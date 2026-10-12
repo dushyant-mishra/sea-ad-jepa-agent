@@ -1,0 +1,79 @@
+{
+  "schema": "SYNTHETIC_V79_AUDIT_STATE_V5",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "target_discovery": "SEPARATE_PARALLEL_LANE__DO_NOT_MIX",
+  "audit_pr": 260,
+  "handoff_pr": 261,
+  "audit_verdict": "V2_CORE_SCIENTIFIC_STRUCTURE_PRESERVED_AFTER_MASK_CORRECTION__CONTRACT_FINALIZATION_SCIENTIFIC_PAYLOAD_ACCEPTED__CROSS_PLATFORM_BYTE_REPRODUCIBILITY_BLOCKS_CANONICAL_LAUNCH_AUTHORITY__NO_WORLDS__NO_QUALIFICATION_FITS__TRAINING_OFF",
+  "terminal": "CONTRACT_V2_FINALIZATION_BLOCKED_ON_CROSS_PLATFORM_BYTE_REPRODUCIBILITY__NO_CANONICAL_WORLD_LAUNCH_AUTHORITY_YET__NO_WORLDS__NO_BENCHMARK__NO_QUALIFICATION_FITS__TRAINING_OFF",
+  "controller_comments": [6112948943,6113335756,6113874774,6114753697,6115051726],
+  "candidate_v2_core": {
+    "status": "FROZEN_UNCHANGED_AFTER_MASK_CORRECTED_S174_REPLAY__NOT_YET_QUALIFIED",
+    "detection": "detected ~ quadratic(log_library) + broad_class + source + donor_within_source",
+    "positive": "log(count)|count>0 ~ Normal(quadratic(log_library) + broad_class + source + donor_within_source, sigma)",
+    "operator": "OUT_OF_CORE",
+    "donor_class": "OUT",
+    "source_class": "OUT",
+    "source_interpretation": "predictive/acquisition-source structure among estimable measured comparisons; not causal/universal biology",
+    "lognormal": "QUALIFICATION_FAMILY",
+    "ztnb": "UNADJUDICATED_CHALLENGER"
+  },
+  "corrected_evidence": {
+    "s174_authority_sha256": "04035c070095e290b9df1a1f1926a635cca528804e644d341df06b82a572d288",
+    "operator_bridge_sha256": "b83c35e6940734a7756627d91e3ce982cb4062e9cdeb2fd6035a090abdface92",
+    "g500_sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62",
+    "support_mask_sha256": "12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab",
+    "masked_replay_sha256": "caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683",
+    "masking_audit_sha256": "6bd0bfc7534635204c24691e754d335df7c586104a126f1d0e6d84583029ad41",
+    "A_to_H_preserved": true,
+    "source_detection_magnitude_reduced": true,
+    "single_source_estimands_undefined_not_zero": true
+  },
+  "contract_payload": {
+    "v1_sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540",
+    "v2_draft_sha256": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
+    "v2_draft_immutable": true,
+    "worlds": 12,
+    "genes_per_world": 44,
+    "planned_fits": 1056,
+    "hard_statistical_gates": 260,
+    "hard_rule_gates": 28,
+    "limit_statistical_gates": 4,
+    "alpha_per_gate": 0.0001923076923076923,
+    "q11_all_hard": true,
+    "first_fail_terminal_lock": true
+  },
+  "pr290": {
+    "head": "5394d036ccd423f9c61267fbdfeef6edd4912d37",
+    "reported_candidate_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+    "windows_ci": ["38183422953/114600601441 30 passed", "38183718225/114601480065 30 passed"],
+    "linux_ci": "38182826433/114598823396 29 passed 1 failed due only to last-binary-digit reported power",
+    "scientific_payload": "ACCEPTED",
+    "launch_authority": "NOT_RATIFIED",
+    "blocker": "platform-dependent final bytes from recomputing accepted SciPy-derived draft values",
+    "required_repair": "immutable accepted draft -> deterministic finalization-field transform -> same Linux/Windows bytes and SHA"
+  },
+  "authority_collision": {
+    "pr289": "CLOSED_NON_CANONICAL",
+    "active_finalization_line": 290
+  },
+  "historical": {
+    "pr279_streaming_cache": "GREEN_15_PASS",
+    "pr280_first_replay": "FAILED_CLOSED_BEFORE_METRICS",
+    "pr283_operator_repair": "GREEN_22_PASS",
+    "pr285_unmasked_replay": "COMPLETE",
+    "pr288_masked_replay": "COMPLETE_A_TO_H_PRESERVED",
+    "detection_v2": "NOT_QUALIFIED",
+    "old_gaussian": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_lognormal": "UNADJUDICATED__METHODOLOGICAL_HOLD",
+    "old_ztnb": "UNADJUDICATED__METHODOLOGICAL_HOLD"
+  },
+  "qualification_world_generation_authorized": false,
+  "qualification_fit_authorized": false,
+  "real_train_nuts_authorized": false,
+  "posterior_export_authorized": false,
+  "factorial_science_authorized": false,
+  "training_authorized": false,
+  "next_gate": "repair PR290 cross-platform deterministic finalization from immutable accepted V2 draft; stop for controller audit"
+}

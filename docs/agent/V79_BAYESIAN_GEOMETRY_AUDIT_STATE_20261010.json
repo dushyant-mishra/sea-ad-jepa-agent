@@ -1,0 +1,54 @@
+{
+  "schema": "V79_BAYESIAN_GEOMETRY_AUDIT_STATE_V1",
+  "date": "2026-10-10",
+  "lane": "MACHA_BAYESIAN_DATASET_GEOMETRY",
+  "source_branch": "analysis/v79-bayesian-synthetic-geometry-20261009",
+  "source_head": "ba61ed4cfca6747e32c21aeabbeed6453e5ea31e",
+  "audit_branch": "audit/v79-bayesian-geometry-snapshot-20261010",
+  "terminal_status": "SIMULATION_QUALIFICATION_INCOMPLETE",
+  "real_expression_fit_started": false,
+  "real_expression_values_accessed_by_bayesian_fit": false,
+  "scrubbed_output_b_qualified": false,
+  "synthetic_generator_authority": false,
+  "training_authorized": false,
+  "v78_retuning_authorized": false,
+  "test_or_morabito_accessed": false,
+  "pathology_accessed": false,
+  "target_discovery_modified": false,
+  "separate_lanes": {
+    "target_discovery_preflight": "PR_259_SEPARATE",
+    "factorial_synthetic_world": "PR_253_256_257_SEPARATE",
+    "historical_td_bayesian_spike": "PR_249_SEPARATE_AND_NOT_THIS_LANE"
+  },
+  "committed_evidence": {
+    "heldout_ppc_end_to_end": "PASS_LOCAL_NUMPYRO",
+    "detection_recovery_S1_present": {
+      "converged": true,
+      "worst_rhat": 1.0087,
+      "worst_ess": 539,
+      "divergences": 0
+    },
+    "detection_recovery_S0_class_absent": {
+      "converged": false,
+      "worst_rhat": 1.0194,
+      "worst_ess": 205,
+      "divergences": 0
+    },
+    "phase_c_lognormal_last_reported": "NARROW_CONVERGENCE_FAIL_DONOR_SPREAD_RHAT_1_013",
+    "ztnb_previous_qualification": "TIMEOUT_NO_TERMINAL_OUTPUT",
+    "ztnb_softplus_density_equivalence_test": "PASS",
+    "phase_c_scoring_tests_after_softplus": "PASS"
+  },
+  "key_commits": {
+    "stable_ztnb_and_progress": "5972ec10d1f60851c4310624d817e0626e5619e7",
+    "recovery_centring_override": "8e63acc24a7a2bcbb5cf905bc40ec7a33ffad522",
+    "audit_entry_34_and_v1_launch": "ba61ed4cfca6747e32c21aeabbeed6453e5ea31e"
+  },
+  "last_reported_external_jobs_not_terminal": [
+    "detection_V1_S0_and_S1",
+    "gaussian_recovery_rerun",
+    "phase_c_lognormal_donor_noncentring_experiment",
+    "phase_c_ztnb_Q9_qualification"
+  ],
+  "next_gate": "COMPLETE_SIMULATION_RECOVERY_AND_BENCHMARK_BEFORE_REAL_DATA"
+}

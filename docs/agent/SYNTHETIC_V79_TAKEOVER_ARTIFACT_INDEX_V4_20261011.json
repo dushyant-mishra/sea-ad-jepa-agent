@@ -1,0 +1,91 @@
+{
+  "schema": "SYNTHETIC_V79_TAKEOVER_ARTIFACT_INDEX_V4",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "target_discovery": "SEPARATE__DO_NOT_MIX",
+  "canonical_audit_pr": 260,
+  "canonical_handoff_pr": 261,
+  "terminal": "CANONICAL_CONTRACT_V2_AUTHORITY_REPAIR_PENDING__PR291_FROZEN_WITH_24_TESTS_GREEN__NO_REALIZED_WORLDS__NO_BENCHMARK__NO_QUALIFICATION_FITS__REAL_TRAIN_POSTERIOR_OFF__FACTORIAL_SCIENCE_OFF__TRAINING_OFF",
+  "controller_rulings": {
+    "operator_repair": {"pr": 280, "comment": 6112948943},
+    "masked_replay_freeze": {"pr": 288, "comment": 6114753697},
+    "pr290_reproducibility_block": {"pr": 290, "comment": 6115051726},
+    "pr291_generator_hold": {"pr": 291, "comment": 6115054911},
+    "q10_q11_pairing_semantics": {"pr": 291, "comment": 6114906562}
+  },
+  "data_custody": {
+    "s174_local_root": "D:\\Jepa project\\data\\cache\\s174_rebuilt_real_train_v1",
+    "s174_authority_sha256": "04035c070095e290b9df1a1f1926a635cca528804e644d341df06b82a572d288",
+    "s174_operator_bridge_sha256": "b83c35e6940734a7756627d91e3ce982cb4062e9cdeb2fd6035a090abdface92",
+    "cells": 4726,
+    "donors": 149,
+    "operators": 42,
+    "sources": 3,
+    "broad_classes": 3,
+    "g500_cache": {"path_local": "V79_ANALYSIS_CACHE_G500.npz", "size_bytes": 1071307, "sha256": "2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62", "committed": false},
+    "structural_support": {"stage81a2r_commit": "95d2cafe", "support_authority_sha_prefix": "ee5d12c1", "mask_sha256": "12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab"}
+  },
+  "historical_prs": {
+    "streaming_cache": {"pr": 279, "verified_code_head": "2d5de281a171f0510d22a7408780fb069625ea02", "doc_head": "615b55eb03b95630484b18d47de0ef7340368d37", "ci": "38166126568/114548954034:15_passed"},
+    "first_replay_fail_closed": {"pr": 280, "head": "2f4b77e7290397130d681c47b82337115e9e9585", "operator_failures": 155, "fits": 600},
+    "operator_penalty_repair": {"pr": 283, "head": "02fb78c36473d9863ae9482619133c052ba4a480", "ci": "38170751947/114562666364:22_passed"},
+    "v3_replay": {"pr": 285, "head": "2c230a70d9151e27b14ec2788d1309eb2ac81468"},
+    "v1_contract": {"pr": 286, "head": "ae706096244b38e7691a3103fcb8dcd445745533", "sha256": "70edabb86c93a9f4ddb4dfb27bded60bab355c90b99d49f49cb851b4c1e58540", "status": "HISTORICAL_NON_AUTHORITY"},
+    "controller_side_mask_engineering": {"pr": 287, "head": "edd8b02bd0be785768c9594cc341f91167e763c0", "ci": "38180476572/114591768346:30_passed"},
+    "canonical_masked_replay": {"pr": 288, "head": "c3cf9ad7472541bfb5ad632465c626c437f9a69c", "masked_replay_sha256": "caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683", "masking_audit_sha256": "6bd0bfc7534635204c24691e754d335df7c586104a126f1d0e6d84583029ad41"},
+    "controller_side_finalization": {"pr": 289, "head": "b8761a66f2b0afc8b43e117d4e64f5fd7287249f", "authority_sha256": "8be47cb2d36ec9ddfdf4fd820ed0d51adea871dc115c1414cbe4edfb9223ee1d", "status": "HISTORICAL_PROVISIONAL__NOT_CURRENT_CANONICAL"},
+    "macha_finalization": {"pr": 290, "head": "5394d036ccd423f9c61267fbdfeef6edd4912d37", "proposed_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26", "status": "BLOCKED_ON_CROSS_PLATFORM_BYTE_REPRODUCIBILITY"},
+    "world_generator": {"pr": 291, "head": "714a36f3ca4f8c01e65f1fb2d5d80741a5b0af27", "ci": "38183909388/114602059598:24_passed", "status": "FROZEN_PENDING_CANONICAL_CONTRACT"}
+  },
+  "core_model": {
+    "status": "FROZEN_UNCHANGED_AFTER_MASK_CORRECTED_S174_REPLAY",
+    "detection": "detected ~ quadratic(log_library) + broad_class + source + donor_within_source",
+    "positive": "log(count)|count>0 ~ Normal(quadratic(log_library) + broad_class + source + donor_within_source, sigma)",
+    "operator": "OUT_OF_CORE",
+    "donor_class": "OUT",
+    "source_class": "OUT",
+    "positive_family": "LOGNORMAL_CURRENT_QUALIFICATION_FAMILY",
+    "ztnb": "UNADJUDICATED_CHALLENGER",
+    "source_interpretation": "PREDICTIVE_ACQUISITION_SOURCE_STRUCTURE_AMONG_ESTIMABLE_MEASURED_COMPARISONS__NOT_UNIVERSAL_CAUSAL_BIOLOGY"
+  },
+  "accepted_v2_payload": {
+    "path": "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json",
+    "sha256": "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3",
+    "worlds": 12,
+    "genes_per_world": 44,
+    "planned_fits": 1056,
+    "hard_statistical_gates": 260,
+    "hard_rule_gates": 28,
+    "limit_statistical_gates": 4,
+    "alpha_per_gate": 0.0001923076923076923
+  },
+  "q10_q11_pairing": {
+    "semantics": "ACCEPTED_PROSPECTIVELY",
+    "old_amendment_sha256": "09f60d91817a041badaa4fc5108125f02a02d1ebbe8242a0f012aa6978d56f7c",
+    "old_binding": "PR289_8be47cb2_PROVISIONAL",
+    "must_regenerate_after_canonical_final_sha": true,
+    "rule": "Q11_INHERITS_Q10_ALL_NON_OPERATOR_TRUTH_AND_BASE_NOISE__DIFFERS_ONLY_OPERATOR_STREAMS_22_23"
+  },
+  "factorial_downstream": {"implementation_pr": 262, "implementation_head": "9110c3fae6d34e43463d56631f43004bda33beb8", "ci": "38147114407/114492689105:94_passed", "audit_pr": 264, "handoff_pr": 265, "scientific_execution": false},
+  "current_allowed_work": [
+    "repair PR290 finalization to load/hash-check accepted V2 draft as immutable input",
+    "apply finalization-only fields without recomputing accepted statistical report values",
+    "prove identical final contract bytes and SHA on Linux and Windows",
+    "retain semantic/tamper/legacy-authority launch-gate tests",
+    "stop for controller ratification"
+  ],
+  "current_forbidden_work": [
+    "further PR291 generator semantics",
+    "realized worlds",
+    "truth tables or world manifests",
+    "benchmark",
+    "qualification fits",
+    "corrected TRAIN posterior inference",
+    "factorial science",
+    "target discovery in this lane",
+    "TEST or Morabito or pathology",
+    "Stage4/500K",
+    "JEPA training"
+  ],
+  "training_authorized": false
+}

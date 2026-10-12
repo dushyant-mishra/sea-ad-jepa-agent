@@ -1,0 +1,32 @@
+{
+  "schema": "SYNTHETIC_V79_AUDIT_STATE_V7",
+  "date": "2026-10-11",
+  "lane": "SYNTHETIC_DATASET_V79_BAYESIAN_GEOMETRY",
+  "audit_pr": 260,
+  "handoff_pr": 261,
+  "world_generator_pr": 291,
+  "controller_pairing_ratification_comment": 6114933346,
+  "audit_verdict": "PAIRING_AMENDMENT_PASS__Q10_Q11_COUNTERFACTUAL_SEMANTICS_PROSPECTIVELY_FIXED_BEFORE_WORLD_REALIZATION__SCENARIO_GENERATOR_ENGINEERING_ONLY_AUTHORIZED__FITTING_OFF__TRAINING_OFF",
+  "pairing_amendment": {
+    "sha256": "09f60d91817a041badaa4fc5108125f02a02d1ebbe8242a0f012aa6978d56f7c",
+    "worlds_generated_at_freeze": 0,
+    "qualification_fits_at_freeze": 0,
+    "q11_inherits_all_non_operator_truth_and_noise_from_q10": true,
+    "q11_only_new_streams": [22, 23],
+    "all_q11_gates_hard": true
+  },
+  "tdd": {
+    "red": {"workflow": 38183033723, "job": 114599441055, "result": "5 pass / 3 expected fail"},
+    "green": {"workflow": 38183126875, "job": 114599720437, "result": "8 passed in 0.13 s"}
+  },
+  "authorization": {
+    "scenario_generator_engineering": true,
+    "world_realization": false,
+    "benchmark": false,
+    "qualification_fit": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "training": false
+  },
+  "terminal": "Q10_Q11_PAIRING_AMENDMENT_RATIFIED__SCENARIO_GENERATOR_ENGINEERING_AUTHORIZED__NO_REALIZED_WORLDS__NO_BENCHMARK__NO_QUALIFICATION_FITS__TRAINING_OFF"
+}
