@@ -22,10 +22,14 @@ def _campaign():
 def _auth(campaign_sha="c"*64,code_sha="d"*40):
     return {"schema":A.AUTH_SCHEMA,"scoring_authorized":True,"qualification_campaign_controller_pass":True,
             "contract_sha256":A.CONTRACT_SHA256,"root_manifest_sha256":A.ROOT_MANIFEST_SHA256,
-            "blinded_index_sha256":A.BLINDED_INDEX_SHA256,
-            "realization_audit_receipt_sha256":A.REALIZATION_AUDIT_RECEIPT_SHA256,
+            "blinded_index_sha256":A.BLINDED_INDEX_SHA256,"realization_audit_receipt_sha256":A.REALIZATION_AUDIT_RECEIPT_SHA256,
             "campaign_receipt_sha256":campaign_sha,"scorer_code_sha":code_sha,
             "real_train_posterior_authorized":False,"factorial_science_authorized":False,"training_authorized":False}
+
+
+def _descriptive():
+    return {"schema":A.DESCRIPTIVE_SCHEMA,"gating":False,
+            "families":{k:{"status":"STRUCTURAL_FIXTURE"} for k in sorted(A.DESCRIPTIVE_FAMILIES)}}
 
 
 def _gate_table(*,hard_fail=None,limit_fail=None):
@@ -60,12 +64,21 @@ def test_scoring_authorization_is_post_campaign_only_and_cannot_cross_downstream
 
 
 def test_scoring_authorization_refuses_64_hex_pseudo_commit_sha():
+    bad=_auth(code_sha="d"*64)
     with pytest.raises(A.ScoreAuthorityRefused):
-        A.validate_scoring_authorization(_auth(code_sha="d"*64),campaign_receipt_sha256="c"*64,scorer_code_sha="d"*64)
+        A.validate_scoring_authorization(bad,campaign_receipt_sha256="c"*64,scorer_code_sha="d"*64)
+
+
+def test_descriptive_metrics_require_exact_five_non_gating_families():
+    assert A.validate_descriptive_metrics(_descriptive())["gating"] is False
+    bad=_descriptive(); bad["families"].pop("positive_heldout")
+    with pytest.raises(A.ScoreAuthorityRefused): A.validate_descriptive_metrics(bad)
+    bad=_descriptive(); bad["gating"]=True
+    with pytest.raises(A.ScoreAuthorityRefused): A.validate_descriptive_metrics(bad)
 
 
 def test_adjudication_receipt_qualified_hard_fail_and_limit_only_semantics():
-    kwargs={"scorer_code_sha":"d"*40,"campaign_receipt_sha256":"c"*64,"scoring_authorization_sha256":"e"*64}
+    kwargs={"scorer_code_sha":"d"*40,"campaign_receipt_sha256":"c"*64,"scoring_authorization_sha256":"e"*64,"descriptive_metrics":_descriptive()}
     q=A.build_adjudication_receipt(**kwargs,gate_table=_gate_table())
     assert q["terminal"]=="V2_CORE_SYNTHETIC_QUALIFICATION_QUALIFIED" and q["hard_fail_count"]==0
     h=A.build_adjudication_receipt(**kwargs,gate_table=_gate_table(hard_fail=20))
@@ -74,9 +87,16 @@ def test_adjudication_receipt_qualified_hard_fail_and_limit_only_semantics():
     assert l["terminal"]=="V2_CORE_SYNTHETIC_QUALIFICATION_QUALIFIED" and l["limit_fail_count"]==1 and l["hard_fail_count"]==0
 
 
+def test_adjudication_refuses_missing_descriptive_family():
+    bad=_descriptive(); bad["families"].pop("detection_heldout")
+    with pytest.raises(A.ScoreAuthorityRefused):
+        A.build_adjudication_receipt(scorer_code_sha="d"*40,campaign_receipt_sha256="c"*64,
+            scoring_authorization_sha256="e"*64,gate_table=_gate_table(),descriptive_metrics=bad)
+
+
 def test_adjudication_receipt_is_write_once(tmp_path):
     rec=A.build_adjudication_receipt(scorer_code_sha="d"*40,campaign_receipt_sha256="c"*64,
-        scoring_authorization_sha256="e"*64,gate_table=_gate_table())
+        scoring_authorization_sha256="e"*64,gate_table=_gate_table(),descriptive_metrics=_descriptive())
     p=tmp_path/"receipt.json"; first=A.write_adjudication_once(p,rec); second=A.write_adjudication_once(p,rec)
     assert first==second==hashlib.sha256(p.read_bytes()).hexdigest()
     bad=dict(rec); bad["training_authorized"]=True
