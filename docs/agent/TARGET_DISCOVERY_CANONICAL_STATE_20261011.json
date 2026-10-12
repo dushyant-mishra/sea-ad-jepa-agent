@@ -1,219 +1,117 @@
 {
-  "schema": "JEPA_TARGET_DISCOVERY_CANONICAL_TAKEOVER_STATE_V1",
+  "blocked": {
+    "corrected_td56_td57b_td57c_td59": "BLOCKED_PENDING_ACCEPTED_G7",
+    "g6": false,
+    "g7": false,
+    "real_target_tournament": true,
+    "representation_selection": true,
+    "stage4": true,
+    "target_selection": true,
+    "td60": true,
+    "training": true
+  },
   "date": "2026-10-11",
-  "lane": "REAL_TARGET_DISCOVERY",
-  "master_handoff": "docs/agent/TARGET_DISCOVERY_MASTER_HANDOFF_20261011.md",
+  "g6": {
+    "accounting": {
+      "HVS_SEA_physical_reread": 23690,
+      "NPH52_passthrough": 1310,
+      "total": 25000
+    },
+    "artifact_sha256": {
+      "manifest": "4fbc14ceda829cca7446e67b9ad25d428608c5aaa5e87d08ae07c412279427bf",
+      "meta": "bd3a494b3dd8239a78485dfc6006e75a75c32e5f2eb0a33afd2da2472522fe74",
+      "receipt": "2edaa2d2e03b8d862172e97b35fb94888305ef0e843cd71206ee56f53b28a52b",
+      "start": "49bdff31a1a055b1bbf1ff539a49a93413c83bf0ab8838494485bc56492bd4f1",
+      "values": "fdc13516a31a4163498cfc1bb9b9dd5fc615bc4ba8e7ec3fd3f4a51522e344a9"
+    },
+    "biological_authority": false,
+    "detected_changed_rows": {
+      "HVS": 0,
+      "NPH52": 0,
+      "SEA_AD": 22560,
+      "total": 22560
+    },
+    "evidence_branch": "evidence/td-g6-replacement-ff4a21f9-20261011",
+    "evidence_commit": "c595af589821bee28eb77e88e44b79dc81835e7a",
+    "execution_state": "EXECUTED_ONCE__PASS__EXTERNALLY_ACCEPTED",
+    "external_acceptance_path": "docs/agent/TD_G6_EXTERNAL_ACCEPTANCE_ff4a21f9_20261011.json",
+    "external_acceptance_sha256": "89932183a2c7b56d1e3ae42264ea3f3b3ae9001d865cfa93604b46f0db2129fb",
+    "external_audit_disposition": "ACCEPT_G6_PASS__VALUE_SUBSTRATE_AND_SOURCE_CUSTODY_CONFIRMED__NO_BIOLOGICAL_TARGET_AUTHORITY",
+    "terminal": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"
+  },
+  "g7": {
+    "biological_replay_authorized": false,
+    "execution_state": "AUTHORIZED_ONCE__PENDING_EXECUTION_OR_RESULT",
+    "expected_pass_terminal": "PASS_TD_G7_S174_EXACT_OVERLAP",
+    "fresh_output_required": true,
+    "one_attempt_only": true,
+    "operational_authorization_path": "custody/owner_decisions/20261011/TD_G7_OPERATIONAL_AUTHORIZATION_ff4a21f9.json",
+    "operational_authorization_sha256": "19a50126219d25989ca466a83b813fcbabdeeb148804e1f616bbb7bbdfe3b4ee",
+    "stop_after_g7": true
+  },
   "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
-  "lane_separation": {
-    "real_target_discovery": "ACTIVE",
-    "synthetic_v79": "SEPARATE__ON_HOLD_UNLESS_EXPLICITLY_RESUMED",
-    "foundation_representation": "SEPARATE__NO_REPRESENTATION_WINNER",
-    "target_tournament_governance": "SEPARATE__SYNTHETIC_METADATA_ONLY__QUALIFIED_SOFTWARE_NO_REAL_AUTHORITY",
-    "cross_lane_contamination_authorized": false
-  },
-  "foundation_science": {
-    "dataset_families": ["HVS", "NPH52", "SEA_AD"],
-    "public_research_data": true,
-    "train_dev_sealed": [149, 19, 19],
-    "reader_roles_fit_validation_oracle": [104, 22, 23],
-    "donor_is_biological_replication_unit": true,
-    "technology_is_observation_operator": true,
-    "protected_outcomes_define_target": false
-  },
-  "historical_row_binding": {
-    "rule": "global_row=np.arange(len(freeze_csv)) before filtering or merging",
-    "sample_A_global_rows": [0, 24999],
-    "sample_B_global_rows": [25000, 49999],
-    "sample_B_sample_row_resets": true,
-    "guard_terminal": "PASS_GLOBAL_ROW_BINDING__RESET_INDEX_FORBIDDEN"
-  },
   "historical_biology": {
-    "TD56": {
-      "state": "HISTORICAL_POSITIVE_RELATIONAL_RECURRENCE",
-      "current_authority": false,
-      "corrected_replay_required": true
-    },
-    "TD57B": {
-      "state": "HISTORICAL_PASS_24_OF_24",
-      "weakest_observed_minus_null_p95": 0.0375178074843,
-      "current_authority": false
-    },
-    "TD57C": {
-      "state": "NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL",
-      "immutable_historical_fail": true
-    },
-    "TD58": {
-      "state": "HISTORICAL_60_PERCENT_PARTIAL_EVIDENCE_PASS_24_OF_24",
-      "current_authority": false
-    },
-    "TD59": {
-      "state": "HISTORICAL_PASS_24_OF_24",
-      "weakest_observed_minus_null_p95": 0.0011566307718604563,
-      "above_null_max_cases": 22,
-      "total_cases": 24,
-      "original_executor_recovered": false,
-      "validated_replay_closure_successor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085"
-    },
-    "TD60": {
-      "state": "PROSPECTIVELY_FROZEN__NEVER_QUALIFYINGLY_EXECUTED__NO_CURRENT_AUTHORITY",
-      "failed": false
-    }
+    "TD56": "HISTORICAL_POSITIVE__CORRECTED_REPLAY_REQUIRED",
+    "TD57B": "HISTORICAL_PASS_24_OF_24__CORRECTED_REPLAY_REQUIRED",
+    "TD57C": "NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL",
+    "TD59": "HISTORICAL_PASS_24_OF_24__CORRECTED_REPLAY_REQUIRED",
+    "TD60": "PROSPECTIVELY_FROZEN__NEVER_QUALIFYINGLY_EXECUTED__NO_CURRENT_AUTHORITY"
   },
-  "historical_executor_sha256": {
-    "td56_hvs": "a1ea8653e24213a3b14ccc52ea64011c92553aec4df5edb7b55d6ba309f61b43",
-    "td56_nph52": "090134f0cc129559286f06d80a31a880c07c9841a7ef3f446b914a78c8cd7162",
-    "td56_sea_exact_fast": "c77ceac26f0ff4c3ae7a3955c39218af56339adda0225b9c663c9d92710c8866",
-    "td57b": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
-    "td57b_exact_fast_wrapper": "808fb293a87d0020adc0f332742f3fa9b99c9c8ec5a88e50504a719ad4183a70",
-    "td57c": "530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c"
+  "lane": "REAL_TARGET_DISCOVERY",
+  "macha": {
+    "current_task": "EXECUTE_G7_ONCE_AT_ff4a21f9_AGAINST_ACCEPTED_G6__STOP_FOR_EXTERNAL_AUDIT",
+    "must_use_existing_code_consumed_owner_decision_sha256": "3d457d4dc484cb46c71925e306f33367ed064d3bf84878512e84391f5ea01a3a",
+    "must_use_existing_code_consumed_runtime_authorization_sha256": "28b3a0c8ed90afe8f8c4d5ab31fe9080303ad3599bf753bbdd55aebe022f3dc7",
+    "must_verify_fresh_g7_operational_authorization_sha256": "19a50126219d25989ca466a83b813fcbabdeeb148804e1f616bbb7bbdfe3b4ee",
+    "stop_after_g7": true
   },
-  "corrected_replay_prefreeze": "docs/superpowers/specs/2026-10-11-td-corrected-replay-interpretation-prefreeze.md",
-  "historical_csr": {
-    "outer_zip_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
-    "inner_npz_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
-    "member_sha256": {
-      "data.npy": "0276be0538515146a66012fc9f871eebff2b5cab4de644a7a3a20c29242ef72e",
-      "indices.npy": "f1fc3200adfcebaa5a1214a4f4259fd5a469f6ddbd1379ad73b1222a440e9771",
-      "indptr.npy": "58182d0a8fb8af88cc5b010775056b04e637279669d352b85935ef36d66cf4b1",
-      "shape.npy": "5547a1cd96a984b5163c5540a616006baca3d2a91985005a8f23e970a3133beb"
-    }
-  },
-  "corrected_substrate": {
-    "s174_sha256": "88067f2efb5d8a0168eb352f83bd9de88c3b929c95a8f8fa1c40a6e34c568a2f"
-  },
-  "supporting_hashes": {
-    "calibration_bundle": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
-    "td41_td58_archive": "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417",
-    "sample_A_freeze": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
-    "provenance": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
-    "collision_ledger": "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722",
-    "s174_rebuild_freeze": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c"
-  },
-  "pr259_g4_g5": {
-    "state": "ACCEPTED_NARROW_TECHNICAL_DATA_INTEGRITY_PASS__VALUE_BLIND",
-    "execution_head": "80e6b4454dd2bc7b8dfcfb060a6e27d3c559f947",
-    "executed_code": "bf253a4dd62d943398f9ff59ed8b1e74777140a5",
+  "master_handoff": "docs/agent/TARGET_DISCOVERY_MASTER_HANDOFF_20261011.md",
+  "pr259": {
+    "biological_authority": false,
     "driver_receipt_sha256": "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae",
+    "execution_head": "80e6b4454dd2bc7b8dfcfb060a6e27d3c559f947",
     "mapping_receipt_sha256": "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0",
     "replay_manifest_sha256": "4bde5f8041394410bf81e9c7c7edbf8553767a87bb31956f0b47bb50026f7660",
-    "authenticated_h5ad_sources": 35,
-    "sample_A_matrices": 34,
-    "sample_A_rows": 25000,
-    "source_counts": {"HVS": 1129, "NPH52": 1310, "SEA_AD": 22561},
-    "replay_addresses": 9216,
-    "expression_arrays_opened": false,
-    "biological_authority": false
+    "state": "ACCEPTED_NARROW_TECHNICAL_DATA_INTEGRITY_PASS__VALUE_BLIND"
   },
-  "g6_attempt_0": {
-    "classification": "ATTEMPT_0_SCHEMA_QUALIFICATION_FAILURE__NO_H5AD_VALUE_READ",
-    "implementation": "fafd4309cc086c95076cefdc94064e8b66e58ae4",
-    "namespace": "D:\\jepa_td_real_g6_20261011\\G6_OUT_fafd4309",
-    "start_marker_sha256": "ae85dd14d17454a104204543312df332bedeae4ea45a9838f9fc9893a80e5894",
-    "receipt_written": false,
-    "corrected_h5ad_value_read": false,
-    "namespace_must_remain_immutable": true,
-    "meaningful_biological_value_read_opportunity_consumed": false
+  "pr275": {
+    "head": "0cbe6244756df3d1b7ed1ef4e1643aae0f94e875",
+    "qualification": "197_passed_0_failed_0_errors",
+    "state": "SYNTHETIC_METADATA_ONLY_GOVERNANCE__NO_REAL_EXECUTION_AUTHORITY"
   },
-  "pr282_g6_successor": {
-    "pr": 282,
+  "pr282": {
     "branch": "fix/td-g6-global-row-binding-successor-20261011",
-    "qualified_head": "ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0",
-    "parent_failed_qualification_head": "7e482cf50f73a5cecda16482777129dd3ca725a6",
-    "failed_qualification_evidence": "qual/td-g6-global-row-successor-7e482cf5-20261011@e4d771cb6d76f9d783b81ddb4e1691c8f4091fd0",
-    "delta_from_parent": "TEST_ONLY_TWO_FILES",
-    "qualification_state": "QUALIFIED_FOR_REPLACEMENT_G6_INTEGRITY_EXECUTION__NO_BIOLOGICAL_AUTHORITY",
-    "qualification_evidence": {
-      "branch": "qual/td-g6-global-row-successor-ff4a21f9-20261011",
-      "commit": "8622f57e67389e3899e76ca7b1dfcc6addd4a3e6",
-      "focused_suite": {"passed": 219, "failed": 0},
-      "real_sample_freeze_terminal": "PASS_REAL_SAMPLE_FREEZE_SCHEMA_AND_GLOBAL_ROW_BINDING",
-      "real_sample_rows": 25000,
-      "source_counts": {"SEA_AD": 22561, "NPH52": 1310, "HVS": 1129},
-      "real_sample_physical_global_row_present": false,
-      "derived_global_row_range": [0, 24999],
-      "pr259_compatibility": "1_passed_0_skipped_0_failed",
-      "worktree_clean_before_and_after": true,
-      "g6_executed_during_qualification": false,
-      "g7_executed_during_qualification": false,
-      "h5ad_value_read_during_qualification": false
-    },
     "code_identity_sha256": {
       "common": "23be96f8f2c02bf10b751b599ccfa5fb15ba93a456f22b2cad73c1a3294ae7ea",
       "g6": "8e6504e02e909a030a33b3fa2b4742fd78354486c1d2a0f40575c11108a6877d",
       "g7": "f8e527104c60a7b6fa307558f97158f004ea485846f5b1ea984a3eef5d1e71fe"
     },
-    "owner_decision": {
-      "path": "custody/owner_decisions/20261011/TD_G6G7_OWNER_DECISION_ff4a21f9.json",
-      "physical_sha256": "3d457d4dc484cb46c71925e306f33367ed064d3bf84878512e84391f5ea01a3a"
-    },
-    "runtime_authorization": {
-      "path": "custody/owner_decisions/20261011/TD_G6G7_RUNTIME_AUTHORIZATION_ff4a21f9.json",
-      "physical_sha256": "28b3a0c8ed90afe8f8c4d5ab31fe9080303ad3599bf753bbdd55aebe022f3dc7"
-    },
-    "replacement_g6_authorized": true,
-    "replacement_g6_execution_state": "AUTHORIZED_ONCE__PENDING_EXECUTION_OR_RESULT",
-    "operational_scope": "REPLACEMENT_G6_ONCE__FRESH_NAMESPACE__STOP_FOR_EXTERNAL_AUDIT",
-    "expected_pass_terminal": "PASS_TD_G6_SOURCE_LIBRARY_EXACT",
-    "g7_operationally_authorized": false
+    "focused_suite": "219_passed_0_failed",
+    "pr": 282,
+    "qualification_evidence_commit": "8622f57e67389e3899e76ca7b1dfcc6addd4a3e6",
+    "qualified_head": "ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0"
   },
-  "pr275_tournament_governance": {
-    "pr": 275,
-    "branch": "science/td-target-tournament-scaffold-20261011",
-    "head": "0cbe6244756df3d1b7ed1ef4e1643aae0f94e875",
-    "lane": "SYNTHETIC_METADATA_ONLY_GOVERNANCE",
-    "qualification_state": "FULLY_QUALIFIED_SYNTHETIC_METADATA_ONLY_V2_AUTHENTICATED_REGISTRY_TO_ADJUDICATION_CHAIN",
-    "qualification": {
-      "workflow_run_id": 38183565983,
-      "workflow_job_id": 114601031751,
-      "artifact_id": 11718374988,
-      "artifact_digest": "sha256:585f7799e0aba4935b37b28319570025de67ecf73d9aa7523a5bf6abeb74de61",
-      "passed": 197,
-      "failed": 0,
-      "errors": 0,
-      "status_before_clean": true,
-      "tracked_status_after_clean": true,
-      "terminal": "PASS_FULL_SYNTHETIC_METADATA_ONLY_V2_AUTHENTICATED_REGISTRY_TO_ADJUDICATION_CHAIN_197_OF_197"
-    },
-    "v2_chain": {
-      "contract": "scripts/v5/td_target_tournament_contract_v2.py",
-      "prefreeze": "scripts/v5/td_target_tournament_prefreeze_v2.py",
-      "gate_registry": "scripts/v5/td_target_tournament_gate_registry_v2.py",
-      "coverage": "scripts/v5/td_gate_case_coverage_v2.py",
-      "gate_evidence": "scripts/v5/td_target_tournament_gate_evidence_v2.py",
-      "adjudicator": "scripts/v5/td_target_tournament_adjudicator_v2.py",
-      "candidate_manifest_requires_full_gate_set": true,
-      "posthoc_executor_substitution_allowed": false,
-      "posthoc_estimand_substitution_allowed": false,
-      "posthoc_decision_rule_substitution_allowed": false,
-      "not_estimable_distinct_from_fail": true
-    },
-    "real_execution_authority": false,
-    "real_tournament_authorized": false,
-    "target_selected": false,
-    "current_priority": "PARALLEL_SECONDARY_TO_REAL_G6_G7_AND_CORRECTED_REPLAY"
-  },
-  "macha": {
-    "current_task": "EXECUTE_REPLACEMENT_G6_ONCE_AT_ff4a21f9__FRESH_NAMESPACE__STOP_FOR_EXTERNAL_AUDIT",
-    "expected_success_files": [
-      "G6_EXECUTION_START.json",
-      "G6_RECEIPT.json",
-      "MANIFEST.json",
-      "TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz",
-      "TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz"
+  "row_binding": {
+    "guard_terminal": "PASS_GLOBAL_ROW_BINDING__RESET_INDEX_FORBIDDEN",
+    "rule": "global_row=np.arange(len(freeze_csv)) before filtering or merging",
+    "sample_A_global_rows": [
+      0,
+      24999
     ],
-    "expected_hvs_sea_physical_reread": 23690,
-    "expected_nph52_historical_passthrough": 1310,
-    "stop_after_g6": true
+    "sample_B_global_rows": [
+      25000,
+      49999
+    ]
   },
-  "blocked": {
-    "replacement_g6": false,
-    "g7": "PENDING_EXTERNAL_AUDIT_OF_REPLACEMENT_G6",
-    "corrected_td56_td57b_td57c_td59": true,
-    "real_target_tournament": true,
-    "td60": true,
-    "target_selection": true,
-    "representation_selection_in_this_lane": true,
-    "stage4": true,
-    "training": true
+  "schema": "JEPA_TARGET_DISCOVERY_CANONICAL_TAKEOVER_STATE_V2",
+  "science_guardrails": {
+    "biological_and_measurement_uncertainty_separate": true,
+    "donor_is_biological_replication_unit": true,
+    "low_jepa_loss_is_not_biological_validation": true,
+    "measured_zero_is_valid": true,
+    "no_forced_modality_imputation": true,
+    "stable_latent_coordinates_are_not_authority": true,
+    "technology_is_observation_operator": true,
+    "unsupported_targets_abstain": true
   }
 }
