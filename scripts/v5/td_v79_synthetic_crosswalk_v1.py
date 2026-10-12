@@ -6,6 +6,7 @@ synthetic-qualification authority.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -48,6 +49,7 @@ SYNTHETIC_STATUS = frozenset({"PASS", "FAIL", "NOT_ESTIMABLE"})
 ELIGIBLE = "ELIGIBLE_PENDING_TARGET_SELECTION"
 
 EXPECTED_SCHEMA = "JEPA_TD_V79_SYNTHETIC_CROSSWALK_V1"
+EVIDENCE_RECEIPT_SCHEMA = "JEPA_TD_V79_SYNTHETIC_EVIDENCE_RECEIPT_V1"
 EXPECTED_CONTRACT_SHA256 = "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26"
 EXPECTED_PAIR = ["Q10_S174_DESIGN_IMBALANCE", "Q11_OMITTED_OPERATOR"]
 AUTHORITY_KEYS = frozenset({
@@ -84,6 +86,16 @@ CLAIM_FIELDS = frozenset({
     "expected_behavior",
     "failure_effect",
 })
+RECEIPT_FIELDS = frozenset({
+    "schema",
+    "candidate_id",
+    "crosswalk_sha256",
+    "synthetic_contract_sha256",
+    "claim_results",
+    "authority",
+})
+CLAIM_RESULT_FIELDS = frozenset({"claim", "evidence_class", "status", "world_evidence"})
+WORLD_EVIDENCE_FIELDS = frozenset({"world", "truth_manifest_sha256", "result_sha256"})
 MANDATORY_NOT_ESTIMABLE = {
     ("C1_SHARED_EMERGENT", "SHARED_MULTIGENE_LATENT_RECOVERY"),
     ("C2_RELATIONAL_SHARED", "RELATIONAL_GEOMETRY_RECOVERY"),
@@ -91,6 +103,15 @@ MANDATORY_NOT_ESTIMABLE = {
     ("C4_STRUCTURED_COMPOSITE", "INCREMENT_OVER_CONSTITUENTS_BIOLOGICAL_TRUTH"),
     ("C5_REGULATORY_SPECIALIST", "REGULATORY_CHROMATIN_RECOVERY"),
 }
+
+
+def canonical_sha256(value) -> str:
+    raw = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    return hashlib.sha256(raw).hexdigest()
+
+
+def _is_sha256(value) -> bool:
+    return isinstance(value, str) and len(value) == 64 and all(ch in "0123456789abcdef" for ch in value)
 
 
 def load_crosswalk(path: Path | str) -> dict:
@@ -115,6 +136,13 @@ def _require_unique_strings(values, label: str, *, allow_empty: bool = False) ->
         raise CrosswalkError(f"{label} must contain nonempty strings")
     if len(values) != len(set(values)):
         raise CrosswalkError(f"{label} must contain unique strings")
+
+
+def _validate_authority(authority, label: str) -> None:
+    if not isinstance(authority, dict) or set(authority) != AUTHORITY_KEYS:
+        raise CrosswalkError(f"{label} authority keys must exactly match V1 boundary")
+    if any(value is not False for value in authority.values()):
+        raise CrosswalkError(f"{label} cannot carry execution or selection authority")
 
 
 def validate_crosswalk(crosswalk: dict) -> None:
@@ -151,11 +179,7 @@ def validate_crosswalk(crosswalk: dict) -> None:
         if rec["foundation"] is not (cid in FOUNDATION_CANDIDATES):
             raise CrosswalkError(f"candidate foundation role mismatch: {cid}")
 
-    authority = crosswalk.get("authority")
-    if not isinstance(authority, dict) or set(authority) != AUTHORITY_KEYS:
-        raise CrosswalkError("authority keys must exactly match V1 boundary")
-    if any(value is not False for value in authority.values()):
-        raise CrosswalkError("synthetic crosswalk cannot carry execution or selection authority")
+    _validate_authority(crosswalk.get("authority"), "synthetic crosswalk")
 
     pair = crosswalk.get("paired_counterfactual")
     required_pair_fields = {
@@ -234,6 +258,69 @@ def validate_crosswalk(crosswalk: dict) -> None:
             raise CrosswalkError(f"mandatory current-V79 NOT_ESTIMABLE claim missing: {key}")
 
 
+def validate_synthetic_evidence_receipt(receipt: dict, crosswalk: dict) -> dict:
+    """Authenticate one candidate's complete frozen V79 claim set before combination."""
+    validate_crosswalk(crosswalk)
+    if not isinstance(receipt, dict) or set(receipt) != RECEIPT_FIELDS:
+        raise CrosswalkError("synthetic evidence receipt fields must exactly match V1 schema")
+    if receipt.get("schema") != EVIDENCE_RECEIPT_SCHEMA:
+        raise CrosswalkError("wrong synthetic evidence receipt schema")
+    candidate_id = receipt.get("candidate_id")
+    if candidate_id not in EXACT_CANDIDATES:
+        raise CrosswalkError("unknown synthetic evidence receipt candidate")
+    if receipt.get("crosswalk_sha256") != canonical_sha256(crosswalk):
+        raise CrosswalkError("synthetic evidence receipt crosswalk binding mismatch")
+    if receipt.get("synthetic_contract_sha256") != EXPECTED_CONTRACT_SHA256:
+        raise CrosswalkError("synthetic evidence receipt V79 contract binding mismatch")
+    _validate_authority(receipt.get("authority"), "synthetic evidence receipt")
+
+    frozen = [entry for entry in crosswalk["claims"] if entry["candidate"] == candidate_id]
+    expected_by_claim = {entry["claim"]: entry for entry in frozen}
+    results = receipt.get("claim_results")
+    if not isinstance(results, list) or len(results) != len(frozen):
+        raise CrosswalkError("synthetic evidence receipt must contain the complete frozen candidate claim set")
+    if [record.get("claim") if isinstance(record, dict) else None for record in results] != [entry["claim"] for entry in frozen]:
+        raise CrosswalkError("synthetic evidence receipt claim order/set differs from frozen crosswalk")
+
+    for record in results:
+        if not isinstance(record, dict) or set(record) != CLAIM_RESULT_FIELDS:
+            raise CrosswalkError("invalid synthetic claim-result shape")
+        claim = record["claim"]
+        frozen_entry = expected_by_claim[claim]
+        if record.get("evidence_class") != frozen_entry["evidence_class"]:
+            raise CrosswalkError(f"synthetic evidence class differs from frozen crosswalk: {claim}")
+        status = record.get("status")
+        if status not in SYNTHETIC_STATUS:
+            raise CrosswalkError(f"invalid synthetic claim status: {claim}")
+        world_evidence = record.get("world_evidence")
+        if not isinstance(world_evidence, list):
+            raise CrosswalkError(f"world_evidence must be a list: {claim}")
+
+        if frozen_entry["evidence_class"] == "NOT_ESTIMABLE":
+            if status != "NOT_ESTIMABLE" or world_evidence:
+                raise CrosswalkError(f"current-V79 NOT_ESTIMABLE claim cannot carry PASS/FAIL evidence: {claim}")
+            continue
+
+        if status == "NOT_ESTIMABLE":
+            if world_evidence:
+                raise CrosswalkError(f"NOT_ESTIMABLE result cannot carry world evidence: {claim}")
+            continue
+
+        expected_worlds = frozen_entry["worlds"]
+        if [item.get("world") if isinstance(item, dict) else None for item in world_evidence] != expected_worlds:
+            raise CrosswalkError(f"world evidence must exactly match frozen worlds: {claim}")
+        for item in world_evidence:
+            if not isinstance(item, dict) or set(item) != WORLD_EVIDENCE_FIELDS:
+                raise CrosswalkError(f"invalid world evidence shape: {claim}")
+            if item["world"] not in EXACT_WORLDS:
+                raise CrosswalkError(f"unknown world evidence: {claim}")
+            if not _is_sha256(item["truth_manifest_sha256"]):
+                raise CrosswalkError(f"invalid truth-manifest SHA-256: {claim}")
+            if not _is_sha256(item["result_sha256"]):
+                raise CrosswalkError(f"invalid synthetic-result SHA-256: {claim}")
+    return receipt
+
+
 def combine_candidate_evidence(
     candidate_id: str,
     real_status: str,
@@ -268,6 +355,16 @@ def combine_candidate_evidence(
     ):
         return "ELIMINATED_SYNTHETIC_FALSIFIER"
     return ELIGIBLE
+
+
+def combine_candidate_receipt(real_status: str, receipt: dict, crosswalk: dict) -> str:
+    """Validate a complete synthetic receipt, then apply the asymmetric evidence rule."""
+    validate_synthetic_evidence_receipt(receipt, crosswalk)
+    synthetic_results = [
+        {"evidence_class": record["evidence_class"], "status": record["status"]}
+        for record in receipt["claim_results"]
+    ]
+    return combine_candidate_evidence(receipt["candidate_id"], real_status, synthetic_results, crosswalk)
 
 
 def adjudicate_foundation(candidate_statuses: dict, specialist_status: str | None = None) -> dict:
