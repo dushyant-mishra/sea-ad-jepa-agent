@@ -13,6 +13,9 @@ HERE=ROOT/"scripts"/"v79"
 sys.path.insert(0,str(HERE))
 import run_v79_v2_core_qualification as Q  # noqa: E402
 
+CODE="a"*40
+SEED=123456
+
 
 def _queue():
     rows=[]
@@ -21,6 +24,9 @@ def _queue():
             for part in ("detection","positive"):
                 rows.append({"opaque_world_id":oid,"world_manifest_sha256":f"{wi+1:064x}","gene_index":g,"part":part,"fit_id":f"{len(rows)+1:064x}"})
     return rows
+
+
+def _seed_map(q): return {x["fit_id"]:SEED for x in q}
 
 
 def _qs(labels):
@@ -32,11 +38,16 @@ def _receipt(item):
                 "class":_qs(["helmert_0","helmert_1"]),"source":_qs(["helmert_0","helmert_1"]),
                 "donor_sd":_qs(["donor_sd"]),"donor_effects":_qs(["donor_0"])}
     if item["part"]=="positive": quantities["sigma"]=_qs(["sigma"])
+    attempt={"stage":"PRIMARY","seed":SEED,"chains":4,"warmup":1000,"draws_per_chain":1000,"target_accept":0.9,
+             "max_tree_depth":10,"extended":False,"dense_mass":False,"init":"uniform_radius_2","divergences":0,
+             "worst_rhat":1.0,"worst_ess_bulk":800,"worst_ess_tail":800,"mean_tree_steps":10.0,
+             "started_at_utc":"2026-10-12T00:00:00+00:00","ended_at_utc":"2026-10-12T00:01:00+00:00",
+             "wall_seconds":60.0,"process_cpu_seconds":200.0,"peak_working_set_bytes":1000,"jax_devices":["TFRT_CPU_0"]}
     return {"schema":"V79_V2_CORE_FIT_RECORD_V1","execution_mode":"QUALIFICATION","fit_id":item["fit_id"],
             "opaque_world_id":item["opaque_world_id"],"gene_index":item["gene_index"],"part":item["part"],
             "input_manifest_sha256":item["world_manifest_sha256"],"contract_sha256":Q.SOURCE_CONTRACT_SHA256,
             "qualification_fits_run":1,"benchmark_run":False,"scoring_run":False,"truth_accessed":False,
-            "training_authorized":False,"final_diagnosis":"COMPLETE","attempts":[],"code_sha":"a"*40,
+            "training_authorized":False,"final_diagnosis":"COMPLETE","attempts":[attempt],"code_sha":CODE,
             "final_diagnostics":{"divergences":0,"worst_rhat":1.0,"worst_ess_bulk":800,"worst_ess_tail":800,"mean_tree_steps":10.0},
             "scoring_summary":{"schema":"V79_V2_CORE_IDENTIFIED_POSTERIOR_SUMMARY_V1","part":item["part"],
                 "identification":{"class":{"mode":"helmert","observed_levels":[0,1,2],"reference_level":None},
@@ -63,32 +74,42 @@ def test_world_groups_preserve_opaque_order_and_det_then_pos_per_gene():
 def test_checkpoint_scan_accepts_exact_prefix_only(tmp_path):
     q=_queue(); out=tmp_path/"r"; out.mkdir()
     for item in q[:3]: _write_receipt(out/f"fit_{item['fit_id']}.json",_receipt(item))
-    assert Q.completed_prefix(out,q)==3
+    assert Q.completed_prefix(out,q,expected_code_sha=CODE,seed_by_fit_id=_seed_map(q))==3
     _write_receipt(out/f"fit_{q[4]['fit_id']}.json",_receipt(q[4]))
-    with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q)
+    with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q,expected_code_sha=CODE,seed_by_fit_id=_seed_map(q))
 
 
 def test_checkpoint_scan_refuses_tampered_existing_receipt(tmp_path):
     q=_queue(); out=tmp_path/"r"; out.mkdir(); r=_receipt(q[0]); r["opaque_world_id"]="ffffffffffff"
     _write_receipt(out/f"fit_{q[0]['fit_id']}.json",r)
-    with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q)
+    with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q,expected_code_sha=CODE,seed_by_fit_id=_seed_map(q))
+
+
+def test_checkpoint_refuses_wrong_code_or_seed(tmp_path):
+    q=_queue(); out=tmp_path/"r"; out.mkdir(); r=_receipt(q[0]); r["code_sha"]="b"*40
+    _write_receipt(out/f"fit_{q[0]['fit_id']}.json",r)
+    with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q,expected_code_sha=CODE,seed_by_fit_id=_seed_map(q))
+    for p in out.iterdir(): p.unlink()
+    r=_receipt(q[0]); r["attempts"][0]["seed"]=SEED+1
+    _write_receipt(out/f"fit_{q[0]['fit_id']}.json",r)
+    with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q,expected_code_sha=CODE,seed_by_fit_id=_seed_map(q))
 
 
 def test_checkpoint_refuses_missing_gate_ready_output(tmp_path):
     q=_queue(); out=tmp_path/"r"; out.mkdir(); r=_receipt(q[0]); r.pop("scoring_summary")
     _write_receipt(out/f"fit_{q[0]['fit_id']}.json",r)
-    with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q)
+    with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q,expected_code_sha=CODE,seed_by_fit_id=_seed_map(q))
 
 
 def test_checkpoint_artifact_path_cannot_escape_result_root(tmp_path):
     q=_queue(); out=tmp_path/"r"; out.mkdir(); escape=tmp_path/"escape.npz"; escape.write_bytes(b"x")
     r=_receipt(q[0]); r["posterior_artifacts"]={"donor_effect_draws":{"path":"../escape.npz","sha256":hashlib.sha256(b"x").hexdigest()}}
     _write_receipt(out/f"fit_{q[0]['fit_id']}.json",r,with_artifact=False)
-    with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q)
+    with pytest.raises(Q.QualificationRunRefused): Q.completed_prefix(out,q,expected_code_sha=CODE,seed_by_fit_id=_seed_map(q))
 
 
 def test_campaign_summary_keeps_scoring_and_truth_off():
-    r=Q.campaign_receipt_skeleton(code_sha="a"*40,custody_receipt_sha="b"*64,fit_count=1056)
+    r=Q.campaign_receipt_skeleton(code_sha=CODE,custody_receipt_sha="b"*64,fit_count=1056)
     assert r["qualification_fits_run"]==0
     assert r["scoring_run"] is False and r["truth_accessed"] is False and r["training_authorized"] is False
 
@@ -96,8 +117,9 @@ def test_campaign_summary_keeps_scoring_and_truth_off():
 def test_campaign_finalization_is_idempotent_after_all_fit_receipts_exist(tmp_path):
     q=_queue(); out=tmp_path/"r"; out.mkdir()
     for item in q: _write_receipt(out/f"fit_{item['fit_id']}.json",_receipt(item))
-    a=Q.finalize_campaign(out,q,code_sha="a"*40,custody_receipt_sha="b"*64)
-    b=Q.finalize_campaign(out,q,code_sha="a"*40,custody_receipt_sha="b"*64)
+    seeds=_seed_map(q)
+    a=Q.finalize_campaign(out,q,code_sha=CODE,custody_receipt_sha="b"*64,seed_by_fit_id=seeds)
+    b=Q.finalize_campaign(out,q,code_sha=CODE,custody_receipt_sha="b"*64,seed_by_fit_id=seeds)
     assert a==b and a["qualification_fits_run"]==len(q)
 
 
