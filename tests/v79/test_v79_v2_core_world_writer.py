@@ -118,42 +118,31 @@ def test_blinded_fit_package_has_no_truth_world_names_operator_or_seed(tmp_path,
     fit_index_path = out / root_manifest["blinded_fit_index_path"]
     fit_index_raw = fit_index_path.read_text(encoding="utf-8")
     fit_index = json.loads(fit_index_raw)
-    assert fit_index["schema"] == "V79_V2_CORE_BLINDED_FIT_INDEX_V1"
-    assert len(fit_index["worlds"]) == 12
+    assert fit_index["schema"] == "V79_V2_CORE_BLINDED_FIT_INDEX_V1" and len(fit_index["worlds"]) == 12
     for q in [f"Q{i:02d}" for i in range(12)]:
         assert q not in fit_index_raw
-
     for rec in root_manifest["worlds"]:
         opaque = rec["opaque_world_id"]
-        assert rec["world_name"].startswith("Q")
-        assert opaque in rec["fit_manifest_path"]
+        assert rec["world_name"].startswith("Q") and opaque in rec["fit_manifest_path"]
         assert rec["world_name"] not in rec["fit_manifest_path"]
         fm_path = out / rec["fit_manifest_path"]
-        fm_raw = fm_path.read_text(encoding="utf-8")
-        fm = json.loads(fm_raw)
+        fm_raw = fm_path.read_text(encoding="utf-8"); fm = json.loads(fm_raw)
         assert fm["opaque_world_id"] == opaque
         for forbidden in ("world_name", "world_index", "seed_root", "truth", "operator", "op.npy"):
             assert forbidden not in fm_raw
         names = set(fm["generated_outputs"])
-        assert names >= {
-            "design/src.npy", "design/donor.npy", "design/cls.npy", "design/log_lib.npy",
-            "support.npy", "observations/train/observed.npy",
-            "observations/same_donor/observed.npy", "observations/new_donor/observed.npy"
-        }
-        assert "design/op.npy" not in names
-        assert not any(x.startswith("truth/") for x in names)
-
+        assert names >= {"design/src.npy", "design/donor.npy", "design/cls.npy", "design/log_lib.npy",
+            "support.npy", "observations/train/observed.npy", "observations/same_donor/observed.npy",
+            "observations/new_donor/observed.npy"}
+        assert "design/op.npy" not in names and not any(x.startswith("truth/") for x in names)
         tm = json.loads((out / rec["truth_manifest_path"]).read_text(encoding="utf-8"))
-        assert tm["world_name"] == rec["world_name"]
-        assert tm["world_index"] == rec["world_index"]
+        assert tm["world_name"] == rec["world_name"] and tm["world_index"] == rec["world_index"]
         assert tm["opaque_world_id"] == opaque
         truth_names = set(tm["generated_outputs"])
         assert "design/op.npy" in truth_names
         assert "truth/detection/intercept.npy" in truth_names
         assert "truth/positive/donor_effects.npy" in truth_names
         assert "truth/new_donor/detection/donor_effects.npy" in truth_names
-
-    # The entire blinded root must have opaque directory names and no controller truth files.
     fit_root = out / root_manifest["blinded_fit_root"]
     opaque_ids = {r["opaque_world_id"] for r in root_manifest["worlds"]}
     assert {p.name for p in fit_root.iterdir() if p.is_dir()} == opaque_ids
@@ -169,7 +158,6 @@ def test_tamper_in_bound_fit_or_truth_file_fails_closed(tmp_path, engineering_pa
     fit_target.write_bytes(fit_target.read_bytes() + b"tamper")
     with pytest.raises(SystemExit):
         w.verify_world_set(out)
-
     out2 = tmp_path / "set2"
     root_manifest = _write_eng(w, tmp_path, engineering_payload, engineering_designs, amendment, "set2")
     rec = root_manifest["worlds"][0]
@@ -196,6 +184,21 @@ def test_qualification_loader_owns_all_frozen_scientific_inputs(qualification_pa
     assert hashlib.sha256(CAL_PATH.read_bytes()).hexdigest() == CAL_SHA and cal == CAL
     assert contract["inputs"]["planting_calibration_masked"]["sha256"] == CAL_SHA
     assert set(inspect.signature(w.realize_qualification_worlds).parameters) == {"root", "out_dir", "authorization"}
+
+
+def test_runtime_package_lock_requires_every_frozen_version():
+    w = _writer()
+    locked = w.load_locked_package_versions(ROOT)
+    assert locked["numpy"] == "2.0.2" and locked["numpyro"] == "0.15.3" and locked["jax"] == "0.4.35"
+    receipt = w.validate_runtime_package_lock(ROOT, installed_versions=dict(locked))
+    assert receipt["environment_lock_sha256"] == ENV_LOCK_SHA
+    assert receipt["matched_packages"] == len(locked)
+    bad = dict(locked); bad["numpy"] = "9.9.9"
+    with pytest.raises(SystemExit):
+        w.validate_runtime_package_lock(ROOT, installed_versions=bad)
+    bad = dict(locked); bad.pop("numpyro")
+    with pytest.raises(SystemExit):
+        w.validate_runtime_package_lock(ROOT, installed_versions=bad)
 
 
 def test_qualification_authorization_binds_windows_environment_lock():
