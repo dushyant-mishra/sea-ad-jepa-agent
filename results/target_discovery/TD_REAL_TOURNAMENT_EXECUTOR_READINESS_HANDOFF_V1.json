@@ -1,18 +1,18 @@
 {
   "schema": "TD_REAL_TOURNAMENT_EXECUTOR_READINESS_HANDOFF_V1",
   "date": "2026-10-12",
-  "status": "FRAMEWORK_ENGINEERING_QUALIFIED__GATE_DECISION_EXECUTORS_PENDING",
+  "status": "FRAMEWORK_AND_PROTECTED_EXECUTION_ENGINEERING_QUALIFIED__GATE_DECISION_EXECUTORS_PENDING",
   "source_pr": 313,
-  "framework_head": "755686c07b9ccf69e0f7517b4e8c7039a6e391e3",
+  "framework_head": "695abc4e5de9c34c3ba8cbab1c833087970fdf6a",
   "qualification": {
-    "workflow_run_id": 38303704716,
-    "workflow_job_id": 114992515665,
-    "passed": 357,
+    "workflow_run_id": 38304099785,
+    "workflow_job_id": 114993812006,
+    "passed": 361,
     "failed": 0,
     "errors": 0,
     "worktree_clean": true,
-    "artifact_id": 11771278468,
-    "artifact_sha256": "b77eabcde3f5eece22afa1fe2c0b4356a17be1adebfbd1f2247316f9dc8e244e"
+    "artifact_id": 11771169064,
+    "artifact_sha256": "1bb72c13df06021a2046b694fb27529f89a757a251be8f12b6128863d6659290"
   },
   "qualified_framework": [
     "real candidate/dependency/falsifier contract",
@@ -21,16 +21,19 @@
     "mandatory raw donor-level falsifier evidence",
     "authenticated gate-output bridge",
     "routing-V4 bundle projection",
-    "fail-closed QUALIFY/EXECUTE_ONCE controller"
+    "fail-closed QUALIFY/EXECUTE_ONCE real-tournament controller",
+    "one-shot protected head-to-head controller",
+    "one-shot protected confirmation controller with no-runner-up rule"
   ],
   "audit_finding": {
     "historical_gate_registry": "FIXTURE_ONLY_PLACEHOLDER_IDENTITIES__NOT_REAL_CALLABLE_GATE_EXECUTORS",
     "evidence": "Historical registry tests synthesize executor/estimand/decision-rule hashes from role-label strings; V2 evidence custody explicitly leaves estimands and decision rules to gate-specific executors.",
-    "historical_cutoff_reuse": "FORBIDDEN__HISTORICAL_CALIBRATION_VALUES_ARE_NOT_FUTURE_TARGET_CUTOFFS"
+    "historical_cutoff_reuse": "FORBIDDEN__HISTORICAL_CALIBRATION_VALUES_ARE_NOT_FUTURE_TARGET_CUTOFFS",
+    "prefreeze_requirement": "V2 explicitly requires gate-specific qualified executors to define estimands and decision rules prospectively; coverage/adjudication may not invent gate-pass policy."
   },
   "remaining_blocker": "QUALIFIED_CALLABLE_REAL_GATE_SPECIFIC_ESTIMANDS_AND_DECISION_RULES_NOT_MATERIALIZED",
   "next_allowed_engineering": [
-    "materialize outcome-blind gate-specific executors from prospectively frozen scientific rules",
+    "after a separately approved prospective gate-rule freeze, materialize outcome-blind gate-specific executors",
     "bind real executor/estimand/decision-rule hashes for every active candidate×gate role",
     "run outcome-blind real-file QUALIFY only after audited corrected replay evidence exists"
   ],
@@ -40,6 +43,7 @@
     "do not execute the real tournament before non-fixture gate executors qualify",
     "do not select target/portfolio, representation, TD60, Stage4 or training"
   ],
-  "integration_with_post_replay_matrix": "Once PR310 replay is audited, TD_POST_REPLAY_CANDIDATE_ADJUDICATION_MATRIX_V1 determines active candidate roles. PR313 provides the execution shell; only those active candidate×gate roles need real gate-executor readiness before tournament launch.",
-  "authority": {"real_tournament_authorized": false,"target_selection_authorized": false,"representation_selection_authorized": false,"td60_authorized": false,"stage4_authorized": false,"training_authorized": false}
+  "integration_with_post_replay_matrix": "Once PR310 replay is audited, TD_POST_REPLAY_CANDIDATE_ADJUDICATION_MATRIX_V1 determines active candidate roles. PR313 provides the execution and protected-evidence custody shell; only active candidate×gate roles need real gate-executor readiness before tournament launch.",
+  "td60_binding": "TD_TD60_SUCCESSOR_PORTFOLIO_READINESS_V1 binds historical TD60 as conditional relational learned-teacher continuity, not a universal target-qualification substitute.",
+  "authority": {"real_tournament_authorized": false,"protected_evidence_authorized": false,"target_selection_authorized": false,"representation_selection_authorized": false,"td60_authorized": false,"stage4_authorized": false,"training_authorized": false}
 }
