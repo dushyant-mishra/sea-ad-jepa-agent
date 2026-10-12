@@ -4,6 +4,7 @@
   "branch": "science/td-target-tournament-scaffold-20261011",
   "draft_pr": 275,
   "status": "TD_TARGET_DISCOVERY_MACHINERY_READY_THROUGH_PROTECTED_CONFIRMATION_ROUTING__WAITING_ON_EXTERNALLY_ACCEPTED_G7_AND_CORRECTED_BIOLOGICAL_EVIDENCE__NO_TARGET_AUTHORITY",
+  "historical_state_preserved": "custody/takeover_20261011/TD_TARGET_TOURNAMENT_SCAFFOLD_STATE_20261011.json",
   "latest_code_qualification": {
     "qualified_head": "5748a3041f9320e6a799e75875a5cde0d28a40ef",
     "workflow_run_id": 38209051675,
