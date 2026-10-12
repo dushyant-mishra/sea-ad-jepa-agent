@@ -14,6 +14,7 @@ import numpy as np
 import generate_v79_v2_core_worlds as G
 import v79_v2_core_observation as O
 import v79_v2_core_planting as P
+import v79_v2_core_structural_support as S
 
 
 def _source_by_donor(design: dict[str, np.ndarray]) -> np.ndarray:
@@ -32,10 +33,36 @@ def _source_by_donor(design: dict[str, np.ndarray]) -> np.ndarray:
 
 
 def _attach_donor_realization(part: dict[str, Any], realization: dict[str, np.ndarray]) -> None:
-    part["donor_effects"] = np.asarray(realization["effects"], dtype=float)
-    part["raw_centered"] = np.asarray(realization["raw_centered"], dtype=float)
-    part["donor_lambda"] = np.asarray(realization["lambda"], dtype=float)
-    part["donor_shared_factor"] = np.asarray(realization["shared_factor"], dtype=float)
+    sd = np.asarray(part["donor_sd"], dtype=float)
+    if np.all(sd == 0):
+        effects = np.zeros_like(np.asarray(realization["effects"], dtype=float))
+        raw = np.zeros_like(np.asarray(realization["raw_centered"], dtype=float))
+        lam = np.zeros_like(np.asarray(realization["lambda"], dtype=float))
+        factor = np.zeros_like(np.asarray(realization["shared_factor"], dtype=float))
+    else:
+        effects = np.asarray(realization["effects"], dtype=float)
+        raw = np.asarray(realization["raw_centered"], dtype=float)
+        lam = np.asarray(realization["lambda"], dtype=float)
+        factor = np.asarray(realization["shared_factor"], dtype=float)
+    part["donor_effects"] = effects
+    part["raw_centered"] = raw
+    part["donor_lambda"] = lam
+    part["donor_shared_factor"] = factor
+
+
+def _deactivate_absent_donor_factors(truth: dict[str, Any]) -> None:
+    """Q07 means no active donor factor, not merely a zero reported SD."""
+    for part_name in ("detection", "positive"):
+        part = truth[part_name]
+        if np.all(np.asarray(part["donor_sd"], dtype=float) == 0):
+            if "donor_effects" in part:
+                part["donor_effects"] = np.zeros_like(np.asarray(part["donor_effects"], dtype=float))
+            if "raw_centered" in part:
+                part["raw_centered"] = np.zeros_like(np.asarray(part["raw_centered"], dtype=float))
+            if "donor_lambda" in part:
+                part["donor_lambda"] = np.zeros_like(np.asarray(part["donor_lambda"], dtype=float))
+            if "donor_shared_factor" in part:
+                part["donor_shared_factor"] = np.zeros_like(np.asarray(part["donor_shared_factor"], dtype=float))
 
 
 def _fixed_detection_eta(truth: dict, design: dict[str, np.ndarray]) -> np.ndarray:
@@ -71,10 +98,10 @@ def fixed_detection_prevalence(truth: dict, design: dict[str, np.ndarray], suppo
 
 def _operator_offset_matrix(design: dict[str, np.ndarray], truth: dict, *, part: str,
                             world_index: int, payload: dict, amendment: dict) -> np.ndarray:
-    GENE_COUNT = len(np.asarray(truth[part]["donor_sd"]))
+    gene_count = len(np.asarray(truth[part]["donor_sd"]))
     n_op = int(np.max(np.asarray(design["op"], dtype=np.int64))) + 1
-    out = np.empty((n_op, GENE_COUNT), dtype=float)
-    for g in range(GENE_COUNT):
+    out = np.empty((n_op, gene_count), dtype=float)
+    for g in range(gene_count):
         out[:, g] = G.generate_operator_offsets(
             design,
             donor_sd=float(truth[part]["donor_sd"][g]),
@@ -96,18 +123,18 @@ def _base_world_index(world_def: dict, amendment: dict | None) -> int:
 
 
 def assemble_world_in_memory(payload: dict, calibration: dict, world_def: dict,
-                             design: dict[str, np.ndarray], *, amendment: dict | None = None,
-                             poison: float = -1.0) -> dict[str, Any]:
+                             design: dict[str, np.ndarray], *, source_code_map: dict[str, int],
+                             amendment: dict | None = None, poison: float = -1.0) -> dict[str, Any]:
     """Assemble one complete synthetic world and both held-out replicates in memory.
 
     Order is frozen: planting -> donor realization -> world modification -> support
     -> detection-intercept calibration -> train/same-donor/new-donor observations.
-    Q11 reuses Q10 for every non-operator random stream and differs only through
-    operator offset streams 22/23.
+    Source identities are passed explicitly from frozen custody. Q11 reuses Q10 for
+    every non-operator random stream and differs only through streams 22/23.
     """
     idx = int(world_def["index"])
     name = str(world_def["name"])
-    GENE_COUNT = int(payload["worlds"]["genes_per_world"])
+    gene_count = int(payload["worlds"]["genes_per_world"])
     root = int(payload["seeds"]["root"])
     base_idx = _base_world_index(world_def, amendment)
 
@@ -117,28 +144,46 @@ def assemble_world_in_memory(payload: dict, calibration: dict, world_def: dict,
     n = len(np.asarray(design["src"]))
     if any(len(np.asarray(design[k])) != n for k in required):
         raise SystemExit("STOP: design arrays disagree on cell count")
+    source_code_map = S.validate_source_code_map(source_code_map, design)
 
-    truth = P.build_q00_planting(calibration, payload, world_index=base_idx, G=GENE_COUNT)
-    # Metadata used only to audit the LHS/sign realization is kept at top level,
-    # outside the generative detection/positive dictionaries.
+    truth = P.build_q00_planting(calibration, payload, world_index=base_idx, G=gene_count)
     audit_lhs = truth.pop("lhs_levels")
     audit_signs = truth.pop("contrast_signs")
 
     src_by_donor = _source_by_donor(design)
     for part in ("detection", "positive"):
-        r = P.build_donor_effects(src_by_donor, np.asarray(truth[part]["donor_sd"], dtype=float),
-                                  world_index=base_idx, part=part, root=root)
-        _attach_donor_realization(truth[part], r)
+        realization = P.build_donor_effects(
+            src_by_donor,
+            np.asarray(truth[part]["donor_sd"], dtype=float),
+            world_index=base_idx,
+            part=part,
+            root=root,
+        )
+        _attach_donor_realization(truth[part], realization)
 
     truth = G.apply_world_modifications(truth, world_def, payload)
-    support = G.build_structural_support(payload, design, world_index=idx, genes=GENE_COUNT, amendment=amendment)
+    _deactivate_absent_donor_factors(truth)
+    support = S.build_structural_support(
+        payload,
+        design,
+        world_index=idx,
+        source_code_map=source_code_map,
+        genes=gene_count,
+        amendment=amendment,
+    )
     truth = G.calibrate_detection_intercepts(truth, design, support)
 
     new_truth = copy.deepcopy(truth)
     for part in ("detection", "positive"):
-        r = P.build_new_donor_effects(src_by_donor, np.asarray(truth[part]["donor_sd"], dtype=float),
-                                      world_index=base_idx, part=part, root=root)
-        _attach_donor_realization(new_truth[part], r)
+        realization = P.build_new_donor_effects(
+            src_by_donor,
+            np.asarray(truth[part]["donor_sd"], dtype=float),
+            world_index=base_idx,
+            part=part,
+            root=root,
+        )
+        _attach_donor_realization(new_truth[part], realization)
+    _deactivate_absent_donor_factors(new_truth)
 
     is_q11 = world_def.get("modifications", {}).get("operator") == "omitted_perturbation"
     if is_q11:
@@ -171,6 +216,7 @@ def assemble_world_in_memory(payload: dict, calibration: dict, world_def: dict,
         "world_name": name,
         "world_index": idx,
         "design_sha256": G.array_bundle_sha({k: np.asarray(design[k]) for k in sorted(required)}),
+        "source_code_map": dict(source_code_map),
         "support": support,
         "truth": truth,
         "new_donor_truth": new_truth,
