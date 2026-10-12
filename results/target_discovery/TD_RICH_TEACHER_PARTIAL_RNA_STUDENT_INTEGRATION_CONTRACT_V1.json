@@ -1,0 +1,117 @@
+{
+  "schema": "TD_RICH_TEACHER_PARTIAL_RNA_STUDENT_INTEGRATION_CONTRACT_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_SCIENCE_CONTRACT__NO_REAL_TRAINING_AUTHORITY",
+  "purpose": "Integrate the current target-candidate lattice, rare-program preservation, authenticated multimodal evidence, and the existing EMA runtime without requiring the partial-RNA student to reproduce teacher-private biology.",
+  "scientific_model": {
+    "teacher_state": "Z_core ⊕ Z_query ⊕ Z_rel_if_qualified ⊕ Z_reg_shared ⊕ Z_reg_private ⊕ Z_context_private",
+    "student_point_target": "Z_core ⊕ Z_query ⊕ Z_rel_if_qualified ⊕ Z_reg_shared",
+    "student_uncertainty_targets": ["biological_evidence_uncertainty", "measurement_uncertainty", "measurement_domain_support", "biological_support_novelty"],
+    "forbidden_point_target": ["Z_reg_private", "Z_context_private", "exact realized ATAC state when not RNA-identifiable", "exact realized spatial neighborhood when not RNA-identifiable"],
+    "principle": "The rich teacher may know more than the student. Teacher-private information is not removed merely to make the student's task easy; instead recoverable and unrecoverable state are separated empirically."
+  },
+  "foundation_target_binding": {
+    "C1": "candidate source for Z_core",
+    "C2": "candidate relational increment for Z_rel_if_qualified; only if corrected replay and later gates keep C2 active",
+    "C3": "candidate source for Z_query",
+    "C6": "candidate joint Z_core+Z_query scaffold; only after C1 and C3 qualify and C6_INCREMENT_OVER_C1_C3 passes",
+    "C4": "candidate joint Z_core+Z_query+Z_rel; only if C2 and C3 qualify",
+    "C5": "regulatory specialist source for Z_reg blocks; never foundation rescue",
+    "rare_program_rule": "Any selected foundation target must first satisfy TD_RARE_PROGRAM_QUALIFICATION_CONTRACT_V1."
+  },
+  "teacher_evidence_order": [
+    "lawful full RNA evidence",
+    "qualified same-nucleus ATAC/regulatory evidence where physically available",
+    "qualified external regulatory program definitions",
+    "separate-nucleus donor-level regulatory replication as support",
+    "spatial/context evidence only where measurable and prospectively lawful",
+    "perturbational evidence only as qualified support/interpretation unless a separate teacher-feature authority explicitly permits more"
+  ],
+  "teacher_feature_rules": {
+    "no_stage4_statistic_as_feature": true,
+    "no_p_value_or_lcb_as_feature": true,
+    "missing_privileged_evidence": "MASKED_UNAVAILABLE_WITH_UNCERTAINTY__NEVER_ZERO_FILLED",
+    "no_dataset_id_as_biology": true,
+    "no_donor_id_as_biology": true,
+    "source_disagreement": "PRESERVE_AND_REPORT",
+    "basis_rule": "When coordinates rotate but subspace is stable, scientific authority attaches to the stable subspace/geometry rather than arbitrary axes."
+  },
+  "rare_program_role": {
+    "foundation": "Rare programs are a mandatory target-preservation test before target selection.",
+    "teacher": "For a frozen rare RNA target state, rich modalities may sharpen regulatory/contextual characterization and reveal teacher-private components.",
+    "student": "The student should detect a rare program when RNA contains recoverable evidence and should widen biological uncertainty when the rich program is not RNA-identifiable.",
+    "novelty_vs_ood": "Biological novelty and measurement-domain OOD are separate outputs; a rare, well-measured state must not be auto-corrected toward the population mean."
+  },
+  "same_nucleus_identifiability_experiment": {
+    "primary_existing_substrate": "GSE214979",
+    "unit": "nucleus nested within donor",
+    "teacher_views": ["RNA_ONLY", "RNA_PLUS_ATAC_REGULATORY"],
+    "student_view": "prospectively masked/partial lawful RNA only",
+    "quantity_of_interest": "Delta_privileged = Z_teacher(RNA+ATAC) - projection_of_Z_teacher(RNA_only) within the stable target geometry",
+    "questions": [
+      "Does privileged ATAC/regulatory evidence sharpen or split a target-defined rare state?",
+      "Which privileged increments are donor-held-out predictable from RNA?",
+      "Which increments remain teacher-private and should widen biological uncertainty rather than point loss?",
+      "Are apparent increments robust to depth/source/support baselines and low-n donor sensitivity?"
+    ],
+    "split_rule": "donor first; no nucleus-level leakage across train/validation/test",
+    "diagnosis_pathology_use": "FORBIDDEN_FOR_CONSTRUCTION_OR_SELECTION",
+    "test_rule": "Recoverability TEST remains sealed until teacher feature construction, baselines, metrics and selection rule are frozen."
+  },
+  "recoverability_classes": {
+    "DETERMINISTIC_OR_HIGHLY_RECOVERABLE": "eligible for student point target after donor-held-out validation and shortcut controls",
+    "PREDICTABLE_BUT_STOCHASTIC": "student predicts distribution/uncertainty, not exact realized teacher coordinate",
+    "TEACHER_PRIVATE": "excluded from deterministic student matching; retained in rich teacher and biological uncertainty",
+    "NOT_ESTIMABLE": "kept unresolved; never mapped to zero or PASS"
+  },
+  "ema_integration": {
+    "runtime_reuse": "Use the already qualified canonical V5 AdamW->successful-update->EMA mechanics; do not create a second optimizer/EMA engine.",
+    "ema_shared_core": "EMA stabilizes the shared representation core and any structurally matched teacher/student modules.",
+    "privileged_adapters": "ATAC/regulatory/spatial teacher adapters may be teacher-only modules; they are not required to be literal EMA copies of nonexistent student modalities.",
+    "teacher_age": "successful base-cell presentations, not raw attempted steps",
+    "failed_update_rule": "No optimizer completion means no EMA advance.",
+    "scientific_boundary": "Runtime qualification does not imply full rich-teacher realization is point-identifiable from partial RNA."
+  },
+  "loss_family": {
+    "shared_state_loss": "rotation-aware/subspace-aware deterministic matching on qualified recoverable target blocks",
+    "query_loss": "q-safe query-conditioned target matching with q excluded from target construction and normalization/QC descendants as already required",
+    "relational_loss": "only if C2/C4 remain active after corrected replay and later gates",
+    "probabilistic_privileged_loss": "distributional or uncertainty-calibrated prediction for privileged components shown to be predictable but not deterministic",
+    "private_state_loss": "NONE_TO_STUDENT_POINT_PREDICTION",
+    "measurement_uncertainty": "estimated separately from biological-evidence uncertainty using depth/count resampling rather than conflating the two",
+    "anti_collapse": "required for every target block and for uncertainty outputs"
+  },
+  "evidence_response": {
+    "biological_evidence_curve": [0.2, 0.4, 0.6, 0.8, 1.0],
+    "measurement_depth_curve": [0.25, 0.5, 0.75, 1.0],
+    "principle": "State change as richer biological evidence is revealed estimates biological-evidence uncertainty; state change under repeated/deeper measurement of the same evidence estimates measurement uncertainty.",
+    "rare_program_use": "Rare states that require substantially more evidence to stabilize are scientifically interesting and should be marked information-poor/uncertain rather than collapsed."
+  },
+  "downstream_sequence": [
+    "1_QUALIFY_FOUNDATION_TARGET_INCLUDING_RARE_PROGRAM_FITNESS",
+    "2_FREEZE_TARGET_WITHOUT_AD_PATHOLOGY",
+    "3_CONSTRUCT_QUALIFIED_RICH_TEACHER_FEATURES_FROM_EXISTING_AUTHENTICATED_MULTIMODAL_SURFACES",
+    "4_SPLIT_TEACHER_STATE_INTO_RNA_RECOVERABLE_AND_PRIVATE_COMPONENTS",
+    "5_QUALIFY_PARTIAL_RNA_STUDENT_ON_DONOR_HELD_OUT_RECOVERABILITY_AND_UNCERTAINTY",
+    "6_TRANSPORT_TO_FULL104_AND_EXTERNAL_RNA_COHORTS_WITH_SUPPORT_MASKS",
+    "7_ONLY_THEN_OPEN_AD_ASSOCIATIONS_FOR_FROZEN_STATES_PROGRAMS",
+    "8_REGULATORY_SPATIAL_PERTURBATIONAL_TRIANGULATION_OF_AD_ASSOCIATED_RARE_PROGRAMS"
+  ],
+  "hard_prohibitions": [
+    "Do not select a foundation target because it correlates with AD pathology.",
+    "Do not force teacher-private multimodal state into deterministic student loss.",
+    "Do not let SCENIC+/ATAC rescue a failed C1/C2/C3/C6/C4 foundation gate.",
+    "Do not pool cells across cohorts and call cell count biological replication.",
+    "Do not treat missing modality as biological zero.",
+    "Do not use protected Morabito or recoverability TEST outcomes to tune target/program definitions.",
+    "Do not create a single ad-hoc weighted evidence score across modalities."
+  ],
+  "governance": {
+    "target_winner": "NONE",
+    "representation_winner": "NONE",
+    "real_training": "OFF",
+    "multimodal_training": "OFF",
+    "td60": "NOT_AUTHORIZED",
+    "stage4": "NOT_AUTHORIZED"
+  }
+}
