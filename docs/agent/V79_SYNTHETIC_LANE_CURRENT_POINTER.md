@@ -1,6 +1,6 @@
 # V79 synthetic lane — current takeover pointer
 
-Updated: 2026-10-12 16:14 UTC
+Updated: 2026-10-12 16:58 UTC
 
 Read first:
 
@@ -9,50 +9,37 @@ Read first:
 3. newest file under `results/v79/synthetic_lane_audit/deltas/`
 4. `docs/agent/V79_SYNTHETIC_LANE_TAKEOVER_HANDOFF_20261012.md`
 
+## STOP CONDITION FIRST — benchmark authority is spent
+
+The single PR #299 engineering-benchmark execution authority was used once and is **SPENT**. The run failed closed after about 3 seconds, before any model fit, at the first Windows RSS/resource-monitor call. Evidence is frozen on branch `evidence/v79-engineering-benchmark-attempt-2240fd82-20261012` at commit `b94367c6`, under `docs/agent/V79_ENGINEERING_BENCHMARK_ATTEMPT_2240fd82_20261012/`.
+
+Root cause is the Windows `ctypes` boundary in `scripts/v79/v79_v2_core_resource_monitor.py`: `GetCurrentProcess` had no `HANDLE` restype and `GetProcessMemoryInfo` had no typed argument signature. This defect is present in historical #300 and was also still present in #306 head `1be84ceb9e7f33f75c1c315f8a2e771b7185f214` when re-audited.
+
+Repair is now isolated on PR #308, branch `fix/v79-windows-resource-monitor-20261012`, based on exact #300 head `7172b201b13c61634b84b85254bf4406959b2b57`. It adds a real unmocked Windows CI test before the production fix. **PR #308 does not restore benchmark authority.** A benchmark rerun requires a fresh controller ruling after the repair is green and independently audited.
+
 ## Preferred live lineage
 
 - PR #305 reconciled scorer/executor successor remains the frozen integration base: `e976d0c1a03f6a54dadcbf7fe3086f832fd319d8`.
-- PR #306 scoring-orchestrator successor is the active engineering branch.
-  - current head: `045affc6e5f1c384f799661ced2db69acaa72ee3`.
-  - scorer CI `38275752111`: Windows PASS, Linux PASS, static scorer firewall PASS.
-  - executor CI `38275752308`: Windows PASS, Linux PASS, static fit-side firewall PASS.
-  - completed PR306 milestones: detection calibration/prevalence descriptive contract; controller-only planted held-out oracle.
+- PR #306 scoring-orchestrator successor is the active scorer engineering branch.
+  - live head at this update: `1be84ceb9e7f33f75c1c315f8a2e771b7185f214`.
+  - it still inherited the unfixed resource monitor at this head; do not execute benchmark or qualification from it.
+- PR #308 is the active execution-path repair branch from #300.
 
 Historical source lineages remain preserved:
 - PR #300 campaign runner: `7172b201b13c61634b84b85254bf4406959b2b57`.
 - PR #301 historical scorer: `7fe0204b2661f0d1492115c973a4da7a4a1646b6`.
-Do not continue development on either historical branch by default.
-
-## Planted oracle now frozen structurally
-
-`v79_v2_core_score_oracle.py` is controller-only and non-gating. It:
-- cross-checks truth/blinded opaque identity and structural support;
-- uses exact fit-model depth/Helmert/within-source donor geometry;
-- uses realized planted donor effects for same-donor oracle;
-- integrates planted donor SD with exact 40-node Gauss-Hermite for new-donor oracle;
-- uses frozen `truth/detection/prevalence.npy` for planted prevalence;
-- requires/applies Q11 operator x gene offsets;
-- outputs same/new detection log-loss/calibration/prevalence and positive LPD oracle references.
+Do not execute from either historical branch.
 
 ## Immediate engineering action
 
-Continue PR #306 under TDD by building the controller-only physical scoring orchestrator.
+1. Complete PR #308 TDD repair and require Windows + Linux executor CI green, including the real Windows `_rss_bytes()` / `ResourceMonitor` test.
+2. Port the exact repair bytes onto the current unified #306 lineage so the future scorer/executor successor cannot regress to the broken monitor.
+3. Update #302/#303 with the green repair head and CI evidence.
+4. Stop. Do **not** rerun the benchmark automatically.
+5. Controller must issue a fresh, explicit benchmark-only ruling bound to the repaired exact head before any rerun.
 
-The orchestrator must:
-- require exact completed 1,056-fit campaign receipt and verify every fit-record hash against the campaign ledger;
-- require a separate post-campaign scoring authorization bound to campaign SHA, Contract V2, root manifest, blinded index, realization audit receipt, and exact scorer Git head;
-- validate the physical frozen blinded package hashes before loading observations;
-- load committed controller truth only after authorization passes;
-- construct exactly 1,056 controller-scored rows;
-- build planted oracle held-out references for every fit;
-- evaluate exactly 292 frozen gates and preserve first-hard-fail terminal semantics;
-- compute all five required descriptive families as explicitly non-gating;
-- write canonical/hash-bound gate table, scored-row table, descriptive metrics and immutable adjudication receipt exactly once;
-- refuse incomplete/mismatched/extra/tampered inputs and refuse overwrite;
-- keep downstream authorities false.
-
-Required RED tests should cover at least: missing/wrong authorization, campaign receipt SHA mismatch, individual fit-record tamper/missing/extra file, wrong scorer head, physical blinded root/index mismatch, truth mismatch, incomplete 1,056 rows, incomplete 292 gates, missing descriptive family, and write-once refusal.
+The scoring-orchestrator work on #306 remains engineering-only and may continue structurally, but no physical fitting/scoring execution is permitted while the benchmark gate is unresolved.
 
 ## Current authority boundary
 
-World regeneration is forbidden. Qualification fitting and scoring remain OFF. Benchmark authority remains separate PR #299 and must not be inferred from this handoff or PR #306.
+World regeneration is forbidden. The prior engineering benchmark authority is **SPENT / FAILED_CLOSED**. Benchmark rerun is OFF pending a new controller ruling after the monitor repair is green. Qualification fitting and scoring remain OFF. Real TRAIN posterior, factorial science, TEST/Morabito/pathology, target discovery in this lane, and JEPA training remain OFF.
