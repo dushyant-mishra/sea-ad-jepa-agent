@@ -58,11 +58,15 @@ def _canonical_ledger(ledger) -> list[dict]:
         _refuse(f"fit seed ledger must contain exactly {EXPECTED_FITS} records")
     out=[]; seen=set()
     for rec in ledger:
-        if not isinstance(rec, Mapping) or set(rec) != {"fit_id", "primary_seed"}: _refuse("fit seed ledger record schema differs")
-        fid=str(rec["fit_id"]); seed=rec["primary_seed"]
+        if not isinstance(rec, Mapping) or set(rec) != {"fit_id", "primary_seed", "escalation_seed"}:
+            _refuse("fit seed ledger record schema differs")
+        fid=str(rec["fit_id"]); primary=rec["primary_seed"]; escalation=rec["escalation_seed"]
         if not re.fullmatch(r"[0-9a-f]{64}",fid): _refuse("fit seed ledger contains invalid fit_id")
-        if fid in seen or not isinstance(seed,int) or not (0<=seed<=0xffffffff): _refuse("fit seed ledger contains duplicate identity or invalid seed")
-        seen.add(fid); out.append({"fit_id":fid,"primary_seed":int(seed)})
+        if fid in seen: _refuse("fit seed ledger contains duplicate identity")
+        for name,seed in (("primary_seed",primary),("escalation_seed",escalation)):
+            if not isinstance(seed,int) or not (0<=seed<=0xffffffff): _refuse(f"fit seed ledger contains invalid {name}")
+        if primary==escalation: _refuse("primary and escalation seeds must differ")
+        seen.add(fid); out.append({"fit_id":fid,"primary_seed":int(primary),"escalation_seed":int(escalation)})
     out.sort(key=lambda x:x["fit_id"]); return out
 
 
@@ -99,7 +103,7 @@ class QualificationCustody:
     authorization: Mapping
     blinded_index: F.BlindedIndex
     queue: tuple[Mapping, ...]
-    seed_by_fit_id: Mapping[str,int]
+    seeds_by_fit_id: Mapping[str,Mapping[str,int]]
 
 
 def load_qualification_custody(custody_dir: Path, *, expected_receipt_sha256: str) -> QualificationCustody:
@@ -141,8 +145,9 @@ def load_qualification_custody(custody_dir: Path, *, expected_receipt_sha256: st
         index=index_json,opaque_world_ids=tuple(x["opaque_world_id"] for x in index_json["worlds"]))
     queue=Q.build_qualification_queue(fit_contract,index_json)
     expected_ids={x["fit_id"] for x in queue}
-    ledger=_canonical_ledger(auth.get("fit_seed_ledger")); seed_by={x["fit_id"]:int(x["primary_seed"]) for x in ledger}
-    if set(seed_by)!=expected_ids: _refuse("authorization seed ledger does not cover exact qualification queue")
+    ledger=_canonical_ledger(auth.get("fit_seed_ledger"))
+    seeds_by={x["fit_id"]:{"primary_seed":int(x["primary_seed"]),"escalation_seed":int(x["escalation_seed"])} for x in ledger}
+    if set(seeds_by)!=expected_ids: _refuse("authorization seed ledger does not cover exact qualification queue")
     if auth.get("schema")!=AUTH_SCHEMA or auth.get("qualification_campaign_authorized") is not True or auth.get("benchmark_controller_pass") is not True or auth.get("contract_sha256")!=SOURCE_CONTRACT_SHA256 or auth.get("blinded_index_sha256")!=QUALIFICATION_INDEX_SHA256 or auth.get("scoring_authorized") is not False or auth.get("training_authorized") is not False:
         _refuse("authorization semantics differ")
-    return QualificationCustody(custody_dir,actual,receipt,fit_contract,auth,index,tuple(queue),seed_by)
+    return QualificationCustody(custody_dir,actual,receipt,fit_contract,auth,index,tuple(queue),seeds_by)
