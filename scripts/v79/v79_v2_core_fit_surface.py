@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Hash-first blinded input loader for the V79 V2_CORE fitter.
 
-This module is intentionally ignorant of controller truth. It accepts only opaque
-world IDs and the physical ``blinded_fit_inputs`` surface written by the frozen
-world writer. It never maps opaque IDs to Q labels and never reads operator/matrix
-identity, seeds, planted truth or scoring data.
+The loader never parses the unblinded root world-set manifest. That manifest
+contains controller-only world identity. Fit-side authority is instead a SHA-pinned
+blinded-fit index plus per-world manifests/arrays. World loading requires the
+already validated BlindedIndex object, so a second unpinned load is impossible.
 """
 from __future__ import annotations
 
@@ -26,10 +26,12 @@ OPAQUE_RE = re.compile(r"^[0-9a-f]{12}$")
 REPLICATES = ("train", "same_donor", "new_donor")
 DESIGN_KEYS = ("src", "donor", "cls", "log_lib")
 ALLOWED_MODES = ("QUALIFICATION_TRUTH_FREEZE", "ENGINEERING_TEST_ONLY")
+QUALIFICATION_ROOT_MANIFEST_SHA256 = "84949723305dc2211ebcd451b64dd9adc8518f3580d2122f5600fcf4b38de0de"
+QUALIFICATION_INDEX_SHA256 = "8ea3e0cb6637c97b3e940eac54476622bd4f790febb07abee2e8ccdeea751e40"
 
 
 class FitSurfaceRefused(RuntimeError):
-    """The offered physical input is not the frozen blinded fit surface."""
+    """The offered physical input is not an authorized blinded fit surface."""
 
 
 def _refuse(message: str):
@@ -92,15 +94,18 @@ def _expected_output_paths() -> set[str]:
 
 @dataclass(frozen=True)
 class BlindedIndex:
-    package_root: Path
-    root_manifest: Mapping
+    fit_root: Path
+    execution_mode: str
+    root_manifest_sha256: str
+    index_sha256: str
     index: Mapping
     opaque_world_ids: tuple[str, ...]
 
 
 @dataclass(frozen=True)
 class BlindedWorld:
-    package_root: Path
+    fit_root: Path
+    execution_mode: str
     opaque_world_id: str
     manifest_sha256: str
     manifest: Mapping
@@ -124,40 +129,41 @@ class GeneInputs:
 def load_blinded_index(package_root: Path, *, expected_mode: str,
                        expected_root_manifest_sha: str | None,
                        expected_index_sha: str | None) -> BlindedIndex:
+    """Authenticate blinded bytes without parsing the controller root manifest.
+
+    Qualification mode is accepted only for the immutable realized root/index hashes.
+    Engineering mode must be explicitly hash-pinned and cannot reuse those hashes.
+    """
     if expected_mode not in ALLOWED_MODES:
         _refuse(f"unsupported expected mode {expected_mode!r}")
+    if not expected_root_manifest_sha or not expected_index_sha:
+        _refuse("root and blinded-index SHA-256 pins are mandatory")
     package_root = Path(package_root)
     root_path = _safe_existing_file(package_root, ROOT_MANIFEST_NAME)
-    if expected_root_manifest_sha is not None and _sha(root_path) != expected_root_manifest_sha:
-        _refuse("root manifest hash differs from accepted realization")
-    root = _load_json(root_path)
-    if root.get("schema") != "V79_V2_CORE_WORLD_SET_MANIFEST_V1":
-        _refuse("wrong root manifest schema")
-    if root.get("mode") != expected_mode:
-        _refuse(f"package mode {root.get('mode')!r} does not match expected mode {expected_mode!r}")
-    if root.get("final_contract_sha256") != FINAL_CONTRACT_SHA256:
-        _refuse("root manifest contract hash differs")
-    if root.get("blinded_fit_root") != FIT_ROOT_NAME:
-        _refuse("unexpected blinded fit root")
-    if root.get("controller_truth_root") != "controller_truth":
-        _refuse("unexpected controller truth root declaration")
-    if root.get("benchmark_run") is not False or root.get("qualification_fits_run") != 0 or \
-            root.get("training_authorized") is not False:
-        _refuse("world package already records downstream execution")
-    index_rel = root.get("blinded_fit_index_path")
-    if index_rel != f"{FIT_ROOT_NAME}/{FIT_INDEX_NAME}":
-        _refuse("unexpected blinded index path")
-    index_path = _safe_existing_file(package_root, index_rel)
+    root_sha = _sha(root_path)
+    if root_sha != expected_root_manifest_sha:
+        _refuse("root manifest hash differs from supplied authority")
+    # Deliberately do not JSON-decode root_path: it is controller-only identity authority.
+    if expected_mode == "QUALIFICATION_TRUTH_FREEZE":
+        if root_sha != QUALIFICATION_ROOT_MANIFEST_SHA256 or expected_index_sha != QUALIFICATION_INDEX_SHA256:
+            _refuse("qualification mode requires the immutable realized root/index authority")
+    else:
+        if root_sha == QUALIFICATION_ROOT_MANIFEST_SHA256 or expected_index_sha == QUALIFICATION_INDEX_SHA256:
+            _refuse("engineering mode may not consume the frozen qualification package")
+
+    fit_root = package_root / FIT_ROOT_NAME
+    index_path = _safe_existing_file(fit_root, FIT_INDEX_NAME)
     index_sha = _sha(index_path)
-    if index_sha != root.get("blinded_fit_index_sha256"):
-        _refuse("blinded index hash does not match root manifest")
-    if expected_index_sha is not None and index_sha != expected_index_sha:
-        _refuse("blinded index hash differs from accepted package")
+    if index_sha != expected_index_sha:
+        _refuse("blinded index hash differs from supplied authority")
     index = _load_json(index_path)
     if index.get("schema") != "V79_V2_CORE_BLINDED_FIT_INDEX_V1":
         _refuse("wrong blinded index schema")
     if index.get("final_contract_sha256") != FINAL_CONTRACT_SHA256:
         _refuse("blinded index contract hash differs")
+    if index.get("benchmark_run") is not False or index.get("qualification_fits_run") != 0 or \
+            index.get("training_authorized") is not False:
+        _refuse("blinded index already records downstream execution")
     worlds = index.get("worlds")
     if not isinstance(worlds, list) or index.get("world_count") != len(worlds):
         _refuse("blinded index world count mismatch")
@@ -173,19 +179,18 @@ def load_blinded_index(package_root: Path, *, expected_mode: str,
         ids.append(oid)
     if len(set(ids)) != len(ids):
         _refuse("duplicate opaque world ID")
-    return BlindedIndex(package_root, root, index, tuple(ids))
+    return BlindedIndex(fit_root, expected_mode, root_sha, index_sha, index, tuple(ids))
 
 
-def load_blinded_world(package_root: Path, opaque_world_id: str, *, expected_mode: str) -> BlindedWorld:
+def load_blinded_world(index: BlindedIndex, opaque_world_id: str) -> BlindedWorld:
+    if not isinstance(index, BlindedIndex):
+        _refuse("validated BlindedIndex authority is required")
     if not isinstance(opaque_world_id, str) or not OPAQUE_RE.fullmatch(opaque_world_id):
         _refuse(f"opaque 12-hex world ID required, got {opaque_world_id!r}")
-    idx = load_blinded_index(package_root, expected_mode=expected_mode,
-                             expected_root_manifest_sha=None, expected_index_sha=None)
-    recs = {r["opaque_world_id"]: r for r in idx.index["worlds"]}
+    recs = {r["opaque_world_id"]: r for r in index.index["worlds"]}
     if opaque_world_id not in recs:
         _refuse(f"unknown opaque world ID {opaque_world_id}")
-    fit_root = Path(package_root) / FIT_ROOT_NAME
-    world_dir = fit_root / opaque_world_id
+    world_dir = index.fit_root / opaque_world_id
     manifest_path = _safe_existing_file(world_dir, "manifest.json")
     manifest_sha = _sha(manifest_path)
     if manifest_sha != recs[opaque_world_id]["manifest_sha256"]:
@@ -196,6 +201,9 @@ def load_blinded_world(package_root: Path, opaque_world_id: str, *, expected_mod
         _refuse("world manifest identity/schema mismatch")
     if manifest.get("final_contract_sha256") != FINAL_CONTRACT_SHA256:
         _refuse("world manifest contract hash differs")
+    if manifest.get("benchmark_run") is not False or manifest.get("qualification_fits_run") != 0 or \
+            manifest.get("training_authorized") is not False:
+        _refuse("world manifest already records downstream execution")
     outputs = manifest.get("generated_outputs")
     if not isinstance(outputs, dict):
         _refuse("generated_outputs must be an object")
@@ -227,7 +235,7 @@ def load_blinded_world(package_root: Path, opaque_world_id: str, *, expected_mod
     for rep, obs in observations.items():
         if obs["observed"].shape != support.shape or obs["detected"].shape != support.shape:
             _refuse(f"observation shape mismatch for {rep}")
-    return BlindedWorld(Path(package_root), opaque_world_id, manifest_sha, manifest,
+    return BlindedWorld(index.fit_root, index.execution_mode, opaque_world_id, manifest_sha, manifest,
                         design, support, observations)
 
 
