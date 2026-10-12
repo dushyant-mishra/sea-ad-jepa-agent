@@ -18,9 +18,11 @@ ROOT_MANIFEST_SHA256="84949723305dc2211ebcd451b64dd9adc8518f3580d2122f5600fcf4b3
 REALIZATION_AUDIT_RECEIPT_SHA256="6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3"
 CAMPAIGN_SCHEMA="V79_V2_CORE_QUALIFICATION_CAMPAIGN_RECEIPT_V1"
 AUTH_SCHEMA="V79_V2_CORE_QUALIFICATION_SCORING_AUTHORIZATION_V1"
+DESCRIPTIVE_SCHEMA="V79_V2_CORE_DESCRIPTIVE_METRICS_V1"
 ADJUDICATION_SCHEMA="V79_V2_CORE_QUALIFICATION_ADJUDICATION_V1"
 EXPECTED_FITS=1056
 EXPECTED_GATES=292
+DESCRIPTIVE_FAMILIES={"parameter_recovery","donor_recovery","detection_heldout","positive_heldout","ppc_q10_q11_second_stage"}
 
 class ScoreAuthorityRefused(RuntimeError): pass
 
@@ -73,8 +75,18 @@ def validate_scoring_authorization(auth:Mapping|None, *, campaign_receipt_sha256
     return dict(auth)
 
 
+def validate_descriptive_metrics(metrics:Mapping|None)->dict:
+    if not isinstance(metrics,Mapping) or metrics.get("schema")!=DESCRIPTIVE_SCHEMA: _refuse("descriptive metric schema differs")
+    required={"schema","gating","families"}
+    if set(metrics)!=required or metrics.get("gating") is not False: _refuse("descriptive metrics must be explicitly non-gating")
+    fam=metrics.get("families")
+    if not isinstance(fam,Mapping) or set(fam)!=DESCRIPTIVE_FAMILIES: _refuse("five frozen descriptive metric families are required")
+    if any(not isinstance(fam[k],Mapping) for k in DESCRIPTIVE_FAMILIES): _refuse("descriptive metric family payload differs")
+    return dict(metrics)
+
+
 def build_adjudication_receipt(*, scorer_code_sha:str, campaign_receipt_sha256:str, scoring_authorization_sha256:str,
-                               gate_table:Mapping, descriptive_metrics:Mapping|None=None)->dict:
+                               gate_table:Mapping, descriptive_metrics:Mapping)->dict:
     for label,value in (("scorer_code_sha",scorer_code_sha),("campaign_receipt_sha256",campaign_receipt_sha256),
                         ("scoring_authorization_sha256",scoring_authorization_sha256)):
         if not _hex64(value): _refuse(f"{label} must be 64-hex")
@@ -90,6 +102,7 @@ def build_adjudication_receipt(*, scorer_code_sha:str, campaign_receipt_sha256:s
     first_index=terminal.get("first_hard_fail_index")
     expected_first=None if not hard_fail else next(i for i,r in enumerate(rows) if r.get("verdict_class")=="FAIL" and r.get("passed") is False)
     if first_index!=expected_first: _refuse("terminal first-hard-fail index differs from gate rows")
+    descriptive=validate_descriptive_metrics(descriptive_metrics)
     rec={
         "schema":ADJUDICATION_SCHEMA,
         "contract_sha256":CONTRACT_SHA256,
@@ -104,7 +117,7 @@ def build_adjudication_receipt(*, scorer_code_sha:str, campaign_receipt_sha256:s
         "terminal":term,
         "first_hard_fail_index":first_index,
         "gate_table_sha256":hashlib.sha256(_canon(gate_table)).hexdigest(),
-        "descriptive_metrics":dict(descriptive_metrics or {}),
+        "descriptive_metrics":descriptive,
         "qualification_scoring_run":True,
         "real_train_posterior_authorized":False,
         "factorial_science_authorized":False,
