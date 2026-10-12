@@ -4,15 +4,18 @@ on:
   pull_request:
     paths:
       - 'scripts/v79/v79_v2_core_fit_*.py'
+      - 'scripts/v79/v79_v2_core_resource_monitor.py'
       - 'scripts/v79/run_v79_v2_core_benchmark.py'
-      - 'tests/v79/test_v79_v2_core_fit_*.py'
-      - 'tests/v79/test_v79_v2_core_benchmark.py'
+      - 'scripts/v79/v79_v2_core_qualification_plan.py'
+      - 'scripts/v79/v79_v2_core_seed_ledger.py'
+      - 'scripts/v79/v79_v2_core_score.py'
+      - 'tests/v79/test_v79_v2_core_*.py'
       - '.github/workflows/v79-v2-core-qualification-executor.yml'
       - 'docs/superpowers/plans/2026-10-12-v79-v2-core-qualification-executor.md'
   workflow_dispatch:
 
 jobs:
-  executor-unit:
+  executor-audit:
     strategy:
       fail-fast: false
       matrix:
@@ -28,7 +31,39 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install frozen structural dependencies
-        run: python -m pip install --disable-pip-version-check numpy==2.0.2 jax==0.4.35 jaxlib==0.4.35 numpyro==0.15.3 pytest
-      - name: Run executor structural tests
-        run: python -m pytest tests/v79/test_v79_v2_core_fit_surface.py tests/v79/test_v79_v2_core_fit_model.py -q -rA -p no:cacheprovider
+      - name: Install frozen V79 environment
+        run: python -m pip install --disable-pip-version-check -r results/v79/v2_core_qualification/inputs/V79_BAYES_ENV_PIP_FREEZE.txt
+      - name: Run authority and executor tests
+        run: >-
+          python -m pytest
+          tests/v79/test_v79_v2_core_launch_authority.py
+          tests/v79/test_v79_v2_core_realization_audit_freeze.py
+          tests/v79/test_v79_v2_core_fit_surface.py
+          tests/v79/test_v79_v2_core_fit_model.py
+          tests/v79/test_v79_v2_core_fit_runner.py
+          tests/v79/test_v79_v2_core_benchmark.py
+          tests/v79/test_v79_v2_core_qualification_plan.py
+          tests/v79/test_v79_v2_core_seed_ledger.py
+          tests/v79/test_v79_v2_core_score.py
+          -q -rA -p no:cacheprovider
+      - name: Static fit-side trust-domain audit
+        shell: python
+        run: |
+          from pathlib import Path
+          fit_side = [
+              Path('scripts/v79/v79_v2_core_fit_surface.py'),
+              Path('scripts/v79/v79_v2_core_fit_model.py'),
+              Path('scripts/v79/v79_v2_core_fit_runner.py'),
+              Path('scripts/v79/v79_v2_core_resource_monitor.py'),
+              Path('scripts/v79/run_v79_v2_core_benchmark.py'),
+              Path('scripts/v79/v79_v2_core_qualification_plan.py'),
+          ]
+          for p in fit_side:
+              text = p.read_text(encoding='utf-8')
+              assert 'import v79_v2_core_score' not in text
+              assert 'from v79_v2_core_score' not in text
+          bench = Path('scripts/v79/run_v79_v2_core_benchmark.py').read_text(encoding='utf-8')
+          assert 'ENGINEERING_TEST_ONLY' in bench
+          assert '31999999' not in bench  # benchmark seed must come from Contract V2, never a local constant
+          assert 'QUALIFICATION_TRUTH_FREEZE' not in bench
+          print('FIT_SIDE_TRUST_DOMAIN_AUDIT=PASS')
