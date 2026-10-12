@@ -162,6 +162,17 @@ def posterior_predictive_positive(samples_by_chain: Mapping[str,np.ndarray], dat
     return ppc_table(obs,{k:np.asarray(v) for k,v in rep_by.items()})
 
 
+def full_donor_effect_summary(samples_by_chain: Mapping[str,np.ndarray], donor_basis_by_donor: np.ndarray) -> dict:
+    """Full-posterior donor-effect summary; compact draw artifact is separate."""
+    if set(("donor_raw","donor_sd"))-set(samples_by_chain): _refuse("donor posterior sites missing")
+    raw=np.asarray(samples_by_chain["donor_raw"],dtype=float); sd=np.asarray(samples_by_chain["donor_sd"],dtype=float); W=np.asarray(donor_basis_by_donor,dtype=float)
+    if raw.ndim!=3 or sd.ndim!=2 or raw.shape[:2]!=sd.shape or W.ndim!=2 or raw.shape[2]!=W.shape[1]: _refuse("donor posterior/basis shapes differ")
+    flat=(raw.reshape(-1,raw.shape[-1])*sd.reshape(-1)[:,None])@W.T
+    return {"mean":np.mean(flat,axis=0).tolist(),"sd":np.std(flat,axis=0,ddof=1).tolist(),
+            "q05":np.quantile(flat,.05,axis=0).tolist(),"q50":np.quantile(flat,.50,axis=0).tolist(),
+            "q95":np.quantile(flat,.95,axis=0).tolist()}
+
+
 def compact_donor_effect_draws(samples_by_chain: Mapping[str,np.ndarray], donor_basis_by_donor: np.ndarray,
                                 *, stored_draws: int=200) -> np.ndarray:
     if set(("donor_raw","donor_sd")) - set(samples_by_chain): _refuse("donor posterior sites missing")
