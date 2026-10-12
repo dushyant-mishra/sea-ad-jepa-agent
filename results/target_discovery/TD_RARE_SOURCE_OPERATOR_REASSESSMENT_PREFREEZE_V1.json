@@ -1,14 +1,104 @@
 {
   "schema": "TD_RARE_SOURCE_OPERATOR_REASSESSMENT_PREFREEZE_V1",
   "date": "2026-10-12",
-  "status": "PROSPECTIVE_REAL_TRAIN_RARE_PROGRAM_REASSESSMENT__NO_RESULT_OPENED__NO_TARGET_AUTHORITY",
-  "purpose": "Reassess historical rare1/rare5 and future rare molecular directions on authenticated TRAIN data while separating biological rarity from source/operator observability.",
-  "inputs_already_authenticated": {"program_weights_sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70", "train_50k_expression_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92", "historical_rare_state_prrc_sha256": "7a2b3f97555cbbf95428b9c70b0f2192584d6a40d0804a55ddf6fa572711105e", "full104_address_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"},
-  "known_finding": {"rare1_rare5_same_direction": true, "upper_5pct_counts": {"NPH52": 1889, "HVS": 347, "SEA_AD": 264}, "upper_1pct_counts": {"NPH52": 499, "HVS": 1, "SEA_AD": 0}, "interpretation": "Strong source shift; not accepted as universal rare biology or prevalence anchors."},
-  "analysis_population": {"primary": "eligible pathology-blind TRAIN only", "biological_family_rule": "rarity within broad biological family", "donor_primary": true, "source_families": ["HVS", "NPH52", "SEA_AD"]},
-  "required_tests": ["within-source donor recurrence", "within-source direction stability", "depth/detection/support matching", "operator support stratification", "source-balanced donor consensus", "leave-one-source-out direction transport", "candidate-target preservation without added shortcut predictability", "uncertainty separation"],
-  "program_classes": {"UNIVERSAL_BIOLOGICAL_PROGRAM": "recurs and transports across sources/donors", "BIOLOGICAL_PROGRAM_WITH_SOURCE_SHIFTED_PREVALENCE": "shared biology with differing abundance/amplitude", "SOURCE_SPECIFIC_BIOLOGICAL_PROGRAM": "real within one source but not universal", "BIOLOGICAL_PROGRAM_PARTIALLY_OBSERVATION_LIMITED": "biology survives but observability depends on operator", "OBSERVATION_OPERATOR_ARTIFACT": "signal explained by operator/support structure", "NOT_ESTIMABLE": "insufficient support/replication"},
-  "candidate_effect": {"C1": "preserve universal/observation-limited biology, not source prevalence", "C3": "evaluate rare query context within source and broad state", "C6": "add rare query-context information beyond C1 without increasing shortcut signal", "C2": "if active, relational rare structure must survive source-aware reassessment", "C4": "if active, relational increment beyond C6 must be biological", "C5": "regulatory specialist only after own qualification"},
-  "forbidden_shortcuts": ["pool all cells and let source composition set rarity", "regress away source before biological assessment", "call source imbalance biology", "use cell count as donor replication", "use global rare1/rare5 prevalence as truth"],
-  "terminal": "DESIGN_ONLY__EXECUTION_REQUIRES_SEPARATE_AUTHORITY"
+  "status": "PROSPECTIVE_REAL_TRAIN_RARE_PROGRAM_REASSESSMENT__NO_TARGET_AUTHORITY",
+  "purpose": "Reassess historical rare1/rare5 plus donor-recurrent Stage75 regulatory-module tails on authenticated pathology-blind TRAIN data while separating biological rarity from source/operator observability.",
+  "inputs_already_authenticated": {
+    "historical_program_weights_sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+    "train_50k_expression_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "historical_rare_state_prrc_sha256": "7a2b3f97555cbbf95428b9c70b0f2192584d6a40d0804a55ddf6fa572711105e",
+    "full104_address_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "stage75_detection_residual_milestone_blob_sha": "33b834743830f773bf6a6f137e55696856bba6e1",
+    "stat1_empirical_regimes_blob_sha": "f9e1305a7e8c5d650ac71a5e170c4723a7599503"
+  },
+  "known_findings": {
+    "historical_rare1_rare5": {
+      "same_direction": true,
+      "upper_5pct_counts": {"NPH52": 1889, "HVS": 347, "SEA_AD": 264},
+      "upper_1pct_counts": {"NPH52": 499, "HVS": 1, "SEA_AD": 0},
+      "interpretation": "Strong source shift; not accepted as universal rare biology or prevalence anchors."
+    },
+    "stage75_detection_residual_regulatory_tails": {
+      "analysis_subset": {"cells": 665, "donors": 66, "HVS_cells": 128, "NPH52_cells": 304, "SEA_AD_cells": 233},
+      "tested_modules": ["ELF1", "SPI1", "STAT1", "BACH1", "CEBPA", "IRF8", "RELA"],
+      "measurement_falsifier": "Within each source, module score residualized on standardized detected-gene count plus quadratic detected-gene term; rare tail at source-specific residual mean + 2 SD.",
+      "all_seven_remain_donor_recurrent": true,
+      "plus_2sd_tail_cells_and_donors": {
+        "SPI1": {"cells": 29, "donors": 20},
+        "STAT1": {"cells": 27, "donors": 17},
+        "ELF1": {"cells": 26, "donors": 14},
+        "CEBPA": {"cells": 25, "donors": 18},
+        "RELA": {"cells": 25, "donors": 19},
+        "BACH1": {"cells": 23, "donors": 19},
+        "IRF8": {"cells": 21, "donors": 16}
+      },
+      "stat1": {
+        "plus_2sd_cells": 27,
+        "plus_2sd_fraction": 0.0406015037593985,
+        "positive_donors": 17,
+        "zero_donors": 49,
+        "source_positive_donors": {"HVS": 7, "NPH52": 3, "SEA_AD": 7},
+        "max_single_donor_contribution_cells": 3,
+        "positive_donor_median_prevalence": 0.14285714285714285,
+        "raw_tail_retention_after_detected_gene_residualization": {"HVS": "7/7", "NPH52": "7/7", "SEA_AD": "11/11"},
+        "empirical_stress_regimes": {
+          "+1.5SD": {"fraction": 0.06616541353383458, "positive_donors": 28},
+          "+2.0SD": {"fraction": 0.0406015037593985, "positive_donors": 17},
+          "+2.5SD": {"fraction": 0.02706766917293233, "positive_donors": 11},
+          "+3.0SD": {"fraction": 0.016541353383458645, "positive_donors": 7}
+        },
+        "interpretation": "Strongest current donor-recurrent regulatory rare-program lead for target-discovery reassessment; not target authority and not causal STAT1 evidence."
+      },
+      "remaining_falsifier": "Prior quality audit found association with total summed log1p expression; detected-gene residualization alone does not close measurement-quality confounding."
+    }
+  },
+  "analysis_population": {
+    "primary": "eligible pathology-blind TRAIN only",
+    "biological_family_rule": "rarity within broad biological family",
+    "donor_primary": true,
+    "source_families": ["HVS", "NPH52", "SEA_AD"]
+  },
+  "priority_programs_for_reassessment": [
+    {"program": "STAT1_STAGE75_MODULE_TAIL", "priority": 1, "reason": "donor recurrent across all three sources and largely unchanged after detected-gene residualization; broader measurement/source falsifiers remain"},
+    {"program": "SPI1_STAGE75_MODULE_TAIL", "priority": 2, "reason": "largest +2SD donor count among tested modules; requires same broader falsifiers"},
+    {"program": "BACH1_CEBPA_IRF8_RELA_ELF1_STAGE75_TAILS", "priority": 3, "reason": "donor recurrent after detected-gene correction; useful alternate/control regulatory topologies"},
+    {"program": "HISTORICAL_RARE1_RARE5_DIRECTION", "priority": 4, "reason": "important historical diagnostic but strongly source shifted and therefore not a clean positive"}
+  ],
+  "required_tests": [
+    "within-source donor recurrence",
+    "within-source direction stability",
+    "depth/detected-gene/summed-expression/support matching or residual challenge",
+    "operator support stratification",
+    "source-balanced donor consensus",
+    "leave-one-source-out direction transport",
+    "candidate-target preservation without added shortcut predictability",
+    "frequency-matched high-quality/high-depth pseudo-rare negative control",
+    "uncertainty separation"
+  ],
+  "program_classes": {
+    "UNIVERSAL_BIOLOGICAL_PROGRAM": "recurs and transports across sources/donors",
+    "BIOLOGICAL_PROGRAM_WITH_SOURCE_SHIFTED_PREVALENCE": "shared biology with differing abundance/amplitude",
+    "SOURCE_SPECIFIC_BIOLOGICAL_PROGRAM": "real within one source but not universal",
+    "BIOLOGICAL_PROGRAM_PARTIALLY_OBSERVATION_LIMITED": "biology survives but observability depends on operator",
+    "OBSERVATION_OPERATOR_ARTIFACT": "signal explained by operator/support/quality structure",
+    "NOT_ESTIMABLE": "insufficient support/replication"
+  },
+  "candidate_effect": {
+    "C1": "preserve universal/observation-limited biology, not source prevalence",
+    "C3": "evaluate rare query context within source and broad state",
+    "C6": "add rare query-context information beyond C1 without increasing shortcut signal",
+    "C2": "if active, relational rare structure must survive source-aware reassessment",
+    "C4": "if active, relational increment beyond C6 must be biological",
+    "C5": "regulatory specialist only after own qualification; Stage75 tail recurrence can prioritize tests but cannot grant C5 authority"
+  },
+  "forbidden_shortcuts": [
+    "pool all cells and let source composition set rarity",
+    "regress away source before biological assessment",
+    "call source imbalance biology",
+    "use cell count as donor replication",
+    "use global rare1/rare5 prevalence as truth",
+    "treat detected-gene residualization as complete measurement-confound closure",
+    "treat STAT1 donor recurrence as causal regulation or target selection"
+  ],
+  "terminal": "DESIGN_FROZEN__EXECUTION_REQUIRES_SEPARATE_AUTHORITY"
 }
