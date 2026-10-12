@@ -1,7 +1,7 @@
 # Target discovery — rare-program + multimodal integration handoff
 
 Date: 2026-10-12  
-Status: **SCIENCE DESIGN FROZEN FOR REVIEW — NON-AUTHORIZING**
+Status: **SCIENCE DESIGN CLOSED FOR EXECUTION/AUDIT — NON-AUTHORIZING**
 
 ## Current scientific conclusion
 
@@ -80,9 +80,44 @@ After the RNA foundation target is frozen, GSE214979 is the primary same-nucleus
 
 The HCT17HEX/HCTZZT identity conflict is handled prospectively: primary deciding analysis excludes those labels unless an independently authenticated correction predates outcome opening; a genotype-only sensitivity analysis cannot rescue a primary failure.
 
+## Frozen contingencies and pivots
+
+`results/target_discovery/TD_CONTINGENCY_AND_PIVOT_CONTRACT_V1.json` is the controlling prospective pivot law for this package.
+
+Core rules:
+
+- relational PASS keeps C2/C4 active but selects nothing;
+- relational FAIL eliminates C2 and blocks C4 while C1/C3/C6 continue;
+- relational NOT_ESTIMABLE leaves C2/C4 unresolved and cannot block independent C1/C3/C6 qualification;
+- rare-program FAIL eliminates the affected candidate rather than lowering the rare-biology bar;
+- source-shifted but donor-recurrent biology is modeled as biology with shifted prevalence/observability, not automatically batch;
+- operator artifacts are retired as biological evidence and retained as adversarial controls;
+- a multimodal increment that is coherent but not RNA-recoverable remains teacher-private instead of becoming an impossible point target;
+- if all foundation candidates fail, target architecture is reopened prospectively from the observed failure signatures; no failed candidate is rescued post hoc.
+
+## What is finished versus what remains executable
+
+`results/target_discovery/TD_WORKFLOW_CLOSEOUT_LEDGER_V1.json` records the closeout state.
+
+The design lane is complete for all currently foreseeable branches: candidate dependencies, rare-program gates, source/operator reassessment, Bayesian reuse, multimodal ETL roles, rich-teacher/student decomposition, regulatory claim boundaries, same-nucleus experiment role, authority ladder, and failure pivots are prospectively frozen.
+
+Remaining work is evidence execution/audit, in order:
+
+1. Macha PR #310 corrected replay execution and audit;
+2. authorized source/operator-aware rare-program reassessment;
+3. rare-program fitness on every active target candidate;
+4. survivor head-to-head/protected confirmation;
+5. explicit foundation-target decision;
+6. post-freeze GSE214979 same-nucleus multimodal decomposition;
+7. Morabito/SEA-AD multimodal replication;
+8. regulatory/spatial/perturbational interpretation;
+9. explicit representation and later TD60/Stage4/training authorities.
+
+No additional architecture brainstorming should occur unless one of the frozen contingencies explicitly triggers redesign.
+
 ## Authority boundary
 
-None of these documents authorizes target selection, representation selection, TD60, Stage 4 or real training. The sequence remains:
+None of these documents authorizes corrected replay execution, target selection, representation selection, TD60, Stage 4 or real training. The sequence remains:
 
 corrected replay -> candidate gates -> rare-program qualification -> survivor adjudication -> protected confirmation -> explicit target decision -> post-freeze multimodal support -> explicit representation decision -> later downstream authorities.
 
