@@ -1,0 +1,11 @@
+{
+  "schema": "JEPA_TD_REAL_GATE_EXECUTOR_READINESS_V1",
+  "date": "2026-10-12",
+  "all_required_roles_materialized": false,
+  "status": "BLOCKED_GATE_EXECUTOR_RULES_NOT_MATERIALIZED__NO_OUTCOME_READ",
+  "reason": "The frozen V2 scaffold binds qualified gate-executor, estimand and decision-rule identities by SHA, but reusable real-data gate-specific executable decision rules are not materialized as callable qualified executors on the current branch. The real tournament framework must not infer or invent thresholds.",
+  "completed_framework": ["real tournament contract", "donor-primary case ledger", "candidate field firewalls", "mandatory falsifier engine", "authenticated gate-output bridge", "routing-v4 bundle projection", "QUALIFY/EXECUTE_ONCE controller"],
+  "missing_before_real_execution": ["qualified callable gate-specific executors for every required candidate×gate role", "readiness manifest regenerated with exact role inventory and code hashes", "outcome-blind QUALIFY against authenticated real metadata/support/replay context", "fresh execution authority"],
+  "authority": {"real_tournament_authorized": false, "target_selection_authorized": false, "td60_authorized": false, "stage4_authorized": false, "training_authorized": false},
+  "manifest_sha256": "e872254a8e305f72926b2b175a2c024a47286b02504483ec59d60f5c1b15c9d9"
+}
