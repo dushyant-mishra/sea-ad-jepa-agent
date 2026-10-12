@@ -38,6 +38,7 @@ jobs:
           tests/v79/test_v79_v2_core_score_quantities.py
           tests/v79/test_v79_v2_core_score_evaluate.py
           tests/v79/test_v79_v2_core_score_authority.py
+          tests/v79/test_v79_v2_core_score_descriptive.py
           -q -rA -p no:cacheprovider
       - name: Run controller scorer tests (Linux structural audit)
         if: runner.os != 'Windows'
@@ -50,6 +51,7 @@ jobs:
           tests/v79/test_v79_v2_core_score_quantities.py
           tests/v79/test_v79_v2_core_score_evaluate.py
           tests/v79/test_v79_v2_core_score_authority.py
+          tests/v79/test_v79_v2_core_score_descriptive.py
           -q -rA -p no:cacheprovider
           -k 'not test_builder_regenerates_final_and_draft_byte_for_byte'
       - name: Static trust-domain audit
