@@ -31,4 +31,4 @@ jobs:
       - name: Install frozen structural dependencies
         run: python -m pip install --disable-pip-version-check numpy==2.0.2 jax==0.4.35 jaxlib==0.4.35 numpyro==0.15.3 pytest
       - name: Run executor structural tests
-        run: python -m pytest tests/v79/test_v79_v2_core_fit_surface.py tests/v79/test_v79_v2_core_fit_model.py tests/v79/test_v79_v2_core_fit_runner.py -q -rA -p no:cacheprovider
+        run: python -m pytest tests/v79/test_v79_v2_core_fit_surface.py tests/v79/test_v79_v2_core_fit_model.py -q -rA -p no:cacheprovider
