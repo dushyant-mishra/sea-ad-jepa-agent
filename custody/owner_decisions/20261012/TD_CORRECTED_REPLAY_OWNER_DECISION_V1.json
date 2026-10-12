@@ -1,0 +1,22 @@
+{
+  "contract_sha256": "f45f9f0d39ef7b7c70c89905b937bc83e96f06dacac7dc5ecef064175a242278",
+  "corrected_replay_execution_authorized": true,
+  "date": "2026-10-12",
+  "decision": "AUTHORIZE_ONE_CORRECTED_TD56_TD57B_TD57C_TD59_REPLAY__FROZEN_SCIENCE__AFTER_EXACT_LAUNCH_AUDIT",
+  "g6_execution_authorized": false,
+  "g6_rerun_permitted": false,
+  "g7_execution_authorized": false,
+  "g7_pass": false,
+  "g7_rerun_permitted": false,
+  "g7_terminal_remains": "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP",
+  "implementation_commit_sha": "f74632ed51a0ffc28ac46daf240debbb8c2d6e01",
+  "prepared_by": "Macha (Claude Code) at owner instruction 2026-10-12; execution requires the external launch-audit acceptance and owner ratification",
+  "prerequisite_amendment_sha256": "4c5fefeb39de6a607266cf2ae3de96d25673cbf2b92c1af6992210d1f5fb7d2f",
+  "schema": "JEPA_TD_CORRECTED_REPLAY_OWNER_DECISION_V1",
+  "scope": "CORRECTED_TD56_TD57B_TD57C_TD59_REPLAY_ONLY",
+  "single_attempt": true,
+  "stage4_authorized": false,
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false
+}
