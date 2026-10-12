@@ -4,11 +4,17 @@
   "status": "DESIGN_LANE_CLOSEOUT__EXECUTION_GATES_REMAIN",
   "purpose": "Record which target-discovery/downstream design tasks are complete and which remaining actions are blocked on future evidence or explicit authority, preventing repeated redesign and duplicate ETL.",
   "hard_boundary": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "cross_lane_provenance": {
+    "PR311": "Analysis/provenance lane for real-TRAIN rare-biology integration and Stage75 detection-residual regulatory-tail findings.",
+    "PR312": "Active target-discovery integration/adjudication surface consuming the PR311 handoff.",
+    "rule": "The PR311 result is preserved there and handed directly into PR312; it is one evidence lineage, not two independent replications or competing interpretations."
+  },
   "completed_design_work": {
     "candidate_architecture": "C1/C2/C3/C6/C4 foundation architecture with C5 specialist retained; dependencies and non-rescue rules preserved.",
     "corrected_replay_integration": "Macha PR310 remains canonical replay package; this lane consumes its eventual audited outcome and does not duplicate execution machinery.",
     "rare_program_gate": "Rare-program fitness is mandatory for every active foundation candidate; Stage81A3/PRRC logic reused rather than rebuilt.",
     "rare1_rare5_reconciliation": "Historical rare1/rare5 classified as one strongly source-shifted diagnostic direction requiring source/operator-aware reassessment before use.",
+    "stage75_rare_lead_handoff": "PR311 Stage75 detection-residual rare-program result folded into PR312. All seven tested modules remain donor-recurrent after detected-gene correction; STAT1 is the priority prospective reassessment lead, with remaining summed-expression/quality confounding explicitly unresolved.",
     "source_operator_reassessment": "Prospective real-TRAIN reassessment questions, evidence classes, terminal interpretations and forbidden shortcuts frozen.",
     "bayesian_reuse": "Useful PR249 dependency-ledger/calibration principles retained; failed zero-sum stage-mean estimand and sampler explicitly rejected.",
     "bayesian_rare_program_design": "Donor-primary within-source recurrence, cross-source direction transport, source-shifted prevalence and observation-limited biology estimands frozen prospectively.",
@@ -20,78 +26,15 @@
     "contingency_pivot_law": "All major PASS/FAIL/NOT_ESTIMABLE/divergence/artifact outcomes now have predeclared pivots and non-rescue rules."
   },
   "remaining_execution_actions": [
-    {
-      "order": 1,
-      "action": "CORRECTED_REPLAY_EXECUTION_AND_AUDIT",
-      "owner": "MACHA_EXECUTION__THIS_LANE_AUDIT",
-      "blocked_on": "exact PR310 owner ratification/launch acceptance and one authorized execution",
-      "changes_candidate_set": true,
-      "notes": "Determines C2/C4 status only; C6 unchanged."
-    },
-    {
-      "order": 2,
-      "action": "SOURCE_OPERATOR_AWARE_RARE_PROGRAM_REASSESSMENT",
-      "owner": "TARGET_DISCOVERY",
-      "blocked_on": "separate explicit execution authority and access to already authenticated TRAIN/cached surfaces",
-      "changes_candidate_set": false,
-      "notes": "Must classify historical rare1/rare5 and any candidate rare directions without global pooling or premature source regression."
-    },
-    {
-      "order": 3,
-      "action": "APPLY_RARE_PROGRAM_FITNESS_TO_EACH_ACTIVE_CANDIDATE",
-      "owner": "TARGET_DISCOVERY",
-      "blocked_on": "candidate readouts plus rare reassessment evidence",
-      "changes_candidate_set": true,
-      "notes": "C1/C3/C6 mandatory; C2/C4 only if replay leaves active."
-    },
-    {
-      "order": 4,
-      "action": "SURVIVOR_HEAD_TO_HEAD_AND_PROTECTED_CONFIRMATION",
-      "owner": "TARGET_DISCOVERY",
-      "blocked_on": "completion of all mandatory candidate gates including rare fitness",
-      "changes_candidate_set": true,
-      "notes": "One survivor still requires protected confirmation; multiple survivors use predeclared pairwise questions."
-    },
-    {
-      "order": 5,
-      "action": "EXPLICIT_FOUNDATION_TARGET_DECISION",
-      "owner": "OWNER_AUTHORITY",
-      "blocked_on": "audited survivor evidence",
-      "changes_candidate_set": true,
-      "notes": "No implicit promotion from technical PASS or single-survivor status."
-    },
-    {
-      "order": 6,
-      "action": "POST_FREEZE_GSE214979_SAME_NUCLEUS_MULTIMODAL_DECOMPOSITION",
-      "owner": "DOWNSTREAM_MULTIMODAL",
-      "blocked_on": "foundation target freeze and separate execution authority",
-      "changes_candidate_set": false,
-      "notes": "Measures regulatory/chromatin increment and RNA recoverability; cannot retrospectively choose target."
-    },
-    {
-      "order": 7,
-      "action": "DONOR_LEVEL_MORABITO_AND_INTERNAL_SEAAD_MULTIMODAL_REPLICATION",
-      "owner": "DOWNSTREAM_MULTIMODAL",
-      "blocked_on": "frozen program definitions from target/multimodal phase",
-      "changes_candidate_set": false,
-      "notes": "Morabito separate-nucleus donor-level only; SEA-AD internal corroboration not pristine external validation."
-    },
-    {
-      "order": 8,
-      "action": "REGULATORY_SPATIAL_PERTURBATIONAL_INTERPRETATION",
-      "owner": "DOWNSTREAM_INTERPRETATION",
-      "blocked_on": "frozen programs and modality-specific qualification",
-      "changes_candidate_set": false,
-      "notes": "Interpretation/localization/causal-direction support only; each evidence class retains its claim boundary."
-    },
-    {
-      "order": 9,
-      "action": "EXPLICIT_REPRESENTATION_DECISION_AND_LATER_TD60_STAGE4_TRAINING_AUTHORITIES",
-      "owner": "OWNER_AUTHORITY",
-      "blocked_on": "post-freeze multimodal/recoverability evidence and runtime/scientific gates",
-      "changes_candidate_set": false,
-      "notes": "No automatic authority propagation."
-    }
+    {"order": 1, "action": "CORRECTED_REPLAY_EXECUTION_AND_AUDIT", "owner": "MACHA_EXECUTION__THIS_LANE_AUDIT", "blocked_on": "exact PR310 owner ratification/launch acceptance and one authorized execution", "changes_candidate_set": true, "notes": "Determines C2/C4 status only; C6 unchanged."},
+    {"order": 2, "action": "SOURCE_OPERATOR_AWARE_RARE_PROGRAM_REASSESSMENT", "owner": "TARGET_DISCOVERY", "blocked_on": "separate explicit execution authority and access to already authenticated TRAIN/cached surfaces", "changes_candidate_set": false, "notes": "Prioritize PR311 STAT1 lead, then SPI1/other Stage75 tails; use historical rare1/rare5 as a confounded diagnostic control. Must not globally pool or prematurely regress source."},
+    {"order": 3, "action": "APPLY_RARE_PROGRAM_FITNESS_TO_EACH_ACTIVE_CANDIDATE", "owner": "TARGET_DISCOVERY", "blocked_on": "candidate readouts plus rare reassessment evidence", "changes_candidate_set": true, "notes": "C1/C3/C6 mandatory; C2/C4 only if replay leaves active."},
+    {"order": 4, "action": "SURVIVOR_HEAD_TO_HEAD_AND_PROTECTED_CONFIRMATION", "owner": "TARGET_DISCOVERY", "blocked_on": "completion of all mandatory candidate gates including rare fitness", "changes_candidate_set": true, "notes": "One survivor still requires protected confirmation; multiple survivors use predeclared pairwise questions."},
+    {"order": 5, "action": "EXPLICIT_FOUNDATION_TARGET_DECISION", "owner": "OWNER_AUTHORITY", "blocked_on": "audited survivor evidence", "changes_candidate_set": true, "notes": "No implicit promotion from technical PASS or single-survivor status."},
+    {"order": 6, "action": "POST_FREEZE_GSE214979_SAME_NUCLEUS_MULTIMODAL_DECOMPOSITION", "owner": "DOWNSTREAM_MULTIMODAL", "blocked_on": "foundation target freeze and separate execution authority", "changes_candidate_set": false, "notes": "Measures regulatory/chromatin increment and RNA recoverability; cannot retrospectively choose target."},
+    {"order": 7, "action": "DONOR_LEVEL_MORABITO_AND_INTERNAL_SEAAD_MULTIMODAL_REPLICATION", "owner": "DOWNSTREAM_MULTIMODAL", "blocked_on": "frozen program definitions from target/multimodal phase", "changes_candidate_set": false, "notes": "Morabito separate-nucleus donor-level only; SEA-AD internal corroboration not pristine external validation."},
+    {"order": 8, "action": "REGULATORY_SPATIAL_PERTURBATIONAL_INTERPRETATION", "owner": "DOWNSTREAM_INTERPRETATION", "blocked_on": "frozen programs and modality-specific qualification", "changes_candidate_set": false, "notes": "Interpretation/localization/causal-direction support only; each evidence class retains its claim boundary."},
+    {"order": 9, "action": "EXPLICIT_REPRESENTATION_DECISION_AND_LATER_TD60_STAGE4_TRAINING_AUTHORITIES", "owner": "OWNER_AUTHORITY", "blocked_on": "post-freeze multimodal/recoverability evidence and runtime/scientific gates", "changes_candidate_set": false, "notes": "No automatic authority propagation."}
   ],
   "work_that_must_not_be_repeated": [
     "Morabito physical authentication/full crosswalk unless byte contradiction is discovered",
@@ -102,7 +45,8 @@
     "G6/G7 reruns",
     "GSE214637 as an independent cohort",
     "historical Stage73/73R graph topology claims as validated GRN",
-    "pathology-guided target discovery"
+    "pathology-guided target discovery",
+    "PR311 Stage75 rare-program handoff as if it were an independent second replication after being imported into PR312"
   ],
   "definition_of_design_lane_done": "All currently foreseeable scientific decision branches, pivots, evidence-role boundaries and non-rescue rules are frozen prospectively. Remaining work is execution/audit against future evidence, not additional architecture brainstorming unless a frozen contingency explicitly triggers redesign.",
   "non_authority_statement": "Closeout does not authorize any blocked execution action."
