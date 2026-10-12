@@ -1,0 +1,71 @@
+{
+  "schema": "V79_V2_CORE_ENGINEERING_BENCHMARK_RECEIPT_V1",
+  "source_contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+  "fit_contract_view_sha256": "d5e9a46425466996a00b1bc2152d9f958b08e535833bfaec83ece1435d8fa753",
+  "prep_receipt_sha256": "ee89a67ba3919a6593b2f20e4cc4030904e4032ef78c28438fecdab0cfed8170",
+  "code_sha": "559a1c104c8f1f56d2c05509eecf6b9dc05846a5",
+  "package_hashes": {
+    "root_manifest": "0dd2632bab43fe2df601c38ff06bd87be1fcfb3a948ec07b4b07934f394f0c9e",
+    "blinded_index": "1021ccaf0cecdffbeb2383f6a23b9f6162ad836b7a5d892dbf4faa23ebbf9244",
+    "blinded_directory_digest": "0d92183cbcc4715fc82dabc74f4ebc23d5f05ac8ee3b3740df5701f9d6e6a7ca",
+    "selected_world_manifest": "0b91416a8b504be57a2725e1ed3a0ca7382958772e99a453f48221de2641bb7d"
+  },
+  "runtime_environment_receipt": {
+    "schema": "V79_V2_CORE_FIT_RUNTIME_RECEIPT_V1",
+    "environment_lock_sha256": "5253ddca79c5f1b11eff2432b39679f16a68a885486a333d244357452261c782",
+    "matched_packages": 31,
+    "platform_system": "Windows",
+    "python_version": "3.11.17",
+    "python_executable": "C:\\Users\\dushy\\anaconda3\\envs\\v79-bayes\\python.exe",
+    "jax_cpu_devices": []
+  },
+  "jax_runtime_receipt": {
+    "jax_device_count": 4,
+    "jax_devices": [
+      "TFRT_CPU_0",
+      "TFRT_CPU_1",
+      "TFRT_CPU_2",
+      "TFRT_CPU_3"
+    ],
+    "jax_platform": "cpu",
+    "jax_enable_x64": true,
+    "jax_default_matmul_precision": "highest"
+  },
+  "fit_records": [
+    {
+      "fit_id": "8b66d1cba6d5fa8d632212628a1a48b6664c312e0207ed0e0f2b4f2a829685cd",
+      "path": "fit_8b66d1cba6d5fa8d632212628a1a48b6664c312e0207ed0e0f2b4f2a829685cd.json",
+      "sha256": "e4daf550349761bf1117491530f83aca8b9bfffe533344fa167d2929459a588a",
+      "final_diagnosis": "COMPLETE"
+    },
+    {
+      "fit_id": "39250166781b6f2e7453baa4be7784cfa1768228157fe4c98dea5d603f3eb451",
+      "path": "fit_39250166781b6f2e7453baa4be7784cfa1768228157fe4c98dea5d603f3eb451.json",
+      "sha256": "4761a9439c77634570f76d0547a57e033512a1d52f0d873e35c91fe84fe36582",
+      "final_diagnosis": "COMPLETE"
+    },
+    {
+      "fit_id": "c5ed04a6830bf470413b623a0a8515c5b9f2f0da4d0a979e62877212be3d23d1",
+      "path": "fit_c5ed04a6830bf470413b623a0a8515c5b9f2f0da4d0a979e62877212be3d23d1.json",
+      "sha256": "cd5445e6a533812b925fd216061af9ca99a56b2c8c1b0076c5e8779da783a261",
+      "final_diagnosis": "COMPLETE"
+    },
+    {
+      "fit_id": "d09ff82bdab7549773c90d525c79e7691b25385ff3399cf8ee7fcb40b07cea63",
+      "path": "fit_d09ff82bdab7549773c90d525c79e7691b25385ff3399cf8ee7fcb40b07cea63.json",
+      "sha256": "62f7b4bf6fb9188af1c6fc197651b0466f943a54fdf45ffad63af1726d306fc4",
+      "final_diagnosis": "COMPLETE"
+    }
+  ],
+  "benchmark_run": true,
+  "qualification_fits_run": 0,
+  "scoring_run": false,
+  "truth_accessed": false,
+  "training_authorized": false,
+  "benchmark_fit_count": 4,
+  "total_fit_wall_seconds": 15.27046630019322,
+  "mean_fit_wall_seconds": 3.817616575048305,
+  "projected_qualification_hours": 1.519834195347503,
+  "projected_runtime_ceiling_hours": 72.0,
+  "stop_required": false
+}

@@ -1,0 +1,4 @@
+contention_check_utc=2026-10-12T17:39:19Z
+windows: machine_load_percent_avg=12; cpu_seconds_all_processes_in_5s=1.98; logical_cpus=16; python_processes=2
+wsl: loadavg=0.00 0.13 0.22 python_procs=0
+python_processes detail: 2 idle Antigravity IDE dak_jupyter servers started 2026-10-11 02:42 (18.7 cpu-s total since); no compute workload

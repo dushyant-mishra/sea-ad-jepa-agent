@@ -1,0 +1,4 @@
+utc=2026-10-12T17:36:49Z
+git rev-parse HEAD: 559a1c104c8f1f56d2c05509eecf6b9dc05846a5
+git status --porcelain: [] lines=0
+fresh paths (absent before prep): package_dir=D:/jepa_v79_engineering_benchmark_rerun_559a1c10/engineering_package exists=no custody_dir=D:/jepa_v79_engineering_benchmark_rerun_559a1c10/fit_custody exists=no result_dir=D:/jepa_v79_engineering_benchmark_rerun_559a1c10/result exists=no
