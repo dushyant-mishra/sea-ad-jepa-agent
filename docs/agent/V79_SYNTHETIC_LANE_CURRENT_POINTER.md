@@ -12,13 +12,15 @@ Updated: 2026-10-12 after repaired benchmark completion and lane-boundary cleanu
 6. `results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_AUDIT_INDEX_V1.json`
 7. `docs/agent/V79_SYNTHETIC_LANE_TAKEOVER_HANDOFF_20261012.md`
 
-## Lane boundary
+## Real-biology rule
 
-This lane **may inspect and analyze real TRAIN biology** when needed to make synthetic worlds realistic. Allowed uses include prevalence ranges, donor recurrence, covariance/program shape, source/operator/depth effects, modality relationships, effect-size ranges, spatial structure and perturbational response geometry.
+This lane **may inspect, analyze, discover and freeze real biological programs from TRAIN** when that is necessary to make synthetic worlds realistic. Allowed work includes program discovery, donor recurrence, prevalence, covariance, regulatory structure, effect sizes, source/operator/depth interactions, multimodal relationships, spatial structure and perturbational response.
 
-This lane **must not promote those analyses into project target-discovery authority**. It does not choose the real biological target, declare a real rare state as the project target, or overwrite the target-discovery lane. Any real-data observation that may matter for target discovery gets handed off separately.
+Those discoveries are legitimate scientific outputs. They must be handed to the target-discovery lane so that lane can use them too.
 
-No completed ETL should be repeated when authenticated caches/hashes already exist.
+The separation is about **authority, not visibility**: synthetic-lane discoveries may define synthetic planted biology and may become candidate real targets, but they do not silently replace the target-discovery lane's own governed adjudication or final project target decision.
+
+Do not repeat completed ETL when authenticated caches/hashes already exist.
 
 ## Q00-Q11
 
@@ -30,9 +32,9 @@ The repaired benchmark at PR #308 / evidence commit `586e5ea5af73bbc28637a4cbab0
 
 The synthetic extension is separate from Q00-Q11 and should model real biological structure, including donor-recurrent rarity, donor-restricted legitimate biology, RNA/regulatory coupling, separate-nucleus versus same-nucleus multimodal structure, spatial context and perturbational response.
 
-Real biology may be examined to inform those worlds. The key protection is that source/operator/depth or any single historical score must not silently become synthetic biological truth.
+Real biology should be examined directly to inform those worlds. Source/operator/depth artifacts must not masquerade as biology.
 
-The historical `innovation_tail`, `recurrent_5pct` and `recurrent_1pct` share the same molecular direction. The read-only 50K TRAIN check showed that direction is strongly source-shifted; use that as a realism/shortcut warning, not as a real target declaration.
+The historical `innovation_tail`, `recurrent_5pct` and `recurrent_1pct` share the same molecular direction. The read-only 50K TRAIN check showed that direction is strongly source-shifted. That is both a synthetic-design warning and a biological finding to pass to target discovery.
 
 ## Existing real-data assets
 
@@ -44,7 +46,8 @@ Reuse existing authenticated/cached FOUNDATION, Morabito, GSE214979, GSE272082, 
 - Q00-Q11 qualification fits: **OFF pending controller authority**
 - qualification scoring: **OFF**
 - synthetic rare-biology design/engineering: **ACTIVE**
-- TRAIN biology inspection/calibration for synthetic realism: **ALLOWED**
-- real biological target selection/promotion: **TARGET-DISCOVERY LANE ONLY**
+- TRAIN biology inspection/discovery/calibration/freeze for synthetic realism: **ALLOWED**
+- cross-lane handoff of discovered biological programs to target discovery: **REQUIRED**
+- final project target authority: **remains separately governed in target discovery**
 - pathology/DEV/SEALED/TEST outcome use for synthetic tuning: **OFF**
 - JEPA training: **OFF**
