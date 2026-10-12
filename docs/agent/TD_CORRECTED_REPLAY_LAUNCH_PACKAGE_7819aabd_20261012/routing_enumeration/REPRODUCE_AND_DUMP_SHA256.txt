@@ -1,0 +1,9 @@
+# The two per-combination dumps are not committed (6.5 MB each); regenerate them byte-identically with:
+#   python enumerate_source_rule_routes_v2.py dump <checkout of f5673f9b>  > dump_f5673f9b.jsonl
+#   python enumerate_source_rule_routes_v2.py dump <checkout of 7819aabd>  > dump_7819aabd.jsonl
+#   python enumerate_source_rule_routes_v2.py compare dump_f5673f9b.jsonl dump_7819aabd.jsonl <out dir> <checkout of 7819aabd>
+# Run in td-replay-hist (Windows), 2026-10-12. SHA-256 of the dumps used:
+0bd0fe69062f7a11b62e953fcaaaf504d07068392c805b3a291a014efacad9c3   dump_f5673f9b.jsonl
+507c67b1662a90b80cecc2f9129998c2656c2e757235b40d6299576cb27bfe54   dump_7819aabd.jsonl
+# Line endings as written by Windows Python: the dumps and ROUTING_ENUMERATION_SUMMARY.json are CRLF (text-mode stdout/write_text);
+# ROUTING_CHANGED_COMBINATIONS.csv is LF. Byte-identical regeneration therefore needs Windows; content is platform-independent.

@@ -1,0 +1,3 @@
+mode=QUALIFY utc=2026-10-12T17:33:46Z authority_commit=69240132383d92911ddb360660c810b585813f1f op_sha=fac62caea5dca118c6e55e460d6bf740f1158d03ed1da19974e56dd863ad2ef2
+acceptance=none:none ratification=none:none
+launch_root=D:/jepa_wt_td_replay_launchroot_69240132 namespace=D:/jepa_td_corrected_replay_20261012/REPLAY_OUT_V1 runroot=D:/jepa_td_corrected_replay_20261012/launch_QUALIFY_20261012T173346Z wsl_python=/home/dushyant_mishra/miniconda3/envs/td-replay-hist/bin/python versions=[python=3.13.5 numpy=2.3.5 scipy=1.17.0 pandas=2.2.3]
