@@ -41,7 +41,7 @@ def test_all_level_identification_matches_raw_frozen_helmert_truth():
     assert np.allclose(truth["class"],w.load("truth/detection/class_contrasts.npy")[0])
     assert np.allclose(truth["source"],w.load("truth/detection/source_contrasts.npy")[0])
     assert np.isclose(truth["intercept"][0],w.load("truth/detection/intercept.npy")[0])
-    assert np.allclose(truth["donor_effects"],w.load("truth/detection/donor_effects.npy")[0,:2])
+    assert np.allclose(truth["donor_effects"],w.load("truth/detection/donor_effects.npy")[:2,0])
 
 
 def test_missing_levels_transform_truth_to_level_differences_and_identified_intercept():
@@ -49,8 +49,7 @@ def test_missing_levels_transform_truth_to_level_differences_and_identified_inte
     si={"mode":"level_differences","observed_levels":[1,2],"reference_level":1}
     w=_world(); s=_summary("detection",class_ident=ci,source_ident=si)
     truth=Q.identified_truth_for_summary(w,"detection",0,s)
-    B=Q._helmert3()
-    c=w.load("truth/detection/class_contrasts.npy")[0]; src=w.load("truth/detection/source_contrasts.npy")[0]
+    B=Q._helmert3(); c=w.load("truth/detection/class_contrasts.npy")[0]; src=w.load("truth/detection/source_contrasts.npy")[0]
     ce=B@c; se=B@src
     assert np.allclose(truth["class"],[ce[2]-ce[0]])
     assert np.allclose(truth["source"],[se[2]-se[1]])
@@ -72,4 +71,4 @@ def test_gene_score_computes_90_95_99_coverage_and_standardized_error_in_identif
     for x in r["quantities"].values():
         assert all(x["covered90"]) and all(x["covered95"]) and all(x["covered99"])
         assert np.allclose(x["standardized_error"],0.0)
-        assert set(("q005","q025","q05","q95","q975","q995")) <= set(x)
+        assert {"q005","q025","q05","q95","q975","q995"} <= set(x)
