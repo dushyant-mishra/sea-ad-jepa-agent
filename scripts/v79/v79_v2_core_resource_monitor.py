@@ -17,6 +17,8 @@ class ResourceMonitorRefused(RuntimeError):
 
 def _rss_bytes() -> int:
     if platform.system().lower() == "windows":
+        from ctypes import wintypes
+
         class PMC(ctypes.Structure):
             _fields_ = [("cb", ctypes.c_ulong), ("PageFaultCount", ctypes.c_ulong),
                         ("PeakWorkingSetSize", ctypes.c_size_t), ("WorkingSetSize", ctypes.c_size_t),
@@ -24,8 +26,14 @@ def _rss_bytes() -> int:
                         ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t), ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
                         ("PagefileUsage", ctypes.c_size_t), ("PeakPagefileUsage", ctypes.c_size_t)]
         counters = PMC(); counters.cb = ctypes.sizeof(PMC)
-        h = ctypes.windll.kernel32.GetCurrentProcess()
-        if not ctypes.windll.psapi.GetProcessMemoryInfo(h, ctypes.byref(counters), counters.cb):
+        get_current_process = ctypes.windll.kernel32.GetCurrentProcess
+        get_current_process.argtypes = []
+        get_current_process.restype = wintypes.HANDLE
+        get_process_memory_info = ctypes.windll.psapi.GetProcessMemoryInfo
+        get_process_memory_info.argtypes = [wintypes.HANDLE, ctypes.POINTER(PMC), wintypes.DWORD]
+        get_process_memory_info.restype = wintypes.BOOL
+        h = get_current_process()
+        if not get_process_memory_info(h, ctypes.byref(counters), counters.cb):
             raise ResourceMonitorRefused("GetProcessMemoryInfo failed")
         return int(counters.WorkingSetSize)
     try:
