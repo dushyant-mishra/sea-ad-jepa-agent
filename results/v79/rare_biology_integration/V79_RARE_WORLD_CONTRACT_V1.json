@@ -1,0 +1,54 @@
+{
+  "schema": "V79_RARE_WORLD_CONTRACT_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_IMPLEMENTED__FIXTURE_TESTED__NO_PRODUCTION_REALIZATION_AUTHORITY",
+  "prototype": {
+    "name": "STAT1_DIRECT_STAGE75_TIER_A",
+    "role": "Synthetic biological prototype only; not project target and not a causal GRN.",
+    "targets": ["AIF1", "APOE", "B2M", "BSG", "C1QB", "CD74", "CTSB", "FCER1G", "GPX4", "HLA-DPA1", "LAPTM5", "NFKBIA", "NPC2", "PRDX1", "TXNIP"],
+    "positive_targets": ["AIF1", "APOE", "B2M", "BSG", "C1QB", "CD74", "CTSB", "FCER1G", "HLA-DPA1", "LAPTM5", "NFKBIA", "NPC2", "PRDX1", "TXNIP"],
+    "negative_targets": ["GPX4"],
+    "evidence": "Stage75 Tier-A direct-motif candidate edges plus Stage76 coactivity sign. Descriptive soft prior only; no validated regulation/causality claim."
+  },
+  "empirical_rarity_regimes": {
+    "weak": {"source_residual_threshold_sd": 1.5, "tail_fraction": 0.0661654135, "active_donors": 28, "total_donors": 66, "active_donor_fraction": 0.4242424242, "positive_donor_beta_alpha": 1.2670743912, "positive_donor_beta_beta": 6.7275855147},
+    "central": {"source_residual_threshold_sd": 2.0, "tail_fraction": 0.0406015038, "active_donors": 17, "total_donors": 66, "active_donor_fraction": 0.2575757576, "positive_donor_beta_alpha": 1.2449148260, "positive_donor_beta_beta": 5.5522387114, "positive_donor_prevalence_median": 0.1428571429, "positive_donor_prevalence_q75": 0.2222222222, "positive_donor_prevalence_max": 0.5},
+    "strong": {"source_residual_threshold_sd": 2.5, "tail_fraction": 0.0270676692, "active_donors": 11, "total_donors": 66, "active_donor_fraction": 0.1666666667, "positive_donor_beta_alpha": 2.9310863813, "positive_donor_beta_beta": 16.3274095698},
+    "extreme": {"source_residual_threshold_sd": 3.0, "tail_fraction": 0.0165413534, "active_donors": 7, "total_donors": 66, "active_donor_fraction": 0.1060606061, "positive_donor_beta_alpha": 2.4078043575, "positive_donor_beta_beta": 13.5442026597}
+  },
+  "source_observation_model": {
+    "principle": "Generate donor/cell biology first, then assign source. Source/operator may alter visibility/noise but cannot cause latent donor activity or R.",
+    "STAT1_detection_residual_sd": {"HVS": 0.1837290780, "NPH52": 0.4496662782, "SEA_AD": 0.2218350492},
+    "relative_noise_vs_HVS": {"HVS": 1.0, "NPH52": 2.4474418468, "SEA_AD": 1.2073827903},
+    "visibility_source": "MG_STAT1_DIRECT_DETECTION_BY_SOURCE.csv from authenticated 665-cell pathology-blind TRAIN microglia subset"
+  },
+  "worlds": {
+    "rna_only": "FOUNDATION-like RNA observation of donor-structured R.",
+    "same_nucleus": "RNA and ATAC share the same cell-level R. Geometry analogue of GSE214979; this is planted truth, not a claim of observed STAT1 validation in GSE214979.",
+    "separate_nucleus": "RNA and ATAC are independent nuclei sampled from the same donor-level prevalence. Geometry analogue of Morabito; never false-pair cells.",
+    "technical_twin": "Biological R is exactly zero while an observation-side pseudo-rare disturbance is frequency-matched to the selected empirical rarity regime."
+  },
+  "required_gates": [
+    "deterministic seed reproducibility",
+    "latent biology independent of source assignment",
+    "donor-sparse rarity with many exact-zero donors",
+    "technical twin has R=0",
+    "same-nucleus RNA/ATAC coupling distinguishable from technical twin",
+    "separate-nucleus world has donor-level concordance without cell pairing",
+    "source-specific visibility changes observed RNA but not latent R",
+    "Q00-Q11 remain byte-immutable and are never regenerated"
+  ],
+  "external_evidence_boundary": {
+    "GSE214979": "Same-nucleus pairing is authenticated, but the currently available cached evidence does not establish STAT1-specific same-cell RNA/ATAC coherence. Future post-freeze evaluation is required.",
+    "Morabito_GSE174367": "Separate-nucleus donor-level evidence only; cannot establish same-cell correspondence.",
+    "Stage75_76": "Supports realistic topology/sign hypotheses and matched controls, not causal truth."
+  },
+  "authority": {
+    "production_world_realization": false,
+    "Q00_Q11_regeneration": false,
+    "qualification_fitting": false,
+    "qualification_scoring": false,
+    "pathology_opening": false,
+    "JEPA_training": false
+  }
+}
