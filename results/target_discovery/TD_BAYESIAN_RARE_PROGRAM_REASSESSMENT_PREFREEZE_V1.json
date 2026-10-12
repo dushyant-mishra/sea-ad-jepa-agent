@@ -1,0 +1,123 @@
+{
+  "schema": "TD_BAYESIAN_RARE_PROGRAM_REASSESSMENT_PREFREEZE_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_METHOD_DESIGN__NO_REAL_FIT__NO_TARGET_AUTHORITY",
+  "purpose": "Reuse the scientifically valid parts of the failed 2026-10-09 Bayesian TD spike to distinguish donor-recurrent rare biology from source/operator-shifted prevalence or measurement artifacts, without reviving the failed stage-mean formulation.",
+  "authority_boundary": {
+    "real_fit_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false,
+    "pathology_opened": false,
+    "historical_bayesian_formulation_revived": false
+  },
+  "historical_reuse": {
+    "failed_spike_pr": 249,
+    "failed_terminal": "SAMPLER_NOT_ESTIMABLE",
+    "failed_disposition": "STOP_THIS_BAYESIAN_FORMULATION__DO_NOT_TUNE_TO_HISTORICAL_OUTCOMES",
+    "reusable_elements": [
+      "stage/source/donor dependency ledger logic",
+      "no panel/split/half pseudo-replication",
+      "duplicate identity rejection before modeling",
+      "shared substrate/source dependencies remain explicit",
+      "prospective synthetic calibration before real fitting",
+      "null, one-source-only, sign-flip, duplicate and shared-positive adversarial scenarios",
+      "prior-sensitivity reporting",
+      "new-source posterior predictive reporting"
+    ],
+    "not_reused": [
+      "zero-sum source-effect stage-mean estimand",
+      "positive pooled/latent mean as evidence of source-general recurrence",
+      "failed random-walk Metropolis implementation",
+      "any historical posterior value from PR249"
+    ],
+    "lesson": "A positive average effect is not the same object as recurrence. Universal/shared biology must be supported by source-specific donor recurrence and transport, not rescued by pooling."
+  },
+  "program_definition_boundary": {
+    "rule": "Bayesian inference does not discover or tune the molecular direction. It operates only on a prospectively frozen candidate rare program/state produced by the target-discovery pipeline.",
+    "historical_rare1_rare5": "May be used only as a diagnostic source-shifted direction after its molecular weights are frozen; rare1 and rare5 are thresholds on the same direction and are not distinct biological programs.",
+    "prevalence_rule": "Do not use the historical global rare1/rare5 thresholds as biological prevalence anchors.",
+    "candidate_targets": ["C1_SHARED_EMERGENT", "C3_QUERY_MEASURED", "C6_SHARED_QUERY_COMPOSITE", "C2_RELATIONAL_SHARED_IF_ACTIVE", "C4_STRUCTURED_COMPOSITE_IF_ACTIVE"]
+  },
+  "primary_biological_unit": "DONOR",
+  "hierarchy": "source -> donor -> cells; operator/technology is an observation process, not a biological identity",
+  "estimands": {
+    "within_source_recurrence": {
+      "question": "Within each source, does the frozen program recur across multiple donors?",
+      "outputs": [
+        "posterior donor prevalence/amplitude distribution per source",
+        "probability that a new donor from the same source expresses the program above the frozen biological threshold",
+        "between-donor heterogeneity"
+      ],
+      "rule": "Many cells increase measurement precision within a donor but do not create biological replication."
+    },
+    "cross_source_direction_transport": {
+      "question": "Is the same frozen molecular/target direction supported across sources after accounting for measurement support, depth and detection?",
+      "outputs": [
+        "source-specific effect direction",
+        "source-specific uncertainty",
+        "posterior probability of sign/direction agreement across required sources"
+      ],
+      "rule": "No pooled source mean can override a source that is unsupported, opposite, or not estimable."
+    },
+    "source_shifted_prevalence": {
+      "question": "If the program direction recurs, does its prevalence or amplitude differ by source/operator?",
+      "interpretation": "A large source effect may represent different prevalence/observability while the underlying program remains biological; this is not automatically batch artifact."
+    },
+    "new_source_transport": {
+      "question": "Given the observed source-specific donor distributions, how likely is the frozen program to recur in a genuinely new source?",
+      "role": "Secondary predictive summary; it cannot rescue failure of observed-source recurrence."
+    }
+  },
+  "observation_model_requirements": {
+    "measured_zero_vs_unmeasured": "Separate states; unavailable evidence is never encoded as zero.",
+    "support": "Program-defining feature support must enter the observation model or eligibility rule so low-support operators cannot manufacture absence.",
+    "depth_detection": "Use predeclared depth/detection/support covariates or matched strata only as observation-process descriptors; do not regress source globally out of the biological state.",
+    "operator": "When multiple operators exist inside a source, estimate operator-associated observability separately from donor biological variation where identifiable.",
+    "abstention": "If source/operator support is insufficient to separate biology from observability, terminal is NOT_ESTIMABLE."
+  },
+  "source_general_claim_rule": {
+    "shared_program": "Requires satisfactory within-source donor recurrence in every required estimable source plus cross-source direction agreement. A hyper-mean alone is never sufficient.",
+    "source_specific_biology": "Allowed when donor recurrence is strong within one source but transport to other sources fails despite adequate measurement support.",
+    "observation_limited_biology": "Allowed when direction is consistent but observability differs because of known support/detection limits.",
+    "operator_artifact": "Supported when apparent rarity disappears under predeclared observation-process controls and lacks donor recurrence.",
+    "not_estimable": "Used whenever required source/donor/support geometry cannot decide among these interpretations."
+  },
+  "synthetic_calibration_before_real_fit": {
+    "required": true,
+    "scenarios": {
+      "NULL": "no donor-recurrent biological program",
+      "ONE_SOURCE_ONLY": "strong recurrence in one source, absent in others with adequate support",
+      "SIGN_FLIP": "opposite biological direction across sources",
+      "SOURCE_SHIFTED_PREVALENCE": "same biological program direction in all sources but strongly different prevalence/amplitude",
+      "OBSERVATION_LIMITED": "same biology, one operator has reduced feature support/detection",
+      "DUPLICATE_ATTACK": "duplicate cells/cases must not inflate donor replication",
+      "SHARED_RARE": "low-prevalence program recurrent across donors and sources",
+      "DONOR_PRIVATE": "real unusual state confined to one donor; must not be promoted to recurrent program"
+    },
+    "pass_principle": "The method must distinguish shared rare biology, source-shifted biology, source-specific biology and observation artifact without turning cell count or pooled means into replication.",
+    "anti_tuning": "Any failed calibration requires a new prospective method freeze; do not tune against historical rare1/rare5, corrected replay, pathology, or target-tournament outcomes."
+  },
+  "candidate_integration": {
+    "role": "This Bayesian layer is a rare-program qualification/adjudication tool after a candidate survives its existing mandatory gates. It cannot rescue a failed foundation candidate.",
+    "C1": "Quantify whether rare shared-state structure is donor-recurrent within and across sources.",
+    "C3": "Quantify recurrence of query-conditioned rare programs after controlling for query abundance/depth/detection.",
+    "C6": "Test whether shared+query reveals recurrent rare programs beyond C1/C3 without increasing source/operator dependence.",
+    "C2_C4": "Only if relational replay keeps them active; quantify whether rare relational structure recurs without source/order artifacts.",
+    "C5": "Regulatory specialist only; Bayesian regulatory recurrence cannot rescue failure of all foundation candidates."
+  },
+  "multimodal_extension": {
+    "GSE214979": "For a frozen rare RNA/target program, estimate whether same-nucleus ATAC/regulatory increment is coherent across donors and how much is RNA-recoverable.",
+    "Morabito": "Use donor-level separate-nucleus RNA/ATAC recurrence; never create same-cell pairs.",
+    "SCENIC_regulatory": "Treat regulon/eRegulon evidence as privileged support with uncertainty, not validated truth.",
+    "spatial": "Model localization only where the program is physically measurable.",
+    "perturbation": "Late directional support for frozen programs with qualified target engagement."
+  },
+  "teacher_student_use": {
+    "teacher": "Teacher may retain source-qualified rare multimodal programs and teacher-private evidence.",
+    "student": "Student is trained to predict the recoverable component and uncertainty, not exact teacher-private realization.",
+    "bayesian_output_role": "Posterior recurrence/observability uncertainty can define confidence/abstention metadata for target qualification and later teacher-state decomposition; it is not itself the JEPA target vector."
+  }
+}
