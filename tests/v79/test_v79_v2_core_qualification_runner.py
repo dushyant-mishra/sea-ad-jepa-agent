@@ -36,6 +36,24 @@ def _qs(labels):
             "q95":[1.0]*n,"q975":[2.0]*n,"q995":[2.5]*n}
 
 
+def _calibration():
+    return [{"bin_index":i,"lower":i/10,"upper":(i+1)/10,"n":1 if i==5 else 0,
+             "mean_predicted":0.5 if i==5 else None,"observed_rate":1.0 if i==5 else None} for i in range(10)]
+
+
+def _heldout(part):
+    if part=="detection":
+        same={"schema":"V79_V2_CORE_DETECTION_HELDOUT_V1","replicate_mode":"same_donor","posterior_draws":200,
+              "gauss_hermite_nodes":None,"n_measured":1,"mean_log_loss":0.693,"predicted_prevalence":0.5,
+              "observed_prevalence":1.0,"calibration_bins":_calibration()}
+        new=dict(same); new["replicate_mode"]="new_donor"; new["gauss_hermite_nodes"]=40
+    else:
+        same={"schema":"V79_V2_CORE_POSITIVE_HELDOUT_V1","replicate_mode":"same_donor","posterior_draws":200,
+              "gauss_hermite_nodes":None,"n_positive":1,"mean_lpd":-0.919}
+        new=dict(same); new["replicate_mode"]="new_donor"; new["gauss_hermite_nodes"]=40
+    return {"same_donor":same,"new_donor":new}
+
+
 def _receipt(item):
     quantities={"intercept":_qs(["intercept"]),"depth1":_qs(["depth1"]),"depth2":_qs(["depth2"]),
                 "class":_qs(["helmert_0","helmert_1"]),"source":_qs(["helmert_0","helmert_1"]),
@@ -56,7 +74,8 @@ def _receipt(item):
                 "identification":{"class":{"mode":"helmert","observed_levels":[0,1,2],"reference_level":None},
                                   "source":{"mode":"helmert","observed_levels":[0,1,2],"reference_level":None},"donor_codes":[0]},
                 "quantities":quantities},
-            "ppc":[{"name":"fixture_stat","observed":0.5,"p_value":0.5}],"posterior_artifacts":{}}
+            "ppc":[{"name":"fixture_stat","observed":0.5,"p_value":0.5}],
+            "heldout_predictive":_heldout(item["part"]),"posterior_artifacts":{}}
 
 
 def _write_receipt(path:Path,receipt:dict,*,with_artifact:bool=True)->None:
