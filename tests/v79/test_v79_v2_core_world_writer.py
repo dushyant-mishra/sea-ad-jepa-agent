@@ -1,6 +1,6 @@
 """RED/GREEN tests for deterministic physical world-package writing.
 
-All successful write tests use engineering seed 4242 only.  The frozen
+All successful write tests use engineering seed 4242 only. The frozen
 qualification seed (31000000) is exercised only through fail-closed paths.
 """
 from __future__ import annotations
@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "v79"))
 
 import generate_v79_v2_core_worlds as G  # noqa: E402
 
-try:  # RED is explicit if the writer has not been implemented yet.
+try:
     import v79_v2_core_world_writer as W  # type: ignore  # noqa: E402
 except ModuleNotFoundError:  # pragma: no cover - expected in RED
     W = None
@@ -69,6 +69,7 @@ def test_generator_bundle_hash_is_explicit_and_stable():
     b = w.generator_bundle_sha256(ROOT)
     assert a == b
     assert isinstance(a, str) and len(a) == 64
+    print(f"GENERATOR_BUNDLE_SHA256={a}")
 
 
 def test_engineering_world_set_roundtrip_is_byte_deterministic(tmp_path, engineering_payload, engineering_designs, amendment):
@@ -93,7 +94,10 @@ def test_engineering_world_set_roundtrip_is_byte_deterministic(tmp_path, enginee
     assert ma["pairing_amendment_sha256"] == G.PAIRING_AMENDMENT_SHA256
     assert len(ma["worlds"]) == 12
     assert ma == mb
-    assert w.directory_digest(a) == w.directory_digest(b)
+    digest_a = w.directory_digest(a)
+    digest_b = w.directory_digest(b)
+    assert digest_a == digest_b
+    print(f"ENGINEERING_WORLD_SET_DIGEST={digest_a}")
     assert w.verify_world_set(a) == ma
     assert w.verify_world_set(b) == mb
 
