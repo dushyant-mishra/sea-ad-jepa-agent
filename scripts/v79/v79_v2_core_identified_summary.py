@@ -32,11 +32,13 @@ def _summary(draws: np.ndarray, labels: list[str]) -> dict:
     a=np.asarray(draws,dtype=float)
     if a.ndim==1: a=a[:,None]
     if a.ndim!=2 or a.shape[1]!=len(labels) or a.shape[0]<2: _refuse("summary draw/label shape mismatch")
+    keys=("q005","q025","q05","q50","q95","q975","q995")
+    probs=(.005,.025,.05,.50,.95,.975,.995)
     if len(labels)==0:
-        return {"labels":[],"mean":[],"sd":[],"q05":[],"q50":[],"q95":[]}
-    return {"labels":list(labels),"mean":np.mean(a,axis=0).tolist(),"sd":np.std(a,axis=0,ddof=1).tolist(),
-            "q05":np.quantile(a,.05,axis=0).tolist(),"q50":np.quantile(a,.50,axis=0).tolist(),
-            "q95":np.quantile(a,.95,axis=0).tolist()}
+        return {"labels":[],"mean":[],"sd":[],**{k:[] for k in keys}}
+    out={"labels":list(labels),"mean":np.mean(a,axis=0).tolist(),"sd":np.std(a,axis=0,ddof=1).tolist()}
+    for key,p in zip(keys,probs): out[key]=np.quantile(a,p,axis=0).tolist()
+    return out
 
 
 def _factor_draws(samples: Mapping[str,np.ndarray], data: Mapping, *, site: str, basis_key: str, code_key: str):
