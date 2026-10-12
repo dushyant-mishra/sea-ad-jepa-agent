@@ -2,7 +2,6 @@
 """Truth-blind deterministic campaign queue and qualification authorization gate."""
 from __future__ import annotations
 
-import json
 import re
 from typing import Mapping
 
@@ -19,12 +18,27 @@ def _refuse(msg: str):
     raise QualificationPlanRefused(f"REFUSED V2_CORE qualification plan: {msg}")
 
 
+def _genes_per_world(contract: Mapping, world_count: int, n_fits: int) -> int:
+    explicit = contract.get("worlds", {}).get("genes_per_world") if isinstance(contract.get("worlds"), Mapping) else None
+    if explicit is not None:
+        n_gene = int(explicit)
+    else:
+        denom = int(world_count) * 2
+        if denom <= 0 or n_fits <= 0 or n_fits % denom:
+            _refuse("cannot derive genes-per-world from fit-only authority")
+        n_gene = n_fits // denom
+    if n_gene <= 0 or n_gene * int(world_count) * 2 != n_fits:
+        _refuse("genes/world arithmetic does not reproduce frozen fit count")
+    return n_gene
+
+
 def build_qualification_queue(contract: Mapping, blinded_index: Mapping) -> list[dict]:
-    n_gene = int(contract.get("worlds", {}).get("genes_per_world", -1))
     want = int(contract.get("resources", {}).get("estimate", {}).get("n_fits", -1))
     worlds = blinded_index.get("worlds")
-    if not isinstance(worlds, list) or int(blinded_index.get("world_count", -1)) != len(worlds):
+    world_count = int(blinded_index.get("world_count", -1))
+    if not isinstance(worlds, list) or world_count != len(worlds):
         _refuse("invalid blinded index")
+    n_gene = _genes_per_world(contract, world_count, want)
     records=[]
     for w in sorted(worlds, key=lambda x: str(x.get("opaque_world_id", ""))):
         oid=str(w.get("opaque_world_id", "")); msha=str(w.get("manifest_sha256", ""))
