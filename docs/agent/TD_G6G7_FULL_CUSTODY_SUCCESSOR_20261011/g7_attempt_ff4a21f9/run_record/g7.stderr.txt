@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "D:\jepa_wt_td_g7_exec_ff4a21f9\scripts\v5\audit_td_relational_g7_s174_overlap_v2.py", line 635, in <module>
+    raise SystemExit(main())
+  File "D:\jepa_wt_td_g7_exec_ff4a21f9\scripts\v5\audit_td_relational_g7_s174_overlap_v2.py", line 515, in main
+    g6_execution_sha256 = load_g6_pass_receipt(
+  File "D:\jepa_wt_td_g7_exec_ff4a21f9\scripts\v5\audit_td_relational_g7_s174_overlap_v2.py", line 456, in load_g6_pass_receipt
+    common.validate_g6_meta_artifact(payloads["meta"], sample_a=sample_a, source_counts=SOURCE_COUNTS)
+  File "D:\jepa_wt_td_g7_exec_ff4a21f9\scripts\v5\td_relational_value_read_v2_common.py", line 184, in validate_g6_meta_artifact
+    "global_row": sample_a.global_row.astype(int).tolist(),
+  File "C:\Users\dushy\anaconda3\lib\site-packages\pandas\core\generic.py", line 5902, in __getattr__
+    return object.__getattribute__(self, name)
+AttributeError: 'DataFrame' object has no attribute 'global_row'

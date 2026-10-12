@@ -1,0 +1,2 @@
+marker_exists False marker_sha256 None
+receipt_written False

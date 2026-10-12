@@ -1,0 +1,8 @@
+utc_start=2026-10-12T00:24:26Z
+exec_head=ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0 status=[]
+python 3.9.7 numpy 1.24.2 pandas 1.5.3 scipy 1.10.1 h5py 3.2.1
+command: C:/Users/dushy/anaconda3/python.exe D:/jepa_wt_td_g7_exec_ff4a21f9/scripts/v5/audit_td_relational_g7_s174_overlap_v2.py --preflight-result D:/jepa_td_real_g6_20261011/pr259_authority_g7_ff4a21f9/PREFLIGHT_RESULT.json --mapping-receipt D:/jepa_td_real_g6_20261011/pr259_authority_g7_ff4a21f9/TD_RELATIONAL_MAPPING_PREFLIGHT.json --value-authorization D:/jepa_td_real_g6_20261011/authority_g7_ff4a21f9/TD_G6G7_RUNTIME_AUTHORIZATION_ff4a21f9.json --owner-decision D:/jepa_td_real_g6_20261011/authority_g7_ff4a21f9/TD_G6G7_OWNER_DECISION_ff4a21f9.json --g6-receipt D:/jepa_td_real_g6_20261011/G6_OUT_ff4a21f9/G6_RECEIPT.json --replay-manifest D:/jepa_td_real_g6_20261011/pr259_authority_g7_ff4a21f9/JEPA_TD_RELATIONAL_REPLAY_9216_MANIFEST.csv --sample-freeze D:/Jepa\ project/exports/foundation_corpus_discovery_v1/FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv --provenance D:/Jepa\ project/results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz --collision-ledger D:/Jepa\ project-stage81a3r-20260814/results/v4/stage81a3r_expression_materialization_collision_ledger.csv.gz --macha-freeze D:/jepa_td_real_g6_20261011/pr259_authority_g7_ff4a21f9/S174_REBUILD_FREEZE_V1.json --s174-cache-root D:/Jepa\ project/data/cache/s174_rebuilt_real_train_v1 --source-root D:/Jepa\ project --out D:/jepa_td_real_g6_20261011/G7_OUT_ff4a21f9/G7_RECEIPT.json
+exit_code=1 utc_end=2026-10-12T00:24:34Z
+exec_status_after=[] exec_head_after=ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0
+accepted_G6_OUT_ff4a21f9_unchanged=true
+old_G6_OUT_fafd4309_unchanged=true

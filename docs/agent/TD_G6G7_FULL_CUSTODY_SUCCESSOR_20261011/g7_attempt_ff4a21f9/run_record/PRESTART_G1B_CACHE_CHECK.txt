@@ -1,0 +1,6 @@
+g1b_result_sha256 c450815c0c91f84654ab10ac1d40897d5293c4d109d42f7b6561bdf3eaf7b7f9
+g1b_freeze_sha256 0513421e45865f290bddf8b0be56d64c7d9c5297bf0150ea6b9df286514b5f8f
+verified_shards 35
+s174_meta_cell_index_loaded_shards 35
+sample_a_hvs_sea_matrices 34 missing_shard_authority [] missing_or_resized_sources []
+PRESTART_G1B_CACHE_SOURCE_CHECK: PASS
