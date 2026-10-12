@@ -13,11 +13,11 @@ from pathlib import Path
 import numpy as np
 
 import generate_v79_v2_core_worlds as G
-import v79_v2_core_fit_model as M
 import v79_v2_core_fit_runner as R
 import v79_v2_core_fit_surface as F
 import v79_v2_core_launch as L
 import v79_v2_core_resource_monitor as RM
+import v79_v2_core_runtime as RT
 import v79_v2_core_world_writer as W
 
 
@@ -36,7 +36,8 @@ def _sha(path: Path) -> str:
 def _max_projected_hours(contract: dict) -> float:
     text = str(contract.get("resources", {}).get("engineering_benchmark", ""))
     m = re.search(r"exceeds\s+([0-9]+(?:\.[0-9]+)?)\s*h", text)
-    if not m: _refuse("contract engineering benchmark runtime ceiling is not parseable")
+    if not m:
+        _refuse("contract engineering benchmark runtime ceiling is not parseable")
     return float(m.group(1))
 
 
@@ -87,7 +88,8 @@ def prepare_engineering_package(root: Path, out_dir: Path) -> tuple[dict, F.Blin
     index_sha = _sha(out_dir/F.FIT_ROOT_NAME/F.FIT_INDEX_NAME)
     idx = F.load_blinded_index(out_dir, expected_mode="ENGINEERING_TEST_ONLY",
                                expected_root_manifest_sha=root_sha, expected_index_sha=index_sha)
-    if not idx.opaque_world_ids: _refuse("engineering package has no blinded worlds")
+    if not idx.opaque_world_ids:
+        _refuse("engineering package has no blinded worlds")
     selected = sorted(idx.opaque_world_ids)[0]
     rec = next(x for x in idx.index["worlds"] if x["opaque_world_id"] == selected)
     hashes = {"root_manifest":root_sha,
@@ -98,7 +100,7 @@ def prepare_engineering_package(root: Path, out_dir: Path) -> tuple[dict, F.Blin
 
 
 def benchmark_seed(contract: dict, *, gene_index: int, part: str) -> int:
-    """Single engineering world has engineering ordinal 0; qualification seed ledger is separate."""
+    """Engineering ordinal 0 is local to the non-scientific benchmark; qualification seeds are separately ledgered."""
     root = int(contract["seeds"]["engineering_benchmark_root"])
     stream = int(contract["seeds"]["gene_streams"]["fit_det_primary" if part=="detection" else "fit_pos_primary"])
     ss = np.random.SeedSequence(entropy=root, spawn_key=(0, int(gene_index), stream))
@@ -110,30 +112,36 @@ def _one_attempt(contract, model, seed, stage, *, post_state=None, previous_ta=N
         run = R.run_nuts_attempt(contract=contract, model=model, seed=seed, stage=stage,
                                  post_warmup_state=post_state, previous_target_accept=previous_ta)
     diag, samples = R.attempt_diagnostics(run)
-    spec = run["spec"]
-    rec = dict(spec)
-    rec.update(diag)
+    rec = dict(run["spec"]); rec.update(diag)
     rec.update({"seed":int(seed), "wall_seconds":float(mon.wall_seconds),
                 "process_cpu_seconds":float(mon.process_cpu_seconds),
                 "peak_working_set_bytes":int(mon.peak_rss)})
-    try:
-        import jax
-        rec["jax_devices"] = [str(x) for x in jax.devices()]
-    except Exception:
-        rec["jax_devices"] = []
+    import jax
+    rec["jax_devices"] = [str(x) for x in jax.devices()]
     return rec, samples, run["mcmc"]
+
+
+def _active_lineage(attempts: list[dict]) -> list[dict]:
+    escalation = [i for i,a in enumerate(attempts) if a.get("stage") == "ESCALATION"]
+    return attempts[escalation[-1]:] if escalation else attempts
 
 
 def execute_benchmark(root: Path, package_dir: Path, result_dir: Path) -> dict:
     root=Path(root); package_dir=Path(package_dir); result_dir=Path(result_dir)
     contract = L.require_launch_authority(root/"results/v79/v2_core_qualification"/L.FINAL_CONTRACT_NAME, root=root)
     env_receipt = W.validate_runtime_package_lock(root)
+    RT.configure_before_jax_import(contract)
+    import v79_v2_core_fit_model as M
+    jax_receipt = RT.validate_imported_jax(contract)
+
     contract2, idx, oid, package_hashes = prepare_engineering_package(root, package_dir)
-    if contract2 != contract: _refuse("engineering package contract differs from launch authority")
+    if contract2 != contract:
+        _refuse("engineering package contract differs from launch authority")
     world = F.load_blinded_world(idx, oid)
     plan = benchmark_plan(contract, opaque_world_id=oid, world_manifest_sha=world.manifest_sha256)
     code_sha = _git_head(root); receipt = benchmark_receipt_skeleton(contract, code_sha=code_sha, package_hashes=package_hashes)
     receipt["runtime_environment_receipt"] = env_receipt
+    receipt["jax_runtime_receipt"] = jax_receipt
     result_dir.mkdir(parents=True, exist_ok=False)
     total_seconds = 0.0
     with RM.single_heavy_fit_lock(result_dir/"HEAVY_FIT.lock"):
@@ -152,10 +160,13 @@ def execute_benchmark(root: Path, package_dir: Path, result_dir: Path) -> dict:
                 attempts.append(arec); total_seconds += arec["wall_seconds"]
                 if stage=="EXTENSION" and all_samples is not None:
                     all_samples = R.combine_samples(all_samples, samples)
-                    diag = R.diagnostics_from_samples(all_samples, divergences=sum(a["divergences"] for a in attempts),
-                                                      mean_tree_steps=float(np.mean([a["mean_tree_steps"] for a in attempts])))
+                    lineage = _active_lineage(attempts)
+                    diag = R.diagnostics_from_samples(all_samples,
+                        divergences=sum(a["divergences"] for a in lineage),
+                        mean_tree_steps=float(np.mean([a["mean_tree_steps"] for a in lineage])))
                 else:
-                    all_samples = samples; diag = {k:arec[k] for k in ("divergences","worst_rhat","worst_ess_bulk","worst_ess_tail","mean_tree_steps")}
+                    all_samples = samples
+                    diag = {k:arec[k] for k in ("divergences","worst_rhat","worst_ess_bulk","worst_ess_tail","mean_tree_steps")}
                 action = R.next_recovery_action(contract, attempts, diag)
                 if action in {"COMPLETE","NOT_DIAGNOSED"}:
                     frec["final_diagnosis"] = action; frec["attempts"] = attempts; break
