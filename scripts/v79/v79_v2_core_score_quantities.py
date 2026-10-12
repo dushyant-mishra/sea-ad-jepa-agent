@@ -57,18 +57,21 @@ def _identified_factor_truth(raw_contrasts:np.ndarray, ident:Mapping, labels:lis
     return vals,effects
 
 
+SUMMARY_KEYS={"labels","mean","sd","q005","q025","q05","q50","q95","q975","q995"}
+
 def _posterior_quantity(rec:Mapping,name:str)->dict:
     q=rec.get("quantities",{}).get(name)
-    required={"labels","mean","sd","q05","q50","q95"}
-    if not isinstance(q,Mapping) or set(q)!=required: _refuse(f"posterior quantity schema differs: {name}")
+    if not isinstance(q,Mapping) or set(q)!=SUMMARY_KEYS: _refuse(f"posterior quantity schema differs: {name}")
     labels=q["labels"]
     if not isinstance(labels,list) or any(not isinstance(x,str) for x in labels): _refuse(f"posterior labels differ: {name}")
     n=len(labels); out={"labels":list(labels)}
-    for k in ("mean","sd","q05","q50","q95"):
+    for k in ("mean","sd","q005","q025","q05","q50","q95","q975","q995"):
         a=np.asarray(q[k],dtype=float).reshape(-1)
         if a.size!=n or np.any(~np.isfinite(a)): _refuse(f"posterior {name}.{k} differs")
         out[k]=a
     if np.any(out["sd"]<=0): _refuse(f"posterior {name} has nonpositive SD")
+    if np.any(out["q005"]>out["q025"]) or np.any(out["q025"]>out["q05"]) or np.any(out["q05"]>out["q50"]) or np.any(out["q50"]>out["q95"]) or np.any(out["q95"]>out["q975"]) or np.any(out["q975"]>out["q995"]):
+        _refuse(f"posterior quantiles not ordered: {name}")
     return out
 
 
@@ -120,10 +123,15 @@ def score_gene_quantities(world:T.TruthWorld,fit_receipt:Mapping)->dict:
     rows={}
     for name,t in truth.items():
         p=_posterior_quantity(summary,name); t=np.asarray(t,dtype=float).reshape(-1)
-        covered=(p["q05"]<=t)&(t<=p["q95"])
+        covered90=(p["q05"]<=t)&(t<=p["q95"])
+        covered95=(p["q025"]<=t)&(t<=p["q975"])
+        covered99=(p["q005"]<=t)&(t<=p["q995"])
         z=(p["mean"]-t)/p["sd"]
         rows[name]={"labels":p["labels"],"truth":t.tolist(),"posterior_mean":p["mean"].tolist(),"posterior_sd":p["sd"].tolist(),
-                    "q05":p["q05"].tolist(),"q95":p["q95"].tolist(),"covered90":covered.astype(bool).tolist(),"standardized_error":z.tolist()}
+                    "q005":p["q005"].tolist(),"q025":p["q025"].tolist(),"q05":p["q05"].tolist(),"q50":p["q50"].tolist(),
+                    "q95":p["q95"].tolist(),"q975":p["q975"].tolist(),"q995":p["q995"].tolist(),
+                    "covered90":covered90.astype(bool).tolist(),"covered95":covered95.astype(bool).tolist(),"covered99":covered99.astype(bool).tolist(),
+                    "standardized_error":z.tolist()}
     return {"opaque_world_id":world.opaque_world_id,"world_name":world.world_name,"world_index":world.world_index,
             "gene_index":gene,"part":part,"final_diagnosis":fit_receipt.get("final_diagnosis"),"quantities":rows,
             "ppc":fit_receipt.get("ppc")}
