@@ -1,0 +1,111 @@
+{
+  "schema": "TD_CONTINGENCY_AND_PIVOT_CONTRACT_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_CONTINGENCY_LAW__NON_AUTHORIZING",
+  "purpose": "Freeze how target discovery pivots after corrected replay, rare-program qualification, Bayesian source/operator reassessment, multimodal support, and survivor comparisons so failures are repaired at the failed layer rather than reinterpreted post hoc.",
+  "hard_boundary": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "global_rules": [
+    "Fix only the layer that failed; do not lower or rewrite a passed upstream gate to rescue a downstream failure.",
+    "NOT_ESTIMABLE remains NOT_ESTIMABLE and never becomes PASS by convenience.",
+    "No protected pathology/clinical outcome may be opened to choose, tune, rescue or redefine the foundation target.",
+    "Donor is the primary biological replication unit; cells/nuclei improve within-donor measurement precision only.",
+    "Source/technology/operator is an observation process, not a biological label.",
+    "Unavailable evidence is missing, never zero.",
+    "No multimodal evidence can rescue a foundation candidate that failed its mandatory RNA/relational gate.",
+    "No single scalar evidence score may collapse distinct evidence classes.",
+    "Every redesigned method after a failure requires a new prospective freeze before real outcome opening."
+  ],
+  "corrected_replay_contingencies": {
+    "RELATIONAL_PASS": {
+      "C2": "ACTIVE",
+      "C4": "ACTIVE_IF_OTHER_DEPENDENCIES_QUALIFY",
+      "C6": "UNCHANGED",
+      "next": "Run all applicable candidate gates plus rare-program fitness; no automatic promotion."
+    },
+    "RELATIONAL_FAIL": {
+      "C2": "ELIMINATED",
+      "C4": "BLOCKED",
+      "C6": "UNCHANGED",
+      "next": "Continue C1/C3/C6. Do not redesign or rescue C2/C4 from downstream evidence."
+    },
+    "RELATIONAL_NOT_ESTIMABLE": {
+      "C2": "UNRESOLVED",
+      "C4": "UNRESOLVED",
+      "C6": "UNCHANGED",
+      "next": "Continue lawful C1/C3/C6 qualification. Only design a new prospective relational experiment if unresolved C2/C4 could change the final target decision."
+    },
+    "TD57C_DIVERGENCE_OR_NOVEL_PATTERN": {
+      "next": "Freeze as divergence; do not reinterpret as success/failure. Design a new prospective locality experiment only if decision-relevant."
+    },
+    "SOURCE_STRADDLE": {
+      "next": "Record universality not established separately from formal heterogeneity. Do not infer biological heterogeneity from threshold discordance alone."
+    },
+    "IMPLEMENTATION_OR_CUSTODY_FAILURE": {
+      "next": "No biological interpretation. Preserve evidence and diagnose execution. A rerun is allowed only if the one-shot custody rules prove the attempt was not spent."
+    }
+  },
+  "rare_program_contingencies": {
+    "RARE_PROGRAM_FITNESS_PASS": "Candidate remains eligible; PASS does not select the target.",
+    "RARE_PROGRAM_FITNESS_FAIL": "Eliminate the candidate from foundation selection. Do not lower rarity/recurrence thresholds after seeing the failure.",
+    "RARE_PROGRAM_FITNESS_NOT_ESTIMABLE": "Do not promote on rare biology. Candidate may remain unresolved only under already-authorized non-rare gates; unresolved rare fitness must be explicit in final adjudication.",
+    "BIOLOGICAL_PROGRAM_WITH_SOURCE_SHIFTED_PREVALENCE": "Preserve as biology; model program state separately from prevalence/observability. Do not globally regress source away.",
+    "SOURCE_SPECIFIC_BIOLOGICAL_PROGRAM": "Retain as specialist/source-specific biology; cannot establish universal foundation evidence.",
+    "BIOLOGICAL_PROGRAM_PARTIALLY_OBSERVATION_LIMITED": "Retain biological direction with support-aware uncertainty/abstention; low support cannot be encoded as biological absence.",
+    "OBSERVATION_OPERATOR_ARTIFACT": "Retire the program as biological qualification evidence; retain it as an adversarial technical control.",
+    "DONOR_PRIVATE_UNUSUAL_STATE": "Retain as unusual/uncertain biology but do not promote to recurrent population-level program."
+  },
+  "historical_rare1_rare5_rule": {
+    "status": "SOURCE_SHIFTED_DIAGNOSTIC_DIRECTION",
+    "identity": "rare1 and rare5 are thresholds on the same frozen innovation direction, not separate programs",
+    "allowed": [
+      "source/operator-aware reassessment",
+      "adversarial control for shortcut sensitivity",
+      "method calibration after prospective freeze"
+    ],
+    "forbidden": [
+      "universal rare-program positive",
+      "global biological prevalence anchor",
+      "target promotion/elimination before source-aware reassessment"
+    ]
+  },
+  "bayesian_method_contingencies": {
+    "CALIBRATION_PASS": "Real fit still requires separate explicit authority and frozen program definitions.",
+    "CALIBRATION_FAIL": "Stop method; redesign prospectively. Never tune against historical rare1/rare5, corrected replay, target tournament, pathology or protected outcomes.",
+    "SAMPLER_NOT_ESTIMABLE": "Stop method implementation; change sampler only under a new prospective calibration freeze.",
+    "PRIOR_SENSITIVE": "Do not use posterior for deciding rare-program status; redesign estimand/prior robustness prospectively.",
+    "ONE_SOURCE_ONLY_FALSE_SHARED": "Estimand failure; reject model even if convergence metrics are good.",
+    "SIGN_FLIP_FALSE_SHARED": "Estimand failure; reject model even if convergence metrics are good.",
+    "DUPLICATE_INFLATION": "Ledger/method failure; reject before real fitting.",
+    "NEW_SOURCE_PREDICTIVE_ONLY": "Secondary summary only; cannot rescue observed-source recurrence failure."
+  },
+  "candidate_specific_pivots": {
+    "C1_FAILS_RARE_PRESERVATION": "Eliminate C1 as foundation target; C6 also cannot survive as a valid shared+query composite unless a prospectively redesigned shared block is independently qualified.",
+    "C3_FAILS_QUERY_SPECIFIC_VALUE_OR_RARE_PRESERVATION": "Eliminate C3; C6 and C4 lose their query-measured dependency and cannot remain valid in current form.",
+    "C6_FAILS_INCREMENT_OVER_C1_C3": "Retain qualified C1/C3; eliminate C6. Do not keep C6 merely because it is more complex.",
+    "C2_FAILS_REPLAY_OR_RARE_RELATIONAL_PRESERVATION": "Eliminate C2 and block C4; continue C1/C3/C6.",
+    "C4_FAILS_INCREMENT_OVER_C6": "Retain qualified C6 and other survivors; eliminate C4.",
+    "C5_FAILS_REGULATORY_QUALIFICATION": "Do not use regulatory specialist target. This does not invalidate a qualified foundation RNA target.",
+    "ALL_FOUNDATION_CANDIDATES_FAIL": "No target selection. Reopen architecture prospectively using observed failure signatures; do not revive a failed candidate by relaxed thresholds.",
+    "MULTIPLE_SURVIVORS": "Run protected head-to-head comparisons using predeclared pairwise questions, especially C6 vs C1/C3 and C4 vs C6.",
+    "ONE_SURVIVOR": "Eligible for protected confirmation only; explicit target-decision authority still required.",
+    "WINNER_DEPENDS_ON_UNRESOLVED_C2_C4": "Stop final selection and run a new prospective relational experiment if estimable; otherwise carry unresolved status rather than choosing by convenience."
+  },
+  "multimodal_teacher_student_pivots": {
+    "ATAC_ADDS_COHERENT_RNA_RECOVERABLE_INCREMENT": "Use as probabilistic/recoverable privileged teacher block after target freeze, with donor-held-out recoverability qualification.",
+    "ATAC_ADDS_COHERENT_BUT_RNA_UNRECOVERABLE_INCREMENT": "Keep teacher-private; student expresses biological uncertainty rather than exact point prediction.",
+    "ATAC_INCREMENT_NOT_DONOR_RECURRENT": "Do not promote as shared teacher biology; retain as uncertain/source-specific evidence if appropriate.",
+    "REGULATORY_GRAPH_TOPOLOGY_FAILS_CONTROLS": "Do not hard-wire graph message passing; use regulatory feature/program evidence as soft privileged support only.",
+    "SPATIAL_PANEL_CANNOT_MEASURE_PROGRAM": "Classify spatial evidence as unavailable, not negative.",
+    "PERTURBATION_TARGET_ENGAGEMENT_UNQUALIFIED": "No causal-direction claim; remain hypothesis-generating.",
+    "MORABITO_DISAGREES_WITH_SAME_NUCLEUS_RESULT": "Treat as transport/replication tension; inspect donor/source/measurement support without averaging discordance away.",
+    "MULTIMODAL_SUPPORT_FAILS_AFTER_TARGET_FREEZE": "Does not retroactively redefine the foundation target; limits biological interpretation/teacher enrichment only."
+  },
+  "architecture_redesign_hierarchy_if_needed": [
+    "1_drop_failed_optional_relational_structure_and_test_C1_C3_C6",
+    "2_drop_failed_composite_increment_and retain qualified simpler constituent",
+    "3_if_query/shared constituent fails, redesign that constituent prospectively rather than preserve composite shell",
+    "4_if all foundation candidates fail, construct a new target family from failure signatures with new synthetic and real-data qualification",
+    "5_multimodal teacher-private decomposition is preferred over forcing unrecoverable biology into deterministic student loss"
+  ],
+  "non_authority_statement": "This contract freezes contingencies only. It authorizes no replay, target selection, representation selection, TD60, Stage4 or real training."
+}
