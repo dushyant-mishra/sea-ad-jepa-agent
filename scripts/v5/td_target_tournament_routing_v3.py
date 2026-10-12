@@ -31,6 +31,16 @@ RELATIONAL_STATUS = frozenset({"PASS", "FAIL", "NOT_ESTIMABLE"})
 CANDIDATE_STATUS = frozenset({"ELIGIBLE", "ELIMINATED", "UNRESOLVED", "BLOCKED_BY_CONSTITUENT"})
 SPECIALIST_STATUS = frozenset({"ELIGIBLE", "ELIMINATED", "UNRESOLVED"})
 
+# Exact adapter from the independently frozen V79 crosswalk vocabulary into
+# this routing layer.  Do not infer statuses by substring or aggregate score.
+CROSSWALK_STATUS_TO_V3 = {
+    "ELIGIBLE_PENDING_TARGET_SELECTION": "ELIGIBLE",
+    "ELIMINATED_REAL_FAIL": "ELIMINATED",
+    "ELIMINATED_SYNTHETIC_FALSIFIER": "ELIMINATED",
+    "UNRESOLVED_REAL_NOT_ESTIMABLE": "UNRESOLVED",
+    "BLOCKED_BY_CONSTITUENT": "BLOCKED_BY_CONSTITUENT",
+}
+
 NO_AUTHORITY = {
     "corrected_replay_authorized": False,
     "target_selected": False,
@@ -124,3 +134,31 @@ def adjudicate_survivors(candidate_statuses: dict, specialist_status: str | None
         "terminal": terminal,
         **_authority_projection(),
     }
+
+
+def _project_crosswalk_status(status: str, *, specialist: bool = False) -> str:
+    try:
+        projected = CROSSWALK_STATUS_TO_V3[status]
+    except (KeyError, TypeError) as exc:
+        raise RoutingV3Error(f"unknown frozen crosswalk status: {status!r}") from exc
+    if specialist and projected == "BLOCKED_BY_CONSTITUENT":
+        raise RoutingV3Error("C5 specialist cannot carry a foundation constituent-block status")
+    return projected
+
+
+def adjudicate_crosswalk_statuses(candidate_statuses: dict, specialist_status: str | None = None) -> dict:
+    """Translate exact V79-crosswalk outcomes into the V3 survivor law.
+
+    This is an interface adapter only.  It does not consume raw synthetic data,
+    reinterpret a synthetic receipt, or upgrade any real-data status.
+    """
+    if not isinstance(candidate_statuses, dict) or set(candidate_statuses) != set(FOUNDATION):
+        raise RoutingV3Error("crosswalk candidate_statuses must contain exactly C1-C4")
+    projected = {
+        cid: _project_crosswalk_status(candidate_statuses[cid])
+        for cid in FOUNDATION
+    }
+    projected_specialist = None
+    if specialist_status is not None:
+        projected_specialist = _project_crosswalk_status(specialist_status, specialist=True)
+    return adjudicate_survivors(projected, specialist_status=projected_specialist)
