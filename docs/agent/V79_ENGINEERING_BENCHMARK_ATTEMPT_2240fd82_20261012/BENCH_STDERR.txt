@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "D:\jepa_wt_v79_benchmark_2240fd82\scripts\v79\run_v79_v2_core_benchmark.py", line 199, in <module>
+    if __name__ == "__main__": main()
+                               ^^^^^^
+  File "D:\jepa_wt_v79_benchmark_2240fd82\scripts\v79\run_v79_v2_core_benchmark.py", line 194, in main
+    r=execute_benchmark(Path(a.root),Path(a.custody_dir),Path(a.result_dir),
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\jepa_wt_v79_benchmark_2240fd82\scripts\v79\run_v79_v2_core_benchmark.py", line 155, in execute_benchmark
+    arec,samples,mcmc=_one_attempt(fit_view,model,seed,stage,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\jepa_wt_v79_benchmark_2240fd82\scripts\v79\run_v79_v2_core_benchmark.py", line 81, in _one_attempt
+    with RM.ResourceMonitor() as mon:
+  File "D:\jepa_wt_v79_benchmark_2240fd82\scripts\v79\v79_v2_core_resource_monitor.py", line 48, in __enter__
+    self.wall_start = time.perf_counter(); self.cpu_start = time.process_time(); self.peak_rss = _rss_bytes()
+                                                                                                 ^^^^^^^^^^^^
+  File "D:\jepa_wt_v79_benchmark_2240fd82\scripts\v79\v79_v2_core_resource_monitor.py", line 29, in _rss_bytes
+    raise ResourceMonitorRefused("GetProcessMemoryInfo failed")
+v79_v2_core_resource_monitor.ResourceMonitorRefused: GetProcessMemoryInfo failed

@@ -21,3 +21,6 @@ results/v79/v2_core_qualification_amendments/** -text
 
 # V79 realization audit freeze: exact byte copies of the realized package and its ledger (no eol conversion).
 results/v79/v2_core_realization_audit_freeze_v1/** -text
+
+# V79 engineering benchmark attempt evidence: byte-exact copies
+docs/agent/V79_ENGINEERING_BENCHMARK_ATTEMPT_2240fd82_20261012/** -text

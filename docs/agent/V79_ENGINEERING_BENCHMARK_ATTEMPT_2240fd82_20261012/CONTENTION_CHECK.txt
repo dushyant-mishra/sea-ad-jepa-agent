@@ -1,0 +1,3 @@
+contention_check_utc=2026-10-12T15:00:07Z
+windows: machine_load_percent_avg=8; top process chrome 1.91 cpu-s in 5 s (~0.38 core); 16 logical CPUs
+wsl: load average 0.02, 99.6% idle, python_procs=0 (TD equivalence finished, canonical receipt 3aff8b49)
