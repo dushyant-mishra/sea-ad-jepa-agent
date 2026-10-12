@@ -6,6 +6,8 @@ qualification seed (31000000) is exercised only through fail-closed paths.
 from __future__ import annotations
 
 import copy
+import hashlib
+import inspect
 import json
 import sys
 from pathlib import Path
@@ -22,11 +24,12 @@ try:
 except ModuleNotFoundError:  # pragma: no cover
     W = None
 
-CAL = json.loads((ROOT / "results/v79/development/v2_core_planting_calibration/"
-                         "V79_V2_CORE_PLANTING_CALIBRATION_MASKED_V2.json").read_text(encoding="utf-8"))
+CAL_PATH = ROOT / "results/v79/development/v2_core_planting_calibration/V79_V2_CORE_PLANTING_CALIBRATION_MASKED_V2.json"
+CAL = json.loads(CAL_PATH.read_text(encoding="utf-8"))
 TEST_ROOT = 4242
 QUAL_ROOT = 31000000
 ENV_LOCK_SHA = "5253ddca79c5f1b11eff2432b39679f16a68a885486a333d244357452261c782"
+CAL_SHA = "49379ee09fcf7496919e570f83710ee772ca407ca0d20268a9af1f4e132f533c"
 
 
 def _writer():
@@ -89,9 +92,7 @@ def test_generator_bundle_hash_is_explicit_and_stable():
 
 
 def test_engineering_world_set_roundtrip_is_byte_deterministic(tmp_path, engineering_payload, engineering_designs, amendment):
-    w = _writer()
-    a = tmp_path / "a"
-    b = tmp_path / "b"
+    w = _writer(); a = tmp_path / "a"; b = tmp_path / "b"
     ma = w.write_engineering_world_set(root=ROOT, payload=engineering_payload, cal=CAL,
         designs=engineering_designs, amendment=amendment, out_dir=a)
     mb = w.write_engineering_world_set(root=ROOT, payload=engineering_payload, cal=CAL,
@@ -107,8 +108,7 @@ def test_engineering_world_set_roundtrip_is_byte_deterministic(tmp_path, enginee
     assert ma["pairing_amendment_sha256"] == G.PAIRING_AMENDMENT_SHA256
     assert len(ma["worlds"]) == 12
     assert ma == mb
-    digest_a = w.directory_digest(a)
-    digest_b = w.directory_digest(b)
+    digest_a = w.directory_digest(a); digest_b = w.directory_digest(b)
     assert digest_a == digest_b
     print(f"ENGINEERING_WORLD_SET_DIGEST={digest_a}")
     assert w.verify_world_set(a) == ma
@@ -141,8 +141,7 @@ def test_tamper_in_bound_world_file_fails_closed(tmp_path, engineering_payload, 
     rec = root_manifest["worlds"][0]
     wm_path = out / rec["manifest_path"]
     wm = json.loads(wm_path.read_text(encoding="utf-8"))
-    target_rel = sorted(wm["generated_outputs"])[0]
-    target = wm_path.parent / target_rel
+    target = wm_path.parent / sorted(wm["generated_outputs"])[0]
     target.write_bytes(target.read_bytes() + b"tamper")
     with pytest.raises(SystemExit):
         w.verify_world_set(out)
@@ -155,9 +154,22 @@ def test_engineering_writer_refuses_frozen_qualification_seed(tmp_path, qualific
             amendment=amendment, out_dir=tmp_path / "forbidden")
 
 
-def test_qualification_authorization_binds_windows_environment_lock():
+def test_qualification_loader_owns_all_frozen_scientific_inputs(qualification_payload, amendment):
     w = _writer()
-    auth = _base_auth(w)
+    contract, payload, cal, designs, loaded_amendment = w.load_frozen_qualification_inputs(ROOT)
+    assert payload == qualification_payload
+    assert int(payload["seeds"]["root"]) == QUAL_ROOT
+    assert loaded_amendment == amendment
+    assert set(designs) == {x["name"] for x in payload["worlds"]["world_list"]}
+    assert hashlib.sha256(CAL_PATH.read_bytes()).hexdigest() == CAL_SHA
+    assert cal == CAL
+    assert contract["inputs"]["planting_calibration_masked"]["sha256"] == CAL_SHA
+    params = set(inspect.signature(w.realize_qualification_worlds).parameters)
+    assert params == {"root", "out_dir", "authorization"}
+
+
+def test_qualification_authorization_binds_windows_environment_lock():
+    w = _writer(); auth = _base_auth(w)
     assert w.validate_qualification_authorization(auth, root=ROOT, runtime_platform="Windows") == auth
     with pytest.raises(SystemExit):
         w.validate_qualification_authorization(auth, root=ROOT, runtime_platform="Linux")
@@ -169,13 +181,11 @@ def test_qualification_authorization_binds_windows_environment_lock():
         w.validate_qualification_authorization(bad, root=ROOT, runtime_platform="Windows")
 
 
-def test_qualification_writer_requires_bundle_bound_authorization(tmp_path, qualification_payload, amendment):
-    w = _writer(); designs = G.build_world_designs(ROOT, qualification_payload)
+def test_qualification_writer_requires_bundle_bound_authorization(tmp_path):
+    w = _writer()
     with pytest.raises(SystemExit):
-        w.realize_qualification_worlds(root=ROOT, payload=qualification_payload, cal=CAL, designs=designs,
-            amendment=amendment, out_dir=tmp_path / "none", authorization=None)
+        w.realize_qualification_worlds(root=ROOT, out_dir=tmp_path / "none", authorization=None)
     bad = _base_auth(w); bad["generator_bundle_sha256"] = "0" * 64
     with pytest.raises(SystemExit):
-        w.realize_qualification_worlds(root=ROOT, payload=qualification_payload, cal=CAL, designs=designs,
-            amendment=amendment, out_dir=tmp_path / "bad", authorization=bad)
+        w.realize_qualification_worlds(root=ROOT, out_dir=tmp_path / "bad", authorization=bad)
     assert not (tmp_path / "bad").exists()
