@@ -5,8 +5,10 @@ Called only by the launcher in EXECUTE_ONCE mode, after the gate has authenticat
 package and validated fresh replay-only authority including the external launch-audit acceptance:
   0. Pure preflight, repeated here so this file cannot be run around the launcher: a ratified QUALIFY PASS receipt for
      this contract, implementation and namespace; an authority check that includes the acceptance and binds this
-     code; the ratification itself (the detected field is read from its parsed JSON); the frozen support bundle; and
-     no namespace or attempt ledger. Any failure here stops before the marker and spends nothing.
+     code, re-validated from the owner/runtime/operational/acceptance bytes; the equivalence receipt; the
+     ratification itself (the detected field is read from its parsed JSON); the frozen support bundle; the SHA-256 of
+     the archive, G6 values and metadata and the sample freeze (hashing only, nothing decoded); and no namespace or
+     attempt ledger. Any failure here stops before the marker and spends nothing.
   1. begin_attempt() creates the attempt ledger and the exclusive start marker. The namespace and authority are spent
      from here on.
   2. Only then are corrected values opened, through the adapter, into <namespace>/adapter_inputs/mnt. Every
@@ -186,8 +188,13 @@ def run(a) -> int:
     c = G.load_contract(ROOT / G.CONTRACT_REL)
     ns = Path(a.namespace)
     pre = G.preflight_execute(c, qualify_receipt=Path(a.qualify_receipt), authority_check=Path(a.authority_check),
-                              ratification=Path(a.ratification), implementation_commit=a.implementation_commit, namespace=ns)
+                              ratification=Path(a.ratification), implementation_commit=a.implementation_commit, namespace=ns,
+                              owner=Path(a.owner), runtime=Path(a.runtime), operational=Path(a.operational),
+                              acceptance=Path(a.acceptance), equivalence_receipt=Path(a.equivalence_receipt))
     support = A.check_support_bundle(Path(a.support_bundle))
+    for path, want, label in ((a.archive, c["archive"]["sha256"], "TD41-TD58 archive"), (a.g6_values, A.G6_VALUES_SHA, "G6 values"),
+                              (a.g6_meta, A.G6_META_SHA, "G6 metadata"), (a.sample_freeze, A.SAMPLE_FREEZE_SHA, "sample freeze")):
+        A.require_sha(Path(path), want, label)  # bytes hashed only; no value is decoded before the marker
     marker = G.begin_attempt(ns, {"contract_sha256": G.sha(ROOT / G.CONTRACT_REL),
                                   "implementation_commit_sha": a.implementation_commit,
                                   "qualify_receipt_sha256": G.sha(Path(a.qualify_receipt)),
@@ -261,7 +268,8 @@ def run(a) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     for n in ("namespace", "archive", "support-bundle", "g6-values", "g6-meta", "sample-freeze", "python",
-              "implementation-commit", "qualify-receipt", "authority-check", "ratification"):
+              "implementation-commit", "qualify-receipt", "authority-check", "ratification", "owner", "runtime",
+              "operational", "acceptance", "equivalence-receipt"):
         ap.add_argument(f"--{n}", required=True)
     return run(ap.parse_args())
 

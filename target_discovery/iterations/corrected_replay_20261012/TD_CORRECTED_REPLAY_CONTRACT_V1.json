@@ -51,6 +51,11 @@
       "proposed": {
         "stage_inputs": "the frozen stage status (PASS/FAIL/NOT_ESTIMABLE); an IMPLEMENTATION_FAILURE yields no routing input",
         "universal_source": "FAIL if, in any stage and panel, one source PASSED that panel's invocation and another source FAILED the same panel's invocation (the same test; under the frozen order the failing source is the later one); otherwise NOT_ESTIMABLE if any stage is NOT_ESTIMABLE; otherwise PASS",
+        "universal_source_consequences_for_ratification": [
+          "Routing V2 (frozen V1 law) checks universal_source first, so a FAIL overrides an upstream NOT_ESTIMABLE or a TD57C divergence: TD56 NOT_ESTIMABLE with TD59 P0 HVS PASS, NPH52 FAIL routes to SOURCE_DISAGREEMENT (V4 FAIL), not NOT_ESTIMABLE__TD56 (V4 NOT_ESTIMABLE)",
+          "Which source fails first can decide the route: in that same state, TD59 P0 HVS FAIL (nothing after it runs) leaves NOT_ESTIMABLE__TD56 (V4 NOT_ESTIMABLE), while HVS PASS then NPH52 FAIL gives V4 FAIL",
+          "Over all 15,379 outcome combinations the frozen order allows (logical possibilities, not probabilities), a universal FAIL changes the V4 route in 4,988: 4,984 NOT_ESTIMABLE -> FAIL, and 4 PASS -> FAIL, all through a TD57C source disagreement (TD57C P0 HVS PASS, NPH52 FAIL with TD59 PASS routes to SOURCE_DISAGREEMENT, not BROAD_MESO)"
+        ],
         "universal_source_examples": [
           "TD57C P0: HVS PASS, NPH52 FAIL -> FAIL (route SOURCE_DISAGREEMENT)",
           "TD57C P1 (after P0 all PASS): HVS PASS, NPH52 FAIL -> FAIL (same rule in either panel)",
@@ -261,7 +266,7 @@
     "one_shot_guards": [
       "attempt ledger (exclusive create, beside the namespace)",
       "namespace absent",
-      "no earlier launch_EXECUTE_ONCE_*/record/RUN_RECORD.txt",
+      "no earlier launch_EXECUTE_ONCE_*/record/RUN_RECORD.txt that recorded attempt_spent=yes",
       "the committed evidence record is the durable spend record"
     ],
     "root_windows": "D:/jepa_td_corrected_replay_20261012/REPLAY_OUT_V1",

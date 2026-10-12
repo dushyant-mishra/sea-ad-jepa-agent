@@ -318,8 +318,10 @@ def code_identity(root: Path = ROOT) -> dict:
 
 
 def preflight_execute(c: dict, *, qualify_receipt: Path, authority_check: Path, ratification: Path,
-                      implementation_commit: str, namespace: Path) -> dict:
-    """Pure checks the orchestrator repeats before the marker, so it cannot be run around the launcher's gates."""
+                      implementation_commit: str, namespace: Path, owner: Path, runtime: Path, operational: Path,
+                      acceptance: Path, equivalence_receipt: Path) -> dict:
+    """Pure checks the orchestrator repeats before the marker, so it cannot be run around the launcher's gates. The
+    authority and equivalence are re-validated from their own bytes, not taken from the launcher's records."""
     q = load_json(qualify_receipt, "QUALIFY receipt")
     require(str(q.get("terminal", "")).startswith("PASS_"), "EXECUTE requires a ratified QUALIFY PASS receipt")
     require(q.get("contract_sha256") == sha(ROOT / CONTRACT_REL) and q.get("implementation_commit_sha") == implementation_commit,
@@ -331,8 +333,15 @@ def preflight_execute(c: dict, *, qualify_receipt: Path, authority_check: Path, 
     au = load_json(authority_check, "authority check")
     require(au.get("authority_check") == "PASS" and "acceptance" in (au.get("authority_sha256") or {}),
             "EXECUTE requires an authority check that includes the launch-audit acceptance")
-    require(au.get("code_sha256") == code_identity()["code_sha256"] and au.get("implementation_commit_sha") == implementation_commit,
+    code = {**code_identity(), "implementation_commit_sha": implementation_commit}
+    require(au.get("code_sha256") == code["code_sha256"] and au.get("implementation_commit_sha") == implementation_commit,
             "authority check is not for this code and implementation")
+    validate_equivalence(c, equivalence_receipt, implementation_commit=implementation_commit)
+    recheck = validate_authority(c, owner=owner, runtime=runtime, operational=operational, acceptance=acceptance,
+                                 expected_operational_sha=au["authority_sha256"]["operational"],
+                                 expected_acceptance_sha=au["authority_sha256"]["acceptance"], code=code,
+                                 equivalence_receipt=equivalence_receipt)
+    require(recheck["authority_sha256"] == au["authority_sha256"], "authority files are not the ones the launcher checked")
     require(rat["detected_field"] in A.DETECTED_FIELDS, "ratified detected field is not a G6 metadata field")
     ns = Path(namespace)
     require(not ns.exists() and not ledger_path(ns).exists(), "replay namespace or attempt ledger already exists; attempt spent")

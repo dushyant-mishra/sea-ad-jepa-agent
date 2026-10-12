@@ -17,7 +17,8 @@
 # EXECUTE_ONCE additionally requires the committed external launch-audit acceptance and the ratification. It then
 # runs the orchestrator once and validates the evidence. The orchestrator repeats the pure checks, reads the detected
 # field from the parsed ratification, and checks the support bundle before it writes the attempt ledger and marker.
-# One attempt only: the attempt ledger, any earlier EXECUTE_ONCE run record and the namespace each refuse another.
+# One attempt only: the attempt ledger, any earlier run record that recorded attempt_spent=yes, and the namespace each
+# refuse another. A stop inside the orchestrator before the marker records attempt_spent=no and spends nothing.
 # No path here invokes G6, G7, a target tournament, TD60, Stage 4 or training.
 #
 # Exit codes:
@@ -76,7 +77,7 @@ fi
 [ -e "$NAMESPACE" ] && fail "replay namespace already exists (attempt spent or occupied): $NAMESPACE"
 [ -e "$RUNBASE/TD_CORRECTED_REPLAY_ATTEMPT_LEDGER_V1.json" ] && fail "attempt ledger exists: the one corrected-replay attempt is spent"
 for r in "$RUNBASE"/launch_EXECUTE_ONCE_*/record/RUN_RECORD.txt; do
-  [ -e "$r" ] && fail "an earlier EXECUTE_ONCE reached the orchestrator ($r): the attempt is spent"
+  [ -e "$r" ] && grep -q '^attempt_spent=yes' "$r" && fail "an earlier EXECUTE_ONCE spent the attempt ($r)"
 done
 [ "$(wsl.exe -e "$WSL_PY" -c "import sys,numpy,scipy,pandas;print('python='+sys.version.split()[0],'numpy='+numpy.__version__,'scipy='+scipy.__version__,'pandas='+pandas.__version__)" 2>/dev/null | tr -d '\r\0')" = "$PY_VERSIONS" ] \
   || fail "WSL replay environment is not the pinned one: $PY_VERSIONS"
@@ -159,9 +160,14 @@ wpy td_corrected_replay_execute_v1.py --namespace "$(wslpath_of "$NAMESPACE")" -
   --g6-meta "$(wslpath_of "$G6NS/TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz")" --sample-freeze "$(wslpath_of "$FREEZE")" \
   --python "$WSL_PY" --implementation-commit "$IMPL" --qualify-receipt "$WREC/QUALIFY_RECEIPT.json" \
   --authority-check "$WREC/AUTHORITY_CHECK.json" --ratification "$(wslpath_of "$AU/ratification.json")" \
+  --owner "$(wslpath_of "$AU/owner.json")" --runtime "$(wslpath_of "$AU/runtime.json")" \
+  --operational "$(wslpath_of "$AU/operational.json")" --acceptance "$(wslpath_of "$AU/acceptance.json")" \
+  --equivalence-receipt "$(wslpath_of "$PRE/EQUIVALENCE_RECEIPT.json")" \
   > "$REC/execute.stdout.txt" 2> "$REC/execute.stderr.txt"
 XRC=$?
 echo "execute_exit=$XRC execute_end_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$REC/RUN_RECORD.txt"
+if [ -e "$RUNBASE/TD_CORRECTED_REPLAY_ATTEMPT_LEDGER_V1.json" ]; then echo "attempt_spent=yes" >> "$REC/RUN_RECORD.txt"
+else echo "attempt_spent=no (the orchestrator stopped before the attempt ledger and marker; nothing spent)" >> "$REC/RUN_RECORD.txt"; fi
 wpy td_corrected_replay_evidence_v1.py --namespace "$(wslpath_of "$NAMESPACE")" --out "$WREC/EVIDENCE_VERDICT.json" \
   --launch-record "$WREC" > "$REC/evidence.stdout.txt" 2> "$REC/evidence.stderr.txt"
 echo "evidence_exit=$? utc=$(date -u +%Y-%m-%dT%H:%M:%SZ). STOP for external outcome audit; no rerun or repair." | tee -a "$REC/RUN_RECORD.txt"

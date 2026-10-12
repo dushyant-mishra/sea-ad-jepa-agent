@@ -218,7 +218,7 @@ def build(archive: Path) -> dict:
                       "start_marker": "TD_CORRECTED_REPLAY_EXECUTION_START.json", "one_shot": True,
                       "attempt_ledger": "D:/jepa_td_corrected_replay_20261012/TD_CORRECTED_REPLAY_ATTEMPT_LEDGER_V1.json",
                       "one_shot_guards": ["attempt ledger (exclusive create, beside the namespace)", "namespace absent",
-                                          "no earlier launch_EXECUTE_ONCE_*/record/RUN_RECORD.txt",
+                                          "no earlier launch_EXECUTE_ONCE_*/record/RUN_RECORD.txt that recorded attempt_spent=yes",
                                           "the committed evidence record is the durable spend record"]},
         "decisions_requiring_owner_ratification": {
             "detected_field": {"question": "Which G6 metadata detected count feeds the executors' td50 'detected' (depth/detection null blocks)?",
@@ -239,7 +239,17 @@ def build(archive: Path) -> dict:
                                                     "TD57C P0: HVS FAIL (nothing else runs) -> no disagreement observed",
                                                     "TD59 P0 all PASS, P1 HVS FAIL -> no disagreement observed (NPH52/SEA_AD were not run on P1)",
                                                     "TD56: HVS PASS, NPH52 PASS, SEA_AD FAIL -> FAIL",
-                                                    "TD59 P0: HVS PASS, NPH52 NOT_ESTIMABLE -> not FAIL; NOT_ESTIMABLE through the stage status"]},
+                                                    "TD59 P0: HVS PASS, NPH52 NOT_ESTIMABLE -> not FAIL; NOT_ESTIMABLE through the stage status"],
+                                                "universal_source_consequences_for_ratification": [
+                                                    ("Routing V2 (frozen V1 law) checks universal_source first, so a FAIL overrides an upstream NOT_ESTIMABLE or a TD57C "
+                                                     "divergence: TD56 NOT_ESTIMABLE with TD59 P0 HVS PASS, NPH52 FAIL routes to SOURCE_DISAGREEMENT (V4 FAIL), "
+                                                     "not NOT_ESTIMABLE__TD56 (V4 NOT_ESTIMABLE)"),
+                                                    ("Which source fails first can decide the route: in that same state, TD59 P0 HVS FAIL (nothing after it runs) "
+                                                     "leaves NOT_ESTIMABLE__TD56 (V4 NOT_ESTIMABLE), while HVS PASS then NPH52 FAIL gives V4 FAIL"),
+                                                    ("Over all 15,379 outcome combinations the frozen order allows (logical possibilities, not probabilities), a "
+                                                     "universal FAIL changes the V4 route in 4,988: 4,984 NOT_ESTIMABLE -> FAIL, and 4 PASS -> FAIL, all through a "
+                                                     "TD57C source disagreement (TD57C P0 HVS PASS, NPH52 FAIL with TD59 PASS routes to SOURCE_DISAGREEMENT, "
+                                                     "not BROAD_MESO)")]},
                                    "status": "PROPOSED_PENDING_OWNER_RATIFICATION"}},
         "interpretation_policy": {
             "routing_module": "scripts/v5/td_corrected_replay_routing_v2.py",

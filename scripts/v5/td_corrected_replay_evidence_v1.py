@@ -13,8 +13,13 @@ Nothing recorded is trusted; everything is recomputed from the bytes on disk:
   - the bundle: every downstream flag false, and its stage summary, universal-source assessment, frozen
     interpretation, TD59 HVS margins and routing projection all reproduced from the stage receipts. The routing
     input file exists exactly when every stage is routable and equals the recomputed inputs.
+Cross-checks: module results must equal the payload the executor printed and follow from their own cases; a TD56
+PASS must match the printed PASS flag; no unrecorded file may sit in a stage directory, the executor directory or
+the namespace root. With --launch-record, the orchestrator's exit code and its printed stage summary (both kept
+outside the namespace) must agree with the namespace. A spent ledger without a marker is reported as spent.
 Writes NAMESPACE_SHA256_INVENTORY.txt beside the verdict. An attempt that stopped early with intact evidence is
 EVIDENCE_VALID__INCOMPLETE_ATTEMPT_PRESERVED; any integrity violation is EVIDENCE_INVALID. Nothing is repaired.
+Self-consistency is checked, not authorship: the committed evidence record is the durable custody of the result.
 """
 from __future__ import annotations
 
@@ -32,6 +37,8 @@ import td_corrected_replay_gate_v1 as G  # noqa: E402
 STATUSES = {"PASS", "FAIL", "NOT_ESTIMABLE", "IMPLEMENTATION_FAILURE"}
 MARKER_KEYS = ("contract_sha256", "implementation_commit_sha", "qualify_receipt_sha256", "authority_check_sha256",
                "authority_sha256", "ratification_sha256", "detected_field")
+ROOT_FILES = {"TD_CORRECTED_REPLAY_EXECUTION_START.json", "ADAPTER_INPUT_SHA256.json", "TD_CORRECTED_REPLAY_RECEIPT_V1.json",
+              "CORRECTED_REPLAY_ROUTING_INPUT_V2.json"}
 REQUIRED_INPUTS = ({f"td50_{s}.npz" for s in A.SOURCES} | {A.SUPPORT_REL}
                    | {f"td_matrix_npz/arrays/{n}.npy" for n in ("data", "indices", "indptr", "shape")})
 
@@ -58,6 +65,24 @@ def check_invocation(st: str, spec_exe: dict, inv: dict, ns: Path, patterns: lis
             problems.append(f"{t}: output changed or unrecorded")
     elif inv.get("output") is not None:
         problems.append(f"{t}: recorded output is missing")
+    stdout = ns / f"{st}/{t}.stdout.txt"
+    printed = stdout.read_text(encoding="utf-8", errors="replace") if stdout.is_file() else ""
+    if st == "TD56":
+        lines = [ln for ln in printed.splitlines() if ln.strip()]
+        if inv.get("exit_code") == 0 and ("PASS True" in (lines[-1] if lines else "")) != (inv.get("outcome") == "PASS"):
+            problems.append(f"{t}: printed PASS flag disagrees with the recorded outcome")
+    elif out.is_file() and inv.get("outcome") in ("PASS", "FAIL"):
+        text = out.read_text(encoding="utf-8")
+        try:
+            r = json.loads(text)
+        except ValueError:
+            r = None
+        r = r if isinstance(r, dict) else {}
+        cases = [x for x in (r.get("cases") or []) if isinstance(x, dict)]
+        if not cases or r.get("status") != ("PASS" if all(x.get("pass") is True for x in cases) else "FAIL"):
+            problems.append(f"{t}: result status does not follow its own cases")
+        if text.rstrip("\n") not in printed:
+            problems.append(f"{t}: written result differs from the payload the executor printed")
     want_exe = spec_exe["by_source"][inv.get("source")]["sha256"] if st == "TD56" else spec_exe["sha256"]
     if inv.get("executor_sha256") != want_exe:
         problems.append(f"{t}: executor identity is not the frozen executor")
@@ -75,7 +100,15 @@ def validate_evidence(namespace: Path, launch_record: Path | None = None) -> dic
     incomplete: list[str] = []
     marker = ns / "TD_CORRECTED_REPLAY_EXECUTION_START.json"
     if not marker.is_file():
-        return {"verdict": "NO_ATTEMPT__NO_START_MARKER", "problems": ["start marker missing"]}
+        base = {"schema": "JEPA_TD_CORRECTED_REPLAY_EVIDENCE_VERDICT_V1", "stage_status": {}, "files": 0, "inventory": [],
+                **{k: False for k in G.DOWNSTREAM}}
+        if not G.ledger_path(ns).is_file():
+            return {**base, "verdict": "NO_ATTEMPT__NO_START_MARKER", "problems": ["start marker missing"], "incomplete": []}
+        if ns.exists() and any(p.is_file() for p in ns.rglob("*")):
+            return {**base, "verdict": "EVIDENCE_INVALID", "incomplete": [],
+                    "problems": ["attempt ledger and namespace files exist but the start marker is missing"]}
+        return {**base, "verdict": "EVIDENCE_VALID__INCOMPLETE_ATTEMPT_PRESERVED", "problems": [], "incomplete": ["start_marker"],
+                "note": "the attempt ledger records the attempt as spent before any start marker; no science ran"}
     m = json.loads(marker.read_text(encoding="utf-8"))
     problems += [f"marker lacks {k}" for k in MARKER_KEYS if k not in m]
     if any(m.get(k) is not False for k in G.DOWNSTREAM):
@@ -116,12 +149,18 @@ def validate_evidence(namespace: Path, launch_record: Path | None = None) -> dic
 
     stages: dict = {}
     gap = False
+    in_progress = None
+    recorded_td56 = set()
     for spec in contract["stages"]:
         st = spec["stage"]
         p = ns / st / f"{st}_STAGE_RECEIPT.json"
         if not p.is_file():
             stages[st] = None
             incomplete.append(st)
+            if gap and (ns / st).exists():
+                problems.append(f"{st}: stage directory exists after a missing earlier stage receipt")
+            elif (ns / st).exists():
+                in_progress = {"stage": st, "files": sorted(x.relative_to(ns).as_posix() for x in (ns / st).rglob("*") if x.is_file())}
             gap = True
             continue
         if gap:
@@ -143,6 +182,12 @@ def validate_evidence(namespace: Path, launch_record: Path | None = None) -> dic
             if i < len(invs) - 1 and inv.get("outcome") != "PASS":
                 problems.append(f"{st}: ran past a non-PASS invocation (sequential stop violated)")
             check_invocation(st, contract["executors"][st], inv, ns, patterns, problems)
+        recorded = {f"{st}/{st}_STAGE_RECEIPT.json"} | {inv.get(k) for inv in invs for k in ("stdout", "stderr", "output") if inv.get(k)}
+        stray = sorted(x.relative_to(ns).as_posix() for x in (ns / st).rglob("*") if x.is_file() and x.relative_to(ns).as_posix() not in recorded)
+        if stray:
+            problems.append(f"{st}: unrecorded files in the stage directory {stray[:3]}")
+        if st == "TD56":
+            recorded_td56 = {inv.get("output") for inv in invs if inv.get("output")}
         status = X.stage_status([i.get("outcome") for i in invs])
         if r.get("status") != status:
             problems.append(f"{st}: stage status does not follow its invocations")
@@ -151,6 +196,18 @@ def validate_evidence(namespace: Path, launch_record: Path | None = None) -> dic
         if r.get("terminal") != X.stage_terminal(spec, status) or r.get("historical_comparison") != X.historical_comparison(st, status):
             problems.append(f"{st}: terminal or historical comparison is not the frozen one")
 
+    mnt = ns / "adapter_inputs" / "mnt"
+    for f in (sorted(mnt.glob("td56_*_result.npz")) if mnt.is_dir() else []):
+        if f.relative_to(ns).as_posix() not in recorded_td56:
+            problems.append(f"unrecorded TD56 result {f.name}")
+    frozen_exe = {e["sha256"] for e in contract["executors"]["TD56"]["by_source"].values()} | {
+        contract["executors"][s]["sha256"] for s in ("TD57B", "TD57C")}
+    for f in (sorted((ns / "executors").iterdir()) if (ns / "executors").is_dir() else []):
+        if not f.is_file() or sha(f) not in frozen_exe:
+            problems.append(f"executor copy is not a frozen executor: {f.name}")
+    stray_root = sorted(x.name for x in ns.iterdir() if x.is_file() and x.name not in ROOT_FILES)
+    if stray_root:
+        problems.append(f"unrecorded files in the namespace root {stray_root[:3]}")
     bundle_p = ns / "TD_CORRECTED_REPLAY_RECEIPT_V1.json"
     routing_in = ns / X.ROUTING_INPUT
     if not bundle_p.is_file():
@@ -183,11 +240,24 @@ def validate_evidence(namespace: Path, launch_record: Path | None = None) -> dic
                 problems.append("routing input missing although every stage is routable")
             elif json.loads(routing_in.read_text(encoding="utf-8")) != ri:
                 problems.append("routing input is not reproduced from the stage evidence")
+    if launch_record is not None:
+        run_record = Path(launch_record) / "RUN_RECORD.txt"
+        exits = [ln.split("execute_exit=")[1].split()[0] for ln in (run_record.read_text().splitlines() if run_record.is_file() else [])
+                 if "execute_exit=" in ln]
+        if not exits:
+            problems.append("launch record lacks the orchestrator exit code")
+        elif exits[-1] == "0" and incomplete:
+            problems.append(f"the orchestrator exited 0 but the evidence is incomplete: {incomplete}")
+        printed = Path(launch_record) / "execute.stdout.txt"
+        lines = [ln for ln in (printed.read_text().splitlines() if printed.is_file() else []) if ln.strip()]
+        if bundle_p.is_file() and (not lines or lines[-1] != json.dumps(json.loads(bundle_p.read_text())["stages"], sort_keys=True)):
+            problems.append("bundle stage summary differs from the one the orchestrator printed at run time")
     inventory = sorted((p.relative_to(ns).as_posix(), sha(p)) for p in ns.rglob("*") if p.is_file() and p.name != "NAMESPACE_SHA256_INVENTORY.txt")
     verdict = ("EVIDENCE_VALID__COMPLETE" if not problems and not incomplete else
                "EVIDENCE_VALID__INCOMPLETE_ATTEMPT_PRESERVED" if not problems else "EVIDENCE_INVALID")
     return {"schema": "JEPA_TD_CORRECTED_REPLAY_EVIDENCE_VERDICT_V1", "verdict": verdict, "problems": problems,
-            "incomplete": incomplete, "stage_status": {k: (v or {}).get("status") for k, v in stages.items()},
+            "incomplete": incomplete, "in_progress_stage": in_progress,
+            "stage_status": {k: (v or {}).get("status") for k, v in stages.items()},
             "files": len(inventory), "inventory": inventory, **{k: False for k in G.DOWNSTREAM}}
 
 

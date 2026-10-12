@@ -6,6 +6,7 @@ archive are skipped when it is absent; the real-file QUALIFY covers them.
 """
 from __future__ import annotations
 
+import contextlib
 import copy
 import hashlib
 import io
@@ -267,12 +268,12 @@ def test_decisions_stay_pending_until_ratified_exactly(contract, tmp_path):
 
 
 # ------------------------------------------------------------------------------------------------------ authority
-def authority_world(tmp_path, contract):
-    code = {"implementation_commit_sha": "c" * 40, "code_sha256": "d" * 64}
+def authority_world(tmp_path, contract, code=None, equiv=None):
+    code = code or {"implementation_commit_sha": "c" * 40, "code_sha256": "d" * 64}
     base = {"scope": "CORRECTED_TD56_TD57B_TD57C_TD59_REPLAY_ONLY", "contract_sha256": sha(CONTRACT),
             "implementation_commit_sha": code["implementation_commit_sha"], **{k: False for k in G.DOWNSTREAM}}
     owner = wjson(tmp_path / "owner.json", {"schema": G.AUTH_SCHEMAS["owner"], **base})
-    equiv = wjson(tmp_path / "equiv_receipt.json", {"schema": "JEPA_TD_CORRECTED_REPLAY_EQUIVALENCE_RECEIPT_V1"})
+    equiv = equiv or wjson(tmp_path / "equiv_receipt.json", {"schema": "JEPA_TD_CORRECTED_REPLAY_EQUIVALENCE_RECEIPT_V1"})
     runtime = wjson(tmp_path / "runtime.json", {"schema": G.AUTH_SCHEMAS["runtime"], **base, "owner_decision_sha256": sha(owner),
                                                  "code_sha256": code["code_sha256"], "equivalence_receipt_sha256": sha(equiv),
                                                  "environment_lock_sha256": contract["execution_environment"]["lock"]["sha256"]})
@@ -409,31 +410,53 @@ def test_universal_source_compares_sources_on_the_same_panel():
 PASS_TERMINAL = "PASS_TD_CORRECTED_REPLAY_TURNKEY_QUALIFICATION__NO_BIOLOGICAL_REPLAY_RUN__LAUNCH_AUDIT_REQUIRED"
 
 
-def preflight_world(tmp_path, ns, *, terminal=PASS_TERMINAL, with_acceptance=True, detected=None, compact=False):
-    """The launch record the orchestrator requires: QUALIFY receipt, authority check and ratification."""
+def preflight_world(tmp_path, ns, *, terminal=PASS_TERMINAL, with_acceptance=True, detected=None, compact=False,
+                    forge_check=False):
+    """The launch record and authority bytes the orchestrator requires."""
     c = G.load_contract(CONTRACT)
+    rec_dir = tmp_path / "rec"
+    rec_dir.mkdir(parents=True, exist_ok=True)
     d = c["decisions_requiring_owner_ratification"]
     rec = {"schema": G.RATIFICATION_SCHEMA, "contract_sha256": sha(CONTRACT),
            "ratified": {"detected_field": detected or d["detected_field"]["proposed"], "routing_input_rule": d["routing_input_rule"]["proposed"]}}
-    rat = tmp_path / "rec" / "ratification.json"
-    rat.parent.mkdir(parents=True, exist_ok=True)
+    rat = rec_dir / "ratification.json"
     rat.write_text(json.dumps(rec, separators=(",", ":")) if compact else json.dumps(rec, indent=2, sort_keys=True))
-    q = wjson(tmp_path / "rec" / "QUALIFY_RECEIPT.json", {
+    q = wjson(rec_dir / "QUALIFY_RECEIPT.json", {
         "terminal": terminal, "contract_sha256": sha(CONTRACT), "implementation_commit_sha": "c" * 40,
         "namespace_fresh": str(ns), "ratification": {"status": "RATIFIED", "ratification_sha256": sha(rat)}})
-    shas = {"owner": "1" * 64, "runtime": "2" * 64, "operational": "3" * 64, **({"acceptance": "4" * 64} if with_acceptance else {})}
-    au = wjson(tmp_path / "rec" / "AUTHORITY_CHECK.json", {"authority_check": "PASS", "authority_sha256": shas,
-                                                          "code_sha256": G.code_identity()["code_sha256"],
-                                                          "implementation_commit_sha": "c" * 40})
-    return q, au, rat
+    code = {"implementation_commit_sha": "c" * 40, "code_sha256": G.code_identity()["code_sha256"]}
+    equiv = _equivalence(rec_dir, c)
+    _, owner, runtime, op, acc = authority_world(rec_dir, c, code=code, equiv=equiv)
+    shas = {"owner": sha(owner), "runtime": sha(runtime), "operational": sha(op), **({"acceptance": sha(acc)} if with_acceptance else {})}
+    if forge_check:
+        shas = {k: "1" * 64 for k in shas}
+    au = wjson(rec_dir / "AUTHORITY_CHECK.json", {"authority_check": "PASS", "authority_sha256": shas,
+                                                 "code_sha256": code["code_sha256"], "implementation_commit_sha": "c" * 40})
+    return {"qualify_receipt": q, "authority_check": au, "ratification": rat, "owner": owner, "runtime": runtime,
+            "operational": op, "acceptance": acc, "equivalence_receipt": equiv}
 
 
-def run_stubbed(tmp_path, monkeypatch, plan: dict, *, support_ok=True, **world):
+def run_stubbed(tmp_path, monkeypatch, plan: dict, *, support_ok=True, bad_input=None, **world):
     """plan: (stage, source, panel) -> outcome; TD56 entries as (obs, p95) or 'crash'; module entries may also be
     'ARGPARSE' (exit 2, no result written) or 'RAISE' (the orchestrator itself dies mid-attempt)."""
     calls = []
     ns = tmp_path / "ns"
     marker = ns / "TD_CORRECTED_REPLAY_EXECUTION_START.json"
+    fake = hashlib.sha256(b"#exec\n").hexdigest()           # the stubbed archive members' bytes stand in for the executors
+    real_load = G.load_contract
+    def load_contract(path):
+        c = real_load(path)
+        for e in c["executors"]["TD56"]["by_source"].values():
+            e["sha256"] = fake
+        for st in ("TD57B", "TD57C"):
+            c["executors"][st]["sha256"] = fake
+        return c
+    monkeypatch.setattr(G, "load_contract", load_contract)
+    def require_sha(path, expected, label):
+        calls.append(("sha", label, marker.exists()))
+        if label == bad_input:
+            raise A.AdapterError(f"{label} SHA mismatch")
+    monkeypatch.setattr(A, "require_sha", require_sha)
     def support(bundle):
         calls.append(("support", marker.exists()))
         if not support_ok:
@@ -462,23 +485,30 @@ def run_stubbed(tmp_path, monkeypatch, plan: dict, *, support_ok=True, **world):
         if stage == "TD56":
             if o == "crash":
                 Path(stderr).write_text("Error\n"); return 1
-            np.savez(Path(mnt) / f"td56_{source}_result.npz", obs=o[0], p95=o[1]); Path(stderr).write_text(""); return 0
+            np.savez(Path(mnt) / f"td56_{source}_result.npz", obs=o[0], p95=o[1]); Path(stderr).write_text("")
+            Path(stdout).write_text(f"NULL finite 64 p95 {o[1]} PASS {bool(o[0] > o[1] and o[0] > 0)}\n"); return 0
         if o == "RAISE":
             raise RuntimeError("orchestrator died mid-attempt")
         if o == "NOT_ESTIMABLE":
             Path(stderr).write_text("RuntimeError: null vector is not exactly 64 finite values\n"); return 1
         if o == "ARGPARSE":
             Path(stderr).write_text("usage: x\nx: error: unrecognized arguments\n"); return 2
-        Path(output).write_text(json.dumps({"status": o, "source": source, "panel": panel, "cases": [
-            {"split": 0, "half": 0, "observed_median_donor_local_triplet_agreement": 0.6, "null_p95_index60": 0.5}]}))
+        text = json.dumps({"status": o, "source": source, "panel": panel, "cases": [
+            {"split": 0, "half": 0, "observed_median_donor_local_triplet_agreement": 0.6, "null_p95_index60": 0.5,
+             "pass": o == "PASS"}]}, indent=2, sort_keys=True) + "\n"
+        Path(output).write_text(text); Path(stdout).write_text(text)              # the executors print their payload
         Path(stderr).write_text("")
         return 0 if o == "PASS" else 2
     monkeypatch.setattr(A, "run_executor", run_executor)
-    q, au, rat = preflight_world(tmp_path, ns, **world)
+    paths = preflight_world(tmp_path, ns, **world)
     args = type("Args", (), dict(namespace=str(ns), archive="a", support_bundle="b", g6_values="v", g6_meta="m",
-                                  sample_freeze="f", python="py", implementation_commit="c" * 40, qualify_receipt=str(q),
-                                  authority_check=str(au), ratification=str(rat)))
-    X.run(args)
+                                  sample_freeze="f", python="py", implementation_commit="c" * 40,
+                                  **{k: str(v) for k, v in paths.items()}))
+    printed = io.StringIO()
+    with contextlib.redirect_stdout(printed):
+        X.run(args)
+    (tmp_path / "rec" / "execute.stdout.txt").write_text(printed.getvalue())      # what the launcher keeps outside the namespace
+    (tmp_path / "rec" / "RUN_RECORD.txt").write_text("execute_exit=0\nattempt_spent=yes\n")
     return ns, calls
 
 
@@ -488,8 +518,11 @@ def bundle_of(ns):
 
 def test_marker_precedes_corrected_values_and_every_stage_runs_in_frozen_order(tmp_path, monkeypatch):
     ns, calls = run_stubbed(tmp_path, monkeypatch, {("TD57C", "HVS", 0): "FAIL"})
-    assert calls[0] == ("support", False)                                           # support checked before the marker
-    assert calls[1] == ("corrected_cache", True, "detected_corrected")              # marker existed before values opened
+    first = next(i for i, c in enumerate(calls) if c[0] == "corrected_cache")
+    assert [c[:2] for c in calls[:first]] == [("support", False), ("sha", "TD41-TD58 archive"), ("sha", "G6 values"),
+                                              ("sha", "G6 metadata"), ("sha", "sample freeze")]
+    assert not any(c[-1] for c in calls[:first])                                    # every pre-check ran before the marker
+    assert calls[first] == ("corrected_cache", True, "detected_corrected")          # marker existed before values opened
     runs = [c[1] for c in calls if c[0] == "run"]
     assert [r[0] for r in runs] == ["TD56"] * 3 + ["TD57B"] * 6 + ["TD57C"] + ["TD59"] * 6
     bundle = bundle_of(ns)
@@ -574,6 +607,54 @@ def test_an_attempt_that_dies_midway_is_preserved_as_incomplete(tmp_path, monkey
     assert v["incomplete"] == ["TD57B", "TD57C", "TD59", "bundle"] and v["stage_status"]["TD56"] == "PASS"
 
 
+def test_preflight_revalidates_the_authority_bytes(tmp_path, monkeypatch):
+    # re-review finding 7: made-up authority SHAs in the launcher's check record are refused before the marker
+    with pytest.raises(G.GateError, match="not the audited SHA"):
+        run_stubbed(tmp_path, monkeypatch, {}, forge_check=True)
+    assert not (tmp_path / "ns").exists() and not G.ledger_path(tmp_path / "ns").exists()
+
+
+def test_input_bytes_are_hashed_before_the_marker(tmp_path, monkeypatch):
+    # re-review defect E: archive, G6 values/metadata and sample freeze are checked before anything is spent
+    _, calls = run_stubbed(tmp_path, monkeypatch, {})
+    hashed = [c for c in calls if c[0] == "sha"]
+    assert [c[1] for c in hashed] == ["TD41-TD58 archive", "G6 values", "G6 metadata", "sample freeze"]
+    assert not any(c[2] for c in hashed)
+    with pytest.raises(A.AdapterError, match="G6 values"):
+        run_stubbed(tmp_path / "second", monkeypatch, {}, bad_input="G6 values")
+    assert not (tmp_path / "second" / "ns").exists() and not G.ledger_path(tmp_path / "second" / "ns").exists()
+
+
+def test_a_spent_ledger_without_a_marker_is_reported_as_spent(tmp_path):
+    # re-review defect C
+    ns = tmp_path / "ns"
+    G.ledger_path(ns).write_text("{}")
+    v = EV.validate_evidence(ns)
+    assert v["verdict"] == "EVIDENCE_VALID__INCOMPLETE_ATTEMPT_PRESERVED" and v["incomplete"] == ["start_marker"]
+    ns.mkdir()
+    (ns / "x.json").write_text("{}")
+    assert EV.validate_evidence(ns)["verdict"] == "EVIDENCE_INVALID"
+
+
+def test_a_completed_result_cannot_be_passed_off_as_a_crash_against_the_launch_record(tmp_path, monkeypatch):
+    # re-review defect D: alone, a removed final receipt looks like a crash; the launch record shows exit 0
+    ns, _ = run_stubbed(tmp_path, monkeypatch, {})
+    for p in (ns / "TD59" / "TD59_STAGE_RECEIPT.json", ns / "TD_CORRECTED_REPLAY_RECEIPT_V1.json", ns / X.ROUTING_INPUT):
+        p.unlink()
+    alone = EV.validate_evidence(ns)
+    assert alone["verdict"] == "EVIDENCE_VALID__INCOMPLETE_ATTEMPT_PRESERVED" and alone["in_progress_stage"]["stage"] == "TD59"
+    v = EV.validate_evidence(ns, tmp_path / "rec")
+    assert v["verdict"] == "EVIDENCE_INVALID" and any("exited 0" in p for p in v["problems"])
+
+
+def test_the_printed_stage_summary_is_checked_against_the_bundle(tmp_path, monkeypatch):
+    ns, _ = run_stubbed(tmp_path, monkeypatch, {})
+    assert EV.validate_evidence(ns, tmp_path / "rec")["verdict"] == "EVIDENCE_VALID__COMPLETE"
+    (tmp_path / "rec" / "execute.stdout.txt").write_text('{"TD56": {}}\n')
+    v = EV.validate_evidence(ns, tmp_path / "rec")
+    assert v["verdict"] == "EVIDENCE_INVALID" and any("printed at run time" in p for p in v["problems"])
+
+
 def test_frozen_interpretation_patterns():
     st = lambda a, b, c, d: {"TD56": a, "TD57B": b, "TD57C": c, "TD59": d}  # noqa: E731
     assert X.frozen_interpretation(st("FAIL", "PASS", "FAIL", "PASS"), "PASS")["pattern"] == "D"
@@ -594,7 +675,8 @@ def _writable(p: Path) -> Path:
 
 
 @pytest.mark.parametrize("attack", ["output", "status", "routing", "flag", "order", "relabel", "drop_inputs", "drop_routing",
-                                    "universal", "ledger", "truncate", "stderr"])
+                                    "universal", "ledger", "truncate", "stderr", "printed", "cases", "td56_flag",
+                                    "stray_stage", "stray_root", "executor_copy", "later_stage_dir"])
 def test_evidence_tampering_is_detected(tmp_path, monkeypatch, attack):
     ns, _ = run_stubbed(tmp_path, monkeypatch, {})
     st = ns / "TD57B" / "TD57B_STAGE_RECEIPT.json"
@@ -634,6 +716,34 @@ def test_evidence_tampering_is_detected(tmp_path, monkeypatch, attack):
         rec["invocations"] = rec["invocations"][:-1]; rec["invocations_run"] = 5; st.write_text(json.dumps(rec))
     elif attack == "stderr":
         (ns / rec["invocations"][0]["stderr"]).write_text("edited\n")
+    elif attack in ("printed", "cases"):
+        # re-review finding 2: SHAs kept consistent, so only the cross-checks can catch it
+        inv = rec["invocations"][0]
+        out, so = ns / inv["output"], ns / inv["stdout"]
+        r = json.loads(out.read_text())
+        if attack == "printed":
+            so.write_text("something else\n")
+        else:
+            r["cases"][0]["pass"] = False
+            text = json.dumps(r, indent=2, sort_keys=True) + "\n"
+            out.write_text(text); so.write_text(text)
+        inv.update(output_sha256=sha(out), stdout_sha256=sha(so))
+        st.write_text(json.dumps(rec))
+    elif attack == "td56_flag":
+        t56 = ns / "TD56" / "TD56_STAGE_RECEIPT.json"
+        r56 = json.loads(t56.read_text())
+        so = ns / r56["invocations"][0]["stdout"]
+        so.write_text("NULL finite 64 PASS False\n")
+        r56["invocations"][0]["stdout_sha256"] = sha(so)
+        t56.write_text(json.dumps(r56))
+    elif attack == "stray_stage":
+        (ns / "TD57B" / "extra.json").write_text("{}")
+    elif attack == "stray_root":
+        (ns / "extra.json").write_text("{}")
+    elif attack == "executor_copy":
+        next((ns / "executors").iterdir()).write_bytes(b"#altered\n")
+    elif attack == "later_stage_dir":
+        (ns / "TD57C" / "TD57C_STAGE_RECEIPT.json").unlink()
     v = EV.validate_evidence(ns)
     assert v["verdict"] == "EVIDENCE_INVALID", attack
     if attack == "relabel":
@@ -682,12 +792,24 @@ def test_launcher_orders_pure_checks_qualify_and_marker_correctly():
     mk = first(r'mkdir -p "\$RUNROOT/authority"')
     for pat in (r'rev-parse HEAD\)" = "\$AUTH_COMMIT"', r'status --porcelain --ignored\)" \] \|\| fail', r'blob_sha "\$AUTH_COMMIT" "\$OP_REL"',
                 r'blob_sha "\$ACC_COMMIT" "\$ACC_REL"', r'replay namespace already exists', r'WSL replay environment is not the pinned one',
-                r'attempt ledger exists', r'an earlier EXECUTE_ONCE reached the orchestrator'):
+                r'attempt ledger exists', r'an earlier EXECUTE_ONCE spent the attempt'):
         assert first(pat) < mk, pat
     execute = first(r"wpy td_corrected_replay_execute_v1\.py")
     assert first(r"wpy td_corrected_replay_gate_v1\.py qualify") < first(r"wpy td_corrected_replay_gate_v1\.py authority") < execute
     assert first(r'if \[ "\$MODE" = "QUALIFY" \]; then') < execute
     assert first(r'EXECUTE_ONCE requires a ratified QUALIFY PASS') < execute
+
+
+def test_launcher_records_whether_the_attempt_was_spent_and_passes_the_authority_bytes():
+    # re-review defect A: only a run that created the ledger blocks later launches
+    text = "\n".join(_code_lines())
+    assert "grep -q '^attempt_spent=yes'" in text and "launch_EXECUTE_ONCE_*/record/RUN_RECORD.txt; do" in text
+    after = text[text.index("XRC=$?"):]
+    assert "attempt_spent=yes" in after and "attempt_spent=no" in after
+    assert after.index("attempt_spent=yes") < after.index("wpy td_corrected_replay_evidence_v1.py")
+    execute = text[text.index("wpy td_corrected_replay_execute_v1.py"):text.index("XRC=$?")]
+    for flag in ("--owner", "--runtime", "--operational", "--acceptance", "--equivalence-receipt", "--ratification", "--authority-check"):
+        assert flag in execute, flag
 
 
 def test_launcher_passes_parsed_decisions_and_binds_the_launch_record():
