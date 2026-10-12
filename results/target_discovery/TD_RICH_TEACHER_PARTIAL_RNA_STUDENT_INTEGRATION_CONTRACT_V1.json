@@ -2,13 +2,13 @@
   "schema": "TD_RICH_TEACHER_PARTIAL_RNA_STUDENT_INTEGRATION_CONTRACT_V1",
   "date": "2026-10-12",
   "status": "PROSPECTIVE_SCIENCE_CONTRACT__NO_REAL_TRAINING_AUTHORITY",
-  "purpose": "Integrate the current target-candidate lattice, rare-program preservation, authenticated multimodal evidence, and the existing EMA runtime without requiring the partial-RNA student to reproduce teacher-private biology.",
+  "purpose": "Integrate the current target-candidate lattice, source-aware rare-program preservation, authenticated multimodal evidence, and the existing EMA runtime without requiring the partial-RNA student to reproduce teacher-private biology.",
   "scientific_model": {
     "teacher_state": "Z_core ⊕ Z_query ⊕ Z_rel_if_qualified ⊕ Z_reg_shared ⊕ Z_reg_private ⊕ Z_context_private",
     "student_point_target": "Z_core ⊕ Z_query ⊕ Z_rel_if_qualified ⊕ Z_reg_shared",
     "student_uncertainty_targets": ["biological_evidence_uncertainty", "measurement_uncertainty", "measurement_domain_support", "biological_support_novelty"],
     "forbidden_point_target": ["Z_reg_private", "Z_context_private", "exact realized ATAC state when not RNA-identifiable", "exact realized spatial neighborhood when not RNA-identifiable"],
-    "principle": "The rich teacher may know more than the student. Teacher-private information is not removed merely to make the student's task easy; instead recoverable and unrecoverable state are separated empirically."
+    "principle": "The rich teacher may know more than the student. Teacher-private information is not removed merely to make the student's task easy; recoverable and unrecoverable state are separated empirically."
   },
   "foundation_target_binding": {
     "C1": "candidate source for Z_core",
@@ -17,7 +17,7 @@
     "C6": "candidate joint Z_core+Z_query scaffold; only after C1 and C3 qualify and C6_INCREMENT_OVER_C1_C3 passes",
     "C4": "candidate joint Z_core+Z_query+Z_rel; only if C2 and C3 qualify",
     "C5": "regulatory specialist source for Z_reg blocks; never foundation rescue",
-    "rare_program_rule": "Any selected foundation target must first satisfy TD_RARE_PROGRAM_QUALIFICATION_CONTRACT_V1."
+    "rare_program_rule": "Any selected foundation target must first satisfy TD_RARE_PROGRAM_QUALIFICATION_CONTRACT_V1 and any triggered source/operator-aware reassessment."
   },
   "teacher_evidence_order": [
     "lawful full RNA evidence",
@@ -36,10 +36,27 @@
     "source_disagreement": "PRESERVE_AND_REPORT",
     "basis_rule": "When coordinates rotate but subspace is stable, scientific authority attaches to the stable subspace/geometry rather than arbitrary axes."
   },
+  "source_aware_rare_program_modeling": {
+    "historical_rare1_rare5_status": "SOURCE_SHIFTED_DIAGNOSTIC_DIRECTION__NOT_YET_UNIVERSAL_BIOLOGICAL_TARGET",
+    "rule": "A rare program may be biologically real even when prevalence differs by source. The model must separate program state from observation-domain support and prevalence.",
+    "teacher_behavior": {
+      "universal_program": "Represent program biology in shared teacher state; source/operator descriptors remain support/context, not biological coordinates.",
+      "source_shifted_prevalence": "Represent the program state if biology is source-qualified; do not encode source prevalence itself as a latent biological target.",
+      "source_specific_biology": "Retain as source-specific biological state/context with restricted transport claim; do not promote to universal foundation target.",
+      "observation_limited_program": "Retain biology plus explicit support/measurement uncertainty; missing evidence must not collapse state toward zero or the mean.",
+      "operator_artifact": "Exclude from biological teacher target and record as measurement/domain structure."
+    },
+    "student_behavior": {
+      "recoverable_rare_program": "Predict the program state when partial RNA contains sufficient evidence.",
+      "weakly_observed_rare_program": "Increase measurement/domain uncertainty rather than forcing a common-state prediction.",
+      "teacher_private_multimodal_increment": "Represent via biological-evidence uncertainty/distributional prediction, not exact deterministic matching."
+    },
+    "prevalence_modeling": "Program identity/state and population prevalence are separate scientific objects; global pooled quantile thresholds are not biological prevalence estimates when source/operator composition differs."
+  },
   "rare_program_role": {
     "foundation": "Rare programs are a mandatory target-preservation test before target selection.",
     "teacher": "For a frozen rare RNA target state, rich modalities may sharpen regulatory/contextual characterization and reveal teacher-private components.",
-    "student": "The student should detect a rare program when RNA contains recoverable evidence and should widen biological uncertainty when the rich program is not RNA-identifiable.",
+    "student": "The student should detect a rare program when RNA contains recoverable evidence and should widen biological or measurement uncertainty when the rich program is not identifiable from its observed RNA.",
     "novelty_vs_ood": "Biological novelty and measurement-domain OOD are separate outputs; a rare, well-measured state must not be auto-corrected toward the population mean."
   },
   "same_nucleus_identifiability_experiment": {
@@ -88,7 +105,7 @@
     "rare_program_use": "Rare states that require substantially more evidence to stabilize are scientifically interesting and should be marked information-poor/uncertain rather than collapsed."
   },
   "downstream_sequence": [
-    "1_QUALIFY_FOUNDATION_TARGET_INCLUDING_RARE_PROGRAM_FITNESS",
+    "1_QUALIFY_FOUNDATION_TARGET_INCLUDING_SOURCE_AWARE_RARE_PROGRAM_FITNESS",
     "2_FREEZE_TARGET_WITHOUT_AD_PATHOLOGY",
     "3_CONSTRUCT_QUALIFIED_RICH_TEACHER_FEATURES_FROM_EXISTING_AUTHENTICATED_MULTIMODAL_SURFACES",
     "4_SPLIT_TEACHER_STATE_INTO_RNA_RECOVERABLE_AND_PRIVATE_COMPONENTS",
@@ -98,20 +115,12 @@
     "8_REGULATORY_SPATIAL_PERTURBATIONAL_TRIANGULATION_OF_AD_ASSOCIATED_RARE_PROGRAMS"
   ],
   "hard_prohibitions": [
-    "Do not select a foundation target because it correlates with AD pathology.",
-    "Do not force teacher-private multimodal state into deterministic student loss.",
-    "Do not let SCENIC+/ATAC rescue a failed C1/C2/C3/C6/C4 foundation gate.",
-    "Do not pool cells across cohorts and call cell count biological replication.",
-    "Do not treat missing modality as biological zero.",
-    "Do not use protected Morabito or recoverability TEST outcomes to tune target/program definitions.",
-    "Do not create a single ad-hoc weighted evidence score across modalities."
-  ],
-  "governance": {
-    "target_winner": "NONE",
-    "representation_winner": "NONE",
-    "real_training": "OFF",
-    "multimodal_training": "OFF",
-    "td60": "NOT_AUTHORIZED",
-    "stage4": "NOT_AUTHORIZED"
-  }
+    "Do not select a foundation target because it gives the strongest downstream AD/pathology association.",
+    "Do not force the student to match teacher-private multimodal realization exactly.",
+    "Do not treat source/operator identity as biological state.",
+    "Do not convert missing privileged evidence to zero.",
+    "Do not allow C5 or multimodal evidence to rescue failure of all foundation candidates.",
+    "Do not use global source-confounded rare1/rare5 prevalence as biological truth.",
+    "Do not authorize real training from this contract."
+  ]
 }
