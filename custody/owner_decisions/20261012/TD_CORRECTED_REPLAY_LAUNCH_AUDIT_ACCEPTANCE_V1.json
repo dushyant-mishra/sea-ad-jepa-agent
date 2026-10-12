@@ -1,0 +1,30 @@
+{
+  "audited_evidence_head": "7cd77cd231e7a1cc879b61c06a676ab4d2d3ba14",
+  "authority_commit_sha": "69240132383d92911ddb360660c810b585813f1f",
+  "code_sha256": "dd7ee4bb4a7e3fe471eb30569535ff3252ec60e3bb7703b341f0ef22ab177a5f",
+  "contract_sha256": "720809582fc36ac9138ca69b6c1fc79d373a6ff38952a8f51af1db680f4c2096",
+  "corrected_replay_execution_authorized": true,
+  "date": "2026-10-12",
+  "disposition": "ACCEPT_TD_CORRECTED_REPLAY_LAUNCH_PACKAGE__EXECUTE_ONCE",
+  "equivalence_receipt_sha256": "9b02c126244aec00b4dcfed13f4c35ce19cec20fde04835537ec1b207175ef16",
+  "external_audit": {
+    "pr": 310,
+    "review_commit": "7cd77cd231e7a1cc879b61c06a676ab4d2d3ba14",
+    "review_id": 5494451040,
+    "review_submitted_at": "2026-10-12T18:10:47Z",
+    "terminal": "ACCEPTED_FOR_EXECUTE_ONCE_AFTER_EXACT_OWNER_RATIFICATION_AND_COMMITTED_LAUNCH_ACCEPTANCE__ONE_SHOT_CURRENTLY_UNSPENT"
+  },
+  "g6_execution_authorized": false,
+  "g7_execution_authorized": false,
+  "implementation_commit_sha": "7819aabd9a4c7adbd494445bb989c44e9b7cfa11",
+  "operational_authorization_sha256": "fac62caea5dca118c6e55e460d6bf740f1158d03ed1da19974e56dd863ad2ef2",
+  "owner_acceptance_verbatim": "I also accept the independently audited launch package for one corrected replay execution only.",
+  "schema": "JEPA_TD_CORRECTED_REPLAY_LAUNCH_AUDIT_ACCEPTANCE_V1",
+  "scope": "CORRECTED_TD56_TD57B_TD57C_TD59_REPLAY_ONLY",
+  "single_attempt": true,
+  "stage4_authorized": false,
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false,
+  "transcribed_by": "Macha (Claude Code) from PR #310 review 5494451040 and the owner's statement; their words govern"
+}
