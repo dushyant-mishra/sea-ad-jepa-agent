@@ -15,13 +15,7 @@ def _seed(root: int, *spawn_key: int) -> int:
 
 
 def build_base_design(authority: dict[str, np.ndarray], *, donors_per_source: tuple[int, ...], root: int) -> dict[str, np.ndarray]:
-    """Build the prospectively frozen crossed BASE design.
-
-    A single RNG keyed by [100,0,0] is used once and shared by Q00-Q09.
-    Donor cell counts are resampled from source-specific empirical donor counts;
-    cell class and pooled log-library are iid resamples; operator/matrix is uniform
-    among matrices belonging to that source.
-    """
+    """Build the prospectively frozen crossed BASE design."""
     src0 = np.asarray(authority["src"], dtype=np.int64)
     donor0 = np.asarray(authority["donor"], dtype=np.int64)
     cls0 = np.asarray(authority["cls"], dtype=np.int64)
@@ -30,7 +24,6 @@ def build_base_design(authority: dict[str, np.ndarray], *, donors_per_source: tu
     sources = np.sort(np.unique(src0))
     if len(donors_per_source) != len(sources):
         raise SystemExit("STOP: donors_per_source length does not match source count")
-    # Authority invariant: each donor and operator belongs to exactly one source.
     for d in np.unique(donor0):
         if len(np.unique(src0[donor0 == d])) != 1:
             raise SystemExit("STOP: authority donor spans sources")
@@ -92,6 +85,7 @@ def latin_hypercube_empirical(values: np.ndarray, *, G: int, world_index: int, q
 def calibration_magnitudes(cal: dict) -> dict:
     """Reproduce the contract-builder calibration pools byte-semantically."""
     rows = cal["per_gene"]
+
     def vals(part: str, key: str, all_sources: bool = False, absolute: bool = False) -> np.ndarray:
         out: list[float] = []
         for r in rows:
@@ -103,6 +97,7 @@ def calibration_magnitudes(cal: dict) -> dict:
             else:
                 out.append(abs(float(v)) if absolute else float(v))
         return np.asarray(out, dtype=float)
+
     m: dict[str, dict[str, np.ndarray]] = {}
     for part, P in (("det", "detection"), ("pos", "positive")):
         m[P] = {
@@ -120,11 +115,7 @@ def calibration_magnitudes(cal: dict) -> dict:
 
 
 def _contrast_coefficients(magnitudes: np.ndarray, *, world_index: int, root: int, sign_offset: int) -> tuple[np.ndarray, np.ndarray]:
-    """Give the two normalized-Helmert contrast coordinates independent seeded signs.
-
-    The frozen magnitude pool is pooled across both development contrast coordinates;
-    each coordinate receives its own LHS realization from that same empirical pool.
-    """
+    """Give the two normalized-Helmert contrast coordinates independent seeded signs."""
     G = len(magnitudes)
     signs = np.empty((G, 2), dtype=np.int8)
     for g in range(G):
@@ -138,7 +129,6 @@ def build_q00_planting(cal: dict, payload: dict, *, world_index: int, G: int) ->
     """Build Q00-style per-gene magnitudes from the masked development calibration."""
     mags = calibration_magnitudes(cal)
     root = int(payload["seeds"]["root"])
-    # Stable quantity IDs; these are scientific identities, not file-layout indices.
     qid = {
         "det_prevalence": 0, "det_depth1": 1, "det_depth2": 2, "det_abs_class_0": 3,
         "det_abs_class_1": 4, "det_abs_source_0": 5, "det_abs_source_1": 6, "det_donor_sd": 7,
@@ -147,6 +137,7 @@ def build_q00_planting(cal: dict, payload: dict, *, world_index: int, G: int) ->
         "pos_donor_sd": 15, "pos_sigma": 16,
     }
     levels: dict[str, np.ndarray] = {}
+
     def lhs(part: str, key: str, name: str, idx: int | None = None) -> np.ndarray:
         qi = qid[name if idx is None else f"{name}_{idx}"]
         x, lev = latin_hypercube_empirical(mags[part][key], G=G, world_index=world_index,
@@ -158,15 +149,16 @@ def build_q00_planting(cal: dict, payload: dict, *, world_index: int, G: int) ->
     det_source_mags = np.column_stack([lhs("detection", "abs_source", "det_abs_source", j) for j in range(2)])
     pos_class_mags = np.column_stack([lhs("positive", "abs_class", "pos_abs_class", j) for j in range(2)])
     pos_source_mags = np.column_stack([lhs("positive", "abs_source", "pos_abs_source", j) for j in range(2)])
-    det_cls = np.empty_like(det_class_mags); det_src = np.empty_like(det_source_mags)
-    pos_cls = np.empty_like(pos_class_mags); pos_src = np.empty_like(pos_source_mags)
+    det_cls = np.empty_like(det_class_mags)
+    det_src = np.empty_like(det_source_mags)
+    pos_cls = np.empty_like(pos_class_mags)
+    pos_src = np.empty_like(pos_source_mags)
     sign_rec = np.empty((G, 4), dtype=np.int8)
     for g in range(G):
         rng = np.random.default_rng(_seed(root, world_index, g, 11))
         sign_rec[g] = rng.choice(np.array([-1, 1], dtype=np.int8), size=4, replace=True)
         det_cls[g] = det_class_mags[g] * sign_rec[g, :2]
         det_src[g] = det_source_mags[g] * sign_rec[g, 2:]
-        # Positive part uses the same four sign identities: same biological direction, independently planted magnitude.
         pos_cls[g] = pos_class_mags[g] * sign_rec[g, :2]
         pos_src[g] = pos_source_mags[g] * sign_rec[g, 2:]
 
@@ -221,22 +213,21 @@ def _center_within_source(x: np.ndarray, src_by_donor: np.ndarray) -> np.ndarray
     return out
 
 
-def build_donor_effects(src_by_donor: np.ndarray, donor_sd: np.ndarray, *, world_index: int,
-                        part: str, root: int) -> dict[str, np.ndarray]:
-    """Plant donor effects with shared factor and seeded half-gene loadings."""
+def _build_donor_effects(src_by_donor: np.ndarray, donor_sd: np.ndarray, *, world_index: int,
+                         part: str, root: int, factor_stream: int,
+                         detection_stream: int, positive_stream: int) -> dict[str, np.ndarray]:
     src = np.asarray(src_by_donor, dtype=np.int64)
     sd = np.asarray(donor_sd, dtype=float)
     D, G = len(src), len(sd)
     if part not in ("detection", "positive"):
         raise ValueError("part must be detection or positive")
-    # Shared factor is identical across genes and parts for a world.
-    f_rng = np.random.default_rng(_seed(root, world_index, 9999, 2))
+    f_rng = np.random.default_rng(_seed(root, world_index, 9999, factor_stream))
     factor = f_rng.normal(size=D)
-    # Exactly a seeded half of genes load at 0.6.
     l_rng = np.random.default_rng(_seed(root, world_index, 9999, 4))
     loaded = np.sort(l_rng.choice(G, size=G // 2, replace=False))
-    lam = np.zeros(G, dtype=float); lam[loaded] = 0.6
-    stream = 12 if part == "detection" else 13
+    lam = np.zeros(G, dtype=float)
+    lam[loaded] = 0.6
+    stream = detection_stream if part == "detection" else positive_stream
     raw = np.empty((D, G), dtype=float)
     for g in range(G):
         e_rng = np.random.default_rng(_seed(root, world_index, g, stream))
@@ -244,4 +235,28 @@ def build_donor_effects(src_by_donor: np.ndarray, donor_sd: np.ndarray, *, world
         raw[:, g] = lam[g] * factor + np.sqrt(1.0 - lam[g] ** 2) * e
     raw = _center_within_source(raw, src)
     effects = raw * sd[None, :]
-    return {"effects": effects, "lambda": lam, "shared_factor": _center_within_source(factor[:, None], src)[:, 0], "raw_centered": raw}
+    return {
+        "effects": effects,
+        "lambda": lam,
+        "shared_factor": _center_within_source(factor[:, None], src)[:, 0],
+        "raw_centered": raw,
+    }
+
+
+def build_donor_effects(src_by_donor: np.ndarray, donor_sd: np.ndarray, *, world_index: int,
+                        part: str, root: int) -> dict[str, np.ndarray]:
+    """Plant TRAIN/same-donor effects with frozen streams 2 and 12/13."""
+    return _build_donor_effects(src_by_donor, donor_sd, world_index=world_index, part=part, root=root,
+                                factor_stream=2, detection_stream=12, positive_stream=13)
+
+
+def build_new_donor_effects(src_by_donor: np.ndarray, donor_sd: np.ndarray, *, world_index: int,
+                            part: str, root: int) -> dict[str, np.ndarray]:
+    """Plant held-out new-donor effects with frozen streams 3 and 18/19.
+
+    Factor-loading assignment remains stream 4, so the same seeded half of genes
+    carries the shared donor factor while the factor realization and idiosyncratic
+    donor effects are new.
+    """
+    return _build_donor_effects(src_by_donor, donor_sd, world_index=world_index, part=part, root=root,
+                                factor_stream=3, detection_stream=18, positive_stream=19)

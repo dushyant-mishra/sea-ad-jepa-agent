@@ -218,17 +218,13 @@ def build_structural_support(payload: dict, design: dict[str, np.ndarray], *, wo
     sources = np.sort(np.unique(src))
 
     if n_struct == 5:
-        # Source identities come from canonical metadata (SOURCE_CODES = source_code_mapping), never an assumed order.
         if sorted(int(s) for s in sources) != sorted(SOURCE_CODES.values()):
             raise SystemExit("STOP: frozen support rule requires the three canonical source codes")
         name_of = {code: name for name, code in SOURCE_CODES.items()}
-        # 1) one gene measured in exactly one source, source selected uniformly.
         g = structural_genes[0]
         keep = int(rng.choice(sources))
         support[:, g] = src == keep
 
-        # 2) three genes each fully absent in one source, weighted by the frozen per-source-name counts
-        #    (HVS:NPH52:SEA_AD = 38:20:10), mapped to codes through SOURCE_CODES.
         weights = np.asarray([float(rule["one_source_absent_probabilities"][name_of[int(s)]]) for s in sources],
                              dtype=float)
         weights /= weights.sum()
@@ -236,17 +232,18 @@ def build_structural_support(payload: dict, design: dict[str, np.ndarray], *, wo
             absent = int(rng.choice(sources, p=weights))
             support[:, g] = src != absent
 
-        # 3) one partial gene: exactly floor(7/2)=3 of NPH52's 7 matrices absent.
         nph52 = int(SOURCE_CODES["NPH52"])
         nph_ops = np.unique(op[src == nph52])
         if len(nph_ops) != 7:
             raise SystemExit(f"STOP: frozen partial-support rule requires 7 NPH52 matrices, got {len(nph_ops)}")
-        g = structural_genes[4]
-        drop = set(int(x) for x in rng.choice(nph_ops, size=3, replace=False))
+        g = int(structural_genes[4])
+        wi24 = effective_seed_world_index(world_index, 24, amendment) if amendment is not None else int(world_index)
+        rng24 = np.random.default_rng(seed_for(world_index=wi24, gene_index=g, stream=24,
+                                                root=int(payload["seeds"]["root"])))
+        drop = set(int(x) for x in rng24.choice(nph_ops, size=3, replace=False))
         support[:, g] = np.array([not (int(s) == nph52 and int(o) in drop) for s, o in zip(src, op)], dtype=bool)
         return support
 
-    # Tiny-fixture fallback: preserve the measured-vs-unmeasured code path without pretending 1/3/1 composition fits.
     for g in structural_genes:
         absent = int(rng.choice(sources))
         support[:, g] = src != absent
@@ -254,9 +251,7 @@ def build_structural_support(payload: dict, design: dict[str, np.ndarray], *, wo
 
 
 def _rescale_donor_effects(part: dict, new_sd: np.ndarray) -> None:
-    """Realized donor effects = canonical latent field x donor SD, for every gene. The canonical latent field is
-    donor_raw_centered (build_donor_effects 'raw_centered'); a truth object without it is refused, so a world can
-    never change its recorded donor SD while keeping baseline-magnitude effects."""
+    """Realized donor effects = canonical latent field x donor SD, for every gene."""
     if "donor_raw_centered" not in part:
         raise SystemExit("STOP: donor rescale requires the canonical latent field donor_raw_centered")
     part["donor_sd"] = np.asarray(new_sd, dtype=float)
@@ -291,6 +286,10 @@ def apply_world_modifications(base_truth: dict, world_def: dict, payload: dict) 
     elif donor_mod == "absent":
         _rescale_donor_effects(out["detection"], np.zeros(G))
         _rescale_donor_effects(out["positive"], np.zeros(G))
+        for part in ("detection", "positive"):
+            out[part]["donor_raw_centered"] = np.zeros_like(np.asarray(out[part]["donor_raw_centered"], dtype=float))
+            if "factor_loading" in out[part]:
+                out[part]["factor_loading"] = np.zeros_like(np.asarray(out[part]["factor_loading"], dtype=float))
 
     if mods.get("source") == "weak":
         for part_name in ("detection", "positive"):
@@ -320,6 +319,9 @@ def apply_world_modifications(base_truth: dict, world_def: dict, payload: dict) 
 
 def build_world_designs(root: Path, payload: dict) -> dict[str, dict[str, np.ndarray]]:
     """BASE (shared key [100,0,0], S174 sizes) for Q00-Q09 and the exact S174 arrays for Q10/Q11."""
+    actual_mapping = source_code_mapping(root)
+    if actual_mapping != SOURCE_CODES:
+        raise SystemExit(f"STOP: SOURCE_CODES disagree with authenticated source mapping: {actual_mapping}")
     s174 = load_s174_design(root)
     donors_per_source = tuple(int(len(np.unique(s174["donor"][s174["src"] == c]))) for c in sorted(SOURCE_CODES.values()))
     if donors_per_source != (62, 19, 68):
@@ -329,8 +331,6 @@ def build_world_designs(root: Path, payload: dict) -> dict[str, dict[str, np.nda
 
 
 def detection_nonintercept_predictor(design: dict[str, np.ndarray], det: dict) -> np.ndarray:
-    """Detection linear predictor without intercept, donor effects and operator offsets (the contract's
-    intercept-solve predictor; operator offsets are excluded so Q11 keeps Q10's non-operator truth)."""
     z, q = O.depth_basis(design["log_lib"])
     cls = np.asarray(design["cls"], dtype=np.int64)
     src = np.asarray(design["src"], dtype=np.int64)
@@ -342,7 +342,6 @@ def detection_nonintercept_predictor(design: dict[str, np.ndarray], det: dict) -
 
 
 def solve_detection_intercept_for_gene(nonintercept: np.ndarray, measured: np.ndarray, target: float) -> float:
-    """Intercept so that mean expit over MEASURED cells equals the planted prevalence; unmeasured cells never enter."""
     return P.solve_detection_intercept(np.asarray(nonintercept, float), np.asarray(measured, bool),
                                        target_prevalence=float(target))
 
@@ -361,13 +360,7 @@ def _src_by_donor(design: dict[str, np.ndarray]) -> np.ndarray:
 
 def build_world_truth(payload: dict, cal: dict, designs: dict[str, dict[str, np.ndarray]], world_def: dict,
                       amendment: dict) -> dict:
-    """In-memory planted truth for one world (no disk emission).
-
-    Order (controller audit 312bb302): plant (LHS) -> donor latent field and effects -> frozen world modifications
-    (donor effects rescaled from the latent field) -> structural-support mask -> detection intercept solved per gene
-    over measured cells from the final non-donor predictor -> Q11 operator offsets (streams 22/23). For Q11 every
-    non-operator stream uses Q10's world index (pairing amendment), so Q11's non-operator truth equals Q10's.
-    """
+    """In-memory planted truth for one world (no disk emission)."""
     wi = int(world_def["index"])
     name = str(world_def["name"])
     root = int(payload["seeds"]["root"])
@@ -405,7 +398,6 @@ def non_operator_truth_sha(world_truth: dict) -> str:
 
 def generate_operator_offsets(design: dict[str, np.ndarray], *, donor_sd: float, world_index: int,
                               gene_index: int, part: str, payload: dict, amendment: dict) -> np.ndarray:
-    """Generate Q11 operator offsets and centre them unweighted within source."""
     if part not in ("detection", "positive"):
         raise ValueError("part must be detection or positive")
     stream = 22 if part == "detection" else 23
@@ -437,6 +429,17 @@ def apply_poison(counts: np.ndarray, support: np.ndarray, *, poison: int = -1) -
     out = counts.copy()
     out[~support] = poison
     return out
+
+
+def validate_poison_integrity(observed: np.ndarray, support: np.ndarray, *, poison: float = -1.0) -> None:
+    observed = np.asarray(observed)
+    support = np.asarray(support, dtype=bool)
+    if observed.shape != support.shape:
+        raise SystemExit("STOP: observed/support shape mismatch")
+    if np.any(observed[support] == poison):
+        raise SystemExit("STOP: poison sentinel appears in a structurally measured entry")
+    if np.any(observed[~support] != poison):
+        raise SystemExit("STOP: structurally unmeasured entry is not poisoned")
 
 
 def opaque_world_id(name: str) -> str:

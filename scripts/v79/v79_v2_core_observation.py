@@ -78,15 +78,19 @@ def generate_observation(design: dict[str, np.ndarray], truth: dict, support: np
                          operator_offsets_positive: np.ndarray | None = None) -> dict[str, np.ndarray]:
     """Generate measured Bernoulli + continuous lognormal observations.
 
-    For Q11 paired counterfactuals, pairing_parent_world fixes all base-noise streams
-    to Q10 while operator offsets alter only the linear predictors.
+    Frozen observation-noise streams are 14/15 for TRAIN, 16/17 for the
+    same-donor held-out replicate, and 20/21 for the new-donor held-out
+    replicate. For Q11 paired counterfactuals, ``pairing_parent_world``
+    fixes every base-noise stream to Q10 while operator offsets alter only
+    the linear predictors.
     """
     support = np.asarray(support, dtype=bool)
     n = len(np.asarray(design["src"]))
     G = support.shape[1]
     if support.shape[0] != n:
         raise SystemExit("STOP: support/design cell count mismatch")
-    det = truth["detection"]; pos = truth["positive"]
+    det = truth["detection"]
+    pos = truth["positive"]
     eta = linear_predictor(design, det, operator_offsets=operator_offsets_detection)
     mu = linear_predictor(design, pos, operator_offsets=operator_offsets_positive)
     if eta.shape != support.shape or mu.shape != support.shape:
@@ -96,8 +100,10 @@ def generate_observation(design: dict[str, np.ndarray], truth: dict, support: np
         det_stream, pos_stream = 14, 15
     elif replicate == "same_donor":
         det_stream, pos_stream = 16, 17
+    elif replicate == "new_donor":
+        det_stream, pos_stream = 20, 21
     else:
-        raise ValueError("replicate must be train or same_donor")
+        raise ValueError("replicate must be train, same_donor or new_donor")
     base_world = int(pairing_parent_world) if pairing_parent_world is not None else int(world_index)
     u = _noise_matrix(n, G, root=root, world_index=base_world, stream=det_stream, normal=False)
     eps = _noise_matrix(n, G, root=root, world_index=base_world, stream=pos_stream, normal=True)
@@ -110,8 +116,6 @@ def generate_observation(design: dict[str, np.ndarray], truth: dict, support: np
     observed = np.zeros((n, G), dtype=np.float64)
     observed[detected] = positive[detected]
     observed[~support] = float(poison)
-    # Keep positive latent draws available for deterministic audit; scientific scoring
-    # uses them only where detection is true and support is measured.
     return {
         "eta_detection": eta,
         "mu_positive": mu,
