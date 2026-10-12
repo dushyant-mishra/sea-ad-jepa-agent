@@ -1,85 +1,70 @@
 # V79 synthetic lane — current takeover pointer
 
-Updated: 2026-10-12 17:20 UTC
+Updated: 2026-10-12 after rare-biology V2/V3 qualification closeout.
 
-## Read these first, in this order
+## Read first
 
-1. `results/v79/synthetic_lane_audit/deltas/20261012T1720Z_ARCHIVAL_CONSOLIDATION_AND_TAKEOVER_V1.md`
-2. `results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_AUDIT_INDEX_V1.json`
-3. `results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_CODE_DATA_RESULT_INDEX_20261012.csv`
-4. `docs/agent/V79_SYNTHETIC_LANE_TAKEOVER_HANDOFF_20261012.md`
-5. `docs/agent/V79_SYNTHETIC_LANE_AUDIT_HISTORY_20261012.md` only if deeper historical context is needed.
+1. `results/v79/rare_biology_integration/V79_RARE_BIOLOGY_LANE_CLOSEOUT_20261012.md`
+2. `results/v79/rare_biology_integration/V79_RARE_MODEL_QUALIFICATION_INTERFACE_V1.json`
+3. `results/v79/rare_biology_integration/V79_RARE_QUALIFICATION_V2_CONTRACT.json`
+4. `results/v79/rare_biology_integration/V79_RARE_QUALIFICATION_V2_EVIDENCE_SUMMARY.json`
+5. `results/v79/rare_biology_integration/V79_RARE_CONTEXT_PERTURB_V3_CONTRACT.json`
+6. `results/v79/rare_biology_integration/V79_RARE_CONTEXT_PERTURB_V3_EVIDENCE.json`
+7. `results/v79/rare_biology_integration/V79_REALDATA_RARE_PROGRAM_ASSIMILATION_20261012.md`
+8. `results/v79/rare_biology_integration/V79_RARE_BIOLOGY_DATASET_CAPABILITY_MATRIX_20261012.csv`
+9. `results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_AUDIT_INDEX_V1.json`
 
-Do not repeat historical audits before the exact heads recorded below. Audit only newer deltas or concrete contradictions.
+Do not repeat the historical audits or rebuild authenticated ETL/caches unless a byte-level contradiction is found.
 
-## Execution state first
+## Current scientific state
 
-### Realization
+Q00-Q11 remain immutable Layer-A observation/statistical worlds.
 
-Q00-Q11 were realized exactly once and byte-audited. Regeneration is forbidden.
+The additive rare-biology synthetic family is now complete at the dataset/challenge-geometry level:
 
-Frozen package authorities:
-- root manifest `84949723305dc2211ebcd451b64dd9adc8518f3580d2122f5600fcf4b38de0de`
-- directory digest `40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286`
-- blinded index `8ea3e0cb6637c97b3e940eac54476622bd4f790febb07abee2e8ccdeea751e40`
-- complete 498-file ledger `4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65`
-- audit receipt `6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3`
+- donor-structured recurrent rarity calibrated from pathology-blind TRAIN;
+- STAT1-like regulatory prototype with source-specific observability;
+- RNA-recoverable and RNA-underidentified/teacher-private biology;
+- technical pseudo-rare twins;
+- same-nucleus RNA+ATAC and separate-nucleus donor-level RNA/ATAC geometry;
+- nested evidence and measurement-depth ladders;
+- conditioned spatial context with true/shuffled/distant controls plus intrinsic context null;
+- perturbation response with matched null.
 
-### Benchmark
+V1 production was intentionally retained as non-gating calibration because numerical gates had not been frozen before its controller metrics were opened.
 
-The original PR #299 one-shot benchmark authority was consumed and **failed closed before fit 1** because of the Windows resource monitor ABI bug.
+V2 was frozen prospectively and then realized exactly once: **12/12 hard gating challenges PASS; 4/4 extreme report-only structural PASS; zero failures**. Directory digest: `9e24c6cb418bd5b74c4bc347cbc2d0a6d857392a40cc2f9225cc1dfbc8c32d09`.
 
-Immutable evidence:
-- branch `evidence/v79-engineering-benchmark-attempt-2240fd82-20261012`
-- commit `b94367c6`
-- path `docs/agent/V79_ENGINEERING_BENCHMARK_ATTEMPT_2240fd82_20261012/`
+V3 spatial/perturbation geometry was separately frozen and realized exactly once: conditioned spatial PASS, intrinsic-context null PASS, perturbation-response/null PASS.
 
-This is infrastructure failure evidence only; no model fit, diagnostics or 72-hour projection were produced.
+Fresh final synthetic engineering verification: **16/16 tests PASS**.
 
-PR #308 repairs that bug and is qualified:
-- exact head `559a1c104c8f1f56d2c05509eecf6b9dc05846a5`
-- exactly 3 changed files
-- RED `38280964089`: real Windows failure reproduced
-- GREEN `38281216579`: Windows/Ubuntu PASS; fit-side firewall PASS
-- repair PASS `6128864889`
-- exactly one fresh rerun authority `6128881654`
-- canonical Macha instructions `6129078915`
+## Real-biology rule
 
-**One fresh engineering benchmark rerun is authorized only at exact #308 head `559a1c10...`; it has not yet been reported.** No automatic second retry exists.
+This lane may inspect, analyze, discover and freeze real TRAIN biology when needed to construct realistic synthetic truth. Any meaningful biological discovery must also be handed to target discovery.
 
-## Engineering topology
+That visibility does not silently grant final target authority. Target/model selection remains governed in the target-discovery/model lane.
 
-Historical source lineages:
-- #300 campaign runner `7172b201b13c61634b84b85254bf4406959b2b57`
-- #301 historical scorer `7fe0204b2661f0d1492115c973a4da7a4a1646b6`
+## Evidence boundaries
 
-Do not redo their old reconciliation.
+- STAT1 is a synthetic prototype, not the final project target.
+- Stage75/76 topology is not a causal GRN.
+- GSE214979 has verified same-nucleus pairing but no claimed STAT1-specific same-cell result yet.
+- Morabito remains separate-nucleus donor-level evidence.
+- GSE272082 remains secondary until barcode-level pairing/microglia census are authenticated if needed.
+- V3 spatial and perturbation numerical amplitudes are synthetic stress settings, not measured human effect-size claims.
 
-Preferred integration base:
-- #305 `e976d0c1a03f6a54dadcbf7fe3086f832fd319d8`
+## Permissions
 
-Active controller-scoring engineering:
-- #306 `d4e10c821847078bac6d4043b18b09bdfb6c5ef1`
-- executor CI `38282050314`: Windows PASS, Ubuntu PASS, fit firewall PASS
-- scorer CI `38282050318`: Windows PASS, Ubuntu PASS, scorer firewall PASS
-- completed: planted held-out oracle, all five non-gating descriptive families, calibration/prevalence aggregation, initial scoring-runner custody/authorization/write-once primitives
-- no physical scoring authority
-
-## Immediate next actions
-
-1. **External/local Windows execution:** run the single authorized repaired engineering benchmark exactly once from #308 head `559a1c10...`, fresh package/custody/result directories, engineering seed root `31999999`, 2 genes x 2 parts, never scored. Report and STOP.
-2. **Controller after benchmark report:** audit only the new benchmark evidence. Do not authorize qualification fitting unless checkout/hash/environment/fit diagnostics/resource projection all satisfy the frozen gate.
-3. **Engineering in parallel:** if continuing #306, start from exact `d4e10c82...` and inspect only later commits. Physical scoring remains OFF until a complete 1,056-fit campaign exists and receives a separate post-campaign scoring authorization.
-4. Update #302/#309 after the benchmark outcome or any later material #306 milestone.
-
-## Authority boundary
-
-- regenerate Q00-Q11: **FORBIDDEN**
-- fresh engineering benchmark: **ONE ATTEMPT AUTHORIZED at #308 `559a1c10...`; not yet reported**
-- Q00-Q11 qualification fits: **OFF**
-- qualification scoring: **OFF**
-- real TRAIN posterior: **OFF**
-- factorial science: **OFF**
-- TEST/Morabito/pathology: **OFF in this lane**
-- target discovery: **SEPARATE LANE**
+- Q00-Q11 regeneration: **FORBIDDEN**
+- synthetic rare-world redesign: **CLOSED unless a future model exposes a concrete missing failure mode**
+- TRAIN biology inspection for synthetic/TD scientific follow-up: **ALLOWED under existing pathology-blind rules**
+- architecture-specific rare-model fitting: **OFF pending target/model authority and frozen numerical model gates**
+- architecture-specific scoring: **OFF**
+- real multimodal/spatial/perturbation validation: **DOWNSTREAM after relevant target/model freeze**
+- pathology/DEV/SEALED/TEST tuning: **OFF**
 - JEPA training: **OFF**
+
+## Next transition
+
+Use `V79_RARE_MODEL_QUALIFICATION_INTERFACE_V1.json`. The next owner/model-lane action is to choose/freeze the actual teacher/student architecture and its numerical model gates, then authorize fitting on the already-qualified blinded challenge package. Do not redesign the synthetic worlds merely because fitting authority is absent.

@@ -1,0 +1,80 @@
+{
+  "schema": "V79_RARE_QUALIFICATION_V2_CONTRACT",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_FROZEN_BEFORE_V2_REALIZATION",
+  "purpose": "Qualify the geometry of real-data-informed rare biological synthetic challenges before any model fitting. V1 production outcomes were non-gating calibration only and cannot satisfy this contract.",
+  "bound_code": {
+    "base_generator_git_blob_sha": "2a2f0b2f5b48ed7b9cfd81a74ab7ec514053309f",
+    "production_io_git_blob_sha": "bf4f9865a32dbcb832844de055c6c083b82face0",
+    "qualification_geometry_git_blob_sha": "d6df76a43cc9f8c0bb457225faa40c1351b09f73",
+    "qualification_realizer_git_blob_sha": "68a50e6bee40c5e466ad22ad2ca2c937d82a64b9",
+    "qualification_scorer_git_blob_sha": "7dbb7b34e36b70b06a868ed696f7f34076d1cbfd"
+  },
+  "realization": {
+    "seed_root": 79202026,
+    "n_donors": 66,
+    "cells_per_donor": 20,
+    "kinds": ["rna_recoverable", "teacher_private", "separate_nucleus", "technical_twin"],
+    "regimes": ["weak", "central", "strong", "extreme"],
+    "challenge_count": 16,
+    "fit_truth_blinding": "Challenge kind/regime, R and pseudo-rare truth remain controller-only. Fit view receives observations plus source/donor/entity codes only."
+  },
+  "challenge_semantics": {
+    "rna_recoverable": "STAT1-like donor-structured program with canonical RNA effect and same-nucleus ATAC support.",
+    "teacher_private": "Same latent/regulatory geometry but RNA effect scaled to 0.15 of canonical while ATAC remains strong; this is a designed identifiability stress condition, not a measured biological effect-size claim.",
+    "separate_nucleus": "Independent RNA and ATAC nuclei share donor-level prevalence but never cell identity.",
+    "technical_twin": "R is exactly zero; observation-side pseudo-rarity is prevalence-matched and intentionally tempting."
+  },
+  "evidence_ladder": {"levels": [0.2,0.4,0.6,0.8,1.0], "rule": "Nested fixed gene order seeded at 8100; higher evidence adds genes rather than swapping subsets."},
+  "depth_ladder": {"levels": [0.25,0.5,0.75,1.0], "rule": "Nested deterministic thinning seeded at 9100; depth changes measurement of the same biology."},
+  "hard_gating_regimes": ["weak", "central", "strong"],
+  "extreme_regime": "REPORT_ONLY except structural validity: biological worlds must contain at least one R-positive cell and technical twin must keep R=0.",
+  "common_biological_gates": {
+    "source_prevalence_gap_max": 0.12,
+    "prevalence_ranges": {"weak":[0.03,0.11],"central":[0.015,0.085],"strong":[0.005,0.055]},
+    "zero_donor_fraction_ranges": {"weak":[0.40,0.72],"central":[0.60,0.86],"strong":[0.70,0.94]}
+  },
+  "kind_gates": {
+    "rna_recoverable": {
+      "rna_auc_full_min": 0.95,
+      "rna_auc_e20_range": [0.70,0.95],
+      "teacher_auc_full_min": 0.99,
+      "same_cell_rna_atac_corr_min": 0.25,
+      "e100_minus_e20_min": 0.03,
+      "d100_minus_d25_min": 0.03
+    },
+    "teacher_private": {
+      "teacher_auc_full_min": 0.99,
+      "teacher_minus_rna_auc_min": 0.10,
+      "weak_central_rna_auc_full_range": [0.50,0.85],
+      "weak_central_rna_auc_e20_range": [0.40,0.75],
+      "weak_central_e100_minus_e20_min": 0.01,
+      "strong_rna_auc_full_range": [0.45,0.90],
+      "strong_rna_auc_e20_max": 0.80
+    },
+    "separate_nucleus": {
+      "rna_auc_full_min": 0.95,
+      "rna_auc_e20_min": 0.70,
+      "abs_same_cell_rna_atac_corr_max": 0.30,
+      "donor_rna_atac_corr_min": 0.20
+    },
+    "technical_twin": {
+      "biological_prevalence_exact": 0.0,
+      "pseudo_auc_rna_range": [0.70,0.95],
+      "pseudo_prevalence_ranges": {"weak":[0.03,0.11],"central":[0.015,0.08],"strong":[0.005,0.06]}
+    }
+  },
+  "fixture_qualification": {
+    "local_tests": "12/12 passed immediately before GitHub binding",
+    "design_calibration": "100-seed prospective calibration was used only before gate freeze to ensure intended geometry is estimable; no V2 realization truth was opened."
+  },
+  "authority_boundary": {
+    "V2_realization_authorized_by_this_file": false,
+    "controller_geometry_scoring_authorized_by_this_file": false,
+    "model_fitting": false,
+    "model_scoring": false,
+    "Q00_Q11_regeneration": false,
+    "pathology_opening": false,
+    "JEPA_training": false
+  }
+}

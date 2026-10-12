@@ -1,0 +1,54 @@
+{
+  "schema": "V79_RARE_MODEL_QUALIFICATION_INTERFACE_V1",
+  "date": "2026-10-12",
+  "status": "INTERFACE_FROZEN__NO_MODEL_FITTING_AUTHORITY",
+  "purpose": "Define how any future teacher/student implementation must consume and be scored on the qualified rare-biology synthetic challenge family without tying the synthetic lane to a particular representation architecture.",
+  "inputs": {
+    "V2_core_rare_challenges": "Hash-bound local fit views identified by V79_RARE_QUALIFICATION_V2_HASH_LEDGER.csv and directory digest 9e24c6cb418bd5b74c4bc347cbc2d0a6d857392a40cc2f9225cc1dfbc8c32d09.",
+    "V3_context_perturb_challenges": "Hash-bound local controller artifacts identified by V79_RARE_CONTEXT_PERTURB_V3_EVIDENCE.json.",
+    "Q00_Q11": "Separate immutable Layer-A observation/statistical qualification; never regenerated or silently merged into the rare-world truth package."
+  },
+  "trust_domain": {
+    "fit_side_may_receive": ["lawful RNA observations", "lawful privileged teacher modality when the experiment explicitly permits it", "source/operator observation descriptors", "donor split membership", "measured-feature/support masks", "physical context only in context-enabled experiments", "intervention identity only in perturbation experiments"],
+    "fit_side_must_not_receive": ["R labels", "pseudo_rare labels", "challenge kind/regime mapping", "controller truth", "gate outcomes", "future real validation outcomes"],
+    "controller_only": ["R", "pseudo_rare", "world/challenge identity", "planted donor prevalence", "technical-twin identity", "scoring and terminal decisions"]
+  },
+  "required_model_outputs": {
+    "intrinsic_state": "Representation/score derived from lawful intrinsic evidence only.",
+    "student_state": "Partial-RNA prediction of the recoverable biological component.",
+    "teacher_state": "Rich-evidence state when privileged modality is permitted.",
+    "biological_uncertainty": "Uncertainty from missing/ambiguous biological evidence; must be separable from measurement uncertainty.",
+    "measurement_uncertainty": "Sensitivity to depth/detection/measurement degradation.",
+    "context_increment": "Optional context-conditioned increment that must not contaminate intrinsic state.",
+    "perturbation_response": "Optional predicted state/amplitude change under intervention."
+  },
+  "required_controller_readouts": {
+    "RNA_RECOVERABLE": ["donor-held-out rare-state discrimination", "evidence ladder", "measurement-depth ladder", "source-stratified performance", "teacher versus student increment"],
+    "TEACHER_PRIVATE": ["teacher preservation of R", "student non-hallucination", "student biological uncertainty/abstention", "evidence-dependent uncertainty"],
+    "TECHNICAL_TWIN": ["false biological-positive rate on pseudo-rarity", "state-score separation from true rare biology", "measurement uncertainty response"],
+    "SEPARATE_NUCLEUS": ["donor-level RNA/ATAC concordance", "explicit prohibition on same-cell scoring"],
+    "SPATIAL_CONDITIONED": ["true-neighbor benefit", "shuffled-neighbor control", "distant-neighbor control", "intrinsic-state firewall"],
+    "SPATIAL_INTRINSIC": ["no spurious true-neighbor advantage", "intrinsic-state stability with context module disabled/enabled"],
+    "PERTURB_RESPONSE": ["actual intervention response", "matched-null response", "donor-held-out response consistency"]
+  },
+  "hard_failure_principles": [
+    "A technical pseudo-rare state cannot be promoted as biological rarity.",
+    "Teacher-private biology cannot be converted into a confident deterministic RNA-student prediction merely to reduce point loss.",
+    "Separate-nucleus data cannot be scored as same-cell correspondence.",
+    "Context cannot improve the intrinsic null world equivalently to the context-conditioned world.",
+    "A perturbation null cannot be treated as a biological response.",
+    "Broad/common-state averages cannot rescue a rare-state hard failure.",
+    "Source/operator identity cannot substitute for biological state.",
+    "Missing/unmeasured evidence is never encoded as measured zero."
+  ],
+  "split_rule": "Donor-first. Cells improve within-donor measurement precision but do not create biological replication.",
+  "future_gate_freeze_rule": "Architecture-specific numerical model gates must be frozen before the first model fit on these challenge outcomes. The synthetic-lane geometry gates already passed but do not themselves qualify a model.",
+  "authority_boundary": {
+    "model_fitting": false,
+    "model_scoring": false,
+    "real_multimodal_validation": false,
+    "Q00_Q11_regeneration": false,
+    "pathology_opening": false,
+    "JEPA_training": false
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "V79_RARE_WORLD_PRODUCTION_V1_CONTROLLER_CALIBRATION_SUMMARY",
+  "status": "NON_GATING_CALIBRATION_ONLY__GATES_NOT_PREFROZEN",
+  "world_count": 16,
+  "directory_digest_sha256": "fb9610871fa3f669f4b4af6d47c81d48ff3637f8d643ae4738d03a2a215cdb7f",
+  "central_evidence_ladder": [
+    {"world_id":"RW001","world":"rna_only","rna_auc_e20":0.8245855686,"rna_auc_e40":0.9030496351,"rna_auc_e60":0.9650391475,"rna_auc_e80":0.9851747136,"rna_auc_e100":0.9877724615},
+    {"world_id":"RW005","world":"same_nucleus","rna_auc_e20":0.7935433071,"rna_auc_e40":0.8984566929,"rna_auc_e60":0.9808976378,"rna_auc_e80":0.9719685039,"rna_auc_e100":0.9818897638},
+    {"world_id":"RW009","world":"separate_nucleus","rna_auc_e20":0.8523514026,"rna_auc_e40":0.9382788861,"rna_auc_e60":0.9733511975,"rna_auc_e80":0.9810503103,"rna_auc_e100":0.9880763116}
+  ],
+  "technical_twin_pseudo_auc_range": [0.8131355877,0.8359543972],
+  "same_nucleus_corr_range": [0.4583457425,0.6881917235],
+  "separate_nucleus_same_cell_corr_range": [-0.0062368367,0.1304528688],
+  "separate_nucleus_donor_corr_range": [0.4107039650,0.7361423007],
+  "interpretation": "Full 15-gene RNA is intentionally strongly informative in RNA-recoverable worlds; 20% evidence reduces central-world AUC to roughly 0.79-0.85. Technical twins are tempting RNA anomalies despite R=0. V1 lacks an explicit RNA-weak/ATAC-strong teacher-private world, so a prospective V2 challenge family is required before model qualification.",
+  "governance": "These controller outcomes were opened before numerical qualification gates existed. They may calibrate a new prospectively frozen V2 contract but cannot themselves be used as qualification evidence."
+}

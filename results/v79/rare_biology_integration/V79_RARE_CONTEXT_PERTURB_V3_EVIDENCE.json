@@ -1,0 +1,57 @@
+{
+  "schema": "V79_RARE_CONTEXT_PERTURB_V3_EVIDENCE",
+  "date": "2026-10-12",
+  "status": "PREFROZEN_STRUCTURAL_QUALIFICATION_COMPLETE",
+  "terminal": "PASS",
+  "seed_root": 79302026,
+  "receipt_sha256": "23436634ac1dec4621c9b0a4f8c8a417f432ee570f90d7f4d16876dae1afc138",
+  "local_only_artifacts": {
+    "SPATIAL_CONDITIONED": "cc1a0e45a6a10fd7e0988d7270991a980e723e0a5f3083b81fce453fd2ca6023",
+    "SPATIAL_INTRINSIC": "75ac19f8332b710a28a70b7d0447546d6196e1b183c6ccf90a9c209b58978bd1",
+    "PERTURB_RESPONSE": "dd81bf7a1ac6f7fbc8759964a55af6a0171f3d69147863399223890afd0b3660"
+  },
+  "results": {
+    "SPATIAL_CONDITIONED": {
+      "seed": 2218374591,
+      "n_positive": 73,
+      "prevalence": 0.0553030303,
+      "true_context_auc": 0.7163493755,
+      "shuffled_context_auc": 0.6099954960,
+      "distant_context_auc": 0.5959453373,
+      "true_minus_shuffled_auc": 0.1063538794,
+      "true_minus_distant_auc": 0.1204040382,
+      "niche_R_prevalence": 0.1103896104,
+      "non_niche_R_prevalence": 0.0256410256,
+      "gate": "PASS"
+    },
+    "SPATIAL_INTRINSIC": {
+      "seed": 91456429,
+      "n_positive": 47,
+      "prevalence": 0.0356060606,
+      "true_context_auc": 0.7013922549,
+      "shuffled_context_auc": 0.6812856212,
+      "distant_context_auc": 0.6385318648,
+      "true_minus_shuffled_auc": 0.0201066337,
+      "true_minus_distant_auc": 0.0628603901,
+      "niche_R_prevalence": 0.0346320346,
+      "non_niche_R_prevalence": 0.0361305361,
+      "gate": "PASS"
+    },
+    "PERTURB_RESPONSE": {
+      "seed": 2694699571,
+      "n_positive": 92,
+      "prevalence": 0.0464646465,
+      "actual_minus_control_Rpos": 0.3342818091,
+      "null_minus_control_Rpos": -0.0439725304,
+      "arm_prevalence_gap": 0.0136363636,
+      "gate": "PASS"
+    }
+  },
+  "interpretation": "The synthetic spatial and perturbation challenge geometry is structurally valid under prospectively frozen gates. The planted niche multiplier and perturbation response delta are synthetic stress settings, not measured human effect-size claims.",
+  "real_evidence_boundary": "Real spatial context value remains to be tested on the authenticated spatial assets; perturbational direction remains a later consistency test on qualified screens. This result does not establish real context benefit or causality.",
+  "model_fitting_run": false,
+  "model_scoring_run": false,
+  "Q00_Q11_regenerated": false,
+  "pathology_opened": false,
+  "JEPA_training_run": false
+}
