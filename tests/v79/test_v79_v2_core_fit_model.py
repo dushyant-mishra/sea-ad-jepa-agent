@@ -11,6 +11,7 @@ HERE = Path(__file__).resolve().parents[2] / "scripts" / "v79"
 sys.path.insert(0, str(HERE))
 
 import v79_v2_core_fit_model as M  # noqa: E402
+import v79_v2_core_observation as O  # noqa: E402
 
 
 def _contract():
@@ -46,11 +47,14 @@ def test_model_fingerprint_is_contract_derived_and_excludes_forbidden_terms():
     assert "source_x_class" not in text
 
 
-def test_prepare_design_uses_population_depth_and_orthonormal_sum_zero_bases():
+def test_prepare_design_uses_exact_generator_helmert_and_population_depth_basis():
     d = M.prepare_design(_gene().design)
     assert np.isclose(float(np.mean(d["z"])), 0.0, atol=1e-12)
     assert np.isclose(float(np.std(d["z"], ddof=0)), 1.0, atol=1e-12)
     assert np.allclose(d["q"], d["z"] ** 2 - 1.0)
+    expected = O.normalized_helmert(3)
+    assert np.array_equal(np.asarray(d["class_basis"]), expected)
+    assert np.array_equal(np.asarray(d["source_basis"]), expected)
     for key in ("class_basis", "source_basis"):
         b = np.asarray(d[key])
         assert b.shape[1] == 2
