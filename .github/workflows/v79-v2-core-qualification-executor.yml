@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  fit-surface-red-green:
+  executor-unit:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
@@ -29,5 +29,5 @@ jobs:
           python-version: '3.11'
       - name: Install structural test dependencies
         run: python -m pip install --disable-pip-version-check numpy==2.0.2 pytest
-      - name: Run fit-surface tests
-        run: python -m pytest tests/v79/test_v79_v2_core_fit_surface.py -q -rA -p no:cacheprovider
+      - name: Run executor structural tests
+        run: python -m pytest tests/v79/test_v79_v2_core_fit_surface.py tests/v79/test_v79_v2_core_fit_model.py -q -rA -p no:cacheprovider
