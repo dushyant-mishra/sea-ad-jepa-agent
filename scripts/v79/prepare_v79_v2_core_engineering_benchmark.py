@@ -13,8 +13,6 @@ import hashlib
 import json
 from pathlib import Path
 
-import numpy as np
-
 import generate_v79_v2_core_worlds as G
 import v79_v2_core_fit_contract as FC
 import v79_v2_core_fit_runner as R
@@ -52,6 +50,10 @@ def _write_once(path: Path, raw: bytes) -> str:
 
 def build_fit_contract_view(contract: dict) -> dict:
     streams = contract["seeds"]["gene_streams"]
+    resource_keys = (
+        "environment", "concurrency", "settle_seconds_between_worlds", "xla_host_devices",
+        "checkpoint", "compact_outputs", "engineering_benchmark",
+    )
     view = {
         "schema": FC.SCHEMA,
         "source_contract_sha256": FC.SOURCE_CONTRACT_SHA256,
@@ -60,8 +62,7 @@ def build_fit_contract_view(contract: dict) -> dict:
         "priors": copy.deepcopy(contract["priors"]),
         "inference": copy.deepcopy(contract["inference"]),
         "resources": {
-            "engineering_benchmark": contract["resources"]["engineering_benchmark"],
-            "settle_seconds_between_worlds": contract["resources"]["settle_seconds_between_worlds"],
+            **{k: copy.deepcopy(contract["resources"][k]) for k in resource_keys},
             "estimate": {"n_fits": contract["resources"]["estimate"]["n_fits"]},
         },
         "seeds": {
@@ -118,7 +119,8 @@ def prepare(root: Path, package_dir: Path, custody_dir: Path) -> dict:
     if package_dir.exists() or custody_dir.exists():
         _refuse("package/custody destination must not already exist")
     contract, qual_payload, cal, _, amendment = W.load_frozen_qualification_inputs(root)
-    if hashlib.sha256((root / "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json").read_bytes()).hexdigest() != FC.SOURCE_CONTRACT_SHA256:
+    contract_path = root / "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json"
+    if hashlib.sha256(contract_path.read_bytes()).hexdigest() != FC.SOURCE_CONTRACT_SHA256:
         _refuse("source contract bytes differ from frozen authority")
     eng_root = int(contract["seeds"]["engineering_benchmark_root"])
     if eng_root == int(qual_payload["seeds"]["root"]):
