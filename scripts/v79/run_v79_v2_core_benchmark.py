@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Identity-blind V79 V2_CORE engineering benchmark fit process.
 
-Controller-side world generation and opaque selection happen in
-prepare_v79_v2_core_engineering_benchmark.py. This process can read only the
-sanitized custody receipt, fit-contract view and blinded_fit_inputs surface.
+Controller-side generation/selection is performed separately. This process accepts
+only fit-only custody: blinded_fit_inputs, fit-contract view, opaque seed ledger and
+a hash-pinned prep receipt. It never imports generator, writer, scoring, or world
+mapping authority.
 """
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import re
 import subprocess
@@ -19,14 +19,13 @@ from typing import Mapping
 import numpy as np
 
 import v79_v2_core_fit_contract as FC
+import v79_v2_core_fit_custody as C
 import v79_v2_core_fit_runner as R
 import v79_v2_core_fit_surface as F
 import v79_v2_core_resource_monitor as RM
 import v79_v2_core_runtime as RT
 import v79_v2_core_runtime_lock as RL
 
-PREP_RECEIPT_NAME = "V79_V2_CORE_ENGINEERING_BENCHMARK_PREP_V1.json"
-FIT_VIEW_NAME = "V79_V2_CORE_FIT_CONTRACT_VIEW_V1.json"
 RESULT_RECEIPT_NAME = "V79_V2_CORE_ENGINEERING_BENCHMARK_RECEIPT_V1.json"
 
 
@@ -38,81 +37,8 @@ def _refuse(msg: str):
     raise BenchmarkRefused(f"REFUSED V2_CORE engineering benchmark: {msg}")
 
 
-def _sha(path: Path) -> str:
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
-
-
 def _canonical(obj: Mapping) -> bytes:
     return (json.dumps(dict(obj), sort_keys=True, separators=(",", ":"), ensure_ascii=False) + "\n").encode("utf-8")
-
-
-def _blinded_directory_digest(package_dir: Path) -> str:
-    base = Path(package_dir) / F.FIT_ROOT_NAME
-    if not base.is_dir():
-        _refuse("blinded fit root missing")
-    h = hashlib.sha256()
-    for p in sorted((p for p in base.rglob("*") if p.is_file()), key=lambda x: x.relative_to(base).as_posix()):
-        rel = p.relative_to(base).as_posix()
-        h.update(rel.encode("utf-8")); h.update(b"\0")
-        h.update(hashlib.sha256(p.read_bytes()).digest()); h.update(b"\0")
-    return h.hexdigest()
-
-
-def _contains_controller_identity(obj) -> bool:
-    if isinstance(obj, Mapping):
-        for k, v in obj.items():
-            if str(k).lower() in {"world_name", "world_index", "q_label", "truth", "operator", "matrix"}:
-                return True
-            if _contains_controller_identity(v):
-                return True
-    elif isinstance(obj, list):
-        return any(_contains_controller_identity(x) for x in obj)
-    elif isinstance(obj, str) and re.search(r"\bQ(?:0[0-9]|1[01])(?:_|\b)", obj):
-        return True
-    return False
-
-
-def load_prep_receipt(custody_dir: Path) -> tuple[dict, str]:
-    path = Path(custody_dir) / PREP_RECEIPT_NAME
-    if not path.is_file():
-        _refuse("benchmark prep receipt missing")
-    raw = path.read_bytes()
-    try:
-        receipt = json.loads(raw.decode("utf-8"))
-    except Exception as exc:
-        _refuse(f"invalid prep receipt JSON: {exc}")
-    if _canonical(receipt) != raw:
-        _refuse("prep receipt is not canonical")
-    required = {
-        "schema", "source_contract_sha256", "fit_contract_view_path", "fit_contract_view_sha256",
-        "execution_mode", "engineering_seed_root", "root_manifest_sha256", "blinded_index_sha256",
-        "blinded_directory_digest", "selected_opaque_world_id", "selected_world_manifest_sha256",
-        "fit_seed_ledger", "benchmark_fit_count", "benchmark_run", "qualification_fits_run",
-        "scoring_run", "fit_truth_accessed", "training_authorized",
-    }
-    if set(receipt) != required or receipt.get("schema") != "V79_V2_CORE_ENGINEERING_BENCHMARK_PREP_V1":
-        _refuse("prep receipt schema/key set differs")
-    if receipt.get("source_contract_sha256") != FC.SOURCE_CONTRACT_SHA256:
-        _refuse("prep receipt source contract differs")
-    if receipt.get("execution_mode") != "ENGINEERING_BENCHMARK" or receipt.get("benchmark_fit_count") != 4:
-        _refuse("prep receipt benchmark scope differs")
-    if receipt.get("benchmark_run") is not False or receipt.get("qualification_fits_run") != 0 or \
-            receipt.get("scoring_run") is not False or receipt.get("fit_truth_accessed") is not False or \
-            receipt.get("training_authorized") is not False:
-        _refuse("prep receipt crosses an execution/truth boundary")
-    if receipt.get("fit_contract_view_path") != FIT_VIEW_NAME:
-        _refuse("unexpected fit-contract view path")
-    if not re.fullmatch(r"[0-9a-f]{12}", str(receipt.get("selected_opaque_world_id", ""))):
-        _refuse("invalid selected opaque world ID")
-    if _contains_controller_identity(receipt):
-        _refuse("controller identity leaked into prep receipt")
-    ledger = receipt.get("fit_seed_ledger")
-    if not isinstance(ledger, list) or len(ledger) != 4:
-        _refuse("prep seed ledger must contain exactly four fits")
-    if any(set(x) != {"fit_id", "primary_seed"} for x in ledger if isinstance(x, Mapping)) or \
-            len({str(x.get("fit_id")) for x in ledger if isinstance(x, Mapping)}) != 4:
-        _refuse("malformed/duplicate prep seed ledger")
-    return receipt, hashlib.sha256(raw).hexdigest()
 
 
 def _max_projected_hours(contract: Mapping) -> float:
@@ -144,6 +70,12 @@ def _git_head(root: Path) -> str:
     return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
 
 
+def _require_clean(root: Path) -> None:
+    status = subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True)
+    if status.strip():
+        _refuse("repository working tree is not clean")
+
+
 def _one_attempt(contract, model, seed, stage, *, post_state=None, previous_ta=None):
     started = datetime.now(timezone.utc).isoformat()
     with RM.ResourceMonitor() as mon:
@@ -165,47 +97,41 @@ def _active_lineage(attempts: list[dict]) -> list[dict]:
     return attempts[escalation[-1]:] if escalation else attempts
 
 
-def execute_benchmark(root: Path, package_dir: Path, custody_dir: Path, result_dir: Path) -> dict:
-    root=Path(root); package_dir=Path(package_dir); custody_dir=Path(custody_dir); result_dir=Path(result_dir)
-    prep, prep_sha = load_prep_receipt(custody_dir)
-    fit_view = FC.load_fit_contract_view(custody_dir/FIT_VIEW_NAME, expected_sha256=prep["fit_contract_view_sha256"])
-    if int(prep["engineering_seed_root"]) != int(fit_view["seeds"]["engineering_benchmark_root"]):
+def execute_benchmark(root: Path, custody_dir: Path, result_dir: Path, *, expected_prep_receipt_sha256: str) -> dict:
+    root=Path(root); custody_dir=Path(custody_dir); result_dir=Path(result_dir)
+    _require_clean(root)
+    custody = C.load_engineering_custody(custody_dir, expected_prep_receipt_sha256=expected_prep_receipt_sha256)
+    fit_view = custody.fit_contract
+    code_sha = _git_head(root)
+    if custody.receipt.get("executor_code_head") != code_sha:
+        _refuse(f"prep code head {custody.receipt.get('executor_code_head')} != executing head {code_sha}")
+    if int(custody.receipt["engineering_seed_root"]) != int(fit_view["seeds"]["engineering_benchmark_root"]):
         _refuse("prep and fit-contract engineering roots differ")
 
-    # Configure CPU host devices before any JAX-importing model code is imported.
+    # Package-lock validation does not import JAX. Configure all JAX authority first.
+    runtime_receipt = RL.validate_runtime(root, require_windows=True, required_cpu_devices=None)
     RT.configure_before_jax_import(fit_view)
-    runtime_receipt = RL.validate_runtime(root, require_windows=True,
-        required_cpu_devices=int(fit_view["resources"]["xla_host_devices"]))
+    import jax
     jax_receipt = RT.validate_imported_jax(fit_view)
     import v79_v2_core_fit_model as M
 
-    root_path = package_dir/F.ROOT_MANIFEST_NAME
-    index_path = package_dir/F.FIT_ROOT_NAME/F.FIT_INDEX_NAME
-    if _sha(root_path) != prep["root_manifest_sha256"] or _sha(index_path) != prep["blinded_index_sha256"]:
-        _refuse("engineering package root/index hashes differ from prep receipt")
-    if _blinded_directory_digest(package_dir) != prep["blinded_directory_digest"]:
-        _refuse("blinded engineering directory digest differs from prep receipt")
-    idx = F.load_blinded_index(package_dir, expected_mode="ENGINEERING_TEST_ONLY",
-        expected_root_manifest_sha=prep["root_manifest_sha256"], expected_index_sha=prep["blinded_index_sha256"])
-    oid = str(prep["selected_opaque_world_id"])
-    world = F.load_blinded_world(idx, oid)
-    if world.manifest_sha256 != prep["selected_world_manifest_sha256"]:
+    oid = custody.selected_opaque_world_id
+    world = F.load_blinded_world(custody.blinded_index, oid)
+    if world.manifest_sha256 != custody.selected_world_manifest_sha256:
         _refuse("selected world manifest differs from prep receipt")
-
     plan = benchmark_plan(fit_view, opaque_world_id=oid, world_manifest_sha=world.manifest_sha256)
-    seeds = {str(x["fit_id"]): int(x["primary_seed"]) for x in prep["fit_seed_ledger"]}
-    if set(seeds) != {x["fit_id"] for x in plan}:
+    if set(custody.seed_by_fit_id) != {x["fit_id"] for x in plan}:
         _refuse("prep seed ledger does not exactly cover benchmark plan")
-    code_sha = _git_head(root)
+
     receipt = {
         "schema":"V79_V2_CORE_ENGINEERING_BENCHMARK_RECEIPT_V1",
         "source_contract_sha256":FC.SOURCE_CONTRACT_SHA256,
-        "fit_contract_view_sha256":prep["fit_contract_view_sha256"],
-        "prep_receipt_sha256":prep_sha,
+        "fit_contract_view_sha256":custody.receipt["fit_contract_view_sha256"],
+        "prep_receipt_sha256":custody.receipt_sha256,
         "code_sha":code_sha,
-        "package_hashes":{"root_manifest":prep["root_manifest_sha256"],
-                          "blinded_index":prep["blinded_index_sha256"],
-                          "blinded_directory_digest":prep["blinded_directory_digest"],
+        "package_hashes":{"root_manifest":custody.receipt["root_manifest_sha256"],
+                          "blinded_index":custody.receipt["blinded_index_sha256"],
+                          "blinded_directory_digest":custody.receipt["blinded_directory_digest"],
                           "selected_world_manifest":world.manifest_sha256},
         "runtime_environment_receipt":runtime_receipt,
         "jax_runtime_receipt":jax_receipt,
@@ -220,7 +146,7 @@ def execute_benchmark(root: Path, package_dir: Path, custody_dir: Path, result_d
         for item in plan:
             gene=F.load_gene_inputs(world, gene_index=item["gene_index"], replicate="train")
             model=M.build_detection_model(fit_view,gene) if item["part"]=="detection" else M.build_positive_model(fit_view,gene)
-            seed=seeds[item["fit_id"]]
+            seed=int(custody.seed_by_fit_id[item["fit_id"]])
             frec=R.new_fit_receipt(execution_mode="ENGINEERING_BENCHMARK", fit_id=item["fit_id"],
                 opaque_world_id=oid, gene_index=item["gene_index"], part=item["part"],
                 input_manifest_sha=world.manifest_sha256, contract_sha=FC.SOURCE_CONTRACT_SHA256, code_sha=code_sha)
@@ -262,8 +188,12 @@ def execute_benchmark(root: Path, package_dir: Path, custody_dir: Path, result_d
 
 
 def main(argv=None):
-    p=argparse.ArgumentParser(); p.add_argument("root"); p.add_argument("package_dir"); p.add_argument("custody_dir"); p.add_argument("result_dir")
-    a=p.parse_args(argv); r=execute_benchmark(Path(a.root),Path(a.package_dir),Path(a.custody_dir),Path(a.result_dir)); print(json.dumps(r,indent=2))
+    p=argparse.ArgumentParser(); p.add_argument("root"); p.add_argument("custody_dir"); p.add_argument("result_dir")
+    p.add_argument("expected_prep_receipt_sha256")
+    a=p.parse_args(argv)
+    r=execute_benchmark(Path(a.root),Path(a.custody_dir),Path(a.result_dir),
+                        expected_prep_receipt_sha256=a.expected_prep_receipt_sha256)
+    print(json.dumps(r,indent=2))
 
 
 if __name__ == "__main__": main()
