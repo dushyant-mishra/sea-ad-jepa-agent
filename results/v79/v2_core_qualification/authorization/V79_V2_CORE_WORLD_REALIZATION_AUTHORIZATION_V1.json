@@ -1,0 +1,59 @@
+{
+  "benchmark_authorized": false,
+  "blinding_required": {
+    "controller_truth_surface": "controller_truth",
+    "fit_surface": "blinded_fit_inputs",
+    "fit_surface_excludes_operator_matrix_identity": true,
+    "fit_surface_excludes_q_labels": true,
+    "fit_surface_excludes_truth": true,
+    "fit_uses_opaque_world_ids_only": true
+  },
+  "controller_authorization": {
+    "comment_id": 6115919187,
+    "decision": "APPROVED",
+    "pr": 294,
+    "scope": "WORLD_GENERATION_AND_TRUTH_FREEZE_ONLY"
+  },
+  "environment_lock_sha256": "5253ddca79c5f1b11eff2432b39679f16a68a885486a333d244357452261c782",
+  "execution_platform": "WINDOWS_LOCKED_QUALIFICATION_ENVIRONMENT",
+  "factorial_science_authorized": false,
+  "final_contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+  "generator_bundle_sha256": "119add636cffdb1db3b58c44dce6a2c5eee245f85c773e5822735537ae8dfc16",
+  "generator_code_head": "fe3aac751e2b8d2e58d5cb4d35af74ad58c823df",
+  "generator_green_ci": {
+    "linux_job_id": 114620987824,
+    "linux_tests": {
+      "failed": 0,
+      "passed": 67
+    },
+    "passed": true,
+    "run_id": 38190157910,
+    "source_tree_sha": "1c7556b6b733741bad46aa69ff007bd2c0bebe9f",
+    "tested_merge_ref": "40c13fb21e1c28004e0808daaedece5ad3d27298",
+    "tested_tree_sha": "1c7556b6b733741bad46aa69ff007bd2c0bebe9f",
+    "windows_job_id": 114620987802,
+    "windows_tests": {
+      "failed": 0,
+      "passed": 67
+    }
+  },
+  "launch_rule": {
+    "fail_closed_on_any_mismatch": true,
+    "reload_science_from_frozen_authorities": true,
+    "single_realization_attempt": true,
+    "stop_after_hash_freeze_for_controller_audit": true,
+    "validate_full_runtime_package_lock": true
+  },
+  "pairing_amendment_sha256": "57d7478b148cf1cab8d50a597f303c727b1a1d2d51db408ad181eab383fa4cf5",
+  "qualification_fits_run_at_freeze": 0,
+  "qualification_fitting_authorized": false,
+  "qualification_seed_root": 31000000,
+  "real_train_posterior_authorized": false,
+  "schema": "V79_V2_CORE_WORLD_REALIZATION_AUTHORIZATION_V1",
+  "scoring_authorized": false,
+  "status": "PROSPECTIVE_AUTHORIZATION__WORLD_GENERATION_AND_TRUTH_FREEZE_ONLY__NO_WORLDS_GENERATED_AT_FREEZE",
+  "training_authorized": false,
+  "truth_freeze_authorized": true,
+  "world_generation_authorized": true,
+  "worlds_generated_at_freeze": 0
+}
