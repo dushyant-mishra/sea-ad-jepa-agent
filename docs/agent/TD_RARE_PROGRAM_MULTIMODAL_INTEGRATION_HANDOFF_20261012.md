@@ -9,18 +9,25 @@ The current foundation candidates remain C1/C2/C3/C6/C4, with C5 regulatory spec
 
 Historical `rare1` and `rare5` are not two distinct biological programs. They are two frequency thresholds on one historical innovation direction. In the authenticated 50K TRAIN sample this direction is strongly source-shifted (upper 5%: NPH52 1,889 / HVS 347 / SEA-AD 264; upper 1%: NPH52 499 / HVS 1 / SEA-AD 0). Therefore it is a **diagnostic direction requiring source/operator-aware biological reassessment**, not a clean universal rare-program positive or prevalence anchor.
 
+A newer cross-lane real-TRAIN result is now explicitly bound into this lane: the analysis is preserved in **PR #311**, and the same result was handed directly into the active target-discovery **PR #312**. PR #311 is therefore the provenance/source lane for that analysis; PR #312 is the active target-discovery integration and adjudication surface. This handoff does not create a second competing interpretation path.
+
+In 665 pathology-blind TRAIN microglia from 66 donors, all seven tested Stage75 regulatory-module tails (ELF1, SPI1, STAT1, BACH1, CEBPA, IRF8, RELA) remained donor-recurrent after within-source quadratic residualization on detected-gene count. STAT1 is the strongest current lead: residual +2 SD tail = 27/665 cells (4.06%), 17/66 donors, with positive donors in HVS 7 / NPH52 3 / SEA-AD 7 and no donor contributing more than 3/27 tail cells. Its raw +2 SD tail was almost unchanged by this correction. This is **not** target authority or causal STAT1 evidence. A remaining summed-log-expression/measurement-quality confound must still be challenged prospectively.
+
 ## Target-discovery consequence
 
-Before a candidate target can use rare biology as positive qualification evidence, source-shifted programs must be classified using donor-primary, within-source and cross-source tests:
+Before a candidate target can use rare biology as positive qualification evidence, candidate programs must be classified using donor-primary, within-source and cross-source tests:
 
 - within-source donor recurrence;
 - source-balanced donor consensus;
-- depth/detection/support controls;
+- depth/detection/summed-expression/support controls;
 - operator support stratification;
+- frequency-matched high-quality/high-depth pseudo-rare controls;
 - leave-one-source-out direction transport;
 - candidate preservation without increased source/operator shortcut predictability.
 
 Possible outcomes include universal biology, biology with source-shifted prevalence, source-specific biology, observation-limited biology, operator artifact, or NOT_ESTIMABLE.
+
+Priority order for prospective reassessment is now: STAT1 Stage75 tail first, SPI1 second, the other donor-recurrent Stage75 tails as alternate/control regulatory probes, and the historical rare1/rare5 direction as a confounded diagnostic control rather than the primary positive.
 
 ## Bayesian reuse
 
@@ -104,7 +111,7 @@ The design lane is complete for all currently foreseeable branches: candidate de
 Remaining work is evidence execution/audit, in order:
 
 1. Macha PR #310 corrected replay execution and audit;
-2. authorized source/operator-aware rare-program reassessment;
+2. authorized source/operator-aware rare-program reassessment using the PR #311 biological leads plus historical rare1/rare5 as a confounded control;
 3. rare-program fitness on every active target candidate;
 4. survivor head-to-head/protected confirmation;
 5. explicit foundation-target decision;
