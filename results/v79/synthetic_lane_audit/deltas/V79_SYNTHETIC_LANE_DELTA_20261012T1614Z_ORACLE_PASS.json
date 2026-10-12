@@ -1,0 +1,44 @@
+{
+  "schema": "V79_SYNTHETIC_LANE_AUDIT_DELTA_V1",
+  "recorded_at": "2026-10-12T16:14:00Z",
+  "pr": 306,
+  "head": "045affc6e5f1c384f799661ced2db69acaa72ee3",
+  "milestone": "PLANTED_HELDOUT_ORACLE_GREEN",
+  "red": {
+    "head": "7481e2c466277edb5251a7ca48a4ef5c46e20b14",
+    "scorer_run": 38275513179,
+    "failure": "test collection failed because v79_v2_core_score_oracle did not exist"
+  },
+  "implementation": {
+    "commit": "045affc6e5f1c384f799661ced2db69acaa72ee3",
+    "module": "scripts/v79/v79_v2_core_score_oracle.py",
+    "properties": [
+      "controller-only and explicitly non-gating",
+      "same-donor oracle uses exact realized planted donor effects indexed by raw donor ID",
+      "new-donor oracle integrates planted donor-SD distribution with exact 40-node Gauss-Hermite convention",
+      "uses exact fit-model standardized depth / Helmert / within-source donor geometry",
+      "uses frozen truth/detection/prevalence.npy for planted prevalence subset",
+      "Q11 requires and applies frozen operator x gene offsets for detection/positive",
+      "refuses truth/blinded world identity mismatch and support mismatch"
+    ]
+  },
+  "ci": {
+    "scorer_run": 38275752111,
+    "scorer_windows": "PASS",
+    "scorer_linux": "PASS",
+    "executor_run": 38275752308,
+    "executor_windows": "PASS",
+    "executor_linux": "PASS",
+    "fit_side_static_firewall": "PASS",
+    "scorer_static_firewall": "PASS"
+  },
+  "next": "controller-only physical scoring orchestrator under TDD; scoring execution remains OFF",
+  "execution_boundaries_unchanged": {
+    "world_regeneration": false,
+    "qualification_fits": false,
+    "qualification_scoring": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "jepa_training": false
+  }
+}
