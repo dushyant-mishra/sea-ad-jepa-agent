@@ -33,7 +33,8 @@ jobs:
           python-version: '3.11'
       - name: Install frozen V79 environment
         run: python -m pip install --disable-pip-version-check -r results/v79/v2_core_qualification/inputs/V79_BAYES_ENV_PIP_FREEZE.txt
-      - name: Run authority and executor tests
+      - name: Run authority and executor tests (Windows byte authority)
+        if: runner.os == 'Windows'
         run: >-
           python -m pytest
           tests/v79/test_v79_v2_core_launch_authority.py
@@ -46,9 +47,25 @@ jobs:
           tests/v79/test_v79_v2_core_seed_ledger.py
           tests/v79/test_v79_v2_core_score.py
           -q -rA -p no:cacheprovider
+      - name: Run authority and executor tests (Linux structural audit)
+        if: runner.os != 'Windows'
+        run: >-
+          python -m pytest
+          tests/v79/test_v79_v2_core_launch_authority.py
+          tests/v79/test_v79_v2_core_realization_audit_freeze.py
+          tests/v79/test_v79_v2_core_fit_surface.py
+          tests/v79/test_v79_v2_core_fit_model.py
+          tests/v79/test_v79_v2_core_fit_runner.py
+          tests/v79/test_v79_v2_core_benchmark.py
+          tests/v79/test_v79_v2_core_qualification_plan.py
+          tests/v79/test_v79_v2_core_seed_ledger.py
+          tests/v79/test_v79_v2_core_score.py
+          -q -rA -p no:cacheprovider
+          -k 'not test_builder_regenerates_final_and_draft_byte_for_byte'
       - name: Static fit-side trust-domain audit
         shell: python
         run: |
+          import ast
           from pathlib import Path
           fit_side = [
               Path('scripts/v79/v79_v2_core_fit_surface.py'),
@@ -62,8 +79,11 @@ jobs:
               text = p.read_text(encoding='utf-8')
               assert 'import v79_v2_core_score' not in text
               assert 'from v79_v2_core_score' not in text
-          bench = Path('scripts/v79/run_v79_v2_core_benchmark.py').read_text(encoding='utf-8')
+          bench_path = Path('scripts/v79/run_v79_v2_core_benchmark.py')
+          bench = bench_path.read_text(encoding='utf-8')
           assert 'ENGINEERING_TEST_ONLY' in bench
-          assert '31999999' not in bench  # benchmark seed must come from Contract V2, never a local constant
           assert 'QUALIFICATION_TRUTH_FREEZE' not in bench
+          tree = ast.parse(bench)
+          numeric_constants = [n.value for n in ast.walk(tree) if isinstance(n, ast.Constant) and isinstance(n.value, (int, float))]
+          assert 31999999 not in numeric_constants  # executable benchmark seed must come from Contract V2
           print('FIT_SIDE_TRUST_DOMAIN_AUDIT=PASS')
