@@ -43,8 +43,8 @@ def _row(world,part,gene,*,offset=0.0,donor_truth=None,donor_mean=None,ppc=(0.5,
 def test_parameter_recovery_reports_corr_rmse_and_nonzero_sign_agreement():
     rows=[_row("Q00_BASELINE","detection",g,offset=0.1*g) for g in range(4)]
     out=D.parameter_recovery(rows)
-    rec=out["groups"]["Q00_BASELINE|detection|depth1"]
-    assert rec["n_scalars"]==4
+    rec=out["groups"]["Q00_BASELINE|detection|class"]
+    assert rec["n_scalars"]==8
     assert rec["rmse"]>0
     assert rec["pearson"] is not None
     assert 0.0<=rec["sign_agreement_nonzero_truth"]<=1.0
