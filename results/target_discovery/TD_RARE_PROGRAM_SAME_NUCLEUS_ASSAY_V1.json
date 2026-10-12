@@ -1,0 +1,96 @@
+{
+  "schema": "TD_RARE_PROGRAM_SAME_NUCLEUS_ASSAY_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_ASSAY_DESIGN__NO_RESULT_OPENED__NO_TARGET_AUTHORITY",
+  "purpose": "Define how a frozen rare RNA/target program (for example a STAT1-like lead) will be tested in GSE214979 using RNA and ATAC from the same physical nucleus without allowing multimodal evidence to redefine the RNA program after outcome inspection.",
+  "prerequisites": {
+    "foundation_target_frozen": true,
+    "rare_program_direction_frozen": true,
+    "program_threshold_or_continuous_score_rule_frozen": true,
+    "program_gene_or_target_membership_frozen": true,
+    "query_semantics_frozen_if_C3_or_C6": true,
+    "no_pathology_used_for_program_definition": true,
+    "identity_conflict_rule": "Primary deciding analysis excludes HCT17HEX and HCTZZT unless an independently authenticated correction predates outcome opening."
+  },
+  "data_surface": {
+    "dataset": "GSE214979",
+    "pairing": "TRUE_SAME_NUCLEUS_RNA_ATAC",
+    "primary_biological_unit": "DONOR",
+    "nested_observation_unit": "NUCLEUS",
+    "development_surface_cells": 2534,
+    "development_surface_donors": 12,
+    "genes": 36601,
+    "peaks": 150614,
+    "matrix_sha256": "8f4315b59c252c8e907dbc7cd9a46b3acfe4878b7fff7e65309027d281581bb2",
+    "metadata_sha256": "8ce4e0c78747cfa6fb2a556468893df0d378e3f53085e52955f3ecdcc944394b",
+    "development_npz_sha256": "edb90d4a3266637cf79c3afeeae7c49175a1b56992af96b5592a92762f95fe34"
+  },
+  "assay_steps": [
+    {
+      "step": 1,
+      "name": "RNA_PROGRAM_SCORING",
+      "rule": "Score the already frozen RNA/target program in every eligible nucleus without using ATAC to alter the score, membership, threshold, direction or query definition."
+    },
+    {
+      "step": 2,
+      "name": "WITHIN_DONOR_ATAC_CONTRAST",
+      "rule": "Within donor, compare ATAC accessibility between nuclei with stronger versus weaker frozen program state using predeclared continuous or thresholded contrasts. Nucleus count improves precision but donor remains the replication unit."
+    },
+    {
+      "step": 3,
+      "name": "REGULATORY_FEATURE_TEST",
+      "rule": "Test predeclared STAT1-like motif/peak/region-gene sets and matched/random regulatory controls. Stage75/cisTarget features are supporting hypotheses, not validated truth."
+    },
+    {
+      "step": 4,
+      "name": "DONOR_RECURRENCE",
+      "rule": "Require directionally coherent within-donor ATAC association across multiple donors. A pooled nucleus-level association cannot establish multimodal coherence."
+    },
+    {
+      "step": 5,
+      "name": "SHORTCUT_FALSIFICATION",
+      "rule": "Challenge the association against depth, detected genes, RNA library size, ATAC fragments/library size, feature support, source/library/operator and query abundance where applicable."
+    },
+    {
+      "step": 6,
+      "name": "RARE_STATE_SHARPENING_OR_SPLITTING",
+      "rule": "Ask whether ATAC adds a coherent regulatory dimension to the frozen RNA state, splits it into reproducible sub-states, leaves it unchanged, or falsifies a regulatory interpretation. Any split is a post-freeze multimodal annotation and cannot retroactively redefine the foundation target."
+    },
+    {
+      "step": 7,
+      "name": "RNA_RECOVERABILITY",
+      "rule": "Using donor-held-out evaluation, estimate how much of the ATAC/regulatory increment can be predicted from lawful RNA evidence."
+    }
+  ],
+  "primary_outputs": {
+    "program_atac_coherence": "donor-level direction and uncertainty for frozen program versus matched controls",
+    "regulatory_specificity": "whether predeclared regulatory features outperform matched/random features without claiming causality",
+    "privileged_increment": "difference between RNA+ATAC teacher state and RNA-only teacher state",
+    "recoverable_fraction": "fraction of privileged increment reproducibly predictable from RNA under donor holdout",
+    "teacher_private_fraction": "coherent privileged biology not reproducibly recoverable from RNA",
+    "falsification_result": "whether observed ATAC coherence disappears under measurement/operator controls"
+  },
+  "decision_classes": {
+    "MULTIMODAL_SHARED_RECOVERABLE": "RNA program has donor-recurrent ATAC/regulatory coherence and substantial increment is RNA-recoverable.",
+    "MULTIMODAL_SHARED_PARTLY_PRIVATE": "RNA program has donor-recurrent ATAC/regulatory coherence but only part of the increment is RNA-recoverable.",
+    "MULTIMODAL_TEACHER_PRIVATE": "ATAC/regulatory coherence is donor-recurrent but not reproducibly predictable from RNA; retain as teacher-private biology/uncertainty.",
+    "RNA_STATE_WITHOUT_REGULATORY_INCREMENT": "Frozen RNA state is reproducible but no qualified same-nucleus ATAC increment is detected despite sufficient support.",
+    "REGULATORY_INTERPRETATION_FALSIFIED": "Apparent coherence is explained by measurement/operator controls or matched controls.",
+    "NOT_ESTIMABLE": "Donor/support/identity geometry is insufficient."
+  },
+  "candidate_specific_notes": {
+    "C1": "Test whether rare shared-state structure has multimodal regulatory coherence.",
+    "C3": "Control explicitly for query abundance and detection so q-conditioned rarity is not merely high expression of q.",
+    "C6": "Test whether shared+query rare structure has multimodal coherence beyond the stronger constituent C1/C3.",
+    "C2_C4": "Only if relational replay leaves them active; test relational rare states without allowing graph/source structure to stand in for biology."
+  },
+  "nonrescue_rules": [
+    "Same-nucleus ATAC cannot select or rescue a failed foundation target.",
+    "ATAC cannot be used to edit the frozen rare RNA direction after outcome opening.",
+    "A donor-pooled nucleus-level p-value is not biological replication.",
+    "A motif enrichment is not causal regulator proof.",
+    "Failure of RNA recoverability does not imply absence of biology; it may define teacher-private state."
+  ],
+  "next_layer": "After classification here, donor-level recurrence is tested in Morabito separate-nucleus RNA/ATAC and regulatory interpretation is compared with SCENIC+/Stage75 evidence.",
+  "non_authority_statement": "This file freezes an assay only. It authorizes no target selection, multimodal execution, representation selection, TD60, Stage4 or training."
+}
