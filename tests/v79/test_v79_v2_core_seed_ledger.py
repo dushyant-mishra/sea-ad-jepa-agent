@@ -30,7 +30,10 @@ def test_seed_ledger_is_opaque_and_covers_all_1056_fits():
     text = json.dumps(ledger)
     for forbidden in ("Q00", "Q11", "world_index", "world_name", "truth"):
         assert forbidden not in text
+    assert all(set(x) == {"fit_id", "primary_seed", "escalation_seed"} for x in ledger)
     assert all(isinstance(x["primary_seed"], int) and 0 <= x["primary_seed"] <= 0xffffffff for x in ledger)
+    assert all(isinstance(x["escalation_seed"], int) and 0 <= x["escalation_seed"] <= 0xffffffff for x in ledger)
+    assert all(x["primary_seed"] != x["escalation_seed"] for x in ledger)
 
 
 def test_seeds_match_frozen_world_index_scheme_without_exposing_index():
