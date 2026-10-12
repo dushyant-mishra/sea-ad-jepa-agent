@@ -1,0 +1,38 @@
+{
+  "schema": "V79_RARE_QUALIFICATION_V2_AUTHORITY",
+  "date": "2026-10-12",
+  "status": "ONE_V2_REALIZATION_AND_CONTROLLER_GEOMETRY_SCORE_AUTHORIZED",
+  "owner_instruction": "User explicitly instructed to keep pushing ahead after V1 calibration and before V2 gate freeze.",
+  "bound_contract_git_blob_sha": "bbb3b5b4a2fed7ca1f397f5c04fd4e6ea18dc773",
+  "bound_code": {
+    "base_generator_git_blob_sha": "2a2f0b2f5b48ed7b9cfd81a74ab7ec514053309f",
+    "production_io_git_blob_sha": "bf4f9865a32dbcb832844de055c6c083b82face0",
+    "qualification_geometry_git_blob_sha": "d6df76a43cc9f8c0bb457225faa40c1351b09f73",
+    "qualification_realizer_git_blob_sha": "68a50e6bee40c5e466ad22ad2ca2c937d82a64b9",
+    "qualification_scorer_git_blob_sha": "7dbb7b34e36b70b06a868ed696f7f34076d1cbfd"
+  },
+  "authorized": {
+    "realization_attempts": 1,
+    "seed_root": 79202026,
+    "challenge_count": 16,
+    "controller_geometry_scoring_after_realization": true,
+    "write_hash_bound_receipts": true
+  },
+  "preflight": [
+    "exact Git blob identities match local executable bytes",
+    "12/12 local V1/V2 synthetic tests pass fresh",
+    "output directory is fresh and empty",
+    "V2 contract remains byte-identical to bound contract",
+    "no Q00-Q11 regeneration or mutation",
+    "no pathology or protected-outcome opening"
+  ],
+  "not_authorized": {
+    "second_V2_realization": false,
+    "model_fitting": false,
+    "model_scoring": false,
+    "Q00_Q11_regeneration": false,
+    "pathology_opening": false,
+    "JEPA_training": false
+  },
+  "terminal": "STOP_AFTER_PREFROZEN_CONTROLLER_GEOMETRY_SCORE__MODEL_FITTING_REQUIRES_SEPARATE_AUTHORITY"
+}
