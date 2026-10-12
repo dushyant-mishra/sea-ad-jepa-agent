@@ -45,6 +45,8 @@ def sampler_policy(contract: Mapping) -> SamplerPolicy:
     inf = contract.get("inference", {})
     rec = inf.get("recovery_path", {})
     diag = inf.get("diagnostics", {})
+    if inf.get("sampler") != "NumPyro NUTS, diagonal mass matrix, default init (uniform radius 2)":
+        _refuse("sampler authority differs")
     if rec.get("version") != "V2_CORE_ONE_ESCALATION_ONE_EXTENSION_V1":
         _refuse("unexpected recovery-path version")
     if "no reparameterization" not in str(rec.get("no_other_changes", "")):
@@ -80,6 +82,8 @@ def next_recovery_action(contract: Mapping, attempts: list[Mapping], diagnostics
 def fit_identity(opaque_world_id: str, world_manifest_sha: str, part: str, gene_index: int) -> str:
     if not re.fullmatch(r"[0-9a-f]{12}", opaque_world_id):
         _refuse("opaque world id required")
+    if not re.fullmatch(r"[0-9a-f]{64}", world_manifest_sha):
+        _refuse("world manifest SHA-256 required")
     if part not in {"detection", "positive"} or gene_index < 0:
         _refuse("invalid fit scientific identity")
     return hashlib.sha256(f"{opaque_world_id}|{world_manifest_sha}|{part}|{int(gene_index)}".encode()).hexdigest()
@@ -130,7 +134,8 @@ def planned_attempt(contract: Mapping, *, stage: str, previous_target_accept: fl
     else:
         _refuse(f"unknown sampler stage {stage}")
     return {"stage":stage, "chains":p.chains, "warmup":warm, "draws_per_chain":p.draws,
-            "target_accept":ta, "max_tree_depth":p.max_tree_depth, "extended":ext}
+            "target_accept":ta, "max_tree_depth":p.max_tree_depth, "extended":ext,
+            "dense_mass":False, "init":"uniform_radius_2"}
 
 
 def diagnostics_from_samples(samples_by_chain: Mapping[str, np.ndarray], *, divergences: int, mean_tree_steps: float) -> dict:
@@ -141,13 +146,9 @@ def diagnostics_from_samples(samples_by_chain: Mapping[str, np.ndarray], *, dive
     tab = az.summary(idata, kind="diagnostics", round_to=None)
     if not {"r_hat", "ess_bulk", "ess_tail"}.issubset(tab.columns):
         _refuse("ArviZ diagnostics missing required columns")
-    return {
-        "divergences": int(divergences),
-        "worst_rhat": float(np.nanmax(tab["r_hat"].to_numpy())),
-        "worst_ess_bulk": float(np.nanmin(tab["ess_bulk"].to_numpy())),
-        "worst_ess_tail": float(np.nanmin(tab["ess_tail"].to_numpy())),
-        "mean_tree_steps": float(mean_tree_steps),
-    }
+    return {"divergences":int(divergences), "worst_rhat":float(np.nanmax(tab["r_hat"].to_numpy())),
+            "worst_ess_bulk":float(np.nanmin(tab["ess_bulk"].to_numpy())),
+            "worst_ess_tail":float(np.nanmin(tab["ess_tail"].to_numpy())), "mean_tree_steps":float(mean_tree_steps)}
 
 
 def combine_samples(a: Mapping[str, np.ndarray], b: Mapping[str, np.ndarray]) -> dict[str, np.ndarray]:
@@ -165,10 +166,10 @@ def combine_samples(a: Mapping[str, np.ndarray], b: Mapping[str, np.ndarray]) ->
 def posterior_summary(samples_by_chain: Mapping[str, np.ndarray]) -> dict:
     out = {}
     for k, v in samples_by_chain.items():
-        a = np.asarray(v); flat = a.reshape((-1,) + a.shape[2:])
-        out[k] = {"mean":np.mean(flat,0).tolist(), "sd":np.std(flat,0,ddof=1).tolist(),
-                  "q05":np.quantile(flat,.05,axis=0).tolist(), "q50":np.quantile(flat,.50,axis=0).tolist(),
-                  "q95":np.quantile(flat,.95,axis=0).tolist()}
+        a=np.asarray(v); flat=a.reshape((-1,) + a.shape[2:])
+        out[k]={"mean":np.mean(flat,0).tolist(), "sd":np.std(flat,0,ddof=1).tolist(),
+                "q05":np.quantile(flat,.05,axis=0).tolist(), "q50":np.quantile(flat,.50,axis=0).tolist(),
+                "q95":np.quantile(flat,.95,axis=0).tolist()}
     return out
 
 
@@ -176,23 +177,23 @@ def run_nuts_attempt(*, contract: Mapping, model, seed: int, stage: str,
                      post_warmup_state=None, previous_target_accept: float | None = None):
     import jax
     from numpyro.infer import MCMC, NUTS
+    from numpyro.infer.initialization import init_to_uniform
     spec = planned_attempt(contract, stage=stage, previous_target_accept=previous_target_accept)
-    kernel = NUTS(model, target_accept_prob=spec["target_accept"], max_tree_depth=spec["max_tree_depth"])
+    kernel = NUTS(model, target_accept_prob=spec["target_accept"], max_tree_depth=spec["max_tree_depth"],
+                  dense_mass=False, init_strategy=init_to_uniform(radius=2))
     mcmc = MCMC(kernel, num_warmup=spec["warmup"], num_samples=spec["draws_per_chain"],
                 num_chains=spec["chains"], chain_method="parallel", progress_bar=False)
     if stage == "EXTENSION":
         if post_warmup_state is None:
             _refuse("extension requires prior chain state")
         mcmc.post_warmup_state = post_warmup_state
-    t0 = time.perf_counter()
-    mcmc.run(jax.random.PRNGKey(int(seed)), extra_fields=("diverging", "num_steps"))
+    t0=time.perf_counter(); mcmc.run(jax.random.PRNGKey(int(seed)), extra_fields=("diverging", "num_steps"))
     return {"mcmc":mcmc, "wall_seconds":time.perf_counter()-t0, "spec":spec}
 
 
 def attempt_diagnostics(run: Mapping) -> tuple[dict, dict[str, np.ndarray]]:
-    m = run["mcmc"]
-    samples = {k: np.asarray(v) for k, v in m.get_samples(group_by_chain=True).items()}
-    extra = m.get_extra_fields(group_by_chain=True)
-    divergences = int(np.asarray(extra["diverging"]).sum())
-    mean_steps = float(np.asarray(extra["num_steps"]).mean())
+    m=run["mcmc"]
+    samples={k:np.asarray(v) for k,v in m.get_samples(group_by_chain=True).items()}
+    extra=m.get_extra_fields(group_by_chain=True)
+    divergences=int(np.asarray(extra["diverging"]).sum()); mean_steps=float(np.asarray(extra["num_steps"]).mean())
     return diagnostics_from_samples(samples, divergences=divergences, mean_tree_steps=mean_steps), samples
