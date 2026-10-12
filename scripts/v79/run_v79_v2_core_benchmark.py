@@ -72,7 +72,7 @@ def _git_head(root: Path) -> str:
 
 
 def prepare_engineering_package(root: Path, out_dir: Path) -> tuple[dict, str, dict]:
-    """Fresh seed-31999999 package; select one world by opaque ordering only, never Q identity."""
+    """Fresh contract-defined engineering package; select by opaque ordering only, never Q identity."""
     root = Path(root); out_dir = Path(out_dir)
     contract, qual_payload, cal, _, amendment = W.load_frozen_qualification_inputs(root)
     eng_root = int(contract["seeds"]["engineering_benchmark_root"])
@@ -88,7 +88,7 @@ def prepare_engineering_package(root: Path, out_dir: Path) -> tuple[dict, str, d
                                expected_root_manifest_sha=_sha(out_dir/F.ROOT_MANIFEST_NAME),
                                expected_index_sha=_sha(out_dir/F.FIT_ROOT_NAME/F.FIT_INDEX_NAME))
     if not idx.opaque_world_ids: _refuse("engineering package has no blinded worlds")
-    selected = sorted(idx.opaque_world_ids)[0]  # blind deterministic selection; never consult mapping/truth
+    selected = sorted(idx.opaque_world_ids)[0]
     rec = next(x for x in idx.index["worlds"] if x["opaque_world_id"] == selected)
     hashes = {"root_manifest":_sha(out_dir/F.ROOT_MANIFEST_NAME),
               "directory_digest":W.directory_digest(out_dir),
@@ -155,7 +155,6 @@ def execute_benchmark(root: Path, package_dir: Path, result_dir: Path) -> dict:
                 attempts.append(arec); total_seconds += arec["wall_seconds"]
                 if stage=="EXTENSION" and all_samples is not None:
                     all_samples = R.combine_samples(all_samples, samples)
-                    # diagnose all draws, as frozen contract requires
                     diag = R.diagnostics_from_samples(all_samples, divergences=sum(a["divergences"] for a in attempts),
                                                       mean_tree_steps=float(np.mean([a["mean_tree_steps"] for a in attempts])))
                 else:
@@ -165,7 +164,6 @@ def execute_benchmark(root: Path, package_dir: Path, result_dir: Path) -> dict:
                     frec["final_diagnosis"] = action; frec["attempts"] = attempts; break
                 previous_ta = arec["target_accept"]; last_mcmc = mcmc
                 stage = "ESCALATION" if action=="ESCALATE" else "EXTENSION"
-                # escalation is a fresh refit with attempt-1 seed by frozen recovery text; extension continues state
             frec["posterior_summary"] = R.posterior_summary(all_samples)
             fpath = result_dir/f"fit_{item['fit_id']}.json"
             fsha = R.write_receipt_atomic(fpath, frec)
