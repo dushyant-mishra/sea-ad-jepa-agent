@@ -14,7 +14,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "v79"))
 import generate_v79_v2_core_worlds as G  # noqa: E402
 
 FINAL = ROOT / "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json"
-FINAL_SHA = "8be47cb2d36ec9ddfdf4fd820ed0d51adea871dc115c1414cbe4edfb9223ee1d"
+FINAL_SHA = "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26"  # canonical Contract V2 (rebind 6115340528)
 PAYLOAD = ROOT / "results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2_DRAFT.json"
 PAYLOAD_SHA = "cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3"
 
@@ -62,7 +62,7 @@ def _truth_fixture(genes: int = 6, donors: int = 4) -> dict:
             "class_contrasts": np.tile(np.array([[0.2, -0.3]]), (genes, 1)),
             "source_contrasts": np.tile(np.array([[0.4, -0.5]]), (genes, 1)),
             "donor_sd": np.linspace(0.3, 0.6, genes),
-            "donor_z": z.copy(),
+            "donor_raw_centered": z.copy(),
             "donor_effects": z * np.linspace(0.3, 0.6, genes),
         },
         "positive": {
@@ -72,7 +72,7 @@ def _truth_fixture(genes: int = 6, donors: int = 4) -> dict:
             "class_contrasts": np.tile(np.array([[0.1, -0.15]]), (genes, 1)),
             "source_contrasts": np.tile(np.array([[0.08, -0.09]]), (genes, 1)),
             "donor_sd": np.linspace(0.1, 0.2, genes),
-            "donor_z": z.copy(),
+            "donor_raw_centered": z.copy(),
             "donor_effects": z * np.linspace(0.1, 0.2, genes),
             "sigma": np.linspace(0.3, 0.6, genes),
         },
