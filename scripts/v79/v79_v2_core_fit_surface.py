@@ -25,6 +25,7 @@ FIT_ROOT_NAME = "blinded_fit_inputs"
 OPAQUE_RE = re.compile(r"^[0-9a-f]{12}$")
 REPLICATES = ("train", "same_donor", "new_donor")
 DESIGN_KEYS = ("src", "donor", "cls", "log_lib")
+ALLOWED_MODES = ("QUALIFICATION_TRUTH_FREEZE", "ENGINEERING_TEST_ONLY")
 
 
 class FitSurfaceRefused(RuntimeError):
@@ -120,8 +121,11 @@ class GeneInputs:
     positive_mask: np.ndarray
 
 
-def load_blinded_index(package_root: Path, *, expected_root_manifest_sha: str | None,
+def load_blinded_index(package_root: Path, *, expected_mode: str,
+                       expected_root_manifest_sha: str | None,
                        expected_index_sha: str | None) -> BlindedIndex:
+    if expected_mode not in ALLOWED_MODES:
+        _refuse(f"unsupported expected mode {expected_mode!r}")
     package_root = Path(package_root)
     root_path = _safe_existing_file(package_root, ROOT_MANIFEST_NAME)
     if expected_root_manifest_sha is not None and _sha(root_path) != expected_root_manifest_sha:
@@ -129,8 +133,8 @@ def load_blinded_index(package_root: Path, *, expected_root_manifest_sha: str | 
     root = _load_json(root_path)
     if root.get("schema") != "V79_V2_CORE_WORLD_SET_MANIFEST_V1":
         _refuse("wrong root manifest schema")
-    if root.get("mode") != "QUALIFICATION_TRUTH_FREEZE":
-        _refuse("wrong realization mode")
+    if root.get("mode") != expected_mode:
+        _refuse(f"package mode {root.get('mode')!r} does not match expected mode {expected_mode!r}")
     if root.get("final_contract_sha256") != FINAL_CONTRACT_SHA256:
         _refuse("root manifest contract hash differs")
     if root.get("blinded_fit_root") != FIT_ROOT_NAME:
@@ -139,7 +143,7 @@ def load_blinded_index(package_root: Path, *, expected_root_manifest_sha: str | 
         _refuse("unexpected controller truth root declaration")
     if root.get("benchmark_run") is not False or root.get("qualification_fits_run") != 0 or \
             root.get("training_authorized") is not False:
-        _refuse("realization root already records downstream execution")
+        _refuse("world package already records downstream execution")
     index_rel = root.get("blinded_fit_index_path")
     if index_rel != f"{FIT_ROOT_NAME}/{FIT_INDEX_NAME}":
         _refuse("unexpected blinded index path")
@@ -148,7 +152,7 @@ def load_blinded_index(package_root: Path, *, expected_root_manifest_sha: str | 
     if index_sha != root.get("blinded_fit_index_sha256"):
         _refuse("blinded index hash does not match root manifest")
     if expected_index_sha is not None and index_sha != expected_index_sha:
-        _refuse("blinded index hash differs from accepted realization")
+        _refuse("blinded index hash differs from accepted package")
     index = _load_json(index_path)
     if index.get("schema") != "V79_V2_CORE_BLINDED_FIT_INDEX_V1":
         _refuse("wrong blinded index schema")
@@ -172,10 +176,11 @@ def load_blinded_index(package_root: Path, *, expected_root_manifest_sha: str | 
     return BlindedIndex(package_root, root, index, tuple(ids))
 
 
-def load_blinded_world(package_root: Path, opaque_world_id: str) -> BlindedWorld:
+def load_blinded_world(package_root: Path, opaque_world_id: str, *, expected_mode: str) -> BlindedWorld:
     if not isinstance(opaque_world_id, str) or not OPAQUE_RE.fullmatch(opaque_world_id):
         _refuse(f"opaque 12-hex world ID required, got {opaque_world_id!r}")
-    idx = load_blinded_index(package_root, expected_root_manifest_sha=None, expected_index_sha=None)
+    idx = load_blinded_index(package_root, expected_mode=expected_mode,
+                             expected_root_manifest_sha=None, expected_index_sha=None)
     recs = {r["opaque_world_id"]: r for r in idx.index["worlds"]}
     if opaque_world_id not in recs:
         _refuse(f"unknown opaque world ID {opaque_world_id}")
