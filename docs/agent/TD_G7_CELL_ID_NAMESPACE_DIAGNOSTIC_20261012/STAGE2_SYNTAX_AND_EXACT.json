@@ -1,0 +1,542 @@
+{
+  "biological_replay_authorized": false,
+  "exact": {
+    "global_overlap_any_shard": 0,
+    "n_s174_ids_total": 4480,
+    "n_sample_ids_total": 23690,
+    "per_matrix": {
+      "HVS::19cd530b-622c-4bd8-b738-dbf169412cb0": {
+        "joined_stem": "de88e08b50c44dbe",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 13,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::38374d1b-6549-4429-b59a-ff2706dacd96": {
+        "joined_stem": "5a104c17a7d6e5cf",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 29,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::42c9001a-3a29-4952-aaa0-b55e73851a5c": {
+        "joined_stem": "fa1d6cf6e74837f2",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 1,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::4afcaa14-e1c1-4b2b-b5af-c5b8936c3ddd": {
+        "joined_stem": "701d4db85fd51088",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 52,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::57f3c92b-a07a-41da-b660-88eb9f93c4c9": {
+        "joined_stem": "5dab94333efd8e21",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 264,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::5fff0955-173e-407d-b160-64f513ca6db6": {
+        "joined_stem": "46a2e68f12d45643",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 96,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::6201fd7d-f35b-4487-bace-99426881237b": {
+        "joined_stem": "7da7c897180c16b5",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 20,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::77dc6994-2777-4fad-a445-4ff7d143a682": {
+        "joined_stem": "c9d1fc26b487b582",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 21,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::7958eba0-1d79-42e3-8947-a198f98578f2": {
+        "joined_stem": "d35f9b260b727137",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 8,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::7b96819c-598c-47a1-9cea-f410fc0c37fa": {
+        "joined_stem": "117e1b89adbf25e4",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 170,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::7be9f52d-7eef-4bdd-a0ba-c8f2d4986551": {
+        "joined_stem": "120794b6773c7cf9",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 39,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::8dfadc37-e19c-4d4b-80d8-cee48e732bcf": {
+        "joined_stem": "dd26eaeaed7d104f",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 18,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::900faaa3-adec-4fd9-81b0-1e90a2ab256f": {
+        "joined_stem": "4777ea704d910eee",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 1,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::9adebd17-bc24-47b6-acdb-0db488bc602d": {
+        "joined_stem": "1cf08334d3b12f5f",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 14,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::a9b5738d-997d-433f-8d86-12dbfc8f01fb": {
+        "joined_stem": "e38be9d52b6f8e0b",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 34,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::ab88770a-7a74-4da5-a166-d68f02d644f2": {
+        "joined_stem": "58baaeadf44eab57",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 54,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::bb3c4200-5c1b-4f8a-a846-e021919b7241": {
+        "joined_stem": "bbffd755c3f71256",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 23,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::c3b47645-c927-4a0a-868f-eb7640ea3354": {
+        "joined_stem": "246008367b5ed2fb",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 79,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1": {
+        "joined_stem": "c70df1e5200f419f",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 9,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::c9143d44-4c95-4f06-8edc-e03d3491ab97": {
+        "joined_stem": "62544b4c7ab48cd1",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 91,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::d1303087-592a-4c3d-aa3e-21de203927dc": {
+        "joined_stem": "57791abbd401df2b",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 89,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::e813d04b-7833-4b02-b14f-0247d6128516": {
+        "joined_stem": "16632e1b92d2409b",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 3,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "HVS::f8975a92-8ddb-4dde-adbe-977a4b3e4e96": {
+        "joined_stem": "4be84f5869689fe5",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 1,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "HVS"
+      },
+      "sea_ad_ang_rna_final_2026": {
+        "joined_stem": "e31a8c262e8be576",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 797,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "SEA_AD"
+      },
+      "sea_ad_caudate_rna_all_2025": {
+        "joined_stem": "3230dd0fe3beb954",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 3424,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "SEA_AD"
+      },
+      "sea_ad_fi_rna_final_2026": {
+        "joined_stem": "a6a34c7d7c6723a0",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 1035,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "SEA_AD"
+      },
+      "sea_ad_hip_rna_final_2026": {
+        "joined_stem": "8a1613e724707595",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 764,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "SEA_AD"
+      },
+      "sea_ad_itg_rna_final_2026": {
+        "joined_stem": "4a3db0b3a3ee23e5",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 1443,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "SEA_AD"
+      },
+      "sea_ad_lec_rna_final_2026": {
+        "joined_stem": "97c509331469cc92",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 645,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "SEA_AD"
+      },
+      "sea_ad_mec_rna_final_2026": {
+        "joined_stem": "15b1f72fcc49200e",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 2776,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "SEA_AD"
+      },
+      "sea_ad_mtg_rna_final_2026": {
+        "joined_stem": "0428d814f189ca87",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 3479,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "SEA_AD"
+      },
+      "sea_ad_pfc_a9_rna_final_2026": {
+        "joined_stem": "dfcb594c1abeb0c0",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 4042,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "SEA_AD"
+      },
+      "sea_ad_stg_rna_final_2026": {
+        "joined_stem": "2bfa3b9301efa393",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 1887,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "SEA_AD"
+      },
+      "sea_ad_v1c_rna_final_2026": {
+        "joined_stem": "9fc20935b65302ee",
+        "joined_stem_in_g1b": true,
+        "n_sample_ids": 2269,
+        "overlap_with_joined_stem": 0,
+        "shards_with_any_overlap": [],
+        "study": "SEA_AD"
+      }
+    },
+    "s174_ids_duplicated_across_shards": 0
+  },
+  "g7_authority_created": false,
+  "inputs": {
+    "g1b_freeze_sha256": "0513421e45865f290bddf8b0be56d64c7d9c5297bf0150ea6b9df286514b5f8f",
+    "macha_freeze_sha256": "240b2b71a94802477ca726a2b4bb020d2ad5542ccf31c4e732906008f81e967c",
+    "s174_meta_sha256": {
+      "0428d814f189ca87": "8cf269c8a58a98c22cbd24ae8f2a68d7b440f26d372dfdaf867e7fa93281c34d",
+      "117e1b89adbf25e4": "a8f66ff78f42e37415159623d5e1f82b431f269e8e350d912693cb7c2c836bed",
+      "120794b6773c7cf9": "2cb5b31a1700675e17e2ed8b4479729cefd4b4b8b6caeba039319b9fec15e073",
+      "15b1f72fcc49200e": "a6f51a8f3b3b725132d954c690dd4aee1d5dccbcd0e5f04e09f0747b10872ec8",
+      "16632e1b92d2409b": "ed57f3e765e65877029a18e6618f0d750328d7489b9c665df9764adb9e1c577c",
+      "1cf08334d3b12f5f": "9a018e0b61c1d6f9aeb923c5ee76896615f8537359683c21609fe03a791911a0",
+      "246008367b5ed2fb": "cc6517c8600774268a5ed60bccd4afccd8da6bb81d7ccded5c3ab941b4477ee7",
+      "2bfa3b9301efa393": "b5210b040b3ea292e7df252d58f851f02260c1cf112ecf3fd85c20c3202bbfd1",
+      "3230dd0fe3beb954": "fd7593f88941e9a308950a177805b60181e1d34367b1214014cdfd1a390790f1",
+      "46a2e68f12d45643": "2472471102dc38502ea12c145d9fb8083033b1aa11cb0dd81a4150c496b19d86",
+      "4777ea704d910eee": "fc1c13393e9d541457cb7e965c8a2b2b1db45542fda993dc21ad872d0a34905c",
+      "4a3db0b3a3ee23e5": "e64dcf4f3ba6a64550bd68c720730ade66fd8d35ddad2362d4e6a695187a71e3",
+      "4be84f5869689fe5": "79ad3197789f211c1ce15c887a2a1fbe5bab9de2063be9ae1e7b69b1e2fc7e9f",
+      "57791abbd401df2b": "be0409b1cb048d2fffbfff281d55d088fa6adbf46829a082d1643025ce0e6bd5",
+      "58baaeadf44eab57": "612091329d25730ed4df87aa1fd256aacffdf1f4e4590ed07ff19fff06f9ca75",
+      "5a104c17a7d6e5cf": "e8666449bbcf94e672feb993853abc5b8af6544563f3f93a9d1377afa1af4f32",
+      "5dab94333efd8e21": "f9ba529fdacaec11da02112929686ec54de4d54a0babf8282ac51370ea636244",
+      "62544b4c7ab48cd1": "1aaaf07d4bfa26e63f15cd422e31f94de0a07484420739758c44eb815de4000d",
+      "701d4db85fd51088": "96d1985a0cec6d86bbee5f725e729eb2dda01d5a2fce6b2f1df0bf715b2ca7b4",
+      "7da7c897180c16b5": "f0ed30524d5217eb8b9b76b8f6e44fd2473d1892964300108976ed80fb083be3",
+      "8a1613e724707595": "d12aeda2eb4fb26fe3702f4e02a5bb555861bc6ffc0bf4955d04d1f8b5a2895d",
+      "97c509331469cc92": "8ab9941bbf3d254497af0a3de5cd271857f9fa9e4fbcb2262822bb9b09578477",
+      "9fc20935b65302ee": "87570408b31dfb6ab9046fa8bb5342f50e4e958b6f7857f28a9d3284c0530dc4",
+      "a410358f191a3e4c": "277c08a4e08cdadd07ff7fade2f7a0b32545da51ba3ef46a9b53d2cd50d487a8",
+      "a6a34c7d7c6723a0": "eeb6817fafb9f27dad8017093776a0bebd555ca2c05a23ff1d36a4eb54ed05d3",
+      "bbffd755c3f71256": "107c414d6dce81d3123a17869c0498cfaba902ce68f48cb7b4895b7a2289be77",
+      "c70df1e5200f419f": "e6547ee1603063d3d5bf3aba0b1f39b44c9b9601dac12019a723d2d7257a3186",
+      "c9d1fc26b487b582": "e5c8bfc7faf33f46824f0200aad1d36607dca641d10cc458adf10344d7df5b57",
+      "d35f9b260b727137": "bfff6976607eec5e67ab133371f4cf580fc65c4aa1be9ca3d64c54f55992d7b7",
+      "dd26eaeaed7d104f": "7995d8fba6ae1a24b43da5dad65cc40a668c0634a5d0186657c709a203f59d49",
+      "de88e08b50c44dbe": "60147fc84f0c39003d3ce4c6609b0f7ceba95eec0d4bca71404ecaf21220fa9a",
+      "dfcb594c1abeb0c0": "4cdc232679f6fa0aac8bfb1c2703ed96c5e8ab180348bf89761b03f290559732",
+      "e31a8c262e8be576": "d4fec4067a7f7c388c9f71f0a76b98aab740ed17a72d63d9b8414c007baae9a3",
+      "e38be9d52b6f8e0b": "92f125e7c882f390c9be3c6b224d79aeb042ab2fed485f7a348a710ffc43c0dc",
+      "fa1d6cf6e74837f2": "977d52463ce8bc78c368d2c2778e1de4b43b075dd0a4e1b2556132b9fc477d35"
+    },
+    "sample_freeze_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6"
+  },
+  "schema": "JEPA_TD_G7_CELL_ID_NAMESPACE_DIAGNOSTIC_SYNTAX_V1",
+  "stage": "syntax_and_exact_intersections",
+  "syntax": {
+    "s174_joined_shards_by_study": {
+      "HVS": {
+        "delimiter_char_counts": {
+          "-": 2944,
+          "_": 2944
+        },
+        "examples": [
+          "GACCGTGGTGTTAGCT-L8TX_190614_01_B05-902409026",
+          "AAGATAGTCGGTAGGA-L8TX_190207_01_C10-894695513",
+          "CTTTCGGAGCAGGGAG-L8TX_190207_01_C09-894704806"
+        ],
+        "length_counts": {
+          "45": 1431,
+          "46": 1513
+        },
+        "n": 2944,
+        "stems": [
+          "117e1b89adbf25e4",
+          "120794b6773c7cf9",
+          "16632e1b92d2409b",
+          "1cf08334d3b12f5f",
+          "246008367b5ed2fb",
+          "46a2e68f12d45643",
+          "4777ea704d910eee",
+          "4be84f5869689fe5",
+          "57791abbd401df2b",
+          "58baaeadf44eab57",
+          "5a104c17a7d6e5cf",
+          "5dab94333efd8e21",
+          "62544b4c7ab48cd1",
+          "701d4db85fd51088",
+          "7da7c897180c16b5",
+          "bbffd755c3f71256",
+          "c70df1e5200f419f",
+          "c9d1fc26b487b582",
+          "d35f9b260b727137",
+          "dd26eaeaed7d104f",
+          "de88e08b50c44dbe",
+          "e38be9d52b6f8e0b",
+          "fa1d6cf6e74837f2"
+        ],
+        "top_shapes": [
+          [
+            "A16-A9A2_96_92_A92-910",
+            1513
+          ],
+          [
+            "A16-A9A2_96_92_A92-99",
+            1431
+          ]
+        ],
+        "unique": 2944
+      },
+      "SEA_AD": {
+        "delimiter_char_counts": {
+          "-": 1408,
+          "_": 1408
+        },
+        "examples": [
+          "CAGGCCACAGTTGTTG-L8TX_210318_01_B05-1153814162",
+          "GAACGTTTCTCCGATC-L8TX_210430_01_C04-1142430413",
+          "AATAGAGGTAAGGCTG-L8TX_210401_01_F09-1142430399"
+        ],
+        "length_counts": {
+          "46": 1268,
+          "47": 5,
+          "76": 135
+        },
+        "n": 1408,
+        "stems": [
+          "0428d814f189ca87",
+          "15b1f72fcc49200e",
+          "2bfa3b9301efa393",
+          "3230dd0fe3beb954",
+          "4a3db0b3a3ee23e5",
+          "8a1613e724707595",
+          "97c509331469cc92",
+          "9fc20935b65302ee",
+          "a6a34c7d7c6723a0",
+          "dfcb594c1abeb0c0",
+          "e31a8c262e8be576"
+        ],
+        "top_shapes": [
+          [
+            "A16-A9A2_96_92_A92-910",
+            1268
+          ],
+          [
+            "A16-A9A2_96_92_A92-A2-A294-9",
+            5
+          ],
+          [
+            "A16-A9A2_96_92_A92-94a9a92a9a9a297a9a9a294a97",
+            4
+          ],
+          [
+            "A16-A9A2_96_92_A92-97a296a9a96a9a94a92a92a29",
+            4
+          ],
+          [
+            "A16-A9A2_96_92_A92-9a29a9a94a9a95a93a79a292a93a",
+            4
+          ]
+        ],
+        "unique": 1408
+      }
+    },
+    "s174_unjoined_shards": {
+      "a410358f191a3e4c": {
+        "delimiter_char_counts": {
+          "-": 128,
+          "_": 128
+        },
+        "examples": [
+          "TCCTCCCAGTTAGTAG-L8TX_190614_01_B05-902409026",
+          "CAGTTAGGTCGGCACT-L8TX_190207_01_C10-894695513",
+          "CTGTGAACACCATTCC-L8TX_190207_01_C09-894704806"
+        ],
+        "length_counts": {
+          "45": 61,
+          "46": 67
+        },
+        "n": 128,
+        "top_shapes": [
+          [
+            "A16-A9A2_96_92_A92-910",
+            67
+          ],
+          [
+            "A16-A9A2_96_92_A92-99",
+            61
+          ]
+        ],
+        "unique": 128
+      }
+    },
+    "sample_a_by_study": {
+      "HVS": {
+        "delimiter_char_counts": {
+          "-": 1129,
+          "_": 1129
+        },
+        "examples": [
+          "AGTACCAGTGAGATAT-L8TX_200625_01_D10-1034780103",
+          "CTGCATCGTCTGTCAA-L8TX_190627_01_A03-908340375",
+          "ATTCTTGTCACGGAGA-L8TX_190614_01_H05-902409030"
+        ],
+        "length_counts": {
+          "45": 530,
+          "46": 599
+        },
+        "n": 1129,
+        "top_shapes": [
+          [
+            "A16-A9A2_96_92_A92-910",
+            599
+          ],
+          [
+            "A16-A9A2_96_92_A92-99",
+            530
+          ]
+        ],
+        "unique": 1129
+      },
+      "SEA_AD": {
+        "delimiter_char_counts": {
+          "-": 22561,
+          "_": 22561
+        },
+        "examples": [
+          "AATCCATCAGAATGAC-L8XR_231026_05_E04-1311674017",
+          "AGGGTTGCAATTGAAG-L8XR_231116_02_G07-1315525447",
+          "AGGATTGAGCGGATAA-L8XR_231221_02_D02-1322484698"
+        ],
+        "length_counts": {
+          "46": 21241,
+          "47": 84,
+          "76": 1236
+        },
+        "n": 22561,
+        "top_shapes": [
+          [
+            "A16-A9A2_96_92_A92-910",
+            21241
+          ],
+          [
+            "A16-A9A2_96_92_A92-A2-A294-9",
+            84
+          ],
+          [
+            "A16-A9A2_96_92_A92-94a9a92a9a9a297a9a9a294a97",
+            64
+          ],
+          [
+            "A16-A9A2_96_92_A92-9a9a29a93a294a9a9a9a392a292a392a92a",
+            56
+          ],
+          [
+            "A16-A9A2_96_92_A92-a39a9a59a94a29a9a914a29",
+            53
+          ]
+        ],
+        "unique": 22561
+      }
+    }
+  },
+  "training_authorized": false,
+  "values_opened": {
+    "corrected_replay": false,
+    "g6": false,
+    "h5ad": false,
+    "s174_counts": false
+  }
+}

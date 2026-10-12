@@ -16,3 +16,7 @@ docs/agent/TD_G7_SUCCESSOR_EXECUTION_20261012/g7_namespace/** -text
 docs/agent/TD_G7_SUCCESSOR_EXECUTION_20261012/launch_record/** -text
 docs/agent/TD_G7_SUCCESSOR_EXECUTION_20261012/launch_authority_materialized/** -text
 docs/agent/TD_G7_SUCCESSOR_EXECUTION_20261012/launch_console/** -text
+
+# G7 cell-ID namespace diagnostic records: byte-exact copies (SOURCE_SHA256 files).
+docs/agent/TD_G7_CELL_ID_NAMESPACE_DIAGNOSTIC_20261012/STAGE2* -text
+docs/agent/TD_G7_CELL_ID_NAMESPACE_DIAGNOSTIC_20261012/STAGE3* -text

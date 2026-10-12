@@ -126,14 +126,90 @@ def syntax(ns: dict) -> dict:
     }
 
 
+TRANSFORMS = {  # the only transforms the committed stage-3 spec may name
+    "IDENTITY": lambda x: x,
+    "STRIP_WHITESPACE": lambda x: x.strip(),
+    "UPPERCASE": lambda x: x.upper(),
+    "DROP_TRAILING_FIELD": lambda x: x.rsplit("-", 1)[0],
+    "BARCODE_AND_TRAILING_FIELD": lambda x: f"{x.split('-')[0]}-{x.split('-')[-1]}",
+    "BARCODE_ONLY": lambda x: x.split("-", 1)[0],
+}
+CAN_ESTABLISH = ("STRIP_WHITESPACE", "UPPERCASE")
+BLOCKS_DISJOINTNESS = ("DROP_TRAILING_FIELD", "BARCODE_AND_TRAILING_FIELD")
+
+
+def _image(groups: dict[str, list[str]], fn) -> tuple[dict, dict]:
+    """Map every ID through fn; return output -> set of preimages, and per-group collision counts."""
+    pre: dict[str, set] = defaultdict(set)
+    within = {}
+    for key, ids in groups.items():
+        outs = [fn(x) for x in ids]
+        within[key] = len(outs) - len(set(outs))
+        for x, y in zip(ids, outs):
+            pre[y].add(x)
+    return pre, within
+
+
+def evaluate_transform(name: str, ns: dict) -> dict:
+    fn = TRANSFORMS[name]
+    s174_groups = {stem: v["ids"] for stem, v in ns["s174"].items()}
+    a_pre, a_within = _image(ns["sample"], fn)
+    b_pre, b_within = _image(s174_groups, fn)
+    a_inputs = sum(len(v) for v in ns["sample"].values())
+    b_inputs = sum(len(v) for v in s174_groups.values())
+    shared = set(a_pre) & set(b_pre)
+    b_by_stem = {stem: {fn(x) for x in ids} for stem, ids in s174_groups.items()}
+    per_matrix = {}
+    for m, ids in ns["sample"].items():
+        outs = {fn(x) for x in ids}
+        per_matrix[m] = {"overlap_with_joined_stem": len(outs & b_by_stem.get(ns["join"][m], set())),
+                         "overlap_any_shard": len(outs & set(b_pre))}
+    one_to_one = all(len(a_pre[y]) == 1 and len(b_pre[y]) == 1 for y in shared)
+    return {"transform": name,
+            "sample_a": {"inputs": a_inputs, "distinct_outputs": len(a_pre), "global_collisions": a_inputs - len(a_pre),
+                         "max_within_matrix_collisions": max(a_within.values())},
+            "s174": {"inputs": b_inputs, "distinct_outputs": len(b_pre), "global_collisions": b_inputs - len(b_pre),
+                     "max_within_shard_collisions": max(b_within.values())},
+            "collision_free_both_sides": a_inputs == len(a_pre) and b_inputs == len(b_pre),
+            "global_overlap": len(shared), "overlap_all_one_to_one": one_to_one,
+            "matrices_with_overlap_joined_stem": sum(v["overlap_with_joined_stem"] > 0 for v in per_matrix.values()),
+            "matrices_with_overlap_any_shard": sum(v["overlap_any_shard"] > 0 for v in per_matrix.values()),
+            "per_matrix": per_matrix}
+
+
+def classify(results: dict) -> str:
+    for name in CAN_ESTABLISH:
+        r = results[name]
+        if r["collision_free_both_sides"] and r["global_overlap"] >= 1 and r["overlap_all_one_to_one"]:
+            return "IDENTIFIER_NAMESPACE_MISMATCH"
+    if any(results[name]["global_overlap"] >= 1 for name in BLOCKS_DISJOINTNESS):
+        return "ID_NAMESPACE_DIAGNOSTIC_NOT_ESTIMABLE"
+    return "GENUINELY_DISJOINT_NATURAL_CELL_SETS"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["syntax"])
+    ap.add_argument("stage", choices=["syntax", "transforms"])
     ap.add_argument("--sample-freeze", required=True)
     ap.add_argument("--macha-freeze", required=True)
     ap.add_argument("--s174-cache-root", required=True)
+    ap.add_argument("--spec", help="committed stage-3 transform spec (transforms stage)")
     a = ap.parse_args()
     ns = load_namespaces(Path(a.sample_freeze), Path(a.macha_freeze), Path(a.s174_cache_root))
+    if a.stage == "transforms":
+        spec = json.loads(Path(a.spec).read_text(encoding="utf-8"))
+        names = [t["name"] for t in spec["transforms"]]
+        if set(names) != set(TRANSFORMS) or spec.get("status") != "PROSPECTIVE__COMMITTED_BEFORE_ANY_TRANSFORMED_OVERLAP_IS_COMPUTED":
+            raise SystemExit("STOP: the transform spec does not name exactly the registered transforms")
+        results = {name: evaluate_transform(name, ns) for name in names}
+        out = {"schema": "JEPA_TD_G7_CELL_ID_NAMESPACE_DIAGNOSTIC_TRANSFORMS_V1", "spec_sha256": sha(Path(a.spec)),
+               "classification": classify(results),
+               "summary": {n: {k: v for k, v in r.items() if k != "per_matrix"} for n, r in results.items()},
+               "per_matrix": {n: r["per_matrix"] for n, r in results.items()},
+               "values_opened": {"s174_counts": False, "h5ad": False, "g6": False, "corrected_replay": False},
+               "g7_authority_created": False, "biological_replay_authorized": False, "training_authorized": False}
+        print(json.dumps(out, indent=2, sort_keys=True))
+        return 0
     out = {"schema": "JEPA_TD_G7_CELL_ID_NAMESPACE_DIAGNOSTIC_SYNTAX_V1", "stage": "syntax_and_exact_intersections",
            "inputs": {"sample_freeze_sha256": SAMPLE_FREEZE_SHA, "macha_freeze_sha256": MACHA_FREEZE_SHA,
                       "g1b_freeze_sha256": ns["g1b_freeze_sha256"],

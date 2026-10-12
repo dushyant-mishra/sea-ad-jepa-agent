@@ -1,0 +1,33 @@
+{
+  "schema": "JEPA_TD_G7_CELL_ID_NAMESPACE_TRANSFORM_SPEC_V1",
+  "status": "PROSPECTIVE__COMMITTED_BEFORE_ANY_TRANSFORMED_OVERLAP_IS_COMPUTED",
+  "authority": "PR #298 external outcome audit, comment 6119238901 (one read-only metadata-only cell-ID namespace diagnostic)",
+  "known_at_specification": {
+    "stage2_output_sha256": "67553625073a5bf6fcd878ea2655d7892fc69632532e382630612a85e6fca49e",
+    "exact_overlap": "0 within the G7 matrix->stem join, 0 per matrix against every shard, 0 globally",
+    "syntax": "Both sides use one three-field, '-'-delimited exp_component_name form: <16-nt barcode>-<chip/date/well token>-<numeric or UUID-like library id>. Shapes and length distributions match. Both are uppercase except the lowercase hex in UUID-like trailing fields. Neither side has a matrix/sample prefix or qualifier."
+  },
+  "transforms": [
+    {"name": "IDENTITY", "applied_to": "both", "declared": "lossless", "role": "exact baseline (stage 2)"},
+    {"name": "STRIP_WHITESPACE", "applied_to": "both", "declared": "lossless_on_domain_if_injective", "role": "can establish"},
+    {"name": "UPPERCASE", "applied_to": "both", "declared": "lossless_on_domain_if_injective", "role": "can establish"},
+    {"name": "DROP_TRAILING_FIELD", "applied_to": "both", "declared": "information_losing", "role": "descriptive; a match on barcode + chip/well blocks a disjointness conclusion"},
+    {"name": "BARCODE_AND_TRAILING_FIELD", "applied_to": "both", "declared": "information_losing", "role": "descriptive; a match on barcode + library id blocks a disjointness conclusion"},
+    {"name": "BARCODE_ONLY", "applied_to": "both", "declared": "information_losing", "role": "descriptive only; barcode reuse across libraries is expected by chance, so it never changes the classification"}
+  ],
+  "measurements_per_transform": [
+    "per side: inputs, distinct outputs, global collisions (inputs - distinct outputs), collisions within any matrix/shard",
+    "overlap of distinct outputs: globally, per matrix vs its G7-joined stem, per matrix vs any shard",
+    "for overlapping outputs: whether each has exactly one preimage on each side (1:1)"
+  ],
+  "decision_rule": [
+    "1. IDENTIFIER_NAMESPACE_MISMATCH if any 'can establish' transform (STRIP_WHITESPACE, UPPERCASE) is collision-free on both sides globally and yields global overlap >= 1 with every overlapping output 1:1.",
+    "2. Otherwise ID_NAMESPACE_DIAGNOSTIC_NOT_ESTIMABLE if DROP_TRAILING_FIELD or BARCODE_AND_TRAILING_FIELD yields any global overlap. The same barcode within the same chip/well, or the same library, on both sides cannot be ruled in or out as one cell from metadata.",
+    "3. Otherwise GENUINELY_DISJOINT_NATURAL_CELL_SETS. Both namespaces share one documented format, no lossless transform yields overlap, and no barcode+chip/well or barcode+library match exists. BARCODE_ONLY results are reported but never change this.",
+    "Overlap is judged globally (any shard), the most conservative scope. Per-matrix and joined-stem scopes are reported."
+  ],
+  "forbidden": ["fuzzy or edit-distance matching", "donor or cell-type matching", "manual pairing", "any transform not listed here", "reading counts, H5AD values, G6 values or corrected-replay values"],
+  "g7_authority_created": false,
+  "biological_replay_authorized": false,
+  "training_authorized": false
+}
