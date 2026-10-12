@@ -57,6 +57,8 @@ def validate_fit_contract_view(view: Mapping) -> Mapping:
         _refuse("seed projection differs")
     if set(seeds.get("gene_streams", {})) != {"fit_det_primary", "fit_det_escalation", "fit_pos_primary", "fit_pos_escalation"}:
         _refuse("fit seed stream projection differs")
+    if set(view.get("result_schemas", {})) != {"fit_record"}:
+        _refuse("fit result-schema projection differs")
     # The fit view may describe excluded operator/matrix terms, but may contain no world/gate identity.
     raw = json.dumps(dict(view), sort_keys=True)
     for forbidden in ("Q00_BASELINE", "Q11_OMITTED_OPERATOR", '"world_name"', '"world_index"', '"gates"'):
