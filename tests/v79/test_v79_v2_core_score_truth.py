@@ -41,7 +41,7 @@ def test_truth_world_exposes_expected_per_gene_parameter_shapes():
         donor=w.load(f"truth/{part}/donor_effects.npy")
         assert intercept.shape==(44,) and depth1.shape==(44,) and depth2.shape==(44,)
         assert cls.shape==(44,2) and src.shape==(44,2) and donor_sd.shape==(44,)
-        assert donor.shape[0]==44 and donor.ndim==2
+        assert donor.shape==(149,44)
     assert w.load("truth/positive/sigma.npy").shape==(44,)
 
 
