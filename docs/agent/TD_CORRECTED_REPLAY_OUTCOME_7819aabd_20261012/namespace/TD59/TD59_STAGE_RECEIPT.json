@@ -1,0 +1,88 @@
+{
+  "historical_comparison": "QUALITATIVE_HISTORICAL_CONCLUSION_REPRODUCED",
+  "invocations": [
+    {
+      "executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "exit_code": 0,
+      "outcome": "PASS",
+      "output": "TD59/TD59_HVS_P0.output.json",
+      "output_sha256": "ee08c7fab912e44de7378a203b89aecb2781a9fdcdbd6606f352e4dfaca82893",
+      "panel": 0,
+      "source": "HVS",
+      "stderr": "TD59/TD59_HVS_P0.stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "TD59/TD59_HVS_P0.stdout.txt",
+      "stdout_sha256": "ee08c7fab912e44de7378a203b89aecb2781a9fdcdbd6606f352e4dfaca82893"
+    },
+    {
+      "executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "exit_code": 0,
+      "outcome": "PASS",
+      "output": "TD59/TD59_NPH52_P0.output.json",
+      "output_sha256": "7afde32748055fadcb1a8f180542e24117748b90a235b55b9ee76bf9519862e0",
+      "panel": 0,
+      "source": "NPH52",
+      "stderr": "TD59/TD59_NPH52_P0.stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "TD59/TD59_NPH52_P0.stdout.txt",
+      "stdout_sha256": "7afde32748055fadcb1a8f180542e24117748b90a235b55b9ee76bf9519862e0"
+    },
+    {
+      "executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "exit_code": 0,
+      "outcome": "PASS",
+      "output": "TD59/TD59_SEA_AD_P0.output.json",
+      "output_sha256": "65ccdcd6bfc980b77b70376c992d9c2d98756fb0a3dcdded65e690b099481e38",
+      "panel": 0,
+      "source": "SEA_AD",
+      "stderr": "TD59/TD59_SEA_AD_P0.stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "TD59/TD59_SEA_AD_P0.stdout.txt",
+      "stdout_sha256": "65ccdcd6bfc980b77b70376c992d9c2d98756fb0a3dcdded65e690b099481e38"
+    },
+    {
+      "executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "exit_code": 0,
+      "outcome": "PASS",
+      "output": "TD59/TD59_HVS_P1.output.json",
+      "output_sha256": "a14f1b03faff7612aba67db396c840d770c962e97c9c55a25ce463e83f63e372",
+      "panel": 1,
+      "source": "HVS",
+      "stderr": "TD59/TD59_HVS_P1.stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "TD59/TD59_HVS_P1.stdout.txt",
+      "stdout_sha256": "a14f1b03faff7612aba67db396c840d770c962e97c9c55a25ce463e83f63e372"
+    },
+    {
+      "executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "exit_code": 0,
+      "outcome": "PASS",
+      "output": "TD59/TD59_NPH52_P1.output.json",
+      "output_sha256": "f6bdbe4465a5c49e5175d98beffcaf2360245d6c468a167d73616f9e6fb315c8",
+      "panel": 1,
+      "source": "NPH52",
+      "stderr": "TD59/TD59_NPH52_P1.stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "TD59/TD59_NPH52_P1.stdout.txt",
+      "stdout_sha256": "f6bdbe4465a5c49e5175d98beffcaf2360245d6c468a167d73616f9e6fb315c8"
+    },
+    {
+      "executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "exit_code": 0,
+      "outcome": "PASS",
+      "output": "TD59/TD59_SEA_AD_P1.output.json",
+      "output_sha256": "edfe715acbbb99c971ad781af4e6b5f8b77b1fe05e9c02d5d876c7f08735a827",
+      "panel": 1,
+      "source": "SEA_AD",
+      "stderr": "TD59/TD59_SEA_AD_P1.stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "TD59/TD59_SEA_AD_P1.stdout.txt",
+      "stdout_sha256": "edfe715acbbb99c971ad781af4e6b5f8b77b1fe05e9c02d5d876c7f08735a827"
+    }
+  ],
+  "invocations_planned": 6,
+  "invocations_run": 6,
+  "stage": "TD59",
+  "status": "PASS",
+  "terminal": "TD59_NEAREST_HALF_MESOSCALE_RELATIONAL_RECURRENCE_SURVIVES__PILOT_FRONTIER_BRACKETED_BETWEEN_ONE_THIRD_AND_ONE_HALF__NO_TRAINING_AUTHORITY"
+}

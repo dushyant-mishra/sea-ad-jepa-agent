@@ -1,0 +1,168 @@
+{
+  "all_equal": true,
+  "cases": [
+    {
+      "case": "TD56_HVS",
+      "equal": true,
+      "executor_sha256": "a1ea8653e24213a3b14ccc52ea64011c92553aec4df5edb7b55d6ba309f61b43",
+      "exit_code": 0,
+      "output_sha256": "ac6dd050689952698ffd18a5bffcf0251132508e20f695eb675b5e7ddc246c4a",
+      "seconds": 14.1
+    },
+    {
+      "case": "TD56_NPH52",
+      "equal": true,
+      "executor_sha256": "090134f0cc129559286f06d80a31a880c07c9841a7ef3f446b914a78c8cd7162",
+      "exit_code": 0,
+      "output_sha256": "caa190e708b632b106250f9d27272f1d3f32a88520539bcf9451ee8b9ee07be7",
+      "seconds": 15.1
+    },
+    {
+      "case": "TD56_SEA_AD",
+      "equal": true,
+      "executor_sha256": "c77ceac26f0ff4c3ae7a3955c39218af56339adda0225b9c663c9d92710c8866",
+      "exit_code": 0,
+      "output_sha256": "ec57015dbc1b1c0dab30ffd3429b8e400898402408868f1641e431beef14157b",
+      "seconds": 34.5
+    },
+    {
+      "case": "TD57B_HVS_P0",
+      "equal": true,
+      "executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "exit_code": 0,
+      "output_sha256": "01590468230e725992251ab0be79fbabfb716cf5c9793cb8403fe57de6f833d7",
+      "seconds": 9.6
+    },
+    {
+      "case": "TD57B_NPH52_P0",
+      "equal": true,
+      "executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "exit_code": 0,
+      "output_sha256": "2db5d27bdeda98ab92da2e2d6fce12401adf0c23560c9142314ae2ae42499284",
+      "seconds": 10.1
+    },
+    {
+      "case": "TD57B_SEA_AD_P0",
+      "equal": true,
+      "executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "exit_code": 0,
+      "output_sha256": "52bcbc5026c6d023c067fc942551587299727f03c5f95c28acf39fd71ae32477",
+      "seconds": 39.6
+    },
+    {
+      "case": "TD57B_HVS_P1",
+      "equal": true,
+      "executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "exit_code": 0,
+      "output_sha256": "1994426dc0318d5f7e23e0c08ba19f315bb008c0493de6f651d70c7dfa2e15be",
+      "seconds": 8.8
+    },
+    {
+      "case": "TD57B_NPH52_P1",
+      "equal": true,
+      "executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "exit_code": 0,
+      "output_sha256": "0264d4b35122a28423b5be203e3c42a7a8b9f90654059553491013fee4e16c6d",
+      "seconds": 9.6
+    },
+    {
+      "case": "TD57B_SEA_AD_P1",
+      "equal": true,
+      "executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "exit_code": 0,
+      "output_sha256": "21a831854cf959880e405eff721c8c3fb644f769595887ba5c6ae16d2ec198f7",
+      "seconds": 37.7
+    },
+    {
+      "case": "TD57C_HVS_P0",
+      "equal": true,
+      "executor_sha256": "530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c",
+      "exit_code": 2,
+      "output_sha256": "b6f0d9b97a4538ef741db831eb047feaa82dce72ba6927b7fdde83500dcc65e8",
+      "seconds": 8.3
+    },
+    {
+      "case": "TD59_HVS_P0",
+      "equal": true,
+      "executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "exit_code": 0,
+      "output_sha256": "72b34077b90c668641c726f4f5a30ffa3b624ef9ef99c0ecc15990410e5d6293",
+      "seconds": 8.3
+    },
+    {
+      "case": "TD59_NPH52_P0",
+      "equal": true,
+      "executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "exit_code": 0,
+      "output_sha256": "308848afa07321af565629d92c0e9e113a55d25cce11b1bed74c3895964f7100",
+      "seconds": 9.8
+    },
+    {
+      "case": "TD59_SEA_AD_P0",
+      "equal": true,
+      "executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "exit_code": 0,
+      "output_sha256": "6a33321cb9a0281ccfabe6f874061de8eef1647f4c63bbfeb5caac009f5546e4",
+      "seconds": 30.4
+    },
+    {
+      "case": "TD59_HVS_P1",
+      "equal": true,
+      "executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "exit_code": 0,
+      "output_sha256": "a2b0e54c1403404f7455b342702c8c7a92707099c5169ec88d203e9e6a2f8900",
+      "seconds": 8.0
+    },
+    {
+      "case": "TD59_NPH52_P1",
+      "equal": true,
+      "executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "exit_code": 0,
+      "output_sha256": "d9f0c04dbbf094028c36ea38ab084ed5ce325d88cac43152be011c256a9fd895",
+      "seconds": 9.1
+    },
+    {
+      "case": "TD59_SEA_AD_P1",
+      "equal": true,
+      "executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "exit_code": 0,
+      "output_sha256": "2272dc124655d429e80b95695f05b0a23b168e70ad43ea36dcbd2edb34b5271d",
+      "seconds": 30.5
+    }
+  ],
+  "code_sha256": {
+    "adapter": "617efe4279aaab28a5ea8e8df01b8c920bf1b19d97efa1acc2b0508f3ee7d9fc",
+    "bootstrap": "d322da0188a877d3138bc92c56f117ffa9f3ffe4da0a2c1c18a23b4ff9c4ce53",
+    "equivalence": "8303061c2a39a704421a531eab8eb2d486ac5a82121a75dc642d8ab02c77551b"
+  },
+  "commit_verification": "caller (Git Bash) verified git rev-parse HEAD == implementation commit and git status --porcelain --ignored empty immediately before this run",
+  "comparison_rule": "TD56 result arrays exactly equal; TD57B/TD57C payload exactly equal except input_sha256; TD59 per-case observed, null_p95, null_max and pass exactly equal to the committed replay-closure table",
+  "corrected_values_read": false,
+  "environment": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "platform": "Linux",
+    "python": "3.13.5",
+    "scipy": "1.17.0"
+  },
+  "fixture_input_sha256": {
+    "support_rel": "td_support_extract/FOUNDATION_CALIBRATION_BUNDLE_20260824/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz",
+    "td50_HVS.npz": "0a73ba174c60621b09288cab6c93a266704d04dbc69c66abb5330f927462f374",
+    "td50_NPH52.npz": "fc20ab1ff16fff6d0d9a7760b7b890a656cc061992e6dc46da13d42473340c9b",
+    "td50_SEA_AD.npz": "d3afb56df4d41416513af3306248f2e8e73ef169c6bca0ee71e966eb18eafdfa",
+    "td_matrix_npz/arrays/data.npy": "676ff6d8a2e7308a8b2728bde455fcef0811da1f13988abc9032edfd38e0627c",
+    "td_matrix_npz/arrays/indices.npy": "9a679e074bdf61bd2ce7b1137b22ac2545959ce6eb9fc0fe70a96a8c80f0b93a",
+    "td_matrix_npz/arrays/indptr.npy": "9777902072d9c60fb6ef713adf2eefc419707ca55cf8322052781bdba957391c",
+    "td_matrix_npz/arrays/shape.npy": "5547a1cd96a984b5163c5540a616006baca3d2a91985005a8f23e970a3133beb",
+    "td_support_extract/FOUNDATION_CALIBRATION_BUNDLE_20260824/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  },
+  "implementation_commit_sha": "7819aabd9a4c7adbd494445bb989c44e9b7cfa11",
+  "n_cases": 16,
+  "purpose": "historical-fixture adapter equivalence (adapter-qualification plan Tasks 3-7); historical values only; no corrected value read",
+  "schema": "JEPA_TD_CORRECTED_REPLAY_EQUIVALENCE_RECEIPT_V1",
+  "stage4_authorized": false,
+  "target_selection_authorized": false,
+  "td57c_historical_fail_reproduced": true,
+  "td60_authorized": false,
+  "training_authorized": false
+}

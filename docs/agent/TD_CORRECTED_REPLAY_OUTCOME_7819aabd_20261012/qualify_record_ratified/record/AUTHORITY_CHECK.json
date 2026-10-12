@@ -1,0 +1,10 @@
+{
+  "authority_check": "PASS",
+  "authority_sha256": {
+    "operational": "fac62caea5dca118c6e55e460d6bf740f1158d03ed1da19974e56dd863ad2ef2",
+    "owner": "f3f20773762ace43b5a5ec8658fd696bb1c1aa280fa6c45b2fe0a98f7c739979",
+    "runtime": "f59f51712c0222c65b07de5c12b2315bee0d061f5818c473f2a28907e3ffac8d"
+  },
+  "code_sha256": "dd7ee4bb4a7e3fe471eb30569535ff3252ec60e3bb7703b341f0ef22ab177a5f",
+  "implementation_commit_sha": "7819aabd9a4c7adbd494445bb989c44e9b7cfa11"
+}

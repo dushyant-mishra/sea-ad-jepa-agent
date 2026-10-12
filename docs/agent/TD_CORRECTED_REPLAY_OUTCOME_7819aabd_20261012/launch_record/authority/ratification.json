@@ -1,0 +1,46 @@
+{
+  "binding": {
+    "audited_evidence_head": "7cd77cd231e7a1cc879b61c06a676ab4d2d3ba14",
+    "authority_commit_sha": "69240132383d92911ddb360660c810b585813f1f",
+    "code_sha256": "dd7ee4bb4a7e3fe471eb30569535ff3252ec60e3bb7703b341f0ef22ab177a5f",
+    "contract_sha256": "720809582fc36ac9138ca69b6c1fc79d373a6ff38952a8f51af1db680f4c2096",
+    "equivalence_receipt_sha256": "9b02c126244aec00b4dcfed13f4c35ce19cec20fde04835537ec1b207175ef16",
+    "implementation_commit_sha": "7819aabd9a4c7adbd494445bb989c44e9b7cfa11",
+    "operational_authorization_sha256": "fac62caea5dca118c6e55e460d6bf740f1158d03ed1da19974e56dd863ad2ef2"
+  },
+  "contract_sha256": "720809582fc36ac9138ca69b6c1fc79d373a6ff38952a8f51af1db680f4c2096",
+  "date": "2026-10-12",
+  "g6_execution_authorized": false,
+  "g7_execution_authorized": false,
+  "owner_statement_verbatim": "I ratify the two frozen TD corrected-replay decisions exactly as proposed in the audited contract:\n1. detected_field = detected_corrected\n2. routing_input_rule = the exact complete decisions_requiring_owner_ratification.routing_input_rule.proposed object in contract SHA-256\n   720809582fc36ac9138ca69b6c1fc79d373a6ff38952a8f51af1db680f4c2096\nThis ratification is bound only to:\n- implementation 7819aabd9a4c7adbd494445bb989c44e9b7cfa11\n- code identity dd7ee4bb4a7e3fe471eb30569535ff3252ec60e3bb7703b341f0ef22ab177a5f\n- equivalence receipt 9b02c126244aec00b4dcfed13f4c35ce19cec20fde04835537ec1b207175ef16\n- operational authorization fac62caea5dca118c6e55e460d6bf740f1158d03ed1da19974e56dd863ad2ef2\n- exact single replay scope TD56 → TD57B → TD57C → TD59.\nI also accept the independently audited launch package for one corrected replay execution only.\nCreate and commit the exact ratification and launch-audit acceptance artifacts required by the frozen launcher. Then rerun QUALIFY from the clean authority root.\nIf QUALIFY passes exactly, execute EXECUTE_ONCE one time.\nAfter execution, preserve and report the complete evidence and STOP for independent adjudication.\nThis grants no authority for target/portfolio selection, TD60, representation selection, Stage 4, or training.\nThe disclosed residuals remain accepted as limitations of the frozen replay:\n- PASS/FAIL straddles establish lack of universality, not formal source heterogeneity;\n- formal source heterogeneity remains unresolved;\n- censored sources are UNOBSERVED;\n- residual FAIL-vs-NOT_ESTIMABLE order dependence from the historical stopping rule remains part of replay fidelity;\n- the four TD57C straddle cases remain explicitly disclosed;\n- C6 remains independent of the relational replay.\nDo not change the science or routing before execution.",
+  "ratified": {
+    "detected_field": "detected_corrected",
+    "routing_input_rule": {
+      "examples": [
+        "TD57C P0 HVS PASS, NPH52 FAIL, with TD56/TD57B/TD59 PASS -> TD57C FAIL; route BROAD_MESO (Pattern A) exactly as for TD57C P0 HVS FAIL; TD57C universal qualification NOT_ESTABLISHED with threshold discordance on P0 and the universality qualifier; source heterogeneity UNRESOLVED",
+        "TD56 NOT_ESTIMABLE with TD59 P0 HVS PASS, NPH52 FAIL -> NOT_ESTIMABLE__TD56: a later straddle never strengthens an upstream NOT_ESTIMABLE",
+        "TD57C P0 HVS FAIL (nothing after it runs) -> NPH52/SEA_AD P0 and all of P1 UNOBSERVED; no agreement is recorded",
+        "TD56 HVS PASS, NPH52 PASS, SEA_AD FAIL -> TD56 FAIL (frozen stage rule); discordance recorded; route TD56 FAIL",
+        "TD59 P0 HVS PASS, NPH52 NOT_ESTIMABLE -> TD59 NOT_ESTIMABLE; no discordance"
+      ],
+      "no_source_averaging": "no pooled or cross-source averaged statistic exists or is computed; a stage PASS needs every planned source/panel PASS, so no source can rescue another source's frozen-gate failure",
+      "residual_source_order_dependence": "the frozen stage rule takes the first non-PASS invocation, so when one source would FAIL and another would be NOT_ESTIMABLE, the stage status (FAIL vs NOT_ESTIMABLE) depends on which runs first; this is replay fidelity and is not changed",
+      "routing_v2_universal_source_input": "FAIL is reserved for formally established source heterogeneity and is never produced; NOT_ESTIMABLE if any stage is NOT_ESTIMABLE; otherwise PASS. Routing V2 rules 1 (universal FAIL) and 9 (universal NOT_ESTIMABLE) therefore never change a route: the route is exactly the frozen TD56 -> TD57B -> TD57C -> TD59 stage hierarchy, a function of the four stage statuses only",
+      "source_heterogeneity": "UNRESOLVED__NO_PROSPECTIVELY_FROZEN_DIRECT_BETWEEN_SOURCE_TEST for every stage; Pattern G (source-specific disagreement) is never assigned in this replay",
+      "source_order_censoring": "source/panels not run because of the frozen sequential stop are missing evidence, recorded as UNOBSERVED; they are never counted as agreement or as disagreement",
+      "stage_inputs": "the frozen stage status (PASS/FAIL/NOT_ESTIMABLE); an IMPLEMENTATION_FAILURE yields no routing input",
+      "threshold_discordance": "a PASS and a FAIL on the same stage and panel is recorded descriptively as failure to establish universality; it is not a between-source test and is never labelled source heterogeneity",
+      "universal_qualification": "per stage, descriptive: ESTABLISHED only when every planned source/panel execution was observed and passed its frozen per-source gate (stage PASS); NOT_ESTABLISHED when an observed execution failed its frozen gate (stage FAIL); otherwise the stage status. Each record lists the observed per-source outcomes, the source/panels the frozen sequential stop left unobserved, and any same-panel PASS/FAIL threshold discordance"
+    }
+  },
+  "ratified_by": "Dushyant Mishra (owner)",
+  "ratified_values_source": "copied programmatically from contract decisions_requiring_owner_ratification.*.proposed; not retyped",
+  "ratified_via": "owner's own answer in chat to Macha's ratification question, 2026-10-12",
+  "schema": "JEPA_TD_CORRECTED_REPLAY_DECISION_RATIFICATION_V1",
+  "scope": "CORRECTED_TD56_TD57B_TD57C_TD59_REPLAY_ONLY",
+  "stage4_authorized": false,
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false,
+  "transcribed_by": "Macha (Claude Code); the owner's words govern"
+}

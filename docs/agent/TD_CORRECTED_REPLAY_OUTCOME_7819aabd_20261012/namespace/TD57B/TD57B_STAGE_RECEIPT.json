@@ -1,0 +1,88 @@
+{
+  "historical_comparison": "QUALITATIVE_HISTORICAL_CONCLUSION_REPRODUCED",
+  "invocations": [
+    {
+      "executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "exit_code": 0,
+      "outcome": "PASS",
+      "output": "TD57B/TD57B_HVS_P0.output.json",
+      "output_sha256": "9a67d166e0cfa54a7beeaad9f95578434e9f7f2afb0e4f7515d24874e9f235f0",
+      "panel": 0,
+      "source": "HVS",
+      "stderr": "TD57B/TD57B_HVS_P0.stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "TD57B/TD57B_HVS_P0.stdout.txt",
+      "stdout_sha256": "9a67d166e0cfa54a7beeaad9f95578434e9f7f2afb0e4f7515d24874e9f235f0"
+    },
+    {
+      "executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "exit_code": 0,
+      "outcome": "PASS",
+      "output": "TD57B/TD57B_NPH52_P0.output.json",
+      "output_sha256": "d85a0e696d01e1082d1ac0c13b353376d0483ab24260b63f50c7a4c681877e8b",
+      "panel": 0,
+      "source": "NPH52",
+      "stderr": "TD57B/TD57B_NPH52_P0.stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "TD57B/TD57B_NPH52_P0.stdout.txt",
+      "stdout_sha256": "d85a0e696d01e1082d1ac0c13b353376d0483ab24260b63f50c7a4c681877e8b"
+    },
+    {
+      "executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "exit_code": 0,
+      "outcome": "PASS",
+      "output": "TD57B/TD57B_SEA_AD_P0.output.json",
+      "output_sha256": "bbd3f1bd681d490727cd50bba5f7b8b233c942c1aefaf688c81692a09873ed36",
+      "panel": 0,
+      "source": "SEA_AD",
+      "stderr": "TD57B/TD57B_SEA_AD_P0.stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "TD57B/TD57B_SEA_AD_P0.stdout.txt",
+      "stdout_sha256": "bbd3f1bd681d490727cd50bba5f7b8b233c942c1aefaf688c81692a09873ed36"
+    },
+    {
+      "executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "exit_code": 0,
+      "outcome": "PASS",
+      "output": "TD57B/TD57B_HVS_P1.output.json",
+      "output_sha256": "774042a01c438ab80707db5b40a9c735ca31446c3935684ca87a5dc1209f6c81",
+      "panel": 1,
+      "source": "HVS",
+      "stderr": "TD57B/TD57B_HVS_P1.stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "TD57B/TD57B_HVS_P1.stdout.txt",
+      "stdout_sha256": "774042a01c438ab80707db5b40a9c735ca31446c3935684ca87a5dc1209f6c81"
+    },
+    {
+      "executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "exit_code": 0,
+      "outcome": "PASS",
+      "output": "TD57B/TD57B_NPH52_P1.output.json",
+      "output_sha256": "006b1b04bb7ba48a6b745271599e39434d238e6494fb8800286ff8e8479b329d",
+      "panel": 1,
+      "source": "NPH52",
+      "stderr": "TD57B/TD57B_NPH52_P1.stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "TD57B/TD57B_NPH52_P1.stdout.txt",
+      "stdout_sha256": "006b1b04bb7ba48a6b745271599e39434d238e6494fb8800286ff8e8479b329d"
+    },
+    {
+      "executor_sha256": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "exit_code": 0,
+      "outcome": "PASS",
+      "output": "TD57B/TD57B_SEA_AD_P1.output.json",
+      "output_sha256": "08c8385e2c08c84e018c3c9f92bfc6be451590c863d326a36944e7c6b5d84760",
+      "panel": 1,
+      "source": "SEA_AD",
+      "stderr": "TD57B/TD57B_SEA_AD_P1.stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "TD57B/TD57B_SEA_AD_P1.stdout.txt",
+      "stdout_sha256": "08c8385e2c08c84e018c3c9f92bfc6be451590c863d326a36944e7c6b5d84760"
+    }
+  ],
+  "invocations_planned": 6,
+  "invocations_run": 6,
+  "stage": "TD57B",
+  "status": "PASS",
+  "terminal": "TD57B_INDEPENDENT_DONOR_RECURRENT_SCALE_FREE_RELATIONAL_ORDER_SURVIVES__FREEZE_LOCAL_NEIGHBORHOOD_STABILITY_GATE_NEXT"
+}

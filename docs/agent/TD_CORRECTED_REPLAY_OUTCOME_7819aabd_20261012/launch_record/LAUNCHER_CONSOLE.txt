@@ -1,0 +1,2 @@
+evidence_exit=0 utc=2026-10-12T20:14:53Z. STOP for external outcome audit; no rerun or repair.
+launcher_exit=0

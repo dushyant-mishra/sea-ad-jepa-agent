@@ -1,0 +1,3 @@
+# Not committed (too large); bytes remain at their path. Verify with sha256sum.
+1a967cbada3a255cd89fee43ceaa6b96c435899aaee6e43f915b6a10759457bb  490406160 bytes  D:/jepa_td_corrected_replay_20261012/REPLAY_OUT_V1/adapter_inputs/mnt/td_matrix_npz/arrays/data.npy
+a5a109618a7e6c3beb1dc7f0ce8fd05ae7b5c45050a97e700a80723430e0fd6c  245203144 bytes  D:/jepa_td_corrected_replay_20261012/REPLAY_OUT_V1/adapter_inputs/mnt/td_matrix_npz/arrays/indices.npy
