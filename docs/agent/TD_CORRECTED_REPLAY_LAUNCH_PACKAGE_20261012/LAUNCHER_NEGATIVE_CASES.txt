@@ -1,0 +1,38 @@
+# TD corrected replay launcher negative cases (recorded at run time)
+utc=2026-10-12T16:22:36Z launch_root=D:/jepa_wt_td_replay_launchroot_23b81f11 head=23b81f11c7e573014938274fae0ae4167b32c6d1 launcher_sha256=f05e70b6011714fa9e0e08589572ee9e06bc705fd7cdb1da82c1f610912a0b81
+clean_including_ignored=[0 entries]
+N1_bad_mode | exit=64 | run_base=UNCHANGED | REFUSED_OK
+  args: RUN_IT 23b81f11c7e573014938274fae0ae4167b32c6d1 75f7d0afb0c8aeeae1ddc43429cbf751c10949fa504a80e028db7b933750cc93
+  output: STOP before any filesystem change: mode must be QUALIFY or EXECUTE_ONCE 
+N2_wrong_operational_sha | exit=64 | run_base=UNCHANGED | REFUSED_OK
+  args: QUALIFY 23b81f11c7e573014938274fae0ae4167b32c6d1 0000000000000000000000000000000000000000000000000000000000000000
+  output: STOP before any filesystem change: operational authorization at 23b81f11c7e573014938274fae0ae4167b32c6d1 is not the audited SHA 
+N3_stale_superseded_authority_sha | exit=64 | run_base=UNCHANGED | REFUSED_OK
+  args: QUALIFY 23b81f11c7e573014938274fae0ae4167b32c6d1 da58136a12a726f04986c8838f56d057d9dcdca664c7b63004cacd64ed6db068
+  output: STOP before any filesystem change: operational authorization at 23b81f11c7e573014938274fae0ae4167b32c6d1 is not the audited SHA 
+N4_superseded_authority_commit | exit=64 | run_base=UNCHANGED | REFUSED_OK
+  args: QUALIFY 635f9f00050234f4e90306e97bce131bf741d73c da58136a12a726f04986c8838f56d057d9dcdca664c7b63004cacd64ed6db068
+  output: STOP before any filesystem change: launcher checkout HEAD is not the authority commit 
+N5_implementation_commit_as_authority | exit=64 | run_base=UNCHANGED | REFUSED_OK
+  args: QUALIFY f5673f9b5c8a02d14ed1a82afb8a1ce144283f5f 75f7d0afb0c8aeeae1ddc43429cbf751c10949fa504a80e028db7b933750cc93
+  output: STOP before any filesystem change: launcher checkout HEAD is not the authority commit 
+N6_execute_too_few_arguments | exit=64 | run_base=UNCHANGED | REFUSED_OK
+  args: EXECUTE_ONCE 23b81f11c7e573014938274fae0ae4167b32c6d1 75f7d0afb0c8aeeae1ddc43429cbf751c10949fa504a80e028db7b933750cc93
+  output: STOP before any filesystem change: EXECUTE_ONCE takes <authority commit> <op SHA> <acceptance commit> <acceptance SHA> <ratification commit> <ratification SHA> 
+N7_execute_nonexistent_acceptance | exit=64 | run_base=UNCHANGED | REFUSED_OK
+  args: EXECUTE_ONCE 23b81f11c7e573014938274fae0ae4167b32c6d1 75f7d0afb0c8aeeae1ddc43429cbf751c10949fa504a80e028db7b933750cc93 0000000000000000000000000000000000000000 0000000000000000000000000000000000000000000000000000000000000000 23b81f11c7e573014938274fae0ae4167b32c6d1 0000000000000000000000000000000000000000000000000000000000000000
+  output: STOP before any filesystem change: decision ratification at 23b81f11c7e573014938274fae0ae4167b32c6d1 is missing or not the given SHA 
+N8_execute_acceptance_absent_at_authority_commit | exit=64 | run_base=UNCHANGED | REFUSED_OK
+  args: EXECUTE_ONCE 23b81f11c7e573014938274fae0ae4167b32c6d1 75f7d0afb0c8aeeae1ddc43429cbf751c10949fa504a80e028db7b933750cc93 23b81f11c7e573014938274fae0ae4167b32c6d1 0000000000000000000000000000000000000000000000000000000000000000 23b81f11c7e573014938274fae0ae4167b32c6d1 0000000000000000000000000000000000000000000000000000000000000000
+  output: STOP before any filesystem change: decision ratification at 23b81f11c7e573014938274fae0ae4167b32c6d1 is missing or not the given SHA 
+N9_qualify_nonexistent_ratification | exit=64 | run_base=UNCHANGED | REFUSED_OK
+  args: QUALIFY 23b81f11c7e573014938274fae0ae4167b32c6d1 75f7d0afb0c8aeeae1ddc43429cbf751c10949fa504a80e028db7b933750cc93 0000000000000000000000000000000000000000 0000000000000000000000000000000000000000000000000000000000000000
+  output: STOP before any filesystem change: decision ratification at 0000000000000000000000000000000000000000 is missing or not the given SHA 
+N10_qualify_ratification_absent_at_authority_commit | exit=64 | run_base=UNCHANGED | REFUSED_OK
+  args: QUALIFY 23b81f11c7e573014938274fae0ae4167b32c6d1 75f7d0afb0c8aeeae1ddc43429cbf751c10949fa504a80e028db7b933750cc93 23b81f11c7e573014938274fae0ae4167b32c6d1 0000000000000000000000000000000000000000000000000000000000000000
+  output: STOP before any filesystem change: decision ratification at 23b81f11c7e573014938274fae0ae4167b32c6d1 is missing or not the given SHA 
+N11_malformed_authority_commit | exit=64 | run_base=UNCHANGED | REFUSED_OK
+  args: QUALIFY not-a-commit 75f7d0afb0c8aeeae1ddc43429cbf751c10949fa504a80e028db7b933750cc93
+  output: STOP before any filesystem change: bad authority commit/operational SHA 
+run_base_listing_sha256 before=e86bc0f5fd9bf4af8d0ec21a3fa306ef5368a9537727382c6ef4cd5764a5a323 after=e86bc0f5fd9bf4af8d0ec21a3fa306ef5368a9537727382c6ef4cd5764a5a323
+clean_after=[0 entries]
