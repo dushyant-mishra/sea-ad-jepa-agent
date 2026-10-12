@@ -1,163 +1,34 @@
-# V79 synthetic-dataset lane — audited takeover handoff
+# V79 synthetic-dataset lane — detailed audited takeover handoff
 
 Date: 2026-10-12
+Scope: **synthetic/V79 only**
 
-This handoff is for the **synthetic dataset / V79 controller-audit lane only**. Read it together with:
+This is the cold-start handoff for a new controller/agent. The purpose is to avoid repeating historical audits, reopening frozen scientific decisions because of engineering bugs, or crossing the fit/controller-truth firewall.
 
-- `docs/agent/V79_SYNTHETIC_LANE_AUDIT_HISTORY_20261012.md`
-- `results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_AUDIT_INDEX_V1.json`
-- the newest files under `results/v79/synthetic_lane_audit/deltas/`
-- `docs/agent/V79_SYNTHETIC_LANE_CURRENT_POINTER.md`
+## 0. Cold-start protocol
 
-Do not repeat closed historical audits unless an authority byte/hash/head changes or a concrete contradiction is discovered.
+Read, in order:
 
-## 1. Current state in one paragraph
+1. `docs/agent/V79_SYNTHETIC_LANE_CURRENT_POINTER.md`
+2. `results/v79/synthetic_lane_audit/deltas/20261012T1720Z_ARCHIVAL_CONSOLIDATION_AND_TAKEOVER_V1.md`
+3. `results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_AUDIT_INDEX_V1.json`
+4. `results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_CODE_DATA_RESULT_INDEX_20261012.csv`
+5. this handoff
+6. `docs/agent/V79_SYNTHETIC_LANE_AUDIT_HISTORY_20261012.md` only for deeper historical detail.
 
-Q00-Q11 are already realized exactly once, byte-audited, and frozen; world regeneration is forbidden. The first authorized engineering benchmark was consumed and failed closed before fit 1 because the Windows RSS monitor used an incorrectly typed Win32 process handle. That failure is immutable evidence, not evidence about V2_CORE biology, sampling or memory demand. The monitor bug has now been reproduced under a real Windows CI test, repaired, and requalified on PR #308. A fresh controller ruling authorizes exactly **one** new engineering benchmark attempt on the repaired PR #308 head only. Physical Q00-Q11 qualification fitting and scoring remain OFF. In parallel, the campaign runner/scorer lineages have been reconciled on #305 and the controller-only scoring orchestrator is being built on #306; its executor side is green with the monitor repair carried forward, while its scorer side is currently at an intentional TDD RED because `run_v79_v2_core_scoring.py` has not yet been implemented.
+**Do not repeat audits before the exact heads/hashes recorded below unless a byte/head changed or a concrete contradiction is discovered.** Audit only deltas.
 
-## 2. Benchmark failure, repair and current authority — read this first
+---
 
-### Historical spent attempt
+# 1. Current state in one paragraph
 
-Original executor / benchmark authority:
+Q00-Q11 have already been realized exactly once on the locked Windows qualification environment and independently byte-audited. They must never be regenerated to repair later software. The first authorized engineering benchmark was consumed once and failed closed before fit 1 because the Windows RSS monitor used untyped Win32 ctypes signatures. That failure is immutable infrastructure evidence, not evidence about V2_CORE model quality, convergence, memory demand or runtime. PR #308 repaired that defect under RED→GREEN real Windows CI and now holds authority for exactly **one fresh engineering benchmark rerun** at exact head `559a1c104c8f1f56d2c05509eecf6b9dc05846a5`; that rerun has not yet been reported. Q00-Q11 qualification fitting and scoring remain OFF. Engineering work beyond the campaign runner/scorer reconciliation is on PR #306 at `d4e10c821847078bac6d4043b18b09bdfb6c5ef1`, with Windows/Linux executor and scorer CI green, but physical scoring remains OFF.
 
-- PR #299 source head: `2240fd82f1707399bb8b2b16d3d93fee23866067`
-- controller benchmark-only authorization: comment `6119596541`
-- unit: Contract V2 engineering world only; seed root `31999999`; 2 genes x 2 parts; never scored
+---
 
-That single authorization was used once and is **SPENT**.
+# 2. Scientific decisions are frozen — do not reopen them because of downstream software failures
 
-Result:
-
-- failed after about 3 seconds
-- failed before any model fit
-- Q00-Q11 remained unfit
-- scoring did not run
-- failure point: first Windows RSS/resource-monitor call
-
-Frozen failure evidence:
-
-- branch: `evidence/v79-engineering-benchmark-attempt-2240fd82-20261012`
-- commit: `b94367c6`
-- path: `docs/agent/V79_ENGINEERING_BENCHMARK_ATTEMPT_2240fd82_20261012/`
-
-Never delete, overwrite, reuse, mutate or reinterpret those outputs as a successful benchmark.
-
-### Root cause
-
-Historical `scripts/v79/v79_v2_core_resource_monitor.py` called:
-
-- `GetCurrentProcess()` without declaring `restype = wintypes.HANDLE`
-- `GetProcessMemoryInfo(...)` without typed argument declarations
-
-On 64-bit Windows this allowed an invalid/truncated process handle and caused `GetProcessMemoryInfo failed` before fit 1.
-
-### PR #308 repair
-
-PR #308:
-
-- branch: `fix/v79-windows-resource-monitor-20261012`
-- base: exact #300 head `7172b201b13c61634b84b85254bf4406959b2b57`
-- repaired head: `559a1c104c8f1f56d2c05509eecf6b9dc05846a5`
-- changed files exactly:
-  1. `.github/workflows/v79-v2-core-qualification-executor.yml`
-  2. `scripts/v79/v79_v2_core_resource_monitor.py`
-  3. `tests/v79/test_v79_v2_core_resource_monitor_windows.py`
-
-The repair declares:
-
-- `GetCurrentProcess.argtypes = []`
-- `GetCurrentProcess.restype = wintypes.HANDLE`
-- `GetProcessMemoryInfo.argtypes = [wintypes.HANDLE, POINTER(PMC), wintypes.DWORD]`
-- `GetProcessMemoryInfo.restype = wintypes.BOOL`
-
-TDD evidence:
-
-- RED run `38280964089`: Windows reproduced the defect with **2 failed / 117 passed**; both unmocked monitor tests failed at `GetProcessMemoryInfo failed`. Ubuntu structural suite passed.
-- GREEN run `38281216579`: Windows executor suite PASS including both real `_rss_bytes()` / `ResourceMonitor` tests; Ubuntu structural suite PASS; static fit-side trust-domain audit PASS on both.
-- repair-only controller PASS: PR #308 comment `6128864889`
-
-No sampler, model, prior, recovery rule, frozen contract, synthetic world, gate, or scoring logic changed.
-
-### Fresh benchmark rerun authority
-
-Controller ruling: PR #308 comment `6128881654`.
-
-Exactly one fresh engineering benchmark rerun is authorized from:
-
-`559a1c104c8f1f56d2c05509eecf6b9dc05846a5`
-
-Conditions:
-
-- clean checkout of that exact head
-- actual locked Windows `v79-bayes` environment
-- Contract V2 engineering seed root `31999999`
-- 2 genes x 2 parts
-- engineering world only; never scored
-- frozen prep -> fit-only custody -> benchmark runner path
-- **fresh package, custody and result directories only**
-- old failed evidence at `b94367c6` is immutable and must not be reused
-- if prep/execution fails closed: preserve evidence and STOP; no automatic second retry
-- if projected qualification runtime exceeds 72 h: STOP; no setting changes
-
-This authority does **not** authorize Q00-Q11 qualification fits or scoring.
-
-## 3. Live engineering topology
-
-### PR #300 — historical campaign-runner source lineage
-
-- branch: `feat/v79-v2-core-qualification-campaign-runner-20261012`
-- head: `7172b201b13c61634b84b85254bf4406959b2b57`
-- historical CI: `38271129785` PASS
-- execution state: no Q00-Q11 fit authority
-
-Important campaign behavior already engineered:
-
-- exact 1,056 opaque fit queue
-- fit-side no controller truth/scorer imports
-- 90/95/99 score-ready posterior summaries retained before chain disposal
-- truth-blind held-out predictive summaries
-- detection calibration: 10 fixed equal-width bins
-- new-donor positive predictive LPD: exact 40-node Gauss-Hermite
-- contiguous/hash/code/seed-bound resume
-- final campaign receipt only after all 1,056 fit receipts validate
-
-Do not execute the qualification campaign merely because this branch is green.
-
-### PR #305 — reconciled scorer/executor integration baseline
-
-- head: `e976d0c1a03f6a54dadcbf7fe3086f832fd319d8`
-- this supersedes the old operational #300/#301 divergence as the integration base
-- before subsequent work, Windows/Linux executor and scorer suites were green and static trust-domain audits passed
-
-Preserve historical #301 as evidence; do not restart reconciliation from scratch.
-
-### PR #306 — active controller-scoring-orchestrator engineering
-
-- branch: `feat/v79-v2-core-scoring-orchestrator-20261012`
-- base: #305 head `e976d0c1a03f6a54dadcbf7fe3086f832fd319d8`
-- current head after monitor repair forward-port: `33efb404caf81a47f976fb39f472c7537aed8f52`
-- executor CI `38281486760`: **Windows PASS, Ubuntu PASS, static fit-side firewall PASS**
-- exact PR #308 monitor repair + real Windows regression test are carried forward here
-
-Completed scorer-side engineering on #306 includes:
-
-- all five required non-gating descriptive families
-- detection held-out log loss, predicted vs observed prevalence, and frozen 10-bin calibration aggregation
-- controller-only planted held-out oracle
-- frozen planted detection prevalence for the `<0.05` subset
-- same-donor planted effects and 40-node Gauss-Hermite new-donor oracle integration
-- Q11 operator perturbation handling on the controller side
-
-Current #306 scorer state is intentionally RED under TDD:
-
-- workflow run `38281486401`
-- Linux scorer job failed during collection because `tests/v79/test_v79_v2_core_score_runner.py` imports missing module `run_v79_v2_core_scoring`
-- this is a pre-existing next-feature RED, **not** a regression from the monitor repair
-
-Next scorer engineering task: implement the controller-only physical scoring orchestrator under those tests. No physical scoring is authorized.
-
-## 4. Frozen scientific authority — do not reopen because of engineering failures
+## V2_CORE
 
 Detection:
 
@@ -168,120 +39,375 @@ Positive:
 `log(count) | count>0 ~ Normal(quadratic(log_library) + broad_class + source + donor_within_source, sigma)`
 
 Included:
-
 - quadratic depth
 - broad class
 - source
 - donor-within-source hierarchical / partial pooled
 
 Excluded:
-
 - operator main
-- donor x class
-- source x class
+- donor × class
+- source × class
 - arbitrary/free matrix or dataset identity
 
-A downstream engineering bug is not evidence to change this frozen biology/statistics decision.
+Positive qualification family: lognormal.
 
-Source remains a predictive/acquisition-source term only; do not make causal/universal source claims. Single-source estimands are undefined/unevaluable, never silently zero.
+ZTNB is an unresolved challenger, not qualification authority.
 
-## 5. Frozen Contract V2 authority
+Source is a predictive/acquisition-source term only. Do not promote it to a universal/causal biological effect. Single-source estimands are undefined/unevaluable rather than zero.
 
-Canonical contract:
+Historical Bernoulli V2 qualification remains `NOT_QUALIFIED` because worst ESS was `361.8761303230284 < 400`; do not relax the threshold or resurrect it as authority.
+
+---
+
+# 3. Frozen Contract V2
+
+Canonical file:
 
 `results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json`
 
-SHA:
+SHA-256:
 
 `57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26`
 
-Campaign:
+Other frozen authorities:
+- Q10/Q11 pairing amendment `57d7478b148cf1cab8d50a597f303c727b1a1d2d51db408ad181eab383fa4cf5`
+- environment lock `5253ddca79c5f1b11eff2432b39679f16a68a885486a333d244357452261c782`
+- generator/writer bundle `119add636cffdb1db3b58c44dce6a2c5eee245f85c773e5822735537ae8dfc16`
 
+Frozen qualification shape:
 - 12 worlds Q00-Q11
 - 44 genes/world
+- 2 parts/gene
 - 1,056 fits
-- 292 gates
+- 292 gates total
 - 260 hard statistical
 - 28 hard deterministic/rule
 - 4 LIMIT statistical
-- FWER 0.05; alpha per hard statistical gate `0.05/260`
-- first hard failure terminal
-- Q11 all hard FAIL-class
+- FWER 0.05
+- hard statistical alpha `0.05 / 260`
+- first hard FAIL terminal
+- Q11 is all-hard FAIL-class stress world
 
 Exactly four LIMIT gates:
-
 - Q01 detection donor_SD
 - Q01 positive donor_SD
 - Q08 positive donor_SD
 - Q09 positive donor_SD
 
-Accepted contract bytes are Windows authority. Do not rewrite them to satisfy another platform.
+Accepted contract bytes are Windows authority. Do not rewrite/round them to make another platform reproduce bytes.
 
-## 6. World realization — never rerun
+---
 
-PR #295 realization authority head:
-
-`cd6425b29f3fbd70b6d93351feb7c188f8b17cc8`
-
-Frozen realization:
-
-- root manifest SHA `84949723305dc2211ebcd451b64dd9adc8518f3580d2122f5600fcf4b38de0de`
-- world-set directory digest `40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286`
-- runtime environment receipt `781d880ada58dfde06c9074401a15d49cf17887460987865655837884dbf9184`
-- blinded-fit index `8ea3e0cb6637c97b3e940eac54476622bd4f790febb07abee2e8ccdeea751e40`
-
-PR #297 byte-evidence freeze:
-
-- head `bb8923562144a0b19a6d80795adf727986893ded`
-- complete 498-file ledger SHA `4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65`
-- realization audit receipt SHA `6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3`
-
-**Never regenerate Q00-Q11 to repair a later bug.**
-
-## 7. Exact S174 / provenance authority
+# 4. Exact S174 / empirical authority
 
 Physical repaired TRAIN substrate:
 
 `D:\Jepa project\data\cache\s174_rebuilt_real_train_v1`
 
-Never reconstruct from the larger 50K corpus.
+Never reconstruct this from the larger 50K corpus.
 
 Key hashes:
-
-- shard authority `04035c070095e290b9df1a1f1926a635cca528804e644d341df06b82a572d288`
+- S174 shard authority `04035c070095e290b9df1a1f1926a635cca528804e644d341df06b82a572d288`
 - operator bridge `b83c35e6940734a7756627d91e3ce982cb4062e9cdeb2fd6035a090abdface92`
 - G500 cache `2f922c08e38c104ed7149a2ee74a5e3adc8c287ef5b5c07ea1b5b862f92a6a62`
 - structural support mask `12ad275ef5e1ca094ab82cbcd871e29a6e1f7648cad4cebb57ae234042b74fab`
-- masked replay `caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683`
+- mask-corrected replay `caf2413cdd4f9a616be84fe3fb976cf40c496df0732530cbf9775659361e4683`
 
-Resource discipline:
-
+Resource rules:
 - at most one count-shard CSR resident
-- no global 4,726 x 41,238 CSR
+- no global 4,726 × 41,238 CSR
 - no sparse `vstack`
-- heavy-fit concurrency 1
+- one heavy fit at a time
 - 120-second inter-world settle
 
-## 8. Historical failures that must remain visible
+Structural missingness is authoritative: unmeasured entries are not zeros and enter neither detection nor positive likelihood. Measured zeros remain real zeros.
 
-Do not rediscover or erase these:
+---
 
-- PR #280 exact-S174 replay failed closed under operator-within-source quasi-separation/tiny ridge; this was not biological evidence about operator structure.
-- structural missingness was previously encoded as zero; PR #288 corrected it with the support mask.
-- accepted Contract V2 bytes are Windows authority.
-- PR #295 had a stale `authorization/` whitelist; repaired narrowly.
-- donor-effect truth orientation is donor x gene.
-- TYPE-S requires named-gate dispatch despite `binomial_upper` primitive encoding.
-- 95%/99% posterior endpoints must be retained before chain disposal.
-- held-out fit summaries remain truth-blind; oracle comparison is controller-only.
-- the first physical engineering benchmark attempt is now also a permanent failed-closed record at `b94367c6`; do not reinterpret it as model performance.
+# 5. Realization authority — never regenerate
 
-## 9. Current execution permissions
+PR #295 realization head:
+
+`cd6425b29f3fbd70b6d93351feb7c188f8b17cc8`
+
+Frozen realized package:
+- root manifest `84949723305dc2211ebcd451b64dd9adc8518f3580d2122f5600fcf4b38de0de`
+- directory digest `40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286`
+- runtime receipt `781d880ada58dfde06c9074401a15d49cf17887460987865655837884dbf9184`
+- blinded-fit index `8ea3e0cb6637c97b3e940eac54476622bd4f790febb07abee2e8ccdeea751e40`
+
+PR #297 realization audit freeze:
+- head `bb8923562144a0b19a6d80795adf727986893ded`
+- complete 498-file ledger `4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65`
+- audit receipt `6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3`
+
+Controller audit established:
+- 12/12 truth and blinded manifests one-to-one
+- truth arrays hash-bound
+- root binds index/runtime/authorization
+- Q10/Q11 non-operator truth is byte-identical; Q11 alone adds frozen operator offsets
+- observation arrays were intentionally not committed but are bound by the complete ledger
+
+**Never regenerate Q00-Q11 because a later benchmark/fitter/scorer bug is found.**
+
+---
+
+# 6. Historical audit/failure chain that must not be repeated
+
+Treat these as closed evidence unless exact bytes/heads change:
+
+- #260 Bayesian/synthetic audit
+- #261 Bayesian/synthetic handoff
+- #262 downstream factorial implementation
+- #264 downstream factorial audit
+- #265 downstream factorial handoff
+- #279 streaming/resource-safe replay
+- #280 immutable failed-closed exact-S174 operator replay; quasi-separation under tiny ridge; do not reinterpret as biology
+- #283 operator repair
+- #285 completed exact-S174 A-H replay
+- #286 V2 draft
+- #288 mask-corrected replay; V2_CORE unchanged
+- #290 final Contract V2
+- #291 generator engineering
+- #293 generator hardening integrated into #291
+- #294 deterministic blinded writer
+- #295 single realization
+- #297 realization byte audit freeze
+- #299 blinded V2_CORE executor
+- #300 qualification campaign runner
+- #301 historical scorer lineage
+- #305 reconciled scorer/executor integration
+- #306 controller scoring-orchestrator engineering
+- #308 Windows monitor repair + one fresh benchmark rerun authority
+
+Known historical traps:
+1. structural missingness-as-zero bug — repaired prospectively in #288
+2. donor truth orientation is donor × gene, not gene × donor
+3. TYPE-S uses named-gate dispatch despite primitive `binomial_upper`
+4. q005/q025/q975/q995 must be retained before chain disposal for 99/95% exclusion reporting
+5. fit-side held-out metrics are truth-blind; oracle belongs only to controller scoring
+6. accepted Windows contract/world bytes are not to be normalized for Linux
+7. old #300/#301 divergence has already been reconciled on #305 — do not redo it
+8. opaque IDs are not a secrecy boundary; firewall is physical custody/import separation
+
+---
+
+# 7. Benchmark history — critical current gate
+
+## Spent failed attempt
+
+Original executor head:
+
+`2240fd82f1707399bb8b2b16d3d93fee23866067`
+
+The one-shot authorization was consumed once.
+
+Immutable evidence:
+- branch `evidence/v79-engineering-benchmark-attempt-2240fd82-20261012`
+- commit `b94367c6`
+- path `docs/agent/V79_ENGINEERING_BENCHMARK_ATTEMPT_2240fd82_20261012/`
+
+Observed:
+- prep PASS
+- fit process failed after ~3 seconds
+- failure occurred entering first `ResourceMonitor`
+- exception `GetProcessMemoryInfo failed`
+- no `run_nuts_attempt`
+- 0 benchmark fits
+- 0 qualification fits
+- 0 scoring
+- no R-hat/ESS/divergence/timing projection
+
+Interpretation: infrastructure failure only.
+
+## Repair
+
+PR #308 exact head:
+
+`559a1c104c8f1f56d2c05509eecf6b9dc05846a5`
+
+Diff from #300 base is exactly 3 files:
+1. `.github/workflows/v79-v2-core-qualification-executor.yml`
+2. `scripts/v79/v79_v2_core_resource_monitor.py`
+3. `tests/v79/test_v79_v2_core_resource_monitor_windows.py`
+
+TDD:
+- RED run `38280964089`: Windows reproduced `2 failed / 117 passed`
+- GREEN run `38281216579`: Windows PASS including real monitor calls; Ubuntu PASS; fit firewall PASS
+
+Controller comments:
+- repair PASS `6128864889`
+- fresh one-shot benchmark rerun authority `6128881654`
+- exact Macha procedure `6129078915`
+
+## Current benchmark authority
+
+Exactly one fresh engineering benchmark rerun is authorized from exact #308 head `559a1c10...`.
+
+Required semantics:
+- locked Windows `v79-bayes`
+- clean exact checkout
+- fresh package/custody/result directories
+- engineering seed root `31999999`
+- 2 genes × 2 parts = 4 fits
+- engineering world only
+- never scored
+- if anything fails: preserve evidence and STOP; no automatic second retry
+- if projected full qualification runtime >72 h: STOP with no tuning
+- if projection <=72 h: still STOP for controller audit
+
+**At this handoff no fresh rerun result has been reported.**
+
+---
+
+# 8. Fit-side engineering lineage
+
+PR #300 historical campaign-runner head:
+
+`7172b201b13c61634b84b85254bf4406959b2b57`
+
+Engineered properties already accepted structurally:
+- opaque 1,056-fit queue
+- exact Bernoulli detection + positive lognormal model
+- contract-driven NUTS/recovery
+- fit-only custody
+- no controller truth/Q mapping/scorer imports
+- world-serial fresh processes
+- one-heavy-fit lock
+- 120-second settle
+- atomic contiguous-prefix checkpoint/resume
+- code/hash/seed/manifest binding
+- gate-ready identified summaries
+- 90/95/99 interval endpoints retained
+- truth-blind PPC
+- compact donor-effect draws
+- truth-blind same/new-donor held-out model metrics
+- final campaign receipt only after all 1,056 valid fit records exist
+
+Execution remains OFF until a successful benchmark is independently audited and a new qualification-execution authority is issued.
+
+Important scripts are indexed in:
+
+`results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_CODE_DATA_RESULT_INDEX_20261012.csv`
+
+---
+
+# 9. Scorer/controller engineering lineage
+
+Historical #301 is evidence only; do not resume from it.
+
+Preferred integration base:
+
+PR #305 head `e976d0c1a03f6a54dadcbf7fe3086f832fd319d8`
+
+Active engineering:
+
+PR #306 head `d4e10c821847078bac6d4043b18b09bdfb6c5ef1`
+
+Verification:
+- executor CI `38282050314`: Windows PASS, Ubuntu PASS, fit firewall PASS
+- scorer CI `38282050318`: Windows PASS, Ubuntu PASS, scorer firewall PASS
+
+Current engineered scorer pieces include:
+- controller truth loader/matching
+- automatic frozen gate evaluator
+- all 292 gates
+- first-hard-fail semantics
+- 90/95/99 absent-effect reporting
+- donor-SD floor from Contract V2
+- five required descriptive families, explicitly non-gating
+- fixed detection calibration/prevalence summaries
+- planted same/new-donor oracle
+- 40-node GH oracle integration for new donors
+- Q11 operator perturbation handling
+- scoring authorization/adjudication receipt primitives
+- fit-ledger hash verification / write-once scoring-run primitives
+
+Physical scoring remains OFF. Do not create or execute a scoring authorization until a complete qualification campaign exists and has controller PASS.
+
+---
+
+# 10. Trust-domain firewall
+
+Fit side may see:
+- opaque world ID
+- blinded manifest/index
+- `src`, `donor`, `cls`, `log_lib`
+- support mask
+- train/same-donor/new-donor observations
+- sanitized fit contract / opaque seeds
+
+Fit side must not see:
+- Q labels/world index
+- planted truth
+- controller root mapping
+- operator identity
+- scorer modules
+- outcome gates
+
+Controller scoring is a later physically separate domain and may open truth only after explicit post-campaign scoring authorization.
+
+Never use public knowledge of Q10/Q11 opaque IDs to choose or order benchmark/campaign worlds.
+
+---
+
+# 11. Local/project artifacts visible in this chat but not V79 authority
+
+These are inventoried by exact SHA/size in the audit index so a future agent does not waste time rediscovering them:
+
+- `WSL execution issue.txt`
+- `Status and Repair Plan.txt`
+- `FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv`
+- expression archive parts 001/002
+- `checkpoints.zip`
+- `FOUNDATION_CALIBRATION_BUNDLE_20260824.zip`
+- `expression.zip`
+- `66e64913-959f-4a7c-bbfe-6ff906fb281d.npz`
+- `t1_checkpoint_u0200.zip`
+
+They were intentionally **not** promoted to synthetic/V79 authority merely because they are available. Large binaries were not duplicated into Git. Use them only after provenance/lane relevance is explicitly established.
+
+---
+
+# 12. What the new agent should do next
+
+## First unresolved external dependency: repaired benchmark result
+
+Check PR #308 and recent PRs/comments for a new Macha/local Windows report after comment `6129078915`.
+
+If no result exists:
+- do not invent one
+- do not run Q00-Q11 qualification
+- benchmark remains the next physical gate
+
+If a result exists:
+- audit only that new evidence
+- require exact checkout `559a1c10...`
+- require clean worktree and fresh dirs
+- verify prep/benchmark receipt hashes
+- verify 4 fits exactly
+- inspect every recovery stage, divergence, R-hat, ESS, wall/CPU/RSS
+- inspect projected 1,056-fit runtime and `stop_required`
+- verify qualification_fits=0, scoring=false, truth_accessed=false
+- verify no Q00-Q11 world was fitted
+- if any mismatch/failure: preserve evidence and STOP; no retry without new authority
+- if successful and <=72 h: do not launch qualification automatically; issue a new explicit qualification authority only after controller audit
+
+## Engineering dependency
+
+If #306 advanced beyond `d4e10c82...`, audit only the newer commits and rerun/inspect both executor and scorer CI. Preserve trust-domain separation.
+
+Do not go back to #301 and redo scorer reconciliation.
+
+---
+
+# 13. Explicit execution permissions at handoff
 
 | Action | State |
 |---|---|
 | regenerate Q00-Q11 | **FORBIDDEN** |
-| fresh engineering benchmark rerun | **AUTHORIZED ONCE ONLY at PR #308 head `559a1c104c8f1f56d2c05509eecf6b9dc05846a5`** |
+| fresh repaired engineering benchmark | **ONE ATTEMPT AUTHORIZED at exact #308 head `559a1c10...`; no result reported yet** |
 | Q00-Q11 qualification fits | **OFF** |
 | qualification scoring | **OFF** |
 | real TRAIN posterior | **OFF** |
@@ -290,59 +416,18 @@ Do not rediscover or erase these:
 | target discovery | **SEPARATE LANE** |
 | JEPA training | **OFF** |
 
-## 10. What to do next
+---
 
-Two tracks may proceed without contaminating each other:
+# 14. Minimum takeover checklist
 
-### A. Physical benchmark track
+A new agent should be able to take over without historical re-audit by doing only this:
 
-Use Macha/local Windows execution for the one authorized rerun only.
+1. read the current pointer and newest delta;
+2. verify #308 live head against `559a1c10...` and look for a new benchmark report;
+3. verify #306 live head against `d4e10c82...` and inspect only later commits;
+4. use the code/data/result CSV to locate any needed script/result/authority;
+5. keep Q00-Q11 realization immutable;
+6. keep fit/controller-truth trust domains separate;
+7. update #302/#303 after any material benchmark outcome, qualification authority/result, scorer milestone, or newly discovered bug.
 
-Required post-run report:
-
-- exact executing checkout SHA (must equal `559a1c104c8f1f56d2c05509eecf6b9dc05846a5`)
-- prep receipt SHA
-- engineering root manifest SHA
-- blinded index SHA / blinded-directory digest
-- selected opaque world manifest SHA
-- all four fit-record SHAs and final diagnoses
-- runtime environment receipt / JAX device receipt
-- per-fit and total wall time / peak working set evidence
-- projected full 1,056-fit qualification hours
-- explicit confirmation Q00-Q11 qualification fits = 0 and scoring = false
-
-If anything fails, preserve evidence and STOP. No second automatic retry.
-
-### B. #306 scoring-orchestrator engineering track
-
-Continue RED -> GREEN from `test_v79_v2_core_score_runner.py` by implementing `scripts/v79/run_v79_v2_core_scoring.py` only as far as frozen tests require.
-
-The runner must eventually:
-
-- require exact complete 1,056-fit campaign receipt
-- verify each physical fit-record hash against the campaign ledger
-- require separate post-campaign scoring authorization bound to campaign SHA, Contract V2, root manifest, blinded index, realization audit receipt and exact scorer Git head
-- validate frozen blinded package hashes before using observations
-- load controller truth only after authorization passes
-- create exactly 1,056 controller-scored rows
-- construct planted oracle held-out references
-- evaluate exactly 292 frozen gates with first-hard-fail terminal semantics
-- compute all five non-gating descriptive families
-- write canonical/hash-bound scored rows, gate table, descriptive metrics and immutable adjudication receipt once only
-- keep real-posterior/factorial/training authorities false
-
-Do not physically score anything while engineering this runner.
-
-## 11. Fast takeover checklist
-
-A new controller should only need to:
-
-1. read `V79_SYNTHETIC_LANE_CURRENT_POINTER.md`;
-2. read the newest audit delta(s);
-3. verify whether the one authorized PR #308 benchmark rerun has produced new evidence;
-4. if yes, audit only that new evidence and issue no qualification authority unless benchmark result passes the frozen runtime/execution requirements;
-5. check live #306 head against `33efb404caf81a47f976fb39f472c7537aed8f52` and inspect only newer deltas;
-6. continue scorer-orchestrator TDD if needed;
-7. update #302/#303 after every material new failure, fix, benchmark outcome, or authority ruling.
-
-Everything earlier remains historical evidence unless a concrete inconsistency appears.
+Everything before these recorded heads is historical evidence unless a concrete inconsistency is found.
