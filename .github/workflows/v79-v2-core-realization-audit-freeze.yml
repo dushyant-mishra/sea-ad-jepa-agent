@@ -20,7 +20,9 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - run: git config --global core.autocrlf false
+      - run: |
+          git config --global core.autocrlf false
+          git config --global core.longpaths true
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
