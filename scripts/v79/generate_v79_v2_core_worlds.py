@@ -99,8 +99,50 @@ def scientific_truth_sha(obj: Any) -> str:
         if isinstance(x, (str, int, float, bool)) or x is None:
             return x
         raise TypeError(f"unsupported truth type: {type(x)!r}")
+
     raw = json.dumps(canon(obj), sort_keys=True, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(raw).hexdigest()
+
+
+def load_s174_design(path: Path, *, expected_cells: int = 4726, expected_donors: int = 149,
+                     expected_operators: int = 42) -> dict[str, np.ndarray]:
+    """Load only the frozen design arrays needed by the synthetic generator.
+
+    The canonical authority stores ``log_lib_centered``. Depth standardization is
+    invariant to this additive centering, so it is exposed to the generator as
+    ``log_lib`` and standardized again by the observation model.
+    """
+    with np.load(Path(path), allow_pickle=False) as z:
+        required = {"cls", "src", "donor", "op"}
+        if not required.issubset(z.files):
+            raise SystemExit(f"STOP: S174 design missing keys {sorted(required - set(z.files))}")
+        if "log_lib_centered" in z.files:
+            log_lib = np.asarray(z["log_lib_centered"], dtype=np.float64)
+        elif "log_lib" in z.files:
+            log_lib = np.asarray(z["log_lib"], dtype=np.float64)
+        else:
+            raise SystemExit("STOP: S174 design lacks log_lib_centered/log_lib")
+        out = {
+            "log_lib": log_lib,
+            "cls": np.asarray(z["cls"], dtype=np.int64),
+            "src": np.asarray(z["src"], dtype=np.int64),
+            "donor": np.asarray(z["donor"], dtype=np.int64),
+            "op": np.asarray(z["op"], dtype=np.int64),
+        }
+    lengths = {len(v) for v in out.values()}
+    if lengths != {int(expected_cells)}:
+        raise SystemExit(f"STOP: S174 design row count mismatch: {sorted(lengths)} expected {expected_cells}")
+    if len(np.unique(out["donor"])) != int(expected_donors):
+        raise SystemExit("STOP: S174 donor count mismatch")
+    if len(np.unique(out["op"])) != int(expected_operators):
+        raise SystemExit("STOP: S174 operator count mismatch")
+    for d in np.unique(out["donor"]):
+        if len(np.unique(out["src"][out["donor"] == d])) != 1:
+            raise SystemExit("STOP: S174 donor spans sources")
+    for o in np.unique(out["op"]):
+        if len(np.unique(out["src"][out["op"] == o])) != 1:
+            raise SystemExit("STOP: S174 operator spans sources")
+    return out
 
 
 def build_designs(payload: dict, *, base_design: dict[str, np.ndarray], s174_design: dict[str, np.ndarray]) -> dict[str, dict[str, np.ndarray]]:
@@ -111,63 +153,89 @@ def build_designs(payload: dict, *, base_design: dict[str, np.ndarray], s174_des
     return out
 
 
+def _source_codes_from_matrix_geometry(src: np.ndarray, op: np.ndarray) -> dict[str, int]:
+    """Bind HVS/NPH52/SEA_AD identities by their frozen 24/7/11 matrix geometry."""
+    code_by_count: dict[int, int] = {}
+    for s in np.unique(src):
+        n_ops = int(len(np.unique(op[src == s])))
+        if n_ops in code_by_count:
+            raise SystemExit("STOP: ambiguous source matrix geometry")
+        code_by_count[n_ops] = int(s)
+    if set(code_by_count) != {24, 7, 11}:
+        raise SystemExit(f"STOP: expected frozen source matrix geometry 24/7/11, got {sorted(code_by_count)}")
+    return {"HVS": code_by_count[24], "NPH52": code_by_count[7], "SEA_AD": code_by_count[11]}
+
+
 def build_structural_support(payload: dict, design: dict[str, np.ndarray], *, world_index: int,
                              genes: int | None = None, amendment: dict | None = None) -> np.ndarray:
-    """Build the frozen cell×gene structural support truth.
-
-    For the real G=44 qualification this is exactly five genes with composition
-    1 single-source-measured / 3 one-source-absent / 1 partial NPH52 (3 of 7
-    NPH52 matrices unmeasured). Tiny fixtures use a proportional fallback.
-    """
+    """Build the frozen cell×gene structural measurement-support truth."""
     G = int(genes if genes is not None else payload["worlds"]["genes_per_world"])
     op = np.asarray(design["op"], dtype=np.int64)
     src = np.asarray(design["src"], dtype=np.int64)
     support = np.ones((len(src), G), dtype=bool)
     rule = payload["worlds"]["structural_support_rule"]
     n_struct = int(rule["genes_with_structural_absence_per_world"]) if G == int(payload["worlds"]["genes_per_world"]) else min(G, max(1, round(59.0 / 500.0 * G)))
-    wi = effective_seed_world_index(world_index, 1, amendment) if amendment is not None else int(world_index)
-    rng = np.random.default_rng(seed_for(world_index=wi, gene_index=9999, stream=1, root=int(payload["seeds"]["root"])))
+    root = int(payload["seeds"]["root"])
+    wi1 = effective_seed_world_index(world_index, 1, amendment) if amendment is not None else int(world_index)
+    rng = np.random.default_rng(seed_for(world_index=wi1, gene_index=9999, stream=1, root=root))
     structural_genes = np.sort(rng.choice(G, size=n_struct, replace=False))
     sources = np.sort(np.unique(src))
 
     if n_struct == 5:
-        # 1) one gene measured in exactly one source, source selected uniformly.
-        g = structural_genes[0]
+        if len(sources) != 3:
+            raise SystemExit("STOP: frozen support rule requires three sources")
+        source_codes = _source_codes_from_matrix_geometry(src, op)
+
+        g = int(structural_genes[0])
         keep = int(rng.choice(sources))
         support[:, g] = src == keep
 
-        # 2) three genes each fully absent in one source, weighted 38:20:10 (HVS:NPH52:SEA_AD).
-        weights = np.asarray([38.0, 20.0, 10.0], dtype=float)
-        if len(sources) != 3:
-            raise SystemExit("STOP: frozen support rule requires three sources")
+        weight_by_code = {
+            source_codes["HVS"]: 38.0,
+            source_codes["NPH52"]: 20.0,
+            source_codes["SEA_AD"]: 10.0,
+        }
+        weights = np.asarray([weight_by_code[int(s)] for s in sources], dtype=float)
         weights /= weights.sum()
-        for g in structural_genes[1:4]:
+        for g0 in structural_genes[1:4]:
             absent = int(rng.choice(sources, p=weights))
-            support[:, g] = src != absent
+            support[:, int(g0)] = src != absent
 
-        # 3) one partial gene: exactly floor(7/2)=3 of NPH52's 7 matrices absent.
-        nph52 = int(sources[1])
+        g = int(structural_genes[4])
+        nph52 = int(source_codes["NPH52"])
         nph_ops = np.unique(op[src == nph52])
-        if len(nph_ops) != 7:
-            raise SystemExit(f"STOP: frozen partial-support rule requires 7 NPH52 matrices, got {len(nph_ops)}")
-        g = structural_genes[4]
-        drop = set(int(x) for x in rng.choice(nph_ops, size=3, replace=False))
+        wi24 = effective_seed_world_index(world_index, 24, amendment) if amendment is not None else int(world_index)
+        matrix_rng = np.random.default_rng(seed_for(world_index=wi24, gene_index=g, stream=24, root=root))
+        drop = set(int(x) for x in matrix_rng.choice(nph_ops, size=3, replace=False))
         support[:, g] = np.array([not (int(s) == nph52 and int(o) in drop) for s, o in zip(src, op)], dtype=bool)
         return support
 
-    # Tiny-fixture fallback: preserve the measured-vs-unmeasured code path without pretending 1/3/1 composition fits.
-    for g in structural_genes:
+    for g0 in structural_genes:
         absent = int(rng.choice(sources))
-        support[:, g] = src != absent
+        support[:, int(g0)] = src != absent
     return support
 
 
 def _rescale_donor_effects(part: dict, new_sd: np.ndarray) -> None:
-    part["donor_sd"] = np.asarray(new_sd, dtype=float)
+    """Rescale the actual planted donor realization, failing closed if its raw form is absent."""
+    sd = np.asarray(new_sd, dtype=float)
+    part["donor_sd"] = sd
+    if "raw_centered" in part:
+        raw = np.asarray(part["raw_centered"], dtype=float)
+        if raw.ndim != 2 or raw.shape[1] != len(sd):
+            raise SystemExit("STOP: raw_centered donor realization shape mismatch")
+        part["donor_effects"] = raw * sd[None, :]
+        return
     if "donor_z" in part:
-        part["donor_effects"] = np.asarray(part["donor_z"], dtype=float) * part["donor_sd"][None, :]
-    elif np.all(part["donor_sd"] == 0):
+        raw = np.asarray(part["donor_z"], dtype=float)
+        if raw.ndim != 2 or raw.shape[1] != len(sd):
+            raise SystemExit("STOP: donor_z shape mismatch")
+        part["donor_effects"] = raw * sd[None, :]
+        return
+    if np.all(sd == 0) and "donor_effects" in part:
         part["donor_effects"] = np.zeros_like(np.asarray(part["donor_effects"], dtype=float))
+        return
+    raise SystemExit("STOP: cannot rescale donor effects without raw_centered donor realization")
 
 
 def _sparse_prevalence(G: int, world_index: int, payload: dict) -> np.ndarray:
@@ -225,6 +293,45 @@ def apply_world_modifications(base_truth: dict, world_def: dict, payload: dict) 
     return out
 
 
+def calibrate_detection_intercepts(truth: dict, design: dict[str, np.ndarray], support: np.ndarray) -> dict:
+    """Solve final detection intercepts over measured cells, excluding donor effects.
+
+    This implements the frozen planting rule exactly: prevalence is calibrated from
+    the fixed depth/class/source predictor after all world modifications and support
+    choices are final, while donor effects remain outside the prevalence calibration.
+    """
+    import v79_v2_core_observation as O
+    import v79_v2_core_planting as P
+
+    out = copy.deepcopy(truth)
+    det = out["detection"]
+    support = np.asarray(support, dtype=bool)
+    n = len(np.asarray(design["src"]))
+    G = len(np.asarray(det["prevalence"]))
+    if support.shape != (n, G):
+        raise SystemExit("STOP: detection calibration support shape mismatch")
+
+    z, q = O.depth_basis(np.asarray(design["log_lib"], dtype=float))
+    cls = np.asarray(design["cls"], dtype=np.int64)
+    src = np.asarray(design["src"], dtype=np.int64)
+    Hc = O.normalized_helmert(len(np.unique(cls)))
+    Hs = O.normalized_helmert(len(np.unique(src)))
+    if np.min(cls) < 0 or np.max(cls) >= Hc.shape[0] or np.min(src) < 0 or np.max(src) >= Hs.shape[0]:
+        raise SystemExit("STOP: class/source must be contiguous integer codes for calibration")
+
+    fixed_eta = z[:, None] * np.asarray(det["depth1"], dtype=float)[None, :]
+    fixed_eta += q[:, None] * np.asarray(det["depth2"], dtype=float)[None, :]
+    fixed_eta += Hc[cls] @ np.asarray(det["class_contrasts"], dtype=float).T
+    fixed_eta += Hs[src] @ np.asarray(det["source_contrasts"], dtype=float).T
+
+    targets = np.asarray(det["prevalence"], dtype=float)
+    det["intercept"] = np.asarray([
+        P.solve_detection_intercept(fixed_eta[:, g], support[:, g], target_prevalence=float(targets[g]))
+        for g in range(G)
+    ], dtype=float)
+    return out
+
+
 def generate_operator_offsets(design: dict[str, np.ndarray], *, donor_sd: float, world_index: int,
                               gene_index: int, part: str, payload: dict, amendment: dict) -> np.ndarray:
     """Generate Q11 operator offsets and centre them unweighted within source."""
@@ -259,6 +366,17 @@ def apply_poison(counts: np.ndarray, support: np.ndarray, *, poison: int = -1) -
     out = counts.copy()
     out[~support] = poison
     return out
+
+
+def validate_poison_integrity(observed: np.ndarray, support: np.ndarray, *, poison: float = -1.0) -> None:
+    observed = np.asarray(observed)
+    support = np.asarray(support, dtype=bool)
+    if observed.shape != support.shape:
+        raise SystemExit("STOP: observed/support shape mismatch")
+    if np.any(observed[support] == poison):
+        raise SystemExit("STOP: poison sentinel appears in a structurally measured entry")
+    if np.any(observed[~support] != poison):
+        raise SystemExit("STOP: structurally unmeasured entry is not poisoned")
 
 
 def opaque_world_id(name: str) -> str:
