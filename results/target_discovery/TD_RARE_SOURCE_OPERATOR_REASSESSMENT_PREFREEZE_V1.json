@@ -1,0 +1,100 @@
+{
+  "schema": "TD_RARE_SOURCE_OPERATOR_REASSESSMENT_PREFREEZE_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_REAL_TRAIN_RARE_PROGRAM_REASSESSMENT__NO_RESULT_OPENED__NO_TARGET_AUTHORITY",
+  "purpose": "Reassess historical rare1/rare5 and future rare molecular directions on authenticated TRAIN data while separating biological rarity from source/operator observability before those directions can influence C1/C3/C6/C2/C4 target qualification.",
+  "inputs_already_authenticated": {
+    "program_weights_sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+    "train_50k_expression_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "historical_rare_state_prrc_sha256": "7a2b3f97555cbbf95428b9c70b0f2192584d6a40d0804a55ddf6fa572711105e",
+    "full104_address_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+  },
+  "known_finding": {
+    "rare1_rare5_same_direction": true,
+    "upper_5pct_counts": {"NPH52": 1889, "HVS": 347, "SEA_AD": 264},
+    "upper_1pct_counts": {"NPH52": 499, "HVS": 1, "SEA_AD": 0},
+    "interpretation": "Strong source shift; historical rare1/rare5 are not accepted as universal rare biological programs or prevalence anchors."
+  },
+  "analysis_population": {
+    "primary": "eligible pathology-blind TRAIN cells only",
+    "biological_family_rule": "Assess rarity within broad biological families; never derive rarity globally across incomparable lineages.",
+    "donor_primary": true,
+    "source_families": ["HVS", "NPH52", "SEA_AD"],
+    "operator_level": "Use registered matrix/operator identities for measurement support and sensitivity analyses; identifiers remain provenance, not biological embeddings."
+  },
+  "program_definitions": {
+    "historical_direction": "Freeze exact historical innovation weight vector; do not refit it during the reassessment.",
+    "new_candidate_directions": "May be discovered only by a separately frozen pathology-blind rule and must then enter the same source/operator gate before target use.",
+    "prevalence_rule": "Global pooled quantiles are descriptive only until source/operator-aware biological qualification passes.",
+    "rare1_rare5_rule": "Treat rare1 and rare5 as two thresholds on one direction, not two independent programs."
+  },
+  "required_tests": {
+    "T1_within_source_donor_recurrence": {
+      "question": "Within each source, is the high-score direction represented across multiple donors rather than one donor/library?",
+      "unit": "donor",
+      "result": ["PASS", "FAIL", "NOT_ESTIMABLE"]
+    },
+    "T2_within_source_direction_stability": {
+      "question": "Does the molecular direction remain internally coherent within source under donor resampling?",
+      "controls": ["donor bootstrap", "family-restricted comparator", "same-cell candidate/RNA comparison"]
+    },
+    "T3_depth_detection_support_matching": {
+      "question": "Does high score remain after matching/conditioning on RNA depth, genes detected and physical feature support?",
+      "rule": "Matching/statistical conditioning may diagnose observability but cannot erase genuine biology by default."
+    },
+    "T4_operator_support_stratification": {
+      "question": "Are high scores concentrated in operators that better measure program-defining genes?",
+      "inputs": ["matrix/operator", "measured-support state", "depth", "detection"],
+      "interpretation": "Operator enrichment without within-operator biological recurrence is an artifact warning."
+    },
+    "T5_source_balanced_consensus": {
+      "question": "When sources are given equal biological weight at donor level, is the direction still present?",
+      "rule": "Do not weight by cell count."
+    },
+    "T6_leave_one_source_out_transport": {
+      "question": "Does a direction defined without one source identify a concordant state in that source where support permits?",
+      "role": "Tests transport of direction, not equality of prevalence."
+    },
+    "T7_candidate_target_preservation": {
+      "question": "For each eligible C1/C3/C6/C2/C4 candidate, is the source-qualified biological direction preserved without increasing source/operator shortcut predictability?",
+      "same_cells": true,
+      "same_comparator_set": true
+    },
+    "T8_uncertainty_separation": {
+      "question": "When RNA evidence is weak because an operator poorly observes the program, does the target/student represent uncertainty rather than collapsing the cell toward the population mean?",
+      "outputs": ["biological_novelty", "measurement_domain_support", "measurement_uncertainty"]
+    }
+  },
+  "source_aware_program_classes": {
+    "UNIVERSAL_BIOLOGICAL_PROGRAM": "Direction recurs across donors within multiple sources and transports in direction after support/depth controls; prevalence may differ.",
+    "BIOLOGICAL_PROGRAM_WITH_SOURCE_SHIFTED_PREVALENCE": "Direction is biologically coherent across sources but source-specific abundance/amplitude differs; target should preserve state while prevalence is modeled separately.",
+    "SOURCE_SPECIFIC_BIOLOGICAL_PROGRAM": "Direction is donor-recurrent and internally coherent in one source but unsupported/nontransporting elsewhere; eligible for source-specific interpretation, not universal target evidence.",
+    "BIOLOGICAL_PROGRAM_PARTIALLY_OBSERVATION_LIMITED": "Biological direction remains but observability depends strongly on operator support; target may preserve it with explicit support/uncertainty masks.",
+    "OBSERVATION_OPERATOR_ARTIFACT": "Direction fails donor recurrence/transport and is explained by support/depth/operator structure; must not be used as rare biological target evidence.",
+    "NOT_ESTIMABLE": "Support overlap or donor recurrence is insufficient to classify."
+  },
+  "candidate_effect": {
+    "C1": "A universal/shared target should preserve universal or observation-limited biological rare programs, but need not encode source-specific prevalence as biology.",
+    "C3": "Query-conditioned preservation is evaluated within source and broad state to prevent query abundance or operator detection from masquerading as rare query biology.",
+    "C6": "Must add rare query-context information beyond C1 without increasing source/operator shortcut signal.",
+    "C2": "If active, relational rare-program structure must survive source-aware reassessment and cannot inherit source-order artifacts.",
+    "C4": "If active, any relational increment over C6 must add biological rare-program structure rather than source/operator grouping.",
+    "C5": "Regulatory specialist may represent a source-qualified rare program after regulatory qualification; cannot rescue failed foundations."
+  },
+  "no_retroactive_selection": {
+    "rule": "This reassessment can qualify/falsify rare-program evidence used by an otherwise eligible candidate, but cannot repair a candidate that already failed its mandatory foundation gates.",
+    "pathology_opening": false,
+    "multimodal_outcome_target_selection": false
+  },
+  "required_outputs_if_executed": [
+    "source-by-donor recurrence table",
+    "operator support/detection table",
+    "source-balanced direction statistics",
+    "leave-one-source-out transport table",
+    "depth/detection matched sensitivity table",
+    "candidate-specific preservation versus shortcut table",
+    "program classification receipt",
+    "exact hashes/provenance receipt"
+  ],
+  "terminal": "DESIGN_ONLY__EXECUTION_REQUIRES_SEPARATE_AUTHORITY"
+}
