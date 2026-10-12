@@ -77,20 +77,36 @@ rm -rf "$RED_TREE"; mkdir -p "$RED_TREE"
   red_g7_sha=$("$PY" -c "import importlib.util,sys;s=importlib.util.spec_from_file_location('c',sys.argv[1]);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);print(m.canonical_text_sha256(sys.argv[2]))" \
     "$RED_TREE/scripts/v5/td_relational_value_read_v2_common.py" "$RED_TREE/scripts/v5/audit_td_relational_g7_s174_overlap_v2.py")
   echo "red_tree_g7_canonical_sha256=$red_g7_sha (required f8e527104c60a7b6fa307558f97158f004ea485846f5b1ea984a3eef5d1e71fe)"
-  ( cd "$RED_TREE" && "$PY" -m pytest -q -p no:cacheprovider -rA $GLOBAL_ROW_TESTS )
+  ( cd "$RED_TREE" && "$PY" -m pytest -q -p no:cacheprovider -rA --junitxml "$OUT/QUAL_02a_global_row_RED_junit.xml" $GLOBAL_ROW_TESTS )
   echo "# red_exit=$?"
 } > "$OUT/QUAL_02a_global_row_RED_at_red_commit.txt" 2>&1
 rm -rf "$RED_TREE"
 RED_LOG="$OUT/QUAL_02a_global_row_RED_at_red_commit.txt"
 red_failed=$(grep -cE "^FAILED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::" "$RED_LOG")
-red_keyerror=$(grep -cE "^FAILED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::.* - KeyError: 'global_row'" "$RED_LOG")
-red_not_raised=$(grep -cE "^FAILED tests/v5/test_td_g7_successor_global_row_and_g6_bridge.py::.* - Failed: DID NOT RAISE" "$RED_LOG")
+# per-test failure reason from the JUnit record (the pinned pytest prints no reason on the short-summary lines)
+"$PY" - "$OUT/QUAL_02a_global_row_RED_junit.xml" >> "$RED_LOG" 2>&1 <<'PY'
+import sys
+import xml.etree.ElementTree as ET
+want = {"test_g7_binds_global_row_from_freeze_file_position_before_filtering": "KeyError: 'global_row'",
+        "test_g7_and_accepted_g6_selectors_agree_on_historical_rows": "KeyError: 'global_row'",
+        "test_g7_refuses_a_freeze_missing_required_columns": "Failed: DID NOT RAISE",
+        "test_g7_validates_an_explicit_global_row_like_g6": "Failed: DID NOT RAISE"}
+got = {}
+for case in ET.parse(sys.argv[1]).getroot().iter("testcase"):
+    failure = case.find("failure")
+    got[case.get("name")] = None if failure is None else (failure.get("message") or "")
+for name in sorted(want):
+    print("red_reason", name, "=>", got.get(name))
+ok = set(got) == set(want) and all(got[k] is not None and got[k].startswith(v) for k, v in want.items())
+print(f"red_reasons_ok={int(ok)}")
+PY
+red_reasons_ok=$(grep -c "^red_reasons_ok=1$" "$RED_LOG")
 red_sha_ok=$(grep -c "^red_tree_g7_canonical_sha256=f8e527104c60a7b6fa307558f97158f004ea485846f5b1ea984a3eef5d1e71fe " "$RED_LOG")
 "$PY" -m pytest -q -p no:cacheprovider -rA $GLOBAL_ROW_TESTS > "$OUT/QUAL_02b_global_row_GREEN_at_head.txt" 2>&1
 rc2=$?
 echo "# exit=$rc2" >> "$OUT/QUAL_02b_global_row_GREEN_at_head.txt"
-rc_red=$(( red_failed == 4 && red_keyerror == 2 && red_not_raised == 2 && red_sha_ok == 1 ? 0 : 1 ))
-echo "# red_failed_tests=$red_failed (required 4): KeyError 'global_row'=$red_keyerror (required 2), DID NOT RAISE=$red_not_raised (required 2), red G7 is f8e52710=$red_sha_ok (required 1)" >> "$RED_LOG"
+rc_red=$(( red_failed == 4 && red_reasons_ok == 1 && red_sha_ok == 1 ? 0 : 1 ))
+echo "# red_failed_tests=$red_failed (required 4); per-test reasons exact=$red_reasons_ok (required 1: 2 KeyError 'global_row', 2 DID NOT RAISE); red G7 is f8e52710=$red_sha_ok (required 1)" >> "$RED_LOG"
 
 # 3. predecessor bridge and authority-separation tests (the complete successor test file)
 "$PY" -m pytest -q -p no:cacheprovider -rA "$NEW" > "$OUT/QUAL_03_successor_bridge_and_authority_tests.txt" 2>&1
@@ -196,7 +212,7 @@ rc_g7out=$?
   echo "tracked_status_after=[$(git status --short --untracked-files=no)]"
   echo "untracked_after=[$(git status --short | grep '^??' | tr '\n' ' ')]"
   echo "focused_suite_counts=[$(grep -E '(passed|failed|skipped|error)' "$OUT/QUAL_01_full_focused_suite.txt" | grep -v '^#' | tail -1)]"
-  echo "global_row_red=failed $red_failed/4, KeyError global_row $red_keyerror/2, DID NOT RAISE $red_not_raised/2, red G7 f8e52710 $red_sha_ok/1"
+  echo "global_row_red=failed $red_failed/4, per-test reasons exact $red_reasons_ok/1, red G7 f8e52710 $red_sha_ok/1"
   echo "global_row_green_counts=[$(grep -E '(passed|failed|error)' "$OUT/QUAL_02b_global_row_GREEN_at_head.txt" | grep -v '^#' | tail -1)]"
   echo "successor_test_file_counts=[$(grep -E '(passed|failed|error)' "$OUT/QUAL_03_successor_bridge_and_authority_tests.txt" | grep -v '^#' | tail -1)]"
   echo "real_g7_premarker_gate_terminal=[$(grep -o '"terminal": "[^"]*"' "$OUT/QUAL_04_real_g7_premarker_gate.json")]"
