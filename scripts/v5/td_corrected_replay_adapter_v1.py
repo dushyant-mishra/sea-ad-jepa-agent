@@ -36,7 +36,7 @@ SAMPLE_A = "A_NATURAL_MIXTURE"
 SAMPLE_A_COUNTS = {"HVS": 1_129, "NPH52": 1_310, "SEA_AD": 22_561}
 ARCHIVE_SHA = "c84849f5568f5260ac80b7c53e8af34f8bdad03fdbc16e0e8b29e7663dcf2417"
 SUPPORT_SHA = "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
-SUPPORT_BUNDLE_SHA = None  # the bundle is identified by the support member SHA it yields
+SUPPORT_BUNDLE_SHA = "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"  # historical custody manifests
 SUPPORT_MEMBER = ("FOUNDATION_CALIBRATION_BUNDLE_20260824/foundation_calibration_bundle_20260824/support/"
                   "FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz")
 SUPPORT_REL = ("td_support_extract/FOUNDATION_CALIBRATION_BUNDLE_20260824/foundation_calibration_bundle_20260824/"
@@ -186,6 +186,18 @@ def metadata_view(meta_npz: Path, freeze: Path) -> dict:
 
 
 # ---------------------------------------------------------------------------------------- historical-layout writer
+def check_support_bundle(bundle: Path) -> dict:
+    """Pure pre-marker check: the calibration bundle and the support member it yields are the frozen bytes."""
+    require_sha(bundle, SUPPORT_BUNDLE_SHA, "support bundle")
+    with zipfile.ZipFile(bundle) as z:
+        if z.namelist().count(SUPPORT_MEMBER) != 1:
+            raise AdapterError(f"support member ambiguous or missing: {SUPPORT_MEMBER}")
+        got = hashlib.sha256(z.read(SUPPORT_MEMBER)).hexdigest()
+    if got != SUPPORT_SHA:
+        raise AdapterError(f"support member SHA mismatch: {got} != {SUPPORT_SHA}")
+    return {"support_bundle_sha256": SUPPORT_BUNDLE_SHA, "support_member_sha256": SUPPORT_SHA}
+
+
 def write_inputs(cache: dict, archive: Path, support_bundle: Path, mnt: Path) -> dict:
     """Write the executors' /mnt/data inputs under `mnt`; return every written file's SHA-256."""
     mnt = Path(mnt)
@@ -212,6 +224,7 @@ def write_inputs(cache: dict, archive: Path, support_bundle: Path, mnt: Path) ->
     np.save(arr / "indices.npy", indices)
     np.save(arr / "indptr.npy", indptr.astype(np.int32))
     np.save(arr / "shape.npy", np.asarray([N_GLOBAL, N_ADDR], dtype=np.int32))
+    check_support_bundle(support_bundle)
     support = mnt / SUPPORT_REL
     support.parent.mkdir(parents=True)
     with zipfile.ZipFile(support_bundle) as z:

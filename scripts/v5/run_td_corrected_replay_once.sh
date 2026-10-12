@@ -15,7 +15,9 @@
 #   - no corrected value is opened and no replay kernel runs;
 #   - nothing is written to the replay namespace.
 # EXECUTE_ONCE additionally requires the committed external launch-audit acceptance and the ratification. It then
-# runs the post-marker orchestrator once and validates the evidence.
+# runs the orchestrator once and validates the evidence. The orchestrator repeats the pure checks, reads the detected
+# field from the parsed ratification, and checks the support bundle before it writes the attempt ledger and marker.
+# One attempt only: the attempt ledger, any earlier EXECUTE_ONCE run record and the namespace each refuse another.
 # No path here invokes G6, G7, a target tournament, TD60, Stage 4 or training.
 #
 # Exit codes:
@@ -72,6 +74,10 @@ if [ "$MODE" = "EXECUTE_ONCE" ]; then
   [ "$(blob_sha "$ACC_COMMIT" "$ACC_REL")" = "$EXPECTED_ACC_SHA" ] || fail "launch-audit acceptance at $ACC_COMMIT is missing or not the given SHA"
 fi
 [ -e "$NAMESPACE" ] && fail "replay namespace already exists (attempt spent or occupied): $NAMESPACE"
+[ -e "$RUNBASE/TD_CORRECTED_REPLAY_ATTEMPT_LEDGER_V1.json" ] && fail "attempt ledger exists: the one corrected-replay attempt is spent"
+for r in "$RUNBASE"/launch_EXECUTE_ONCE_*/record/RUN_RECORD.txt; do
+  [ -e "$r" ] && fail "an earlier EXECUTE_ONCE reached the orchestrator ($r): the attempt is spent"
+done
 [ "$(wsl.exe -e "$WSL_PY" -c "import sys,numpy,scipy,pandas;print('python='+sys.version.split()[0],'numpy='+numpy.__version__,'scipy='+scipy.__version__,'pandas='+pandas.__version__)" 2>/dev/null | tr -d '\r\0')" = "$PY_VERSIONS" ] \
   || fail "WSL replay environment is not the pinned one: $PY_VERSIONS"
 [ "$(wsl.exe -e "$WSL_PY" -m pip freeze --all 2>/dev/null | tr -d '\r\0' | sha256sum | cut -c1-64)" = "$(sha256sum "$LAUNCH_ROOT/$ENV_LOCK_REL" | cut -c1-64)" ] \
@@ -96,6 +102,7 @@ git -C "$REPO" cat-file blob 0b50938e48f7c257b362a0c66899bc1caa0d27a1:docs/agent
 git -C "$REPO" cat-file blob bffba425ec41c584b01c9a5e71178241ec5ee523:docs/agent/TD_G7_SUCCESSOR_EXECUTION_20261012/SPENT_AUTHORITY_RECORD_8d41fb98.json > "$PRE/G7_SPENT.json" || stop "spent record"
 pin "$PRE/G6_ACCEPTANCE.json" 89932183a2c7b56d1e3ae42264ea3f3b3ae9001d865cfa93604b46f0db2129fb
 pin "$PRE/DIAG_TRANSFORMS.json" f7378b2a872b558c76bad2b1b7f4c201a3e30c38f4f63e25f73c76826129daca
+pin "$PRE/DIAG_RESULT.md" 208684bcca51680a107433cc22764cc2227a847da37a023d632ec1469bd04298
 git -C "$REPO" cat-file blob "$AUTH_COMMIT:$OWNER_REL" > "$AU/owner.json" || stop "owner decision"
 git -C "$REPO" cat-file blob "$AUTH_COMMIT:$RUNTIME_REL" > "$AU/runtime.json" || stop "runtime authorization"
 git -C "$REPO" cat-file blob "$AUTH_COMMIT:$OP_REL" > "$AU/operational.json" || stop "operational authorization"
@@ -126,14 +133,16 @@ wpy td_corrected_replay_gate_v1.py qualify --archive "$(wslpath_of "$ARCHIVE")" 
   --diagnostic-transforms "$(wslpath_of "$PRE/DIAG_TRANSFORMS.json")" --diagnostic-result "$(wslpath_of "$PRE/DIAG_RESULT.md")" \
   --spent-record "$(wslpath_of "$PRE/G7_SPENT.json")" --sample-freeze "$(wslpath_of "$FREEZE")" \
   --namespace "$(wslpath_of "$NAMESPACE")" --record "$WREC/QUALIFY_RECEIPT.json" \
-  --equivalence-receipt "$(wslpath_of "$PRE/EQUIVALENCE_RECEIPT.json")" --implementation-commit "$IMPL" "${RAT_ARG[@]}" > "$REC/QUALIFY_STDOUT.txt" 2> "$REC/QUALIFY_STDERR.txt"
+  --equivalence-receipt "$(wslpath_of "$PRE/EQUIVALENCE_RECEIPT.json")" --implementation-commit "$IMPL" \
+  --support-bundle "$(wslpath_of "$SUPPORT_BUNDLE")" "${RAT_ARG[@]}" > "$REC/QUALIFY_STDOUT.txt" 2> "$REC/QUALIFY_STDERR.txt"
 QRC=$?
 [ $QRC -eq 0 ] || [ $QRC -eq 3 ] || stop "QUALIFY failed (exit $QRC; see QUALIFY_STDERR.txt)"
 
 # 3. replay-only authority (and, in EXECUTE_ONCE, the external launch-audit acceptance)
 wpy td_corrected_replay_gate_v1.py authority --owner "$(wslpath_of "$AU/owner.json")" --runtime "$(wslpath_of "$AU/runtime.json")" \
   --operational "$(wslpath_of "$AU/operational.json")" --expected-operational-sha256 "$EXPECTED_OP_SHA" \
-  --implementation-commit "$IMPL" --record "$WREC/AUTHORITY_CHECK.json" "${ACC_ARGS[@]}" > "$REC/AUTHORITY_STDOUT.txt" 2> "$REC/AUTHORITY_STDERR.txt" \
+  --implementation-commit "$IMPL" --equivalence-receipt "$(wslpath_of "$PRE/EQUIVALENCE_RECEIPT.json")" \
+  --record "$WREC/AUTHORITY_CHECK.json" "${ACC_ARGS[@]}" > "$REC/AUTHORITY_STDOUT.txt" 2> "$REC/AUTHORITY_STDERR.txt" \
   || stop "authority check failed (see AUTHORITY_STDERR.txt)"
 [ -e "$NAMESPACE" ] && stop "replay namespace appeared during qualification"
 
@@ -144,16 +153,16 @@ fi
 
 # 4. EXECUTE_ONCE: requires a ratified QUALIFY PASS; the orchestrator creates the start marker before any protected step
 [ $QRC -eq 0 ] || stop "EXECUTE_ONCE requires a ratified QUALIFY PASS"
-DET=$(sed -n 's/.*"detected_field": "\([a-z_]*\)".*/\1/p' "$AU/ratification.json" | head -1)
-AUTH_JSON=$(wsl.exe -e "$WSL_PY" -c "import json,sys;print(json.dumps(json.load(open(sys.argv[1]))['authority_sha256'],sort_keys=True))" "$WREC/AUTHORITY_CHECK.json" | tr -d '\r\0')
 echo "execute_start_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$REC/RUN_RECORD.txt"
 wpy td_corrected_replay_execute_v1.py --namespace "$(wslpath_of "$NAMESPACE")" --archive "$(wslpath_of "$ARCHIVE")" \
   --support-bundle "$(wslpath_of "$SUPPORT_BUNDLE")" --g6-values "$(wslpath_of "$G6NS/TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz")" \
   --g6-meta "$(wslpath_of "$G6NS/TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz")" --sample-freeze "$(wslpath_of "$FREEZE")" \
   --python "$WSL_PY" --implementation-commit "$IMPL" --qualify-receipt "$WREC/QUALIFY_RECEIPT.json" \
-  --authority-sha-json "$AUTH_JSON" --detected-field "$DET" --ratified > "$REC/execute.stdout.txt" 2> "$REC/execute.stderr.txt"
+  --authority-check "$WREC/AUTHORITY_CHECK.json" --ratification "$(wslpath_of "$AU/ratification.json")" \
+  > "$REC/execute.stdout.txt" 2> "$REC/execute.stderr.txt"
 XRC=$?
 echo "execute_exit=$XRC execute_end_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$REC/RUN_RECORD.txt"
-wpy td_corrected_replay_evidence_v1.py --namespace "$(wslpath_of "$NAMESPACE")" --out "$WREC/EVIDENCE_VERDICT.json" > "$REC/evidence.stdout.txt" 2> "$REC/evidence.stderr.txt"
+wpy td_corrected_replay_evidence_v1.py --namespace "$(wslpath_of "$NAMESPACE")" --out "$WREC/EVIDENCE_VERDICT.json" \
+  --launch-record "$WREC" > "$REC/evidence.stdout.txt" 2> "$REC/evidence.stderr.txt"
 echo "evidence_exit=$? utc=$(date -u +%Y-%m-%dT%H:%M:%SZ). STOP for external outcome audit; no rerun or repair." | tee -a "$REC/RUN_RECORD.txt"
 exit $XRC

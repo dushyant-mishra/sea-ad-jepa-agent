@@ -10,8 +10,9 @@ authority, and the one-shot start marker. THIS FILE NEVER OPENS CORRECTED VALUES
                QUALIFY receipt (under --record).
   authority    validate fresh replay-only owner/runtime/operational authority and, for EXECUTE, the committed
                external launch-audit acceptance.
-`begin_attempt()` is the only function that creates the start marker. It uses exclusive create and must be called
-only after every check has passed and before any protected (outcome-bearing) operation.
+`preflight_execute()` repeats the pure EXECUTE checks inside the orchestrator. `begin_attempt()` is the only function
+that creates the attempt ledger and the start marker. Both use exclusive create; it must be called only after every
+check has passed and before any protected (outcome-bearing) operation.
 """
 from __future__ import annotations
 
@@ -42,6 +43,12 @@ AUTH_SCHEMAS = {"owner": "JEPA_TD_CORRECTED_REPLAY_OWNER_DECISION_V1",
                 "operational": "JEPA_TD_CORRECTED_REPLAY_OPERATIONAL_AUTHORIZATION_V1",
                 "acceptance": "JEPA_TD_CORRECTED_REPLAY_LAUNCH_AUDIT_ACCEPTANCE_V1"}
 RATIFICATION_SCHEMA = "JEPA_TD_CORRECTED_REPLAY_DECISION_RATIFICATION_V1"
+LEDGER_NAME = "TD_CORRECTED_REPLAY_ATTEMPT_LEDGER_V1.json"
+
+
+def ledger_path(namespace: Path) -> Path:
+    """The one-attempt ledger beside the namespace. Deleting the namespace does not re-enable an attempt."""
+    return Path(namespace).parent / LEDGER_NAME
 
 
 class GateError(RuntimeError):
@@ -89,6 +96,8 @@ def validate_contract(c: dict, *, repo_root: Path, archive: Path) -> dict:
         require(sha(repo_root / rel) == want, f"science reference changed: {rel}")
     amend = c["prerequisite_amendment"]
     require(sha(repo_root / amend["path"]) == amend["sha256"], "prerequisite amendment changed")
+    lock = c["execution_environment"]["lock"]
+    require(sha(repo_root / lock["path"]) == lock["sha256"], "environment lock file changed")
     require(sha(archive) == c["archive"]["sha256"], "TD41-TD58 archive SHA mismatch")
     ex = c["executors"]
     members = [v["archive_path"] for v in ex["TD56"]["by_source"].values()] + [ex[s]["archive_path"] for s in ("TD57B", "TD57C")]
@@ -137,6 +146,7 @@ def authenticate_predecessors(c: dict, *, g6_namespace: Path, g6_acceptance: Pat
     d = p["g7_diagnostic"]
     require(Path(diagnostic_transforms).is_file() and Path(diagnostic_result).is_file(), "missing diagnostic evidence")
     require(sha(diagnostic_transforms) == d["transforms_sha256"], "diagnostic transforms output changed")
+    require(sha(diagnostic_result) == d["result_sha256"], "diagnostic result document changed")
     t = load_json(diagnostic_transforms, "diagnostic transforms")
     require(t.get("classification") == DIAGNOSTIC_CLASS and t.get("spec_sha256") == d["spec_sha256"], "diagnostic class/spec mismatch")
     require(t.get("g7_authority_created") is False and t.get("biological_replay_authorized") is False,
@@ -194,7 +204,7 @@ def ratification_state(c: dict, ratification: Path | None) -> dict:
     got = r.get("ratified", {})
     require(got.get("detected_field") == decisions["detected_field"]["proposed"], "ratified detected field differs from the contract")
     require(got.get("routing_input_rule") == decisions["routing_input_rule"]["proposed"], "ratified routing rule differs from the contract")
-    return {"status": "RATIFIED", "ratification_sha256": sha(ratification)}
+    return {"status": "RATIFIED", "ratification_sha256": sha(ratification), "detected_field": got["detected_field"]}
 
 
 EQUIVALENCE_CASES = ({f"TD56_{s}" for s in A.SOURCES} | {f"TD57B_{s}_P{p}" for s in A.SOURCES for p in (0, 1)}
@@ -228,8 +238,10 @@ def qualify(c: dict, *, args) -> dict:
                                      diagnostic_result=Path(args.diagnostic_result), spent_record=Path(args.spent_record))
     est = structural_estimability(c, g6_meta=Path(args.g6_namespace) / "TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz",
                                   sample_freeze=Path(args.sample_freeze), archive=Path(args.archive))
+    support = A.check_support_bundle(Path(args.support_bundle))
     ns = Path(args.namespace)
     require(not ns.exists(), f"replay namespace already exists (spent or occupied): {ns}")
+    require(not ledger_path(ns).exists(), f"attempt ledger exists; the one corrected-replay attempt is spent: {ledger_path(ns)}")
     rat = ratification_state(c, Path(args.ratification) if args.ratification else None)
     ok = rat["status"] == "RATIFIED"
     return {"schema": "JEPA_TD_CORRECTED_REPLAY_QUALIFY_RECEIPT_V1",
@@ -237,14 +249,16 @@ def qualify(c: dict, *, args) -> dict:
                          else "QUALIFIED_EXCEPT_PENDING_OWNER_RATIFICATION__NO_BIOLOGICAL_REPLAY_RUN"),
             "contract_sha256": sha(ROOT / CONTRACT_REL), "contract": contract, "predecessors": pred,
             "structural_estimability": est, "historical_fixture_equivalence": equivalence, "ratification": rat,
-            "namespace_fresh": str(ns), "implementation_commit_sha": args.implementation_commit,
+            "support_bundle": support, "namespace_fresh": str(ns), "attempt_ledger_absent": True,
+            "implementation_commit_sha": args.implementation_commit,
             "corrected_values_opened": False, "replay_kernels_run": False, "start_marker_created": False,
             **{k: False for k in DOWNSTREAM}}
 
 
 # ------------------------------------------------------------------------------------------------------ authority
 def validate_authority(c: dict, *, owner: Path, runtime: Path, operational: Path, acceptance: Path | None,
-                       expected_operational_sha: str, expected_acceptance_sha: str | None, code: dict) -> dict:
+                       expected_operational_sha: str, expected_acceptance_sha: str | None, code: dict,
+                       equivalence_receipt: Path) -> dict:
     spent = set(c["predecessors"]["spent_authority_sha256"])
     recs = {"owner": owner, "runtime": runtime, "operational": operational}
     if acceptance is not None:
@@ -268,6 +282,9 @@ def validate_authority(c: dict, *, owner: Path, runtime: Path, operational: Path
     rt = load_json(runtime, "runtime")
     require(rt.get("owner_decision_sha256") == shas["owner"], "runtime does not bind the owner decision")
     require(rt.get("code_sha256") == code["code_sha256"], "runtime does not bind the exact code identity")
+    require(rt.get("equivalence_receipt_sha256") == sha(equivalence_receipt), "runtime does not bind this equivalence receipt")
+    require(rt.get("environment_lock_sha256") == c["execution_environment"]["lock"]["sha256"],
+            "runtime does not bind the contract environment lock")
     op = load_json(operational, "operational")
     require(op.get("owner_decision_sha256") == shas["owner"] and op.get("runtime_authorization_sha256") == shas["runtime"],
             "operational does not bind owner/runtime")
@@ -300,17 +317,53 @@ def code_identity(root: Path = ROOT) -> dict:
     return {"files": files, "code_sha256": h.hexdigest()}
 
 
-def begin_attempt(namespace: Path, payload: dict) -> Path:
-    """The only creator of the start marker. Exclusive create; the namespace and authority are spent from here on."""
+def preflight_execute(c: dict, *, qualify_receipt: Path, authority_check: Path, ratification: Path,
+                      implementation_commit: str, namespace: Path) -> dict:
+    """Pure checks the orchestrator repeats before the marker, so it cannot be run around the launcher's gates."""
+    q = load_json(qualify_receipt, "QUALIFY receipt")
+    require(str(q.get("terminal", "")).startswith("PASS_"), "EXECUTE requires a ratified QUALIFY PASS receipt")
+    require(q.get("contract_sha256") == sha(ROOT / CONTRACT_REL) and q.get("implementation_commit_sha") == implementation_commit,
+            "QUALIFY receipt is not for this contract and implementation")
+    require(q.get("namespace_fresh") == str(Path(namespace)), "QUALIFY receipt is not for this namespace")
+    rat = ratification_state(c, ratification)
+    require((q.get("ratification") or {}).get("ratification_sha256") == rat["ratification_sha256"],
+            "QUALIFY was not run with this ratification")
+    au = load_json(authority_check, "authority check")
+    require(au.get("authority_check") == "PASS" and "acceptance" in (au.get("authority_sha256") or {}),
+            "EXECUTE requires an authority check that includes the launch-audit acceptance")
+    require(au.get("code_sha256") == code_identity()["code_sha256"] and au.get("implementation_commit_sha") == implementation_commit,
+            "authority check is not for this code and implementation")
+    require(rat["detected_field"] in A.DETECTED_FIELDS, "ratified detected field is not a G6 metadata field")
     ns = Path(namespace)
-    if ns.exists():
-        raise GateError(f"replay namespace already exists; attempt spent or occupied: {ns}")
-    ns.mkdir(parents=True)
-    marker = ns / "TD_CORRECTED_REPLAY_EXECUTION_START.json"
-    fd = os.open(marker, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o444)
+    require(not ns.exists() and not ledger_path(ns).exists(), "replay namespace or attempt ledger already exists; attempt spent")
+    return {"authority_sha256": au["authority_sha256"], "detected_field": rat["detected_field"],
+            "ratification_sha256": rat["ratification_sha256"]}
+
+
+def _exclusive_json(path: Path, rec: dict) -> None:
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o444)
     with os.fdopen(fd, "w", encoding="utf-8") as f:
-        f.write(json.dumps({"schema": "JEPA_TD_CORRECTED_REPLAY_EXECUTION_START_V1", "status": "STARTED_NOT_A_RESULT",
-                            **payload, **{k: False for k in DOWNSTREAM}}, indent=2, sort_keys=True) + "\n")
+        f.write(json.dumps(rec, indent=2, sort_keys=True) + "\n")
+
+
+def begin_attempt(namespace: Path, payload: dict) -> Path:
+    """The only creator of the attempt ledger and the start marker. Exclusive create; the namespace and authority are
+    spent from here on, and the ledger keeps them spent even if the namespace is later removed."""
+    ns = Path(namespace)
+    ledger = ledger_path(ns)
+    if ns.exists() or ledger.exists():
+        raise GateError(f"replay namespace or attempt ledger already exists; attempt spent or occupied: {ns}")
+    rec = {"schema": "JEPA_TD_CORRECTED_REPLAY_EXECUTION_START_V1", "status": "STARTED_NOT_A_RESULT",
+           **payload, **{k: False for k in DOWNSTREAM}}
+    ledger.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        _exclusive_json(ledger, {**rec, "schema": "JEPA_TD_CORRECTED_REPLAY_ATTEMPT_LEDGER_V1", "status": "ATTEMPT_SPENT",
+                                 "namespace": str(ns)})
+        ns.mkdir()
+    except FileExistsError as exc:
+        raise GateError(f"replay namespace or attempt ledger already exists; attempt spent or occupied: {exc}") from exc
+    marker = ns / "TD_CORRECTED_REPLAY_EXECUTION_START.json"
+    _exclusive_json(marker, rec)
     return marker
 
 
@@ -319,11 +372,13 @@ def main() -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
     q = sub.add_parser("qualify")
     for n in ("archive", "g6-namespace", "g6-acceptance", "g7-namespace", "diagnostic-transforms", "diagnostic-result",
-              "spent-record", "sample-freeze", "namespace", "record", "equivalence-receipt", "implementation-commit"):
+              "spent-record", "sample-freeze", "namespace", "record", "equivalence-receipt", "implementation-commit",
+              "support-bundle"):
         q.add_argument(f"--{n}", required=True)
     q.add_argument("--ratification")
     au = sub.add_parser("authority")
-    for n in ("owner", "runtime", "operational", "expected-operational-sha256", "implementation-commit", "record"):
+    for n in ("owner", "runtime", "operational", "expected-operational-sha256", "implementation-commit", "record",
+              "equivalence-receipt"):
         au.add_argument(f"--{n}", required=True)
     au.add_argument("--acceptance")
     au.add_argument("--expected-acceptance-sha256")
@@ -338,8 +393,10 @@ def main() -> int:
         out = validate_authority(c, owner=Path(a.owner), runtime=Path(a.runtime), operational=Path(a.operational),
                                  acceptance=Path(a.acceptance) if a.acceptance else None,
                                  expected_operational_sha=a.expected_operational_sha256,
-                                 expected_acceptance_sha=a.expected_acceptance_sha256, code=code)
+                                 expected_acceptance_sha=a.expected_acceptance_sha256, code=code,
+                                 equivalence_receipt=Path(a.equivalence_receipt))
         out["code_sha256"] = code["code_sha256"]
+        out["implementation_commit_sha"] = a.implementation_commit
         Path(a.record).write_text(json.dumps(out, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         print(json.dumps(out, indent=2, sort_keys=True))
         return 0

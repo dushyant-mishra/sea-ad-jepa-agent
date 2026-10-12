@@ -72,6 +72,12 @@ def git_commit(prefix: str) -> str:
     return full
 
 
+def git_blob_sha256(commit: str, path: str) -> str:
+    """SHA-256 of a committed file, read from the git object; never hand-typed."""
+    import subprocess
+    return hashlib.sha256(subprocess.check_output(["git", "-C", str(ROOT), "cat-file", "blob", f"{commit}:{path}"])).hexdigest()
+
+
 def archive_members(archive: Path, names: list[str]) -> dict:
     if sha(archive) != ARCHIVE_SHA:
         raise SystemExit("STOP: authenticated TD41-TD58 archive SHA mismatch")
@@ -138,6 +144,7 @@ def build(archive: Path) -> dict:
                               "result_path": "docs/agent/TD_G7_CELL_ID_NAMESPACE_DIAGNOSTIC_20261012/TD_G7_CELL_ID_NAMESPACE_DIAGNOSTIC_RESULT.md",
                               "transforms_path": "docs/agent/TD_G7_CELL_ID_NAMESPACE_DIAGNOSTIC_20261012/STAGE3_TRANSFORMS.json",
                               "transforms_sha256": "f7378b2a872b558c76bad2b1b7f4c201a3e30c38f4f63e25f73c76826129daca",
+                              "result_sha256": git_blob_sha256(git_commit("0b50938e"), "docs/agent/TD_G7_CELL_ID_NAMESPACE_DIAGNOSTIC_20261012/TD_G7_CELL_ID_NAMESPACE_DIAGNOSTIC_RESULT.md"),
                               "spec_sha256": "cfee4477871f4c50600cc4dbc6a2fc32e675950507ff23d27ff233e0be8c96e1",
                               "classification": "GENUINELY_DISJOINT_NATURAL_CELL_SETS",
                               "claims_value_agreement": False},
@@ -186,8 +193,10 @@ def build(archive: Path) -> dict:
         "stage_order": ["TD56", "TD57B", "TD57C", "TD59"],
         "cross_stage_rule": "Replay all four already-opened historical objects for audit even if an earlier corrected replay fails. Preserve each stage's internal historical sequential-stop rule. No stage outcome may redesign another replay.",
         "invocation_outcome_mapping": {
-            "td56": "NOT_ESTIMABLE if observed or null_p95 is not finite; PASS iff observed > null_p95 and observed > 0; else FAIL",
-            "module": "exit 0 -> PASS; exit 2 -> FAIL; an exception whose final message contains a frozen support pattern -> NOT_ESTIMABLE; any other exception -> IMPLEMENTATION_FAILURE (preserved, never relabelled)",
+            "td56": "non-zero exit or no result file -> IMPLEMENTATION_FAILURE; NOT_ESTIMABLE if observed or null_p95 is not finite; PASS iff observed > null_p95 and observed > 0; else FAIL",
+            "module": ("exit 0 -> PASS and exit 2 -> FAIL, each only when the executor's own written result has that status for this source and panel "
+                       "(otherwise IMPLEMENTATION_FAILURE: Python also exits 2 on argument or missing-script errors); any other exit: an exception whose "
+                       "final stderr line contains a frozen support pattern -> NOT_ESTIMABLE, else IMPLEMENTATION_FAILURE (preserved, never relabelled)"),
             "support_patterns": NOT_ESTIMABLE_PATTERNS,
             "stage_status": "PASS iff every invocation PASS; FAIL at the first FAIL; NOT_ESTIMABLE at the first NOT_ESTIMABLE; IMPLEMENTATION_FAILURE at the first implementation failure"},
         "historical_fixture_equivalence": {
@@ -206,14 +215,31 @@ def build(archive: Path) -> dict:
                                   "rationale": "Historical executors were byte-exact on Linux with these versions. On Windows, null vectors differ by 1 ULP."},
         "namespace": {"root_windows": "D:/jepa_td_corrected_replay_20261012/REPLAY_OUT_V1",
                       "root_wsl": "/mnt/d/jepa_td_corrected_replay_20261012/REPLAY_OUT_V1",
-                      "start_marker": "TD_CORRECTED_REPLAY_EXECUTION_START.json", "one_shot": True},
+                      "start_marker": "TD_CORRECTED_REPLAY_EXECUTION_START.json", "one_shot": True,
+                      "attempt_ledger": "D:/jepa_td_corrected_replay_20261012/TD_CORRECTED_REPLAY_ATTEMPT_LEDGER_V1.json",
+                      "one_shot_guards": ["attempt ledger (exclusive create, beside the namespace)", "namespace absent",
+                                          "no earlier launch_EXECUTE_ONCE_*/record/RUN_RECORD.txt",
+                                          "the committed evidence record is the durable spend record"]},
         "decisions_requiring_owner_ratification": {
             "detected_field": {"question": "Which G6 metadata detected count feeds the executors' td50 'detected' (depth/detection null blocks)?",
                                "options": ["detected_corrected", "detected_historical"], "proposed": "detected_corrected",
                                "status": "PROPOSED_PENDING_OWNER_RATIFICATION"},
             "routing_input_rule": {"question": "How are stage outcomes mapped to routing V2 inputs, including universal_source?",
                                    "proposed": {"stage_inputs": "the frozen stage status (PASS/FAIL/NOT_ESTIMABLE); an IMPLEMENTATION_FAILURE yields no routing input",
-                                                "universal_source": "FAIL if, in any stage, a source passed all its invocations and a later source in the frozen order failed; otherwise NOT_ESTIMABLE if any stage is NOT_ESTIMABLE; otherwise PASS"},
+                                                "universal_source": ("FAIL if, in any stage and panel, one source PASSED that panel's invocation and another source FAILED the same "
+                                                                     "panel's invocation (the same test; under the frozen order the failing source is the later one); otherwise "
+                                                                     "NOT_ESTIMABLE if any stage is NOT_ESTIMABLE; otherwise PASS"),
+                                                "universal_source_reading": ("PASS means no source disagreement was observed under the frozen sequential order, not that every "
+                                                                             "source replicated every stage: sources after a stage's first failure are not run, so a disagreement "
+                                                                             "in which a later source would pass after an earlier source failed (e.g. SEA_AD PASS, HVS FAIL) "
+                                                                             "cannot be observed"),
+                                                "universal_source_examples": [
+                                                    "TD57C P0: HVS PASS, NPH52 FAIL -> FAIL (route SOURCE_DISAGREEMENT)",
+                                                    "TD57C P1 (after P0 all PASS): HVS PASS, NPH52 FAIL -> FAIL (same rule in either panel)",
+                                                    "TD57C P0: HVS FAIL (nothing else runs) -> no disagreement observed",
+                                                    "TD59 P0 all PASS, P1 HVS FAIL -> no disagreement observed (NPH52/SEA_AD were not run on P1)",
+                                                    "TD56: HVS PASS, NPH52 PASS, SEA_AD FAIL -> FAIL",
+                                                    "TD59 P0: HVS PASS, NPH52 NOT_ESTIMABLE -> not FAIL; NOT_ESTIMABLE through the stage status"]},
                                    "status": "PROPOSED_PENDING_OWNER_RATIFICATION"}},
         "interpretation_policy": {
             "routing_module": "scripts/v5/td_corrected_replay_routing_v2.py",
@@ -225,12 +251,16 @@ def build(archive: Path) -> dict:
                 "corrected TD57C PASS -> divergence; stop and require a new prospective locality experiment",
                 "source disagreement -> no universal-source claim; do not average it away",
                 "any NOT_ESTIMABLE -> remains not estimable, never a biological PASS"],
+            "pattern_F": "no frozen 'materially narrow' number: any corrected TD59 PASS is flagged for auditor judgment and the HVS TD59 case margins are reported",
             "historical_comparison_classes": ["QUALITATIVE_HISTORICAL_CONCLUSION_REPRODUCED",
-                                              "QUALITATIVE_HISTORICAL_CONCLUSION_NOT_REPRODUCED", "NOT_ESTIMABLE"]},
+                                              "QUALITATIVE_HISTORICAL_CONCLUSION_NOT_REPRODUCED", "NOT_ESTIMABLE",
+                                              "NOT_COMPARABLE__IMPLEMENTATION_FAILURE"]},
         "estimability_policy": {"pre_marker_checks": [
             "G6 metadata Sample-A rows equal the frozen freeze rows in sample_row order",
             "per source, the G6 metadata (global_row, donor, operator) equal the historical td50 structural fields exactly, so every comparison population is the historical one",
-            "per source, donor counts and donor x operator strata with >= 4 cells meet the executors' structural floors (TD56: >= 8 donors; TD57B: >= 4 per half; TD57C/TD59: >= 8 structurally eligible)"],
+            "per source, donor counts and donor x operator strata with >= 4 cells meet the executors' structural floors (TD56: >= 8 donors; TD57B: >= 4 per half; TD57C/TD59: >= 8 structurally eligible)",
+            "the support calibration bundle (SHA 07748d5b) and the support member it yields (SHA 852cb3ec) are the frozen bytes (QUALIFY, and again in the orchestrator before the marker)",
+            "the detected field is read from the parsed, ratified decision JSON before the marker"],
             "value_dependent_measurability": "checked only by the executors after the start marker"},
         "authority_policy": {"required": ["fresh replay-only owner decision", "fresh replay-only runtime authorization",
                                           "fresh replay-only operational authorization", "committed external launch-audit acceptance"],
