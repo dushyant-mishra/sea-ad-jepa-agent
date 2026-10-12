@@ -1,0 +1,29 @@
+{
+  "schema": "TD_PR311_TO_PR312_HANDOFF_BINDING_V1",
+  "date": "2026-10-12",
+  "status": "CROSS_LANE_EVIDENCE_BINDING__NON_AUTHORIZING",
+  "source_lane": {
+    "pr": 311,
+    "role": "real-TRAIN rare-biology analysis/provenance",
+    "head_at_review": "d416111e3bc3e1fade119b5bb5f255d7b3e8b399",
+    "key_artifacts": [
+      "results/v79/rare_biology_integration/V79_STAGE75_DETECTION_RESIDUAL_RARE_PROGRAM_MILESTONE_20261012.md",
+      "results/v79/rare_biology_integration/MG_STAGE75_DETECTION_RESIDUAL_AUDIT_20261012.csv",
+      "results/v79/rare_biology_integration/MG_STAT1_EMPIRICAL_RARE_REGIMES_20261012.csv"
+    ]
+  },
+  "target_lane": {
+    "pr": 312,
+    "role": "active target-discovery integration/adjudication",
+    "integration_surfaces": [
+      "results/target_discovery/TD_RARE_SOURCE_OPERATOR_REASSESSMENT_PREFREEZE_V1.json",
+      "results/target_discovery/TD_RARE_PROGRAM_QUALIFICATION_CONTRACT_V1.json",
+      "results/target_discovery/TD_MULTIMODAL_EVIDENCE_LEDGER_V1.json",
+      "docs/agent/TD_RARE_PROGRAM_MULTIMODAL_INTEGRATION_HANDOFF_20261012.md",
+      "results/target_discovery/TD_WORKFLOW_CLOSEOUT_LEDGER_V1.json"
+    ]
+  },
+  "binding_rule": "The PR311 finding and its copy/summary in PR312 constitute one evidence lineage. Import into PR312 is not an independent replication and must not be double-counted.",
+  "scientific_effect": "PR311 Stage75 donor-recurrent regulatory tails become prospective rare-program qualification leads in PR312, with STAT1 prioritized for broader measurement/source falsification. Historical rare1/rare5 remain a confounded diagnostic control.",
+  "authority_boundary": "No target selection, causal regulator claim, representation selection, TD60, Stage4 or training authority is created by this handoff."
+}
