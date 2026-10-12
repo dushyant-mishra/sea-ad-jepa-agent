@@ -1,0 +1,35 @@
+{
+  "schema": "TD_TD60_SUCCESSOR_PORTFOLIO_READINESS_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_ROLE_BINDING__TD60_OFF",
+  "historical_td60": {
+    "design_commit": "79c893ab27f87c1c2c4e57241bfc3af8d855a250",
+    "question": "Does the first lawful learned u40 EMA teacher preserve the already-frozen relational geometry?",
+    "required_cases": {"TD57B_global":24,"TD59_mesoscale":24,"total":48},
+    "pass_rule": "48_OF_48_PASS",
+    "forbidden": ["new locality search","historical checkpoint resume as successor authority","u41 before TD60 adjudication"]
+  },
+  "current_portfolio_interpretation": {
+    "TD60_is_not": "a universal substitute for qualifying all target blocks",
+    "applies_when": "the frozen selected target portfolio contains a relational learned-teacher block requiring C2/C4 continuity",
+    "C1": "requires its own learned-teacher shared-state continuity/transfer qualification if selected",
+    "C3": "requires query-specific teacher fidelity and q-safe student recoverability if selected",
+    "C6": "requires both shared and query block continuity plus noninterference/increment preservation if selected",
+    "C4": "requires relational TD60-style continuity plus shared/query continuity and composite increment preservation",
+    "C5": "specialist regulatory continuity/recoverability remains separate and cannot rescue foundation failure"
+  },
+  "entry_conditions_before_any_td60_or_successor_execution": [
+    "audited real target tournament complete",
+    "protected confirmation complete where required",
+    "explicit owner target-portfolio selection decision",
+    "teacher/student topology frozen for qualification",
+    "lawful fresh successor u0 materialized and attested",
+    "bounded qualification-only u0_to_u40 authority explicitly granted",
+    "exact u40 checkpoint frozen",
+    "all applicable continuity protocols frozen before reading u40 biological outcomes"
+  ],
+  "rare_common_rule": "Teacher-continuity qualification must preserve the same unified biology obligations as target selection, including reproducible rare as well as common programs; rare biology is not a separate TD60 lane.",
+  "multimodal_rule": "Post-freeze multimodal evidence may characterize teacher-private/recoverable biology but cannot be used to tune TD60 or successor continuity rules after u40 outcomes are opened.",
+  "current_terminal": "TD60_OFF__TARGET_PORTFOLIO_NOT_SELECTED__LAWFUL_BOUNDED_TEACHER_NOT_MATERIALIZED",
+  "authority": {"td60_authorized":false,"bounded_teacher_training_authorized":false,"stage4_authorized":false,"training_authorized":false}
+}
