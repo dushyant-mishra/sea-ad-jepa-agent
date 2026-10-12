@@ -77,15 +77,23 @@ Bayesian recurrence/observability uncertainty can later supply confidence/absten
 
 Stage75F is useful enhancer-informed regulatory evidence, but not a validated eRegulon/GRN. Stage73R is an important negative prior: the context graph did not beat STRING or the repaired target-shuffled control, so graph topology is not foundation truth. Regulatory program activity may be used as privileged teacher evidence or C5 specialist structure; mandatory graph message passing requires a new topology-specific qualification.
 
-## GSE214979 role
+## GSE214979 same-nucleus rare-program assay
 
-After the RNA foundation target is frozen, GSE214979 is the primary same-nucleus experiment for asking:
+`results/target_discovery/TD_RARE_PROGRAM_SAME_NUCLEUS_ASSAY_V1.json` now freezes the exact assay for a rare program such as STAT1 after the foundation target/program direction is frozen.
 
-1. whether ATAC/regulatory evidence sharpens or splits frozen rare RNA states;
-2. what privileged increment RNA can recover under donor holdout;
-3. what remains teacher-private and should appear as uncertainty rather than impossible point loss.
+For every eligible nucleus, the already-frozen RNA program is scored first. ATAC is then interrogated in the **same physical nucleus** without changing the RNA program definition. The deciding analysis is donor-primary and includes within-donor ATAC contrasts, predeclared regulatory-feature tests, matched/random regulatory controls, donor recurrence, shortcut falsification and donor-held-out RNA recoverability.
+
+The assay classifies the result as multimodal shared/recoverable, multimodal shared/partly private, teacher-private, RNA state without regulatory increment, regulatory interpretation falsified, or NOT_ESTIMABLE. Failure of RNA recoverability does not erase coherent biology; it moves that increment to teacher-private uncertainty rather than an impossible point target.
 
 The HCT17HEX/HCTZZT identity conflict is handled prospectively: primary deciding analysis excludes those labels unless an independently authenticated correction predates outcome opening; a genotype-only sensitivity analysis cannot rescue a primary failure.
+
+## Morabito + SCENIC reconciliation layer
+
+`results/target_discovery/TD_RARE_PROGRAM_MORABITO_SCENIC_FOLLOWUP_V1.json` freezes the next layer after same-nucleus classification.
+
+Morabito is used only at donor or predeclared donor×subcluster level because RNA and ATAC come from different nuclei. The question is whether donors with stronger frozen RNA-program activity also show stronger accessibility/regulatory support in the same direction. No same-cell pairing, nearest-gene-is-target shortcut or cell-count pseudo-replication is allowed.
+
+SCENIC+/Stage75 is used as a regulatory interpretation layer, not an answer key. Strongest convergence is: GSE214979 same-nucleus coherence + Morabito donor-level recurrence + predeclared SCENIC/Stage75 support in the same direction. Regulatory support without same-nucleus or donor-level coherence is insufficient for biological promotion.
 
 ## Frozen contingencies and pivots
 
@@ -106,7 +114,7 @@ Core rules:
 
 `results/target_discovery/TD_WORKFLOW_CLOSEOUT_LEDGER_V1.json` records the closeout state.
 
-The design lane is complete for all currently foreseeable branches: candidate dependencies, rare-program gates, source/operator reassessment, Bayesian reuse, multimodal ETL roles, rich-teacher/student decomposition, regulatory claim boundaries, same-nucleus experiment role, authority ladder, and failure pivots are prospectively frozen.
+The design lane is complete for all currently foreseeable branches: candidate dependencies, rare-program gates, source/operator reassessment, Bayesian reuse, multimodal ETL roles, rich-teacher/student decomposition, regulatory claim boundaries, same-nucleus assay, Morabito/SCENIC reconciliation layer, authority ladder, and failure pivots are prospectively frozen.
 
 Remaining work is evidence execution/audit, in order:
 
@@ -115,9 +123,9 @@ Remaining work is evidence execution/audit, in order:
 3. rare-program fitness on every active target candidate;
 4. survivor head-to-head/protected confirmation;
 5. explicit foundation-target decision;
-6. post-freeze GSE214979 same-nucleus multimodal decomposition;
-7. Morabito/SEA-AD multimodal replication;
-8. regulatory/spatial/perturbational interpretation;
+6. post-freeze GSE214979 same-nucleus rare-program/multimodal decomposition;
+7. Morabito donor-level replication plus SCENIC/Stage75 reconciliation;
+8. internal SEA-AD multiome corroboration and then regulatory/spatial/perturbational interpretation;
 9. explicit representation and later TD60/Stage4/training authorities.
 
 No additional architecture brainstorming should occur unless one of the frozen contingencies explicitly triggers redesign.
