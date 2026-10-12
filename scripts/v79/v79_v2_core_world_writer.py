@@ -2,8 +2,8 @@
 """Deterministic physical package writer for V79 V2_CORE worlds.
 
 The successful engineering path is explicitly barred from the frozen qualification
-seed.  Qualification realization requires a separate controller authorization whose
-generator-bundle SHA matches the exact bytes executing this writer.  This module
+seed. Qualification realization requires a separate controller authorization whose
+generator-bundle SHA matches the exact bytes executing this writer. This module
 writes data/truth packages only; it never benchmarks or fits a model.
 """
 from __future__ import annotations
@@ -21,7 +21,6 @@ import v79_v2_core_world_assembly as A
 QUALIFICATION_SEED_ROOT = 31_000_000
 ROOT_MANIFEST_NAME = "V79_V2_CORE_WORLD_SET_MANIFEST_V1.json"
 
-# Every byte here can affect authority, planting, observation, assembly or writing.
 _BUNDLE_PATHS = (
     "scripts/v79/v79_v2_core_launch.py",
     "scripts/v79/generate_v79_v2_core_worlds.py",
@@ -52,6 +51,11 @@ def _safe_rel(rel: str) -> Path:
     return p
 
 
+def _portable_rel(path: Path) -> str:
+    """Canonical manifest/ledger path syntax independent of host OS."""
+    return path.as_posix()
+
+
 def generator_bundle_sha256(root: Path) -> str:
     root = Path(root)
     h = hashlib.sha256()
@@ -78,7 +82,6 @@ def _write_npy(path: Path, value: Any) -> str:
         raise SystemExit(f"STOP: object dtype forbidden in authority array {path.name}")
     arr = np.ascontiguousarray(arr)
     path.parent.mkdir(parents=True, exist_ok=True)
-    # NPY is deterministic for a fixed primitive dtype/shape/value and has no timestamp.
     with path.open("wb") as f:
         np.save(f, arr, allow_pickle=False)
     return _sha256_file(path)
@@ -86,7 +89,7 @@ def _write_npy(path: Path, value: Any) -> str:
 
 def _record_array(outputs: dict[str, str], world_dir: Path, rel: str, value: Any) -> None:
     safe = _safe_rel(rel)
-    outputs[rel] = _write_npy(world_dir / safe, value)
+    outputs[_portable_rel(safe)] = _write_npy(world_dir / safe, value)
 
 
 def _write_world_bundle(*, root: Path, payload: dict, design: dict[str, np.ndarray], bundle: dict,
@@ -99,17 +102,14 @@ def _write_world_bundle(*, root: Path, payload: dict, design: dict[str, np.ndarr
     world_dir.mkdir(parents=True, exist_ok=False)
     outputs: dict[str, str] = {}
 
-    # Value-blind design and structural measurement truth.
     for key in ("src", "donor", "cls", "op", "log_lib"):
         _record_array(outputs, world_dir, f"design/{key}.npy", design[key])
     _record_array(outputs, world_dir, "support.npy", bundle["support"])
 
-    # Full fixed/donor truth used to score the fitted model.
     for part in ("detection", "positive"):
         for key, value in sorted(bundle["truth"][part].items()):
             _record_array(outputs, world_dir, f"truth/{part}/{key}.npy", value)
 
-    # New-donor truth only needs the donor-specific realization; fixed truth is shared.
     for part in ("detection", "positive"):
         for key in ("donor_raw_centered", "donor_effects", "factor_loading"):
             _record_array(outputs, world_dir, f"truth/new_donor/{part}/{key}.npy",
@@ -120,8 +120,6 @@ def _write_world_bundle(*, root: Path, payload: dict, design: dict[str, np.ndarr
         for part in ("detection", "positive"):
             _record_array(outputs, world_dir, f"truth/operator_offsets/{part}.npy", offsets[part])
 
-    # The fitter consumes observed values plus support/design.  detected is persisted
-    # as an audit convenience; latent RNG draws are reproducible from frozen seeds.
     for rep in ("train", "same_donor", "new_donor"):
         obs = bundle["observations"][rep]
         _record_array(outputs, world_dir, f"observations/{rep}/observed.npy", obs["observed"])
@@ -243,8 +241,6 @@ def realize_qualification_worlds(*, root: Path, payload: dict, cal: dict,
     actual_bundle = generator_bundle_sha256(root)
     if auth.get("generator_bundle_sha256") != actual_bundle:
         raise SystemExit("STOP: realization authorization does not bind the executing generator bundle")
-    # Qualification writing is now mechanically possible only with an externally
-    # frozen, bundle-bound authorization receipt.  This function never fits data.
     return _write_world_set(
         root=root, payload=payload, cal=cal, designs=designs, amendment=amendment,
         out_dir=out_dir, mode="QUALIFICATION_TRUTH_FREEZE", authorization=auth)
@@ -276,8 +272,9 @@ def verify_world_set(out_dir: Path) -> dict:
     if not isinstance(worlds, list) or len(worlds) != int(root_manifest.get("world_count", -1)):
         raise SystemExit("STOP: world-set count/list mismatch")
     for rec in worlds:
-        mrel = str(_safe_rel(rec["manifest_path"]))
-        mp = out_dir / mrel
+        safe_manifest = _safe_rel(rec["manifest_path"])
+        mrel = _portable_rel(safe_manifest)
+        mp = out_dir / safe_manifest
         if not mp.is_file() or _sha256_file(mp) != rec["manifest_sha256"]:
             raise SystemExit(f"STOP: world manifest hash mismatch: {mrel}")
         expected_files.add(mrel)
@@ -295,10 +292,10 @@ def verify_world_set(out_dir: Path) -> dict:
             fp = world_dir / safe
             if not fp.is_file() or _sha256_file(fp) != digest:
                 raise SystemExit(f"STOP: world file hash mismatch: {wm['world_name']}/{rel}")
-            expected_files.add(str(Path(rec["relative_dir"]) / safe).replace("\\", "/"))
+            expected_files.add(_portable_rel(Path(rec["relative_dir"]) / safe))
 
     actual_files = {
-        str(p.relative_to(out_dir)).replace("\\", "/")
+        _portable_rel(p.relative_to(out_dir))
         for p in out_dir.rglob("*") if p.is_file()
     }
     if actual_files != expected_files:
@@ -312,8 +309,8 @@ def directory_digest(out_dir: Path) -> str:
     out_dir = Path(out_dir)
     h = hashlib.sha256()
     for p in sorted((p for p in out_dir.rglob("*") if p.is_file()),
-                    key=lambda x: str(x.relative_to(out_dir)).replace("\\", "/")):
-        rel = str(p.relative_to(out_dir)).replace("\\", "/")
+                    key=lambda x: _portable_rel(x.relative_to(out_dir))):
+        rel = _portable_rel(p.relative_to(out_dir))
         h.update(rel.encode("utf-8")); h.update(b"\0")
         h.update(hashlib.sha256(p.read_bytes()).digest()); h.update(b"\0")
     return h.hexdigest()
