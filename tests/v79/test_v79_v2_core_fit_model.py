@@ -74,6 +74,28 @@ def test_masks_enforce_structural_measurement_and_positive_observed_only():
     assert len(pos["z"]) == 5
 
 
+def test_num_pyro_graph_instantiates_exact_frozen_sites_without_forbidden_terms():
+    import jax.random as jr
+    from numpyro import handlers
+
+    c = _contract(); g = _gene()
+    det = handlers.trace(handlers.seed(M.build_detection_model(c, g), jr.PRNGKey(1))).get_trace()
+    pos = handlers.trace(handlers.seed(M.build_positive_model(c, g), jr.PRNGKey(2))).get_trace()
+
+    det_samples = {k for k, v in det.items() if v.get("type") == "sample"}
+    pos_samples = {k for k, v in pos.items() if v.get("type") == "sample"}
+    assert det_samples == {"alpha", "beta_depth1", "beta_depth2", "class_contrasts",
+                           "source_contrasts", "donor_sd", "donor_raw", "obs"}
+    assert pos_samples == {"alpha", "gamma_depth1", "gamma_depth2", "class_contrasts",
+                           "source_contrasts", "donor_sd", "donor_raw", "sigma", "obs"}
+    assert det["obs"]["is_observed"] is True and pos["obs"]["is_observed"] is True
+    assert tuple(det["obs"]["value"].shape) == (8,)
+    assert tuple(pos["obs"]["value"].shape) == (5,)
+    text = " ".join(sorted(det_samples | pos_samples)).lower()
+    for forbidden in ("operator", "matrix", "dataset", "interaction"):
+        assert forbidden not in text
+
+
 def test_model_builders_refuse_non_v2_core_contract():
     c = _contract(); c["model"]["name"] = "OTHER"
     with pytest.raises(M.FitModelRefused):
