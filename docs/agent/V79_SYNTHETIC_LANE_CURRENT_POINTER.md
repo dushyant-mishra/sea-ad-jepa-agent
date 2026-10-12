@@ -1,6 +1,6 @@
 # V79 synthetic lane — current takeover pointer
 
-Updated: 2026-10-12 16:07 UTC
+Updated: 2026-10-12 16:14 UTC
 
 Read first:
 
@@ -11,41 +11,48 @@ Read first:
 
 ## Preferred live lineage
 
-- PR #305 reconciled scorer/executor successor remains the last frozen all-green integration base: `e976d0c1a03f6a54dadcbf7fe3086f832fd319d8`.
+- PR #305 reconciled scorer/executor successor remains the frozen integration base: `e976d0c1a03f6a54dadcbf7fe3086f832fd319d8`.
 - PR #306 scoring-orchestrator successor is the active engineering branch.
-  - current head: `71273b3017c10811b6ddf4bccea78b2bf0f58c92`
-  - scorer CI `38274937051`: Windows PASS, Linux PASS, static scorer firewall PASS.
-  - executor CI `38274937118`: Windows PASS, Linux PASS, static fit-side firewall PASS.
-  - newest completed milestone: frozen detection held-out descriptives now retain and validate 10-bin calibration plus predicted-vs-observed prevalence, while remaining explicitly non-gating.
+  - current head: `045affc6e5f1c384f799661ced2db69acaa72ee3`.
+  - scorer CI `38275752111`: Windows PASS, Linux PASS, static scorer firewall PASS.
+  - executor CI `38275752308`: Windows PASS, Linux PASS, static fit-side firewall PASS.
+  - completed PR306 milestones: detection calibration/prevalence descriptive contract; controller-only planted held-out oracle.
 
 Historical source lineages remain preserved:
 - PR #300 campaign runner: `7172b201b13c61634b84b85254bf4406959b2b57`.
 - PR #301 historical scorer: `7fe0204b2661f0d1492115c973a4da7a4a1646b6`.
 Do not continue development on either historical branch by default.
 
+## Planted oracle now frozen structurally
+
+`v79_v2_core_score_oracle.py` is controller-only and non-gating. It:
+- cross-checks truth/blinded opaque identity and structural support;
+- uses exact fit-model depth/Helmert/within-source donor geometry;
+- uses realized planted donor effects for same-donor oracle;
+- integrates planted donor SD with exact 40-node Gauss-Hermite for new-donor oracle;
+- uses frozen `truth/detection/prevalence.npy` for planted prevalence;
+- requires/applies Q11 operator x gene offsets;
+- outputs same/new detection log-loss/calibration/prevalence and positive LPD oracle references.
+
 ## Immediate engineering action
 
-Continue PR #306 under TDD:
-
-1. implement controller-only planted-oracle held-out metrics;
-2. use the frozen `truth/detection/prevalence.npy` for the planted `<0.05` subset;
-3. use exact fitter design geometry and masks;
-4. same-donor oracle uses planted donor effects;
-5. new-donor oracle uses the frozen 40-node Gauss-Hermite integration convention over the planted donor-effect distribution;
-6. include Q11 planted operator offsets in the oracle where present;
-7. then build the physical controller-only scoring orchestrator.
+Continue PR #306 under TDD by building the controller-only physical scoring orchestrator.
 
 The orchestrator must:
-- require the exact completed 1,056-fit campaign receipt and verify every fit-record hash;
-- require a separate post-campaign scoring authorization bound to exact campaign SHA, frozen Contract V2, realization authority, blinded-index SHA, and exact scorer Git head;
-- load controller truth only in the scoring trust domain;
-- construct exactly 1,056 controller-scored gene/part rows;
+- require exact completed 1,056-fit campaign receipt and verify every fit-record hash against the campaign ledger;
+- require a separate post-campaign scoring authorization bound to campaign SHA, Contract V2, root manifest, blinded index, realization audit receipt, and exact scorer Git head;
+- validate the physical frozen blinded package hashes before loading observations;
+- load committed controller truth only after authorization passes;
+- construct exactly 1,056 controller-scored rows;
+- build planted oracle held-out references for every fit;
 - evaluate exactly 292 frozen gates and preserve first-hard-fail terminal semantics;
 - compute all five required descriptive families as explicitly non-gating;
-- write hash-bound gate table, descriptive metrics, and immutable adjudication receipt once;
-- refuse incomplete/mismatched/extra inputs and refuse overwrite;
-- never authorize real TRAIN posterior, factorial science, external validation, or JEPA training.
+- write canonical/hash-bound gate table, scored-row table, descriptive metrics and immutable adjudication receipt exactly once;
+- refuse incomplete/mismatched/extra/tampered inputs and refuse overwrite;
+- keep downstream authorities false.
+
+Required RED tests should cover at least: missing/wrong authorization, campaign receipt SHA mismatch, individual fit-record tamper/missing/extra file, wrong scorer head, physical blinded root/index mismatch, truth mismatch, incomplete 1,056 rows, incomplete 292 gates, missing descriptive family, and write-once refusal.
 
 ## Current authority boundary
 
-World regeneration is forbidden. Qualification fitting and scoring remain OFF. Benchmark authority remains the separate PR #299 path and must not be inferred from this handoff or PR #306.
+World regeneration is forbidden. Qualification fitting and scoring remain OFF. Benchmark authority remains separate PR #299 and must not be inferred from this handoff or PR #306.
