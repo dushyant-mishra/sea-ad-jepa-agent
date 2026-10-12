@@ -2,7 +2,7 @@
   "schema": "TD_RICH_TEACHER_PARTIAL_RNA_STUDENT_INTEGRATION_CONTRACT_V1",
   "date": "2026-10-12",
   "status": "PROSPECTIVE_SCIENCE_CONTRACT__NO_REAL_TRAINING_AUTHORITY",
-  "purpose": "Integrate target candidates, source-aware rare-program preservation, authenticated multimodal evidence and existing EMA mechanics without forcing partial RNA to reproduce teacher-private biology.",
+  "purpose": "Integrate qualified regular and rare target-discovery biology, authenticated multimodal evidence and existing EMA mechanics without forcing partial RNA to reproduce teacher-private biology.",
   "scientific_model": {
     "teacher_state": "Z_core ⊕ Z_query ⊕ Z_rel_if_qualified ⊕ Z_reg_shared ⊕ Z_reg_private ⊕ Z_context_private",
     "student_point_target": "Z_core ⊕ Z_query ⊕ Z_rel_if_qualified ⊕ Z_reg_shared",
@@ -11,16 +11,36 @@
     "principle": "The rich teacher may know more than the student; recoverable and unrecoverable state are separated empirically."
   },
   "foundation_target_binding": {"C1": "Z_core candidate", "C2": "Z_rel candidate only if corrected replay keeps C2 active", "C3": "Z_query candidate", "C6": "joint Z_core+Z_query scaffold subject to C1+C3 and C6 increment", "C4": "joint Z_core+Z_query+Z_rel only if constituents qualify", "C5": "regulatory specialist only; never foundation rescue"},
+  "regular_program_modeling": {
+    "contract": "results/target_discovery/TD_REGULAR_PROGRAM_MULTIMODAL_RECONCILIATION_V1.json",
+    "candidate_matrix": "results/target_discovery/TD_REGULAR_PROGRAM_CANDIDATE_MODALITY_MATRIX_V1.json",
+    "rule": "Common, continuous, intermediate-frequency and broadly recurrent biology encoded by a frozen foundation target receives the same post-freeze multimodal reconciliation discipline as rare biology.",
+    "freeze_rule": "Freeze RNA target geometry/program/state/query/relational definitions before any deciding multimodal outcome is opened.",
+    "teacher_behavior": {"multimodal_shared_recoverable": "shared teacher/student biology", "multimodal_shared_stochastic": "distributional target", "multimodal_shared_teacher_private": "teacher-private biology plus uncertainty", "rna_biology_without_privileged_increment": "retain qualified RNA biology without inventing privileged state", "multimodal_falsifier": "interpretation failure only; no retrospective target rewrite"}
+  },
   "source_aware_rare_program_modeling": {
     "historical_rare1_rare5_status": "SOURCE_SHIFTED_DIAGNOSTIC_DIRECTION__NOT_YET_UNIVERSAL_BIOLOGICAL_TARGET",
     "rule": "Program state, prevalence and observation-domain support are separate objects.",
     "teacher_behavior": {"universal_program": "shared teacher biology", "source_shifted_prevalence": "preserve biology but not source prevalence as biological target", "source_specific_biology": "restricted transport claim", "observation_limited_program": "biology plus explicit support/measurement uncertainty", "operator_artifact": "exclude from biological teacher target"},
     "student_behavior": {"recoverable_rare_program": "predict state", "weakly_observed_rare_program": "increase measurement/domain uncertainty", "teacher_private_multimodal_increment": "distributional/uncertainty prediction rather than exact point matching"}
   },
-  "same_nucleus_identifiability_experiment": {"primary_existing_substrate": "GSE214979", "unit": "nucleus nested within donor", "teacher_views": ["RNA_ONLY", "RNA_PLUS_ATAC_REGULATORY"], "student_view": "prospectively masked/partial lawful RNA only", "questions": ["Does ATAC/regulatory evidence sharpen or split a frozen rare RNA state?", "Which privileged increments are donor-held-out predictable from RNA?", "Which remain teacher-private?", "Are increments robust to depth/source/support baselines?"]},
+  "same_nucleus_identifiability_experiment": {
+    "primary_existing_substrate": "GSE214979",
+    "unit": "nucleus nested within donor",
+    "teacher_views": ["RNA_ONLY", "RNA_PLUS_ATAC_REGULATORY"],
+    "student_view": "prospectively masked/partial lawful RNA only",
+    "questions": [
+      "Does ATAC/regulatory evidence support, sharpen, split or falsify a frozen regular or rare RNA state/program/geometry without redefining it?",
+      "For C1/C2/C3/C6/C4, what privileged increment exists beyond the frozen RNA object and its required constituent controls?",
+      "Which privileged increments are donor-held-out predictable from RNA?",
+      "Which are predictable but stochastic?",
+      "Which remain teacher-private?",
+      "Are increments robust to depth, detection, source/operator, feature support, query abundance where relevant, and matched/random regulatory controls?"
+    ]
+  },
   "recoverability_classes": {"DETERMINISTIC_OR_HIGHLY_RECOVERABLE": "student point target", "PREDICTABLE_BUT_STOCHASTIC": "distribution/uncertainty target", "TEACHER_PRIVATE": "no deterministic student loss", "NOT_ESTIMABLE": "unresolved"},
   "ema_integration": {"runtime_reuse": "Reuse canonical V5 AdamW->successful-update->EMA mechanics; no second EMA engine.", "ema_shared_core": "EMA stabilizes structurally shared teacher/student modules.", "privileged_adapters": "ATAC/regulatory/spatial teacher adapters may be teacher-only.", "teacher_age": "successful base-cell presentations", "failed_update_rule": "no optimizer completion means no EMA advance"},
   "loss_family": {"shared_state_loss": "rotation/subspace-aware deterministic matching on recoverable blocks", "query_loss": "q-safe matching", "relational_loss": "only if C2/C4 active", "probabilistic_privileged_loss": "distributional/uncertainty calibrated", "private_state_loss": "NONE_TO_STUDENT_POINT_PREDICTION", "measurement_uncertainty": "separate depth/count resampling", "anti_collapse": "required"},
-  "downstream_sequence": ["1_QUALIFY_FOUNDATION_TARGET_INCLUDING_SOURCE_AWARE_RARE_PROGRAM_FITNESS", "2_FREEZE_TARGET_WITHOUT_AD_PATHOLOGY", "3_BUILD_RICH_TEACHER_FROM_AUTHENTICATED_MULTIMODAL_SURFACES", "4_SPLIT_TEACHER_STATE_INTO_RNA_RECOVERABLE_AND_PRIVATE_COMPONENTS", "5_QUALIFY_PARTIAL_RNA_STUDENT_DONOR_HELD_OUT", "6_TRANSPORT_WITH_SUPPORT_MASKS", "7_ONLY_THEN_OPEN_AD_ASSOCIATIONS", "8_REGULATORY_SPATIAL_PERTURBATIONAL_TRIANGULATION"],
-  "hard_prohibitions": ["No pathology-selected foundation target.", "No exact student matching of teacher-private biology.", "No source/operator identity as biological state.", "No zero-fill for missing privileged evidence.", "No C5/multimodal rescue of failed foundation.", "No global source-confounded rare1/rare5 prevalence as biology.", "No real training authority from this file."]
+  "downstream_sequence": ["1_QUALIFY_FOUNDATION_TARGET_INCLUDING_REGULAR_AND_SOURCE_AWARE_RARE_PROGRAM_FITNESS", "2_FREEZE_TARGET_AND_RNA_PROGRAMS_WITHOUT_AD_PATHOLOGY", "3_RECONCILE_FROZEN_REGULAR_AND_RARE_BIOLOGY_WITH_GSE214979_SAME_NUCLEUS_RNA_ATAC", "4_REPLICATE_AT_DONOR_LEVEL_IN_MORABITO_AND_CORROBORATE_IN_INTERNAL_SEAAD_MULTIOME", "5_APPLY_SCENIC_REGULATORY_SPATIAL_PERTURBATIONAL_INTERPRETATION_WITH_CLAIM_BOUNDARIES", "6_SPLIT_TEACHER_STATE_INTO_RNA_RECOVERABLE_STOCHASTIC_AND_PRIVATE_COMPONENTS", "7_QUALIFY_PARTIAL_RNA_STUDENT_DONOR_HELD_OUT", "8_TRANSPORT_WITH_SUPPORT_MASKS", "9_ONLY_THEN_OPEN_AD_ASSOCIATIONS"],
+  "hard_prohibitions": ["No pathology-selected foundation target.", "No exact student matching of teacher-private biology.", "No source/operator identity as biological state.", "No zero-fill for missing privileged evidence.", "No C5/multimodal rescue of failed foundation.", "No multimodal retrospective redefinition of frozen regular or rare RNA biology.", "No global source-confounded rare1/rare5 prevalence as biology.", "No real training authority from this file."]
 }
