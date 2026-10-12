@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Deterministic physical package writer for V79 V2_CORE worlds.
 
-The successful engineering path is explicitly barred from the frozen qualification
-seed. Qualification realization requires a separate controller authorization whose
-generator-bundle SHA matches the exact bytes executing this writer. This module
-writes data/truth packages only; it never benchmarks or fits a model.
+Engineering writes are barred from the frozen qualification seed. Qualification
+realization owns and reloads all scientific inputs from authenticated repository
+bytes and requires a separate controller authorization bound to the exact generator
+bundle, frozen environment lock and locked Windows qualification environment.
+This module never benchmarks or fits a model.
 """
 from __future__ import annotations
 
@@ -236,8 +237,26 @@ def write_engineering_world_set(*, root: Path, payload: dict, cal: dict,
         out_dir=out_dir, mode="ENGINEERING_TEST_ONLY")
 
 
+def load_frozen_qualification_inputs(root: Path) -> tuple[dict, dict, dict, dict[str, dict[str, np.ndarray]], dict]:
+    """Reload every scientific input for the real qualification run from frozen, hash-bound repo bytes."""
+    root = Path(root)
+    contract, payload = G.load_launch_contract(root)
+    if int(payload["seeds"]["root"]) != QUALIFICATION_SEED_ROOT:
+        raise SystemExit("STOP: canonical qualification payload has unexpected seed root")
+    amendment = G.load_pairing_amendment(root)
+    cal_spec = contract["inputs"]["planting_calibration_masked"]
+    cal_path = root / cal_spec["path"]
+    if not cal_path.is_file() or _sha256_file(cal_path) != cal_spec["sha256"]:
+        raise SystemExit("STOP: frozen planting calibration hash mismatch")
+    cal = json.loads(cal_path.read_text(encoding="utf-8"))
+    designs = G.build_world_designs(root, payload)
+    return contract, payload, cal, designs, amendment
+
+
 def validate_qualification_authorization(authorization: dict | None, *, root: Path,
                                          runtime_platform: str | None = None) -> dict:
+    # Re-validate the immutable contract and every bound evidence file before accepting authorization.
+    G.load_launch_contract(root)
     auth = G.validate_realization_authorization(authorization)
     actual_bundle = generator_bundle_sha256(root)
     if auth.get("generator_bundle_sha256") != actual_bundle:
@@ -252,11 +271,11 @@ def validate_qualification_authorization(authorization: dict | None, *, root: Pa
     return auth
 
 
-def realize_qualification_worlds(*, root: Path, payload: dict, cal: dict,
-                                 designs: dict[str, dict[str, np.ndarray]], amendment: dict,
-                                 out_dir: Path, authorization: dict | None) -> dict:
-    if int(payload["seeds"]["root"]) != QUALIFICATION_SEED_ROOT:
-        raise SystemExit("STOP: qualification realization requires the frozen qualification seed")
+def realize_qualification_worlds(*, root: Path, out_dir: Path, authorization: dict | None) -> dict:
+    """Realize Q00-Q11 only from canonical frozen authorities; callers cannot inject scientific inputs."""
+    contract, payload, cal, designs, amendment = load_frozen_qualification_inputs(root)
+    if contract.get("qualification_worlds_generated") != 0 or contract.get("qualification_fits_run") != 0:
+        raise SystemExit("STOP: canonical contract is not in the pre-generation/pre-fit state")
     auth = validate_qualification_authorization(authorization, root=root)
     return _write_world_set(
         root=root, payload=payload, cal=cal, designs=designs, amendment=amendment,
