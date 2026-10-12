@@ -1,0 +1,32 @@
+{
+  "schema": "V79_SYNTHETIC_LANE_AUDIT_DELTA_V1",
+  "recorded_at": "2026-10-12T15:54:00Z",
+  "reconciliation_pr": 305,
+  "base_head": "7172b201b13c61634b84b85254bf4406959b2b57",
+  "scorer_source_head": "7fe0204b2661f0d1492115c973a4da7a4a1646b6",
+  "byte_exact_port_commit": "189607959d1755cf09c478fcf9274057828f7cf0",
+  "port_scope": "13 scorer-only workflow/script/test blobs; fit-side identified_summary intentionally untouched because source blobs were identical",
+  "first_ci": {
+    "scorer_run": 38273390601,
+    "linux_job": 114892893147,
+    "result": "RED",
+    "failure": "test_parameter_recovery_reports_corr_rmse_and_nonzero_sign_agreement expected Pearson correlation on depth1 fixture with constant truth",
+    "root_cause": "test fixture invalid for correlation: depth1 truth was 2.0 for every gene; production scorer correctly returns null/None when either vector has zero variance",
+    "production_defect": false
+  },
+  "repair": {
+    "commit": "e976d0c1a03f6a54dadcbf7fe3086f832fd319d8",
+    "scope": "test-only",
+    "change": "exercise parameter-recovery correlation on class quantity, whose pooled truth has variance; expected scalar count changed from 4 to 8",
+    "production_scorer_bytes_changed": false
+  },
+  "state": "FRESH_CI_REQUIRED",
+  "execution_boundaries_unchanged": {
+    "world_regeneration": false,
+    "qualification_fits": false,
+    "qualification_scoring": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "jepa_training": false
+  }
+}
