@@ -77,6 +77,7 @@ jobs:
             tests/v5/test_td_target_tournament_routing_v4_c6.py \
             tests/v5/test_td_protected_head_to_head_v2_c6.py \
             tests/v5/test_td_corrected_replay_routing_v2_c6.py \
+            tests/v5/test_td_v79_c6_synthetic_extension_v1.py \
             | tee qualification/pytest.txt
       - name: Confirm tracked worktree unchanged
         run: |
