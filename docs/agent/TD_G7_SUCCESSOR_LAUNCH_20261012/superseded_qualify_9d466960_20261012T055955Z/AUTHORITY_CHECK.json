@@ -1,0 +1,9 @@
+{
+  "authority_check": "PASS",
+  "launch_checks_sha256": "5f6aa8023ce9ca6e8240912a839109c744bcdb8ff5d9d287520189d93f2805eb",
+  "launcher_sha256": "934b3bccf9e892d9937ef6ea9b299886c0d3db70b556b9908fb725db517d3140",
+  "operational_authorization": "1850a6935738b40edbae76c5a631396aac8383126bf2dde655e1eb1fbb3f30e4",
+  "owner_decision": "c1bac85b4da9f447590b9f7172fc69f612b878a7ad851fc29f4efd87f2f0eaf1",
+  "r1_scope_lock": "g6_execution_authorized=false in all three records; G7 entrypoint only",
+  "runtime_authorization": "be097fb21f58cbccea6b88cfad531eae4c8fbf3dc05582029f3d7dcc710bf1fa"
+}

@@ -1,0 +1,13 @@
+# Post-hoc packaging of console output: the pure-check refusals write no files by design. Captured verbatim from the
+# console at 2026-10-12 ~06:16Z, from clean launch checkout D:/jepa_wt_td_g7_launchroot_b8fd8421 (HEAD b8fd8421).
+before: 2 dirs, 113 worktrees, G7_OUT=0
+--- N1 wrong op SHA (QUALIFY b8fd8421 0x64)
+STOP before any filesystem change: operational authorization at b8fd8421b3ad0e1a4e80c7054aa4d41375966dd4 is not the audited SHA
+exit=64
+--- N2 EXECUTE without acceptance args (EXECUTE b8fd8421 c171b91b)
+STOP before any filesystem change: EXECUTE takes: EXECUTE <authority commit> <operational SHA> <acceptance commit> <acceptance SHA>
+exit=64
+--- N3 EXECUTE with a nonexistent acceptance (EXECUTE b8fd8421 c171b91b 0x40 0x64)
+STOP before any filesystem change: launch-audit acceptance at 0000000000000000000000000000000000000000 is missing or not the given SHA
+exit=64
+after negatives: 2 dirs, 113 worktrees, G7_OUT=0
