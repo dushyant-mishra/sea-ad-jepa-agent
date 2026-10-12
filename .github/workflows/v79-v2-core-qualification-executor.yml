@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'scripts/v79/v79_v2_core_fit_*.py'
+      - 'scripts/v79/v79_v2_core_identified_summary.py'
       - 'scripts/v79/v79_v2_core_runtime*.py'
       - 'scripts/v79/v79_v2_core_resource_monitor.py'
       - 'scripts/v79/run_v79_v2_core_benchmark.py'
@@ -48,6 +49,7 @@ jobs:
           tests/v79/test_v79_v2_core_fit_model.py
           tests/v79/test_v79_v2_core_fit_runner.py
           tests/v79/test_v79_v2_core_fit_outputs.py
+          tests/v79/test_v79_v2_core_identified_summary.py
           tests/v79/test_v79_v2_core_fit_custody.py
           tests/v79/test_v79_v2_core_runtime.py
           tests/v79/test_v79_v2_core_benchmark_prep.py
@@ -69,6 +71,7 @@ jobs:
           tests/v79/test_v79_v2_core_fit_model.py
           tests/v79/test_v79_v2_core_fit_runner.py
           tests/v79/test_v79_v2_core_fit_outputs.py
+          tests/v79/test_v79_v2_core_identified_summary.py
           tests/v79/test_v79_v2_core_fit_custody.py
           tests/v79/test_v79_v2_core_runtime.py
           tests/v79/test_v79_v2_core_benchmark_prep.py
@@ -92,6 +95,7 @@ jobs:
               Path('scripts/v79/v79_v2_core_fit_model.py'),
               Path('scripts/v79/v79_v2_core_fit_runner.py'),
               Path('scripts/v79/v79_v2_core_fit_outputs.py'),
+              Path('scripts/v79/v79_v2_core_identified_summary.py'),
               Path('scripts/v79/v79_v2_core_runtime.py'),
               Path('scripts/v79/v79_v2_core_runtime_lock.py'),
               Path('scripts/v79/v79_v2_core_resource_monitor.py'),
