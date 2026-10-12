@@ -29,7 +29,6 @@ def test_world_z_deciles_are_fixed_before_gene_masking():
     mask=np.array([True,False]*10)
     codes=O.world_z_decile_codes(log_lib,mask,n_bins=10)
     assert len(codes)==10
-    # every selected cell is assigned under boundaries derived from all 20 cells
     assert codes.min()>=0 and codes.max()<=9
 
 
@@ -61,3 +60,42 @@ def test_positive_ppc_statistics_cover_contract_families():
     names={x["name"] for x in stats}
     assert {"mean_log_positive","variance_log_positive","q01_log_positive","q99_log_positive","sd_donor_mean_log_positive"} <= names
     assert any(n.startswith("mean_log_positive_zdecile_") for n in names)
+
+
+def _posterior_fixture(part: str, ncell: int=12):
+    shape=(2,500)
+    s={
+        "alpha":np.zeros(shape),
+        "class_contrasts":np.zeros(shape+(2,)),
+        "source_contrasts":np.zeros(shape+(2,)),
+        "donor_sd":np.ones(shape)*0.1,
+        "donor_raw":np.zeros(shape+(1,)),
+    }
+    if part=="detection":
+        s["beta_depth1"]=np.zeros(shape); s["beta_depth2"]=np.zeros(shape)
+    else:
+        s["gamma_depth1"]=np.zeros(shape); s["gamma_depth2"]=np.zeros(shape); s["sigma"]=np.ones(shape)*0.5
+    data={
+        "z":np.linspace(-1,1,ncell), "q":np.linspace(-1,1,ncell)**2-1,
+        "class_rows":np.zeros((ncell,2)), "source_rows":np.zeros((ncell,2)), "donor_rows":np.zeros((ncell,1)),
+        "cls_code":np.array([0,1,2]*4), "src_code":np.array([0]*4+[1]*4+[2]*4), "donor_code":np.array([0]*6+[1]*6),
+    }
+    return s,data
+
+
+def test_detection_posterior_predictive_table_is_deterministic():
+    s,d=_posterior_fixture("detection")
+    d["y"]=np.array([0,1]*6,dtype=int)
+    log_lib=np.arange(12,dtype=float); mask=np.ones(12,dtype=bool)
+    a=O.posterior_predictive_detection(s,d,fit_id="a"*64,world_log_lib=log_lib,measured_mask=mask,draws=1000)
+    b=O.posterior_predictive_detection(s,d,fit_id="a"*64,world_log_lib=log_lib,measured_mask=mask,draws=1000)
+    assert a==b and all(0.0<=x["p_value"]<=1.0 for x in a)
+
+
+def test_positive_posterior_predictive_table_is_deterministic():
+    s,d=_posterior_fixture("positive")
+    d["y_log"]=np.linspace(-1,1,12)
+    log_lib=np.arange(12,dtype=float); mask=np.ones(12,dtype=bool)
+    a=O.posterior_predictive_positive(s,d,fit_id="b"*64,world_log_lib=log_lib,positive_mask=mask,draws=1000)
+    b=O.posterior_predictive_positive(s,d,fit_id="b"*64,world_log_lib=log_lib,positive_mask=mask,draws=1000)
+    assert a==b and all(0.0<=x["p_value"]<=1.0 for x in a)
