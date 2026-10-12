@@ -1,0 +1,3 @@
+mode=EXECUTE_ONCE utc=2026-10-12T20:08:05Z authority_commit=69240132383d92911ddb360660c810b585813f1f op_sha=fac62caea5dca118c6e55e460d6bf740f1158d03ed1da19974e56dd863ad2ef2
+acceptance=717d5089e97705362af0c67f5e2e5d760c5faf31:4e8f4db2bca4a54906921c1f5e68b7393c4e284bf1a4cdea03f9ca1542dfc491 ratification=717d5089e97705362af0c67f5e2e5d760c5faf31:d20d836335eb803c42538838323426d8475f5863457243a0521e563a876ae3c1
+launch_root=D:/jepa_wt_td_replay_launchroot_69240132 namespace=D:/jepa_td_corrected_replay_20261012/REPLAY_OUT_V1 runroot=D:/jepa_td_corrected_replay_20261012/launch_EXECUTE_ONCE_20261012T200804Z wsl_python=/home/dushyant_mishra/miniconda3/envs/td-replay-hist/bin/python versions=[python=3.13.5 numpy=2.3.5 scipy=1.17.0 pandas=2.2.3]

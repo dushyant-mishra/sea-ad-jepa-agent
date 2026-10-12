@@ -1,0 +1,11 @@
+{
+  "support_rel": "td_support_extract/FOUNDATION_CALIBRATION_BUNDLE_20260824/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz",
+  "td50_HVS.npz": "0a73ba174c60621b09288cab6c93a266704d04dbc69c66abb5330f927462f374",
+  "td50_NPH52.npz": "fc20ab1ff16fff6d0d9a7760b7b890a656cc061992e6dc46da13d42473340c9b",
+  "td50_SEA_AD.npz": "e82efdd5da0e69c8da53fc62e492c1b4e25f3fdeaeca7f84bfb0598a4aa9fc07",
+  "td_matrix_npz/arrays/data.npy": "1a967cbada3a255cd89fee43ceaa6b96c435899aaee6e43f915b6a10759457bb",
+  "td_matrix_npz/arrays/indices.npy": "a5a109618a7e6c3beb1dc7f0ce8fd05ae7b5c45050a97e700a80723430e0fd6c",
+  "td_matrix_npz/arrays/indptr.npy": "5558b626eb97cd3fe840a5ca0af4c2095c4956510aef4c73b913a5178645c1f1",
+  "td_matrix_npz/arrays/shape.npy": "5547a1cd96a984b5163c5540a616006baca3d2a91985005a8f23e970a3133beb",
+  "td_support_extract/FOUNDATION_CALIBRATION_BUNDLE_20260824/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+}

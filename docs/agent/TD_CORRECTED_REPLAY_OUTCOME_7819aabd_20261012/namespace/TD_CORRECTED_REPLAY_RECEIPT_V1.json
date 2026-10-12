@@ -1,0 +1,274 @@
+{
+  "detected_field": "detected_corrected",
+  "frozen_interpretation": {
+    "label": "CORRECTED_RELATIONAL_PROGRAM_CONSISTENT_WITH_HISTORICAL_SCALE_BRACKET",
+    "pattern": "A",
+    "pattern_F_requires_auditor_judgment": true
+  },
+  "g6_execution_authorized": false,
+  "g7_execution_authorized": false,
+  "marker": "TD_CORRECTED_REPLAY_EXECUTION_START.json",
+  "marker_sha256": "d9bff555f4c8bce9c3350f2934e325753c371963ae3cb05b5b1d48ce78b236ae",
+  "ratification_sha256": "d20d836335eb803c42538838323426d8475f5863457243a0521e563a876ae3c1",
+  "routing": {
+    "biological_state": "BROAD_MESO_RELATIONAL_VIABLE__NOT_TARGET_WINNER",
+    "candidate_routes": {
+      "C1_SHARED_EMERGENT": "ACTIVE",
+      "C2_RELATIONAL_SHARED": "ACTIVE",
+      "C3_QUERY_MEASURED": "ACTIVE",
+      "C4_STRUCTURED_COMPOSITE": "ACTIVE_SUBJECT_TO_C2_C3",
+      "C6_SHARED_QUERY_COMPOSITE": "ACTIVE_SUBJECT_TO_C1_C3"
+    },
+    "corrected_replay_authorized": false,
+    "independently_testable": [
+      "C1_SHARED_EMERGENT",
+      "C2_RELATIONAL_SHARED",
+      "C3_QUERY_MEASURED",
+      "C6_SHARED_QUERY_COMPOSITE",
+      "C4_STRUCTURED_COMPOSITE"
+    ],
+    "inputs": {
+      "TD56": "PASS",
+      "TD57B": "PASS",
+      "TD57C": "FAIL",
+      "TD59": "PASS",
+      "universal_source": "PASS"
+    },
+    "locality_experiment_required": false,
+    "representation_selected": false,
+    "schema": "JEPA_TD_CORRECTED_RELATIONAL_REPLAY_ROUTING_V2",
+    "source_averaging_rescue_allowed": false,
+    "spec_git_blob_sha": "918f9db1c7c26cbdb250e9b25dd78ca17ecee2bd",
+    "spec_path": "docs/superpowers/specs/2026-10-12-td-corrected-replay-routing-v2-c6.md",
+    "stage4_authorized": false,
+    "target_selected": false,
+    "td60_authorized": false,
+    "training_authorized": false,
+    "v4_relational_status": "PASS"
+  },
+  "routing_universal_source_input": "PASS",
+  "schema": "JEPA_TD_CORRECTED_REPLAY_RECEIPT_V1",
+  "source_heterogeneity": "UNRESOLVED__NO_PROSPECTIVELY_FROZEN_DIRECT_BETWEEN_SOURCE_TEST",
+  "stage4_authorized": false,
+  "stages": {
+    "TD56": {
+      "historical_comparison": "QUALITATIVE_HISTORICAL_CONCLUSION_REPRODUCED",
+      "status": "PASS",
+      "terminal": "TD56S_DISJOINT_GENE_RELATIONAL_GEOMETRY_SURVIVES__FREEZE_DONOR_BLOCK_AND_CROSS_SOURCE_SCALE_GATE_NEXT"
+    },
+    "TD57B": {
+      "historical_comparison": "QUALITATIVE_HISTORICAL_CONCLUSION_REPRODUCED",
+      "status": "PASS",
+      "terminal": "TD57B_INDEPENDENT_DONOR_RECURRENT_SCALE_FREE_RELATIONAL_ORDER_SURVIVES__FREEZE_LOCAL_NEIGHBORHOOD_STABILITY_GATE_NEXT"
+    },
+    "TD57C": {
+      "historical_comparison": "QUALITATIVE_HISTORICAL_CONCLUSION_REPRODUCED",
+      "status": "FAIL",
+      "terminal": "NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL"
+    },
+    "TD59": {
+      "historical_comparison": "QUALITATIVE_HISTORICAL_CONCLUSION_REPRODUCED",
+      "status": "PASS",
+      "terminal": "TD59_NEAREST_HALF_MESOSCALE_RELATIONAL_RECURRENCE_SURVIVES__PILOT_FRONTIER_BRACKETED_BETWEEN_ONE_THIRD_AND_ONE_HALF__NO_TRAINING_AUTHORITY"
+    }
+  },
+  "target_selection_authorized": false,
+  "td59_hvs_case_margins": [
+    {
+      "cases": [
+        {
+          "half": 0,
+          "observed_minus_p95": 0.10212201591511938,
+          "split": 0
+        },
+        {
+          "half": 1,
+          "observed_minus_p95": 0.03527354997943233,
+          "split": 0
+        },
+        {
+          "half": 0,
+          "observed_minus_p95": 0.09872922776148585,
+          "split": 1
+        },
+        {
+          "half": 1,
+          "observed_minus_p95": 0.04041958351972985,
+          "split": 1
+        }
+      ],
+      "panel": 0
+    },
+    {
+      "cases": [
+        {
+          "half": 0,
+          "observed_minus_p95": 0.08797653958944285,
+          "split": 0
+        },
+        {
+          "half": 1,
+          "observed_minus_p95": 0.08678549093183241,
+          "split": 0
+        },
+        {
+          "half": 0,
+          "observed_minus_p95": 0.08000000000000007,
+          "split": 1
+        },
+        {
+          "half": 1,
+          "observed_minus_p95": 0.08028425151712826,
+          "split": 1
+        }
+      ],
+      "panel": 1
+    }
+  ],
+  "td60_authorized": false,
+  "training_authorized": false,
+  "universal_qualification": {
+    "TD56": {
+      "cross_source_pattern": "ALL_PLANNED_OBSERVED_PASS",
+      "observed": [
+        {
+          "outcome": "PASS",
+          "panel": null,
+          "source": "HVS"
+        },
+        {
+          "outcome": "PASS",
+          "panel": null,
+          "source": "NPH52"
+        },
+        {
+          "outcome": "PASS",
+          "panel": null,
+          "source": "SEA_AD"
+        }
+      ],
+      "source_heterogeneity": "UNRESOLVED__NO_PROSPECTIVELY_FROZEN_DIRECT_BETWEEN_SOURCE_TEST",
+      "threshold_discordance": [],
+      "universal_qualification": "ESTABLISHED__EVERY_PLANNED_SOURCE_AND_PANEL_OBSERVED_PASS",
+      "unobserved": []
+    },
+    "TD57B": {
+      "cross_source_pattern": "ALL_PLANNED_OBSERVED_PASS",
+      "observed": [
+        {
+          "outcome": "PASS",
+          "panel": 0,
+          "source": "HVS"
+        },
+        {
+          "outcome": "PASS",
+          "panel": 0,
+          "source": "NPH52"
+        },
+        {
+          "outcome": "PASS",
+          "panel": 0,
+          "source": "SEA_AD"
+        },
+        {
+          "outcome": "PASS",
+          "panel": 1,
+          "source": "HVS"
+        },
+        {
+          "outcome": "PASS",
+          "panel": 1,
+          "source": "NPH52"
+        },
+        {
+          "outcome": "PASS",
+          "panel": 1,
+          "source": "SEA_AD"
+        }
+      ],
+      "source_heterogeneity": "UNRESOLVED__NO_PROSPECTIVELY_FROZEN_DIRECT_BETWEEN_SOURCE_TEST",
+      "threshold_discordance": [],
+      "universal_qualification": "ESTABLISHED__EVERY_PLANNED_SOURCE_AND_PANEL_OBSERVED_PASS",
+      "unobserved": []
+    },
+    "TD57C": {
+      "cross_source_pattern": "NO_DISCORDANCE_OBSERVED__UNOBSERVED_SOURCES_ARE_MISSING_EVIDENCE",
+      "observed": [
+        {
+          "outcome": "FAIL",
+          "panel": 0,
+          "source": "HVS"
+        }
+      ],
+      "source_heterogeneity": "UNRESOLVED__NO_PROSPECTIVELY_FROZEN_DIRECT_BETWEEN_SOURCE_TEST",
+      "threshold_discordance": [],
+      "universal_qualification": "NOT_ESTABLISHED__AN_OBSERVED_EXECUTION_FAILED_ITS_FROZEN_GATE",
+      "unobserved": [
+        {
+          "evidence": "UNOBSERVED__NOT_RUN_UNDER_THE_FROZEN_SEQUENTIAL_STOP",
+          "panel": 0,
+          "source": "NPH52"
+        },
+        {
+          "evidence": "UNOBSERVED__NOT_RUN_UNDER_THE_FROZEN_SEQUENTIAL_STOP",
+          "panel": 0,
+          "source": "SEA_AD"
+        },
+        {
+          "evidence": "UNOBSERVED__NOT_RUN_UNDER_THE_FROZEN_SEQUENTIAL_STOP",
+          "panel": 1,
+          "source": "HVS"
+        },
+        {
+          "evidence": "UNOBSERVED__NOT_RUN_UNDER_THE_FROZEN_SEQUENTIAL_STOP",
+          "panel": 1,
+          "source": "NPH52"
+        },
+        {
+          "evidence": "UNOBSERVED__NOT_RUN_UNDER_THE_FROZEN_SEQUENTIAL_STOP",
+          "panel": 1,
+          "source": "SEA_AD"
+        }
+      ]
+    },
+    "TD59": {
+      "cross_source_pattern": "ALL_PLANNED_OBSERVED_PASS",
+      "observed": [
+        {
+          "outcome": "PASS",
+          "panel": 0,
+          "source": "HVS"
+        },
+        {
+          "outcome": "PASS",
+          "panel": 0,
+          "source": "NPH52"
+        },
+        {
+          "outcome": "PASS",
+          "panel": 0,
+          "source": "SEA_AD"
+        },
+        {
+          "outcome": "PASS",
+          "panel": 1,
+          "source": "HVS"
+        },
+        {
+          "outcome": "PASS",
+          "panel": 1,
+          "source": "NPH52"
+        },
+        {
+          "outcome": "PASS",
+          "panel": 1,
+          "source": "SEA_AD"
+        }
+      ],
+      "source_heterogeneity": "UNRESOLVED__NO_PROSPECTIVELY_FROZEN_DIRECT_BETWEEN_SOURCE_TEST",
+      "threshold_discordance": [],
+      "universal_qualification": "ESTABLISHED__EVERY_PLANNED_SOURCE_AND_PANEL_OBSERVED_PASS",
+      "unobserved": []
+    }
+  }
+}

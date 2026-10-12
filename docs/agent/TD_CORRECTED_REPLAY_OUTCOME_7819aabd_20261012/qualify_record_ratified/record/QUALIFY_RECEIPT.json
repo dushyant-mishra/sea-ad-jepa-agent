@@ -1,0 +1,86 @@
+{
+  "attempt_ledger_absent": true,
+  "contract": {
+    "executors_resolved": {
+      "run_td56_hvs.py": "a1ea8653e24213a3b14ccc52ea64011c92553aec4df5edb7b55d6ba309f61b43",
+      "run_td56_nph.py": "090134f0cc129559286f06d80a31a880c07c9841a7ef3f446b914a78c8cd7162",
+      "run_td56_sea_fast.py": "c77ceac26f0ff4c3ae7a3955c39218af56339adda0225b9c663c9d92710c8866",
+      "td57b_fixed_relational_recurrence.py": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+      "td57c_three_view_local_geometry.py": "530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c"
+    },
+    "science_references": 20,
+    "td59_successor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085"
+  },
+  "contract_sha256": "720809582fc36ac9138ca69b6c1fc79d373a6ff38952a8f51af1db680f4c2096",
+  "corrected_values_opened": false,
+  "g6_execution_authorized": false,
+  "g7_execution_authorized": false,
+  "historical_fixture_equivalence": {
+    "cases_equal": 16,
+    "equivalence_receipt_sha256": "9b02c126244aec00b4dcfed13f4c35ce19cec20fde04835537ec1b207175ef16",
+    "td57c_historical_fail_reproduced": true
+  },
+  "implementation_commit_sha": "7819aabd9a4c7adbd494445bb989c44e9b7cfa11",
+  "namespace_fresh": "/mnt/d/jepa_td_corrected_replay_20261012/REPLAY_OUT_V1",
+  "predecessors": {
+    "closure_reason": "G7_NOT_ESTIMABLE__GENUINELY_DISJOINT_NATURAL_CELL_SETS",
+    "diagnostic_classification": "GENUINELY_DISJOINT_NATURAL_CELL_SETS",
+    "g6_accepted": true,
+    "g7_pass": false,
+    "g7_terminal": "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP",
+    "schema": "JEPA_TD_CORRECTED_REPLAY_PREDECESSOR_RECEIPT_V1",
+    "spent_authority_refused": [
+      "19a50126219d25989ca466a83b813fcbabdeeb148804e1f616bbb7bbdfe3b4ee",
+      "28b3a0c8ed90afe8f8c4d5ab31fe9080303ad3599bf753bbdd55aebe022f3dc7",
+      "3d457d4dc484cb46c71925e306f33367ed064d3bf84878512e84391f5ea01a3a",
+      "b1bcc74f3e508fed72669aa323e9b9a8e7ccb4d72050e2dcd8fa9339e1bc1525",
+      "be097fb21f58cbccea6b88cfad531eae4c8fbf3dc05582029f3d7dcc710bf1fa",
+      "c171b91b853e9e136c28c3051cd3baae4e74a1be337f70b3d6ecdb175dd643ed",
+      "c1bac85b4da9f447590b9f7172fc69f612b878a7ad851fc29f4efd87f2f0eaf1"
+    ],
+    "technical_prerequisite_closed": true
+  },
+  "ratification": {
+    "detected_field": "detected_corrected",
+    "ratification_sha256": "d20d836335eb803c42538838323426d8475f5863457243a0521e563a876ae3c1",
+    "status": "RATIFIED"
+  },
+  "replay_kernels_run": false,
+  "schema": "JEPA_TD_CORRECTED_REPLAY_QUALIFY_RECEIPT_V1",
+  "stage4_authorized": false,
+  "start_marker_created": false,
+  "structural_estimability": {
+    "HVS": {
+      "cells": 1129,
+      "donors": 41,
+      "donors_with_stratum_ge_4": 39,
+      "strata": 438,
+      "strata_ge_4_cells": 99,
+      "structure_equals_historical_td50": true
+    },
+    "NPH52": {
+      "cells": 1310,
+      "donors": 17,
+      "donors_with_stratum_ge_4": 16,
+      "strata": 96,
+      "strata_ge_4_cells": 68,
+      "structure_equals_historical_td50": true
+    },
+    "SEA_AD": {
+      "cells": 22561,
+      "donors": 46,
+      "donors_with_stratum_ge_4": 46,
+      "strata": 343,
+      "strata_ge_4_cells": 343,
+      "structure_equals_historical_td50": true
+    }
+  },
+  "support_bundle": {
+    "support_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "support_member_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  },
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "terminal": "PASS_TD_CORRECTED_REPLAY_TURNKEY_QUALIFICATION__NO_BIOLOGICAL_REPLAY_RUN__LAUNCH_AUDIT_REQUIRED",
+  "training_authorized": false
+}

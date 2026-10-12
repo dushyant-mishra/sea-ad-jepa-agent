@@ -1,0 +1,10 @@
+{
+  "verdict": "EVIDENCE_VALID__COMPLETE",
+  "problems": [],
+  "stage_status": {
+    "TD56": "PASS",
+    "TD57B": "PASS",
+    "TD57C": "FAIL",
+    "TD59": "PASS"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "historical_comparison": "QUALITATIVE_HISTORICAL_CONCLUSION_REPRODUCED",
+  "invocations": [
+    {
+      "executor_sha256": "530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c",
+      "exit_code": 2,
+      "outcome": "FAIL",
+      "output": "TD57C/TD57C_HVS_P0.output.json",
+      "output_sha256": "5e53a6c2ea1c3b2ee69b8716bc52fc19655d63cc9f43753a14d938be12459416",
+      "panel": 0,
+      "source": "HVS",
+      "stderr": "TD57C/TD57C_HVS_P0.stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "TD57C/TD57C_HVS_P0.stdout.txt",
+      "stdout_sha256": "5e53a6c2ea1c3b2ee69b8716bc52fc19655d63cc9f43753a14d938be12459416"
+    }
+  ],
+  "invocations_planned": 6,
+  "invocations_run": 1,
+  "stage": "TD57C",
+  "status": "FAIL",
+  "terminal": "NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL"
+}

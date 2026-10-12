@@ -1,0 +1,27 @@
+{
+  "authority_check_sha256": "0b251e92b3897f21350825eaecec462be744f17522bc34bef0d3b3251f350d5b",
+  "authority_sha256": {
+    "acceptance": "4e8f4db2bca4a54906921c1f5e68b7393c4e284bf1a4cdea03f9ca1542dfc491",
+    "operational": "fac62caea5dca118c6e55e460d6bf740f1158d03ed1da19974e56dd863ad2ef2",
+    "owner": "f3f20773762ace43b5a5ec8658fd696bb1c1aa280fa6c45b2fe0a98f7c739979",
+    "runtime": "f59f51712c0222c65b07de5c12b2315bee0d061f5818c473f2a28907e3ffac8d"
+  },
+  "contract_sha256": "720809582fc36ac9138ca69b6c1fc79d373a6ff38952a8f51af1db680f4c2096",
+  "detected_field": "detected_corrected",
+  "g6_execution_authorized": false,
+  "g7_execution_authorized": false,
+  "implementation_commit_sha": "7819aabd9a4c7adbd494445bb989c44e9b7cfa11",
+  "qualify_receipt_sha256": "bf8ba8dfef5bad5d7a3173aee49736ce59faa1d1084abe1cab2cfcd9a7ff3b2a",
+  "ratification_sha256": "d20d836335eb803c42538838323426d8475f5863457243a0521e563a876ae3c1",
+  "schema": "JEPA_TD_CORRECTED_REPLAY_EXECUTION_START_V1",
+  "stage4_authorized": false,
+  "status": "STARTED_NOT_A_RESULT",
+  "support": {
+    "support_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "support_member_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  },
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false,
+  "utc": "2026-10-12T20:08:22Z"
+}
