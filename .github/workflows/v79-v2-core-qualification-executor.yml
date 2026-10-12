@@ -58,6 +58,7 @@ jobs:
           tests/v79/test_v79_v2_core_qualification_plan.py
           tests/v79/test_v79_v2_core_qualification_custody.py
           tests/v79/test_v79_v2_core_qualification_runner.py
+          tests/v79/test_v79_v2_core_qualification_heldout_receipt.py
           tests/v79/test_v79_v2_core_seed_ledger.py
           tests/v79/test_v79_v2_core_score.py
           -q -rA -p no:cacheprovider
@@ -81,6 +82,7 @@ jobs:
           tests/v79/test_v79_v2_core_qualification_plan.py
           tests/v79/test_v79_v2_core_qualification_custody.py
           tests/v79/test_v79_v2_core_qualification_runner.py
+          tests/v79/test_v79_v2_core_qualification_heldout_receipt.py
           tests/v79/test_v79_v2_core_seed_ledger.py
           tests/v79/test_v79_v2_core_score.py
           -q -rA -p no:cacheprovider
@@ -97,6 +99,7 @@ jobs:
               Path('scripts/v79/v79_v2_core_fit_model.py'),
               Path('scripts/v79/v79_v2_core_fit_runner.py'),
               Path('scripts/v79/v79_v2_core_fit_outputs.py'),
+              Path('scripts/v79/v79_v2_core_fit_predictive.py'),
               Path('scripts/v79/v79_v2_core_identified_summary.py'),
               Path('scripts/v79/v79_v2_core_runtime.py'),
               Path('scripts/v79/v79_v2_core_runtime_lock.py'),
@@ -111,6 +114,9 @@ jobs:
               text = p.read_text(encoding='utf-8')
               assert 'import v79_v2_core_score' not in text
               assert 'from v79_v2_core_score' not in text
+          predictive = Path('scripts/v79/v79_v2_core_fit_predictive.py').read_text(encoding='utf-8').lower()
+          for forbidden in ('controller_truth', 'world_name', 'world_index', 'q00', 'q11'):
+              assert forbidden not in predictive
           bench = Path('scripts/v79/run_v79_v2_core_benchmark.py').read_text(encoding='utf-8')
           for forbidden in ('generate_v79_v2_core_worlds', 'v79_v2_core_world_writer', 'v79_v2_core_launch',
                             'prepare_v79_v2_core_engineering_benchmark', 'v79_v2_core_score',
