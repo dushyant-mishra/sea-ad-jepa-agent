@@ -8,7 +8,6 @@ import hashlib
 import json
 import re
 import subprocess
-import sys
 from pathlib import Path
 
 import numpy as np
@@ -71,7 +70,7 @@ def _git_head(root: Path) -> str:
     return subprocess.check_output(["git","rev-parse","HEAD"], cwd=root, text=True).strip()
 
 
-def prepare_engineering_package(root: Path, out_dir: Path) -> tuple[dict, str, dict]:
+def prepare_engineering_package(root: Path, out_dir: Path) -> tuple[dict, F.BlindedIndex, str, dict]:
     """Fresh contract-defined engineering package; select by opaque ordering only, never Q identity."""
     root = Path(root); out_dir = Path(out_dir)
     contract, qual_payload, cal, _, amendment = W.load_frozen_qualification_inputs(root)
@@ -84,17 +83,18 @@ def prepare_engineering_package(root: Path, out_dir: Path) -> tuple[dict, str, d
                                              amendment=amendment, out_dir=out_dir)
     if manifest.get("mode") != "ENGINEERING_TEST_ONLY" or int(manifest.get("seed_root", -1)) != eng_root:
         _refuse("writer did not produce the contract-defined engineering package")
+    root_sha = _sha(out_dir/F.ROOT_MANIFEST_NAME)
+    index_sha = _sha(out_dir/F.FIT_ROOT_NAME/F.FIT_INDEX_NAME)
     idx = F.load_blinded_index(out_dir, expected_mode="ENGINEERING_TEST_ONLY",
-                               expected_root_manifest_sha=_sha(out_dir/F.ROOT_MANIFEST_NAME),
-                               expected_index_sha=_sha(out_dir/F.FIT_ROOT_NAME/F.FIT_INDEX_NAME))
+                               expected_root_manifest_sha=root_sha, expected_index_sha=index_sha)
     if not idx.opaque_world_ids: _refuse("engineering package has no blinded worlds")
     selected = sorted(idx.opaque_world_ids)[0]
     rec = next(x for x in idx.index["worlds"] if x["opaque_world_id"] == selected)
-    hashes = {"root_manifest":_sha(out_dir/F.ROOT_MANIFEST_NAME),
+    hashes = {"root_manifest":root_sha,
               "directory_digest":W.directory_digest(out_dir),
-              "blinded_index":_sha(out_dir/F.FIT_ROOT_NAME/F.FIT_INDEX_NAME),
+              "blinded_index":index_sha,
               "selected_world_manifest":rec["manifest_sha256"]}
-    return contract, selected, hashes
+    return contract, idx, selected, hashes
 
 
 def benchmark_seed(contract: dict, *, gene_index: int, part: str) -> int:
@@ -128,12 +128,9 @@ def execute_benchmark(root: Path, package_dir: Path, result_dir: Path) -> dict:
     root=Path(root); package_dir=Path(package_dir); result_dir=Path(result_dir)
     contract = L.require_launch_authority(root/"results/v79/v2_core_qualification"/L.FINAL_CONTRACT_NAME, root=root)
     env_receipt = W.validate_runtime_package_lock(root)
-    contract2, oid, package_hashes = prepare_engineering_package(root, package_dir)
+    contract2, idx, oid, package_hashes = prepare_engineering_package(root, package_dir)
     if contract2 != contract: _refuse("engineering package contract differs from launch authority")
-    idx = F.load_blinded_index(package_dir, expected_mode="ENGINEERING_TEST_ONLY",
-                               expected_root_manifest_sha=package_hashes["root_manifest"],
-                               expected_index_sha=package_hashes["blinded_index"])
-    world = F.load_blinded_world(package_dir, oid, expected_mode="ENGINEERING_TEST_ONLY")
+    world = F.load_blinded_world(idx, oid)
     plan = benchmark_plan(contract, opaque_world_id=oid, world_manifest_sha=world.manifest_sha256)
     code_sha = _git_head(root); receipt = benchmark_receipt_skeleton(contract, code_sha=code_sha, package_hashes=package_hashes)
     receipt["runtime_environment_receipt"] = env_receipt
