@@ -135,3 +135,95 @@ def test_unknown_statuses_fail_closed():
         X.combine_candidate_evidence("C1_SHARED_EMERGENT", "MAYBE", [], cw)
     with pytest.raises(X.CrosswalkError):
         X.combine_candidate_evidence("C1_SHARED_EMERGENT", "PASS", [{"evidence_class": "DECISIVE_NEGATIVE", "status": "MAYBE"}], cw)
+
+
+def _receipt(candidate="C1_SHARED_EMERGENT", decisive_status="PASS"):
+    cw = crosswalk()
+    results = []
+    for entry in cw["claims"]:
+        if entry["candidate"] != candidate:
+            continue
+        status = "NOT_ESTIMABLE" if entry["evidence_class"] == "NOT_ESTIMABLE" else decisive_status
+        world_evidence = []
+        if status != "NOT_ESTIMABLE":
+            world_evidence = [
+                {
+                    "world": world,
+                    "truth_manifest_sha256": "a" * 64,
+                    "result_sha256": "b" * 64,
+                }
+                for world in entry["worlds"]
+            ]
+        results.append(
+            {
+                "claim": entry["claim"],
+                "evidence_class": entry["evidence_class"],
+                "status": status,
+                "world_evidence": world_evidence,
+            }
+        )
+    return {
+        "schema": X.EVIDENCE_RECEIPT_SCHEMA,
+        "candidate_id": candidate,
+        "crosswalk_sha256": X.canonical_sha256(cw),
+        "synthetic_contract_sha256": X.EXPECTED_CONTRACT_SHA256,
+        "claim_results": results,
+        "authority": {key: False for key in X.AUTHORITY_KEYS},
+    }
+
+
+def test_synthetic_receipt_requires_complete_frozen_claim_set_and_matching_classes():
+    cw = crosswalk()
+    receipt = _receipt()
+    X.validate_synthetic_evidence_receipt(receipt, cw)
+
+    bad = copy.deepcopy(receipt)
+    bad["claim_results"].pop()
+    with pytest.raises(X.CrosswalkError):
+        X.validate_synthetic_evidence_receipt(bad, cw)
+
+    bad = copy.deepcopy(receipt)
+    bad["claim_results"][0]["evidence_class"] = "DIAGNOSTIC"
+    with pytest.raises(X.CrosswalkError):
+        X.validate_synthetic_evidence_receipt(bad, cw)
+
+
+def test_synthetic_receipt_binds_exact_crosswalk_and_contract():
+    cw = crosswalk()
+    bad = _receipt()
+    bad["crosswalk_sha256"] = "c" * 64
+    with pytest.raises(X.CrosswalkError):
+        X.validate_synthetic_evidence_receipt(bad, cw)
+
+    bad = _receipt()
+    bad["synthetic_contract_sha256"] = "d" * 64
+    with pytest.raises(X.CrosswalkError):
+        X.validate_synthetic_evidence_receipt(bad, cw)
+
+
+def test_synthetic_receipt_decisive_pass_requires_exact_world_evidence_and_not_estimable_forbids_it():
+    cw = crosswalk()
+    bad = _receipt()
+    decisive = next(r for r in bad["claim_results"] if r["evidence_class"].startswith("DECISIVE"))
+    decisive["world_evidence"] = []
+    with pytest.raises(X.CrosswalkError):
+        X.validate_synthetic_evidence_receipt(bad, cw)
+
+    bad = _receipt()
+    ne = next(r for r in bad["claim_results"] if r["evidence_class"] == "NOT_ESTIMABLE")
+    ne["status"] = "PASS"
+    ne["world_evidence"] = [{"world": "Q00_BASELINE", "truth_manifest_sha256": "a" * 64, "result_sha256": "b" * 64}]
+    with pytest.raises(X.CrosswalkError):
+        X.validate_synthetic_evidence_receipt(bad, cw)
+
+
+def test_receipt_combiner_preserves_asymmetry_and_decisive_failure():
+    cw = crosswalk()
+    receipt = _receipt(decisive_status="PASS")
+    assert X.combine_candidate_receipt("FAIL", receipt, cw) == "ELIMINATED_REAL_FAIL"
+    assert X.combine_candidate_receipt("NOT_ESTIMABLE", receipt, cw) == "UNRESOLVED_REAL_NOT_ESTIMABLE"
+
+    receipt = _receipt(decisive_status="PASS")
+    decisive = next(r for r in receipt["claim_results"] if r["evidence_class"].startswith("DECISIVE"))
+    decisive["status"] = "FAIL"
+    assert X.combine_candidate_receipt("PASS", receipt, cw) == "ELIMINATED_SYNTHETIC_FALSIFIER"
