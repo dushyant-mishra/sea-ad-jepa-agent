@@ -37,3 +37,17 @@ def test_projection_over_contract_ceiling_stops():
     with pytest.raises(B.BenchmarkRefused):
         B.check_projected_hours(c, 72.0001)
     assert B.check_projected_hours(c, 72.0) == 72.0
+
+
+def test_active_lineage_discards_primary_after_escalation():
+    p = {"stage":"PRIMARY","divergences":1,"mean_tree_steps":40.0}
+    e = {"stage":"ESCALATION","divergences":0,"mean_tree_steps":50.0}
+    x = {"stage":"EXTENSION","divergences":0,"mean_tree_steps":60.0}
+    assert B._active_lineage([p, x]) == [p, x]
+    assert B._active_lineage([p, e, x]) == [e, x]
+
+
+def test_benchmark_module_does_not_import_model_before_runtime_configuration():
+    text = (HERE / "run_v79_v2_core_benchmark.py").read_text(encoding="utf-8")
+    before_execute = text.split("def execute_benchmark", 1)[0]
+    assert "import v79_v2_core_fit_model" not in before_execute
