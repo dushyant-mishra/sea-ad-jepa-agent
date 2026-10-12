@@ -1,0 +1,62 @@
+{
+  "schema": "V79_RARE_CONTEXT_PERTURB_V3_CONTRACT",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_FROZEN_BEFORE_V3_REALIZATION",
+  "purpose": "Complete the rare-biology synthetic family with spatial-context and perturbation-response structural challenges. These are synthetic stress geometries, not claims that the same numerical effects have been measured in real human data.",
+  "bound_code": {
+    "context_perturb_git_blob_sha": "a79e7747a2709204454fcd2deca6fa8ddea35fac",
+    "test_git_blob_sha": "73bc9dd9e261ec4374d9b11d650deda3f1fb7854",
+    "base_generator_git_blob_sha": "2a2f0b2f5b48ed7b9cfd81a74ab7ec514053309f"
+  },
+  "realization": {
+    "seed_root": 79302026,
+    "seed_derivation": "uint32(first8bytes(SHA256('V79_RARE_CONTEXT_PERTURB_V3|seed_root|challenge_id')))",
+    "challenges": ["SPATIAL_CONDITIONED", "SPATIAL_INTRINSIC", "PERTURB_RESPONSE"],
+    "regime": "central",
+    "n_donors": 66,
+    "spatial_cells_per_donor": 20,
+    "perturb_cells_per_donor": 30
+  },
+  "spatial_stress_geometry": {
+    "niche_fraction": 0.35,
+    "niche_multiplier": 8.0,
+    "interpretation": "Synthetic context-strength setting chosen prospectively after design calibration because real Stage81A3 assets establish context-value identifiability, not a numeric human context effect prior.",
+    "conditioned_gates": {
+      "true_minus_shuffled_auc_min_exclusive": 0.03,
+      "true_minus_distant_auc_min_exclusive": 0.05,
+      "niche_minus_non_niche_R_prevalence_min_exclusive": 0.03
+    },
+    "intrinsic_null_gates": {
+      "abs_true_minus_shuffled_auc_max_exclusive": 0.12,
+      "abs_true_minus_distant_auc_max_exclusive": 0.15
+    },
+    "shuffled_control_rule": "Within-donor shuffled context may not contain the focal cell. The earlier leaky control was rejected during TDD before this freeze."
+  },
+  "perturbation_stress_geometry": {
+    "response_delta": 0.5,
+    "interpretation": "Synthetic response-strength setting only; existing perturbation audits do not establish this as a measured universal microglial effect size.",
+    "arms": ["CONTROL", "ACTUAL", "NULL"],
+    "gates": {
+      "actual_minus_control_R_positive_min_exclusive": 0.08,
+      "abs_null_minus_control_R_positive_max_exclusive": 0.12,
+      "arm_R_prevalence_gap_max_exclusive": 0.10
+    }
+  },
+  "design_calibration": {
+    "spatial": "After removing focal-cell leakage, intrinsic true-vs-shuffled advantage centered near zero across calibration seeds. Conditioned niche_fraction=0.35/niche_multiplier=8 produced a robust positive true-neighbor advantage. Calibration seeds are design-only and cannot serve as V3 qualification evidence.",
+    "perturbation": "Calibration showed actual-arm shifts while matched null centered near zero; numerical thresholds were frozen before V3 seed realization.",
+    "fresh_unit_tests_before_freeze": "4/4 passed"
+  },
+  "real_evidence_boundary": {
+    "spatial": "SCP2167 plus eligible Fang STG MERFISH makes bounded real context-value qualification identifiable; actual context benefit has not yet been demonstrated.",
+    "perturbation": "Authenticated perturbation assets support later directional consistency tests but do not define latent truth or universal causal effect size."
+  },
+  "authority_boundary": {
+    "V3_realization_authorized_by_this_file": false,
+    "controller_structural_scoring_authorized_by_this_file": false,
+    "model_fitting": false,
+    "Q00_Q11_regeneration": false,
+    "pathology_opening": false,
+    "JEPA_training": false
+  }
+}
