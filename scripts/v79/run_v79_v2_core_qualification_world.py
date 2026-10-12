@@ -15,6 +15,7 @@ import numpy as np
 
 import v79_v2_core_fit_contract as FC
 import v79_v2_core_fit_outputs as O
+import v79_v2_core_fit_predictive as P
 import v79_v2_core_fit_runner as R
 import v79_v2_core_fit_surface as F
 import v79_v2_core_identified_summary as I
@@ -53,6 +54,25 @@ def _write_npz_once(path:Path,**arrays)->str:
     with tmp.open("wb") as f: np.savez(f,**arrays)
     os.replace(tmp,path); return _sha(path)
 
+def _heldout_predictive(active_samples:Mapping[str,np.ndarray], world:F.BlindedWorld, *, gene_index:int, part:str)->dict:
+    same=F.load_gene_inputs(world,gene_index=gene_index,replicate="same_donor")
+    new=F.load_gene_inputs(world,gene_index=gene_index,replicate="new_donor")
+    if part=="detection":
+        return {
+            "same_donor":P.detection_heldout_metrics(active_samples,design=world.design,detected=np.asarray(same.detected),
+                measured_mask=np.asarray(same.detection_mask),new_donor=False,posterior_draws=200,calibration_bins=10,gh_nodes=40),
+            "new_donor":P.detection_heldout_metrics(active_samples,design=world.design,detected=np.asarray(new.detected),
+                measured_mask=np.asarray(new.detection_mask),new_donor=True,posterior_draws=200,calibration_bins=10,gh_nodes=40),
+        }
+    if part=="positive":
+        return {
+            "same_donor":P.positive_heldout_metrics(active_samples,design=world.design,observed=np.asarray(same.observed),
+                positive_mask=np.asarray(same.positive_mask),new_donor=False,posterior_draws=200,gh_nodes=40),
+            "new_donor":P.positive_heldout_metrics(active_samples,design=world.design,observed=np.asarray(new.observed),
+                positive_mask=np.asarray(new.positive_mask),new_donor=True,posterior_draws=200,gh_nodes=40),
+        }
+    _refuse(f"unknown fit part for heldout prediction: {part}")
+
 def _fit_one(*,fit_view:Mapping,world:F.BlindedWorld,item:Mapping,seed:int,code_sha:str,result_dir:Path,model_module,custody:C.QualificationCustody)->None:
     fid=str(item["fit_id"]); receipt_path=result_dir/f"fit_{fid}.json"; artifact_path=result_dir/f"donor_effect_draws_{fid}.npz"
     if receipt_path.exists(): Q._validate_existing_receipt(receipt_path,item,expected_code_sha=code_sha,expected_seed=seed); return
@@ -87,6 +107,7 @@ def _fit_one(*,fit_view:Mapping,world:F.BlindedWorld,item:Mapping,seed:int,code_
     else:
         frec["ppc"]=O.posterior_predictive_positive(active_samples,data,fit_id=fid,world_log_lib=np.asarray(world.design["log_lib"]),
             positive_mask=np.asarray(gene.positive_mask),draws=ppc_draws)
+    frec["heldout_predictive"]=_heldout_predictive(active_samples,world,gene_index=int(item["gene_index"]),part=str(item["part"]))
     compact=O.compact_donor_effect_draws(active_samples,donor_basis,stored_draws=int(custody.receipt["donor_draws_stored"]))
     asha=_write_npz_once(artifact_path,donor_effect_draws=compact); frec["posterior_artifacts"]={"donor_effect_draws":{"path":artifact_path.name,"sha256":asha}}
     R.write_receipt_atomic(receipt_path,frec)
@@ -109,8 +130,7 @@ def execute_world(root:Path,custody_dir:Path,result_dir:Path,*,expected_custody_
         for item in items:
             p=result_dir/f"fit_{item['fit_id']}.json"; seed=int(custody.seed_by_fit_id[item["fit_id"]])
             if p.exists(): Q._validate_existing_receipt(p,item,expected_code_sha=code_sha,expected_seed=seed); continue
-            _fit_one(fit_view=custody.fit_contract,world=world,item=item,seed=seed,code_sha=code_sha,
-                     result_dir=result_dir,model_module=M,custody=custody); completed+=1
+            _fit_one(fit_view=custody.fit_contract,world=world,item=item,seed=seed,code_sha=code_sha,result_dir=result_dir,model_module=M,custody=custody); completed+=1
     return {"opaque_world_id":opaque_world_id,"completed":completed,"already_complete":False}
 
 def main(argv=None):
