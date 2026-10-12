@@ -1,0 +1,73 @@
+name: V79 V2_CORE controller scorer
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v79/v79_v2_core_score*.py'
+      - 'tests/v79/test_v79_v2_core_score*.py'
+      - '.github/workflows/v79-v2-core-controller-scorer.yml'
+  workflow_dispatch:
+
+jobs:
+  scorer-audit:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Preserve byte identity
+        shell: bash
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.longpaths true || true
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install frozen V79 environment
+        run: python -m pip install --disable-pip-version-check -r results/v79/v2_core_qualification/inputs/V79_BAYES_ENV_PIP_FREEZE.txt
+      - name: Run controller scorer tests (Windows byte authority)
+        if: runner.os == 'Windows'
+        run: >-
+          python -m pytest
+          tests/v79/test_v79_v2_core_launch_authority.py
+          tests/v79/test_v79_v2_core_realization_audit_freeze.py
+          tests/v79/test_v79_v2_core_score.py
+          tests/v79/test_v79_v2_core_score_truth.py
+          tests/v79/test_v79_v2_core_score_quantities.py
+          tests/v79/test_v79_v2_core_score_evaluate.py
+          tests/v79/test_v79_v2_core_score_authority.py
+          tests/v79/test_v79_v2_core_score_descriptive.py
+          -q -rA -p no:cacheprovider
+      - name: Run controller scorer tests (Linux structural audit)
+        if: runner.os != 'Windows'
+        run: >-
+          python -m pytest
+          tests/v79/test_v79_v2_core_launch_authority.py
+          tests/v79/test_v79_v2_core_realization_audit_freeze.py
+          tests/v79/test_v79_v2_core_score.py
+          tests/v79/test_v79_v2_core_score_truth.py
+          tests/v79/test_v79_v2_core_score_quantities.py
+          tests/v79/test_v79_v2_core_score_evaluate.py
+          tests/v79/test_v79_v2_core_score_authority.py
+          tests/v79/test_v79_v2_core_score_descriptive.py
+          -q -rA -p no:cacheprovider
+          -k 'not test_builder_regenerates_final_and_draft_byte_for_byte'
+      - name: Static trust-domain audit
+        shell: python
+        run: |
+          from pathlib import Path
+          fit_side = [
+              Path('scripts/v79/v79_v2_core_fit_surface.py'),
+              Path('scripts/v79/v79_v2_core_fit_model.py'),
+              Path('scripts/v79/v79_v2_core_fit_runner.py'),
+              Path('scripts/v79/run_v79_v2_core_benchmark.py'),
+              Path('scripts/v79/run_v79_v2_core_qualification.py'),
+              Path('scripts/v79/run_v79_v2_core_qualification_world.py'),
+          ]
+          for p in fit_side:
+              text=p.read_text(encoding='utf-8')
+              assert 'v79_v2_core_score' not in text
+              assert 'controller_truth' not in text
+          print('SCORER_TRUST_DOMAIN_AUDIT=PASS')
