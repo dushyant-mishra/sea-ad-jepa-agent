@@ -1,0 +1,1 @@
+QUALIFY_DONE exit=3 utc=2026-10-12T17:33:57Z (0 = PASS; 3 = pending owner ratification). No start marker; no corrected value opened.

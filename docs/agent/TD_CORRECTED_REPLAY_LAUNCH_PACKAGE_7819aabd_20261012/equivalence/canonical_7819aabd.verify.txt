@@ -1,0 +1,2 @@
+verified head+clean utc=2026-10-12T17:23:51Z head=7819aabd9a4c7adbd494445bb989c44e9b7cfa11 worktree=D:/jepa_wt_td_replay_canon_7819aabd
+canon clean after: [0] head=7819aabd9a4c7adbd494445bb989c44e9b7cfa11 utc=2026-10-12T17:30:06Z
