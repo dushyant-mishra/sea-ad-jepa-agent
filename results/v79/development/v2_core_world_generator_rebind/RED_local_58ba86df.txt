@@ -1,0 +1,318 @@
+....FFFF..FEFFFFEEEEEEEEEEE..E.............                              [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_generator_obtains_the_canonical_contract_only_through_the_launch_gate _
+
+    @pytest.fixture(scope="module")
+    def launch():
+>       return G.load_launch_contract(ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'load_launch_contract'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:65: AttributeError
+_ ERROR at setup of test_baseline_donor_effects_use_the_canonical_latent_field _
+
+    @pytest.fixture(scope="module")
+    def launch():
+>       return G.load_launch_contract(ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'load_launch_contract'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:65: AttributeError
+_ ERROR at setup of test_donor_strength_worlds_rescale_the_realized_effects[Q01_WEAK_DONOR-weak_donor_sd] _
+
+    @pytest.fixture(scope="module")
+    def launch():
+>       return G.load_launch_contract(ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'load_launch_contract'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:65: AttributeError
+_ ERROR at setup of test_donor_strength_worlds_rescale_the_realized_effects[Q02_STRONG_DONOR-strong_donor_sd] _
+
+    @pytest.fixture(scope="module")
+    def launch():
+>       return G.load_launch_contract(ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'load_launch_contract'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:65: AttributeError
+__ ERROR at setup of test_donor_absent_world_has_exactly_zero_donor_effects ___
+
+    @pytest.fixture(scope="module")
+    def launch():
+>       return G.load_launch_contract(ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'load_launch_contract'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:65: AttributeError
+_ ERROR at setup of test_rescale_refuses_a_truth_object_without_the_canonical_latent_field _
+
+    @pytest.fixture(scope="module")
+    def launch():
+>       return G.load_launch_contract(ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'load_launch_contract'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:65: AttributeError
+_ ERROR at setup of test_every_world_hits_its_planted_prevalence_over_measured_cells _
+
+    @pytest.fixture(scope="module")
+    def launch():
+>       return G.load_launch_contract(ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'load_launch_contract'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:65: AttributeError
+_____ ERROR at setup of test_sparse_world_realizes_its_sparse_prevalence ______
+
+    @pytest.fixture(scope="module")
+    def launch():
+>       return G.load_launch_contract(ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'load_launch_contract'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:65: AttributeError
+______ ERROR at setup of test_intercepts_are_solved_after_modifications _______
+
+    @pytest.fixture(scope="module")
+    def launch():
+>       return G.load_launch_contract(ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'load_launch_contract'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:65: AttributeError
+___ ERROR at setup of test_unmeasured_cells_never_enter_the_intercept_solve ___
+
+    @pytest.fixture(scope="module")
+    def launch():
+>       return G.load_launch_contract(ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'load_launch_contract'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:65: AttributeError
+____ ERROR at setup of test_structural_support_composition_in_every_world _____
+
+    @pytest.fixture(scope="module")
+    def launch():
+>       return G.load_launch_contract(ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'load_launch_contract'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:65: AttributeError
+_______ ERROR at setup of test_q11_inherits_q10_except_operator_offsets _______
+
+    @pytest.fixture(scope="module")
+    def launch():
+>       return G.load_launch_contract(ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'load_launch_contract'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:65: AttributeError
+_ ERROR at setup of test_realization_stays_disabled_even_with_a_canonical_authorization _
+
+    @pytest.fixture(scope="module")
+    def launch():
+>       return G.load_launch_contract(ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'load_launch_contract'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:65: AttributeError
+================================== FAILURES ===================================
+_______ test_manifest_binds_final_contract_payload_truth_and_zero_fits ________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1280/test_manifest_binds_final_cont0')
+
+    def test_manifest_binds_final_contract_payload_truth_and_zero_fits(tmp_path: Path):
+        truth = {"world": "Q00_BASELINE", "opaque_id": hashlib.sha256(b"V2CORE|Q00_BASELINE").hexdigest()[:12]}
+>       manifest = G.build_manifest(world_name="Q00_BASELINE", world_index=0, truth=truth,
+            final_contract_sha=FINAL_SHA, payload_sha=PAYLOAD_SHA,
+            generated_files={"truth.json": "abc", "world.npz": "def"})
+
+tests\v79\test_v79_v2_core_world_generator.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+world_name = 'Q00_BASELINE', world_index = 0
+truth = {'world': 'Q00_BASELINE', 'opaque_id': '327c1c1ee188'}
+final_contract_sha = '57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26'
+payload_sha = 'cbfa332b419f12205d26b7f1ebd645299acb9ecc7f1ed8cdccc526ebf88477b3'
+generated_files = {'truth.json': 'abc', 'world.npz': 'def'}
+
+    def build_manifest(*, world_name: str, world_index: int, truth: dict, final_contract_sha: str,
+                       payload_sha: str, generated_files: dict[str, str]) -> dict:
+        if final_contract_sha != FINAL_CONTRACT_SHA256:
+>           raise SystemExit("STOP: wrong final Contract V2 SHA")
+E           SystemExit: STOP: wrong final Contract V2 SHA
+
+scripts\v79\generate_v79_v2_core_worlds.py:271: SystemExit
+___________ test_pairing_amendment_is_required_and_controller_bound ___________
+
+    def test_pairing_amendment_is_required_and_controller_bound():
+>       amendment = G.load_pairing_amendment(ROOT)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v79\test_v79_v2_core_world_generator.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('D:/jepa_wt_v79_worldgen_rebind')
+
+    def load_pairing_amendment(root: Path) -> dict:
+        path = root / PAIRING_AMENDMENT_REL
+        if not path.exists():
+>           raise SystemExit("STOP: Q10/Q11 pairing amendment is required")
+E           SystemExit: STOP: Q10/Q11 pairing amendment is required
+
+scripts\v79\generate_v79_v2_core_worlds.py:33: SystemExit
+______ test_q11_reuses_q10_seed_identity_except_operator_offset_streams _______
+
+    def test_q11_reuses_q10_seed_identity_except_operator_offset_streams():
+>       amendment = G.load_pairing_amendment(ROOT)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v79\test_v79_v2_core_world_generator.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('D:/jepa_wt_v79_worldgen_rebind')
+
+    def load_pairing_amendment(root: Path) -> dict:
+        path = root / PAIRING_AMENDMENT_REL
+        if not path.exists():
+>           raise SystemExit("STOP: Q10/Q11 pairing amendment is required")
+E           SystemExit: STOP: Q10/Q11 pairing amendment is required
+
+scripts\v79\generate_v79_v2_core_worlds.py:33: SystemExit
+____ test_q10_q11_pairing_validator_allows_only_operator_fields_to_differ _____
+
+    def test_q10_q11_pairing_validator_allows_only_operator_fields_to_differ():
+>       amendment = G.load_pairing_amendment(ROOT)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v79\test_v79_v2_core_world_generator.py:154: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('D:/jepa_wt_v79_worldgen_rebind')
+
+    def load_pairing_amendment(root: Path) -> dict:
+        path = root / PAIRING_AMENDMENT_REL
+        if not path.exists():
+>           raise SystemExit("STOP: Q10/Q11 pairing amendment is required")
+E           SystemExit: STOP: Q10/Q11 pairing amendment is required
+
+scripts\v79\generate_v79_v2_core_worlds.py:33: SystemExit
+__ test_operator_offsets_are_deterministic_scaled_and_centered_within_source __
+
+    def test_operator_offsets_are_deterministic_scaled_and_centered_within_source():
+>       payload = _payload(); amendment = G.load_pairing_amendment(ROOT); design = _fixture_design()
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v79\test_v79_v2_core_world_generator.py:216: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('D:/jepa_wt_v79_worldgen_rebind')
+
+    def load_pairing_amendment(root: Path) -> dict:
+        path = root / PAIRING_AMENDMENT_REL
+        if not path.exists():
+>           raise SystemExit("STOP: Q10/Q11 pairing amendment is required")
+E           SystemExit: STOP: Q10/Q11 pairing amendment is required
+
+scripts\v79\generate_v79_v2_core_worlds.py:33: SystemExit
+__________ test_obsolete_contract_is_refused_as_authority_everywhere __________
+
+tmp_path = WindowsPath('C:/Users/dushy/AppData/Local/Temp/pytest-of-dushy/pytest-1280/test_obsolete_contract_is_refu0')
+
+    def test_obsolete_contract_is_refused_as_authority_everywhere(tmp_path):
+        old = {"schema": "V79_V2_CORE_Q10_Q11_PAIRING_AMENDMENT_V1", "controller_comment": 6114906562,
+               "rebind_controller_comment": 6115340528, "final_contract_sha256": OBSOLETE,
+               "qualification_payload_sha256": PAYLOAD_SHA, "worlds_generated_at_freeze": 0,
+               "qualification_fits_at_freeze": 0, "paired_counterfactual": FROZEN_PAIRING,
+               "authorization": FROZEN_AUTHORIZATION_FLAGS}
+        with pytest.raises(SystemExit):
+>           G.validate_pairing_amendment_content(old)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'validate_pairing_amendment_content'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:111: AttributeError
+_ test_pairing_amendment_is_regenerated_against_the_canonical_contract_with_unchanged_semantics _
+
+    def test_pairing_amendment_is_regenerated_against_the_canonical_contract_with_unchanged_semantics():
+>       a = G.load_pairing_amendment(ROOT)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:129: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('D:/jepa_wt_v79_worldgen_rebind')
+
+    def load_pairing_amendment(root: Path) -> dict:
+        path = root / PAIRING_AMENDMENT_REL
+        if not path.exists():
+>           raise SystemExit("STOP: Q10/Q11 pairing amendment is required")
+E           SystemExit: STOP: Q10/Q11 pairing amendment is required
+
+scripts\v79\generate_v79_v2_core_worlds.py:33: SystemExit
+__________ test_pairing_amendment_builder_regenerates_byte_for_byte ___________
+
+    def test_pairing_amendment_builder_regenerates_byte_for_byte():
+        r = subprocess.run([sys.executable, str(ROOT / "scripts" / "v79" / "build_v79_v2_core_pairing_amendment.py"),
+                            str(ROOT), "--check"], capture_output=True, text=True)
+>       assert r.returncode == 0, r.stdout[-2000:] + r.stderr[-2000:]
+E       AssertionError: C:\Users\dushy\anaconda3\envs\v79-bayes\python.exe: can't open file 'D:\\jepa_wt_v79_worldgen_rebind\\scripts\\v79\\build_v79_v2_core_pairing_amendment.py': [Errno 2] No such file or directory
+E         
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['C:\\Users\\dushy\\anaconda3\\envs\\v79-bayes\\python.exe', 'D:\\jepa_wt_v79_worldgen_rebind\\s...9_worldgen_rebind\\\\scripts\\\\v79\\\\build_v79_v2_core_pairing_amendment.py': [Errno 2] No such file or directory\n").returncode
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:146: AssertionError
+______________ test_source_codes_match_canonical_design_metadata ______________
+
+    def test_source_codes_match_canonical_design_metadata():
+>       assert G.source_code_mapping(ROOT) == G.SOURCE_CODES == {"HVS": 0, "NPH52": 1, "SEA_AD": 2}
+               ^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'generate_v79_v2_core_worlds' has no attribute 'source_code_mapping'
+
+tests\v79\test_v79_v2_core_world_generator_rebind.py:152: AttributeError
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/v79/test_v79_v2_core_world_generator.py::test_realization_requires_separate_authorization
+PASSED tests/v79/test_v79_v2_core_world_generator.py::test_seed_is_keyed_by_scientific_identity_not_file_layout
+PASSED tests/v79/test_v79_v2_core_world_generator.py::test_q00_q09_share_base_design_and_q10_q11_share_s174_design
+PASSED tests/v79/test_v79_v2_core_world_generator.py::test_structural_support_truth_and_poison_are_separate
+PASSED tests/v79/test_v79_v2_core_world_generator.py::test_full_G_structural_support_has_frozen_1_3_1_composition
+PASSED tests/v79/test_v79_v2_core_world_generator.py::test_world_modifications_match_frozen_semantics
+PASSED tests/v79/test_v79_v2_core_world_generator_rebind.py::test_no_competing_finalization_layer_remains
+PASSED tests/v79/test_v79_v2_core_world_generator_rebind.py::test_no_world_artifacts_exist
+PASSED tests/v79/test_v79_v2_core_baseline_planting.py::test_base_design_is_deterministic_and_uses_frozen_sampling_sources
+PASSED tests/v79/test_v79_v2_core_baseline_planting.py::test_base_design_seed_is_world_independent_shared_key
+PASSED tests/v79/test_v79_v2_core_baseline_planting.py::test_latin_hypercube_is_deterministic_stratified_and_within_p5_p95
+PASSED tests/v79/test_v79_v2_core_baseline_planting.py::test_baseline_plant_uses_masked_calibration_and_frozen_ranges
+PASSED tests/v79/test_v79_v2_core_baseline_planting.py::test_detection_intercept_bisection_hits_measured_target
+PASSED tests/v79/test_v79_v2_core_baseline_planting.py::test_donor_factor_effects_are_within_source_centered_and_lambda_assignment_half
+PASSED tests/v79/test_v79_v2_core_observation.py::test_normalized_helmert_is_orthonormal_and_sum_to_zero
+PASSED tests/v79/test_v79_v2_core_observation.py::test_depth_basis_uses_population_standardization_and_q_z2_minus_1
+PASSED tests/v79/test_v79_v2_core_observation.py::test_linear_predictor_matches_explicit_model_basis
+PASSED tests/v79/test_v79_v2_core_observation.py::test_observation_respects_measurement_support_and_poison_invariance
+PASSED tests/v79/test_v79_v2_core_observation.py::test_positive_values_are_continuous_lognormal_only_when_detected
+PASSED tests/v79/test_v79_v2_core_observation.py::test_same_donor_replicate_changes_only_observation_noise_streams
+PASSED tests/v79/test_v79_v2_core_observation.py::test_q10_q11_common_random_numbers_differ_only_through_operator_offsets
+ERROR tests/v79/test_v79_v2_core_world_generator_rebind.py::test_generator_obtains_the_canonical_contract_only_through_the_launch_gate
+ERROR tests/v79/test_v79_v2_core_world_generator_rebind.py::test_baseline_donor_effects_use_the_canonical_latent_field
+ERROR tests/v79/test_v79_v2_core_world_generator_rebind.py::test_donor_strength_worlds_rescale_the_realized_effects[Q01_WEAK_DONOR-weak_donor_sd]
+ERROR tests/v79/test_v79_v2_core_world_generator_rebind.py::test_donor_strength_worlds_rescale_the_realized_effects[Q02_STRONG_DONOR-strong_donor_sd]
+ERROR tests/v79/test_v79_v2_core_world_generator_rebind.py::test_donor_absent_world_has_exactly_zero_donor_effects
+ERROR tests/v79/test_v79_v2_core_world_generator_rebind.py::test_rescale_refuses_a_truth_object_without_the_canonical_latent_field
+ERROR tests/v79/test_v79_v2_core_world_generator_rebind.py::test_every_world_hits_its_planted_prevalence_over_measured_cells
+ERROR tests/v79/test_v79_v2_core_world_generator_rebind.py::test_sparse_world_realizes_its_sparse_prevalence
+ERROR tests/v79/test_v79_v2_core_world_generator_rebind.py::test_intercepts_are_solved_after_modifications
+ERROR tests/v79/test_v79_v2_core_world_generator_rebind.py::test_unmeasured_cells_never_enter_the_intercept_solve
+ERROR tests/v79/test_v79_v2_core_world_generator_rebind.py::test_structural_support_composition_in_every_world
+ERROR tests/v79/test_v79_v2_core_world_generator_rebind.py::test_q11_inherits_q10_except_operator_offsets
+ERROR tests/v79/test_v79_v2_core_world_generator_rebind.py::test_realization_stays_disabled_even_with_a_canonical_authorization
+FAILED tests/v79/test_v79_v2_core_world_generator.py::test_manifest_binds_final_contract_payload_truth_and_zero_fits
+FAILED tests/v79/test_v79_v2_core_world_generator.py::test_pairing_amendment_is_required_and_controller_bound
+FAILED tests/v79/test_v79_v2_core_world_generator.py::test_q11_reuses_q10_seed_identity_except_operator_offset_streams
+FAILED tests/v79/test_v79_v2_core_world_generator.py::test_q10_q11_pairing_validator_allows_only_operator_fields_to_differ
+FAILED tests/v79/test_v79_v2_core_world_generator.py::test_operator_offsets_are_deterministic_scaled_and_centered_within_source
+FAILED tests/v79/test_v79_v2_core_world_generator_rebind.py::test_obsolete_contract_is_refused_as_authority_everywhere
+FAILED tests/v79/test_v79_v2_core_world_generator_rebind.py::test_pairing_amendment_is_regenerated_against_the_canonical_contract_with_unchanged_semantics
+FAILED tests/v79/test_v79_v2_core_world_generator_rebind.py::test_pairing_amendment_builder_regenerates_byte_for_byte
+FAILED tests/v79/test_v79_v2_core_world_generator_rebind.py::test_source_codes_match_canonical_design_metadata
+9 failed, 21 passed, 13 errors in 0.91s
