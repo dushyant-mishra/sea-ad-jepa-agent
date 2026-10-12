@@ -1,0 +1,41 @@
+{
+  "schema": "V79_RARE_WORLD_PRODUCTION_AUTHORITY_V1",
+  "date": "2026-10-12",
+  "status": "ONE_PRODUCTION_REALIZATION_AUTHORIZED",
+  "owner_instruction": "User explicitly instructed: 'ok keep pushing ahead' after the lane closeout identified the next controller transition as a single frozen production rare-world realization.",
+  "scope": {
+    "attempts_authorized": 1,
+    "seed_root": 79102026,
+    "n_donors": 66,
+    "cells_per_donor": 20,
+    "regimes": ["weak", "central", "strong", "extreme"],
+    "world_types": ["rna_only", "same_nucleus", "separate_nucleus", "technical_twin"],
+    "world_count": 16,
+    "output_policy": "local-only realization bytes; Git tracks authority, code and hash-bound receipts, not controller truth binaries",
+    "blinding": "fit_view may contain RNA/ATAC observations plus source/donor/entity codes only; R, pseudo_rare, donor activity/prevalence and world/regime mapping are controller-only"
+  },
+  "bound_inputs": {
+    "rare_world_contract_git_blob_sha": "5a09a107f853f69492f6334ee856c559a9ae2a83",
+    "rare_world_generator_git_blob_sha": "2a2f0b2f5b48ed7b9cfd81a74ab7ec514053309f",
+    "production_realizer_git_blob_sha": "bf4f9865a32dbcb832844de055c6c083b82face0",
+    "production_test_git_blob_sha": "faa076ca99b1bf4e5ba2eed8cf7030dda312d0f0",
+    "fixture_qualification_git_blob_sha": "e29c5f422c29088abfeb26d58b1d8f03d8088b52"
+  },
+  "preflight_requirements": [
+    "production-specific deterministic/blinding/hash tests pass",
+    "output directory is fresh and empty",
+    "Q00-Q11 are not regenerated or modified",
+    "no pathology, DEV, SEALED or protected outcome is opened",
+    "fit/truth trust-domain separation is preserved",
+    "the realization is executed at most once under this authority"
+  ],
+  "not_authorized": {
+    "qualification_fitting": false,
+    "qualification_scoring": false,
+    "Q00_Q11_regeneration": false,
+    "pathology_opening": false,
+    "JEPA_training": false,
+    "second_realization_attempt": false
+  },
+  "terminal_after_execution": "STOP_AT_HASH_BOUND_PRODUCTION_RECEIPT__FITTING_AND_SCORING_REQUIRE_SEPARATE_AUTHORITY"
+}
