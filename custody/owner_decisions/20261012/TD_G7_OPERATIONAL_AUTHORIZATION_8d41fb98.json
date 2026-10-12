@@ -1,0 +1,62 @@
+{
+  "attempt_policy": "ONE_ATTEMPT_ONLY__START_MARKER_MAKES_OUTPUT_SPENT__NO_IN_PLACE_REPAIR_OR_RERUN",
+  "authorization": "EXECUTE_G7_SUCCESSOR_ONCE_AT_8d41fb98__G7_ENTRYPOINT_ONLY__NO_G6_RERUN__AGAINST_ACCEPTED_G6_ff4a21f9__FRESH_OUTPUT__STOP_FOR_EXTERNAL_AUDIT",
+  "biological_replay_authorized": false,
+  "common_entrypoint": "scripts/v5/td_relational_value_read_v2_common.py",
+  "common_script_sha256": "23be96f8f2c02bf10b751b599ccfa5fb15ba93a456f22b2cad73c1a3294ae7ea",
+  "corrected_biological_replay_authorized": false,
+  "date": "2026-10-12",
+  "expected_g7_pass_terminal": "PASS_TD_G7_S174_EXACT_OVERLAP",
+  "external_audit_reference": {
+    "classification": "ACCEPT_G7_SUCCESSOR_QUALIFICATION__8d41fb98__PREMARKER_DEFECT_REPAIRED__ACCEPTED_G6_PREDECESSOR_BRIDGE_CONFIRMED__NO_G7_EXECUTION_AUTHORITY_YET",
+    "pr": 296,
+    "review_id": 5486851355
+  },
+  "fresh_g7_output_namespace": "D:/jepa_td_real_g6_20261011/G7_OUT_8d41fb98",
+  "fresh_output_required": true,
+  "g6_artifact_sha256": {
+    "G6_EXECUTION_START.json": "49bdff31a1a055b1bbf1ff539a49a93413c83bf0ab8838494485bc56492bd4f1",
+    "G6_RECEIPT.json": "2edaa2d2e03b8d862172e97b35fb94888305ef0e843cd71206ee56f53b28a52b",
+    "MANIFEST.json": "4fbc14ceda829cca7446e67b9ad25d428608c5aaa5e87d08ae07c412279427bf",
+    "TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz": "fdc13516a31a4163498cfc1bb9b9dd5fc615bc4ba8e7ec3fd3f4a51522e344a9",
+    "TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz": "bd3a494b3dd8239a78485dfc6006e75a75c32e5f2eb0a33afd2da2472522fe74"
+  },
+  "g6_entrypoint": "scripts/v5/materialize_td_relational_corrected_sampleA_v2.py",
+  "g6_execution_authorized": false,
+  "g6_external_acceptance_sha256": "89932183a2c7b56d1e3ae42264ea3f3b3ae9001d865cfa93604b46f0db2129fb",
+  "g6_external_acceptance_source": {
+    "commit": "17a68667174ae8583305c546639dced7dded94d9",
+    "path": "docs/agent/TD_G6_EXTERNAL_ACCEPTANCE_ff4a21f9_20261011.json"
+  },
+  "g6_producer_commit_sha": "ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0",
+  "g6_receipt_path": "D:/jepa_td_real_g6_20261011/G6_OUT_ff4a21f9/G6_RECEIPT.json",
+  "g6_rerun_permitted": false,
+  "g6_script_sha256": "8e6504e02e909a030a33b3fa2b4742fd78354486c1d2a0f40575c11108a6877d",
+  "g7_entrypoint": "scripts/v5/audit_td_relational_g7_s174_overlap_v2.py",
+  "g7_entrypoint_only": true,
+  "g7_script_sha256": "275dad00c6bd37ef11a34a376c703b4433ed40eae8d087c4d8f9535f88170412",
+  "implementation_commit_sha": "8d41fb9838b425ddcb704ecbdf5cd51f3eeb9f27",
+  "launch_checks_path": "scripts/v5/td_g7_successor_launch_checks.py",
+  "launch_checks_sha256": "5f6aa8023ce9ca6e8240912a839109c744bcdb8ff5d9d287520189d93f2805eb",
+  "launcher_path": "scripts/v5/run_td_g7_successor_once.sh",
+  "launcher_sha256": "934b3bccf9e892d9937ef6ea9b299886c0d3db70b556b9908fb725db517d3140",
+  "prepared_by": "Macha (Claude Code) at owner instruction, 2026-10-12; released only by the audited SHA at launch",
+  "prestart_requirements": [
+    "G7_OWN_PREMARKER_PATH_INCLUDING_BIND_EXECUTION",
+    "G1B_AUTHORITY_LOAD",
+    "ALL_35_S174_SHARD_HASHES",
+    "ALL_34_HVS_SEA_MATRICES_COVERED",
+    "MATRIX_STEM_SHARD_JOIN",
+    "PHYSICAL_SOURCES_PRESENT_AT_FROZEN_SIZES"
+  ],
+  "required_code_consumed_owner_decision_sha256": "c1bac85b4da9f447590b9f7172fc69f612b878a7ad851fc29f4efd87f2f0eaf1",
+  "required_code_consumed_runtime_authorization_sha256": "be097fb21f58cbccea6b88cfad531eae4c8fbf3dc05582029f3d7dcc710bf1fa",
+  "requires_exact_launch_audit_before_execution": true,
+  "schema": "JEPA_TD_G7_OPERATIONAL_AUTHORIZATION_V2",
+  "scope_note": "R1 scope lock (external audit PR #296 review 5486851355): this authority covers the successor G7 run only. G6 must not be executed or rerun under it; the launcher invokes the G7 entrypoint only.",
+  "stage4_authorized": false,
+  "stop_after_g7": true,
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false
+}

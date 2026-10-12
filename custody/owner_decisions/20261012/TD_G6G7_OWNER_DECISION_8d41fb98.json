@@ -1,0 +1,20 @@
+{
+  "authorized_pr259_mapping_receipt_sha256": "6a97cb30ae1899fa249e2d4b6d292ed900283cc3c434749688de99a9cd8828e0",
+  "authorized_pr259_preflight_driver_sha256": "62f2af4a97ce77c72907992dff673dcdea74ac17bcd080bd4d77d39e483e8bae",
+  "biological_replay_authorized": false,
+  "date": "2026-10-12",
+  "decision": "AUTHORIZE_G6_G7_INTEGRITY_ONLY",
+  "external_audit_reference": {
+    "classification": "ACCEPT_G7_SUCCESSOR_QUALIFICATION__8d41fb98__PREMARKER_DEFECT_REPAIRED__ACCEPTED_G6_PREDECESSOR_BRIDGE_CONFIRMED__NO_G7_EXECUTION_AUTHORITY_YET",
+    "pr": 296,
+    "review_id": 5486851355
+  },
+  "g6_execution_authorized": false,
+  "prepared_by": "Macha (Claude Code) at owner instruction, 2026-10-12; requires exact launch audit before G7 execution",
+  "qualified_implementation_commit_sha": "8d41fb9838b425ddcb704ecbdf5cd51f3eeb9f27",
+  "schema": "JEPA_TD_RELATIONAL_G6_G7_OWNER_DECISION_V1",
+  "scope_note": "R1 scope lock (external audit PR #296 review 5486851355): this authority covers the successor G7 run only. G6 must not be executed or rerun under it; the launcher invokes the G7 entrypoint only.",
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false
+}
