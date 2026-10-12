@@ -11,6 +11,7 @@ HERE = ROOT / "scripts" / "v79"
 sys.path.insert(0, str(HERE))
 
 import v79_v2_core_qualification_custody as C  # noqa: E402
+import v79_v2_core_qualification_plan as Q  # noqa: E402
 
 
 def _auth(ledger):
@@ -48,3 +49,15 @@ def test_authorization_refuses_later_gate_permissions():
     a = _auth(ledger); a["scoring_authorized"] = True
     with pytest.raises(C.QualificationCustodyRefused):
         C.sanitize_execution_authorization(a, expected_seed_ledger=ledger)
+
+
+def test_fit_only_queue_derives_44_genes_without_world_labels():
+    fit_view = {"resources": {"estimate": {"n_fits": 1056}}}
+    index = {"world_count": 12, "worlds": [
+        {"opaque_world_id": f"{i:012x}", "manifest_sha256": f"{i+1:064x}"} for i in range(12)
+    ]}
+    q = Q.build_qualification_queue(fit_view, index)
+    assert len(q) == 1056
+    assert max(x["gene_index"] for x in q) == 43
+    raw = json.dumps(q)
+    assert "world_name" not in raw and "world_index" not in raw and "Q00" not in raw and "Q11" not in raw
