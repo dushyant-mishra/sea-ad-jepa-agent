@@ -1,0 +1,34 @@
+{
+  "attempt_policy": "ONE_ATTEMPT__START_MARKER_SPENDS_NAMESPACE_AND_AUTHORITY__NO_REPAIR_OR_RERUN",
+  "code_sha256": "4544200cbc72b3b47eeab8efbb500ef7147e2ec0bff1159984a3dd582393b389",
+  "contract_sha256": "46e4e7ad30f5e18197a377066a16de9047582dafb1ccbb837769e92b5ac92061",
+  "corrected_replay_execution_authorized": true,
+  "date": "2026-10-12",
+  "g6_execution_authorized": false,
+  "g7_execution_authorized": false,
+  "g7_pass": false,
+  "g7_terminal_remains": "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP",
+  "implementation_commit_sha": "f5673f9b5c8a02d14ed1a82afb8a1ce144283f5f",
+  "namespace": "D:/jepa_td_corrected_replay_20261012/REPLAY_OUT_V1",
+  "owner_decision_sha256": "02caebae0a83dc2bf73976cea21fcd9a06bfdd948b28e59ca3867ac18bfd9522",
+  "prepared_by": "Macha (Claude Code) at owner instruction 2026-10-12; execution requires the external launch-audit acceptance and owner ratification",
+  "prerequisite_amendment_sha256": "4c5fefeb39de6a607266cf2ae3de96d25673cbf2b92c1af6992210d1f5fb7d2f",
+  "requires": [
+    "committed external launch-audit acceptance (JEPA_TD_CORRECTED_REPLAY_LAUNCH_AUDIT_ACCEPTANCE_V1)",
+    "committed owner decision ratification (JEPA_TD_CORRECTED_REPLAY_DECISION_RATIFICATION_V1)"
+  ],
+  "runtime_authorization_sha256": "d716eda760689d3bf00d5c34e8fba67d0f57fd34f76c9edd2b7e378522d82fb4",
+  "schema": "JEPA_TD_CORRECTED_REPLAY_OPERATIONAL_AUTHORIZATION_V1",
+  "scope": "CORRECTED_TD56_TD57B_TD57C_TD59_REPLAY_ONLY",
+  "single_attempt": true,
+  "stage4_authorized": false,
+  "stage_order": [
+    "TD56",
+    "TD57B",
+    "TD57C",
+    "TD59"
+  ],
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false
+}

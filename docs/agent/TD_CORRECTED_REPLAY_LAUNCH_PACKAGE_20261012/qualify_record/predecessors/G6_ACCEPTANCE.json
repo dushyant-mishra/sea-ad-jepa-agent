@@ -1,0 +1,32 @@
+{
+  "accounting": {
+    "detected_changed_rows": 22560,
+    "detected_changed_rows_by_source": {
+      "HVS": 0,
+      "NPH52": 0,
+      "SEA_AD": 22560
+    },
+    "hvs_sea_physically_reread_rows": 23690,
+    "nph52_authenticated_historical_passthrough_rows": 1310,
+    "total_sample_a_rows": 25000
+  },
+  "biological_replay_authorized": false,
+  "date": "2026-10-11",
+  "evidence_branch": "evidence/td-g6-replacement-ff4a21f9-20261011",
+  "evidence_commit_sha": "c595af589821bee28eb77e88e44b79dc81835e7a",
+  "external_audit_disposition": "ACCEPT_G6_PASS__VALUE_SUBSTRATE_AND_SOURCE_CUSTODY_CONFIRMED__NO_BIOLOGICAL_TARGET_AUTHORITY",
+  "g6_artifact_sha256": {
+    "G6_EXECUTION_START.json": "49bdff31a1a055b1bbf1ff539a49a93413c83bf0ab8838494485bc56492bd4f1",
+    "G6_RECEIPT.json": "2edaa2d2e03b8d862172e97b35fb94888305ef0e843cd71206ee56f53b28a52b",
+    "MANIFEST.json": "4fbc14ceda829cca7446e67b9ad25d428608c5aaa5e87d08ae07c412279427bf",
+    "TD_RELATIONAL_CORRECTED_SAMPLE_A_9216_VALUES_V2.npz": "fdc13516a31a4163498cfc1bb9b9dd5fc615bc4ba8e7ec3fd3f4a51522e344a9",
+    "TD_RELATIONAL_CORRECTED_SAMPLE_A_META_V2.npz": "bd3a494b3dd8239a78485dfc6006e75a75c32e5f2eb0a33afd2da2472522fe74"
+  },
+  "g6_terminal": "PASS_TD_G6_SOURCE_LIBRARY_EXACT",
+  "g7_may_receive_fresh_operational_authority": true,
+  "implementation_commit_sha": "ff4a21f9e470f26e34a935b6a4c7c61b03a6dfb0",
+  "schema": "JEPA_TD_G6_EXTERNAL_AUDIT_ACCEPTANCE_V1",
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false
+}
