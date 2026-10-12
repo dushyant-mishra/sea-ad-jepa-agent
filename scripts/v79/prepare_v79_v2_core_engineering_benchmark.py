@@ -64,6 +64,7 @@ def build_fit_contract_view(contract: dict) -> dict:
         "resources": {
             **{k: copy.deepcopy(contract["resources"][k]) for k in resource_keys},
             "estimate": {"n_fits": contract["resources"]["estimate"]["n_fits"]},
+            "qualification_world_count": len(contract["worlds"]["world_list"]),
         },
         "seeds": {
             "engineering_benchmark_root": contract["seeds"]["engineering_benchmark_root"],
@@ -90,8 +91,6 @@ def _selected_world_and_seed_ledger(contract: dict, root_manifest: dict, blinded
     worlds = blinded_index.get("worlds")
     if not isinstance(worlds, list) or not worlds:
         _refuse("blinded engineering index has no worlds")
-    # Selection is made from opaque fit-facing records only. Controller mapping is consulted only after selection
-    # to derive the frozen SeedSequence world index; it cannot affect which world was selected.
     selected_rec = sorted(worlds, key=lambda x: str(x["opaque_world_id"]))[0]
     oid = str(selected_rec["opaque_world_id"])
     msha = str(selected_rec["manifest_sha256"])
@@ -106,10 +105,7 @@ def _selected_world_and_seed_ledger(contract: dict, root_manifest: dict, blinded
         for part in ("detection", "positive"):
             stream = int(streams["fit_det_primary" if part == "detection" else "fit_pos_primary"])
             seed = G.seed_for(world_index=wi, gene_index=gene_index, stream=stream, root=eng_root)
-            ledger.append({
-                "fit_id": R.fit_identity(oid, msha, part, gene_index),
-                "primary_seed": int(seed),
-            })
+            ledger.append({"fit_id": R.fit_identity(oid, msha, part, gene_index), "primary_seed": int(seed)})
     ledger.sort(key=lambda x: x["fit_id"])
     return oid, msha, ledger
 
@@ -125,8 +121,7 @@ def prepare(root: Path, package_dir: Path, custody_dir: Path) -> dict:
     eng_root = int(contract["seeds"]["engineering_benchmark_root"])
     if eng_root == int(qual_payload["seeds"]["root"]):
         _refuse("engineering and qualification seed roots alias")
-    payload = copy.deepcopy(qual_payload)
-    payload["seeds"]["root"] = eng_root
+    payload = copy.deepcopy(qual_payload); payload["seeds"]["root"] = eng_root
     designs = G.build_world_designs(root, payload)
     root_manifest = W.write_engineering_world_set(root=root, payload=payload, cal=cal, designs=designs,
                                                   amendment=amendment, out_dir=package_dir)
@@ -166,13 +161,9 @@ def prepare(root: Path, package_dir: Path, custody_dir: Path) -> dict:
 
 
 def main(argv=None):
-    p = argparse.ArgumentParser()
-    p.add_argument("root")
-    p.add_argument("package_dir")
-    p.add_argument("custody_dir")
+    p = argparse.ArgumentParser(); p.add_argument("root"); p.add_argument("package_dir"); p.add_argument("custody_dir")
     a = p.parse_args(argv)
     print(json.dumps(prepare(Path(a.root), Path(a.package_dir), Path(a.custody_dir)), indent=2))
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__": main()
