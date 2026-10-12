@@ -1,0 +1,185 @@
+{
+  "schema": "TD_REGULATORY_EVIDENCE_CONTRACT_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_SCIENCE_CONTRACT__NO_TARGET_SELECTION_OR_TRAINING_AUTHORITY",
+  "purpose": "Define how ATAC, SCENIC+/cisTarget-style regulatory evidence, historical graph work, external cis resources, spatial evidence and perturbation evidence may lawfully support the current C1/C2/C3/C6/C4/C5 target architecture without becoming retrospective target selectors.",
+  "claim_ladder": {
+    "R1": "RNA_REPRESENTATION -> TRANSFERABLE_BIOLOGICAL_STATE",
+    "R2": "TRANSFERABLE_BIOLOGICAL_STATE -> REGULATORY_SUPPORT",
+    "R3": "REGULATORY_SUPPORT -> CAUSAL_PERTURBATIONAL_PREDICTION",
+    "rule": "Every adjacent transition needs prospectively declared evidence; no automatic promotion is permitted."
+  },
+  "authority_boundary": {
+    "foundation_target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false,
+    "regulatory_evidence_may_rescue_failed_foundation": false,
+    "pathology_may_define_regulatory_target": false,
+    "historical_regulatory_outcomes_may_retroactively_change_C1_C6": false
+  },
+  "evidence_classes": {
+    "SAME_NUCLEUS_RNA_ATAC": {
+      "meaning": "Direct within-nucleus cross-modal correspondence.",
+      "primary_existing_asset": "GSE214979",
+      "allowed_claim": "Regulatory/chromatin support and RNA-identifiability of a frozen state within donor-held-out evaluation.",
+      "forbidden_claim": "Causality or donor replication from nucleus count."
+    },
+    "INTERNAL_SAME_NUCLEUS_MULTIOME": {
+      "meaning": "Internal paired SEA-AD modality anchor with development exposure.",
+      "primary_existing_asset": "SEAAD_PUBLIC_MULTIOME",
+      "allowed_claim": "Internal corroboration and observation-operator stress testing.",
+      "forbidden_claim": "Pristine independent confirmation."
+    },
+    "SEPARATE_NUCLEUS_DONOR_LEVEL_RNA_ATAC": {
+      "meaning": "RNA and ATAC are linked at donor/study level, not at cell level.",
+      "primary_existing_asset": "GSE174367_MORABITO",
+      "allowed_claim": "Donor-level recurrence/support after target freeze.",
+      "forbidden_claim": "Same-cell state correspondence or target selection."
+    },
+    "MOTIF_CISTARGET_SUPPORT": {
+      "meaning": "Motif/ranking/region evidence supporting candidate regulator-target architecture.",
+      "historical_stage75F": {
+        "tested_regulators": 10,
+        "tier_A_direct_motif_support": ["STAT1", "ELF1", "SPI1"],
+        "tier_B_extended_only_support": ["IRF8", "BACH1", "CEBPA", "RELA"],
+        "tier_C_negative_gate": ["MITF", "NRF1", "STAT3"],
+        "supported_regulators": 7,
+        "tf_target_rows": 96
+      },
+      "allowed_claim": "Enhancer-informed candidate regulatory support.",
+      "forbidden_claim": "Validated eRegulon, validated GRN, causal regulation or therapeutic target."
+    },
+    "GRAPH_TOPOLOGY_SUPPORT": {
+      "meaning": "Evidence that the particular regulatory graph topology contributes information beyond topology controls.",
+      "required_controls": [
+        "NO_GRAPH_OR_IDENTITY",
+        "STRICT_TARGET_SHUFFLE_OR_EDGE_SHUFFLE",
+        "GENE_LABEL_PERMUTATION_WHERE_APPLICABLE",
+        "GENERIC_PRIOR_GRAPH_WHERE_APPLICABLE"
+      ],
+      "historical_result": "NOT_ESTABLISHED",
+      "historical_basis": "Stage73R context graph beat no-graph and gene-label permutation but did not beat STRING or the repaired target-shuffled control; context_graph_prediction_lock remained false.",
+      "rule": "Regulon/program activity support and graph-topology support are distinct evidence classes."
+    },
+    "EXTERNAL_CIS_REFERENCE": {
+      "meaning": "Independent promoter/enhancer/contact annotation or reference resource.",
+      "allowed_claim": "Post-freeze regulatory corroboration after exact product/version/custody authentication.",
+      "forbidden_claim": "Target selection or causality from annotation alone."
+    },
+    "SPATIAL_LOCALIZATION": {
+      "meaning": "Localization of a frozen program in intact tissue when the required genes/features are measured.",
+      "allowed_claim": "Localization/support for measurable program components.",
+      "forbidden_claim": "Full 41K-state validation when the spatial panel lacks coverage."
+    },
+    "PERTURBATIONAL_SUPPORT": {
+      "meaning": "Direction-of-effect support from authenticated intervention data.",
+      "allowed_claim": "R3 support only for prospectively frozen hypotheses after per-screen target-engagement and reliability qualification.",
+      "forbidden_claim": "Pristine benchmark truth or causal promotion from observational agreement."
+    }
+  },
+  "historical_negative_priors": {
+    "stage73r_graph_specificity": {
+      "context_graph_mean": 0.323611,
+      "no_graph_mean": 0.311254,
+      "string_graph_mean": 0.331809,
+      "target_shuffled_mean": 0.33229,
+      "gene_label_permuted_mean": 0.313402,
+      "context_graph_prediction_lock": false,
+      "interpretation": "A context regulatory graph can add generic predictive structure without proving that its biological edge topology is the useful part."
+    },
+    "stage74_in_silico_perturbation": {
+      "directed_graph_organization_pass": true,
+      "ablation_control_specificity_pass": true,
+      "candidate_prioritization_pass": true,
+      "causal_validation_pass": false,
+      "prediction_benchmark_updated": false,
+      "interpretation": "Historical directed perturbation results are useful hypothesis priors, not causal validation and not a foundation-target answer key."
+    }
+  },
+  "candidate_rules": {
+    "C1_SHARED_EMERGENT": {
+      "regulatory_question": "Do frozen C1 states/programs align with coherent accessibility/regulon programs across donors and lawful modalities?",
+      "positive_result": "Upgrades biological interpretation/support only.",
+      "negative_result": "Does not automatically eliminate C1 because C1 may be a transferable RNA state without a one-to-one regulatory program.",
+      "retrospective_redefinition_forbidden": true
+    },
+    "C2_RELATIONAL_SHARED": {
+      "regulatory_question": "If corrected relational replay keeps C2 active, do relational neighborhoods carry recurrent regulatory coherence beyond source/order and topology controls?",
+      "dependency": "C2 must already be active from its own corrected relational gates.",
+      "regulatory_rescue_if_relational_fail": false
+    },
+    "C3_QUERY_MEASURED": {
+      "regulatory_question": "Does query-conditioned state contain query-specific regulatory context beyond shared state, query abundance, depth and detection?",
+      "required_controls": ["C1_SHARED_STATE", "QUERY_ABUNDANCE", "DEPTH_DETECTION", "DONOR_SOURCE_OPERATOR"],
+      "retrospective_target_construction_from_regulatory_outcome_forbidden": true
+    },
+    "C6_SHARED_QUERY_COMPOSITE": {
+      "regulatory_question": "Does the C3 increment over C1 align with gene-specific accessibility/regulon context within a broader shared state?",
+      "special_value": "C6 provides the clean shared+query, no-relational cell needed to ask whether query identity adds regulatory information before introducing relational structure.",
+      "dependency": "C1 and C3 must qualify and C6_INCREMENT_OVER_C1_C3 remains independently required."
+    },
+    "C4_STRUCTURED_COMPOSITE": {
+      "regulatory_question": "If C2 survives, does relational structure add regulatory coherence beyond C6?",
+      "comparison": "C4_vs_C6 isolates the relational increment once shared+query information is present.",
+      "dependency": "Blocked when C2 is blocked."
+    },
+    "C5_REGULATORY_SPECIALIST": {
+      "role": "Specialist regulatory target/teacher block based on qualified eRegulon/accessibility/regulatory-potential features.",
+      "foundation_rescue": false,
+      "allowed_feature_families": ["eRegulon_activity", "TF_region_gene_program_activity", "accessibility_module", "regulatory_potential_vector"],
+      "selection_rule": "C5 needs its own donor-held-out regulatory qualification and cannot establish the foundation target merely because it is multimodal."
+    }
+  },
+  "graph_use_policy": {
+    "default": "PROGRAM_FEATURE_OR_PRIOR_NOT_MANDATORY_MESSAGE_PASSING_TOPOLOGY",
+    "reason": "Historical graph-specificity controls did not establish topology-specific superiority.",
+    "upgrade_condition": "A future prospectively frozen test must show real regulatory topology beats no-graph/identity and strict shuffled/permuted topology under donor-held-out evaluation.",
+    "permitted_now": [
+      "regulon/program activity as privileged teacher evidence",
+      "edge set as interpretation prior",
+      "graph-derived hypothesis ranking with explicit controls",
+      "C5 specialist experiments"
+    ],
+    "not_permitted_now": [
+      "hard-wire Stage72B/Stage75 graph as foundation truth",
+      "use graph agreement to select C1/C3/C6 retrospectively",
+      "claim validated causal GRN"
+    ]
+  },
+  "source_and_replication_rules": {
+    "donor_primary": true,
+    "source_operator_is_not_biology": true,
+    "same_nucleus_and_separate_nucleus_must_not_be_pooled_as_equivalent": true,
+    "small_donor_n_not_rescued_by_cell_n": true,
+    "source_disagreement": "REPORT_SEPARATELY_FROM_FORMAL_HETEROGENEITY",
+    "missing_evidence": "MISSING_NOT_ZERO",
+    "not_estimable": "PRESERVE_AS_NOT_ESTIMABLE"
+  },
+  "minimum_regulatory_support_bundle_for_R2": {
+    "required": [
+      "frozen foundation state/program before regulatory evaluation",
+      "donor-held-out or donor-primary inference",
+      "coverage/support mask for the regulatory feature",
+      "depth/detection/source/operator controls",
+      "same-nucleus/separate-nucleus evidence class stated",
+      "no pathology-selected construction",
+      "negative result retained"
+    ],
+    "recommended_when_graph_claimed": [
+      "no-graph/identity control",
+      "strict shuffled topology",
+      "gene-label permutation or equivalent topology falsification",
+      "generic prior graph comparison"
+    ]
+  },
+  "terminal_states": [
+    "REGULATORY_SUPPORT_PASS",
+    "REGULATORY_SUPPORT_FAIL",
+    "REGULATORY_SUPPORT_NOT_ESTIMABLE",
+    "REGULATORY_PROGRAM_SUPPORT_ONLY__TOPOLOGY_NOT_ESTABLISHED",
+    "TOPOLOGY_SPECIFIC_SUPPORT_PASS"
+  ],
+  "non_authority_statement": "This contract defines lawful downstream evidence use only. It does not open protected outcomes, select a target, select a representation, authorize corrected replay, authorize TD60, authorize Stage 4, or authorize real training."
+}
