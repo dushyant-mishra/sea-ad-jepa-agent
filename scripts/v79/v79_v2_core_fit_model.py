@@ -11,6 +11,7 @@ import numpy as np
 try:
     import jax
     jax.config.update("jax_enable_x64", True)
+    jax.config.update("jax_default_matmul_precision", "highest")
     import jax.numpy as jnp
     import numpyro
     import numpyro.distributions as dist
@@ -81,7 +82,6 @@ def prepare_design(design: Mapping[str, np.ndarray]) -> dict:
         _refuse("V2_CORE requires exactly three sources and three broad classes")
     donor_source = np.full(len(donor_levels), -1, dtype=np.int32)
     blocks = []
-    col_offset = 0
     for s in range(3):
         ds = np.unique(donor[src == s])
         if len(ds) < 1:
@@ -96,7 +96,6 @@ def prepare_design(design: Mapping[str, np.ndarray]) -> dict:
         if hb.shape[1]:
             block[ds, :] = hb
         blocks.append(block)
-        col_offset += hb.shape[1]
     if np.any(donor_source < 0):
         _refuse("donor source assignment incomplete")
     W = np.concatenate(blocks, axis=1) if blocks else np.zeros((len(donor_levels), 0), dtype=np.float64)
