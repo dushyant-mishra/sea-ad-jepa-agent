@@ -108,8 +108,30 @@ def donor_recovery(scored_rows:Sequence[Mapping])->dict:
     return {"gating":False,"per_gene":per,"summary":summary}
 
 
+def _frozen_calibration_bins(value, *, fid:str, mode:str)->list[dict]:
+    if not isinstance(value,list) or len(value)!=10: _refuse(f"detection calibration requires exactly 10 bins for fit {fid} {mode}")
+    out=[]
+    required={"bin_index","lower","upper","n","mean_predicted","observed_rate"}
+    for b,row in enumerate(value):
+        if not isinstance(row,Mapping) or set(row)!=required: _refuse(f"detection calibration bin schema differs for fit {fid} {mode}")
+        if row.get("bin_index")!=b or float(row.get("lower"))!=b/10 or float(row.get("upper"))!=(b+1)/10:
+            _refuse(f"detection calibration bin edges differ for fit {fid} {mode}")
+        n=row.get("n")
+        if not isinstance(n,int) or isinstance(n,bool) or n<0: _refuse(f"detection calibration bin count differs for fit {fid} {mode}")
+        mp=row.get("mean_predicted"); obs=row.get("observed_rate")
+        if n==0:
+            if mp is not None or obs is not None: _refuse(f"empty detection calibration bin must carry null rates for fit {fid} {mode}")
+        else:
+            if not isinstance(mp,(int,float)) or not isinstance(obs,(int,float)) or not np.isfinite(float(mp)) or not np.isfinite(float(obs)):
+                _refuse(f"detection calibration rates must be finite for fit {fid} {mode}")
+            if not (0.0<=float(mp)<=1.0 and 0.0<=float(obs)<=1.0): _refuse(f"detection calibration rates outside [0,1] for fit {fid} {mode}")
+        out.append({"bin_index":b,"lower":b/10,"upper":(b+1)/10,"n":n,"mean_predicted":mp,"observed_rate":obs})
+    return out
+
+
 def _heldout_records(receipts:Sequence[Mapping],oracle_by_fit_id:Mapping,*,part:str,metric:str,delta_name:str)->dict:
     rows={"same_donor":[],"new_donor":[]}; low=[]
+    detection_aux={mode:{"predicted":[],"observed":[],"bins":[{"n":0,"pred_sum":0.0,"obs_sum":0.0} for _ in range(10)]} for mode in ("same_donor","new_donor")}
     for rec in receipts:
         if rec.get("part")!=part: continue
         fid=str(rec.get("fit_id")); held=rec.get("heldout_predictive"); oracle=oracle_by_fit_id.get(fid)
@@ -120,11 +142,36 @@ def _heldout_records(receipts:Sequence[Mapping],oracle_by_fit_id:Mapping,*,part:
             mv=float(model[metric]); ov=float(ref[metric])
             if not np.isfinite(mv) or not np.isfinite(ov): _refuse("heldout/oracle metric nonfinite")
             rows[mode].append(mv-ov)
+            if part=="detection":
+                pred=float(model.get("predicted_prevalence",np.nan)); obs=float(model.get("observed_prevalence",np.nan))
+                if not np.isfinite(pred) or not np.isfinite(obs) or not (0.0<=pred<=1.0) or not (0.0<=obs<=1.0):
+                    _refuse(f"detection prevalence summary differs for fit {fid} {mode}")
+                detection_aux[mode]["predicted"].append(pred); detection_aux[mode]["observed"].append(obs)
+                bins=_frozen_calibration_bins(model.get("calibration_bins"),fid=fid,mode=mode)
+                for b,row in enumerate(bins):
+                    n=int(row["n"]); acc=detection_aux[mode]["bins"][b]; acc["n"]+=n
+                    if n:
+                        acc["pred_sum"]+=n*float(row["mean_predicted"]); acc["obs_sum"]+=n*float(row["observed_rate"])
         if part=="detection" and float(oracle.get("planted_prevalence",np.nan))<0.05: low.append(rows["same_donor"][-1])
     out={"gating":False}
     for mode,vals in rows.items():
         a=_finite(vals,f"{part} {mode}",allow_empty=True)
         out[mode]={"n_fits":int(a.size),delta_name:None if a.size==0 else float(np.mean(a)),"median_delta":None if a.size==0 else float(np.median(a))}
+        if part=="detection":
+            pred=_finite(detection_aux[mode]["predicted"],f"detection {mode} predicted prevalence",allow_empty=True)
+            obs=_finite(detection_aux[mode]["observed"],f"detection {mode} observed prevalence",allow_empty=True)
+            if pred.size!=obs.size or pred.size!=a.size: _refuse(f"detection prevalence count differs for {mode}")
+            out[mode].update({
+                "mean_predicted_prevalence":None if pred.size==0 else float(np.mean(pred)),
+                "mean_observed_prevalence":None if obs.size==0 else float(np.mean(obs)),
+                "mean_predicted_minus_observed_prevalence":None if pred.size==0 else float(np.mean(pred-obs)),
+                "calibration_bins":[],
+            })
+            for b,acc in enumerate(detection_aux[mode]["bins"]):
+                n=int(acc["n"])
+                out[mode]["calibration_bins"].append({"bin_index":b,"lower":b/10,"upper":(b+1)/10,"n":n,
+                    "mean_predicted":None if n==0 else float(acc["pred_sum"]/n),
+                    "observed_rate":None if n==0 else float(acc["obs_sum"]/n)})
     if part=="detection":
         a=_finite(low,"low prevalence deltas",allow_empty=True)
         out["low_prevalence_lt_0_05"]={"n_fits":int(a.size),delta_name:None if a.size==0 else float(np.mean(a))}
