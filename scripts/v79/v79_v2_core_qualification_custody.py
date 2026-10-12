@@ -116,12 +116,15 @@ def load_qualification_custody(custody_dir: Path, *, expected_receipt_sha256: st
     if _contains_forbidden_identity(receipt): _refuse("custody receipt leaks controller identity")
     required={"schema","executor_code_head","source_contract_sha256","root_manifest_sha256","blinded_index_sha256",
               "blinded_directory_digest","fit_contract_view_path","fit_contract_view_sha256","authorization_path",
-              "authorization_sha256","fit_count","qualification_fits_run","scoring_run","truth_accessed","training_authorized"}
+              "authorization_sha256","fit_count","ppc_draws","donor_draws_stored","qualification_fits_run",
+              "scoring_run","truth_accessed","training_authorized"}
     if set(receipt)!=required: _refuse("custody receipt key set differs")
     if receipt.get("source_contract_sha256")!=SOURCE_CONTRACT_SHA256 or receipt.get("root_manifest_sha256")!=F.QUALIFICATION_ROOT_MANIFEST_SHA256 or receipt.get("blinded_index_sha256")!=QUALIFICATION_INDEX_SHA256:
         _refuse("custody does not bind frozen qualification authority")
     if receipt.get("fit_count")!=EXPECTED_FITS or receipt.get("qualification_fits_run")!=0 or receipt.get("scoring_run") is not False or receipt.get("truth_accessed") is not False or receipt.get("training_authorized") is not False:
         _refuse("custody execution boundary differs")
+    if not isinstance(receipt.get("ppc_draws"),int) or receipt["ppc_draws"]<=0 or not isinstance(receipt.get("donor_draws_stored"),int) or receipt["donor_draws_stored"]<=0:
+        _refuse("qualification output counts are missing/invalid")
     fit_contract=FC.load_fit_contract_view(custody_dir/FIT_VIEW_NAME,expected_sha256=str(receipt["fit_contract_view_sha256"]))
     apath=custody_dir/AUTH_NAME
     if _sha(apath)!=receipt.get("authorization_sha256"): _refuse("authorization hash mismatch")
