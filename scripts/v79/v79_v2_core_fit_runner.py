@@ -70,9 +70,11 @@ def next_recovery_action(contract: Mapping, attempts: list[Mapping], diagnostics
     if evaluate_sampler_diagnostics(contract, diagnostics):
         return "COMPLETE"
     stages = [str(a.get("stage")) for a in attempts]
+    if "EXTENSION" in stages:
+        return "NOT_DIAGNOSED"
     if int(diagnostics.get("divergences", 0)) > 0:
         return "ESCALATE" if "ESCALATION" not in stages else "NOT_DIAGNOSED"
-    return "EXTEND" if "EXTENSION" not in stages else "NOT_DIAGNOSED"
+    return "EXTEND"
 
 
 def fit_identity(opaque_world_id: str, world_manifest_sha: str, part: str, gene_index: int) -> str:
