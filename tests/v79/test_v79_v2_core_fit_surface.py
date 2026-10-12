@@ -32,7 +32,7 @@ def _write_npy(path: Path, value) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _fixture(tmp_path: Path, *, mode="QUALIFICATION_TRUTH_FREEZE"):
+def _fixture(tmp_path: Path, *, mode="ENGINEERING_TEST_ONLY"):
     root = tmp_path / ("worlds_eng" if mode == "ENGINEERING_TEST_ONLY" else "realized_worlds_v1")
     oid = "0123456789ab"
     w = root / "blinded_fit_inputs" / oid
@@ -71,10 +71,15 @@ def _fixture(tmp_path: Path, *, mode="QUALIFICATION_TRUTH_FREEZE"):
         "training_authorized": False,
     }
     index_sha = _write_json(root / "blinded_fit_inputs" / F.FIT_INDEX_NAME, index)
+    # Deliberately poison the controller root with identity/truth information. The fit loader may hash these bytes,
+    # but must never JSON-decode or return them.
     root_manifest = {
         "schema": "V79_V2_CORE_WORLD_SET_MANIFEST_V1",
         "mode": mode,
+        "seed_root": 123456,
         "world_count": 1,
+        "worlds": [{"world_name": "Q00_BASELINE", "world_index": 0, "opaque_world_id": oid,
+                    "truth_manifest_path": f"controller_truth/{oid}/manifest.json"}],
         "blinded_fit_root": "blinded_fit_inputs",
         "blinded_fit_index_path": f"blinded_fit_inputs/{F.FIT_INDEX_NAME}",
         "blinded_fit_index_sha256": index_sha,
@@ -84,47 +89,66 @@ def _fixture(tmp_path: Path, *, mode="QUALIFICATION_TRUTH_FREEZE"):
         "qualification_fits_run": 0,
         "training_authorized": False,
     }
-    _write_json(root / F.ROOT_MANIFEST_NAME, root_manifest)
-    return root, oid
+    root_sha = _write_json(root / F.ROOT_MANIFEST_NAME, root_manifest)
+    return root, oid, root_sha, index_sha
 
 
-def test_loader_exposes_only_blinded_surface(tmp_path):
-    root, oid = _fixture(tmp_path)
-    idx = F.load_blinded_index(root, expected_mode="QUALIFICATION_TRUTH_FREEZE", expected_root_manifest_sha=None, expected_index_sha=None)
+def _engineering_index(root, root_sha, index_sha):
+    return F.load_blinded_index(root, expected_mode="ENGINEERING_TEST_ONLY",
+                                expected_root_manifest_sha=root_sha, expected_index_sha=index_sha)
+
+
+def test_loader_exposes_only_blinded_surface_and_never_parses_controller_root(tmp_path):
+    root, oid, rsha, isha = _fixture(tmp_path)
+    idx = _engineering_index(root, rsha, isha)
     assert idx.opaque_world_ids == (oid,)
-    world = F.load_blinded_world(root, oid, expected_mode="QUALIFICATION_TRUTH_FREEZE")
+    assert "root_manifest" not in idx.__dict__
+    assert "Q00_BASELINE" not in json.dumps(idx.index)
+    world = F.load_blinded_world(idx, oid)
     assert set(world.design) == {"src", "donor", "cls", "log_lib"}
     assert set(world.observations) == {"train", "same_donor", "new_donor"}
     assert world.support.shape == (3, 2)
-    forbidden = {"op", "operator", "matrix", "truth", "seed_root", "world_name", "world_index"}
+    forbidden = {"op", "operator", "matrix", "truth", "seed_root", "world_name", "world_index", "package_root"}
     assert forbidden.isdisjoint(world.__dict__)
 
 
-def test_same_loader_accepts_engineering_surface_only_when_explicit(tmp_path):
-    root, oid = _fixture(tmp_path, mode="ENGINEERING_TEST_ONLY")
-    F.load_blinded_world(root, oid, expected_mode="ENGINEERING_TEST_ONLY")
-    with pytest.raises(F.FitSurfaceRefused, match="mode"):
-        F.load_blinded_world(root, oid, expected_mode="QUALIFICATION_TRUTH_FREEZE")
+def test_qualification_mode_requires_exact_frozen_realization_hashes(tmp_path):
+    root, _, rsha, isha = _fixture(tmp_path, mode="QUALIFICATION_TRUTH_FREEZE")
+    with pytest.raises(F.FitSurfaceRefused, match="immutable realized"):
+        F.load_blinded_index(root, expected_mode="QUALIFICATION_TRUTH_FREEZE",
+                             expected_root_manifest_sha=rsha, expected_index_sha=isha)
 
 
-def test_loader_refuses_q_label_and_nonopaque_identifier(tmp_path):
-    root, _ = _fixture(tmp_path)
+def test_engineering_mode_refuses_qualification_authority_hashes(tmp_path):
+    root, _, _, _ = _fixture(tmp_path)
     with pytest.raises(F.FitSurfaceRefused):
-        F.load_blinded_world(root, "Q00_BASELINE", expected_mode="QUALIFICATION_TRUTH_FREEZE")
+        F.load_blinded_index(root, expected_mode="ENGINEERING_TEST_ONLY",
+                             expected_root_manifest_sha=F.QUALIFICATION_ROOT_MANIFEST_SHA256,
+                             expected_index_sha=F.QUALIFICATION_INDEX_SHA256)
+
+
+def test_loader_refuses_q_label_nonopaque_and_unvalidated_world_load(tmp_path):
+    root, _, rsha, isha = _fixture(tmp_path)
+    idx = _engineering_index(root, rsha, isha)
     with pytest.raises(F.FitSurfaceRefused):
-        F.load_blinded_world(root, "../controller_truth", expected_mode="QUALIFICATION_TRUTH_FREEZE")
+        F.load_blinded_world(idx, "Q00_BASELINE")
+    with pytest.raises(F.FitSurfaceRefused):
+        F.load_blinded_world(idx, "../controller_truth")
+    with pytest.raises(F.FitSurfaceRefused, match="BlindedIndex"):
+        F.load_blinded_world(root, "0123456789ab")
 
 
 def test_loader_refuses_hash_tamper_before_return(tmp_path):
-    root, oid = _fixture(tmp_path)
+    root, oid, rsha, isha = _fixture(tmp_path)
+    idx = _engineering_index(root, rsha, isha)
     p = root / "blinded_fit_inputs" / oid / "design/src.npy"
     raw = bytearray(p.read_bytes()); raw[-1] ^= 1; p.write_bytes(bytes(raw))
     with pytest.raises(F.FitSurfaceRefused, match="hash"):
-        F.load_blinded_world(root, oid, expected_mode="QUALIFICATION_TRUTH_FREEZE")
+        F.load_blinded_world(idx, oid)
 
 
 def test_loader_refuses_unknown_manifest_output(tmp_path):
-    root, oid = _fixture(tmp_path)
+    root, oid, rsha, _ = _fixture(tmp_path)
     mp = root / "blinded_fit_inputs" / oid / "manifest.json"
     m = json.loads(mp.read_text())
     m["generated_outputs"]["design/op.npy"] = "0" * 64
@@ -133,27 +157,30 @@ def test_loader_refuses_unknown_manifest_output(tmp_path):
     i = json.loads(ip.read_text())
     i["worlds"][0]["manifest_sha256"] = hashlib.sha256(mp.read_bytes()).hexdigest()
     new_i_sha = _write_json(ip, i)
-    rp = root / F.ROOT_MANIFEST_NAME
-    r = json.loads(rp.read_text()); r["blinded_fit_index_sha256"] = new_i_sha; _write_json(rp, r)
+    idx = _engineering_index(root, rsha, new_i_sha)
     with pytest.raises(F.FitSurfaceRefused, match="forbidden|unexpected"):
-        F.load_blinded_world(root, oid, expected_mode="QUALIFICATION_TRUTH_FREEZE")
+        F.load_blinded_world(idx, oid)
 
 
 def test_loader_refuses_object_dtype(tmp_path):
-    root, oid = _fixture(tmp_path)
+    root, oid, rsha, _ = _fixture(tmp_path)
     p = root / "blinded_fit_inputs" / oid / "design/src.npy"
     with p.open("wb") as f:
         np.save(f, np.asarray([{"x": 1}], dtype=object), allow_pickle=True)
     mp = root / "blinded_fit_inputs" / oid / "manifest.json"
     m = json.loads(mp.read_text()); m["generated_outputs"]["design/src.npy"] = hashlib.sha256(p.read_bytes()).hexdigest()
-    _write_json(mp, m)
+    new_m_sha = _write_json(mp, m)
+    ip = root / "blinded_fit_inputs" / F.FIT_INDEX_NAME
+    i = json.loads(ip.read_text()); i["worlds"][0]["manifest_sha256"] = new_m_sha
+    new_i_sha = _write_json(ip, i)
+    idx = _engineering_index(root, rsha, new_i_sha)
     with pytest.raises(F.FitSurfaceRefused):
-        F.load_blinded_world(root, oid, expected_mode="QUALIFICATION_TRUTH_FREEZE")
+        F.load_blinded_world(idx, oid)
 
 
 def test_gene_inputs_apply_structural_support_and_positive_detection(tmp_path):
-    root, oid = _fixture(tmp_path)
-    w = F.load_blinded_world(root, oid, expected_mode="QUALIFICATION_TRUTH_FREEZE")
+    root, oid, rsha, isha = _fixture(tmp_path)
+    w = F.load_blinded_world(_engineering_index(root, rsha, isha), oid)
     g0 = F.load_gene_inputs(w, gene_index=0, replicate="train")
     assert g0.detection_mask.tolist() == [True, True, True]
     assert g0.positive_mask.tolist() == [False, True, True]
@@ -162,10 +189,13 @@ def test_gene_inputs_apply_structural_support_and_positive_detection(tmp_path):
     assert g1.positive_mask.tolist() == [True, False, True]
 
 
-def test_index_can_pin_realization_hashes(tmp_path):
-    root, _ = _fixture(tmp_path)
-    rsha = hashlib.sha256((root / F.ROOT_MANIFEST_NAME).read_bytes()).hexdigest()
-    isha = hashlib.sha256((root / "blinded_fit_inputs" / F.FIT_INDEX_NAME).read_bytes()).hexdigest()
-    F.load_blinded_index(root, expected_mode="QUALIFICATION_TRUTH_FREEZE", expected_root_manifest_sha=rsha, expected_index_sha=isha)
+def test_index_requires_both_authority_hashes(tmp_path):
+    root, _, rsha, isha = _fixture(tmp_path)
+    F.load_blinded_index(root, expected_mode="ENGINEERING_TEST_ONLY",
+                         expected_root_manifest_sha=rsha, expected_index_sha=isha)
     with pytest.raises(F.FitSurfaceRefused):
-        F.load_blinded_index(root, expected_mode="QUALIFICATION_TRUTH_FREEZE", expected_root_manifest_sha="0" * 64, expected_index_sha=isha)
+        F.load_blinded_index(root, expected_mode="ENGINEERING_TEST_ONLY",
+                             expected_root_manifest_sha=None, expected_index_sha=isha)
+    with pytest.raises(F.FitSurfaceRefused):
+        F.load_blinded_index(root, expected_mode="ENGINEERING_TEST_ONLY",
+                             expected_root_manifest_sha=rsha, expected_index_sha=None)
