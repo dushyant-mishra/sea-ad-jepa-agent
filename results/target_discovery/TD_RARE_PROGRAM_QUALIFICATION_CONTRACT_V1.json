@@ -2,7 +2,7 @@
   "schema": "TD_RARE_PROGRAM_QUALIFICATION_CONTRACT_V1",
   "date": "2026-10-12",
   "status": "PROSPECTIVE_TARGET_QUALIFICATION_DESIGN__NO_TARGET_SELECTION_AUTHORITY",
-  "purpose": "Make rare-biology preservation a mandatory property of any foundation target candidate by reusing the Stage81A3/PRRC rare-state machinery rather than treating rarity as a downstream add-on.",
+  "purpose": "Make rare-biology preservation a mandatory property of any foundation target candidate by reusing the Stage81A3/PRRC rare-state machinery and authenticated V79 real-biology findings rather than treating rarity as a downstream add-on.",
   "authority_boundary": {
     "target_selection_authorized": false,
     "td60_authorized": false,
@@ -19,6 +19,26 @@
     "config_current_main_reference": "f5a8ebeddbcd52a94274a7f72ecda1f71b82d777",
     "prrc_sha256": "7a2b3f97555cbbf95428b9c70b0f2192584d6a40d0804a55ddf6fa572711105e",
     "principle": "Reuse existing censuses, caches, recurrence definitions, resample roots and technical-firewall semantics when bytes are available; do not rerun ETL merely to create new filenames."
+  },
+  "v79_realbiology_handoff": {
+    "handoff_commit": "84a191fd0bd6c24f26e9bea0b8b4cbc58eb2128d",
+    "program_weights_sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+    "train_50k_expression_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "train_50k": {
+      "donors": 104,
+      "HVS_cells": 10958,
+      "NPH52_cells": 5221,
+      "SEA_AD_cells": 33821
+    },
+    "findings": {
+      "rare1_rare5_identity": "innovation_tail, recurrent_5pct and recurrent_1pct use the same molecular weight vector; historical rare1 and rare5 are frequency thresholds on one direction, not distinct biological programs.",
+      "upper_5pct_by_source": {"NPH52": 1889, "HVS": 347, "SEA_AD": 264},
+      "upper_1pct_by_source": {"NPH52": 499, "HVS": 1, "SEA_AD": 0},
+      "bounded_native_microglia": {"cells": 665, "donors": 66, "interpretation": "upper-tail cells occurred across all three sources and multiple donors, so donor-recurrent rarity is feasible, but the subset is too small/uneven and the score too source-shifted to freeze prevalence."},
+      "pathology_used": false
+    },
+    "binding_interpretation": "Historical rare1/rare5 cannot be used as clean biological positives or prevalence anchors. They are source-shifted diagnostic directions requiring source/operator-aware biological reassessment before promotion.",
+    "nonrescue": "Source-shifted historical rarity cannot be used to eliminate or promote C1/C3/C6/C2/C4 until the shift is decomposed into biological versus observation-operator contributions."
   },
   "rare_biology_channels": {
     "annotation_defined": {
@@ -38,10 +58,7 @@
       "local_isolation_k": 30,
       "candidate_fraction": 0.01,
       "neighborhood_overlap_fraction": 0.5,
-      "recurrence_donor_thresholds": {
-        "limited_min": 2,
-        "recurring_min": 5
-      },
+      "recurrence_donor_thresholds": {"limited_min": 2, "recurring_min": 5},
       "rule": "Discover locally isolated molecular neighborhoods within broad biological family, never globally across incomparable cell families."
     },
     "continuous_extreme_biology": {
@@ -51,6 +68,40 @@
     "donor_private_unusual_biology": {
       "role": "Retain donor-private unusual biology as lower-strength evidence rather than deleting it as batch by default.",
       "promotion_rule": "Cannot establish a recurring population-level program without recurrence, but can remain a biologically unusual/uncertain state."
+    }
+  },
+  "source_operator_aware_reassessment": {
+    "trigger": "Mandatory for historical rare1/rare5 and for any candidate rare program with strong source/operator imbalance.",
+    "principle": "Technology/source is an observation operator, not biology; do not globally residualize away source before establishing whether source-linked biology is also real.",
+    "primary_questions": [
+      "Does the program recur within each source among multiple donors?",
+      "Does its within-source direction/geometry agree across sources after conditioning on depth, detection and support?",
+      "Is the program enriched only because one source/operator measures its genes better?",
+      "Does a source-balanced donor design preserve the biological signal?",
+      "Are program-defining genes/features physically measured with adequate support in each operator?",
+      "Does the target preserve the within-source biological direction even if global prevalence differs?"
+    ],
+    "required_views": [
+      "within-source donor recurrence",
+      "source-balanced donor aggregation",
+      "operator-level support/detection stratification",
+      "depth/detection matched comparison",
+      "leave-one-source-out direction transport where estimable",
+      "native broad-family restricted comparison"
+    ],
+    "forbidden_shortcuts": [
+      "declare source imbalance to be biology",
+      "declare source imbalance to be technical and regress it away without testing",
+      "pool all cells and let the largest source determine rarity threshold",
+      "use global rare1/rare5 prevalence as a biological frequency estimate",
+      "count many nuclei/cells as independent donor replication"
+    ],
+    "possible_terminal_interpretations": {
+      "BIOLOGICAL_PROGRAM_WITH_SOURCE_SHIFTED_PREVALENCE": "Within-source donor recurrence and direction transport survive; prevalence or amplitude differs across source/operator.",
+      "BIOLOGICAL_PROGRAM_PARTIALLY_OBSERVATION_LIMITED": "Direction survives but measurement support/detection materially changes observability; use support-aware target/uncertainty.",
+      "OBSERVATION_OPERATOR_ARTIFACT": "Apparent rarity disappears under support/depth/operator controls or does not recur within sources/donors.",
+      "SOURCE_SPECIFIC_BIOLOGY": "Program is reproducible within a source across donors but does not transport; retain as source-specific biology, not universal target evidence.",
+      "NOT_ESTIMABLE": "Insufficient cross-source/donor/support overlap for a deciding interpretation."
     }
   },
   "stability_and_firewall": {
@@ -68,6 +119,7 @@
     "C1_SHARED_EMERGENT": {
       "required": true,
       "question": "Does the shared state preserve recurrent rare biology instead of collapsing it into the dominant population state?",
+      "special_source_rule": "Score within-source preservation and cross-source direction transport separately; global source-shifted rarity cannot decide C1.",
       "multimodal_role": "Orthogonal modalities may corroborate or falsify preserved rare states but do not define C1 retrospectively."
     },
     "C2_RELATIONAL_SHARED": {
@@ -78,7 +130,7 @@
     "C3_QUERY_MEASURED": {
       "required": true,
       "question": "Does query conditioning preserve rare gene/program context beyond shared cell state while maintaining q-safety and non-q target construction?",
-      "special_test": "Within a broad state, rare query-conditioned program structure must remain distinguishable from query abundance/depth alone."
+      "special_test": "Within a broad state and within source/operator strata, rare query-conditioned program structure must remain distinguishable from query abundance/depth/detection alone."
     },
     "C6_SHARED_QUERY_COMPOSITE": {
       "required_if_C1_and_C3_qualify": true,
@@ -102,9 +154,9 @@
     "RARE_PROGRAM_FITNESS_NOT_ESTIMABLE"
   ],
   "decision_logic": {
-    "pass": "Known recurrent rare populations are preserved without critical loss; no stable donor-recurring data-defined neighborhood shows candidate-specific attenuation not already present in RNA/ledger; continuous/extreme biology is not systematically collapsed; technical-firewall checks do not explain the apparent rare structure.",
+    "pass": "Known recurrent rare populations are preserved without critical loss; no stable donor-recurring data-defined neighborhood shows candidate-specific attenuation not already present in RNA/ledger; continuous/extreme biology is not systematically collapsed; technical-firewall checks do not explain the apparent rare structure. For source-shifted programs, within-source donor recurrence and cross-source direction/support tests must be satisfactory or explicitly classified as source-specific/observation-limited rather than silently pooled.",
     "fail": "At least one robustly testable recurrent rare population/program shows stable candidate-specific loss across the frozen resampling design, or the candidate's rare structure is dominated by technical/source/depth/support shortcuts.",
-    "not_estimable": "Available recurring rare biology is insufficient or unstable for a deciding comparison, or required cached/physical evidence is unavailable; NOT_ESTIMABLE is never converted to PASS.",
+    "not_estimable": "Available recurring rare biology is insufficient or unstable for a deciding comparison, required cached/physical evidence is unavailable, or source/operator support prevents biological versus measurement separation; NOT_ESTIMABLE is never converted to PASS.",
     "no_positive_discovery_requirement": "A candidate does not fail merely because no new donor-recurring rare program is discovered; the gate primarily tests preservation and truthful uncertainty, not guaranteed novelty."
   },
   "multimodal_followup_boundary": {
