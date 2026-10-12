@@ -34,7 +34,7 @@ def _heldout(part:str):
 
 
 def test_checkpoint_refuses_missing_heldout_predictive_summary(tmp_path):
-    item=_fx._queue()[0]; out=tmp_path/"r"; out.mkdir(); r=_fx._receipt(item)
+    item=_fx._queue()[0]; out=tmp_path/"r"; out.mkdir(); r=_fx._receipt(item); r.pop("heldout_predictive")
     _fx._write_receipt(out/f"fit_{item['fit_id']}.json",r)
     with pytest.raises(Q.QualificationRunRefused):
         Q._validate_existing_receipt(out/f"fit_{item['fit_id']}.json",item,expected_code_sha=_fx.CODE,expected_seed=_fx.SEED)
