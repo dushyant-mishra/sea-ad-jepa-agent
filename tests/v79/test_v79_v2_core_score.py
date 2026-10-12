@@ -37,6 +37,8 @@ def test_first_hard_fail_is_terminal_and_later_results_cannot_rescue():
     assert t["first_hard_fail_index"] == 2
     assert t["post_terminal_count"] == 1
     assert t["limit_failures"] == 1
+    labeled=S.label_post_terminal_rows(_contract(),rows)
+    assert [x["interpretation"] for x in labeled]==["CONFIRMATORY","CONFIRMATORY","CONFIRMATORY","POST_TERMINAL_DIAGNOSTIC_ONLY"]
 
 
 def test_incomplete_campaign_is_refused():
@@ -46,27 +48,21 @@ def test_incomplete_campaign_is_refused():
 
 def test_one_sided_t_lower_exact_frozen_logic():
     alpha=0.05/260
-    # comfortably above nominal -> pass
     a=S.one_sided_t_lower_across_genes(np.array([1.0]*44), nominal=0.9, alpha=alpha)
     assert a["passed"] is True
-    # zero variance special rule: 0.79 < 0.9 - 0.10 -> fail
     b=S.one_sided_t_lower_across_genes(np.array([0.79]*44), nominal=0.9, alpha=alpha)
     assert b["passed"] is False and b["zero_sd_rule"] is True
-    # 0.81 is below nominal but inside the frozen 0.10 zero-SD tolerance -> pass
     c=S.one_sided_t_lower_across_genes(np.array([0.81]*44), nominal=0.9, alpha=alpha)
     assert c["passed"] is True
 
 
 def test_two_sided_bias_requires_significance_and_materiality():
     alpha=0.05/260
-    # Material but noisy: not statistically significant -> pass.
     noisy=np.array([2.0,-0.8]*22)
     a=S.two_sided_t_across_genes_and_materiality(noisy, alpha=alpha, materiality=0.50)
     assert a["material"] is True and a["passed"] is True
-    # Huge constant standardized bias: zero-SD deterministic significance + materiality -> fail.
     b=S.two_sided_t_across_genes_and_materiality(np.array([0.75]*44), alpha=alpha, materiality=0.50)
     assert b["passed"] is False
-    # Statistically nonzero but below materiality -> pass.
     c=S.two_sided_t_across_genes_and_materiality(np.array([0.25]*44), alpha=alpha, materiality=0.50)
     assert c["passed"] is True
 
@@ -75,7 +71,6 @@ def test_binomial_tail_gates_use_frozen_upper_tail_definition():
     alpha=0.05/260
     low=S.binomial_tail_gate(count=0,n=44,nominal=0.10,alpha=alpha)
     assert low["passed"] is True
-    # Search for the first failing count and verify monotonicity thereafter.
     failing=[k for k in range(45) if not S.binomial_tail_gate(count=k,n=44,nominal=0.10,alpha=alpha)["passed"]]
     assert failing and failing == list(range(failing[0],45))
 
