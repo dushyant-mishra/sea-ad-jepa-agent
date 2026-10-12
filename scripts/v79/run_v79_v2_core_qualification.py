@@ -78,7 +78,9 @@ def _validate_existing_receipt(path: Path, item: Mapping) -> Mapping:
     if not isinstance(artifacts,Mapping): _refuse("posterior_artifacts must be an object")
     for rec in artifacts.values():
         if not isinstance(rec,Mapping) or set(rec)!={"path","sha256"}: _refuse("posterior artifact record differs")
-        ap=path.parent/str(rec["path"])
+        rel=Path(str(rec["path"]))
+        if rel.is_absolute() or len(rel.parts)!=1 or rel.name!=str(rec["path"]): _refuse("posterior artifact path must be a result-root basename")
+        ap=path.parent/rel
         if not ap.is_file() or _sha(ap)!=rec["sha256"]: _refuse(f"posterior artifact missing/hash mismatch: {ap.name}")
     return r
 
@@ -132,7 +134,7 @@ def execute_campaign(root:Path,custody_dir:Path,result_dir:Path,*,expected_custo
     if not worker.is_file(): _refuse("qualification world worker is missing")
     settle=float(custody.fit_contract["resources"]["settle_seconds_between_worlds"])
     cumulative=0
-    for gi,(oid,items) in enumerate(groups):
+    for oid,items in groups:
         end=cumulative+len(items)
         if done>=end:
             cumulative=end; continue
