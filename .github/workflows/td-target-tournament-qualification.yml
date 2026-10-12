@@ -73,6 +73,7 @@ jobs:
             tests/v5/test_td_protected_head_to_head_v1.py \
             tests/v5/test_td_target_tournament_v79_routing_integration_v1.py \
             tests/v5/test_td_corrected_replay_routing_v1.py \
+            tests/v5/test_td_c6_candidate_extension_v1.py \
             | tee qualification/pytest.txt
       - name: Confirm tracked worktree unchanged
         run: |
