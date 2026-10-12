@@ -1,0 +1,19 @@
+{
+  "schema": "V79_RARE_QUALIFICATION_V2_CONTROLLER_SCORE",
+  "status": "PREFROZEN_GEOMETRY_QUALIFICATION_COMPLETE",
+  "terminal": "QUALIFICATION_GEOMETRY_PASS",
+  "directory_digest_sha256": "9e24c6cb418bd5b74c4bc347cbc2d0a6d857392a40cc2f9225cc1dfbc8c32d09",
+  "controller_map_sha256": "010e6779d98767697865c5996d8439db0110db3f37cba36ef50c3830edf9635f",
+  "realization_seed_root": 79202026,
+  "challenge_count": 16,
+  "gating_challenge_count": 12,
+  "extreme_report_only_count": 4,
+  "gating_failures": 0,
+  "structural_failures": 0,
+  "qualification_scope": "Synthetic rare-world challenge geometry only; no JEPA/model fit has run.",
+  "model_fitting_authorized": false,
+  "model_scoring_authorized": false,
+  "Q00_Q11_regenerated": false,
+  "pathology_opened": false,
+  "JEPA_training_run": false
+}
