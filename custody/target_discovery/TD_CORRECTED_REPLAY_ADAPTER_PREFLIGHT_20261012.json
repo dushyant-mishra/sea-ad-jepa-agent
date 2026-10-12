@@ -1,0 +1,31 @@
+{
+  "schema": "JEPA_TD_CORRECTED_REPLAY_ADAPTER_CONTRACT_V1",
+  "sample_label": "A_NATURAL_MIXTURE",
+  "row_count": 25000,
+  "global_row_start": 0,
+  "global_row_end": 24999,
+  "source_counts": {"HVS": 1129, "NPH52": 1310, "SEA_AD": 22561},
+  "replay_address_count": 9216,
+  "metadata_fields": ["global_row", "sample_row", "source", "donor_id", "operator_id", "cell_id", "source_library", "detected_count"],
+  "executor_sha256": {
+    "TD56_HVS": "a1ea8653e24213a3b14ccc52ea64011c92553aec4df5edb7b55d6ba309f61b43",
+    "TD56_NPH52": "090134f0cc129559286f06d80a31a880c07c9841a7ef3f446b914a78c8cd7162",
+    "TD56_SEA_AD": "c77ceac26f0ff4c3ae7a3955c39218af56339adda0225b9c663c9d92710c8866",
+    "TD57B": "1654011ca1aeb20dab8e707b229ec3de00106b937ed49b33b2432b789d8c4e0e",
+    "TD57B_FAST": "808fb293a87d0020adc0f332742f3fa9b99c9c8ec5a88e50504a719ad4183a70",
+    "TD57C": "530aa006595b9633147234538e9ad441787e4d80860da240d26b254f5e59b11c",
+    "TD59_SUCCESSOR": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085"
+  },
+  "td59_original_executor_sha256": "3268486b3ccd002fe83d05fea25b16ff88cde85a0511255852ae6fc7dc12d9f0",
+  "td59_original_executor_bytes_recovered": false,
+  "historical_fixture_equivalence": {"TD56": "PENDING", "TD57B": "PENDING", "TD57C": "PENDING", "TD59": "PENDING"},
+  "g7_terminal": "PENDING_EXTERNAL_OUTCOME",
+  "g7_externally_accepted": false,
+  "corrected_replay_authorized": false,
+  "target_selected": false,
+  "representation_selected": false,
+  "td60_authorized": false,
+  "stage4_authorized": false,
+  "training_authorized": false,
+  "validated_terminal": "BLOCKED_G7_NOT_EXTERNALLY_ACCEPTED__NO_REPLAY_AUTHORITY"
+}
