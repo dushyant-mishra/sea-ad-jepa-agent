@@ -40,6 +40,20 @@ def _row(world,part,gene,*,offset=0.0,donor_truth=None,donor_mean=None,ppc=(0.5,
             "ppc":[{"name":f"s{i}","observed":0.0,"p_value":float(p)} for i,p in enumerate(ppc)]}
 
 
+def _calibration(predicted=0.2,observed=0.2):
+    rows=[]
+    for b in range(10):
+        rows.append({"bin_index":b,"lower":b/10,"upper":(b+1)/10,"n":0,"mean_predicted":None,"observed_rate":None})
+    rows[2]={"bin_index":2,"lower":0.2,"upper":0.3,"n":10,"mean_predicted":predicted,"observed_rate":observed}
+    return rows
+
+
+def _detection_mode(loss,*,mode):
+    return {"schema":"V79_V2_CORE_DETECTION_HELDOUT_V1","replicate_mode":mode,"posterior_draws":200,
+            "gauss_hermite_nodes":None if mode=="same_donor" else 40,"n_measured":10,"mean_log_loss":loss,
+            "predicted_prevalence":0.2,"observed_prevalence":0.2,"calibration_bins":_calibration()}
+
+
 def test_parameter_recovery_reports_corr_rmse_and_nonzero_sign_agreement():
     rows=[_row("Q00_BASELINE","detection",g,offset=0.1*g) for g in range(4)]
     out=D.parameter_recovery(rows)
@@ -61,7 +75,7 @@ def test_donor_recovery_reports_per_gene_spearman_slope_shrinkage_and_null_when_
 
 def test_detection_and_positive_heldout_aggregate_model_minus_oracle_without_becoming_gates():
     receipts=[
-        {"fit_id":"a"*64,"part":"detection","heldout_predictive":{"same_donor":{"mean_log_loss":0.7},"new_donor":{"mean_log_loss":0.8}}},
+        {"fit_id":"a"*64,"part":"detection","heldout_predictive":{"same_donor":_detection_mode(0.7,mode="same_donor"),"new_donor":_detection_mode(0.8,mode="new_donor")}},
         {"fit_id":"b"*64,"part":"positive","heldout_predictive":{"same_donor":{"mean_lpd":-1.2},"new_donor":{"mean_lpd":-1.4}}},
     ]
     oracle={
@@ -100,7 +114,7 @@ def test_build_descriptive_metrics_requires_all_five_families_and_is_explicitly_
     receipts=[]; oracle={}; held={}
     for i,row in enumerate(rows):
         fid=f"{100+i:064x}"; row["fit_id"]=fid
-        receipts.append({"fit_id":fid,"part":"detection","heldout_predictive":{"same_donor":{"mean_log_loss":0.7},"new_donor":{"mean_log_loss":0.8}}})
+        receipts.append({"fit_id":fid,"part":"detection","heldout_predictive":{"same_donor":_detection_mode(0.7,mode="same_donor"),"new_donor":_detection_mode(0.8,mode="new_donor")}})
         oracle[fid]={"planted_prevalence":0.2,"same_donor":{"mean_log_loss":0.5},"new_donor":{"mean_log_loss":0.6}}
         held[(row["world_name"],row["part"],row["gene_index"])]=0.7
     out=D.build_descriptive_metrics(rows,receipts,oracle,heldout_model_metric=held)
