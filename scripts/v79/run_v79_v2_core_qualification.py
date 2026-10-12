@@ -40,6 +40,29 @@ def group_queue_by_world(queue:list[Mapping])->list[tuple[str,list[Mapping]]]:
         if list(items)!=expected: _refuse(f"within-world fit order differs for {oid}")
     return out
 
+def _validate_quantity_summary(q:Mapping,name:str)->None:
+    required={"labels","mean","sd","q05","q50","q95"}
+    if not isinstance(q,Mapping) or set(q)!=required: _refuse(f"scoring quantity {name} schema differs")
+    labels=q["labels"]
+    if not isinstance(labels,list) or any(not isinstance(x,str) for x in labels): _refuse(f"scoring quantity {name} labels differ")
+    n=len(labels)
+    for k in ("mean","sd","q05","q50","q95"):
+        vals=q[k]
+        if not isinstance(vals,list) or len(vals)!=n or any(not isinstance(x,(int,float)) for x in vals): _refuse(f"scoring quantity {name}.{k} differs")
+
+def _validate_scoring_summary(summary:Mapping,part:str)->None:
+    if not isinstance(summary,Mapping) or summary.get("schema")!="V79_V2_CORE_IDENTIFIED_POSTERIOR_SUMMARY_V1" or summary.get("part")!=part:
+        _refuse("identified scoring summary schema/part differs")
+    identification=summary.get("identification"); quantities=summary.get("quantities")
+    if not isinstance(identification,Mapping) or set(identification)!={"class","source","donor_codes"}: _refuse("identification metadata differs")
+    for factor in ("class","source"):
+        rec=identification[factor]
+        if not isinstance(rec,Mapping) or rec.get("mode") not in {"helmert","level_differences"} or not isinstance(rec.get("observed_levels"),list):
+            _refuse(f"{factor} identification differs")
+    expected={"intercept","depth1","depth2","class","source","donor_sd","donor_effects"}|({"sigma"} if part=="positive" else set())
+    if not isinstance(quantities,Mapping) or set(quantities)!=expected: _refuse("identified quantity set differs")
+    for name,q in quantities.items(): _validate_quantity_summary(q,name)
+
 def _validate_existing_receipt(path:Path,item:Mapping)->Mapping:
     try: raw=path.read_bytes(); r=json.loads(raw.decode("utf-8"))
     except Exception as exc: _refuse(f"unreadable existing fit receipt {path.name}: {exc}")
@@ -51,8 +74,16 @@ def _validate_existing_receipt(path:Path,item:Mapping)->Mapping:
     for k,v in required.items():
         if r.get(k)!=v: _refuse(f"existing fit receipt mismatch {path.name}: {k}")
     if r.get("final_diagnosis") not in {"COMPLETE","NOT_DIAGNOSED"}: _refuse(f"existing fit is not terminal: {path.name}")
+    diag=r.get("final_diagnostics")
+    if not isinstance(diag,Mapping) or not {"divergences","worst_rhat","worst_ess_bulk","worst_ess_tail","mean_tree_steps"}<=set(diag): _refuse("final diagnostics missing")
+    _validate_scoring_summary(r.get("scoring_summary"),str(item["part"]))
+    ppc=r.get("ppc")
+    if not isinstance(ppc,list) or not ppc: _refuse("PPC table missing")
+    for row in ppc:
+        if not isinstance(row,Mapping) or set(row)!={"name","observed","p_value"} or not isinstance(row["name"],str) or not isinstance(row["p_value"],(int,float)) or not (0.0<=float(row["p_value"])<=1.0):
+            _refuse("PPC row differs")
     artifacts=r.get("posterior_artifacts",{})
-    if not isinstance(artifacts,Mapping): _refuse("posterior_artifacts must be an object")
+    if not isinstance(artifacts,Mapping) or set(artifacts)!={"donor_effect_draws"}: _refuse("posterior artifact set differs")
     for rec in artifacts.values():
         if not isinstance(rec,Mapping) or set(rec)!={"path","sha256"}: _refuse("posterior artifact record differs")
         rel=Path(str(rec["path"]))
