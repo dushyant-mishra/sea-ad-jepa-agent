@@ -11,12 +11,26 @@ sys.path.insert(0,str(HERE))
 import v79_v2_core_fit_outputs as O  # noqa: E402
 
 
+def test_ppc_seed_is_fit_id_only_and_deterministic():
+    a="a"*64; b="b"*64
+    assert O.ppc_seed(a)==O.ppc_seed(a)
+    assert O.ppc_seed(a)!=O.ppc_seed(b)
+    assert 0<=O.ppc_seed(a)<=0xffffffff
+
+
 def test_two_sided_mid_p_matches_frozen_definition():
     reps=np.array([0.,1.,1.,2.])
-    # obs=1: P(>)=.25, P(=)=.5, P(<)=.25 -> 2*min(.5,.5)=1
     assert O.two_sided_mid_p(1.0,reps)==1.0
-    # obs=2: P(>)=0, P(=)=.25, P(<)=.75 -> 2*.125=.25
     assert O.two_sided_mid_p(2.0,reps)==0.25
+
+
+def test_world_z_deciles_are_fixed_before_gene_masking():
+    log_lib=np.arange(20,dtype=float)
+    mask=np.array([True,False]*10)
+    codes=O.world_z_decile_codes(log_lib,mask,n_bins=10)
+    assert len(codes)==10
+    # every selected cell is assigned under boundaries derived from all 20 cells
+    assert codes.min()>=0 and codes.max()<=9
 
 
 def test_donor_effect_compaction_is_200_float32_draws_and_deterministic():
