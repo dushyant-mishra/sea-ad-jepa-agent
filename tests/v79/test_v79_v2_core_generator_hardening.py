@@ -57,6 +57,20 @@ def _truth(genes: int = 4) -> dict:
     return {"detection": det, "positive": pos}
 
 
+def _fixed_detection_predictor(design: dict[str, np.ndarray], part: dict) -> np.ndarray:
+    z, q = O.depth_basis(design["log_lib"])
+    cls = np.asarray(design["cls"], dtype=np.int64)
+    src = np.asarray(design["src"], dtype=np.int64)
+    Hc = O.normalized_helmert(len(np.unique(cls)))
+    Hs = O.normalized_helmert(len(np.unique(src)))
+    eta = np.broadcast_to(np.asarray(part["intercept"], dtype=float)[None, :], (len(z), len(part["intercept"]))).copy()
+    eta += z[:, None] * np.asarray(part["depth1"], dtype=float)[None, :]
+    eta += q[:, None] * np.asarray(part["depth2"], dtype=float)[None, :]
+    eta += Hc[cls] @ np.asarray(part["class_contrasts"], dtype=float).T
+    eta += Hs[src] @ np.asarray(part["source_contrasts"], dtype=float).T
+    return eta
+
+
 def test_rescale_donor_effects_uses_real_raw_centered_representation():
     part = _production_shaped_part()
     new_sd = np.full(4, 0.9)
@@ -64,7 +78,7 @@ def test_rescale_donor_effects_uses_real_raw_centered_representation():
     assert np.allclose(part["donor_effects"], part["raw_centered"] * new_sd[None, :])
 
 
-def test_detection_intercepts_are_recalibrated_on_final_measured_support():
+def test_detection_intercepts_are_recalibrated_on_final_measured_support_without_donor():
     assert hasattr(G, "calibrate_detection_intercepts")
     design = _design()
     truth = _truth()
@@ -72,7 +86,7 @@ def test_detection_intercepts_are_recalibrated_on_final_measured_support():
     support[design["src"] == 1, 0] = False
     support[::2, 1] = False
     out = G.calibrate_detection_intercepts(truth, design, support)
-    eta = O.linear_predictor(design, out["detection"])
+    eta = _fixed_detection_predictor(design, out["detection"])
     p = 1.0 / (1.0 + np.exp(-np.clip(eta, -40.0, 40.0)))
     for g, target in enumerate(out["detection"]["prevalence"]):
         assert float(p[support[:, g], g].mean()) == pytest.approx(float(target), abs=1e-10)
@@ -95,8 +109,8 @@ def test_new_donor_effects_use_reserved_streams_and_change_effects():
 def test_new_donor_observation_uses_reserved_noise_streams():
     design = _design()
     truth = _truth()
-    truth = G.calibrate_detection_intercepts(truth, design, np.ones((len(design["src"]), 4), dtype=bool))
     support = np.ones((len(design["src"]), 4), dtype=bool)
+    truth = G.calibrate_detection_intercepts(truth, design, support)
     train = O.generate_observation(design, truth, support, world_index=2, root=31000000, replicate="train")
     same = O.generate_observation(design, truth, support, world_index=2, root=31000000, replicate="same_donor")
     new = O.generate_observation(design, truth, support, world_index=2, root=31000000, replicate="new_donor")
@@ -110,7 +124,7 @@ def test_full_support_identifies_nph52_by_7_matrix_geometry_not_numeric_code():
         "worlds": {"genes_per_world": 44, "structural_support_rule": {"genes_with_structural_absence_per_world": 5}},
         "seeds": {"root": 31000000},
     }
-    # Permute numeric source codes deliberately: code 2 has 7 matrices and must be treated as NPH52.
+    # Deliberately permute source codes: code 2 has seven matrices and is therefore NPH52.
     src = np.concatenate([np.full(24, 1), np.full(7, 2), np.full(11, 0)]).astype(np.int64)
     design = {"src": src, "op": np.arange(42, dtype=np.int64)}
     support = G.build_structural_support(payload, design, world_index=0, genes=44)
@@ -137,3 +151,14 @@ def test_s174_design_normalization_accepts_canonical_log_lib_centered_key(tmp_pa
     d = G.load_s174_design(p, expected_cells=3, expected_donors=3, expected_operators=3)
     assert np.array_equal(d["log_lib"], np.array([-0.2, 0.1, 0.1]))
     assert set(d) >= {"log_lib", "cls", "src", "donor", "op"}
+
+
+def test_poison_integrity_refuses_poison_in_measured_entry():
+    assert hasattr(G, "validate_poison_integrity")
+    support = np.array([[True, False], [True, True]], dtype=bool)
+    observed = np.array([[0.0, -1.0], [2.0, 1.0]])
+    G.validate_poison_integrity(observed, support, poison=-1.0)
+    bad = observed.copy()
+    bad[1, 0] = -1.0
+    with pytest.raises(SystemExit):
+        G.validate_poison_integrity(bad, support, poison=-1.0)
