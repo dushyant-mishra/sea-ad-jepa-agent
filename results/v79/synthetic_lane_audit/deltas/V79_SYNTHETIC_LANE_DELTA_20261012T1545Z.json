@@ -1,0 +1,32 @@
+{
+  "schema": "V79_SYNTHETIC_LANE_AUDIT_DELTA_V1",
+  "recorded_at": "2026-10-12T15:45:00Z",
+  "base_audit_pr": 302,
+  "campaign_runner": {
+    "pr": 300,
+    "head": "7172b201b13c61634b84b85254bf4406959b2b57",
+    "ci_run": 38271129785,
+    "ci_conclusion": "success"
+  },
+  "controller_scorer": {
+    "pr": 301,
+    "previous_recorded_head": "fa1962eddfbb73ec95e5334288c83b324f8d97db",
+    "current_head": "7fe0204b2661f0d1492115c973a4da7a4a1646b6",
+    "new_commits": 3,
+    "new_work": [
+      "pin five-family descriptive aggregation",
+      "record RED five-family descriptive aggregation",
+      "implement five-family non-gating descriptive aggregation"
+    ],
+    "execution_state": "SCORING_OFF"
+  },
+  "reconciliation_rule": "Start successor from exact PR300 head and port scorer-only files from current PR301. Preserve PR300 identified-summary and held-out predictive interfaces; do not blind-merge the divergent branches.",
+  "execution_boundaries_unchanged": {
+    "world_regeneration": false,
+    "qualification_fits": false,
+    "qualification_scoring": false,
+    "real_train_posterior": false,
+    "factorial_science": false,
+    "jepa_training": false
+  }
+}
