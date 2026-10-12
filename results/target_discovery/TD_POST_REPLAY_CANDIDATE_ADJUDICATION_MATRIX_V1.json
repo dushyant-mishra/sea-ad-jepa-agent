@@ -1,0 +1,119 @@
+{
+  "schema": "TD_POST_REPLAY_CANDIDATE_ADJUDICATION_MATRIX_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_POST_REPLAY_ROUTING__NO_REPLAY_OUTCOME_OPENED",
+  "purpose": "Make the next target-discovery actions deterministic once PR310 corrected replay evidence arrives, preventing post-outcome reinterpretation or unnecessary redesign.",
+  "inputs": {
+    "required": [
+      "audited PR310 corrected replay evidence package",
+      "frozen PR275 routing/convergence machinery",
+      "TD_CANDIDATE_QUALIFICATION_STATUS_LEDGER_V1",
+      "TD_UNIFIED_TARGET_PORTFOLIO_MULTI_TEACHER_STUDENT_ARCHITECTURE_V1"
+    ],
+    "forbidden_substitutes": ["chat summary without evidence receipts", "historical outcome alone", "multimodal support used to override replay", "synthetic PASS used to rescue real replay FAIL"]
+  },
+  "replay_outcome_routes": {
+    "RELATIONAL_PASS": {
+      "C1": "ACTIVE_INDEPENDENT",
+      "C2": "ACTIVE__MUST_COMPLETE_C1_INHERITANCE_PLUS_R1_R4",
+      "C3": "ACTIVE_INDEPENDENT",
+      "C6": "ACTIVE_SUBJECT_TO_C1_C3",
+      "C4": "ACTIVE_SUBJECT_TO_C2_C3_AND_INCREMENT",
+      "C5": "SPECIALIST_INDEPENDENT",
+      "next": [
+        "instantiate/consume exact real gate receipts for C1 and C3",
+        "complete C2 relational-extension gates under corrected replay result",
+        "apply cross-cutting rare/common preservation and source/operator controls to each active foundation block",
+        "if C1+C3 PASS, execute C6 increment",
+        "if C2+C3 PASS, execute C4 increment and compare C4 vs C6 for relational increment",
+        "route qualified blocks to portfolio convergence"
+      ]
+    },
+    "RELATIONAL_FAIL": {
+      "C1": "ACTIVE_INDEPENDENT",
+      "C2": "ELIMINATED__NO_DOWNSTREAM_RESCUE",
+      "C3": "ACTIVE_INDEPENDENT",
+      "C6": "ACTIVE_SUBJECT_TO_C1_C3",
+      "C4": "BLOCKED_BY_C2",
+      "C5": "SPECIALIST_INDEPENDENT",
+      "next": [
+        "do not run new relational rescue experiment before finishing independent candidates",
+        "complete C1 and C3 real qualification",
+        "apply cross-cutting rare/common preservation/source-operator gates",
+        "if C1+C3 PASS, execute C6 increment",
+        "route C1/C3/C6 survivors plus any later specialist C5 to portfolio convergence"
+      ]
+    },
+    "RELATIONAL_NOT_ESTIMABLE": {
+      "C1": "ACTIVE_INDEPENDENT",
+      "C2": "UNRESOLVED__NOT_FAILED",
+      "C3": "ACTIVE_INDEPENDENT",
+      "C6": "ACTIVE_SUBJECT_TO_C1_C3",
+      "C4": "UNRESOLVED_THROUGH_C2",
+      "C5": "SPECIALIST_INDEPENDENT",
+      "next": [
+        "finish C1/C3/C6 qualification without waiting on relational branch",
+        "if resulting target portfolio would be unchanged regardless of C2/C4 resolution, retain relational branch as unresolved and proceed only to the next authorized non-relational decision",
+        "if C2/C4 could materially change the portfolio, design one new prospective relational experiment; do not tune the replay"
+      ]
+    },
+    "TD57C_HISTORICAL_CORRECTED_DIVERGENCE": {
+      "C2": "UNRESOLVED_PENDING_NEW_PROSPECTIVE_LOCALITY_EXPERIMENT",
+      "C4": "UNRESOLVED_THROUGH_C2",
+      "C1": "ACTIVE_INDEPENDENT",
+      "C3": "ACTIVE_INDEPENDENT",
+      "C6": "ACTIVE_SUBJECT_TO_C1_C3",
+      "next": [
+        "record divergence without rewriting historical TD57C",
+        "finish C1/C3/C6 independent qualification",
+        "only if portfolio decision depends on relational branch, prospectively freeze a new locality experiment"
+      ]
+    },
+    "IMPLEMENTATION_OR_CUSTODY_FAILURE": {
+      "all_biological_interpretation": "BLOCKED",
+      "next": [
+        "preserve attempt evidence exactly",
+        "determine from one-shot contract whether biological attempt is spent",
+        "no candidate status change from failed infrastructure"
+      ]
+    }
+  },
+  "foundation_gate_execution_order_after_replay": [
+    "1_C1_SHARED_EMERGENT_REAL_GATE_RECEIPT",
+    "2_C3_QUERY_MEASURED_REAL_GATE_RECEIPT",
+    "3_C2_RELATIONAL_EXTENSION_RECEIPT_IF_ACTIVE",
+    "4_CROSS_CUTTING_RARE_COMMON_AND_SOURCE_OPERATOR_FITNESS_ON_EACH_ACTIVE_BLOCK",
+    "5_C6_INCREMENT_OVER_C1_C3_IF_BOTH_PASS",
+    "6_C4_INCREMENT_OVER_C6_AND_CONSTITUENTS_IF_C2_AND_C3_PASS",
+    "7_PORTFOLIO_COMPLEMENTARITY_NONREDUNDANCY_AND_INTERFERENCE",
+    "8_PROTECTED_CONFIRMATION_WHERE_REQUIRED",
+    "9_EXPLICIT_OWNER_TARGET_PORTFOLIO_DECISION"
+  ],
+  "candidate_gate_noncompensation": {
+    "C6": "C1 or C3 mandatory FAIL blocks C6; favorable C6 average cannot compensate.",
+    "C4": "C2 or C3 mandatory FAIL blocks C4; favorable composite average cannot compensate.",
+    "C5": "Specialist qualification never rescues zero qualified foundation blocks."
+  },
+  "portfolio_convergence": {
+    "zero_foundation_blocks": "NO_QUALIFIED_PORTFOLIO__PROSPECTIVE_ARCHITECTURE_REOPEN_REQUIRED",
+    "one_foundation_block": "ELIGIBLE_FOR_PROTECTED_CONFIRMATION__SPECIALISTS_MAY_BE_ADDED_LATER",
+    "multiple_complementary_blocks": "MULTI_BLOCK_TARGET_PORTFOLIO__PROTECTED_CONFIRMATION_AND_OWNER_DECISION_REQUIRED",
+    "fused_candidate_passes_but_constituents_redundant": "FUSED_IMPLEMENTATION_MAY_BE_SELECTED_WITH_BLOCK_LEVEL_ACCOUNTABILITY",
+    "multiple_blocks_interfere_under_shared_student": "RETAIN_TARGET_BLOCKS__TRIGGER_TEACHER_STUDENT_TOPOLOGY_INTERFERENCE_TEST__DO_NOT_DISCARD_BIOLOGY_BY_DEFAULT",
+    "specialist_only_survivor": "NO_FOUNDATION_TARGET__SPECIALIST_CANNOT_RESCUE_FOUNDATION_TERMINAL"
+  },
+  "post_target_freeze": {
+    "sequence": [
+      "GSE214979 same-nucleus RNA+ATAC reconciliation",
+      "partition multimodal increment into RNA-recoverable / stochastic / teacher-private",
+      "Morabito donor-level replication and internal SEA-AD corroboration",
+      "SCENIC+/Stage75 regulatory interpretation",
+      "spatial localization where measurable",
+      "perturbational R3 support only after qualification",
+      "explicit representation/teacher-student topology decision",
+      "later TD60/Stage4/training authority"
+    ],
+    "rule": "Post-freeze multimodal evidence may characterize, falsify interpretation, or alter recoverability/topology; it may not retrospectively rewrite the frozen RNA target to chase agreement."
+  },
+  "non_authority_statement": "This matrix grants no replay, tournament, target-selection, representation, TD60, Stage4 or training authority."
+}
