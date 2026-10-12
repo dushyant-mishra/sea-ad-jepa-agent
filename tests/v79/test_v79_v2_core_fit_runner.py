@@ -23,6 +23,8 @@ def test_sampler_policy_is_parsed_only_from_contract():
     assert p.target_accept_escalation == pytest.approx(0.99)
     assert p.rhat_max == pytest.approx(1.01)
     assert p.ess_min == 400
+    primary = R.planned_attempt(_contract(), stage="PRIMARY")
+    assert primary["dense_mass"] is False and primary["init"] == "uniform_radius_2"
 
 
 def test_recovery_path_is_finite_and_predeclared():
@@ -52,6 +54,8 @@ def test_fit_identity_is_deterministic_and_stage_independent():
     a = R.fit_identity("0123456789ab", "a"*64, "detection", 3)
     b = R.fit_identity("0123456789ab", "a"*64, "detection", 3)
     assert a == b and len(a) == 64
+    with pytest.raises(R.FitRunnerRefused):
+        R.fit_identity("0123456789ab", "not-a-hash", "detection", 3)
 
 
 def test_execution_mode_refuses_unknown_value():
