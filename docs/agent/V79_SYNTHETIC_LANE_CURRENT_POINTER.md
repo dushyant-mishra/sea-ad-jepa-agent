@@ -1,85 +1,105 @@
 # V79 synthetic lane — current takeover pointer
 
-Updated: 2026-10-12 17:20 UTC
+Updated: 2026-10-12 after repaired benchmark completion and rare-biology real-data assimilation.
 
-## Read these first, in this order
+## Read these first
 
-1. `results/v79/synthetic_lane_audit/deltas/20261012T1720Z_ARCHIVAL_CONSOLIDATION_AND_TAKEOVER_V1.md`
-2. `results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_AUDIT_INDEX_V1.json`
-3. `results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_CODE_DATA_RESULT_INDEX_20261012.csv`
-4. `docs/agent/V79_SYNTHETIC_LANE_TAKEOVER_HANDOFF_20261012.md`
-5. `docs/agent/V79_SYNTHETIC_LANE_AUDIT_HISTORY_20261012.md` only if deeper historical context is needed.
+1. `results/v79/synthetic_lane_audit/deltas/20261012_RARE_BIOLOGY_REALDATA_INTEGRATION_V1.md`
+2. `docs/agent/V79_RARE_BIOLOGY_REALDATA_INTEGRATION_SPEC_20261012.md`
+3. `results/v79/rare_biology_integration/V79_REALDATA_RARE_PROGRAM_ASSIMILATION_20261012.md`
+4. `results/v79/rare_biology_integration/V79_RARE_BIOLOGY_DATASET_CAPABILITY_MATRIX_20261012.csv`
+5. `results/v79/synthetic_lane_audit/deltas/20261012T1720Z_ARCHIVAL_CONSOLIDATION_AND_TAKEOVER_V1.md`
+6. `results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_AUDIT_INDEX_V1.json`
+7. `results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_CODE_DATA_RESULT_INDEX_20261012.csv`
+8. `docs/agent/V79_SYNTHETIC_LANE_TAKEOVER_HANDOFF_20261012.md`
 
-Do not repeat historical audits before the exact heads recorded below. Audit only newer deltas or concrete contradictions.
+Do not repeat historical audits before frozen heads/hashes unless bytes changed or a concrete contradiction is found.
 
-## Execution state first
+## Current state
 
-### Realization
+### Q00-Q11 realization
 
-Q00-Q11 were realized exactly once and byte-audited. Regeneration is forbidden.
+Realized exactly once and byte-audited. Regeneration is forbidden.
 
-Frozen package authorities:
 - root manifest `84949723305dc2211ebcd451b64dd9adc8518f3580d2122f5600fcf4b38de0de`
 - directory digest `40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286`
 - blinded index `8ea3e0cb6637c97b3e940eac54476622bd4f790febb07abee2e8ccdeea751e40`
-- complete 498-file ledger `4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65`
-- audit receipt `6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3`
+- 498-file ledger `4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65`
 
-### Benchmark
+### Repaired engineering benchmark — COMPLETE
 
-The original PR #299 one-shot benchmark authority was consumed and **failed closed before fit 1** because of the Windows resource monitor ABI bug.
+The one authorized repaired benchmark at PR #308 exact head `559a1c104c8f1f56d2c05509eecf6b9dc05846a5` was consumed successfully.
 
-Immutable evidence:
-- branch `evidence/v79-engineering-benchmark-attempt-2240fd82-20261012`
-- commit `b94367c6`
-- path `docs/agent/V79_ENGINEERING_BENCHMARK_ATTEMPT_2240fd82_20261012/`
+Evidence:
+- evidence commit `586e5ea5af73bbc28637a4cbab0eb7c108c67d42`
+- PR #308 comment `6129569599`
+- prep receipt SHA-256 `ee89a67ba3919a6593b2f20e4cc4030904e4032ef78c28438fecdab0cfed8170`
+- result receipt SHA-256 `3774cecbc10266ed9205fe3bd8f161faf119ab83c3625783b484c2412477316d`
 
-This is infrastructure failure evidence only; no model fit, diagnostics or 72-hour projection were produced.
+Results:
+- 4/4 fits COMPLETE on PRIMARY stage only
+- 0 divergences
+- worst R-hat 1.01
+- worst bulk/tail ESS 1184 / 1343
+- mean fit wall time 3.818 s
+- projected 1,056-fit runtime 1.520 h including frozen settle term
+- frozen ceiling 72 h
+- `stop_required=false`
+- qualification fits 0; scoring false; truth not accessed; training not authorized
 
-PR #308 repairs that bug and is qualified:
-- exact head `559a1c104c8f1f56d2c05509eecf6b9dc05846a5`
-- exactly 3 changed files
-- RED `38280964089`: real Windows failure reproduced
-- GREEN `38281216579`: Windows/Ubuntu PASS; fit-side firewall PASS
-- repair PASS `6128864889`
-- exactly one fresh rerun authority `6128881654`
-- canonical Macha instructions `6129078915`
+This establishes engineering feasibility only. It does not by itself authorize Q00-Q11 fitting.
 
-**One fresh engineering benchmark rerun is authorized only at exact #308 head `559a1c10...`; it has not yet been reported.** No automatic second retry exists.
+## Scientific scope correction
+
+V79 Q00-Q11 are Layer A: observation/statistical qualification. They do **not** contain the project's required cell-level rare multimodal biological state.
+
+Historical project work already required rare/private biology, donor recurrence, evidence-dependent recovery and uncertainty. That requirement is now restored as a separate additive workstream rather than modifying Q00-Q11.
+
+New authority/design surfaces on the integration branch:
+- `docs/agent/V79_RARE_BIOLOGY_REALDATA_INTEGRATION_SPEC_20261012.md`
+- `results/v79/rare_biology_integration/V79_RARE_BIOLOGY_DATASET_CAPABILITY_MATRIX_20261012.csv`
+- `results/v79/rare_biology_integration/V79_REALDATA_RARE_PROGRAM_ASSIMILATION_20261012.md`
+- `docs/superpowers/plans/2026-10-12-v79-rare-biology-realdata-integration.md`
+
+Important recovered fact: frozen `recurrent_5pct` and `recurrent_1pct` use the same molecular direction as `innovation_tail`; they are threshold roles, not distinct rare biological programs.
+
+Important new read-only diagnostic: applying that historical direction to the existing authenticated 50K TRAIN discovery sample is strongly source-shifted. Therefore it must not define the new cross-source rare biological truth.
+
+## Real-data assets already assimilated
+
+Do not redo ETL. Existing authenticated/cached assets include:
+- FOUNDATION 41K TRAIN/discovery expression and metadata;
+- Morabito GSE174367 RNA/ATAC and microglia caches;
+- GSE214979 paired same-nucleus multiome (conditional support);
+- GSE272082 paired-multiome candidate with remaining authentication gaps;
+- Stage75-79/cisTarget regulatory evidence;
+- SCP2167 + eligible Fang STG spatial context evidence;
+- GSE178317 perturbation assets.
+
+Exact hashes/roles/limitations are in the capability matrix.
 
 ## Engineering topology
 
-Historical source lineages:
-- #300 campaign runner `7172b201b13c61634b84b85254bf4406959b2b57`
-- #301 historical scorer `7fe0204b2661f0d1492115c973a4da7a4a1646b6`
+- historical campaign runner #300 `7172b201b13c61634b84b85254bf4406959b2b57`
+- preferred reconciled base #305 `e976d0c1a03f6a54dadcbf7fe3086f832fd319d8`
+- active controller-scorer engineering #306 `d4e10c821847078bac6d4043b18b09bdfb6c5ef1`
+- physical scoring OFF
 
-Do not redo their old reconciliation.
+## Immediate work
 
-Preferred integration base:
-- #305 `e976d0c1a03f6a54dadcbf7fe3086f832fd319d8`
+1. Controller must separately decide whether the successful benchmark authorizes frozen Q00-Q11 qualification fitting.
+2. In parallel, implement the real-data-matched rare-biology workstream from the new spec/plan.
+3. Do not regenerate or modify Q00-Q11.
+4. Do not use protected Morabito/pathology/DEV/SEALED/TEST outcomes for rare-program selection.
+5. Rare biology must be independently gated; a V79 Layer-A PASS cannot substitute for it.
 
-Active controller-scoring engineering:
-- #306 `d4e10c821847078bac6d4043b18b09bdfb6c5ef1`
-- executor CI `38282050314`: Windows PASS, Ubuntu PASS, fit firewall PASS
-- scorer CI `38282050318`: Windows PASS, Ubuntu PASS, scorer firewall PASS
-- completed: planted held-out oracle, all five non-gating descriptive families, calibration/prevalence aggregation, initial scoring-runner custody/authorization/write-once primitives
-- no physical scoring authority
-
-## Immediate next actions
-
-1. **External/local Windows execution:** run the single authorized repaired engineering benchmark exactly once from #308 head `559a1c10...`, fresh package/custody/result directories, engineering seed root `31999999`, 2 genes x 2 parts, never scored. Report and STOP.
-2. **Controller after benchmark report:** audit only the new benchmark evidence. Do not authorize qualification fitting unless checkout/hash/environment/fit diagnostics/resource projection all satisfy the frozen gate.
-3. **Engineering in parallel:** if continuing #306, start from exact `d4e10c82...` and inspect only later commits. Physical scoring remains OFF until a complete 1,056-fit campaign exists and receives a separate post-campaign scoring authorization.
-4. Update #302/#309 after the benchmark outcome or any later material #306 milestone.
-
-## Authority boundary
+## Permissions
 
 - regenerate Q00-Q11: **FORBIDDEN**
-- fresh engineering benchmark: **ONE ATTEMPT AUTHORIZED at #308 `559a1c10...`; not yet reported**
-- Q00-Q11 qualification fits: **OFF**
+- repaired engineering benchmark: **SPENT SUCCESSFULLY**
+- Q00-Q11 qualification fits: **OFF pending new controller authority**
 - qualification scoring: **OFF**
-- real TRAIN posterior: **OFF**
-- factorial science: **OFF**
-- TEST/Morabito/pathology: **OFF in this lane**
-- target discovery: **SEPARATE LANE**
+- rare-biology synthetic implementation: **DESIGN/ENGINEERING ACTIVE; production realization not authorized**
+- real TRAIN pathology-blind calibration from already-authorized caches: **allowed only under the new prospective contract; no pathology**
+- TEST/Morabito outcome selection/pathology: **OFF**
 - JEPA training: **OFF**
