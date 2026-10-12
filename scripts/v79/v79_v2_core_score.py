@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-"""Controller-only V79 V2_CORE scoring boundary.
+"""Controller-only V79 V2_CORE scoring boundary and frozen gate mathematics.
 
 This module may consume controller truth only after a frozen qualification campaign.
-No fit-side module imports it.
+No fit-side module imports it. Statistical gate functions implement Contract V2
+verbatim and are outcome-agnostic.
 """
 from __future__ import annotations
 
-from collections import Counter
-from typing import Mapping
+from typing import Mapping, Sequence
+
+import numpy as np
+from scipy import stats
 
 import v79_v2_core_launch as L
 
@@ -18,6 +21,13 @@ class ScoreRefused(RuntimeError):
 
 def _refuse(msg: str):
     raise ScoreRefused(f"REFUSED V2_CORE scorer: {msg}")
+
+
+def _finite_1d(values, *, name: str, min_n: int = 1) -> np.ndarray:
+    a=np.asarray(values,dtype=float).reshape(-1)
+    if a.size < min_n or np.any(~np.isfinite(a)):
+        _refuse(f"{name} requires >= {min_n} finite values")
+    return a
 
 
 def gate_authority(contract: Mapping) -> dict:
@@ -56,6 +66,89 @@ def require_complete_campaign(contract: Mapping, fit_receipts: list[Mapping]) ->
     return fit_receipts
 
 
+def one_sided_t_lower_across_genes(values, *, nominal: float, alpha: float) -> dict:
+    """Frozen lower-coverage gate over gene-level fractions c_g."""
+    x=_finite_1d(values,name="one_sided_t_lower_across_genes",min_n=2)
+    nominal=float(nominal); alpha=float(alpha)
+    if not (0.0<nominal<=1.0 and 0.0<alpha<1.0): _refuse("invalid nominal/alpha")
+    mean=float(np.mean(x)); sd=float(np.std(x,ddof=1)); n=int(x.size)
+    if sd==0.0:
+        failed=mean < nominal-0.10
+        return {"passed":not failed,"n":n,"mean":mean,"sd":sd,"t":None,"critical":None,
+                "nominal":nominal,"alpha":alpha,"zero_sd_rule":True}
+    se=sd/np.sqrt(n); t=(mean-nominal)/se; critical=float(stats.t.ppf(1.0-alpha,n-1))
+    failed=(mean<nominal) and (t < -critical)
+    return {"passed":not failed,"n":n,"mean":mean,"sd":sd,"t":float(t),"critical":critical,
+            "nominal":nominal,"alpha":alpha,"zero_sd_rule":False}
+
+
+def two_sided_t_across_genes_and_materiality(values, *, alpha: float, materiality: float=0.50) -> dict:
+    """Frozen bias gate over gene-level mean standardized errors b_g."""
+    x=_finite_1d(values,name="two_sided_t_across_genes_and_materiality",min_n=2)
+    alpha=float(alpha); materiality=float(materiality)
+    if not (0.0<alpha<1.0 and materiality>=0): _refuse("invalid alpha/materiality")
+    mean=float(np.mean(x)); sd=float(np.std(x,ddof=1)); n=int(x.size); material=abs(mean)>materiality
+    critical=float(stats.t.ppf(1.0-alpha/2.0,n-1))
+    if sd==0.0:
+        # A nonzero constant has zero standard error: deterministic infinite t magnitude.
+        t=0.0 if mean==0.0 else float(np.copysign(np.inf,mean)); significant=(mean!=0.0)
+    else:
+        t=mean/(sd/np.sqrt(n)); significant=abs(t)>critical
+    failed=bool(significant and material)
+    return {"passed":not failed,"n":n,"mean":mean,"sd":sd,"t":float(t),"critical":critical,
+            "materiality":materiality,"material":bool(material),"significant":bool(significant),"alpha":alpha}
+
+
+def binomial_tail_gate(*, count: int, n: int, nominal: float, alpha: float) -> dict:
+    """Frozen binomial_upper/lower tail kernel: FAIL iff P(Bin(n,p)>=count) < alpha."""
+    count=int(count); n=int(n); nominal=float(nominal); alpha=float(alpha)
+    if n<1 or count<0 or count>n or not (0.0<=nominal<=1.0) or not (0.0<alpha<1.0):
+        _refuse("invalid binomial gate arguments")
+    tail=float(stats.binom.sf(count-1,n,nominal))
+    failed=tail<alpha
+    return {"passed":not failed,"count":count,"n":n,"nominal":nominal,"tail_probability":tail,"alpha":alpha}
+
+
+def type_s_gate(*, wrong_sign_count: int, excluded_count: int, alpha: float) -> dict:
+    wrong_sign_count=int(wrong_sign_count); excluded_count=int(excluded_count)
+    if excluded_count<0 or wrong_sign_count<0 or wrong_sign_count>excluded_count: _refuse("invalid TYPE_S counts")
+    if excluded_count==0:
+        return {"passed":True,"wrong_sign_count":0,"excluded_count":0,"power":0.0,
+                "nominal":0.05,"tail_probability":1.0,"alpha":float(alpha)}
+    r=binomial_tail_gate(count=wrong_sign_count,n=excluded_count,nominal=0.05,alpha=alpha)
+    r.update({"wrong_sign_count":wrong_sign_count,"excluded_count":excluded_count,
+              "power":float(excluded_count)})
+    return r
+
+
+def ppc_extreme_rate(p_values, *, alpha: float) -> dict:
+    p=_finite_1d(p_values,name="PPC_EXTREME_RATE",min_n=1)
+    if np.any((p<0.0)|(p>1.0)): _refuse("PPC p-values outside [0,1]")
+    count=int(np.sum(p<0.01)); r=binomial_tail_gate(count=count,n=int(p.size),nominal=0.01,alpha=alpha)
+    r.update({"extreme_count":count,"statistic_count":int(p.size),"threshold":0.01})
+    return r
+
+
+def population_donor_sd_ratio(posterior_mean_sd, planted_sd, *, bounds: Sequence[float]) -> dict:
+    post=_finite_1d(posterior_mean_sd,name="posterior donor SD",min_n=1)
+    truth=_finite_1d(planted_sd,name="planted donor SD",min_n=1)
+    if post.size!=truth.size: _refuse("posterior/truth donor-SD gene counts differ")
+    lo,hi=(float(bounds[0]),float(bounds[1]))
+    if not (0.0<=lo<=hi): _refuse("invalid donor-SD ratio bounds")
+    denom=float(np.mean(truth))
+    if denom<=0: _refuse("population donor-SD ratio undefined for nonpositive mean truth")
+    ratio=float(np.mean(post)/denom)
+    return {"passed":bool(lo<=ratio<=hi),"ratio":ratio,"bounds":[lo,hi],
+            "posterior_mean":float(np.mean(post)),"planted_mean":denom,"n_genes":int(post.size)}
+
+
+def convergence_all_fits_diagnosed(diagnoses) -> dict:
+    d=list(diagnoses)
+    if not d: _refuse("convergence gate requires fits")
+    bad=sum(str(x)!="COMPLETE" for x in d)
+    return {"passed":bad==0,"fit_count":len(d),"not_diagnosed_count":int(bad)}
+
+
 def terminal_from_gate_results(contract: Mapping, gate_results: list[Mapping]) -> dict:
     t=contract.get("terminal_logic",{})
     post_label=t.get("post_terminal_label")
@@ -74,7 +167,7 @@ def terminal_from_gate_results(contract: Mapping, gate_results: list[Mapping]) -
 
 
 def bind_gate_evaluations(contract: Mapping, evaluations: list[Mapping]) -> dict:
-    """Bind externally computed statistics to every frozen gate; thresholds/classes may not be replaced."""
+    """Bind controller-computed statistics to every frozen gate; thresholds/classes may not be replaced."""
     auth=gate_authority(contract); gates=auth["gates"]
     key=lambda g:(g["world"],g["part"],g["gate"])
     expected={key(g):g for g in gates}; observed={key(e):e for e in evaluations}
