@@ -46,14 +46,11 @@ def _decile_codes(z: np.ndarray, n_bins: int=10) -> np.ndarray:
 
 
 def world_z_decile_codes(log_lib: np.ndarray, mask: np.ndarray, *, n_bins: int=10) -> np.ndarray:
-    """Assign masked cells to deciles whose boundaries were computed on all world cells."""
     x=np.asarray(log_lib,dtype=float).reshape(-1); mask=np.asarray(mask,dtype=bool).reshape(-1)
     if len(x)==0 or len(mask)!=len(x) or np.any(~np.isfinite(x)): _refuse("invalid world log_lib/mask")
     sd=float(np.std(x,ddof=0))
     if not np.isfinite(sd) or sd<=0: _refuse("world log_lib has zero/nonfinite population SD")
-    z=(x-float(np.mean(x)))/sd
-    edges=np.quantile(z,np.linspace(0.0,1.0,n_bins+1))
-    masked=z[mask]
+    z=(x-float(np.mean(x)))/sd; edges=np.quantile(z,np.linspace(0.0,1.0,n_bins+1)); masked=z[mask]
     return np.clip(np.searchsorted(edges[1:-1],masked,side="right"),0,n_bins-1).astype(np.int16)
 
 
@@ -105,14 +102,73 @@ def positive_statistics(y_log: np.ndarray, *, z: np.ndarray, donor: np.ndarray, 
     return out
 
 
+def _selected_indices(samples_by_chain: Mapping[str,np.ndarray], n_draws: int) -> np.ndarray:
+    shapes=[]
+    for v in samples_by_chain.values():
+        a=np.asarray(v)
+        if a.ndim<2: _refuse("posterior sites must retain chain and draw axes")
+        shapes.append(a.shape[:2])
+    if not shapes or len(set(shapes))!=1: _refuse("posterior chain/draw axes differ across sites")
+    total=int(shapes[0][0]*shapes[0][1])
+    if total<n_draws or n_draws<=0: _refuse("insufficient posterior draws")
+    return np.linspace(0,total-1,int(n_draws),dtype=np.int64)
+
+
+def _flat_selected(samples_by_chain: Mapping[str,np.ndarray], name: str, idx: np.ndarray) -> np.ndarray:
+    if name not in samples_by_chain: _refuse(f"posterior site missing: {name}")
+    a=np.asarray(samples_by_chain[name],dtype=float); flat=a.reshape((-1,)+a.shape[2:]); return flat[idx]
+
+
+def _eta_draws(samples: Mapping[str,np.ndarray], data: Mapping, *, part: str, idx: np.ndarray) -> np.ndarray:
+    alpha=_flat_selected(samples,"alpha",idx)
+    b1=_flat_selected(samples,"beta_depth1" if part=="detection" else "gamma_depth1",idx)
+    b2=_flat_selected(samples,"beta_depth2" if part=="detection" else "gamma_depth2",idx)
+    cc=_flat_selected(samples,"class_contrasts",idx); sc=_flat_selected(samples,"source_contrasts",idx)
+    ds=_flat_selected(samples,"donor_sd",idx); dr=_flat_selected(samples,"donor_raw",idx)
+    z=np.asarray(data["z"],dtype=float); q=np.asarray(data["q"],dtype=float)
+    cr=np.asarray(data["class_rows"],dtype=float); sr=np.asarray(data["source_rows"],dtype=float); wr=np.asarray(data["donor_rows"],dtype=float)
+    eta=alpha[:,None]+b1[:,None]*z[None,:]+b2[:,None]*q[None,:]
+    eta += cc@cr.T + sc@sr.T
+    if wr.shape[1]: eta += (dr*ds[:,None])@wr.T
+    return eta
+
+
+def posterior_predictive_detection(samples_by_chain: Mapping[str,np.ndarray], data: Mapping, *, fit_id: str,
+                                   world_log_lib: np.ndarray, measured_mask: np.ndarray, draws: int=1000) -> list[dict]:
+    idx=_selected_indices(samples_by_chain,draws); eta=_eta_draws(samples_by_chain,data,part="detection",idx=idx)
+    rng=np.random.default_rng(ppc_seed(fit_id)); p=1.0/(1.0+np.exp(-eta)); reps=(rng.random(p.shape)<p).astype(np.int8)
+    zb=world_z_decile_codes(world_log_lib,measured_mask,n_bins=10)
+    obs=detection_statistics(data["y"],z=data["z"],cls=data["cls_code"],src=data["src_code"],donor=data["donor_code"],z_bins=zb)
+    rep_by={x["name"]:[] for x in obs}
+    for row in reps:
+        vals={x["name"]:x["value"] for x in detection_statistics(row,z=data["z"],cls=data["cls_code"],src=data["src_code"],donor=data["donor_code"],z_bins=zb)}
+        if set(vals)!=set(rep_by): _refuse("detection replicated statistic set changed")
+        for k in rep_by: rep_by[k].append(vals[k])
+    return ppc_table(obs,{k:np.asarray(v) for k,v in rep_by.items()})
+
+
+def posterior_predictive_positive(samples_by_chain: Mapping[str,np.ndarray], data: Mapping, *, fit_id: str,
+                                  world_log_lib: np.ndarray, positive_mask: np.ndarray, draws: int=1000) -> list[dict]:
+    idx=_selected_indices(samples_by_chain,draws); mu=_eta_draws(samples_by_chain,data,part="positive",idx=idx)
+    sigma=_flat_selected(samples_by_chain,"sigma",idx)
+    rng=np.random.default_rng(ppc_seed(fit_id)); reps=rng.normal(loc=mu,scale=sigma[:,None])
+    zb=world_z_decile_codes(world_log_lib,positive_mask,n_bins=10)
+    obs=positive_statistics(data["y_log"],z=data["z"],donor=data["donor_code"],z_bins=zb)
+    rep_by={x["name"]:[] for x in obs}
+    for row in reps:
+        vals={x["name"]:x["value"] for x in positive_statistics(row,z=data["z"],donor=data["donor_code"],z_bins=zb)}
+        if set(vals)!=set(rep_by): _refuse("positive replicated statistic set changed")
+        for k in rep_by: rep_by[k].append(vals[k])
+    return ppc_table(obs,{k:np.asarray(v) for k,v in rep_by.items()})
+
+
 def compact_donor_effect_draws(samples_by_chain: Mapping[str,np.ndarray], donor_basis_by_donor: np.ndarray,
                                 *, stored_draws: int=200) -> np.ndarray:
     if set(("donor_raw","donor_sd")) - set(samples_by_chain): _refuse("donor posterior sites missing")
     raw=np.asarray(samples_by_chain["donor_raw"],dtype=float); sd=np.asarray(samples_by_chain["donor_sd"],dtype=float); W=np.asarray(donor_basis_by_donor,dtype=float)
     if raw.ndim!=3 or sd.ndim!=2 or raw.shape[:2]!=sd.shape or W.ndim!=2 or raw.shape[2]!=W.shape[1]: _refuse("donor posterior/basis shapes differ")
-    flat_raw=raw.reshape(-1,raw.shape[-1]); flat_sd=sd.reshape(-1); n=flat_raw.shape[0]
-    if stored_draws<=0 or n<stored_draws: _refuse("insufficient posterior draws for frozen donor compaction")
-    idx=np.linspace(0,n-1,int(stored_draws),dtype=np.int64)
+    idx=_selected_indices({"donor_raw":raw,"donor_sd":sd},stored_draws)
+    flat_raw=raw.reshape(-1,raw.shape[-1]); flat_sd=sd.reshape(-1)
     return np.asarray((flat_raw[idx]*flat_sd[idx,None])@W.T,dtype=np.float32)
 
 
