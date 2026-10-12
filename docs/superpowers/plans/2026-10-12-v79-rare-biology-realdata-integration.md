@@ -1,168 +1,67 @@
-# V79 Rare-Biology Real-Data Integration Implementation Plan
+# V79 rare-biology real-data integration plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+**Goal:** build synthetic rare-biology worlds that genuinely resemble the authenticated real datasets, without modifying Q00-Q11 or repeating completed ETL.
 
-**Goal:** Build a prospectively governed rare-biological-state synthetic qualification layer matched to already-authenticated real RNA, ATAC, spatial and perturbation assets, without modifying Q00-Q11 or rerunning completed ETL.
+## Boundary
 
-**Architecture:** Keep V79 V2_CORE as Layer A measurement/statistical qualification. Add an independent Layer B donor-structured rare biological truth family and Layer C teacher/student qualification. Calibrate ranges only from already-authorized TRAIN/cached development evidence, freeze truth/gates before realization, and preserve physical truth/fit custody separation.
+The synthetic lane may inspect, analyze, discover and freeze real TRAIN biological programs when needed for realism. Those discoveries may define planted synthetic biology and may also become candidate real targets. Every biologically meaningful discovery must be handed to target discovery with hashes/provenance so that lane can use it under its own governed adjudication.
 
-**Tech Stack:** Python, NumPy/Pandas/SciPy, existing V79 contract/generator/scorer patterns, pytest, JSON/CSV provenance manifests.
+No pathology, DEV, SEALED or TEST outcome use for synthetic tuning. Morabito remains separate-nucleus evidence and protected from inappropriate target selection. JEPA training remains OFF.
 
-**Spec:** `docs/agent/V79_RARE_BIOLOGY_REALDATA_INTEGRATION_SPEC_20261012.md`
+## Work order
 
-## Global Constraints
+### 1. Reuse existing authenticated assets
 
-- Q00-Q11 immutable; never regenerate or amend them.
-- No new ETL/reacquisition when an authenticated cache/manifest already exists.
-- No pathology, DEV, SEALED or TEST outcome use for calibration/selection.
-- Morabito is protected from target/representation selection and is separate-nucleus evidence only.
-- Historical rare1/rare5 are threshold roles on the same innovation direction; do not treat them as distinct biological programs.
-- Stage75-79/cisTarget resources are regulatory topology/support, not causal truth.
-- Rare biology cannot be rescued by aggregate/common-state metrics.
-- JEPA training remains OFF.
+Use the existing capability matrix and caches. Do not reacquire or redo ETL unless an actual missing-authentication gap is identified.
 
-## Review Focus
+### 2. Inspect TRAIN biology for realistic rare programs
 
-1. Source/operator confounding must not define rare truth; add explicit conditional/source-shuffle tests in Task 2.
-2. Donor-restricted true biology must survive nuisance correction; add donor-subset truth tests in Task 3.
-3. Separate-nucleus and same-nucleus worlds must remain different evidence classes; test schema separation in Task 4.
-4. Technical pseudo-rare controls must be frequency matched but biologically null; test truth labels and observation-only perturbation in Task 4.
-5. Student uncertainty must rise when teacher-private evidence is required; test underidentified world behavior in Task 6.
+Use existing FOUNDATION TRAIN/discovery expression, donor/operator metadata, support masks and frozen historical program weights to measure:
+- donor recurrence and donor restriction;
+- prevalence distributions;
+- coherent RNA program structure and covariance;
+- effect-size ranges;
+- source/operator/depth interactions and confounding;
+- evidence and measurement-depth sensitivity.
 
----
+Do not restrict this to mere nuisance calibration: real biological programs can be discovered/frozen here when needed to construct realistic synthetic truth.
 
-### Task 1: Freeze assimilation and capability authorities
+### 3. Build regulatory program templates
 
-**Files:**
-- Existing: `results/v79/rare_biology_integration/V79_RARE_BIOLOGY_DATASET_CAPABILITY_MATRIX_20261012.csv`
-- Existing: `results/v79/rare_biology_integration/V79_REALDATA_RARE_PROGRAM_ASSIMILATION_20261012.md`
-- Create: `results/v79/rare_biology_integration/V79_RARE_BIOLOGY_INPUT_AUTHORITY_V1.json`
-- Test: `tests/v79/test_v79_rare_biology_input_authority.py`
+Reuse Stage75-79/cisTarget/SCENIC-style evidence to construct realistic regulator-target topology and matched controls. Do not upgrade these resources to causal GRN truth without evidence.
 
-**Interfaces:**
-- Consumes: recorded SHA-256 identities and role classifications.
-- Produces: one machine-readable authority file with asset IDs, permitted roles, prohibited roles and required hashes.
+### 4. Freeze donor-structured synthetic truth
 
-- [ ] Write tests that reject missing required hashes, role escalation, Morabito same-cell claims and Q00-Q11 mutation authority.
-- [ ] Run targeted tests and confirm RED.
-- [ ] Implement the authority JSON plus validator using existing V79 fail-closed patterns.
-- [ ] Run targeted tests and confirm GREEN.
-- [ ] Commit only Task 1 files.
+Create rare worlds with donor heterogeneity, exact-zero donors where realistic, donor-recurrent and donor-restricted biology, and separate rare1-like/rare5-like prevalence regimes. Truth must not be an artifact of source/operator/depth.
 
-### Task 2: Build TRAIN-only empirical calibration summaries
+### 5. Build modality-matched worlds
 
-**Files:**
-- Create: `scripts/v79/derive_v79_rare_biology_calibration_v1.py`
-- Create: `results/v79/rare_biology_integration/V79_RARE_BIOLOGY_CALIBRATION_CONTRACT_V1.json`
-- Test: `tests/v79/test_v79_rare_biology_calibration_v1.py`
+Keep these evidence structures distinct:
+- FOUNDATION: RNA population structure;
+- Morabito: separate-nucleus RNA/ATAC with shared donor-level biology;
+- GSE214979: same-nucleus RNA+ATAC;
+- GSE272082: secondary paired-multiome route after remaining authentication;
+- spatial: intrinsic versus neighborhood-conditioned biology;
+- perturbation: response of an already-defined program.
 
-**Interfaces:**
-- Consumes: existing frozen 41K TRAIN/discovery caches, donor/operator metadata, program weights and support masks.
-- Produces: donor/lineage/source/operator-conditioned distributions for prevalence, module score, support and measurement-depth sensitivity; no pathology fields.
+Add frequency-matched technical pseudo-rare controls.
 
-- [ ] Write tests for TRAIN-only provenance, donor/source conditioning, deterministic summaries and explicit rejection of global innovation-tail thresholding.
-- [ ] Run tests and confirm RED.
-- [ ] Implement deterministic read-only summary derivation.
-- [ ] Run tests and confirm GREEN on fixtures.
-- [ ] Execute only against already-authenticated local caches when physically available; preserve receipt/hashes.
-- [ ] Commit Task 2 code/tests/contract; keep large derived caches local with hash manifests if needed.
+### 6. Teacher/student qualification
 
-### Task 3: Freeze donor-structured rare truth semantics
+Test teacher preservation/discovery, student recovery with sufficient RNA, uncertainty when biology is underidentified, rejection of technical pseudo-rarity, donor generalization, multimodal correspondence and spatial/perturbation consistency.
 
-**Files:**
-- Create: `results/v79/rare_biology_integration/V79_RARE_BIOLOGY_TRUTH_CONTRACT_V1.json`
-- Create: `scripts/v79/v79_rare_biology_truth.py`
-- Test: `tests/v79/test_v79_rare_biology_truth.py`
+Rare failures cannot be rescued by broad/common-state averages.
 
-**Interfaces:**
-- Consumes: Task 2 calibration summaries and frozen regulatory topology template.
-- Produces: deterministic donor propensities, cell-level R labels/activity, rare1-like/rare5-like regimes and donor-restricted regimes.
+### 7. Cross-lane handoff
 
-- [ ] Write tests for reproducibility, donor heterogeneity, exact-zero donors, recurrence across multiple donors and independence from source/operator/depth.
-- [ ] Run tests RED.
-- [ ] Implement minimal truth generator.
-- [ ] Run tests GREEN.
-- [ ] Commit.
+For every real biological program or important confounding/result discovered during synthetic construction, write a compact target-discovery handoff containing:
+- exact input hashes;
+- lineage/donor/source scope;
+- program definition;
+- observed prevalence/effect/covariance;
+- confounding checks;
+- why it matters for target discovery.
 
-### Task 4: Implement modality-matched rare worlds and technical twins
+### 8. Realization gate
 
-**Files:**
-- Create: `scripts/v79/generate_v79_rare_biology_worlds.py`
-- Create: `scripts/v79/v79_rare_biology_world_writer.py`
-- Test: `tests/v79/test_v79_rare_biology_worlds.py`
-
-**Interfaces:**
-- Consumes: Task 3 truth and existing V79 observation-model primitives.
-- Produces: RB00-RB07 blinded fit/student views plus controller truth.
-
-- [ ] Write tests for each world family, including separate-nucleus RB04 versus same-nucleus RB05 and frequency-matched biologically-null RB02.
-- [ ] Test that Q00-Q11 paths/bytes are never touched.
-- [ ] Run RED.
-- [ ] Implement worlds using shared biological truth followed by modality-specific observation operators.
-- [ ] Run GREEN.
-- [ ] Commit without realizing production worlds.
-
-### Task 5: Implement regulatory topology template and controls
-
-**Files:**
-- Create: `scripts/v79/build_v79_rare_regulatory_template.py`
-- Create: `results/v79/rare_biology_integration/V79_RARE_REGULATORY_TEMPLATE_CONTRACT_V1.json`
-- Test: `tests/v79/test_v79_rare_regulatory_template.py`
-
-**Interfaces:**
-- Consumes: exact Stage75-79/cisTarget tables named in Task 1.
-- Produces: frozen topology template plus degree/size-matched random controls; no causal labels.
-
-- [ ] Write tests for source hashes, regulator/target membership, matched control size/degree and absence of causal activation/repression claims.
-- [ ] Run RED.
-- [ ] Implement deterministic extraction/control construction.
-- [ ] Run GREEN.
-- [ ] Commit.
-
-### Task 6: Implement rare-biology scorer and teacher/student falsifiers
-
-**Files:**
-- Create: `scripts/v79/score_v79_rare_biology.py`
-- Create: `results/v79/rare_biology_integration/V79_RARE_BIOLOGY_SCORING_CONTRACT_V1.json`
-- Test: `tests/v79/test_v79_rare_biology_scorer.py`
-
-**Interfaces:**
-- Consumes: controller truth and blinded teacher/student outputs.
-- Produces: separate hard gates for teacher preservation, pseudo-rare rejection, student recovery, uncertainty/abstention, donor recurrence, multimodal concordance, context controls and perturbation support.
-
-- [ ] Write tests for first-hard-fail, rare1/rare5 separate reporting, no aggregate rescue, underidentified-student uncertainty and technical-twin rejection.
-- [ ] Run RED.
-- [ ] Implement scorer with write-once controller receipt following V79 patterns.
-- [ ] Run GREEN.
-- [ ] Commit.
-
-### Task 7: Prospective realization package and controller review
-
-**Files:**
-- Create: `docs/agent/V79_RARE_BIOLOGY_REALIZATION_REVIEW_V1.md`
-- Create: `results/v79/rare_biology_integration/V79_RARE_BIOLOGY_REALIZATION_AUTHORITY_CANDIDATE_V1.json`
-- Test: relevant full rare-biology test suite plus existing V79 trust-domain tests.
-
-**Interfaces:**
-- Consumes: Tasks 1-6 exact heads/hashes.
-- Produces: review-only realization candidate; does not realize worlds without explicit controller authorization.
-
-- [ ] Run all targeted rare-biology tests and existing V79 firewall tests.
-- [ ] Hash code/contracts/inputs and freeze seed derivation/world count.
-- [ ] Verify no Q00-Q11 byte/path mutation.
-- [ ] Publish review candidate and STOP for controller authority.
-
-### Task 8: Map synthetic gates to lawful real-data validation
-
-**Files:**
-- Create: `results/v79/rare_biology_integration/V79_RARE_BIOLOGY_SYNTHETIC_TO_REAL_VALIDATION_MAP_V1.csv`
-- Create: `docs/agent/V79_RARE_BIOLOGY_REAL_VALIDATION_PROTOCOL_V1.md`
-
-**Interfaces:**
-- Consumes: Task 1 capability matrix and final scoring contract.
-- Produces: one-to-one mapping of each synthetic claim to FOUNDATION/Morabito/GSE214979/GSE272082/spatial/perturbation evidence class and its limitations.
-
-- [ ] Map every hard synthetic gate to at least one lawful real-data falsifier or mark `NO_REAL_FALSIFIER_YET`.
-- [ ] Preserve exposure/pairing/donor limitations verbatim.
-- [ ] Verify no external asset is silently promoted to target-selection authority.
-- [ ] Commit.
+Only after biology, worlds, controls, seeds and scoring gates are frozen should new production rare worlds be realized. Q00-Q11 remain immutable throughout.
