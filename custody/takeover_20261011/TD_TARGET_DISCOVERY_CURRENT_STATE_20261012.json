@@ -1,0 +1,87 @@
+{
+  "schema": "JEPA_TD_TARGET_DISCOVERY_CURRENT_STATE_V1",
+  "date": "2026-10-12",
+  "branch": "science/td-target-tournament-scaffold-20261011",
+  "draft_pr": 275,
+  "status": "TD_TARGET_DISCOVERY_MACHINERY_READY_THROUGH_PROTECTED_CONFIRMATION_ROUTING__WAITING_ON_EXTERNALLY_ACCEPTED_G7_AND_CORRECTED_BIOLOGICAL_EVIDENCE__NO_TARGET_AUTHORITY",
+  "latest_code_qualification": {
+    "qualified_head": "5748a3041f9320e6a799e75875a5cde0d28a40ef",
+    "workflow_run_id": 38209051675,
+    "workflow_job_id": 114678898730,
+    "artifact_id": 11728576919,
+    "artifact_name": "td-target-tournament-qualification-5748a3041f9320e6a799e75875a5cde0d28a40ef",
+    "artifact_sha256": "f1996ff4c44d90157dc6c5f29383d414dbce8a00bc0ba7409d1a7dfdaf1b79b7",
+    "passed": 293,
+    "failed": 0,
+    "errors": 0,
+    "elapsed_seconds": 0.69,
+    "status_before": "CLEAN",
+    "tracked_status_after": "CLEAN"
+  },
+  "candidate_lattice": {
+    "foundation": [
+      "C1_SHARED_EMERGENT",
+      "C2_RELATIONAL_SHARED",
+      "C3_QUERY_MEASURED",
+      "C6_SHARED_QUERY_COMPOSITE",
+      "C4_STRUCTURED_COMPOSITE"
+    ],
+    "specialist": ["C5_REGULATORY_SPECIALIST"],
+    "c6_requires": ["C1_SHARED_EMERGENT", "C3_QUERY_MEASURED"],
+    "c4_requires": ["C2_RELATIONAL_SHARED", "C3_QUERY_MEASURED"],
+    "specialist_can_rescue_foundation": false
+  },
+  "qualified_metadata_modules": {
+    "corrected_replay_projection": "scripts/v5/td_corrected_replay_routing_v2.py",
+    "candidate_routing": "scripts/v5/td_target_tournament_routing_v4.py",
+    "protected_head_to_head": "scripts/v5/td_protected_head_to_head_v2.py",
+    "synthetic_crosswalk_c1_c5": "scripts/v5/td_v79_synthetic_crosswalk_v1.py",
+    "synthetic_crosswalk_c6": "scripts/v5/td_v79_c6_synthetic_extension_v1.py",
+    "final_convergence": "scripts/v5/td_target_convergence_v1.py"
+  },
+  "synthetic_contract": {
+    "v79_contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+    "synthetic_can_falsify_where_truth_is_planted": true,
+    "synthetic_can_rescue_real_fail": false,
+    "synthetic_can_convert_real_not_estimable_to_pass": false,
+    "synthetic_can_select_target": false
+  },
+  "final_convergence_law": {
+    "zero_eligible": "NO_TARGET_WINNER__REDESIGN_BEFORE_PROTECTED_CONFIRMATION",
+    "unresolved": "FOUNDATION_CANDIDATE_UNRESOLVED__CONTINUE_TESTABLE_ROUTES__NO_TARGET_AUTHORITY",
+    "single_or_unique_h2h_leader": "PROTECTED_CONFIRMATION_REQUIRED__NO_TARGET_AUTHORITY",
+    "multiple_incomparable": "MULTIPLE_QUALIFIED_TARGETS__INCOMPARABLE__NO_TARGET_AUTHORITY",
+    "head_to_head_unresolved": "HEAD_TO_HEAD_UNRESOLVED__NO_TARGET_AUTHORITY",
+    "confirmation_pass": "TARGET_CANDIDATE_CONFIRMED__OWNER_SELECTION_DECISION_REQUIRED__NO_TARGET_AUTHORITY",
+    "confirmation_fail": "PROTECTED_CONFIRMATION_FAILED__NO_TARGET_WINNER__REDESIGN",
+    "confirmation_not_estimable": "PROTECTED_CONFIRMATION_NOT_ESTIMABLE__NO_TARGET_AUTHORITY"
+  },
+  "real_data_gate": {
+    "g6_external_acceptance": "89932183a2c7b56d1e3ae42264ea3f3b3ae9001d865cfa93604b46f0db2129fb",
+    "g7_successor_qualified_head": "8d41fb9838b425ddcb704ecbdf5cd51f3eeb9f27",
+    "g7_execution_accepted": false,
+    "corrected_td56_57b_57c_59_authorized": false,
+    "corrected_td56_57b_57c_59_executed": false
+  },
+  "next_external_sequence": [
+    "externally accepted G7 execution",
+    "separately authorized corrected TD56/TD57B/TD57C/TD59 replay",
+    "frozen corrected-replay interpretation",
+    "real candidate gate execution",
+    "synthetic falsifier evidence consumption where available",
+    "survivor routing and protected head-to-head if required",
+    "protected confirmation",
+    "explicit owner target selection"
+  ],
+  "authority": {
+    "value_read_authorized": false,
+    "g7_authorized": false,
+    "corrected_biological_replay_authorized": false,
+    "real_tournament_authorized": false,
+    "target_selected": false,
+    "representation_selected": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false
+  }
+}
