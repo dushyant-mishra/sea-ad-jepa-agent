@@ -13,6 +13,10 @@ from typing import Mapping
 
 SOURCE_CONTRACT_SHA256 = "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26"
 SCHEMA = "V79_V2_CORE_FIT_CONTRACT_VIEW_V1"
+RESOURCE_KEYS = {
+    "environment", "concurrency", "settle_seconds_between_worlds", "xla_host_devices",
+    "checkpoint", "compact_outputs", "engineering_benchmark", "estimate",
+}
 
 
 class FitContractRefused(RuntimeError):
@@ -48,10 +52,12 @@ def validate_fit_contract_view(view: Mapping) -> Mapping:
     if inf.get("recovery_path", {}).get("version") != "V2_CORE_ONE_ESCALATION_ONE_EXTENSION_V1":
         _refuse("recovery authority differs")
     resources = view.get("resources", {})
-    if set(resources) != {"engineering_benchmark", "settle_seconds_between_worlds", "estimate"}:
+    if set(resources) != RESOURCE_KEYS:
         _refuse("resource projection differs")
     if set(resources.get("estimate", {})) != {"n_fits"}:
         _refuse("resource estimate projection must expose only n_fits")
+    if int(resources.get("xla_host_devices", -1)) != int(inf.get("chains", -2)):
+        _refuse("XLA host-device count must equal frozen chain count")
     seeds = view.get("seeds", {})
     if set(seeds) != {"engineering_benchmark_root", "gene_streams"}:
         _refuse("seed projection differs")
