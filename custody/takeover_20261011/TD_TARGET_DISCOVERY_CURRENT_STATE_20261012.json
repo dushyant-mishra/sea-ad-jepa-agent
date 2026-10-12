@@ -60,7 +60,7 @@
     "root_manifest_sha256": "84949723305dc2211ebcd451b64dd9adc8518f3580d2122f5600fcf4b38de0de",
     "world_set_directory_digest_sha256": "40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286",
     "complete_ledger_sha256": "4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65",
-    "audit_freeze_receipt_sha256": "6bd05349516a9697c3b67dfb1343d6274335b22068f8c6577f5a9de11b3f9b3",
+    "audit_freeze_receipt_sha256": "6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3",
     "world_count": 12,
     "q10_q11_non_operator_truth_identical": true,
     "target_discovery_binding": "results/target_discovery/synthetic_crosswalk/TD_V79_REALIZATION_BINDING_V1.json",
