@@ -13,9 +13,10 @@ import v79_v2_core_structural_support as S  # noqa: E402
 
 BRIDGE = ROOT / "results/v78/V78_S174_SHARD_OPERATOR_BRIDGE_V1.json"
 
+# These tests deliberately use incomplete realized operator support. Source identity
+# must come from the frozen bridge, never from counting matrices in a sampled world.
 
 def test_source_identity_comes_from_frozen_bridge_not_realized_matrix_count():
-    # Only one operator from each source is present, and the integer source codes are permuted.
     design = {
         "op": np.array([0, 0, 35, 35, 24, 24], dtype=np.int64),
         "src": np.array([2, 2, 0, 0, 1, 1], dtype=np.int64),
