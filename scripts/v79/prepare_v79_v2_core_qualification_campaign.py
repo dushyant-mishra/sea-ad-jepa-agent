@@ -89,6 +89,13 @@ def _compact_donor_draw_count(contract: dict) -> int:
     return int(m.group(1))
 
 
+def _ppc_draw_count(contract: dict) -> int:
+    ppc=contract.get("scoring",{}).get("ppc",{})
+    draws=ppc.get("draws")
+    if not isinstance(draws,int) or draws<=0: _refuse("cannot parse frozen scoring.ppc.draws")
+    return int(draws)
+
+
 def _digest(base: Path) -> str:
     h=hashlib.sha256(); base=Path(base)
     for p in sorted((p for p in base.rglob("*") if p.is_file()), key=lambda x:x.relative_to(base).as_posix()):
@@ -126,7 +133,7 @@ def prepare(root: Path, package_dir: Path, authorization_path: Path, custody_dir
              "blinded_directory_digest":_digest(dst),
              "fit_contract_view_path":FIT_VIEW_NAME,"fit_contract_view_sha256":fit_view_sha,
              "authorization_path":AUTH_NAME,"authorization_sha256":auth_sha,
-             "fit_count":C.EXPECTED_FITS,"ppc_draws":int(contract["ppc"]["draws"]),
+             "fit_count":C.EXPECTED_FITS,"ppc_draws":_ppc_draw_count(contract),
              "donor_draws_stored":_compact_donor_draw_count(contract),
              "qualification_fits_run":0,"scoring_run":False,
              "truth_accessed":False,"training_authorized":False}
