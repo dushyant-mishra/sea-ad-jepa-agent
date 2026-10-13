@@ -1,0 +1,6 @@
+prefit archive: prefit/JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_PREFIT.tar.xz
+SHA256 ba0fa56a49ffa009a0225606fb48d8fb30c3bd410a6a264ef905db5d4bb18803
+SIZE   7018400
+MATCH (required ba0fa56a... / 7018400)
+source: GitHub Actions run 38438433970 artifact 11834580081 (td-relational-synthetic-v2-1-prefit-15f519c0...), zip sha256 97c89d0e1781b7fe8a3a0e4c5b84bcf181e7e1636cbcb0f81a2679a3dc076798
+controller artifact 11833833421 and cross-cert artifact 11832884948: NOT downloaded

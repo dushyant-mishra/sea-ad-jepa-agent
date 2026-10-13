@@ -1,0 +1,19 @@
+# byte-exact copies: <sha256>  <copy>  <- <source>
+33684b4e95a827fec82f4b3ad6129bc955142021271ba62d5e588f768960b9c1  record/BLINDED_FIT_RUN_RECORD.txt  <- D:/jepa_td_synthetic_phase1_20261013/record/BLINDED_FIT_RUN_RECORD.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  record/BLINDED_FIT_STDERR.txt  <- D:/jepa_td_synthetic_phase1_20261013/record/BLINDED_FIT_STDERR.txt
+962b3be56e2914b921185de16e49ded94218c0a38832f56f577fbdaf639dcb17  record/BLINDED_FIT_STDOUT.txt  <- D:/jepa_td_synthetic_phase1_20261013/record/BLINDED_FIT_STDOUT.txt
+043b3a983246093999ddf2367b7924da48f17990ca3cb896d08f75c249ae8014  record/CHECKOUT.txt  <- D:/jepa_td_synthetic_phase1_20261013/record/CHECKOUT.txt
+5be64755315b5396524ee4dad86a45a11f7b2902fdf28c5e1fc8e0a0fee4cc89  record/EXTRACTION_NOTE.txt  <- D:/jepa_td_synthetic_phase1_20261013/record/EXTRACTION_NOTE.txt
+bafac97b883acf4d957a0a67c2928ab1b6772ed67494a1e05a78cf3616653b92  record/PACKAGE_INVENTORY_AND_BINDING.txt  <- D:/jepa_td_synthetic_phase1_20261013/record/PACKAGE_INVENTORY_AND_BINDING.txt
+adad5878c70684304e00f8f5c0c9eac587d2531f5fe15008c63c73a6084a7f52  record/PHASE1_ENVIRONMENT.txt  <- D:/jepa_td_synthetic_phase1_20261013/record/PHASE1_ENVIRONMENT.txt
+fd833b4b91efd2f9479af35a36a5d7a4c9b6d02228f76c493a3590ab291d6159  record/PHASE1_ISOLATION_INVENTORY.txt  <- D:/jepa_td_synthetic_phase1_20261013/record/PHASE1_ISOLATION_INVENTORY.txt
+777cf7d22bebb92bda8f7d0c97de4f34660a6eec953f8ee12cb1cc8c5bf7e224  record/POST_RUN_IDENTITY.txt  <- D:/jepa_td_synthetic_phase1_20261013/record/POST_RUN_IDENTITY.txt
+a24ff205df91c9378726f3bc3f6c3c14210554f83718fa4be7a5c43103b3be2e  record/PREFIT_ARCHIVE_VERIFICATION.txt  <- D:/jepa_td_synthetic_phase1_20261013/record/PREFIT_ARCHIVE_VERIFICATION.txt
+3fd47f28d3bd69105220703d09205bb303fbf44cc574f79658120879f455b292  record/PREFLIGHT_RUN_RECORD.txt  <- D:/jepa_td_synthetic_phase1_20261013/record/PREFLIGHT_RUN_RECORD.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  record/PREFLIGHT_STDERR.txt  <- D:/jepa_td_synthetic_phase1_20261013/record/PREFLIGHT_STDERR.txt
+99b9209f9cfdefab244a424211728948e12a4b4b594bbd30a9702fa8b5957158  record/PREFLIGHT_STDOUT.txt  <- D:/jepa_td_synthetic_phase1_20261013/record/PREFLIGHT_STDOUT.txt
+13f105686a3e201492318b2b23edbc9aa9a640929fd7fc5fb7e1119167442b94  record/STRUCTURAL_AUDIT.json  <- D:/jepa_td_synthetic_phase1_20261013/record/STRUCTURAL_AUDIT.json
+edf1387543b687eb4df466907d4969e49b678c252f9d30699b9a47d7b5809022  output/phase1_preflight_receipt.json  <- D:/jepa_td_synthetic_phase1_20261013/output/phase1_preflight_receipt.json
+e67aace8dfa8b9823cf8635155a48f5a78faed0a45bf9edb6f7adcba07737684  output/TD_RELATIONAL_SUCCESSOR_BLINDED_FIT_RECEIPT_V4.json  <- D:/jepa_td_synthetic_phase1_20261013/output/TD_RELATIONAL_SUCCESSOR_BLINDED_FIT_RECEIPT_V4.json
+# not committed (authenticated CI transport; bytes remain in the phase-1 workspace):
+# ba0fa56a49ffa009a0225606fb48d8fb30c3bd410a6a264ef905db5d4bb18803  7018400 bytes  D:/jepa_td_synthetic_phase1_20261013/prefit/JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_PREFIT.tar.xz

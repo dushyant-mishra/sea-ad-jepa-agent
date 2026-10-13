@@ -1,0 +1,24 @@
+isolation_inventory_utc=2026-10-13T17:52:18Z
+--- phase-1 workspace files (sha256 size path):
+edf1387543b687eb4df466907d4969e49b678c252f9d30699b9a47d7b5809022 707 ./output/phase1_preflight_receipt.json
+c80f19cb88151a1f2687f1330a24b3fa32fafac26612216024bb5d9b008f00fc 904 ./phase1_package/metadata/td_interface_identity.json
+0977c30f6551df72e244423e1b37733cafa9178099bd0b9ab796beb8a52d2115 1861 ./phase1_package/pre_fit/fit_package_root.json
+29ba7dc106eee38b61536dd284fa008c7dc1abd499603a4373d58e1661163e37 1685710 ./phase1_package/pre_fit/fit_views/29ba7dc106eee38b61536dd284fa008c7dc1abd499603a4373d58e1661163e37.npz
+5948fb98014472a641c1d9552144ef5112f90fe28cea671f4c47668e6b77808f 1685710 ./phase1_package/pre_fit/fit_views/5948fb98014472a641c1d9552144ef5112f90fe28cea671f4c47668e6b77808f.npz
+65f186ef18a153a363fd868e5352ca570d033c38790a485361e82966d6e1f0cf 1685710 ./phase1_package/pre_fit/fit_views/65f186ef18a153a363fd868e5352ca570d033c38790a485361e82966d6e1f0cf.npz
+6a6137e37222f1f44a12c065fc7bcc2ad111ab89dc1b769be779ab30b49affd9 1685710 ./phase1_package/pre_fit/fit_views/6a6137e37222f1f44a12c065fc7bcc2ad111ab89dc1b769be779ab30b49affd9.npz
+829d3836bd71fbc956c29d596299e4b0937ee8e9253111125ac5c1b5483c0432 1685710 ./phase1_package/pre_fit/fit_views/829d3836bd71fbc956c29d596299e4b0937ee8e9253111125ac5c1b5483c0432.npz
+b6a447cb1c1ae40855bc4f1f8249302abcf6f6e4cdeff3c691a9ab1bdddb77f2 1685710 ./phase1_package/pre_fit/fit_views/b6a447cb1c1ae40855bc4f1f8249302abcf6f6e4cdeff3c691a9ab1bdddb77f2.npz
+b8aff89b65057822b89c6147049181adb2289452cf483d1c308119609374d76c 1685710 ./phase1_package/pre_fit/fit_views/b8aff89b65057822b89c6147049181adb2289452cf483d1c308119609374d76c.npz
+eb829f956e349c21ee6c935c5ea90f4190614a021b0477ac8a5dc8c72a6466ca 1685710 ./phase1_package/pre_fit/fit_views/eb829f956e349c21ee6c935c5ea90f4190614a021b0477ac8a5dc8c72a6466ca.npz
+f0eddc82221190e6dc2e7acb16626a9f1a6673748d4441334e66e81c6054ebce 1685710 ./phase1_package/pre_fit/fit_views/f0eddc82221190e6dc2e7acb16626a9f1a6673748d4441334e66e81c6054ebce.npz
+ab29bacd07fc6697eff8dfe48461ec5f1cc1ec7d378724b10def93910f98ac44 2041 ./phase1_package/pre_fit/TD_EXTERNAL_SYNTHETIC_PACKAGE_BINDING_V2.json
+ba0fa56a49ffa009a0225606fb48d8fb30c3bd410a6a264ef905db5d4bb18803 7018400 ./prefit/JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_PREFIT.tar.xz
+97c89d0e1781b7fe8a3a0e4c5b84bcf181e7e1636cbcb0f81a2679a3dc076798 7022095 ./transport/prefit_artifact_11834580081.zip
+--- transport zip members: ['JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_PREFIT.tar.xz', 'separated_transport_receipt.json']
+--- files in workspace with controller archive sha f554e2a9...: 0
+--- files in workspace of controller archive size 2028 bytes: 0
+--- controller-like names in workspace: 0
+--- TD checkout: HEAD=1f474a44a6baabc667dbfda726e0755426c732e7 porcelain_lines=0 ignored_lines=0; tree has no .tar.xz and no td_relational_synthetic path (checked by name)
+--- GitHub artifacts of run 38438433970 downloaded: only 11834580081 (prefit). 11833833421 (controller) and 11832884948 (cross-cert) were NOT downloaded.
+--- adjudicate subcommand: never invoked

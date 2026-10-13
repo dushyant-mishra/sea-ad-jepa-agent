@@ -1,0 +1,70 @@
+{
+ "schema": "JEPA_TD_RELATIONAL_SUCCESSOR_BLINDED_FIT_RECEIPT_V4",
+ "schema_ok": true,
+ "package_sha256": "0977c30f6551df72e244423e1b37733cafa9178099bd0b9ab796beb8a52d2115",
+ "package_binding_ok": true,
+ "package_id": "JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_20261013",
+ "fit_engine_identity_present": true,
+ "fit_engine_identity_matches_checkout": true,
+ "fit_engine_identity_keys": [
+  "scripts/v5/td_relational_successor_capability_reducer_v1.py",
+  "scripts/v5/td_relational_successor_disk_runner_v4.py",
+  "scripts/v5/td_relational_successor_estimability_v1.py",
+  "scripts/v5/td_relational_successor_gate_v2.py",
+  "scripts/v5/td_relational_successor_observed_executor_v2.py",
+  "scripts/v5/td_relational_successor_qualification_runner_v3.py",
+  "scripts/v5/td_relational_successor_synthetic_adapter_v2.py",
+  "scripts/v5/td_test_qualification_package_v2.py"
+ ],
+ "authority": {
+  "controller_truth_opened": false,
+  "real_execution_authorized": false,
+  "stage4_authorized": false,
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false
+ },
+ "controller_truth_opened_false": true,
+ "all_authority_flags_false": true,
+ "top_level_keys": [
+  "authority",
+  "fit_engine_identity",
+  "fit_receipt",
+  "package_id",
+  "package_sha256",
+  "schema"
+ ],
+ "fit_receipt_top_keys": [
+  "authority",
+  "controls",
+  "package_id",
+  "package_sha256",
+  "profiles"
+ ],
+ "fit_receipt_key_names_matching_label_words": []
+}
+{
+ "opaque_identity_check": {
+  "profiles": {
+   "container": "dict",
+   "count": 9,
+   "identifier_patterns": [
+    "opaque-prefixed"
+   ]
+  },
+  "controls": {
+   "container": "dict",
+   "count": 9,
+   "identifier_patterns": [
+    "opaque-prefixed"
+   ]
+  }
+ },
+ "fit_receipt_authority": {
+  "real_execution_authorized": false,
+  "stage4_authorized": false,
+  "target_selection_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false
+ }
+}
