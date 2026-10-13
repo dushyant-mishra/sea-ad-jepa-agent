@@ -28,6 +28,7 @@ _SOURCE_COMMITS = {
 _CALIBRATION = {
     "stat1_50k_physical_row_status": "QUARANTINED_NOT_HARD_AUTHORITY",
     "rare_frequency_source": "SYNTHETIC_STRESS_PRESETS_NOT_EMPIRICAL_CALIBRATION",
+    "pseudo_rarity_source": "SYNTHETIC_STRESS_PRESET_NOT_EMPIRICAL_CALIBRATION",
 }
 _INTEGRATION_SOURCE_FILES = (
     "scripts/v79/unified_synthetic_integration_v1.py",
