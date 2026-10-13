@@ -55,7 +55,7 @@ def test_concordance_distance_preserves_measured_zero_and_excludes_unmeasured():
     assert np.isfinite(dist[0, 1])
     assert np.isfinite(dist[0, 2])
     assert dist[1, 1] == 0.0
-    assert np.isnan(dist[2, 2]) is False
+    assert not np.isnan(dist[2, 2])
 
     measured_all_missing = measured.copy()
     measured_all_missing[2, :] = False
