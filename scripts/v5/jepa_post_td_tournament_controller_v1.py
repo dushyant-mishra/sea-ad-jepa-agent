@@ -48,7 +48,7 @@ def build_zero_update_teacher_screen(portfolio: Mapping) -> dict:
     if portfolio.get("schema") != C.PORTFOLIO_SCHEMA:
         raise PostTDTournamentError("invalid target portfolio schema")
     blocks = []
-    for block in portfolio.get("blocks", ()): 
+    for block in portfolio.get("blocks", ()):
         block_type = str(block.get("block_type", "")).upper()
         blocks.append({
             "block_id": block.get("block_id"),
@@ -83,6 +83,25 @@ def supervision_record(state: str) -> dict:
         "direct_supervision_allowed": direct,
         "encode_missing_as_zero": False,
     }
+
+
+_RECOVERABILITY_TO_SEMANTICS = {
+    "POINT_IDENTIFIABLE": frozenset({"POINT_STATE", "CONDITIONAL_MEAN"}),
+    "STOCHASTIC_IDENTIFIABLE": frozenset({"STATE_PLUS_UNCERTAINTY", "CONDITIONAL_DISTRIBUTION"}),
+    "TEACHER_PRIVATE": frozenset({"TEACHER_PRIVATE_CRITIC_ONLY"}),
+    "NOT_ESTIMABLE": frozenset({"ABSTAIN_NOT_ESTIMABLE"}),
+}
+
+
+def validate_recoverability_assignment(recoverability: str, semantics: str) -> str:
+    r = str(recoverability).upper()
+    s = str(semantics).upper()
+    if r not in _RECOVERABILITY_TO_SEMANTICS:
+        raise PostTDTournamentError(f"unknown recoverability class: {r}")
+    C.output_semantics_spec(s)
+    if s not in _RECOVERABILITY_TO_SEMANTICS[r]:
+        raise PostTDTournamentError(f"{r} cannot be assigned student semantics {s}")
+    return s
 
 
 def _validate_arm(
@@ -173,6 +192,36 @@ def build_architecture_tournament_manifest(
         "required_evaluator_gates": list(gates),
         "noncompensation_required": True,
         "aggregate_score_selection_authority": False,
+        "authority": _authority_off(),
+    }
+
+
+def build_ema_screen_manifest(
+    *,
+    architecture_arm: ArchitectureArm,
+    half_lives_presentations: Iterable[int],
+) -> dict:
+    values = [int(x) for x in half_lives_presentations]
+    if len(values) != 3 or len(set(values)) != 3 or any(x <= 0 for x in values):
+        raise PostTDTournamentError("EMA screen requires exactly three distinct positive half-lives")
+    ordered = sorted(values)
+    labels = ("SHORT", "INTERMEDIATE", "LONG")
+    arms = []
+    for label, half_life in zip(labels, ordered):
+        C.ema_momentum_for_presentations(1, half_life)
+        arms.append({
+            "label": label,
+            "half_life_presentations": half_life,
+            "architecture_arm_id": architecture_arm.arm_id,
+        })
+    return {
+        "schema": "JEPA_POST_TD_EMA_SCREEN_MANIFEST_V1",
+        "status": "READY_FOR_AUTHORIZED_EMA_TIMESCALE_SCREEN",
+        "native_unit": "SUCCESSFUL_BASE_CELL_PRESENTATIONS",
+        "architecture_arm": asdict(architecture_arm),
+        "arms": arms,
+        "production_half_life_selected": False,
+        "historical_fixed_beta_has_authority": False,
         "authority": _authority_off(),
     }
 
