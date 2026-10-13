@@ -58,6 +58,7 @@ jobs:
             tests/v5/test_td_relational_successor_gate_v1.py \
             tests/v5/test_td_relational_successor_synthetic_adapter_v1.py \
             tests/v5/test_td_relational_successor_observed_executor_v1.py \
+            tests/v5/test_td_relational_successor_prepared_context_v1.py \
             tests/v5/test_td_relational_successor_capability_reducer_v1.py \
             tests/v5/test_td_relational_successor_qualification_runner_v1.py \
             tests/v5/test_td_relational_successor_readiness_v1.py \
