@@ -36,6 +36,12 @@ CALIBRATION_BOUNDARY = {
     "pseudo_rarity_source": "SYNTHETIC_STRESS_PRESET_NOT_EMPIRICAL_CALIBRATION",
 }
 
+PERTURBATION_ARM_SEMANTICS = {
+    "0": "CONTROL",
+    "1": "ACTIVE_RARE_PROGRAM_PERTURBATION",
+    "2": "MATCHED_PERTURB_NULL",
+}
+
 # Synthetic stress presets only. These values intentionally do not reuse the
 # quarantined STAT1/50K empirical donor-frequency moments from PR #311.
 # They preserve the qualitative weak/central/strong/extreme rarity ordering
@@ -53,6 +59,7 @@ class IntegrationAuthority:
     source_commits: dict[str, str]
     authority: dict[str, bool]
     calibration: dict[str, str]
+    perturbation_arm_semantics: dict[str, str]
 
 
 def _contains_candidate(value: object) -> bool:
@@ -80,7 +87,15 @@ def validate_integration_manifest(manifest: Mapping[str, object]) -> Integration
     calibration = manifest.get("calibration")
     if not isinstance(calibration, Mapping) or dict(calibration) != CALIBRATION_BOUNDARY:
         raise ValueError("integration calibration boundary differs")
-    return IntegrationAuthority(dict(sources), {k: False for k in _AUTHORITY_KEYS}, dict(calibration))
+    perturbation = manifest.get("perturbation_arm_semantics")
+    if not isinstance(perturbation, Mapping) or dict(perturbation) != PERTURBATION_ARM_SEMANTICS:
+        raise ValueError("integration perturbation arm semantics differ")
+    return IntegrationAuthority(
+        dict(sources),
+        {k: False for k in _AUTHORITY_KEYS},
+        dict(calibration),
+        dict(perturbation),
+    )
 
 
 @dataclass(frozen=True)
@@ -262,6 +277,8 @@ def build_unified_biology(config: UnifiedBiologyConfig, *, seed: int) -> Unified
     rare_eligible = eligibility.any(axis=1)
 
     perturbation_arm = _balanced_perturbation_arms(latent.donor, rng)
+    # Only arm 1 is the active perturbation. Arm 2 is a matched perturb-null and
+    # is forbidden from changing the perturbation mechanism.
     perturbation_state = (perturbation_arm == 1) & rare_activity
 
     expected = np.asarray(latent.latent_abundance, dtype=np.float64).copy()
