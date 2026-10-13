@@ -1,0 +1,54 @@
+{
+  "schema": "JEPA_TD_REAL_GATE_EXECUTOR_READINESS_MATRIX_V1_SUMMARY",
+  "date": "2026-10-13",
+  "source_pr": 313,
+  "source_head": "206167a1eb86f1dec5f8285db56accbcd469bce9",
+  "scope": "outcome_blind_engineering_readiness_only",
+  "framework_provenance": {
+    "contract_file": "scripts/v5/td_real_tournament_contract_v1.py",
+    "contract_blob_sha": "20f5c9ebead2355e155cddbf8a5fd67ed250fe54",
+    "gate_bridge_file": "scripts/v5/td_real_tournament_gates_v1.py",
+    "gate_bridge_blob_sha": "cde740914257773a44410bfe9e163aa027bb385e",
+    "prior_readiness_file": "results/target_discovery/real_tournament/TD_REAL_GATE_EXECUTOR_READINESS_V1.json",
+    "prior_readiness_blob_sha": "5880e17f3f8ca3a031552d4df6711b72c0a4d217"
+  },
+  "readiness_classes": [
+    "CALLABLE_AND_QUALIFIED",
+    "CALLABLE_NEEDS_QUALIFICATION",
+    "RULE_NOT_MATERIALIZED",
+    "BLOCKED_ON_DEPENDENCY",
+    "NOT_APPLICABLE"
+  ],
+  "candidate_required_gate_counts": {
+    "C1_SHARED_EMERGENT": 15,
+    "C2_RELATIONAL_SHARED": 19,
+    "C3_QUERY_MEASURED": 19,
+    "C6_SHARED_QUERY_COMPOSITE": 24,
+    "C4_STRUCTURED_COMPOSITE": 28,
+    "C5_REGULATORY_SPECIALIST": 12
+  },
+  "gate_universe_count": 33,
+  "candidate_gate_row_count": 198,
+  "required_role_count": 117,
+  "readiness_counts": {
+    "CALLABLE_AND_QUALIFIED": 0,
+    "CALLABLE_NEEDS_QUALIFICATION": 0,
+    "RULE_NOT_MATERIALIZED": 117,
+    "BLOCKED_ON_DEPENDENCY": 0,
+    "NOT_APPLICABLE": 81
+  },
+  "all_required_roles_materialized": false,
+  "real_tournament_qualify_eligible": false,
+  "terminal": "BLOCKED_PROSPECTIVE_GATE_RULES_REQUIRED__NO_OUTCOME_READ",
+  "blocker": "Every one of the 117 required candidate-by-gate roles lacks an exact prospectively frozen gate-specific estimand, callable decision executor, and bound decision-rule identity. Historical descriptive cutoffs are not authorized substitutes.",
+  "next_engineering_gate": "Materialize the required gate-specific estimands and PASS/FAIL/NOT_ESTIMABLE rules prospectively, then bind executable code and exact SHA-256 identities before outcome-blind QUALIFY can become eligible.",
+  "authority": {
+    "value_read_authorized": false,
+    "real_tournament_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false
+  }
+}
