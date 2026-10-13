@@ -23,6 +23,24 @@ DESCRIPTIVE_SCHEMA="V79_V2_CORE_DESCRIPTIVE_METRICS_V1"
 ADJUDICATION_SCHEMA="V79_V2_CORE_QUALIFICATION_ADJUDICATION_V1"
 EXPECTED_FITS=1056
 EXPECTED_GATES=292
+# Frozen completed qualification campaign (evidence/v79-qualification-campaign-complete-a61437ba-20261013).
+CAMPAIGN_RECEIPT_SHA256="a0065925789c58409a85ccbf72d24f5c7b1be142a4d17eddc434babdf0d0e340"
+CAMPAIGN_CODE_SHA="a61437ba284e9e75b0557157ad68e56eacd8f8fe"
+CUSTODY_RECEIPT_SHA256="c5116d6273f82fd3b3c5450b6bb8d701e03ef7d17ba6ada98eb5ff5aec906b63"
+RESULT_LEDGER_SHA256="d467bb9b51336278ee46566173148a4f112eaa79cf578b8bbfae502cb4388b89"
+RESULT_FILE_COUNT=2113
+NOT_DIAGNOSED_FIT_IDS=frozenset({
+    "09bbe252aeb91c12eb996fbd60e5a420237ba4f317255278cdc6e4bfacf9daa6",
+    "6ca5f0876ccdac9c86bf5b2f07a4413fdd9f8b824ec8ad45ae84090d657e2f43",
+    "ede8a3a369d69133a85fa4a35a3bd24ca87e4a6c680599b671b9693efe7104a5",
+})
+# Frozen realization authority (results/v79/v2_core_realization_audit_freeze_v1, receipt above).
+REALIZATION_LEDGER_SHA256="4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65"
+WORLD_SET_DIRECTORY_DIGEST="40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286"
+REALIZED_FILE_COUNT=498
+CONTROLLER_TRUTH_FILE_COUNT=350
+COMMITTED_PACKAGE_FILE_COUNT=366
+BLINDED_FIT_FILE_COUNT=145
 DESCRIPTIVE_FAMILIES={"parameter_recovery","donor_recovery","detection_heldout","positive_heldout","ppc_q10_q11_second_stage"}
 
 class ScoreAuthorityRefused(RuntimeError): pass
@@ -36,13 +54,16 @@ def _git_sha(value)->bool: return isinstance(value,str) and re.fullmatch(r"[0-9a
 def load_completed_campaign(path:Path, *, expected_sha256:str)->dict:
     path=Path(path)
     if not _hex64(expected_sha256) or not path.is_file(): _refuse("campaign receipt path/hash missing")
+    if expected_sha256!=CAMPAIGN_RECEIPT_SHA256: _refuse("expected campaign receipt is not the frozen completed campaign")
     raw=path.read_bytes(); actual=hashlib.sha256(raw).hexdigest()
     if actual!=expected_sha256: _refuse("campaign receipt SHA-256 mismatch")
     try: rec=json.loads(raw.decode("utf-8"))
     except Exception as exc: _refuse(f"invalid campaign receipt JSON: {exc}")
     if _canon(rec)!=raw or rec.get("schema")!=CAMPAIGN_SCHEMA: _refuse("campaign receipt schema/canonical bytes differ")
-    if not _git_sha(rec.get("code_sha")) or not _hex64(rec.get("custody_receipt_sha256")):
-        _refuse("campaign code/custody authority differs")
+    if rec.get("code_sha")!=CAMPAIGN_CODE_SHA:
+        _refuse(f"campaign code head {rec.get('code_sha')!r} differs from the frozen campaign code head")
+    if rec.get("custody_receipt_sha256")!=CUSTODY_RECEIPT_SHA256:
+        _refuse("campaign custody receipt differs from the frozen custody receipt")
     if rec.get("planned_fit_count")!=EXPECTED_FITS or rec.get("qualification_fits_run")!=EXPECTED_FITS:
         _refuse("campaign receipt is not the complete 1,056-fit campaign")
     if rec.get("benchmark_run") is not False or rec.get("scoring_run") is not False or rec.get("truth_accessed") is not False or rec.get("training_authorized") is not False:
@@ -73,6 +94,8 @@ def validate_scoring_authorization(auth:Mapping|None, *, campaign_receipt_sha256
         _refuse("scoring authorization does not bind frozen V79 authorities")
     if not _hex64(campaign_receipt_sha256) or auth.get("campaign_receipt_sha256")!=campaign_receipt_sha256:
         _refuse("scoring authorization campaign receipt hash differs")
+    if campaign_receipt_sha256!=CAMPAIGN_RECEIPT_SHA256:
+        _refuse("scoring authorization must bind the frozen completed campaign receipt")
     if not _git_sha(scorer_code_sha) or auth.get("scorer_code_sha")!=scorer_code_sha:
         _refuse("scoring authorization scorer code head differs")
     if auth.get("real_train_posterior_authorized") is not False or auth.get("factorial_science_authorized") is not False or auth.get("training_authorized") is not False:
@@ -95,6 +118,7 @@ def build_adjudication_receipt(*, scorer_code_sha:str, campaign_receipt_sha256:s
     if not _git_sha(scorer_code_sha): _refuse("scorer_code_sha must be an exact 40-hex Git commit")
     for label,value in (("campaign_receipt_sha256",campaign_receipt_sha256),("scoring_authorization_sha256",scoring_authorization_sha256)):
         if not _hex64(value): _refuse(f"{label} must be 64-hex")
+    if campaign_receipt_sha256!=CAMPAIGN_RECEIPT_SHA256: _refuse("adjudication must bind the frozen completed campaign receipt")
     if not isinstance(gate_table,Mapping) or gate_table.get("schema")!="V79_V2_CORE_GATE_SCORE_TABLE_V1": _refuse("gate table schema differs")
     rows=gate_table.get("rows"); terminal=gate_table.get("terminal")
     if not isinstance(rows,list) or len(rows)!=EXPECTED_GATES or not isinstance(terminal,Mapping): _refuse("gate table is incomplete")

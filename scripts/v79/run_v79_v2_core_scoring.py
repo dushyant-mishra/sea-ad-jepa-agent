@@ -148,37 +148,46 @@ def q10_q11_heldout_model_metric(fit_receipt: Mapping) -> float:
     return float(value)
 
 
+SCORING_OUTPUT_KEYS = ("scored_rows", "gate_table", "heldout_oracle", "descriptive_metrics", "adjudication")
+
+
 def scoring_run_receipt(*, scorer_code_sha: str, campaign_receipt_sha256: str,
-                        scoring_authorization_sha256: str, scored_rows_sha256: str,
-                        gate_table_sha256: str, descriptive_metrics_sha256: str,
-                        adjudication_sha256: str) -> dict:
+                        scoring_authorization_sha256: str, outputs: Mapping[str, str],
+                        authentication_steps) -> dict:
+    """Final write-once run receipt. The caller builds it only after the truth barrier was crossed
+    following every authentication step and after every output was written and re-verified."""
     if not _git_sha(scorer_code_sha):
         _refuse("scorer code head must be exact 40-hex Git SHA")
-    hashes = {
-        "campaign_receipt_sha256": campaign_receipt_sha256,
-        "scoring_authorization_sha256": scoring_authorization_sha256,
-        "scored_rows": scored_rows_sha256,
-        "gate_table": gate_table_sha256,
-        "descriptive_metrics": descriptive_metrics_sha256,
-        "adjudication": adjudication_sha256,
-    }
-    if any(not _hex64(v) for v in hashes.values()):
-        _refuse("scoring receipt hash binding must be 64-hex")
+    if campaign_receipt_sha256 != A.CAMPAIGN_RECEIPT_SHA256:
+        _refuse("scoring receipt must bind the frozen completed campaign receipt")
+    if not _hex64(scoring_authorization_sha256):
+        _refuse("scoring authorization hash must be 64-hex")
+    if not isinstance(outputs, Mapping) or set(outputs) != set(SCORING_OUTPUT_KEYS) or any(not _hex64(v) for v in outputs.values()):
+        _refuse("scoring receipt requires exactly the complete set of 64-hex output hashes")
+    steps = list(authentication_steps) if isinstance(authentication_steps, (list, tuple)) else None
+    if not steps or any(not isinstance(s, str) or not s for s in steps):
+        _refuse("scoring receipt requires the ordered authentication steps")
     return {
-        "schema": "V79_V2_CORE_QUALIFICATION_SCORING_RUN_RECEIPT_V1",
-        "contract_sha256": A.CONTRACT_SHA256,
-        "root_manifest_sha256": A.ROOT_MANIFEST_SHA256,
-        "blinded_index_sha256": A.BLINDED_INDEX_SHA256,
-        "realization_audit_receipt_sha256": A.REALIZATION_AUDIT_RECEIPT_SHA256,
-        "campaign_receipt_sha256": campaign_receipt_sha256,
-        "scoring_authorization_sha256": scoring_authorization_sha256,
+        "schema": "V79_V2_CORE_QUALIFICATION_SCORING_RUN_RECEIPT_V2",
         "scorer_code_sha": scorer_code_sha,
-        "outputs": {
-            "scored_rows": scored_rows_sha256,
-            "gate_table": gate_table_sha256,
-            "descriptive_metrics": descriptive_metrics_sha256,
-            "adjudication": adjudication_sha256,
+        "scoring_authorization_sha256": scoring_authorization_sha256,
+        "inputs": {
+            "contract_sha256": A.CONTRACT_SHA256,
+            "root_manifest_sha256": A.ROOT_MANIFEST_SHA256,
+            "blinded_index_sha256": A.BLINDED_INDEX_SHA256,
+            "realization_audit_receipt_sha256": A.REALIZATION_AUDIT_RECEIPT_SHA256,
+            "realization_ledger_sha256": A.REALIZATION_LEDGER_SHA256,
+            "world_set_directory_digest": A.WORLD_SET_DIRECTORY_DIGEST,
+            "campaign_receipt_sha256": campaign_receipt_sha256,
+            "campaign_code_sha": A.CAMPAIGN_CODE_SHA,
+            "custody_receipt_sha256": A.CUSTODY_RECEIPT_SHA256,
+            "result_ledger_sha256": A.RESULT_LEDGER_SHA256,
         },
+        "fit_count": A.EXPECTED_FITS,
+        "gate_count": A.EXPECTED_GATES,
+        "not_diagnosed_fit_ids": sorted(A.NOT_DIAGNOSED_FIT_IDS),
+        "outputs": dict(outputs),
+        "truth_open_last": {"authentication_steps": steps, "barrier_crossed_after_all_steps": True},
         "qualification_scoring_run": True,
         "real_train_posterior_authorized": False,
         "factorial_science_authorized": False,
