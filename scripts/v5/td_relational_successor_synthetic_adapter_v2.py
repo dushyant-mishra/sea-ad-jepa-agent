@@ -21,6 +21,7 @@ MANDATORY_RELATIONAL_CAPABILITIES = (
     "REL_NULL_NEGATIVE",
     "REL_UNDERPOWERED_POSITIVE",
 )
+OPAQUE_CONTROL_PROFILE_COUNT = 5
 
 _EXECUTOR_INPUT_FIELDS = frozenset({
     "source", "panel_id",
@@ -42,7 +43,7 @@ _FORBIDDEN_UPSTREAM_TD_FIELDS = frozenset({
 _FORBIDDEN_CONTROL_ID_TOKENS = (
     "REL_", "DONOR_MATCHED_COMMON", "DEPTH_DETECTED_SUM_MATCHED", "SOURCE_OPERATOR_MATCHED",
     "WRONG_CELL", "PSEUDO_RARE_TECHNICAL", "POSITIVE_TRUTH", "NEGATIVE_TRUTH",
-    "UNDERIDENTIFIED_TRUTH", "STRESS_TRUTH",
+    "UNDERIDENTIFIED_TRUTH", "STRESS_TRUTH", "RARE", "NULL", "TECHNICAL",
 )
 _PAYLOAD_FIELDS = frozenset({"authenticated_fit_view_sha256", "executor_input"})
 _AUTHORITY = {
@@ -68,6 +69,10 @@ class RelationalQualificationAdapterReceipt:
 def _validate_control_profiles(value, challenge_id: str) -> dict:
     if not isinstance(value, Mapping):
         raise RelationalAdapterError(f"control_profiles must be a mapping: {challenge_id}")
+    if len(value) != OPAQUE_CONTROL_PROFILE_COUNT:
+        raise RelationalAdapterError(
+            f"every blinded challenge must carry exactly {OPAQUE_CONTROL_PROFILE_COUNT} opaque control profiles: {challenge_id}"
+        )
     out = {}
     for control_id, rec in value.items():
         if not isinstance(control_id, str) or not control_id:
