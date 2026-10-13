@@ -25,18 +25,58 @@ _SOURCE_COMMITS = {
     "pr311": "2b6d3439105e087acdab53a318c57bbb468eae26",
     "pr315": "af03ef67d52651463944a6de3a08e101ad00e0ea",
 }
+_INTEGRATION_SOURCE_FILES = (
+    "scripts/v79/unified_synthetic_integration_v1.py",
+    "scripts/v79/unified_synthetic_fit_view_v1.py",
+    "scripts/v79/unified_synthetic_controller_truth_v1.py",
+    "scripts/v79/finalize_unified_synthetic_integration_v1.py",
+)
 
 
 def _canon(value: Mapping[str, object]) -> bytes:
     return (json.dumps(dict(value), sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n").encode("utf-8")
 
 
+def _sha_file(path: Path) -> str:
+    if path.is_symlink() or not path.is_file():
+        raise ValueError(f"required custody file missing or symlinked: {path}")
+    h=sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(1024*1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _integration_source_identity(repo_root: Path) -> dict[str, str]:
+    root=repo_root.resolve()
+    identity={}
+    for rel in _INTEGRATION_SOURCE_FILES:
+        path=(root/rel)
+        try:
+            path.resolve(strict=True).relative_to(root)
+        except Exception as exc:
+            raise ValueError(f"integration source escapes repository: {rel}") from exc
+        identity[rel]=_sha_file(path)
+    return identity
+
+
 def build_integration_receipt(*, world: UnifiedBiologyWorld, fit_view: UnifiedFitView,
-                              controller_truth: UnifiedControllerTruth) -> dict[str, object]:
+                              controller_truth: UnifiedControllerTruth, repo_root: Path,
+                              integration_manifest_path: Path) -> dict[str, object]:
     if fit_view.world_hash != world.world_hash:
         raise ValueError("fit view is not bound to supplied world")
     if controller_truth.world_sha256 != world.world_hash:
         raise ValueError("controller truth is not bound to supplied world")
+    root=Path(repo_root).resolve()
+    manifest_path=Path(integration_manifest_path)
+    if not manifest_path.is_absolute():
+        manifest_path=root/manifest_path
+    try:
+        manifest_path.resolve(strict=True).relative_to(root)
+    except Exception as exc:
+        raise ValueError("integration manifest must be inside repository") from exc
+    manifest_sha=_sha_file(manifest_path)
+    source_identity=_integration_source_identity(root)
     fit_sha = fit_view_sha256(fit_view)
     controller_sha = controller_truth_sha256(controller_truth)
     package_identity = {
@@ -44,11 +84,15 @@ def build_integration_receipt(*, world: UnifiedBiologyWorld, fit_view: UnifiedFi
         "world_sha256": world.world_hash,
         "fit_view_sha256": fit_sha,
         "source_commits": _SOURCE_COMMITS,
+        "integration_manifest_sha256": manifest_sha,
+        "integration_source_sha256": source_identity,
     }
     package_sha = sha256(_canon(package_identity)).hexdigest()
     return {
         "schema": "UNIFIED_SYNTHETIC_INTEGRATION_RECEIPT_V1",
         "source_commits": dict(_SOURCE_COMMITS),
+        "integration_manifest_sha256": manifest_sha,
+        "integration_source_sha256": source_identity,
         "world_sha256": world.world_hash,
         "fit_view_sha256": fit_sha,
         "controller_truth_sha256": controller_sha,
