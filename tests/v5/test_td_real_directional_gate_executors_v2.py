@@ -140,7 +140,57 @@ def test_g10_requires_exact_candidate_mandatory_falsifier_set():
     assert D.evaluate_directional_gate("G10_COLLAPSE_SHORTCUT_RESISTANCE", bad)["status"] == "NOT_ESTIMABLE"
 
 
+def test_m1_requires_disjoint_construction_and_deciding_evidence():
+    passed = D.evaluate_directional_gate(
+        "M1_CIRCULARITY_CONTROL",
+        {"construction_evidence_ids": ["A", "B"], "deciding_evidence_ids": ["C"]},
+    )
+    failed = D.evaluate_directional_gate(
+        "M1_CIRCULARITY_CONTROL",
+        {"construction_evidence_ids": ["A", "B"], "deciding_evidence_ids": ["B", "C"]},
+    )
+    assert passed["status"] == "PASS"
+    assert failed["status"] == "FAIL"
+    assert D.evaluate_directional_gate("M1_CIRCULARITY_CONTROL", {})["status"] == "NOT_ESTIMABLE"
+
+
+def test_m2_requires_authenticated_independent_provenance():
+    passed = D.evaluate_directional_gate(
+        "M2_INDEPENDENT_PROVENANCE",
+        {"provenance_authenticated": True, "independent_of_target_selection": True},
+    )
+    exposed = D.evaluate_directional_gate(
+        "M2_INDEPENDENT_PROVENANCE",
+        {"provenance_authenticated": True, "independent_of_target_selection": False},
+    )
+    assert passed["status"] == "PASS"
+    assert exposed["status"] == "FAIL"
+    assert D.evaluate_directional_gate("M2_INDEPENDENT_PROVENANCE", {})["status"] == "NOT_ESTIMABLE"
+
+
 def test_m3_only_passes_explicit_noncausal_claim_scope():
     assert D.evaluate_directional_gate("M3_CAUSAL_CLAIM_FALSE", {"causal_claim_asserted": False})["status"] == "PASS"
     assert D.evaluate_directional_gate("M3_CAUSAL_CLAIM_FALSE", {"causal_claim_asserted": True})["status"] == "FAIL"
     assert D.evaluate_directional_gate("M3_CAUSAL_CLAIM_FALSE", {})["status"] == "NOT_ESTIMABLE"
+
+
+def test_m4_preserves_missing_and_unsupported_as_abstention():
+    passed = D.evaluate_directional_gate(
+        "M4_SUPPORT_ABSTENTION",
+        {
+            "unsupported_converted_to_numeric": False,
+            "missing_evidence_treated_as_zero": False,
+            "imputation_used": False,
+        },
+    )
+    failed = D.evaluate_directional_gate(
+        "M4_SUPPORT_ABSTENTION",
+        {
+            "unsupported_converted_to_numeric": False,
+            "missing_evidence_treated_as_zero": True,
+            "imputation_used": False,
+        },
+    )
+    assert passed["status"] == "PASS"
+    assert failed["status"] == "FAIL"
+    assert D.evaluate_directional_gate("M4_SUPPORT_ABSTENTION", {})["status"] == "NOT_ESTIMABLE"
