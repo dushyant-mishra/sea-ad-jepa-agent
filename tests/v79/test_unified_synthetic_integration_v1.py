@@ -4,6 +4,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
+import scripts.v79.unified_synthetic_integration_v1 as U
 from scripts.v79.unified_synthetic_integration_v1 import (
     UnifiedBiologyConfig, build_unified_biology, validate_integration_manifest,
 )
@@ -54,6 +55,15 @@ def test_unified_population_reuses_all_pr311_rare_regimes_without_parallel_world
     active_rates=w.rare_donor_active.mean(axis=0)
     expected=np.array([REGIMES[r]["active_prob"] for r in w.rare_regime_ids])
     assert np.max(np.abs(active_rates-expected)) < 0.20
+
+def test_no_posthoc_positive_is_injected_to_make_a_rare_regime_visible(monkeypatch):
+    def active_but_zero_prevalence(rng, cfg):
+        return np.ones(cfg.n_donors, dtype=bool), np.zeros(cfg.n_donors, dtype=np.float32)
+    monkeypatch.setattr(U, "_donor_latent", active_but_zero_prevalence)
+    w=build_unified_biology(UnifiedBiologyConfig(n_cells=240,n_genes=32,n_donors=12), seed=91)
+    assert w.rare_donor_active.all()
+    assert not w.rare_program_activity.any()
+    assert not w.rare_activity.any()
 
 def test_context_and_perturbation_design_are_embedded_in_same_population():
     w=build_unified_biology(UnifiedBiologyConfig(n_cells=1200,n_genes=64,n_donors=30), seed=211)
