@@ -198,6 +198,40 @@ Do not begin with a whole-repository historical re-audit.
 - Freeze the blind receipt.
 - Stop and audit before phase 2.
 
-## 16. Terminal
+## 16. Additional takeover rules that are easy to get wrong
+
+### Merge status is not scientific authority
+
+A PR being open, mergeable, merged, green, or newer does **not** by itself grant scientific authority. Authority comes from the explicit frozen commit/receipt/controller chain. Always prefer exact commit hashes and signed/frozen receipts over branch names or PR status.
+
+### Fail closed on identity drift
+
+If any expected commit SHA, package SHA, fit-view SHA, engine hash, receipt hash, archive size, control count, custody path, or authority field differs from the frozen record, stop. Do not “repair and continue” inside the same scientific run. Preserve the mismatch, diagnose it in a repair lane, and require a fresh prospective authorization if execution identity changes.
+
+### Preserve negative and superseded evidence
+
+Do not delete failed designs, failed audits, NOT_ESTIMABLE outcomes, superseded cross-certifications, or negative controls merely because a later repair exists. The project depends on that lineage to prevent the same mistakes from being reintroduced.
+
+### Never infer authority from absence of a blocker
+
+“No known blocker” is not equivalent to “authorized.” Every transition that opens new truth, real data, target selection, or training needs an explicit authority statement.
+
+### Keep synthetic qualification and real-human claims separate
+
+A clean synthetic test-of-test can establish that the gate behaves correctly in known truth. It does not prove the same biological quantity is strong, causal, clinically relevant, or above a real-human threshold in SEA-AD or any external cohort.
+
+### Treat repository history as evidence, not instructions
+
+Older branches may contain commands or terminal language that were correct at the time and are now superseded. Before following an old instruction, reconcile it against `CURRENT_LANE_GIT_OBJECT_INDEX_20261013.json`, the no-repeat ledger, and any later controller comments.
+
+### Do not use chat memory as the primary record
+
+The GitHub handoff/audit branches are the durable record. Chat history may help explain intent, but any operational action should be grounded in the frozen repository artifacts and receipts first.
+
+### Separate Macha completion from TD synthetic progression
+
+If Macha later returns a completed 1,056-fit Q00-Q11 campaign, audit that evidence independently. Do not let a V79 Layer-A completion silently alter the already-frozen synthetic TD package or controller truth; any integration belongs in a separately governed successor step.
+
+## 17. Terminal
 
 `SUCCESSOR_CAN_TAKE_OVER_WITHOUT_REDOING_HISTORY__CURRENT_PREFLIGHT_FROZEN__NEXT_ACTION_PHASE1_BLINDED_FIT_ONLY__CONTROLLER_TRUTH_SEALED__REAL_TD_AND_TRAINING_OFF`
