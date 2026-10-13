@@ -62,7 +62,7 @@ jobs:
           import hashlib, json, sys
           from pathlib import Path
           sys.path.insert(0, 'scripts/v79')
-          import finalize_td_relational_synthetic_package_v2_1 as F
+          import finalize_td_relational_synthetic_package_v2_1_1 as F
 
           td = Path('_td')
           files = {
@@ -79,6 +79,7 @@ jobs:
               td_commit_sha='1f474a44a6baabc667dbfda726e0755426c732e7',
               td_interface_hashes=hashes,
           )
+          assert receipt['controller_manifest_sha256'] != receipt['controller_commitment_sha256']
           Path('qualification-v2-1/separated_transport_receipt.json').write_text(
               json.dumps(receipt, sort_keys=True, separators=(',', ':')) + '\n', encoding='utf-8'
           )
@@ -188,12 +189,13 @@ jobs:
           binding = json.load(open('_cert/extracted/pre_fit/TD_EXTERNAL_SYNTHETIC_PACKAGE_BINDING_V2.json'))
           fit_hashes = sorted(rec['sha256'] for rec in binding['fit_views'])
           receipt = {
-              'schema': 'JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_CROSS_CERTIFICATION_V1',
+              'schema': 'JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_CROSS_CERTIFICATION_V2',
               'synthetic_commit_sha': '${{ github.sha }}',
               'td_commit_sha': '1f474a44a6baabc667dbfda726e0755426c732e7',
               'package_sha256': transport['package_sha256'],
               'binding_sha256': transport['binding_sha256'],
               'controller_manifest_sha256': transport['controller_manifest_sha256'],
+              'controller_commitment_sha256': transport['controller_commitment_sha256'],
               'fit_view_sha256': fit_hashes,
               'prefit_archive_sha256': transport['prefit_archive_sha256'],
               'prefit_archive_size_bytes': transport['prefit_archive_size_bytes'],
@@ -217,6 +219,7 @@ jobs:
               },
           }
           assert receipt['preflight_status'] == 'READY_TO_EXECUTE_BLIND_FIT'
+          assert receipt['controller_manifest_sha256'] != receipt['controller_commitment_sha256']
           assert len(receipt['fit_view_sha256']) == 9 and len(set(receipt['fit_view_sha256'])) == 9
           out = Path('_cert/compatibility_certification_receipt.json')
           out.write_text(json.dumps(receipt, sort_keys=True, separators=(',', ':')) + '\n', encoding='utf-8')
