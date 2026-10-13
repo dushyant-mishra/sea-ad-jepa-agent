@@ -35,6 +35,19 @@ def test_manifest_requires_exact_calibration_boundary():
     with pytest.raises(ValueError, match="calibration"):
         validate_integration_manifest(m)
 
+def test_manifest_requires_exact_perturbation_arm_semantics():
+    m=json.loads(MANIFEST.read_text())
+    assert m["perturbation_arm_semantics"] == {
+        "0": "CONTROL",
+        "1": "ACTIVE_RARE_PROGRAM_PERTURBATION",
+        "2": "MATCHED_PERTURB_NULL",
+    }
+    assert m["perturbation_arm_semantics"] == U.PERTURBATION_ARM_SEMANTICS
+    bad=json.loads(MANIFEST.read_text())
+    bad["perturbation_arm_semantics"]["2"]="ACTIVE"
+    with pytest.raises(ValueError, match="perturbation"):
+        validate_integration_manifest(bad)
+
 def test_candidate_identifiers_are_rejected_from_config():
     with pytest.raises(ValueError, match="candidate"):
         UnifiedBiologyConfig(extra_metadata={"C2_relational": True})
@@ -107,3 +120,12 @@ def test_context_and_perturbation_design_are_embedded_in_same_population():
     assert set(np.unique(w.perturbation_arm)) == {0,1,2}
     assert np.all(w.perturbation_state <= (w.perturbation_arm == 1))
     assert np.all(w.perturbation_state <= w.rare_activity)
+
+def test_matched_perturb_null_arm_cannot_activate_target_mechanism():
+    w=build_unified_biology(UnifiedBiologyConfig(n_cells=1200,n_genes=64,n_donors=30), seed=211)
+    assert not w.perturbation_state[w.perturbation_arm == 2].any()
+    assert not w.perturbation_state[w.perturbation_arm == 0].any()
+    assert np.array_equal(
+        w.perturbation_state,
+        (w.perturbation_arm == 1) & w.rare_activity,
+    )
