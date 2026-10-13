@@ -30,6 +30,12 @@ _AUTHORITY_KEYS = (
 )
 _CANDIDATE = re.compile(r"(?:^|[^A-Z0-9])C[1-6](?:[^A-Z0-9]|$)", re.IGNORECASE)
 
+CALIBRATION_BOUNDARY = {
+    "stat1_50k_physical_row_status": "QUARANTINED_NOT_HARD_AUTHORITY",
+    "rare_frequency_source": "SYNTHETIC_STRESS_PRESETS_NOT_EMPIRICAL_CALIBRATION",
+    "pseudo_rarity_source": "SYNTHETIC_STRESS_PRESET_NOT_EMPIRICAL_CALIBRATION",
+}
+
 # Synthetic stress presets only. These values intentionally do not reuse the
 # quarantined STAT1/50K empirical donor-frequency moments from PR #311.
 # They preserve the qualitative weak/central/strong/extreme rarity ordering
@@ -72,12 +78,8 @@ def validate_integration_manifest(manifest: Mapping[str, object]) -> Integration
     if any(authority[k] is not False for k in _AUTHORITY_KEYS):
         raise ValueError("integration authority escalation refused")
     calibration = manifest.get("calibration")
-    if (
-        not isinstance(calibration, Mapping)
-        or calibration.get("stat1_50k_physical_row_status") != "QUARANTINED_NOT_HARD_AUTHORITY"
-        or calibration.get("rare_frequency_source") != "SYNTHETIC_STRESS_PRESETS_NOT_EMPIRICAL_CALIBRATION"
-    ):
-        raise ValueError("50K STAT1 calibration caveat missing")
+    if not isinstance(calibration, Mapping) or dict(calibration) != CALIBRATION_BOUNDARY:
+        raise ValueError("integration calibration boundary differs")
     return IntegrationAuthority(dict(sources), {k: False for k in _AUTHORITY_KEYS}, dict(calibration))
 
 
