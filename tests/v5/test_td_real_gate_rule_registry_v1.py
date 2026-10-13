@@ -48,7 +48,7 @@ def test_only_explicitly_structural_rules_are_callable_before_quantitative_prefr
         assert rule["source_semantics"] == "observation_operator_not_biological_replicate"
         if gate_id in CALLABLE_STRUCTURAL:
             assert rule["rule_kind"] == "STRUCTURAL_PROVENANCE"
-            assert rule["callable_implementation"] == "td_real_gate_rule_registry_v1.evaluate_structural_gate"
+            assert rule["callable_implementation"] == "td_real_gate_rule_registry_v1.execute_structural_gate"
             assert len(rule["estimand_sha256"]) == 64
             assert len(rule["decision_rule_sha256"]) == 64
             assert rule["threshold_source"] == "NO_NUMERIC_THRESHOLD__FROZEN_STRUCTURAL_RULE"
