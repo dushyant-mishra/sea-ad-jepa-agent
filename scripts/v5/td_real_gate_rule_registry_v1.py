@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 from collections.abc import Mapping, Sequence
+from pathlib import Path
 
 import td_query_information_guard as Q
 import td_real_tournament_contract_v1 as C
@@ -25,6 +26,16 @@ CALLABLE_STRUCTURAL = {
     "Q1_Q_SCALAR_STUDENT_ABSENT",
     "Q2_Q_EXCLUDED_TEACHER_PRIMARY_ANCHOR",
     "Q3_TARGET_NORMALIZATION_Q_SCALAR_FREE",
+}
+
+_QUALIFICATION_FIELDS = {
+    "schema",
+    "status",
+    "registry_sha256",
+    "query_guard_sha256",
+    "executor_bundle_sha256",
+    "candidate_outcomes_opened",
+    "real_tournament_authorized",
 }
 
 _QUERY_GUARD_REUSE = {
@@ -72,9 +83,20 @@ _STRUCTURAL_SPECS = {
 }
 
 
-def _sha(value) -> str:
-    payload = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
+def canonical_sha256(value) -> str:
+    try:
+        payload = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    except (TypeError, ValueError) as exc:
+        raise GateRuleError("value must be canonical-JSON serializable") from exc
     return hashlib.sha256(payload).hexdigest()
+
+
+def _sha(value) -> str:
+    return canonical_sha256(value)
+
+
+def _file_sha256(path: str | Path) -> str:
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def _gate_universe() -> list[str]:
@@ -105,7 +127,7 @@ def _build_rules() -> dict[str, dict]:
                 "required_fields": list(spec["required_fields"]),
                 "decision_rule": spec["decision_rule"],
                 "threshold_source": "NO_NUMERIC_THRESHOLD__FROZEN_STRUCTURAL_RULE",
-                "callable_implementation": "td_real_gate_rule_registry_v1.evaluate_structural_gate",
+                "callable_implementation": "td_real_gate_rule_registry_v1.execute_structural_gate",
                 "estimand_sha256": _sha({"gate_id": gate_id, "estimand": spec["estimand"]}),
                 "decision_rule_sha256": _sha({
                     "gate_id": gate_id,
@@ -197,6 +219,53 @@ def evaluate_structural_gate(gate_id: str, evidence: Mapping) -> str:
     raise GateRuleError(f"structural evaluator missing implementation: {gate_id}")
 
 
+def _authenticate_qualification_receipt(receipt: Mapping) -> str:
+    if not isinstance(receipt, Mapping) or set(receipt) != _QUALIFICATION_FIELDS:
+        raise GateRuleError("exact structural qualification receipt required")
+    if receipt.get("schema") != "JEPA_TD_REAL_STRUCTURAL_GATE_QUALIFICATION_V1":
+        raise GateRuleError("structural qualification receipt schema mismatch")
+    if receipt.get("status") != "PASS_OUTCOME_BLIND_STRUCTURAL_EXECUTOR_MECHANICS":
+        raise GateRuleError("structural executor mechanics are not qualified")
+    if receipt.get("candidate_outcomes_opened") is not False:
+        raise GateRuleError("structural qualification may not open candidate outcomes")
+    if receipt.get("real_tournament_authorized") is not False:
+        raise GateRuleError("structural qualification receipt may not authorize real tournament")
+
+    registry_sha = _file_sha256(__file__)
+    query_guard_sha = _file_sha256(Q.__file__)
+    if receipt.get("registry_sha256") != registry_sha:
+        raise GateRuleError("structural registry SHA-256 mismatch")
+    if receipt.get("query_guard_sha256") != query_guard_sha:
+        raise GateRuleError("query information guard SHA-256 mismatch")
+    expected_bundle = canonical_sha256({
+        "query_guard_sha256": query_guard_sha,
+        "registry_sha256": registry_sha,
+    })
+    if receipt.get("executor_bundle_sha256") != expected_bundle:
+        raise GateRuleError("structural executor bundle SHA-256 mismatch")
+    return expected_bundle
+
+
+def execute_structural_gate(gate_id: str, evidence: Mapping, *, qualification_receipt: Mapping) -> dict:
+    if gate_id not in CALLABLE_STRUCTURAL:
+        raise GateRuleError(f"gate is not a qualified structural executor candidate: {gate_id}")
+    executor_bundle_sha = _authenticate_qualification_receipt(qualification_receipt)
+    if not isinstance(evidence, Mapping):
+        raise GateRuleError("evidence must be a mapping")
+    raw = dict(evidence)
+    evidence_sha = canonical_sha256(raw)
+    status = evaluate_structural_gate(gate_id, raw)
+    rule = RULES[gate_id]
+    return {
+        "status": status,
+        "qualified_gate_executor_sha256": executor_bundle_sha,
+        "estimand_sha256": rule["estimand_sha256"],
+        "decision_rule_sha256": rule["decision_rule_sha256"],
+        "evidence_payload_sha256": evidence_sha,
+        "raw_sufficient_statistics": raw,
+    }
+
+
 def validate_rule_registry() -> dict:
     universe = _gate_universe()
     if len(universe) != len(set(universe)) or set(RULES) != set(universe):
@@ -217,6 +286,8 @@ def validate_rule_registry() -> dict:
             callable_count += 1
             if rule.get("readiness") != "CALLABLE_NEEDS_QUALIFICATION":
                 raise GateRuleError(f"structural rule readiness drift: {gate_id}")
+            if rule.get("callable_implementation") != "td_real_gate_rule_registry_v1.execute_structural_gate":
+                raise GateRuleError(f"structural callable implementation drift: {gate_id}")
             if rule.get("threshold_source") != "NO_NUMERIC_THRESHOLD__FROZEN_STRUCTURAL_RULE":
                 raise GateRuleError(f"structural threshold-source drift: {gate_id}")
             if not _is_sha256(rule.get("estimand_sha256")) or not _is_sha256(rule.get("decision_rule_sha256")):
