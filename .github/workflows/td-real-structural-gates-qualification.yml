@@ -39,9 +39,11 @@ jobs:
               tests/v5/test_td_real_gate_rule_registry_v1.py \
               tests/v5/test_td_real_structural_gate_output_v1.py \
               tests/v5/test_td_real_gate_executor_readiness_v2.py \
+              tests/v5/test_td_real_gate_executor_readiness_v3.py \
               tests/v5/test_td_real_gate_historical_equivalence_v1.py \
               tests/v5/test_td_query_information_guard.py \
               results/target_discovery/real_tournament/TD_REAL_GATE_HISTORICAL_EQUIVALENCE_V1.json \
+              results/target_discovery/real_tournament/TD_REAL_STRUCTURAL_GATE_QUALIFICATION_RECEIPT_V1.json \
               docs/superpowers/specs/2026-10-11-td-multitarget-tournament-prefreeze-v2.md
           } | tee qualification/identity.txt
       - name: Validate V1 and projected V2 readiness without outcome reads
@@ -57,6 +59,7 @@ jobs:
             tests/v5/test_td_real_gate_rule_registry_v1.py \
             tests/v5/test_td_real_structural_gate_output_v1.py \
             tests/v5/test_td_real_gate_executor_readiness_v2.py \
+            tests/v5/test_td_real_gate_executor_readiness_v3.py \
             tests/v5/test_td_real_gate_historical_equivalence_v1.py \
             tests/v5/test_td_query_information_guard.py \
             tests/v5/test_td_real_tournament_contract_v1.py \
