@@ -1,0 +1,20 @@
+{
+  "schema": "JEPA_SUCCESSOR_AUTHORITY_STATE_V1",
+  "date": "2026-10-13",
+  "target_winner": null,
+  "representation_winner": null,
+  "real_training_authorized": false,
+  "stage4_authorized": false,
+  "td_phase1_receipt_sha256": "e67aace8dfa8b9823cf8635155a48f5a78faed0a45bf9edb6f7adcba07737684",
+  "phase1_receipt_audit": "PASS_PHASE1_RECEIPT_STRUCTURE_AND_CUSTODY__SAFE_TO_CONSIDER_SEPARATE_PHASE2_AUTHORIZATION",
+  "phase2_authorized_by_this_manifest": false,
+  "post_td_harness_commit": "97dd73f49e1554053bbfab6c5369377a23a72ceb",
+  "post_td_harness_training_authority": false,
+  "historical_audit_pr": 322,
+  "handoff_pr": 323,
+  "td_repair_pr": 320,
+  "synthetic_v21_pr": 321,
+  "real_target_tournament_pr": 313,
+  "corrected_replay_pr": 314,
+  "old_one_process_design_pr": 316
+}
