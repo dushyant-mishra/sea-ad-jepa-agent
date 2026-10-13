@@ -1,0 +1,245 @@
+name: TD relational synthetic V2.1 final cross-certification
+
+on:
+  push:
+    branches:
+      - synthetic/td-relational-test-package-v2-1-20261013
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freeze-separated-transports:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact synthetic head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install construction dependency
+        run: python -m pip install --upgrade numpy
+      - name: Verify exact clean synthetic head
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          test -z "$(git status --short)"
+      - name: Checkout exact repaired TD head read-only
+        uses: actions/checkout@v4
+        with:
+          repository: dushyant-mishra/sea-ad-jepa-agent
+          ref: 1f474a44a6baabc667dbfda726e0755426c732e7
+          path: _td
+          fetch-depth: 1
+      - name: Verify exact TD certification head
+        run: |
+          set -euo pipefail
+          test "$(git -C _td rev-parse HEAD)" = "1f474a44a6baabc667dbfda726e0755426c732e7"
+          test -z "$(git -C _td status --short)"
+      - name: Build sealed V2.1 realization without logging controller entropy
+        run: |
+          set -euo pipefail
+          mkdir -p qualification-v2-1
+          python - <<'PY'
+          import secrets, sys
+          sys.path.insert(0, 'scripts/v79')
+          import build_td_relational_synthetic_package_v2_1 as B
+          B.main(
+              'qualification-v2-1/package',
+              realization_seed_hex=secrets.token_hex(32),
+              blind_nonce=secrets.token_hex(32),
+          )
+          PY
+      - name: Freeze physically separated pre-fit and controller transports
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts/v79')
+          import finalize_td_relational_synthetic_package_v2_1_1 as F
+
+          td = Path('_td')
+          files = {
+              'package_validator_sha256': td / 'scripts/v5/td_test_qualification_package_v2.py',
+              'synthetic_adapter_sha256': td / 'scripts/v5/td_relational_successor_synthetic_adapter_v2.py',
+              'disk_preflight_sha256': td / 'scripts/v5/td_relational_successor_disk_runner_v4.py',
+              'qualification_runner_v3_sha256': td / 'scripts/v5/td_relational_successor_qualification_runner_v3.py',
+          }
+          hashes = {key: hashlib.sha256(path.read_bytes()).hexdigest() for key, path in files.items()}
+          receipt = F.build_separated_transport_archives(
+              package_dir='qualification-v2-1/package',
+              prefit_archive_path='qualification-v2-1/JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_PREFIT.tar.xz',
+              controller_archive_path='qualification-v2-1/JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_CONTROLLER.tar.xz',
+              td_commit_sha='1f474a44a6baabc667dbfda726e0755426c732e7',
+              td_interface_hashes=hashes,
+          )
+          assert receipt['controller_manifest_sha256'] != receipt['controller_commitment_sha256']
+          Path('qualification-v2-1/separated_transport_receipt.json').write_text(
+              json.dumps(receipt, sort_keys=True, separators=(',', ':')) + '\n', encoding='utf-8'
+          )
+          PY
+      - name: Audit physical transport separation
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import lzma, tarfile
+          from pathlib import Path
+          def names(path):
+              with lzma.open(path, 'rb') as fh:
+                  with tarfile.open(fileobj=fh, mode='r:') as tf:
+                      return set(tf.getnames())
+          pre = names(Path('qualification-v2-1/JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_PREFIT.tar.xz'))
+          ctl = names(Path('qualification-v2-1/JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_CONTROLLER.tar.xz'))
+          assert len([n for n in pre if n.endswith('.npz')]) == 9
+          assert not any(n.startswith('controller/') for n in pre)
+          assert not any(n.endswith('.npz') for n in ctl)
+          assert 'controller/controller_manifest.json' in ctl
+          assert 'controller/controller_realization_receipt.json' in ctl
+          assert pre.isdisjoint(ctl - {'metadata/td_interface_identity.json'})
+          PY
+      - name: Stage pre-fit artifact only
+        run: |
+          set -euo pipefail
+          mkdir -p artifact-prefit artifact-controller
+          cp qualification-v2-1/JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_PREFIT.tar.xz artifact-prefit/
+          cp qualification-v2-1/separated_transport_receipt.json artifact-prefit/
+          cp qualification-v2-1/JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_CONTROLLER.tar.xz artifact-controller/
+      - name: Upload pre-fit transport
+        uses: actions/upload-artifact@v4
+        with:
+          name: td-relational-synthetic-v2-1-prefit-${{ github.sha }}
+          path: artifact-prefit/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Upload controller transport separately
+        uses: actions/upload-artifact@v4
+        with:
+          name: td-relational-synthetic-v2-1-controller-${{ github.sha }}
+          path: artifact-controller/
+          if-no-files-found: error
+          retention-days: 90
+
+  preflight-prefit-only:
+    needs: freeze-separated-transports
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact repaired TD head
+        uses: actions/checkout@v4
+        with:
+          ref: 1f474a44a6baabc667dbfda726e0755426c732e7
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install TD preflight dependencies
+        run: python -m pip install --upgrade numpy pandas scipy scikit-learn
+      - name: Verify exact clean TD head
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "1f474a44a6baabc667dbfda726e0755426c732e7"
+          test -z "$(git status --short)"
+      - name: Download pre-fit transport only
+        uses: actions/download-artifact@v4
+        with:
+          name: td-relational-synthetic-v2-1-prefit-${{ github.sha }}
+          path: _cert/prefit_artifact
+      - name: Prove controller bytes are absent from phase-1 custody
+        run: |
+          set -euo pipefail
+          test ! -e _cert/prefit_artifact/JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_CONTROLLER.tar.xz
+          test "$(find _cert/prefit_artifact -maxdepth 1 -type f | wc -l)" -eq 2
+          mkdir -p _cert/extracted
+          tar -xJf _cert/prefit_artifact/JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_PREFIT.tar.xz -C _cert/extracted
+          test ! -e _cert/extracted/controller
+          test ! -e _cert/extracted/controller/controller_manifest.json
+          test "$(find _cert/extracted/pre_fit/fit_views -type f -name '*.npz' | wc -l)" -eq 9
+      - name: Run exact V4 preflight only
+        run: |
+          set -euo pipefail
+          PKG="$(python - <<'PY'
+          import json
+          print(json.load(open('_cert/extracted/pre_fit/TD_EXTERNAL_SYNTHETIC_PACKAGE_BINDING_V2.json'))['package_sha256'])
+          PY
+          )"
+          python scripts/v5/td_relational_successor_disk_runner_v4.py preflight \
+            --binding _cert/extracted/pre_fit/TD_EXTERNAL_SYNTHETIC_PACKAGE_BINDING_V2.json \
+            --fit-dir _cert/extracted/pre_fit/fit_views \
+            --authenticated-package-sha256 "$PKG" \
+            --output _cert/preflight_receipt.json \
+            | tee _cert/preflight_terminal.txt
+          grep -Fx 'READY_TO_EXECUTE_BLIND_FIT' _cert/preflight_terminal.txt
+      - name: Freeze compatibility certification receipt
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts/v5')
+          import td_relational_successor_disk_runner_v4 as D4
+
+          transport = json.load(open('_cert/prefit_artifact/separated_transport_receipt.json'))
+          preflight = json.load(open('_cert/preflight_receipt.json'))
+          binding = json.load(open('_cert/extracted/pre_fit/TD_EXTERNAL_SYNTHETIC_PACKAGE_BINDING_V2.json'))
+          fit_hashes = sorted(rec['sha256'] for rec in binding['fit_views'])
+          receipt = {
+              'schema': 'JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_CROSS_CERTIFICATION_V2',
+              'synthetic_commit_sha': '${{ github.sha }}',
+              'td_commit_sha': '1f474a44a6baabc667dbfda726e0755426c732e7',
+              'package_sha256': transport['package_sha256'],
+              'binding_sha256': transport['binding_sha256'],
+              'controller_manifest_sha256': transport['controller_manifest_sha256'],
+              'controller_commitment_sha256': transport['controller_commitment_sha256'],
+              'fit_view_sha256': fit_hashes,
+              'prefit_archive_sha256': transport['prefit_archive_sha256'],
+              'prefit_archive_size_bytes': transport['prefit_archive_size_bytes'],
+              'controller_archive_sha256': transport['controller_archive_sha256'],
+              'controller_archive_size_bytes': transport['controller_archive_size_bytes'],
+              'td_interface_hashes': transport['td_interface_hashes'],
+              'fit_engine_identity': D4.fit_engine_identity('.'),
+              'preflight_schema': preflight['schema'],
+              'preflight_status': preflight['status'],
+              'controller_transport_present_in_phase1': False,
+              'controller_truth_opened': False,
+              'execute_blinded_fit_called': False,
+              'td_geometry_computed': False,
+              'authority': {
+                  'td_biological_execution_authorized': False,
+                  'real_td_execution_authorized': False,
+                  'target_selection_authorized': False,
+                  'td60_authorized': False,
+                  'stage4_authorized': False,
+                  'training_authorized': False,
+              },
+          }
+          assert receipt['preflight_status'] == 'READY_TO_EXECUTE_BLIND_FIT'
+          assert receipt['controller_manifest_sha256'] != receipt['controller_commitment_sha256']
+          assert len(receipt['fit_view_sha256']) == 9 and len(set(receipt['fit_view_sha256'])) == 9
+          out = Path('_cert/compatibility_certification_receipt.json')
+          out.write_text(json.dumps(receipt, sort_keys=True, separators=(',', ':')) + '\n', encoding='utf-8')
+          digest = hashlib.sha256(out.read_bytes()).hexdigest()
+          Path('_cert/compatibility_certification_receipt.sha256').write_text(digest + '\n', encoding='utf-8')
+          PY
+      - name: Assert workflow never invokes the blinded fit phase
+        run: |
+          set -euo pipefail
+          ! grep -E 'td_relational_successor_disk_runner_v4\.py[[:space:]]+blinded-fit' .github/workflows/td-relational-synthetic-v2-1-cross-cert.yml
+          ! grep -E 'execute_blinded_fit\(' .github/workflows/td-relational-synthetic-v2-1-cross-cert.yml
+      - name: Upload certification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: td-relational-synthetic-v2-1-cross-cert-${{ github.sha }}
+          path: |
+            _cert/preflight_receipt.json
+            _cert/preflight_terminal.txt
+            _cert/compatibility_certification_receipt.json
+            _cert/compatibility_certification_receipt.sha256
+            _cert/prefit_artifact/separated_transport_receipt.json
+          if-no-files-found: error
+          retention-days: 90
