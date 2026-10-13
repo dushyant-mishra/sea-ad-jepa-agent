@@ -20,6 +20,10 @@ def _is_sha256(value) -> bool:
     return isinstance(value, str) and len(value) == 64 and all(ch in "0123456789abcdef" for ch in value)
 
 
+def _is_git_sha(value) -> bool:
+    return isinstance(value, str) and len(value) == 40 and all(ch in "0123456789abcdef" for ch in value)
+
+
 def _canonical(value) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
@@ -40,8 +44,8 @@ def _load_json(path: Path):
 
 
 def _validate_identity(td_commit_sha: str, td_interface_hashes: Mapping[str, str]) -> dict[str, str]:
-    if not _is_sha256(td_commit_sha):
-        raise ValueError("TD commit must be a lowercase 40/64-hex commit identity")
+    if not _is_git_sha(td_commit_sha):
+        raise ValueError("TD commit must be an exact lowercase 40-hex git commit identity")
     if not isinstance(td_interface_hashes, Mapping) or set(td_interface_hashes) != set(REQUIRED_INTERFACE_HASHES):
         raise ValueError("interface hash keys must exactly match the frozen certification contract")
     out = {}
