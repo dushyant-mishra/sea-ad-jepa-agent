@@ -1,0 +1,32 @@
+name: TD phase2 independent audit 20261013
+
+on:
+  push:
+    branches:
+      - audit/td-phase2-independent-20261013
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install audit dependency
+        run: python -m pip install pytest
+      - name: Bind exact head
+        run: |
+          test -z "$(git status --short)"
+          echo "HEAD=$(git rev-parse HEAD)"
+      - name: Run independent audit regression
+        run: python -m pytest -q tests/v5/test_td_phase2_independent_audit_20261013.py
+      - name: Emit independent audit result
+        run: python scripts/v5/audit_td_phase2_independent_20261013.py
+      - name: Confirm tracked worktree clean
+        run: test -z "$(git status --short --untracked-files=no)"
