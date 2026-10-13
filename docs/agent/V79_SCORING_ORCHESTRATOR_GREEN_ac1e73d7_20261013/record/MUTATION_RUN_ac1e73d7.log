@@ -1,0 +1,16 @@
+runner_sha256=b437b56b2d9a77ec03d6dbf845c50b0181742237ab735a5cd650395906705e74 wt_head=ac1e73d79489438634aaeeca035d229875f3186a wt_status=0 start_utc=2026-10-13T23:07:39Z
+{"mutation": "guard_disabled", "status": "KILLED", "summary": ["2 failed in 78.89s (0:01:18)"]}
+{"mutation": "loader_ignores_barrier", "status": "KILLED", "summary": ["1 failed in 1.75s"]}
+{"mutation": "truth_tree_hash_check_removed", "status": "KILLED", "summary": ["1 failed in 11.82s"]}
+{"mutation": "realization_receipt_sha_removed", "status": "KILLED", "summary": ["1 failed in 43.02s"]}
+{"mutation": "not_diagnosed_check_removed", "status": "KILLED", "summary": ["2 failed in 52.56s"]}
+{"mutation": "fit_identity_set_removed", "status": "KILLED", "summary": ["1 failed in 24.74s"]}
+{"mutation": "output_exists_check_removed", "status": "KILLED", "summary": ["1 failed in 17.42s"]}
+{"mutation": "truth_cross_identity_removed", "status": "KILLED", "summary": ["1 failed in 61.22s (0:01:01)"]}
+{"mutation": "custody_executor_head_unchecked", "status": "KILLED", "summary": ["1 failed in 57.93s"]}
+{"mutation": "campaign_code_head_syntactic_only", "status": "KILLED", "summary": ["2 failed in 23.35s"]}
+{"mutation": "result_ledger_hash_check_removed", "status": "KILLED", "summary": ["1 failed in 53.54s"]}
+{"mutation": "receipt_written_before_outputs_verified", "status": "KILLED", "summary": ["1 failed in 38.53s"]}
+{"mutation": "cli_executing_code_location_unchecked", "status": "KILLED", "summary": ["1 failed in 15.48s"]}
+ALL_REQUIRED_MUTATIONS_KILLED
+end_utc=2026-10-13T23:15:48Z wt_status_after=0

@@ -1,0 +1,86 @@
+[
+  {
+    "mutation": "guard_disabled",
+    "status": "KILLED",
+    "summary": [
+      "2 failed in 37.15s"
+    ]
+  },
+  {
+    "mutation": "loader_ignores_barrier",
+    "status": "KILLED",
+    "summary": [
+      "1 failed in 35.48s"
+    ]
+  },
+  {
+    "mutation": "truth_tree_hash_check_removed",
+    "status": "KILLED",
+    "summary": [
+      "1 failed in 13.76s"
+    ]
+  },
+  {
+    "mutation": "realization_receipt_sha_removed",
+    "status": "KILLED",
+    "summary": [
+      "1 failed in 38.68s"
+    ]
+  },
+  {
+    "mutation": "not_diagnosed_check_removed",
+    "status": "KILLED",
+    "summary": [
+      "2 failed in 43.97s"
+    ]
+  },
+  {
+    "mutation": "fit_identity_set_removed",
+    "status": "SURVIVED",
+    "summary": [
+      "1 passed in 17.94s"
+    ]
+  },
+  {
+    "mutation": "output_exists_check_removed",
+    "status": "KILLED",
+    "summary": [
+      "1 failed in 17.87s"
+    ]
+  },
+  {
+    "mutation": "truth_cross_identity_removed",
+    "status": "KILLED",
+    "summary": [
+      "1 failed in 38.72s"
+    ]
+  },
+  {
+    "mutation": "custody_executor_head_unchecked",
+    "status": "KILLED",
+    "summary": [
+      "1 failed in 41.46s"
+    ]
+  },
+  {
+    "mutation": "campaign_code_head_syntactic_only",
+    "status": "KILLED",
+    "summary": [
+      "2 failed in 19.44s"
+    ]
+  },
+  {
+    "mutation": "result_ledger_hash_check_removed",
+    "status": "KILLED",
+    "summary": [
+      "1 failed in 17.62s"
+    ]
+  },
+  {
+    "mutation": "receipt_written_before_outputs_verified",
+    "status": "KILLED",
+    "summary": [
+      "1 failed in 38.34s"
+    ]
+  }
+]

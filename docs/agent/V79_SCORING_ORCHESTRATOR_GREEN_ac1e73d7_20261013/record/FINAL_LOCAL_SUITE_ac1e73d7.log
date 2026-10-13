@@ -1,0 +1,8 @@
+start_utc=2026-10-13T23:07:00Z head=ac1e73d79489438634aaeeca035d229875f3186a pre_status_lines=0 env=v79-bayes
+files=32 excluded=score_truth,score_quantities,realization_audit_freeze,seed_ledger (read real truth or unblinding content)
+........................................................................ [ 28%]
+........................................................................ [ 57%]
+........................................................................ [ 85%]
+....................................                                     [100%]
+252 passed in 431.17s (0:07:11)
+end_utc=2026-10-13T23:14:13Z post_status_lines=0
