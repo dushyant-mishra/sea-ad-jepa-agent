@@ -1,0 +1,40 @@
+name: TD controller convergence 20261013
+
+on:
+  push:
+    branches:
+      - audit/td-controller-convergence-20261013
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  convergence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pytest
+        run: python -m pip install pytest
+      - name: Bind exact head
+        run: |
+          test -z "$(git status --short)"
+          echo "HEAD=$(git rev-parse HEAD)"
+      - name: Run convergence invariants
+        run: python -m pytest -q tests/v5/test_td_controller_convergence_20261013.py
+      - name: Confirm no authority
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('results/target_discovery/TD_CONTROLLER_CONVERGENCE_STATE_20261013.json')
+          s = json.loads(p.read_text())
+          assert not any(s['authority'].values())
+          assert s['real_tournament_readiness']['real_tournament_qualify_eligible'] is False
+          print(s['terminal'])
+          PY
+          test -z "$(git status --short --untracked-files=no)"

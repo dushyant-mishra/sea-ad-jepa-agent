@@ -1,0 +1,61 @@
+{
+  "schema": "JEPA_TD_CONTROLLER_CONVERGENCE_STATE_V1",
+  "date": "2026-10-13",
+  "terminal": "SYNTHETIC_RELATIONAL_TEST_QUALIFIED__REAL_TOURNAMENT_BLOCKED_ON_PROSPECTIVE_RULES__NO_BIOLOGICAL_AUTHORITY",
+  "synthetic_phase2": {
+    "execution_head": "7659030cd2fc9a2662c67a9bf4d23e0e8f3f1606",
+    "evidence_commit": "ef95199f2350d48cd1f534c21455e3de3bbcc448",
+    "independent_audit_head": "b92f335b53a93805a5d05330dc0d61f0479b1dcf",
+    "independent_audit_pr": 336,
+    "independent_audit_run": 38478444632,
+    "independent_audit_job": 115574841300,
+    "blinded_phase1_receipt_sha256": "e67aace8dfa8b9823cf8635155a48f5a78faed0a45bf9edb6f7adcba07737684",
+    "phase2_receipt_sha256": "5382034332f24b0e37954b4f8e2cefe958f21ff644e6fd1ffec150d2478aa61b",
+    "package_sha256": "0977c30f6551df72e244423e1b37733cafa9178099bd0b9ab796beb8a52d2115",
+    "qualification_status": "QUALIFIED",
+    "audit_status": "PASS_PHASE2_EXECUTION_AND_CUSTODY",
+    "challenge_count": 9,
+    "matched_count": 9,
+    "scientific_scope": "TEST_QUALIFICATION_ONLY"
+  },
+  "real_tournament_readiness": {
+    "readiness_stack_prs": [333, 334, 335],
+    "latest_engineering_head": "f6de02cc9784da2c119c8a43f1e04f0853c09d34",
+    "candidate_gate_rows": 198,
+    "required_roles": 117,
+    "mechanically_qualified_structural_roles": 17,
+    "rule_not_materialized_required_roles": 100,
+    "unique_unresolved_rules": 28,
+    "real_tournament_qualify_eligible": false,
+    "biological_outcomes_opened": false
+  },
+  "interpretation": {
+    "qualified": [
+      "The relational TD test can distinguish the sealed synthetic positive, negative, stress, and underidentified challenge classes exercised by V2.1 under the frozen test-of-test contract."
+    ],
+    "not_established": [
+      "Any human biological target is qualified or selected.",
+      "C2_RELATIONAL_SHARED is biologically PASS on real data.",
+      "The remaining 28 prospective real-TD gate rules are defined.",
+      "A representation, architecture, EMA timescale, TD60 configuration, Stage4 plan, multimodal training plan, or JEPA training plan is selected."
+    ]
+  },
+  "authority": {
+    "real_td_authorized": false,
+    "real_tournament_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "architecture_selection_authorized": false,
+    "ema_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "multimodal_training_authorized": false,
+    "jepa_training_authorized": false,
+    "continuation_authorized": false
+  },
+  "next_legal_work": [
+    "Prospectively define the unresolved biological estimands and PASS/FAIL/NOT_ESTIMABLE rules without reading real candidate outcomes.",
+    "Independently qualify each new gate executor and bind it to the real-tournament registry.",
+    "Recompute the full readiness matrix; only a separate explicit authority decision may permit real TD after all required roles are callable and qualified."
+  ]
+}
