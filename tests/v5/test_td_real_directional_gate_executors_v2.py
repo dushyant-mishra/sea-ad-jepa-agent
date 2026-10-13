@@ -41,10 +41,7 @@ BLOCKED = {
 
 
 def _deltas(value: float, n=10, prefix="D"):
-    return [
-        {"donor_id": f"{prefix}{i:03d}", "delta": float(value)}
-        for i in range(n)
-    ]
+    return [{"donor_id": f"{prefix}{i:03d}", "delta": float(value)} for i in range(n)]
 
 
 def _positive(n=10, prefix="D"):
@@ -63,10 +60,7 @@ def test_exact_v2_scope_is_frozen():
 
 def test_blocked_gate_has_no_direction_only_fallback():
     with pytest.raises(D.DirectionalGateError, match="blocked prospective rule"):
-        D.evaluate_directional_gate(
-            "G2_NONTRIVIAL_BIOLOGICAL_CONTENT",
-            {"donor_deltas": _positive()},
-        )
+        D.evaluate_directional_gate("G2_NONTRIVIAL_BIOLOGICAL_CONTENT", {"donor_deltas": _positive()})
 
 
 def test_g4_is_donor_primary_directional_recurrence_only():
@@ -81,58 +75,25 @@ def test_g4_is_donor_primary_directional_recurrence_only():
 
 
 def test_g3_relational_requires_b3_and_b4_noncompensating():
-    out = D.evaluate_directional_gate(
-        "G3_CORRECT_CELL_SPECIFICITY",
-        {
-            "candidate_id": "C2_RELATIONAL_SHARED",
-            "subtests": {
-                "matched_wrong_cell": _positive(prefix="B3"),
-                "fine_neighborhood_wrong_cell": _negative(prefix="B4"),
-            },
-        },
-    )
+    out = D.evaluate_directional_gate("G3_CORRECT_CELL_SPECIFICITY", {"candidate_id": "C2_RELATIONAL_SHARED", "subtests": {"matched_wrong_cell": _positive(prefix="B3"), "fine_neighborhood_wrong_cell": _negative(prefix="B4")}})
     assert out["status"] == "FAIL"
     assert out["subtests"]["matched_wrong_cell"]["status"] == "PASS"
     assert out["subtests"]["fine_neighborhood_wrong_cell"]["status"] == "FAIL"
 
 
 def test_g3_missing_required_relational_b4_is_not_estimable():
-    out = D.evaluate_directional_gate(
-        "G3_CORRECT_CELL_SPECIFICITY",
-        {
-            "candidate_id": "C2_RELATIONAL_SHARED",
-            "subtests": {"matched_wrong_cell": _positive(prefix="B3")},
-        },
-    )
+    out = D.evaluate_directional_gate("G3_CORRECT_CELL_SPECIFICITY", {"candidate_id": "C2_RELATIONAL_SHARED", "subtests": {"matched_wrong_cell": _positive(prefix="B3")}})
     assert out["status"] == "NOT_ESTIMABLE"
 
 
 def test_g5_requires_exact_current_sources_without_pooling():
-    out = D.evaluate_directional_gate(
-        "G5_SOURCE_REPLICATION",
-        {
-            "source_donor_deltas": {
-                "HVS": _positive(prefix="H"),
-                "NPH52": _positive(prefix="N"),
-                "SEA_AD": _negative(prefix="S"),
-            }
-        },
-    )
+    out = D.evaluate_directional_gate("G5_SOURCE_REPLICATION", {"source_donor_deltas": {"HVS": _positive(prefix="H"), "NPH52": _positive(prefix="N"), "SEA_AD": _negative(prefix="S")}})
     assert out["status"] == "FAIL"
     assert set(out["strata"]) == {"HVS", "NPH52", "SEA_AD"}
 
 
 def test_g10_requires_exact_candidate_mandatory_falsifier_set():
-    evidence = {
-        "candidate_id": "C1_SHARED_EMERGENT",
-        "falsifier_donor_deltas": {
-            "constant_train_mean": _positive(prefix="B0"),
-            "technical_operator_only": _positive(prefix="B1"),
-            "address_support_operator": _positive(prefix="B2"),
-            "matched_wrong_cell": _positive(prefix="B3"),
-            "identity_support_only": _positive(prefix="B5"),
-        },
-    }
+    evidence = {"candidate_id": "C1_SHARED_EMERGENT", "falsifier_donor_deltas": {"constant_train_mean": _positive(prefix="B0"), "technical_operator_only": _positive(prefix="B1"), "address_support_operator": _positive(prefix="B2"), "matched_wrong_cell": _positive(prefix="B3"), "identity_support_only": _positive(prefix="B5")}}
     assert D.evaluate_directional_gate("G10_COLLAPSE_SHORTCUT_RESISTANCE", evidence)["status"] == "PASS"
     bad = dict(evidence)
     bad["falsifier_donor_deltas"] = dict(evidence["falsifier_donor_deltas"])
@@ -141,28 +102,16 @@ def test_g10_requires_exact_candidate_mandatory_falsifier_set():
 
 
 def test_m1_requires_disjoint_construction_and_deciding_evidence():
-    passed = D.evaluate_directional_gate(
-        "M1_CIRCULARITY_CONTROL",
-        {"construction_evidence_ids": ["A", "B"], "deciding_evidence_ids": ["C"]},
-    )
-    failed = D.evaluate_directional_gate(
-        "M1_CIRCULARITY_CONTROL",
-        {"construction_evidence_ids": ["A", "B"], "deciding_evidence_ids": ["B", "C"]},
-    )
+    passed = D.evaluate_directional_gate("M1_CIRCULARITY_CONTROL", {"construction_evidence_ids": ["A", "B"], "deciding_evidence_ids": ["C"]})
+    failed = D.evaluate_directional_gate("M1_CIRCULARITY_CONTROL", {"construction_evidence_ids": ["A", "B"], "deciding_evidence_ids": ["B", "C"]})
     assert passed["status"] == "PASS"
     assert failed["status"] == "FAIL"
     assert D.evaluate_directional_gate("M1_CIRCULARITY_CONTROL", {})["status"] == "NOT_ESTIMABLE"
 
 
 def test_m2_requires_authenticated_independent_provenance():
-    passed = D.evaluate_directional_gate(
-        "M2_INDEPENDENT_PROVENANCE",
-        {"provenance_authenticated": True, "independent_of_target_selection": True},
-    )
-    exposed = D.evaluate_directional_gate(
-        "M2_INDEPENDENT_PROVENANCE",
-        {"provenance_authenticated": True, "independent_of_target_selection": False},
-    )
+    passed = D.evaluate_directional_gate("M2_INDEPENDENT_PROVENANCE", {"provenance_authenticated": True, "independent_of_target_selection": True})
+    exposed = D.evaluate_directional_gate("M2_INDEPENDENT_PROVENANCE", {"provenance_authenticated": True, "independent_of_target_selection": False})
     assert passed["status"] == "PASS"
     assert exposed["status"] == "FAIL"
     assert D.evaluate_directional_gate("M2_INDEPENDENT_PROVENANCE", {})["status"] == "NOT_ESTIMABLE"
@@ -175,22 +124,27 @@ def test_m3_only_passes_explicit_noncausal_claim_scope():
 
 
 def test_m4_preserves_missing_and_unsupported_as_abstention():
-    passed = D.evaluate_directional_gate(
-        "M4_SUPPORT_ABSTENTION",
-        {
-            "unsupported_converted_to_numeric": False,
-            "missing_evidence_treated_as_zero": False,
-            "imputation_used": False,
-        },
-    )
-    failed = D.evaluate_directional_gate(
-        "M4_SUPPORT_ABSTENTION",
-        {
-            "unsupported_converted_to_numeric": False,
-            "missing_evidence_treated_as_zero": True,
-            "imputation_used": False,
-        },
-    )
+    passed = D.evaluate_directional_gate("M4_SUPPORT_ABSTENTION", {"unsupported_converted_to_numeric": False, "missing_evidence_treated_as_zero": False, "imputation_used": False})
+    failed = D.evaluate_directional_gate("M4_SUPPORT_ABSTENTION", {"unsupported_converted_to_numeric": False, "missing_evidence_treated_as_zero": True, "imputation_used": False})
     assert passed["status"] == "PASS"
     assert failed["status"] == "FAIL"
     assert D.evaluate_directional_gate("M4_SUPPORT_ABSTENTION", {})["status"] == "NOT_ESTIMABLE"
+
+
+def test_specialist_boolean_predicates_reject_numeric_surrogates():
+    with pytest.raises(D.DirectionalGateError, match="must be boolean"):
+        D.evaluate_directional_gate("M2_INDEPENDENT_PROVENANCE", {"provenance_authenticated": 1, "independent_of_target_selection": True})
+    with pytest.raises(D.DirectionalGateError, match="must be boolean"):
+        D.evaluate_directional_gate("M4_SUPPORT_ABSTENTION", {"unsupported_converted_to_numeric": 0, "missing_evidence_treated_as_zero": False, "imputation_used": False})
+
+
+def test_authority_payload_exactly_covers_frozen_contract_and_is_all_false():
+    assert D.NO_AUTHORITY == {
+        "value_read_authorized": False,
+        "real_tournament_authorized": False,
+        "target_selection_authorized": False,
+        "representation_selection_authorized": False,
+        "td60_authorized": False,
+        "stage4_authorized": False,
+        "training_authorized": False,
+    }
