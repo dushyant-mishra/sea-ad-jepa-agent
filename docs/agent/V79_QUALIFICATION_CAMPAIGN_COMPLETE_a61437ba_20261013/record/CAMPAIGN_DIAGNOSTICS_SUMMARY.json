@@ -1,0 +1,226 @@
+{
+ "fit_count": 1056,
+ "final_diagnosis_counts": {
+  "COMPLETE": 1053,
+  "NOT_DIAGNOSED": 3
+ },
+ "final_diagnosis_by_part": {
+  "detection:COMPLETE": 528,
+  "positive:COMPLETE": 525,
+  "positive:NOT_DIAGNOSED": 3
+ },
+ "attempt_paths": {
+  "PRIMARY": 1027,
+  "PRIMARY+EXTENSION": 14,
+  "PRIMARY+ESCALATION+EXTENSION": 3,
+  "PRIMARY+ESCALATION": 12
+ },
+ "stage_use_counts": {
+  "PRIMARY": 1056,
+  "EXTENSION": 17,
+  "ESCALATION": 15
+ },
+ "not_diagnosed_fits": [
+  {
+   "fit_id": "09bbe252aeb91c12eb996fbd60e5a420237ba4f317255278cdc6e4bfacf9daa6",
+   "opaque_world_id": "ee384a29a9fc",
+   "gene_index": 2,
+   "part": "positive",
+   "stages": "PRIMARY+ESCALATION"
+  },
+  {
+   "fit_id": "6ca5f0876ccdac9c86bf5b2f07a4413fdd9f8b824ec8ad45ae84090d657e2f43",
+   "opaque_world_id": "ee384a29a9fc",
+   "gene_index": 13,
+   "part": "positive",
+   "stages": "PRIMARY+ESCALATION"
+  },
+  {
+   "fit_id": "ede8a3a369d69133a85fa4a35a3bd24ca87e4a6c680599b671b9693efe7104a5",
+   "opaque_world_id": "ee384a29a9fc",
+   "gene_index": 43,
+   "part": "positive",
+   "stages": "PRIMARY+ESCALATION+EXTENSION"
+  }
+ ],
+ "total_divergences_final": 55,
+ "total_divergences_all_attempts": 567,
+ "fits_with_any_divergence": 15,
+ "worst_rhat": 1.03,
+ "worst_ess_bulk": 253.0,
+ "worst_ess_tail": 425.0,
+ "mean_tree_steps_range": [
+  15.0,
+  511.0
+ ],
+ "sampling_wall_s": {
+  "total": 3612.0,
+  "mean": 3.42,
+  "median": 3.266,
+  "max": 9.594
+ },
+ "process_cpu_s": {
+  "total": 3663.4,
+  "mean": 3.469,
+  "max": 9.562
+ },
+ "peak_working_set_bytes": {
+  "max": 1392254976,
+  "median": 1092919296
+ },
+ "campaign_wall": {
+  "world1_invocation_s": 2123.0,
+  "continuation_invocation_s": 20504.0,
+  "total_execution_s": 22627.0,
+  "total_execution_h": 6.29,
+  "frozen_ceiling_h": 72,
+  "benchmark_formula_projection_h": 1.52,
+  "world1_extrapolation_h": 7.48
+ },
+ "per_world": {
+  "2ae1cb055fed": {
+   "fits": 88,
+   "complete": 88,
+   "not_diagnosed": 0,
+   "non_primary_paths": 0,
+   "divergences": 0,
+   "worst_rhat": 1.01,
+   "worst_ess_bulk": 603.0,
+   "worst_ess_tail": 425.0,
+   "first_fit_start_to_last_fit_end_s": 2107.4,
+   "sampling_wall_s": 331.6
+  },
+  "327c1c1ee188": {
+   "fits": 88,
+   "complete": 88,
+   "not_diagnosed": 0,
+   "non_primary_paths": 0,
+   "divergences": 0,
+   "worst_rhat": 1.01,
+   "worst_ess_bulk": 547.0,
+   "worst_ess_tail": 440.0,
+   "first_fit_start_to_last_fit_end_s": 1537.8,
+   "sampling_wall_s": 299.8
+  },
+  "4a5e773dd737": {
+   "fits": 88,
+   "complete": 88,
+   "not_diagnosed": 0,
+   "non_primary_paths": 0,
+   "divergences": 0,
+   "worst_rhat": 1.01,
+   "worst_ess_bulk": 610.0,
+   "worst_ess_tail": 545.0,
+   "first_fit_start_to_last_fit_end_s": 1610.8,
+   "sampling_wall_s": 288.3
+  },
+  "4ef1ad16f002": {
+   "fits": 88,
+   "complete": 88,
+   "not_diagnosed": 0,
+   "non_primary_paths": 5,
+   "divergences": 0,
+   "worst_rhat": 1.01,
+   "worst_ess_bulk": 401.0,
+   "worst_ess_tail": 547.0,
+   "first_fit_start_to_last_fit_end_s": 1616.5,
+   "sampling_wall_s": 293.5
+  },
+  "aa187836a3b3": {
+   "fits": 88,
+   "complete": 88,
+   "not_diagnosed": 0,
+   "non_primary_paths": 2,
+   "divergences": 0,
+   "worst_rhat": 1.01,
+   "worst_ess_bulk": 546.0,
+   "worst_ess_tail": 526.0,
+   "first_fit_start_to_last_fit_end_s": 1571.4,
+   "sampling_wall_s": 285.0
+  },
+  "aa2604cb1a3e": {
+   "fits": 88,
+   "complete": 88,
+   "not_diagnosed": 0,
+   "non_primary_paths": 1,
+   "divergences": 0,
+   "worst_rhat": 1.01,
+   "worst_ess_bulk": 530.0,
+   "worst_ess_tail": 622.0,
+   "first_fit_start_to_last_fit_end_s": 1705.9,
+   "sampling_wall_s": 288.0
+  },
+  "b7eecc34112f": {
+   "fits": 88,
+   "complete": 88,
+   "not_diagnosed": 0,
+   "non_primary_paths": 1,
+   "divergences": 0,
+   "worst_rhat": 1.01,
+   "worst_ess_bulk": 433.0,
+   "worst_ess_tail": 615.0,
+   "first_fit_start_to_last_fit_end_s": 1691.0,
+   "sampling_wall_s": 289.1
+  },
+  "cace57a3d450": {
+   "fits": 88,
+   "complete": 88,
+   "not_diagnosed": 0,
+   "non_primary_paths": 0,
+   "divergences": 0,
+   "worst_rhat": 1.01,
+   "worst_ess_bulk": 579.0,
+   "worst_ess_tail": 509.0,
+   "first_fit_start_to_last_fit_end_s": 1599.2,
+   "sampling_wall_s": 289.8
+  },
+  "d78d6e6eaf31": {
+   "fits": 88,
+   "complete": 88,
+   "not_diagnosed": 0,
+   "non_primary_paths": 0,
+   "divergences": 0,
+   "worst_rhat": 1.01,
+   "worst_ess_bulk": 583.0,
+   "worst_ess_tail": 636.0,
+   "first_fit_start_to_last_fit_end_s": 2194.6,
+   "sampling_wall_s": 291.2
+  },
+  "eb3c7d6adfeb": {
+   "fits": 88,
+   "complete": 88,
+   "not_diagnosed": 0,
+   "non_primary_paths": 1,
+   "divergences": 0,
+   "worst_rhat": 1.01,
+   "worst_ess_bulk": 646.0,
+   "worst_ess_tail": 509.0,
+   "first_fit_start_to_last_fit_end_s": 1752.9,
+   "sampling_wall_s": 307.6
+  },
+  "ee384a29a9fc": {
+   "fits": 88,
+   "complete": 85,
+   "not_diagnosed": 3,
+   "non_primary_paths": 16,
+   "divergences": 567,
+   "worst_rhat": 1.03,
+   "worst_ess_bulk": 253.0,
+   "worst_ess_tail": 500.0,
+   "first_fit_start_to_last_fit_end_s": 1927.0,
+   "sampling_wall_s": 351.8
+  },
+  "f3975424edad": {
+   "fits": 88,
+   "complete": 88,
+   "not_diagnosed": 0,
+   "non_primary_paths": 3,
+   "divergences": 0,
+   "worst_rhat": 1.01,
+   "worst_ess_bulk": 576.0,
+   "worst_ess_tail": 569.0,
+   "first_fit_start_to_last_fit_end_s": 1892.3,
+   "sampling_wall_s": 296.3
+  }
+ }
+}

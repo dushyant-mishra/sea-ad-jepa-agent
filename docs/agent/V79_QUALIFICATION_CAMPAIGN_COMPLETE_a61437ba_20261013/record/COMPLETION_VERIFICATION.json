@@ -1,0 +1,49 @@
+{
+ "completed_prefix": 1056,
+ "queue_length": 1056,
+ "campaign_receipt_sha256_on_disk": "a0065925789c58409a85ccbf72d24f5c7b1be142a4d17eddc434babdf0d0e340",
+ "campaign_receipt_equals_independent_deterministic_reconstruction": true,
+ "campaign_receipt_flags": {
+  "code_sha": "a61437ba284e9e75b0557157ad68e56eacd8f8fe",
+  "custody_receipt_sha256": "c5116d6273f82fd3b3c5450b6bb8d701e03ef7d17ba6ada98eb5ff5aec906b63",
+  "planned_fit_count": 1056,
+  "qualification_fits_run": 1056,
+  "benchmark_run": false,
+  "scoring_run": false,
+  "truth_accessed": false,
+  "training_authorized": false
+ },
+ "all_1056_fit_ids_equal_authority_ledger": true,
+ "all_attempt_seeds_equal_authority_ledger": true,
+ "each_fit_id_exactly_once": true,
+ "receipts_match_queue_order_and_identity": true,
+ "first_88_world1_files_unchanged_vs_world1_ledger": true,
+ "world1_ledger_result_files_checked": 176,
+ "flags_all_receipts": {
+  "execution_mode": [
+   "QUALIFICATION"
+  ],
+  "benchmark_run": [
+   "False"
+  ],
+  "qualification_fits_run": [
+   "1"
+  ],
+  "scoring_run": [
+   "False"
+  ],
+  "truth_accessed": [
+   "False"
+  ],
+  "training_authorized": [
+   "False"
+  ],
+  "code_sha": [
+   "a61437ba284e9e75b0557157ad68e56eacd8f8fe"
+  ],
+  "contract_sha256": [
+   "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26"
+  ]
+ },
+ "jax_imported_in_this_check": false
+}

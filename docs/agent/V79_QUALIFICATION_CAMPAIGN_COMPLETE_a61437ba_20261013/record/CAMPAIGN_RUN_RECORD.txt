@@ -1,0 +1,2 @@
+campaign_start_utc=2026-10-13T13:33:36Z invocation=1 head=a61437ba284e9e75b0557157ad68e56eacd8f8fe status=[] fit_receipts_before=88 cmd=python scripts/v79/run_v79_v2_core_qualification.py D:/jepa_wt_v79_qual_world1_a61437ba D:/jepa_v79_qualification_world1_a61437ba/fit_custody D:/jepa_v79_qualification_world1_a61437ba/result c5116d6273f82fd3b3c5450b6bb8d701e03ef7d17ba6ada98eb5ff5aec906b63
+campaign_exit=0 invocation=1 campaign_end_utc=2026-10-13T19:15:20Z status_after=[] fit_receipts_after=1056 npz_after=1056 campaign_receipt=yes lock_present=no

@@ -1,0 +1,8 @@
+utc=2026-10-13T13:32:26Z
+authority: PR #317 comment 6146378159 (continuation of the same campaign: records 89-1056, 968 fits / 11 worlds)
+git rev-parse HEAD: a61437ba284e9e75b0557157ad68e56eacd8f8fe
+git status --porcelain: [] lines=0 ignored_lines=0
+frozen package: files_now=498 ledger_mismatches=0 (ledger 4e65f213, 498 entries)
+custody receipt sha: c5116d6273f82fd3b3c5450b6bb8d701e03ef7d17ba6ada98eb5ff5aec906b63
+custody+controller files vs run-time ledger: checked=149 mismatches=0; custody files now=148 controller files now=1
+result files vs run-time ledger: checked=176 mismatches=0; result files now=176 (fit json 88, npz 88); lock present=no; campaign receipt present=no

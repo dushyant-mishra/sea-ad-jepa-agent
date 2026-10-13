@@ -1,0 +1,19 @@
+firewall_check_utc=2026-10-13T13:32:48Z
+custody top-level: blinded_fit_inputs V79_V2_CORE_FIT_CONTRACT_VIEW_V1.json V79_V2_CORE_QUALIFICATION_CUSTODY_V1.json V79_V2_CORE_QUALIFICATION_EXECUTION_AUTHORIZATION_V1.json 
+files: 148; world dirs: 12
+python/scorer/gate files: 0; truth/root manifest: 0; Q-label paths: 0
+json files containing '"Q0': 0
+json files containing '"Q1': 0
+json files containing 'Q00': 0
+json files containing 'Q11': 0
+json files containing 'world_index': 0
+json files containing 'world_name': 0
+json files containing 'controller_truth': 0
+json files containing 'planted': 0
+json files containing 'oracle': 0
+json files containing 'scorer': 0
+json files containing 'pathology': 0
+json files containing 'rare_program': 0
+json files containing 'target_discovery': 0
+json files containing 'morabito': 0
+custody files identical to the run-time ledger (checked above): yes

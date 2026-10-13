@@ -1,0 +1,3 @@
+contention_check_utc=2026-10-13T13:33:28Z
+windows: machine_load_percent_avg=18; cpu_seconds_all_processes_in_5s=8.23; top=com.docker.backend:4.61, Taskmgr:1.34, remoting_host:1.05
+wsl: loadavg=0.02 0.01 0.00 python_procs=0

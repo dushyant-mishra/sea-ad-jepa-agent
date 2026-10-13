@@ -1,0 +1,6 @@
+post_campaign_checks_utc=2026-10-13T19:28:27Z
+frozen package: files_now=498 ledger_mismatches=0 (ledger 4e65f213, 498 entries)
+custody receipt sha: c5116d6273f82fd3b3c5450b6bb8d701e03ef7d17ba6ada98eb5ff5aec906b63; custody+controller files vs run-time ledger: checked=149 mismatches=0; custody files now=148
+execution checkout: HEAD=a61437ba284e9e75b0557157ad68e56eacd8f8fe porcelain_lines=0 ignored_lines=0
+result ledger: files=2113 total_bytes=193904663 fit_json=1056 npz=1056 ledger_sha256=d467bb9b51336278ee46566173148a4f112eaa79cf578b8bbfae502cb4388b89
+controller truth: never opened (custody holds none; no world ID mapped to a Q label)
