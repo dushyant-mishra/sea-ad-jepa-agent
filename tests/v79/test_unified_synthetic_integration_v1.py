@@ -1,0 +1,131 @@
+from __future__ import annotations
+import json
+from pathlib import Path
+import numpy as np
+import pytest
+
+import scripts.v79.unified_synthetic_integration_v1 as U
+from scripts.v79.unified_synthetic_integration_v1 import (
+    UnifiedBiologyConfig, build_unified_biology, validate_integration_manifest,
+)
+
+MANIFEST = Path("results/v79/unified_synthetic/UNIFIED_SYNTHETIC_INTEGRATION_MANIFEST_V1.json")
+
+def test_manifest_binds_exact_sources_and_authority_off():
+    m=json.loads(MANIFEST.read_text())
+    a=validate_integration_manifest(m)
+    assert a.source_commits["stage81a3"] == "f5a8ebeddbcd52a94274a7f72ecda1f71b82d777"
+    assert a.source_commits["v79_pr253"] == "1a0ab6e1108af924ca13e81caa3c70f3101d251c"
+    assert a.source_commits["pr311"] == "2b6d3439105e087acdab53a318c57bbb468eae26"
+    assert a.source_commits["pr315"] == "af03ef67d52651463944a6de3a08e101ad00e0ea"
+    assert not any(a.authority.values())
+
+def test_manifest_fails_closed_on_source_drift():
+    m=json.loads(MANIFEST.read_text()); m["source_commits"]["pr311"]="0"*40
+    with pytest.raises(ValueError, match="drift"):
+        validate_integration_manifest(m)
+
+def test_manifest_requires_exact_calibration_boundary():
+    m=json.loads(MANIFEST.read_text())
+    m["calibration"].pop("pseudo_rarity_source")
+    with pytest.raises(ValueError, match="calibration"):
+        validate_integration_manifest(m)
+    m=json.loads(MANIFEST.read_text())
+    m["calibration"]["unexpected"]="drift"
+    with pytest.raises(ValueError, match="calibration"):
+        validate_integration_manifest(m)
+
+def test_manifest_requires_exact_perturbation_arm_semantics():
+    m=json.loads(MANIFEST.read_text())
+    assert m["perturbation_arm_semantics"] == {
+        "0": "CONTROL",
+        "1": "ACTIVE_RARE_PROGRAM_PERTURBATION",
+        "2": "MATCHED_PERTURB_NULL",
+    }
+    assert m["perturbation_arm_semantics"] == U.PERTURBATION_ARM_SEMANTICS
+    bad=json.loads(MANIFEST.read_text())
+    bad["perturbation_arm_semantics"]["2"]="ACTIVE"
+    with pytest.raises(ValueError, match="perturbation"):
+        validate_integration_manifest(bad)
+
+def test_candidate_identifiers_are_rejected_from_config():
+    with pytest.raises(ValueError, match="candidate"):
+        UnifiedBiologyConfig(extra_metadata={"C2_relational": True})
+
+def test_quarantined_stat1_moments_are_not_executable_generator_authority():
+    m=json.loads(MANIFEST.read_text())
+    assert m["calibration"] == U.CALIBRATION_BOUNDARY
+    assert not hasattr(U, "_donor_latent")
+    assert not hasattr(U, "REGIMES")
+    assert tuple(U.SYNTHETIC_RARITY_PRESETS) == ("weak", "central", "strong", "extreme")
+
+def test_one_population_contains_common_and_rare_activity():
+    w=build_unified_biology(UnifiedBiologyConfig(n_cells=720,n_genes=64,n_donors=24), seed=77)
+    assert w.rare_activity.sum() > 0
+    assert (~w.rare_activity).sum() > 0
+    assert np.all(w.rare_activity <= w.rare_eligible)
+    assert len(np.unique(w.donor_id)) == 24
+    assert w.expected_molecular_state.shape == (720,64)
+    assert all("C1" not in name and "C2" not in name and "C3" not in name and "C4" not in name and "C5" not in name and "C6" not in name for name in w.__dataclass_fields__)
+
+def test_unified_population_reuses_pr311_rare_challenge_classes_without_empirical_frequency_authority():
+    cfg=UnifiedBiologyConfig(n_cells=2400,n_genes=64,n_donors=60)
+    w=build_unified_biology(cfg, seed=107)
+    assert tuple(w.rare_regime_ids) == ("weak","central","strong","extreme")
+    assert w.rare_program_activity.shape == (2400,4)
+    assert w.rare_donor_active.shape == (60,4)
+    assert w.rare_donor_prevalence.shape == (60,4)
+    assert np.array_equal(w.rare_activity, w.rare_program_activity.any(axis=1))
+    assert (w.rare_program_activity.sum(axis=0) > 0).sum() >= 3
+    assert np.all(w.rare_donor_prevalence[~w.rare_donor_active] == 0)
+    active_rates=w.rare_donor_active.mean(axis=0)
+    expected=np.array([U.SYNTHETIC_RARITY_PRESETS[r]["active_prob"] for r in w.rare_regime_ids])
+    assert np.max(np.abs(active_rates-expected)) < 0.20
+
+def test_no_posthoc_positive_is_injected_to_make_a_rare_regime_visible(monkeypatch):
+    def zero_prevalence(rng, n_donors, preset):
+        return np.ones(n_donors, dtype=bool), np.zeros(n_donors, dtype=np.float32)
+    monkeypatch.setattr(U, "_draw_synthetic_donor_latent", zero_prevalence)
+    w=build_unified_biology(UnifiedBiologyConfig(n_cells=240,n_genes=32,n_donors=12), seed=91)
+    assert w.rare_donor_active.all()
+    assert not w.rare_program_activity.any()
+    assert not w.rare_activity.any()
+
+def test_context_conditioning_is_bound_to_central_identity_not_program_position(monkeypatch):
+    def fixed_prevalence(rng, n_donors, preset):
+        return np.ones(n_donors, dtype=bool), np.full(n_donors, 0.15, dtype=np.float32)
+    monkeypatch.setattr(U, "_draw_synthetic_donor_latent", fixed_prevalence)
+    cfg=UnifiedBiologyConfig(
+        n_cells=6000,n_genes=48,n_donors=30,
+        rare_regime_ids=("central","weak"), context_niche_multiplier=8.0,
+    )
+    w=build_unified_biology(cfg, seed=313)
+    central=w.rare_program_activity[:,0]
+    weak=w.rare_program_activity[:,1]
+    latent=U.generate_latent_biology(U._biology_authority(), cfg.n_cells, cfg.n_genes, cfg.n_donors, 313)
+    eligibility=U._program_eligibility(latent, 2)
+    inside_c=eligibility[:,0] & w.context_niche
+    outside_c=eligibility[:,0] & ~w.context_niche
+    assert inside_c.any() and outside_c.any()
+    assert central[inside_c].mean() > central[outside_c].mean() + 0.15
+    inside_w=eligibility[:,1] & w.context_niche
+    outside_w=eligibility[:,1] & ~w.context_niche
+    assert inside_w.any() and outside_w.any()
+    assert abs(weak[inside_w].mean() - weak[outside_w].mean()) < 0.15
+
+def test_context_and_perturbation_design_are_embedded_in_same_population():
+    w=build_unified_biology(UnifiedBiologyConfig(n_cells=1200,n_genes=64,n_donors=30), seed=211)
+    assert w.context_niche.shape == (1200,)
+    assert 0 < w.context_niche.mean() < 1
+    assert set(np.unique(w.perturbation_arm)) == {0,1,2}
+    assert np.all(w.perturbation_state <= (w.perturbation_arm == 1))
+    assert np.all(w.perturbation_state <= w.rare_activity)
+
+def test_matched_perturb_null_arm_cannot_activate_target_mechanism():
+    w=build_unified_biology(UnifiedBiologyConfig(n_cells=1200,n_genes=64,n_donors=30), seed=211)
+    assert not w.perturbation_state[w.perturbation_arm == 2].any()
+    assert not w.perturbation_state[w.perturbation_arm == 0].any()
+    assert np.array_equal(
+        w.perturbation_state,
+        (w.perturbation_arm == 1) & w.rare_activity,
+    )
