@@ -1,0 +1,151 @@
+{
+  "schema": "JEPA_LANE_TAKEOVER_STATE_V1",
+  "date": "2026-10-13",
+  "terminal": "HISTORICAL_AUDIT_FROZEN__GENE_IDENTITY_RECLASSIFIED__DOWNSTREAM_RUNTIME_AUDITED__TD_PHASE1_READY__TRAINING_OFF",
+  "authority": {
+    "real_td_execution_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "multimodal_training_authorized": false,
+    "training_authorized": false,
+    "controller_adjudication_authorized": false
+  },
+  "read_first": [
+    "docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261013.md",
+    "docs/agent/JEPA_HISTORICAL_ARCHITECTURE_DECISION_LEDGER_20261013.md",
+    "docs/agent/JEPA_GENE_IDENTITY_RECLASSIFICATION_AUDIT_20261013.md",
+    "docs/agent/JEPA_DOWNSTREAM_IMPLEMENTATION_READINESS_AUDIT_20261013.md",
+    "docs/agent/JEPA_ACTIVE_BRANCH_PR_MAP_20261013.md",
+    "docs/agent/JEPA_EXTERNAL_ARTIFACT_CUSTODY_MANIFEST_20261013.csv"
+  ],
+  "historical_master_sources": [
+    "docs/agent/memory-os/DECISION_REGISTRY.csv",
+    "docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md",
+    "docs/agent/JEPA_HISTORICAL_HANDOFF_TARGET_AUTHORITY_AUDIT_20261005.md",
+    "docs/agent/JEPA_REPOSITORY_AUTHORITY_CLEANUP_AUDIT_20261005.md",
+    "docs/agent/CURRENT_SUPERSESSION_MAP.md",
+    "docs/agent/CURRENT_AUTHORITY_INDEX_20261005_SUPERSESSION_NOTICE.md",
+    "docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md",
+    "results/tables/project_file_inventory_v1.csv",
+    "results/tables/project_script_dependency_inventory_v1.csv",
+    "results/tables/project_doc_config_index_v1.csv",
+    "results/tables/v3_scorecard_status_v1.csv"
+  ],
+  "audit_branch": {
+    "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
+    "pr": 322,
+    "role": "non-authorizing architecture/historical/gene-identity/downstream readiness audit"
+  },
+  "handoff_branch": {
+    "branch": "handoff/jepa-lane-takeover-20261013",
+    "role": "navigation, custody and future-agent takeover only"
+  },
+  "td_chain": {
+    "historical_design": {
+      "pr": 316,
+      "sha": "2397ab83d8ae9d0c762a8fd5f3919edc350d137f",
+      "status": "FROZEN_V2_HISTORY__OLD_ONE_PROCESS_EXTERNAL_PATH_SUPERSEDED"
+    },
+    "td_repair": {
+      "pr": 320,
+      "sha": "1f474a44a6baabc667dbfda726e0755426c732e7",
+      "workflow_run": 38437427228,
+      "workflow_result": "PASS"
+    },
+    "synthetic_v2_1": {
+      "pr": 321,
+      "sha": "15f519c00137d581e25232c16be52c2b9badd83e",
+      "cross_cert_run": 38438433970,
+      "cross_cert_result": "PASS",
+      "package_sha256": "0977c30f6551df72e244423e1b37733cafa9178099bd0b9ab796beb8a52d2115",
+      "prefit_archive_sha256": "ba0fa56a49ffa009a0225606fb48d8fb30c3bd410a6a264ef905db5d4bb18803",
+      "prefit_archive_size_bytes": 7018400,
+      "controller_archive_sha256": "f554e2a95315bb39cc8f7e366620bca5cb2126a4896b3790ed2c632e5cc6a328",
+      "controller_archive_size_bytes": 2028,
+      "controller_manifest_raw_sha256": "87219ad5f2bc1c514c6771c52dbf0e2529645a7221aaafd0774a8d3e186d03f9",
+      "controller_semantic_commitment_sha256": "a3d8ea34339aa06d995d498c2651d4dfd4e1058eec3640a7cd7ea1128efce293",
+      "certification_receipt_sha256": "fbcf2d589ec05ff67914a890f465d39cdc8f9f53363129d98b4b7f0a00213ee9",
+      "preflight_terminal": "READY_TO_EXECUTE_BLIND_FIT"
+    },
+    "phase1": {
+      "authorized_scope": "independent blinded synthetic test-of-test fit only",
+      "entrypoint": "scripts/v5/td_relational_successor_disk_runner_v4.py blinded-fit",
+      "expected_receipt_schema": "JEPA_TD_RELATIONAL_SUCCESSOR_BLINDED_FIT_RECEIPT_V4",
+      "must_stop_after_receipt": true,
+      "controller_transport_allowed_in_environment": false,
+      "adjudication_allowed": false,
+      "biological_test_of_test_executed": false,
+      "controller_truth_opened": false
+    }
+  },
+  "real_tournament": {
+    "pr": 313,
+    "sha": "206167a1eb86f1dec5f8285db56accbcd469bce9",
+    "status": "SEPARATE_OUTCOME_BLIND_IMPLEMENTATION_LANE__DO_NOT_MODIFY_FROM_HANDOFF"
+  },
+  "corrected_replay": {
+    "pr": 314,
+    "sha": "c6899a2910244a0352c0c57e7aea6e3026191da1",
+    "status": "FROZEN_SPENT__DO_NOT_RERUN",
+    "routing": "BROAD_MESO_RELATIONAL_VIABLE__NOT_TARGET_WINNER"
+  },
+  "target_candidates": {
+    "C1": "ACTIVE_NO_WINNER",
+    "C2": "ACTIVE_RELATIONAL_SUCCESSOR_REQUIRES_KNOWN_TRUTH_QUALIFICATION",
+    "C3": "ACTIVE_EXACT_QUERY_SHORTCUT_GATES_REQUIRED",
+    "C6": "ACTIVE_SUBJECT_TO_C1_C3",
+    "C4": "ACTIVE_SUBJECT_TO_C2_C3",
+    "C5": "ACTIVE_SPECIALIST_ONLY"
+  },
+  "gene_identity_policy": {
+    "allowed_active_evidence_classes": [
+      "SOURCE_NATIVE_SAFE",
+      "FROZEN_4K_IDENTITY_AUDITED",
+      "REPAIRED_41K_ADDRESS_BOUND",
+      "SEMANTICS_FREE_MECHANICS",
+      "NOT_GENE_SEMANTIC"
+    ],
+    "unresolved_class": "GENE_IDENTITY_PROVENANCE_UNRESOLVED",
+    "unresolved_rule": "cannot be active biological architecture authority; replay prospectively on repaired/bound data only if question remains material"
+  },
+  "downstream_runtime": {
+    "canonical_doc": "docs/agent/TEACHER_STUDENT_CANONICAL_RUNTIME_V1_20260907.md",
+    "status": "MECHANICS_RUNTIME_MATURE__TARGET_PORTFOLIO_INTEGRATION_MISSING",
+    "primary_teacher_topologies": ["single_rich_ema_teacher", "shared_ema_backbone_typed_heads"],
+    "conditional_teacher_topology": "independent_complementary_teachers_only_after_interference_gate",
+    "primary_student_topology": "shared_full_capacity_backbone_typed_heads",
+    "conditional_student_topology": "specialists_only_after_negative_transfer_gate",
+    "prediction_semantics": ["point_or_conditional_mean", "state_plus_uncertainty", "conditional_distribution", "teacher_private_auxiliary", "abstention_not_estimable"],
+    "ema_native_parameter": "half_life_in_successful_base_cell_presentations",
+    "ema_production_value_selected": false,
+    "opf_status": "optional_future_numerical_challenger_inside_qualified_blocks_only"
+  },
+  "do_not_repeat": [
+    "hidden_gene_anchor",
+    "address_exposure_as_v6_rescue",
+    "core_only_evidence_as_production_default",
+    "tier_hiding_evidence_starvation",
+    "random_u0_as_biological_teacher",
+    "T0_T1_TCTX_as_unresolved_production_targets",
+    "V6R5B_residual_target_rescue",
+    "historical_PROD41K_T1_training_or_resume",
+    "rare_auxiliary_head_as_default_student",
+    "graph_auxiliary_as_default_foundation_arm",
+    "variance_regularizer_as_default_objective",
+    "old_2_4_8_teacher_view_optimum_as_authority",
+    "PR314_corrected_replay_under_same_authority",
+    "PR316_old_one_process_external_synthetic_execution_path"
+  ],
+  "next_actions": [
+    "Macha/independent agent executes PR320 phase-1 blind fit using PR321 pre-fit transport only",
+    "freeze V4 blinded receipt and independently recompute its SHA-256",
+    "STOP before controller material enters custody",
+    "independently audit blinded receipt completeness, engine hashes, authority flags and opacity",
+    "only then decide whether to authorize separate controller adjudication",
+    "after TD tests are qualified, continue real candidate tournament without weakening candidate-specific gates",
+    "build target-agnostic downstream TargetPortfolio/teacher/student/uncertainty/matched-compute integration harness without turning training authority on"
+  ],
+  "external_artifact_manifest": "docs/agent/JEPA_EXTERNAL_ARTIFACT_CUSTODY_MANIFEST_20261013.csv"
+}

@@ -1,0 +1,85 @@
+name: JEPA lane handoff and custody audit
+
+on:
+  push:
+    branches:
+      - 'handoff/jepa-lane-takeover-20261013'
+  pull_request:
+    paths:
+      - 'docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261013.md'
+      - 'docs/agent/JEPA_LANE_TAKEOVER_STATE_20261013.json'
+      - 'docs/agent/JEPA_LATEST_HANDOFF_POINTER_20261013.json'
+      - 'docs/agent/JEPA_EXTERNAL_ARTIFACT_CUSTODY_MANIFEST_20261013.csv'
+      - 'docs/agent/JEPA_ACTIVE_BRANCH_PR_MAP_20261013.md'
+      - 'docs/agent/JEPA_LANE_TAKEOVER_CHANGELOG_20261013.md'
+      - 'docs/agent/external_context/**'
+      - 'scripts/v5/verify_jepa_lane_handoff_state_v1.py'
+      - 'tests/v5/test_verify_jepa_lane_handoff_state_v1.py'
+      - '.github/workflows/jepa-lane-handoff-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  handoff-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile handoff validators/tests
+        run: |
+          python -m py_compile \
+            scripts/v5/verify_jepa_lane_takeover_manifest_v1.py \
+            scripts/v5/verify_jepa_lane_handoff_state_v1.py \
+            tests/v5/test_verify_jepa_lane_takeover_manifest_v1.py \
+            tests/v5/test_verify_jepa_lane_handoff_state_v1.py
+      - name: Validate audit manifests
+        run: |
+          python scripts/v5/verify_jepa_lane_takeover_manifest_v1.py | tee /tmp/audit_manifest.txt
+          grep -q 'PASS_JEPA_LANE_TAKEOVER_MANIFEST_V1' /tmp/audit_manifest.txt
+      - name: Validate handoff state and custody
+        run: |
+          python scripts/v5/verify_jepa_lane_handoff_state_v1.py | tee /tmp/handoff_state.txt
+          grep -q 'PASS_JEPA_LANE_HANDOFF_STATE_V1' /tmp/handoff_state.txt
+      - name: Validate latest handoff pointer
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('docs/agent/JEPA_LATEST_HANDOFF_POINTER_20261013.json')
+          v=json.loads(p.read_text())
+          assert v['schema']=='JEPA_LATEST_HANDOFF_POINTER_V1'
+          assert v['branch']=='handoff/jepa-lane-takeover-20261013'
+          assert v['read_first']=='docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261013.md'
+          assert v['authority']['target_selection_authorized'] is False
+          assert v['authority']['representation_selection_authorized'] is False
+          assert v['authority']['td60_authorized'] is False
+          assert v['authority']['stage4_authorized'] is False
+          assert v['authority']['training_authorized'] is False
+          print('LATEST_HANDOFF_POINTER_BOUND')
+          PY
+      - name: Run hostile takeover-manifest tests
+        run: |
+          python -m unittest tests.v5.test_verify_jepa_lane_takeover_manifest_v1 -v 2>&1 | tee /tmp/takeover_tests.txt
+          grep -q '^Ran 10 tests' /tmp/takeover_tests.txt
+          grep -q '^OK$' /tmp/takeover_tests.txt
+      - name: Run hostile handoff/custody tests
+        run: |
+          python -m unittest tests.v5.test_verify_jepa_lane_handoff_state_v1 -v 2>&1 | tee /tmp/handoff_tests.txt
+          grep -q '^Ran 10 tests' /tmp/handoff_tests.txt
+          grep -q '^OK$' /tmp/handoff_tests.txt
+      - name: Assert no forbidden binary extensions added to handoff docs tree
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          forbidden={'.pt','.pth','.ckpt','.npz','.zip','.xz','.qs','.h5ad'}
+          bad=[]
+          for p in Path('docs/agent').rglob('*'):
+              if p.is_file() and p.suffix.lower() in forbidden:
+                  bad.append(str(p))
+          assert not bad, f'forbidden binary payloads under docs/agent: {bad}'
+          print('NO_LARGE_BINARY_CUSTODY_PAYLOADS_COMMITTED')
+          PY
