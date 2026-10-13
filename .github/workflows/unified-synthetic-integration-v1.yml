@@ -60,3 +60,10 @@ jobs:
           print(out.read_text(encoding="utf-8"), end="")
           print("UNIFIED_SYNTHETIC_RECEIPT_END")
           PY
+      - name: Publish generated V2 receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: unified-synthetic-integration-receipt-v2
+          path: /tmp/UNIFIED_SYNTHETIC_INTEGRATION_RECEIPT_V2.json
+          if-no-files-found: error
+          retention-days: 30
