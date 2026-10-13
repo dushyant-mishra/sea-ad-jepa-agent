@@ -1,0 +1,304 @@
+{
+  "schema": "JEPA_TD_REAL_QUANTITATIVE_RULE_RECOVERY_MAP_V1",
+  "date": "2026-10-13",
+  "scope": "OUTCOME_BLIND_COMPONENT_RECOVERY_ONLY",
+  "candidate_outcomes_opened": false,
+  "historical_descriptive_cutoffs_promoted": false,
+  "real_tournament_qualify_eligible": false,
+  "gates": {
+    "G2_NONTRIVIAL_BIOLOGICAL_CONTENT": {
+      "gate_id": "G2_NONTRIVIAL_BIOLOGICAL_CONTENT",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_tournament_falsifiers_v1.py", "git_blob_sha": "e089436b1d0865583a95b27020715771951641b3", "scope": "RAW_DONOR_PRIMARY_BASELINE_DELTAS_ONLY"},
+        {"path": "scripts/v5/td_target_tournament_precision.py", "git_blob_sha": "152bd1ed6aa6fb2dfa33dc3909d4f417cfa88c39", "scope": "DONOR_BOUND_EXACT_SIGN_INFERENCE_ONLY"},
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_DIRECTIONAL_STATUS_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the candidate-specific donor-level biological-content contrast(s), positive direction, multiplicity family, and whether statistical positivity alone is sufficient or a minimum biological effect is required.",
+      "threshold_policy": "PROSPECTIVE_NUMERIC_OR_DIRECTIONAL_RULE_REQUIRED",
+      "why_not_promoted": "Existing code computes falsifier deltas and donor sign inference but does not define the biological estimand or substantive nontriviality threshold.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "G3_CORRECT_CELL_SPECIFICITY": {
+      "gate_id": "G3_CORRECT_CELL_SPECIFICITY",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_tournament_falsifiers_v1.py", "git_blob_sha": "e089436b1d0865583a95b27020715771951641b3", "scope": "MATCHED_WRONG_CELL_AND_FINE_NEIGHBOR_RAW_DELTAS_ONLY"},
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "DONOR_DIRECTIONAL_AND_NONCOMPENSATING_COMPONENTS_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the exact correct-cell versus wrong-cell donor estimand, applicable null set by candidate, and multiplicity-adjusted decision rule.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "Wrong-cell evidence exists, but the gate-specific endpoint and prospective pass rule do not.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "G4_DONOR_RECURRENCE": {
+      "gate_id": "G4_DONOR_RECURRENCE",
+      "reusable_components": [
+        {"path": "scripts/v5/td_target_tournament_precision.py", "git_blob_sha": "152bd1ed6aa6fb2dfa33dc3909d4f417cfa88c39", "scope": "DONOR_BOUND_EXACT_SIGN_INFERENCE_ONLY"},
+        {"path": "scripts/v5/td_donor_resampling_audit.py", "git_blob_sha": "412dbff491b410570dcc24e4f091405c6022aef1", "scope": "DONOR_DEPENDENCE_AUDIT_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze what candidate-specific per-donor quantity constitutes recurrence and how ties/heterogeneous donor effects are adjudicated beyond the generic sign helper.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "The donor is correctly protected as N, but the biological quantity whose recurrence matters is candidate-specific and not materialized.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "G5_SOURCE_REPLICATION": {
+      "gate_id": "G5_SOURCE_REPLICATION",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "EXACT_REQUIRED_STRATA_NONCOMPENSATION_ONLY"},
+        {"path": "scripts/v5/td_target_tournament_precision.py", "git_blob_sha": "152bd1ed6aa6fb2dfa33dc3909d4f417cfa88c39", "scope": "WITHIN_SOURCE_DONOR_SIGN_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the within-source biological endpoint and estimability requirements for HVS, NPH52 and SEA_AD, including any candidate-specific unsupported-source exclusions.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "Exact non-compensation across sources is available, but source-specific biological PASS criteria remain undefined.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "G6_TEACHER_INFORMATION_ADVANTAGE": {
+      "gate_id": "G6_TEACHER_INFORMATION_ADVANTAGE",
+      "reusable_components": [
+        {"path": "scripts/v5/td_query_information_guard.py", "git_blob_sha": "3ca60c5f82b7b07f5f6123a52e7b50f9027a6ebe", "scope": "DIRECT_AND_TRANSITIVE_QUERY_LEAKAGE_EXCLUSION_ONLY"},
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_DONOR_DIRECTIONAL_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the exact teacher-versus-student information-advantage estimand and prospective advantage decision threshold; leakage exclusion alone is necessary but not sufficient.",
+      "threshold_policy": "PROSPECTIVE_NUMERIC_OR_DIRECTIONAL_RULE_REQUIRED",
+      "why_not_promoted": "The information firewall is qualified, but no complete biological advantage contrast/rule exists.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "G7_EVIDENCE_CONVERGENCE": {
+      "gate_id": "G7_EVIDENCE_CONVERGENCE",
+      "reusable_components": [
+        {"path": "scripts/v5/td_target_tournament_precision.py", "git_blob_sha": "152bd1ed6aa6fb2dfa33dc3909d4f417cfa88c39", "scope": "DONOR_INFERENCE_COMPONENT_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the evidence ladder, stabilization metric, monotonicity/tolerance rule, and donor-primary aggregation for each applicable candidate target.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "No real-data candidate-specific convergence metric or tolerance is frozen.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "G8_MEASUREMENT_ROBUSTNESS": {
+      "gate_id": "G8_MEASUREMENT_ROBUSTNESS",
+      "reusable_components": [
+        {"path": "scripts/v5/td_measurement_noise_fixture.py", "git_blob_sha": "17263abf3bb9b943f1062c31281fd84cf298702d", "scope": "SYNTHETIC_ONLY_SPLIT_AND_DEPTH_PSEUDOREPLICATE_MECHANICS"},
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_DONOR_DIRECTIONAL_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the real-data robustness endpoint separating biological-state stability from measurement-depth sensitivity and its admissible tolerance/decision rule.",
+      "threshold_policy": "PROSPECTIVE_NUMERIC_OR_DIRECTIONAL_RULE_REQUIRED",
+      "why_not_promoted": "Pseudoreplicate mechanics are synthetic-reference code, not a qualified real biological robustness rule.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "G9_LEARNED_TEACHER_CONTINUITY": {
+      "gate_id": "G9_LEARNED_TEACHER_CONTINUITY",
+      "reusable_components": [],
+      "remaining_scientific_decision": "Freeze candidate-specific rich-state geometry recurrence across disjoint views and donor-balanced refits; historical TD60 applies only conditionally to the relational learned-teacher family and is not a universal G9 executor.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "No universal candidate-specific learned-teacher continuity executor exists.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "G10_COLLAPSE_SHORTCUT_RESISTANCE": {
+      "gate_id": "G10_COLLAPSE_SHORTCUT_RESISTANCE",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_tournament_falsifiers_v1.py", "git_blob_sha": "e089436b1d0865583a95b27020715771951641b3", "scope": "MANDATORY_FALSIFIER_RAW_DELTAS_ONLY"},
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "NONCOMPENSATING_STATUS_COMPONENT_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the candidate-specific noncollapse statistic and the per-falsifier donor-primary defeat rule; all applicable falsifiers must pass without aggregate rescue.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "Falsifier evidence exists, but noncollapse and baseline-defeat thresholds are not prospectively defined.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "G11_TRANSFER": {
+      "gate_id": "G11_TRANSFER",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "EXACT_REQUIRED_STRATA_NONCOMPENSATION_ONLY"},
+        {"path": "scripts/v5/td_target_tournament_precision.py", "git_blob_sha": "152bd1ed6aa6fb2dfa33dc3909d4f417cfa88c39", "scope": "DONOR_BOUND_DIRECTIONAL_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the valid transfer levels for each candidate and the level-specific endpoint/rule for held-out donor, operator/matrix, study family and technology.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "Non-compensation can be enforced once levels are frozen, but level-specific biological success criteria remain unspecified.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "G12_COVERAGE_ABSTENTION": {
+      "gate_id": "G12_COVERAGE_ABSTENTION",
+      "reusable_components": [],
+      "remaining_scientific_decision": "Freeze the candidate-specific minimum eligible coverage and any donor/source/operator/query coverage floors while preserving structural unsupportedness as abstention.",
+      "threshold_policy": "PROSPECTIVE_NUMERIC_OR_DIRECTIONAL_RULE_REQUIRED",
+      "why_not_promoted": "Support semantics are frozen, but the minimum eligible coverage threshold is explicitly not.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "S1_DISJOINT_VIEW_RECURRENCE": {
+      "gate_id": "S1_DISJOINT_VIEW_RECURRENCE",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_DONOR_DIRECTIONAL_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the shared-state disjoint-view recurrence metric, alignment convention, positive direction and donor-primary decision rule.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "No shared-state recurrence metric/tolerance is frozen for real execution.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "S2_DONOR_BALANCED_SUBSPACE_STABILITY": {
+      "gate_id": "S2_DONOR_BALANCED_SUBSPACE_STABILITY",
+      "reusable_components": [
+        {"path": "scripts/v5/td_donor_resampling_audit.py", "git_blob_sha": "412dbff491b410570dcc24e4f091405c6022aef1", "scope": "DONOR_PARTITION_DEPENDENCE_AUDIT_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the subspace-stability metric, dimensional alignment, donor-balanced refit design and PASS/FAIL/NOT_ESTIMABLE tolerance.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "Donor dependence is auditable, but the biological subspace-stability endpoint is not materialized.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "S3_IDENTITY_SUPPORT_BASELINE_DEFEAT": {
+      "gate_id": "S3_IDENTITY_SUPPORT_BASELINE_DEFEAT",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_tournament_falsifiers_v1.py", "git_blob_sha": "e089436b1d0865583a95b27020715771951641b3", "scope": "IDENTITY_SUPPORT_BASELINE_RAW_DELTAS_ONLY"},
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_DONOR_DIRECTIONAL_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the exact donor-level advantage estimand over identity+support-only prediction and multiplicity-adjusted decision rule.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "The baseline exists, but the gate-level contrast and prospective success rule do not.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "R1_SCALE_FREE_RELATIONAL_RECURRENCE": {
+      "gate_id": "R1_SCALE_FREE_RELATIONAL_RECURRENCE",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_DONOR_DIRECTIONAL_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the production relational recurrence metric over the allowed broad/mesoscale support and the donor-primary rule; corrected replay is a prior/viability prerequisite, not the production gate itself.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "Historical relational replay cannot be promoted into the future production target gate.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "R3_FINE_NEIGHBOR_WRONG_CELL_DEFEAT": {
+      "gate_id": "R3_FINE_NEIGHBOR_WRONG_CELL_DEFEAT",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_tournament_falsifiers_v1.py", "git_blob_sha": "e089436b1d0865583a95b27020715771951641b3", "scope": "FINE_NEIGHBOR_WRONG_CELL_RAW_DELTAS_ONLY"},
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_DONOR_DIRECTIONAL_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the exact relational target loss/score contrast versus the fine-neighbor wrong-cell null and its multiplicity-adjusted donor rule.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "The null construction is available but no production gate decision rule is bound.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "R4_INCREMENT_OVER_C1_SHARED": {
+      "gate_id": "R4_INCREMENT_OVER_C1_SHARED",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_PAIRED_DONOR_DIRECTIONAL_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the paired donor-level incremental-information/robustness estimand comparing C2 with C1 and the required nondegradation dimensions.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "Generic paired inference exists, but the relational increment estimand does not.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "Q4_Q_COUNT_ONLY_DEFEAT": {
+      "gate_id": "Q4_Q_COUNT_ONLY_DEFEAT",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_tournament_falsifiers_v1.py", "git_blob_sha": "e089436b1d0865583a95b27020715771951641b3", "scope": "Q_COUNT_ONLY_BASELINE_RAW_DELTAS_ONLY"},
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_DONOR_DIRECTIONAL_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the q-conditioned target advantage estimand over q-count-only prediction and its prospective donor rule.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "Baseline deltas are available; gate endpoint/rule is not.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "Q5_Q_ADDRESS_ONLY_DEFEAT": {
+      "gate_id": "Q5_Q_ADDRESS_ONLY_DEFEAT",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_tournament_falsifiers_v1.py", "git_blob_sha": "e089436b1d0865583a95b27020715771951641b3", "scope": "Q_ADDRESS_ONLY_BASELINE_RAW_DELTAS_ONLY"},
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_DONOR_DIRECTIONAL_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the advantage estimand over q-address-only prediction and its prospective donor rule.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "Baseline deltas are available; gate endpoint/rule is not.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "Q6_QUERY_AGNOSTIC_DEFEAT": {
+      "gate_id": "Q6_QUERY_AGNOSTIC_DEFEAT",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_tournament_falsifiers_v1.py", "git_blob_sha": "e089436b1d0865583a95b27020715771951641b3", "scope": "QUERY_AGNOSTIC_BASELINE_RAW_DELTAS_ONLY"},
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_DONOR_DIRECTIONAL_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the query-conditioned advantage estimand over a query-agnostic readout and its prospective donor rule.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "Baseline deltas are available; gate endpoint/rule is not.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "Q7_WRONG_Q_DEFEAT": {
+      "gate_id": "Q7_WRONG_Q_DEFEAT",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_tournament_falsifiers_v1.py", "git_blob_sha": "e089436b1d0865583a95b27020715771951641b3", "scope": "WRONG_Q_BASELINE_RAW_DELTAS_ONLY"},
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_DONOR_DIRECTIONAL_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the correct-q versus wrong-q advantage estimand and its prospective donor rule.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "Wrong-q baseline deltas are available; gate endpoint/rule is not.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "Q8_TECHNICAL_PLUS_Q_DEFEAT": {
+      "gate_id": "Q8_TECHNICAL_PLUS_Q_DEFEAT",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_tournament_falsifiers_v1.py", "git_blob_sha": "e089436b1d0865583a95b27020715771951641b3", "scope": "TECHNICAL_PLUS_Q_BASELINE_RAW_DELTAS_ONLY"},
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_DONOR_DIRECTIONAL_INFERENCE_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the biological-context advantage estimand over the technical+q baseline and its prospective donor rule.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "Baseline deltas are available; gate endpoint/rule is not.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "C6_INCREMENT_OVER_C1_C3": {
+      "gate_id": "C6_INCREMENT_OVER_C1_C3",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_PAIRED_DONOR_AND_NONCOMPENSATION_COMPONENTS_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the C6 fused-implementation increment estimand over separately qualified C1+C3 and explicit nondegradation requirements; C6 failure must not erase constituents.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "Composite non-compensation is available but the added-information/robustness endpoint is not.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "C4_INCREMENT_OVER_CONSTITUENTS": {
+      "gate_id": "C4_INCREMENT_OVER_CONSTITUENTS",
+      "reusable_components": [
+        {"path": "scripts/v5/td_real_quantitative_components_v1.py", "git_blob_sha": "3a540c546bd3806a72c03966029309994bc9d847", "scope": "GENERIC_PAIRED_DONOR_AND_NONCOMPENSATION_COMPONENTS_ONLY"}
+      ],
+      "remaining_scientific_decision": "Freeze the C4 increment estimand over strongest qualified constituents plus explicit transfer/shortcut/coverage/uncertainty nondegradation rules.",
+      "threshold_policy": "PROSPECTIVE_ENDPOINT_AND_RULE_REQUIRED",
+      "why_not_promoted": "The frozen design states the qualitative increment requirements but not a complete executable endpoint/rule.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "M1_CIRCULARITY_CONTROL": {
+      "gate_id": "M1_CIRCULARITY_CONTROL",
+      "reusable_components": [],
+      "remaining_scientific_decision": "Create a prospective C5-specific contract defining which regulatory/chromatin evidence may construct the target, which evidence is held independent, and what exact provenance pattern constitutes circularity.",
+      "threshold_policy": "PROSPECTIVE_SPECIALIST_STRUCTURAL_CONTRACT_REQUIRED",
+      "why_not_promoted": "The frozen V2 spec names M1 but does not define an executable structural predicate.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "M2_INDEPENDENT_PROVENANCE": {
+      "gate_id": "M2_INDEPENDENT_PROVENANCE",
+      "reusable_components": [],
+      "remaining_scientific_decision": "Create a prospective C5-specific provenance contract defining independent validation versus evidence reused in regulatory target construction.",
+      "threshold_policy": "PROSPECTIVE_SPECIALIST_STRUCTURAL_CONTRACT_REQUIRED",
+      "why_not_promoted": "The project rule forbids reused regulatory evidence from being called independent validation, but exact machine fields/predicate are not frozen.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "M3_CAUSAL_CLAIM_FALSE": {
+      "gate_id": "M3_CAUSAL_CLAIM_FALSE",
+      "reusable_components": [],
+      "remaining_scientific_decision": "Create a prospective C5-specific claim-boundary contract that machine-checks descriptive/regulatory association language versus prohibited causal interpretation.",
+      "threshold_policy": "PROSPECTIVE_SPECIALIST_STRUCTURAL_CONTRACT_REQUIRED",
+      "why_not_promoted": "The gate name alone does not define a callable predicate or evidence schema.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    },
+    "M4_SUPPORT_ABSTENTION": {
+      "gate_id": "M4_SUPPORT_ABSTENTION",
+      "reusable_components": [],
+      "remaining_scientific_decision": "Create a prospective C5-specific support registry and abstention predicate for unsupported cells/queries/sources, consistent with measured-zero versus structural-unmeasurement semantics.",
+      "threshold_policy": "PROSPECTIVE_SPECIALIST_STRUCTURAL_CONTRACT_REQUIRED",
+      "why_not_promoted": "Global support semantics exist, but specialist-specific support eligibility and machine predicate are not frozen.",
+      "readiness_after_audit": "RULE_NOT_MATERIALIZED"
+    }
+  },
+  "authority": {
+    "value_read_authorized": false,
+    "real_tournament_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false
+  },
+  "terminal": "REUSABLE_COMPONENTS_RECOVERED__TWENTY_EIGHT_GATE_RULES_STILL_REQUIRE_PROSPECTIVE_SCIENTIFIC_MATERIALIZATION__NO_OUTCOME_READ__NO_REAL_TD_AUTHORITY"
+}
