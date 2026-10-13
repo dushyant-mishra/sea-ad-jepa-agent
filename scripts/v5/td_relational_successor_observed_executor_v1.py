@@ -26,6 +26,21 @@ class _StratumGeometry:
     y: np.ndarray
 
 
+@dataclass(frozen=True)
+class PreparedObservedRelationalContext:
+    source: str
+    panel_id: str
+    n_cells: int
+    donors: np.ndarray
+    operators: np.ndarray
+    rows: np.ndarray
+    library: np.ndarray
+    detected: np.ndarray
+    store: dict[tuple[str, str], _StratumGeometry]
+    null_maps: np.ndarray
+    cell_keys: tuple[tuple[str, str], ...]
+
+
 def _require_view(name: str, values, measured, feature_ids: Sequence[str], n: int | None = None):
     arr = np.asarray(values, dtype=float)
     support = np.asarray(measured, dtype=bool)
@@ -43,21 +58,16 @@ def _require_view(name: str, values, measured, feature_ids: Sequence[str], n: in
     return arr, support, ids
 
 
-def _validate_vectors(*, donor_ids, operator_ids, global_rows, source_library, detected_genes,
-                      focal_mask, neighbor_pool_mask, n: int):
+def _validate_core_vectors(*, donor_ids, operator_ids, global_rows, source_library, detected_genes, n: int):
     donors = np.asarray(donor_ids, dtype=object)
     operators = np.asarray(operator_ids, dtype=object)
     rows = np.asarray(global_rows)
     library = np.asarray(source_library, dtype=float)
     detected = np.asarray(detected_genes)
-    focal = np.asarray(focal_mask, dtype=bool)
-    pool = np.asarray(neighbor_pool_mask, dtype=bool)
-    if any(len(v) != n for v in (donors, operators, rows, library, detected, focal, pool)):
+    if any(len(v) != n for v in (donors, operators, rows, library, detected)):
         raise ObservedExecutorError("cell-vector length mismatch")
     if len(set(rows.tolist())) != n:
         raise ObservedExecutorError("global_rows must be unique")
-    if np.any(focal & ~pool):
-        raise ObservedExecutorError("focal anchors must belong to neighbor pool")
     if any(not isinstance(v, str) or not v for v in donors.tolist()):
         raise ObservedExecutorError("donor IDs must be nonempty strings")
     if any(not isinstance(v, str) or not v for v in operators.tolist()):
@@ -66,7 +76,17 @@ def _validate_vectors(*, donor_ids, operator_ids, global_rows, source_library, d
         raise ObservedExecutorError("source_library must be finite and nonnegative")
     if not np.issubdtype(detected.dtype, np.integer) or np.any(detected < 0):
         raise ObservedExecutorError("detected_genes must be nonnegative integers")
-    return donors, operators, rows.astype(np.int64), library, detected.astype(np.int64), focal, pool
+    return donors, operators, rows.astype(np.int64), library, detected.astype(np.int64)
+
+
+def _validate_profile_masks(*, focal_mask, neighbor_pool_mask, n: int):
+    focal = np.asarray(focal_mask, dtype=bool)
+    pool = np.asarray(neighbor_pool_mask, dtype=bool)
+    if len(focal) != n or len(pool) != n:
+        raise ObservedExecutorError("profile-mask length mismatch")
+    if np.any(focal & ~pool):
+        raise ObservedExecutorError("focal anchors must belong to neighbor pool")
+    return focal, pool
 
 
 def _stratum_keys(donors: np.ndarray, operators: np.ndarray) -> tuple[tuple[str, str], ...]:
@@ -176,11 +196,10 @@ def _donor_null(triplets, store, cell_keys, mapping):
     return float(agree / resolved) if resolved >= G.MIN_RESOLVED_RELATIONS_PER_DONOR else None
 
 
-def evaluate_observed_relational_profile(
+def prepare_observed_relational_context(
     *,
     source: str,
     panel_id: str,
-    profile_id: str,
     z_values,
     x_values,
     y_values,
@@ -195,32 +214,23 @@ def evaluate_observed_relational_profile(
     global_rows,
     source_library,
     detected_genes,
-    focal_mask,
-    neighbor_pool_mask,
-    min_focal_anchors_per_donor: int,
-) -> G.RelationalProfileReceipt:
-    if not all(isinstance(v, str) and v for v in (source, panel_id, profile_id)):
-        raise ObservedExecutorError("source, panel_id and profile_id must be nonempty strings")
-    if not isinstance(min_focal_anchors_per_donor, int) or isinstance(min_focal_anchors_per_donor, bool) or min_focal_anchors_per_donor < 1:
-        raise ObservedExecutorError("min_focal_anchors_per_donor must be a positive integer")
-
+) -> PreparedObservedRelationalContext:
+    if not all(isinstance(v, str) and v for v in (source, panel_id)):
+        raise ObservedExecutorError("source and panel_id must be nonempty strings")
     z, zm, z_ids = _require_view("Z", z_values, z_measured, z_feature_ids)
     n = z.shape[0]
     x, xm, x_ids = _require_view("X", x_values, x_measured, x_feature_ids, n)
     y, ym, y_ids = _require_view("Y", y_values, y_measured, y_feature_ids, n)
     if set(z_ids) & set(x_ids) or set(z_ids) & set(y_ids) or set(x_ids) & set(y_ids):
         raise ObservedExecutorError("Z/X/Y feature views must be mutually disjoint")
-    donors, operators, rows, library, detected, focal, pool = _validate_vectors(
+    donors, operators, rows, library, detected = _validate_core_vectors(
         donor_ids=donor_ids,
         operator_ids=operator_ids,
         global_rows=global_rows,
         source_library=source_library,
         detected_genes=detected_genes,
-        focal_mask=focal_mask,
-        neighbor_pool_mask=neighbor_pool_mask,
         n=n,
     )
-
     z_pairs = M.select_pair_coordinates(z_ids, panel_id=panel_id, view_id="Z")
     x_pairs = M.select_pair_coordinates(x_ids, panel_id=panel_id, view_id="X")
     y_pairs = M.select_pair_coordinates(y_ids, panel_id=panel_id, view_id="Y")
@@ -240,7 +250,46 @@ def evaluate_observed_relational_profile(
         source_library=library,
         detected_genes=detected,
     )
-    cell_keys = tuple((str(d), str(o)) for d, o in zip(donors.tolist(), operators.tolist()))
+    return PreparedObservedRelationalContext(
+        source=source,
+        panel_id=panel_id,
+        n_cells=n,
+        donors=donors,
+        operators=operators,
+        rows=rows,
+        library=library,
+        detected=detected,
+        store=store,
+        null_maps=null_maps,
+        cell_keys=tuple((str(d), str(o)) for d, o in zip(donors.tolist(), operators.tolist())),
+    )
+
+
+def evaluate_prepared_relational_profile(
+    context: PreparedObservedRelationalContext,
+    *,
+    profile_id: str,
+    focal_mask,
+    neighbor_pool_mask,
+    min_focal_anchors_per_donor: int,
+) -> G.RelationalProfileReceipt:
+    if not isinstance(context, PreparedObservedRelationalContext):
+        raise ObservedExecutorError("context must be a PreparedObservedRelationalContext")
+    if not isinstance(profile_id, str) or not profile_id:
+        raise ObservedExecutorError("profile_id must be a nonempty string")
+    if not isinstance(min_focal_anchors_per_donor, int) or isinstance(min_focal_anchors_per_donor, bool) or min_focal_anchors_per_donor < 1:
+        raise ObservedExecutorError("min_focal_anchors_per_donor must be a positive integer")
+    focal, pool = _validate_profile_masks(
+        focal_mask=focal_mask,
+        neighbor_pool_mask=neighbor_pool_mask,
+        n=context.n_cells,
+    )
+    donors = context.donors
+    operators = context.operators
+    rows = context.rows
+    store = context.store
+    null_maps = context.null_maps
+    cell_keys = context.cell_keys
 
     work = {}
     donor_order = tuple(dict.fromkeys(str(v) for v in donors.tolist()))
@@ -275,8 +324,8 @@ def evaluate_observed_relational_profile(
                         all_triplets.append((i, kidx, j))
             by_donor[donor].extend(_sample_triplets(
                 all_triplets,
-                source=source,
-                panel_id=panel_id,
+                source=context.source,
+                panel_id=context.panel_id,
                 donor=donor,
                 operator=operator,
                 rows=rows,
@@ -372,8 +421,8 @@ def evaluate_observed_relational_profile(
         characterization.append("NOT_ESTIMABLE")
 
     return G.RelationalProfileReceipt(
-        source=source,
-        panel_id=panel_id,
+        source=context.source,
+        panel_id=context.panel_id,
         profile_id=profile_id,
         scale_results=results,
         characterization=tuple(characterization),
@@ -385,4 +434,54 @@ def evaluate_observed_relational_profile(
             "stage4_authorized": False,
             "training_authorized": False,
         },
+    )
+
+
+def evaluate_observed_relational_profile(
+    *,
+    source: str,
+    panel_id: str,
+    profile_id: str,
+    z_values,
+    x_values,
+    y_values,
+    z_measured,
+    x_measured,
+    y_measured,
+    z_feature_ids: Sequence[str],
+    x_feature_ids: Sequence[str],
+    y_feature_ids: Sequence[str],
+    donor_ids,
+    operator_ids,
+    global_rows,
+    source_library,
+    detected_genes,
+    focal_mask,
+    neighbor_pool_mask,
+    min_focal_anchors_per_donor: int,
+) -> G.RelationalProfileReceipt:
+    context = prepare_observed_relational_context(
+        source=source,
+        panel_id=panel_id,
+        z_values=z_values,
+        x_values=x_values,
+        y_values=y_values,
+        z_measured=z_measured,
+        x_measured=x_measured,
+        y_measured=y_measured,
+        z_feature_ids=z_feature_ids,
+        x_feature_ids=x_feature_ids,
+        y_feature_ids=y_feature_ids,
+        donor_ids=donor_ids,
+        operator_ids=operator_ids,
+        global_rows=global_rows,
+        source_library=source_library,
+        detected_genes=detected_genes,
+    )
+    return evaluate_prepared_relational_profile(
+        context,
+        profile_id=profile_id,
+        focal_mask=focal_mask,
+        neighbor_pool_mask=neighbor_pool_mask,
+        min_focal_anchors_per_donor=min_focal_anchors_per_donor,
     )
