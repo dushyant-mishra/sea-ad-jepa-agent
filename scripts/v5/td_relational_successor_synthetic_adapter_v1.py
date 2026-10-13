@@ -23,8 +23,18 @@ MANDATORY_RELATIONAL_CAPABILITIES = (
 )
 
 _EXECUTOR_INPUT_FIELDS = frozenset({
-    'source','panel_id','z_distances','x_distances','y_distances','donor_ids','operator_ids','global_rows',
-    'focal_mask','neighbor_pool_mask','null_y_identity_maps','min_focal_anchors_per_donor',
+    'source','panel_id',
+    'z_values','x_values','y_values',
+    'z_measured','x_measured','y_measured',
+    'z_feature_ids','x_feature_ids','y_feature_ids',
+    'donor_ids','operator_ids','global_rows',
+    'source_library','detected_genes',
+    'focal_mask','neighbor_pool_mask','min_focal_anchors_per_donor',
+})
+_FORBIDDEN_UPSTREAM_TD_FIELDS = frozenset({
+    'z_distances','x_distances','y_distances','null_y_identity_maps',
+    'pair_coordinates','pair_signs','observed_statistic','null_statistics',
+    'expected_status','controller_truth','R','pseudo_rare','challenge_kind','semantic_class',
 })
 _PAYLOAD_FIELDS = frozenset({'authenticated_fit_view_sha256','executor_input'})
 _AUTHORITY = {
@@ -92,7 +102,11 @@ def build_relational_qualification_adapter(
         if actual_sha != expected_sha:
             raise RelationalAdapterError(f'fit-view SHA-256 mismatch: {cid}')
         inp=payload.get('executor_input')
-        if not isinstance(inp, Mapping) or set(inp) != _EXECUTOR_INPUT_FIELDS:
+        if not isinstance(inp, Mapping):
+            raise RelationalAdapterError(f'executor_input must be a mapping: {cid}')
+        fields=set(inp)
+        leaked=sorted(fields & _FORBIDDEN_UPSTREAM_TD_FIELDS)
+        if leaked or fields != _EXECUTOR_INPUT_FIELDS:
             raise RelationalAdapterError(f'executor_input fields must exactly match the blinded TD gate schema: {cid}')
         fit=dict(inp)
         fit['profile_id']=cid
