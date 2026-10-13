@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 from pathlib import Path
+import sys
 import tempfile
 import unittest
 
@@ -11,6 +12,7 @@ MODULE_PATH = ROOT / "scripts" / "v5" / "jepa_post_td_harness_contract_v1.py"
 SPEC = importlib.util.spec_from_file_location("jepa_post_td_harness_contract_v1", MODULE_PATH)
 assert SPEC and SPEC.loader
 M = importlib.util.module_from_spec(SPEC)
+sys.modules[SPEC.name] = M
 SPEC.loader.exec_module(M)
 
 
