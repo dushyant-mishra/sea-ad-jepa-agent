@@ -28,8 +28,28 @@ def test_receipt_binds_fit_controller_manifest_and_source_bytes_with_authority_o
         "scripts/v79/unified_synthetic_fit_view_v1.py",
         "scripts/v79/unified_synthetic_controller_truth_v1.py",
         "scripts/v79/finalize_unified_synthetic_integration_v1.py",
+        "scripts/v79/v79_hierarchical_biology.py",
+        "scripts/v79/v79_observation_operator.py",
+        "scripts/v79/v79_rare_biology_generator_v1.py",
     }
     assert all(len(x) == 64 for x in r["integration_source_sha256"].values())
+    assert r["frozen_import_git_blob_sha1"] == {
+        "scripts/v79/v79_hierarchical_biology.py": "08d74b02fb609a1e923f2adc906c2bf68b821b26",
+        "scripts/v79/v79_observation_operator.py": "6ed165d33ea31616875064f0c7d95554a6a6abe8",
+        "scripts/v79/v79_rare_biology_generator_v1.py": "2a2f0b2f5b48ed7b9cfd81a74ab7ec514053309f",
+    }
+    assert r["runtime_environment"] == {
+        "python": "3.11.9",
+        "numpy": "2.3.5",
+        "pandas": "2.2.3",
+        "scipy": "1.17.0",
+        "pytest": "9.0.2",
+    }
+    assert r["perturbation_arm_semantics"] == {
+        "0": "CONTROL",
+        "1": "ACTIVE_RARE_PROGRAM_PERTURBATION",
+        "2": "MATCHED_PERTURB_NULL",
+    }
     assert r["synthetic_package_sha256"] != r["controller_truth_sha256"]
     assert r["calibration"] == {
         "stat1_50k_physical_row_status": "QUARANTINED_NOT_HARD_AUTHORITY",
