@@ -79,6 +79,36 @@ class EligibilityTests(unittest.TestCase):
         self.assertFalse(record["encode_missing_as_zero"])
 
 
+class RecoverabilityTests(unittest.TestCase):
+    def test_point_identifiable_allows_only_point_or_mean(self):
+        for semantics in ("POINT_STATE", "CONDITIONAL_MEAN"):
+            self.assertEqual(
+                M.validate_recoverability_assignment("POINT_IDENTIFIABLE", semantics), semantics
+            )
+        with self.assertRaisesRegex(M.PostTDTournamentError, "POINT_IDENTIFIABLE"):
+            M.validate_recoverability_assignment("POINT_IDENTIFIABLE", "CONDITIONAL_DISTRIBUTION")
+
+    def test_stochastic_identifiable_requires_uncertainty_or_distribution(self):
+        for semantics in ("STATE_PLUS_UNCERTAINTY", "CONDITIONAL_DISTRIBUTION"):
+            self.assertEqual(
+                M.validate_recoverability_assignment("STOCHASTIC_IDENTIFIABLE", semantics), semantics
+            )
+        with self.assertRaisesRegex(M.PostTDTournamentError, "STOCHASTIC_IDENTIFIABLE"):
+            M.validate_recoverability_assignment("STOCHASTIC_IDENTIFIABLE", "POINT_STATE")
+
+    def test_teacher_private_maps_only_to_critic_and_not_estimable_only_to_abstain(self):
+        self.assertEqual(
+            M.validate_recoverability_assignment("TEACHER_PRIVATE", "TEACHER_PRIVATE_CRITIC_ONLY"),
+            "TEACHER_PRIVATE_CRITIC_ONLY",
+        )
+        self.assertEqual(
+            M.validate_recoverability_assignment("NOT_ESTIMABLE", "ABSTAIN_NOT_ESTIMABLE"),
+            "ABSTAIN_NOT_ESTIMABLE",
+        )
+        with self.assertRaises(M.PostTDTournamentError):
+            M.validate_recoverability_assignment("TEACHER_PRIVATE", "POINT_STATE")
+
+
 class ArchitectureTournamentTests(unittest.TestCase):
     def test_matched_tournament_manifest_binds_all_arms_and_gates(self):
         p = portfolio_c6()
@@ -142,6 +172,27 @@ class ArchitectureTournamentTests(unittest.TestCase):
                 compute_contracts={"ind": compute_contract()},
                 rare_preservation_required=True,
             )
+
+
+class EMAScreenTests(unittest.TestCase):
+    def test_ema_screen_uses_presentation_half_lives_and_selects_nothing(self):
+        manifest = M.build_ema_screen_manifest(
+            architecture_arm=M.ArchitectureArm(
+                "shared", "SHARED_TYPED_HEADS", "SHARED_TYPED_HEADS", "NONE", 10_000
+            ),
+            half_lives_presentations=[5_000, 20_000, 80_000],
+        )
+        self.assertEqual(manifest["native_unit"], "SUCCESSFUL_BASE_CELL_PRESENTATIONS")
+        self.assertEqual([x["label"] for x in manifest["arms"]], ["SHORT", "INTERMEDIATE", "LONG"])
+        self.assertFalse(manifest["production_half_life_selected"])
+        self.assertNotIn("winner", manifest)
+        self.assertFalse(manifest["authority"]["training_authorized"])
+
+    def test_ema_screen_requires_three_distinct_positive_half_lives(self):
+        arm = M.ArchitectureArm("x", "SINGLE_RICH", "SHARED_TYPED_HEADS", "NONE", 1_000)
+        for values in ([1_000, 2_000], [1_000, 1_000, 2_000], [0, 1_000, 2_000]):
+            with self.assertRaises(M.PostTDTournamentError):
+                M.build_ema_screen_manifest(architecture_arm=arm, half_lives_presentations=values)
 
 
 class EvidenceReducerTests(unittest.TestCase):
