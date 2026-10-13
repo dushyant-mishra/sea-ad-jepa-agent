@@ -7,7 +7,7 @@ from typing import Mapping
 
 import numpy as np
 
-from .unified_synthetic_integration_v1 import UnifiedBiologyWorld
+from .unified_synthetic_integration_v1 import PERTURBATION_ARM_SEMANTICS, UnifiedBiologyWorld
 
 
 @dataclass(frozen=True)
@@ -85,6 +85,7 @@ def derive_controller_truth(world: UnifiedBiologyWorld) -> UnifiedControllerTrut
         "noncontext_rare_prevalence": float(rare[~context].mean()) if (~context).any() else 0.0,
         "perturbed_count": int(perturb.sum()),
         "perturbation_arm_counts": {str(a): int((arms == a).sum()) for a in (0, 1, 2)},
+        "perturbation_arm_semantics": dict(PERTURBATION_ARM_SEMANTICS),
         "rare_expected_shift": float(expected[rare].mean() - expected[~rare].mean()) if rare.any() and (~rare).any() else 0.0,
     }
     return UnifiedControllerTruth(
