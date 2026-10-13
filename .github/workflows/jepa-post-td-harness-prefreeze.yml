@@ -33,6 +33,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Compile post-TD harness sources and tests
+        run: |
+          python -m py_compile \
+            scripts/v5/jepa_post_td_harness_contract_v1.py \
+            tests/v5/test_jepa_post_td_harness_contract_v1.py \
+            tests/v5/test_jepa_post_td_rehearsal_preflight_v1.py
       - name: Run post-TD harness contract tests
         run: |
-          python -m unittest tests.v5.test_jepa_post_td_harness_contract_v1 -v
+          python -m unittest \
+            tests.v5.test_jepa_post_td_harness_contract_v1 \
+            tests.v5.test_jepa_post_td_rehearsal_preflight_v1 \
+            -v
