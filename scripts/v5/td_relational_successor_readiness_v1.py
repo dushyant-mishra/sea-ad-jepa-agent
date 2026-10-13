@@ -27,6 +27,10 @@ _EXECUTOR_FILES = (
 _DECISION_FILES = (
     "scripts/v5/td_relational_successor_capability_reducer_v1.py",
     "scripts/v5/td_test_of_test_controller_v1.py",
+    "scripts/v5/td_test_qualification_package_v1.py",
+    "scripts/v5/td_relational_successor_synthetic_adapter_v1.py",
+    "scripts/v5/td_relational_successor_qualification_runner_v1.py",
+    "scripts/v5/td_relational_successor_disk_runner_v1.py",
 )
 _AUTHORITY_KEYS = frozenset({
     "real_execution_authorized",
