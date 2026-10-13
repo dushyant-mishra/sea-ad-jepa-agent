@@ -189,6 +189,41 @@ def _evaluate_g10(evidence: Mapping, *, alpha_family: float) -> dict:
     )
 
 
+def _string_set(value, field: str) -> set[str]:
+    if not isinstance(value, (list, tuple, set)) or not value:
+        raise DirectionalGateError(f"{field} must be a nonempty sequence of strings")
+    if any(not isinstance(item, str) or not item for item in value):
+        raise DirectionalGateError(f"{field} must contain only nonempty strings")
+    return set(value)
+
+
+def _evaluate_m1(evidence: Mapping) -> dict:
+    if "construction_evidence_ids" not in evidence or "deciding_evidence_ids" not in evidence:
+        return _result("NOT_ESTIMABLE")
+    construction = _string_set(evidence["construction_evidence_ids"], "construction_evidence_ids")
+    deciding = _string_set(evidence["deciding_evidence_ids"], "deciding_evidence_ids")
+    overlap = sorted(construction & deciding)
+    return _result(
+        "FAIL" if overlap else "PASS",
+        raw_sufficient_statistics={
+            "construction_evidence_count": len(construction),
+            "deciding_evidence_count": len(deciding),
+            "overlap_ids": overlap,
+        },
+    )
+
+
+def _evaluate_m2(evidence: Mapping) -> dict:
+    required = ("provenance_authenticated", "independent_of_target_selection")
+    if any(field not in evidence for field in required):
+        return _result("NOT_ESTIMABLE")
+    values = {field: evidence[field] for field in required}
+    if any(value not in (True, False) for value in values.values()):
+        raise DirectionalGateError("M2 provenance predicates must be boolean")
+    status = "PASS" if all(values.values()) else "FAIL"
+    return _result(status, raw_sufficient_statistics=values)
+
+
 def _evaluate_m3(evidence: Mapping) -> dict:
     if "causal_claim_asserted" not in evidence:
         return _result("NOT_ESTIMABLE")
@@ -198,6 +233,21 @@ def _evaluate_m3(evidence: Mapping) -> dict:
     if value is True:
         return _result("FAIL", raw_sufficient_statistics={"causal_claim_asserted": True})
     raise DirectionalGateError("causal_claim_asserted must be boolean")
+
+
+def _evaluate_m4(evidence: Mapping) -> dict:
+    fields = (
+        "unsupported_converted_to_numeric",
+        "missing_evidence_treated_as_zero",
+        "imputation_used",
+    )
+    if any(field not in evidence for field in fields):
+        return _result("NOT_ESTIMABLE")
+    values = {field: evidence[field] for field in fields}
+    if any(value not in (True, False) for value in values.values()):
+        raise DirectionalGateError("M4 support/abstention predicates must be boolean")
+    status = "FAIL" if any(values.values()) else "PASS"
+    return _result(status, raw_sufficient_statistics=values)
 
 
 def evaluate_directional_gate(gate_id: str, evidence: Mapping, *, alpha_family: float = 0.01) -> dict:
@@ -217,8 +267,14 @@ def evaluate_directional_gate(gate_id: str, evidence: Mapping, *, alpha_family: 
         return _evaluate_g5(evidence, alpha_family=alpha_family)
     if gate_id == "G10_COLLAPSE_SHORTCUT_RESISTANCE":
         return _evaluate_g10(evidence, alpha_family=alpha_family)
+    if gate_id == "M1_CIRCULARITY_CONTROL":
+        return _evaluate_m1(evidence)
+    if gate_id == "M2_INDEPENDENT_PROVENANCE":
+        return _evaluate_m2(evidence)
     if gate_id == "M3_CAUSAL_CLAIM_FALSE":
         return _evaluate_m3(evidence)
+    if gate_id == "M4_SUPPORT_ABSTENTION":
+        return _evaluate_m4(evidence)
     if gate_id in _SINGLE_DIRECTIONAL:
         if "donor_deltas" not in evidence:
             return _result("NOT_ESTIMABLE")
