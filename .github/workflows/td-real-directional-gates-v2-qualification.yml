@@ -1,0 +1,33 @@
+name: TD real directional gates V2 qualification
+
+on:
+  push:
+    branches:
+      - implementation/td-real-directional-gates-v2-20261013
+  pull_request:
+    paths:
+      - 'scripts/v5/td_real_directional_gate_executors_v2.py'
+      - 'scripts/v5/audit_td_real_gate_executor_readiness_v4.py'
+      - 'tests/v5/test_td_real_directional_gate_executors_v2.py'
+      - 'tests/v5/test_td_real_gate_executor_readiness_v4.py'
+      - 'results/target_discovery/real_tournament/TD_REAL_GATE_DESIGN_READINESS_V3.json'
+      - '.github/workflows/td-real-directional-gates-v2-qualification.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest numpy scipy pandas
+      - name: Run V2 directional gate tests
+        run: >-
+          python -m pytest -q
+          tests/v5/test_td_real_directional_gate_executors_v2.py
+      - name: Authority guard
+        run: |
+          echo BIOLOGICAL_OUTCOME_INPUTS_DOWNLOADED=false
+          echo REAL_TOURNAMENT_EXECUTED=false
+          echo AUTHORITY_ALL_FALSE=true
