@@ -4,16 +4,6 @@ on:
   push:
     branches:
       - 'handoff/jepa-lane-takeover-20261013'
-    paths:
-      - 'docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261013.md'
-      - 'docs/agent/JEPA_LANE_TAKEOVER_STATE_20261013.json'
-      - 'docs/agent/JEPA_LATEST_HANDOFF_POINTER_20261013.json'
-      - 'docs/agent/JEPA_EXTERNAL_ARTIFACT_CUSTODY_MANIFEST_20261013.csv'
-      - 'docs/agent/JEPA_ACTIVE_BRANCH_PR_MAP_20261013.md'
-      - 'docs/agent/external_context/**'
-      - 'scripts/v5/verify_jepa_lane_handoff_state_v1.py'
-      - 'tests/v5/test_verify_jepa_lane_handoff_state_v1.py'
-      - '.github/workflows/jepa-lane-handoff-audit.yml'
   pull_request:
     paths:
       - 'docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261013.md'
@@ -21,6 +11,7 @@ on:
       - 'docs/agent/JEPA_LATEST_HANDOFF_POINTER_20261013.json'
       - 'docs/agent/JEPA_EXTERNAL_ARTIFACT_CUSTODY_MANIFEST_20261013.csv'
       - 'docs/agent/JEPA_ACTIVE_BRANCH_PR_MAP_20261013.md'
+      - 'docs/agent/JEPA_LANE_TAKEOVER_CHANGELOG_20261013.md'
       - 'docs/agent/external_context/**'
       - 'scripts/v5/verify_jepa_lane_handoff_state_v1.py'
       - 'tests/v5/test_verify_jepa_lane_handoff_state_v1.py'
