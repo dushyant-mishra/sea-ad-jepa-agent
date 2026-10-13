@@ -11,6 +11,7 @@
   "stage4_authorized": false,
   "real_jepa_training_authorized": false,
   "screening_multiplicity_scope": "GATE_LOCAL_QUALIFICATION_ONLY__NOT_CROSS_CANDIDATE_WINNER_CONTROL",
+  "cross_candidate_selection_rule": "SEPARATE_PROTECTED_HEAD_TO_HEAD_OR_CONFIRMATION_CONTRACT_REQUIRED_BEFORE_VALUES",
   "design_classes": {
     "SCIENTIFICALLY_SPECIFIED_FOR_FUTURE_IMPLEMENTATION_PLAN": [
       "G3_CORRECT_CELL_SPECIFICITY",
