@@ -12,19 +12,20 @@ import td_real_quantitative_components_v1 as Q  # noqa: E402
 
 
 def test_directional_donor_contrast_maps_frozen_sign_resolution_to_status():
+    unresolved = Q.directional_donor_contrast(
+        [{"donor_id": f"D{i}", "delta": 1.0} for i in range(1, 8)],
+        alpha_eff=0.01,
+    )
+    assert unresolved["status"] == "NOT_ESTIMABLE"
+    assert unresolved["raw_sufficient_statistics"]["n_nonzero_donors"] == 7
+
     passed = Q.directional_donor_contrast(
         [{"donor_id": f"D{i}", "delta": 1.0} for i in range(1, 9)],
         alpha_eff=0.01,
     )
-    assert passed["status"] == "NOT_ESTIMABLE"  # 8 donors cannot resolve two-sided 0.01
-    assert passed["raw_sufficient_statistics"]["n_nonzero_donors"] == 8
-
-    passed = Q.directional_donor_contrast(
-        [{"donor_id": f"D{i}", "delta": 1.0} for i in range(1, 10)],
-        alpha_eff=0.01,
-    )
     assert passed["status"] == "PASS"
-    assert passed["raw_sufficient_statistics"]["two_sided_p"] <= 0.01
+    assert passed["raw_sufficient_statistics"]["n_nonzero_donors"] == 8
+    assert passed["raw_sufficient_statistics"]["two_sided_p"] == 0.0078125
 
     failed = Q.directional_donor_contrast(
         [
@@ -36,7 +37,6 @@ def test_directional_donor_contrast_maps_frozen_sign_resolution_to_status():
             {"donor_id": "D6", "delta": -1.0},
             {"donor_id": "D7", "delta": 1.0},
             {"donor_id": "D8", "delta": -1.0},
-            {"donor_id": "D9", "delta": 1.0},
         ],
         alpha_eff=0.01,
     )
@@ -44,7 +44,7 @@ def test_directional_donor_contrast_maps_frozen_sign_resolution_to_status():
 
 
 def test_directional_donor_contrast_refuses_duplicate_donor_identity():
-    with pytest.raises(Exception):
+    with pytest.raises(Q.QuantitativeComponentError):
         Q.directional_donor_contrast(
             [{"donor_id": "D1", "delta": 1.0}, {"donor_id": "D1", "delta": 2.0}],
             alpha_eff=0.05,
