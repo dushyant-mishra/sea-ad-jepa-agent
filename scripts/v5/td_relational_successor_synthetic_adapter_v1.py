@@ -30,12 +30,18 @@ _EXECUTOR_INPUT_FIELDS = frozenset({
     'donor_ids','operator_ids','global_rows',
     'source_library','detected_genes',
     'focal_mask','neighbor_pool_mask','min_focal_anchors_per_donor',
+    'control_profiles',
 })
+_CONTROL_PROFILE_FIELDS = frozenset({'focal_mask','neighbor_pool_mask','min_focal_anchors_per_donor'})
 _FORBIDDEN_UPSTREAM_TD_FIELDS = frozenset({
     'z_distances','x_distances','y_distances','null_y_identity_maps',
     'pair_coordinates','pair_signs','observed_statistic','null_statistics',
     'expected_status','controller_truth','R','pseudo_rare','challenge_kind','semantic_class',
 })
+_FORBIDDEN_CONTROL_ID_TOKENS = (
+    'REL_', 'DONOR_MATCHED_COMMON', 'DEPTH_DETECTED_SUM_MATCHED', 'SOURCE_OPERATOR_MATCHED',
+    'WRONG_CELL', 'PSEUDO_RARE_TECHNICAL', 'POSITIVE_TRUTH', 'NEGATIVE_TRUTH', 'UNDERIDENTIFIED_TRUTH',
+)
 _PAYLOAD_FIELDS = frozenset({'authenticated_fit_view_sha256','executor_input'})
 _AUTHORITY = {
     'synthetic_world_generation_authorized': False,
@@ -57,6 +63,24 @@ class RelationalQualificationAdapterReceipt:
     controller_challenges: dict[str, dict]
     missing_capabilities: tuple[str, ...]
     authority: dict[str, bool]
+
+
+def _validate_control_profiles(value, challenge_id: str) -> dict:
+    if not isinstance(value, Mapping):
+        raise RelationalAdapterError(f'control_profiles must be a mapping: {challenge_id}')
+    out={}
+    for control_id, rec in value.items():
+        if not isinstance(control_id,str) or not control_id:
+            raise RelationalAdapterError(f'control IDs must be opaque nonempty strings: {challenge_id}')
+        if any(token in control_id.upper() for token in _FORBIDDEN_CONTROL_ID_TOKENS):
+            raise RelationalAdapterError(f'control IDs must be opaque: {challenge_id}')
+        if not isinstance(rec,Mapping) or set(rec) != _CONTROL_PROFILE_FIELDS:
+            raise RelationalAdapterError(f'control profile fields must exactly match focal/neighbor masks and support minimum: {challenge_id}')
+        minimum=rec.get('min_focal_anchors_per_donor')
+        if not isinstance(minimum,int) or isinstance(minimum,bool) or minimum < 1:
+            raise RelationalAdapterError(f'control min_focal_anchors_per_donor must be positive: {challenge_id}')
+        out[control_id]=dict(rec)
+    return out
 
 
 def build_relational_qualification_adapter(
@@ -109,6 +133,7 @@ def build_relational_qualification_adapter(
         if leaked or fields != _EXECUTOR_INPUT_FIELDS:
             raise RelationalAdapterError(f'executor_input fields must exactly match the blinded TD gate schema: {cid}')
         fit=dict(inp)
+        fit['control_profiles']=_validate_control_profiles(inp.get('control_profiles'),cid)
         fit['profile_id']=cid
         fit_inputs[cid]=fit
         controller[cid]={
