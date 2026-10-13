@@ -196,7 +196,12 @@ def _profile(value: Mapping) -> G.RelationalProfileReceipt:
     }
     _expect_fields(value, fields, "profile")
     scales = value["scale_results"]
-    if not isinstance(scales, Mapping) or tuple(scales) != G.SCALE_LABELS:
+    # Durable receipts are written with sort_keys=True, so validate the exact label set, not JSON key order.
+    if (
+        not isinstance(scales, Mapping)
+        or len(scales) != len(G.SCALE_LABELS)
+        or set(scales) != set(G.SCALE_LABELS)
+    ):
         raise DiskRunnerV3Error("frozen profile scale grid mismatch")
     return G.RelationalProfileReceipt(
         source=str(value["source"]),
