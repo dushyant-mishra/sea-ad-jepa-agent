@@ -28,6 +28,7 @@ jobs:
         run: |
           python -m pytest -q \
             tests/v5/test_td_real_quantitative_components_v1.py \
+            tests/v5/test_td_real_quantitative_rule_recovery_map_v1.py \
             tests/v5/test_td_target_tournament_precision.py \
             tests/v5/test_td_precision_donor_identity.py \
             tests/v5/test_td_donor_resampling_audit.py
