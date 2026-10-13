@@ -1,13 +1,14 @@
 # TD Real-Gate Prospective Contracts — Self-Audit Amendment
 
-Status: `DESIGN_AMENDMENT__OUTCOME_BLIND__SUPERSEDES_CONFLICTING_SECTIONS_OF_2026-10-13_DESIGN`
+Status: `SUPERSEDED_FOR_CONFLICTING_SCIENTIFIC_RULES_BY_2026-10-13_SCIENTIFIC_AMENDMENT_V2__HISTORICAL_V1_PRESERVED`
+
+Read first for current authority:
+`docs/superpowers/specs/2026-10-13-td-real-gate-prospective-contracts-scientific-amendment-v2.md`
 
 Parent design:
 `docs/superpowers/specs/2026-10-13-td-real-gate-prospective-contracts-design.md`
 
-This amendment was produced by re-auditing the new design against the frozen multitarget V2, measurement/noise-floor prefreeze, C6 candidate freeze, PR #313 framework qualification, and the current controller convergence state. No candidate outcomes were opened.
-
-Where this amendment conflicts with the parent design, this amendment controls.
+This historical V1 self-audit amendment was produced outcome-blind and is preserved to document the design evolution. Where this file conflicts with the V2 scientific amendment, V2 controls. In particular, the V2 amendment supersedes the V1 rules for G7 strict adjacent monotonicity, G8's zero-boundary measurement contrast, G12 coverage-by-inferential-resolution, and the C4 strongest-constituent comparator.
 
 ## A1. Naming firewall: historical stage G6/G7 is not promotion-gate G6/G7
 
@@ -22,7 +23,7 @@ No historical G6/G7 PASS, receipt, cutoff, or implementation is evidence for the
 
 The parent design was too narrow in describing G2 baselines.
 
-Authoritative G2 contract:
+Historical V1 contract recorded here:
 
 `G2_NONTRIVIAL_BIOLOGICAL_CONTENT` requires donor-primary defeat of:
 
@@ -31,13 +32,15 @@ Authoritative G2 contract:
 - B2 `address_support_operator`;
 - applicable B3 `matched_wrong_cell`.
 
-Each required baseline is a separate subtest under the gate's Bonferroni family. All combine non-compensatingly.
+Each required baseline was a separate subtest under the gate's Bonferroni family. All combine non-compensatingly.
 
 G3 remains a separate interpretability gate for correct-cell specificity even though it reuses B3 evidence. Shared raw evidence may feed two prospectively distinct gate decisions; the gate identities and decision-rule hashes remain separate.
 
+Current V2 correction: baseline defeat alone is insufficient to establish the substantive magnitude implied by G2; G2 remains `BLOCKED_PROSPECTIVE_RULE_REQUIRED`.
+
 ## A3. Relational G3 must include B4 where estimable
 
-Authoritative G3 contract:
+Authoritative G3 contract retained by V2:
 
 All candidates defeat B3 matched wrong cell.
 
@@ -46,13 +49,13 @@ Relational candidates additionally defeat B4 `fine_neighborhood_wrong_cell` wher
 - B4 estimable and resolved non-PASS -> G3 FAIL.
 - no legal B4 partner or inadequate donor resolution -> B4 subtest NE; G3 becomes NE unless another required subtest already FAILS.
 
-R3 remains the relational-specific gate that preserves the fine-neighbor claim separately. As with B3/G2/G3, evidence may be reused while gate identities remain distinct.
+R3 remains the relational-specific gate that preserves the fine-neighbor claim separately. Evidence may be reused while gate identities remain distinct.
 
 ## A4. G4 must not depend on R1
 
 The parent design created an unnecessary dependency by proposing R1 as the recurrence delta for relational candidates.
 
-Authoritative G4 contract:
+Authoritative G4 contract retained by V2:
 
 G4 is the donor-recurrence adjudication of the candidate's primary predictive-information endpoint, independent of candidate-specific extension gates.
 
@@ -67,88 +70,51 @@ For a composite, each retained constituent block is evaluated separately and com
 
 G4 therefore never requires R1/C6/C4 to exist first and never averages constituent recurrence away.
 
-## A5. G7 convergence rule made executable
+## A5. Historical V1 G7 rule — SUPERSEDED
 
-The parent phrase “final two levels do not show a direction reversal” was underspecified.
+V1 attempted to make G7 executable by requiring every successive instability to shrink. External scientific audit correctly identified this as an unjustified strict monotonicity assumption.
 
-Before any value read, freeze an evidence ladder with at least three nested donor-balanced biological-evidence budgets. Measurement depth/support universe must remain fixed; this is biological-evidence response, not G8.
+This section is no longer authoritative. Current V2 status:
 
-For each donor and adjacent ladder pair `(j, j+1)` on the same held-out anchor cases:
+`G7_EVIDENCE_CONVERGENCE = BLOCKED_PROSPECTIVE_RULE_REQUIRED`
 
-- calculate rotation/scale-invariant geometry recurrence `rho_j` using pairwise-distance rank correlation;
-- define adjacent instability `u_j = 1 - rho_j`.
+until an outcome-blind evidence ladder and terminal/plateau stability rule, including exact recurrence-null comparison, are independently frozen.
 
-Required subtests:
+## A6. Historical V1 G8 decision rule — SUPERSEDED
 
-1. Every adjacent pair must show recurrence above its donor-preserving random-alignment null under the common inferential law.
-2. For each pair of successive instabilities, define donor delta `u_j - u_{j+1}`; positive means instability shrinks as evidence increases. Every shrinkage subtest must PASS.
-
-With exactly three evidence levels there is one shrinkage subtest. With more levels all shrinkage subtests are required.
-
-Any resolved reversal is FAIL. Insufficient resolution without a resolved failure is NE. No historical convergence cutoff is imported.
-
-## A6. G8 must preserve the frozen empirical measurement protocol
-
-The frozen measurement/noise-floor prefreeze controls G8 mechanics.
-
-Authoritative depth grid:
+The measurement/noise-floor mechanics remain frozen:
 
 `25% -> 50% -> 75% -> 100%`
 
-Preferred empirical perturbations:
+with same-cell complementary raw-count split and/or nested raw-count thinning and the original support/identity invariants.
 
-- same-cell complementary raw-count split;
-- same-cell nested raw-count thinning.
+V1's proposed decision contrast
 
-Input and perturbation invariants remain exactly as frozen: finite nonnegative integer counts, split conservation, no manufactured support, measured zero preserved, donor/source/operator/address identities unchanged, deterministic seed namespace frozen, and no change to the biological-evidence universe.
+`D(A_d,B_d) - mean(D(full,A_d), D(full,B_d))`
 
-For each donor at each required depth `d`:
+is withdrawn. Zero was not independently justified as a valid noninferiority boundary for statistically dependent full/thinned observations.
 
-- construct two independent same-cell pseudoreplicates `A_d` and `B_d` under the frozen mechanism;
-- compute candidate-primary displacement `D(A_d,B_d)` as the technical-noise reference;
-- compute `D(full,A_d)` and `D(full,B_d)` with the same metric;
-- define donor robustness delta:
+Current V2 status:
 
-`delta_d = D(A_d,B_d) - mean(D(full,A_d), D(full,B_d))`
+`G8_MEASUREMENT_ROBUSTNESS = BLOCKED_PROSPECTIVE_RULE_REQUIRED`
 
-Positive orientation means the full-to-thinned displacement is no worse than the empirical pseudoreplicate noise reference at the same depth.
+until the measurement-reference distribution and an outcome-blind decision margin, or another mathematically justified rule, are frozen.
 
-Each depth is a required subtest under the gate's familywise alpha; all depths combine non-compensatingly.
+## A7. C6 increment candidate identity retained, magnitude unresolved
 
-This contract supplies the prospective comparison rule that the earlier prefreeze intentionally left unresolved. It does not call count splitting independent biological replication.
+C6 remains dependent on independently qualified C1 and C3 and may never delete those constituents on C6 failure/NE.
 
-## A7. C6 increment must preserve the frozen candidate question
+The V2 scientific amendment additionally records that a merely directionally positive increment is insufficient for promotion. `C6_INCREMENT_OVER_C1_C3` therefore remains blocked until a substantive effect/noise-relative criterion is frozen.
 
-The parent design incorrectly raised the primary C6 comparator from the strongest qualified constituent to the full separate C1+C3 portfolio. That would silently redefine the frozen candidate.
+## A8. Historical V1 C4 comparator — SUPERSEDED
 
-Authoritative C6 increment gate:
+V1 restored the older “strongest qualified constituent” comparator. The later C6 factorial freeze is more specific and prospectively defines the clean relational increment question as C4 versus C6.
 
-Prerequisites: C1 and C3 independently satisfy their own required gates.
+Current V2 authority therefore uses:
 
-Primary increment estimand compares C6 against the **stronger qualified constituent** under matched held-out evidence. The stronger constituent is selected by a prospectively declared donor-primary base loss comparison, not post-hoc narrative preference.
+`C4_INCREMENT_OVER_CONSTITUENTS = C4 versus independently qualified C6 under matched evidence`
 
-C6 must show added donor-primary biological information **or** prospectively declared robustness benefit beyond that constituent, while not worsening:
-
-- transfer;
-- shortcut dependence;
-- supported coverage/abstention;
-- biological-versus-measurement uncertainty separation.
-
-A diagnostic comparison against the separate C1+C3 portfolio may be reported later, but it is not the frozen C6 promotion criterion unless a future prospective candidate amendment is separately approved before outcomes.
-
-C6 FAIL/NE never removes C1 or C3 from a valid multi-block portfolio.
-
-## A8. C4 increment must preserve the frozen strongest-constituent comparator
-
-Authoritative C4 increment gate:
-
-Prerequisites: all applicable inherited C2/C3 gates PASS.
-
-Primary increment compares C4 against the **strongest qualified constituent** exactly as frozen in multitarget V2, while requiring constituent interpretability and no degradation of transfer, shortcut dependence, coverage/abstention or uncertainty separation.
-
-A separate C2+C3 portfolio remains representable under the repaired `TargetPortfolio`; C4 is not permission for those blocks to coexist.
-
-C4 FAIL/NE never deletes independently qualified constituents.
+If C6 is not independently qualified, the C4 increment is unresolved/NE; no opportunistic alternate comparator is allowed. A C4 failure or NE never deletes independently qualified constituent blocks.
 
 ## A9. G5 current source set is explicit
 
@@ -162,34 +128,28 @@ No source abundance weighting or pooled rescue is permitted.
 
 For C5 or future specialist instantiations, a source/operator combination that is structurally unsupported may be NE/not applicable only under a prospectively frozen applicability rule; it may not be silently omitted after outcomes.
 
-## A10. G12 minimum coverage definition
+## A10. Historical V1 G12 rule — SUPERSEDED
 
-The earlier multitarget V2 required a prospectively frozen minimum eligible coverage but did not supply a numerical floor.
+V1 defined minimum coverage as the support needed for downstream inferential resolution. External audit correctly identified that biological coverage and statistical resolvability are different questions.
 
-This design prospectively defines the minimum as the support required to execute every required gate at its frozen statistical resolution, rather than inventing an independent cell-count cutoff.
+Current V2 status:
 
-Thus:
+`G12_COVERAGE_ABSTENTION = BLOCKED_PROSPECTIVE_RULE_REQUIRED`
 
-- enough lawful support for all required tests -> PASS if abstention semantics also pass;
-- lawful support but inadequate donor/null resolution -> NE;
-- unsupported-to-numeric conversion, imputation, or false support claim -> FAIL.
+until an explicit biological support/coverage scope is frozen independently of significance resolution, or the candidate claim is prospectively narrowed to the support actually represented.
 
-This is a qualification/estimability criterion, not a prevalence claim.
+Structural unsupportedness remains abstention, measured zero remains valid measurement, and imputation remains forbidden.
 
-## A11. Spec self-review conclusion
+## A11. Current authority
 
-After these corrections, the 28 unresolved gate IDs remain unchanged:
+The unique 28-gate inventory remains unchanged, but current design readiness is governed by:
 
-- G2–G12;
-- S1–S3;
-- R1, R3, R4;
-- Q4–Q8;
-- C6 increment;
-- C4 increment;
-- M1–M4.
+`results/target_discovery/TD_REAL_GATE_DESIGN_READINESS_V2.json`
 
-No historical closed experiment is reopened, no old descriptive cutoff becomes a production threshold, no synthetic result becomes human biological evidence, and no real execution authority is created.
+and the V2 scientific amendment.
+
+No historical closed experiment is reopened, no old descriptive cutoff becomes a production threshold, no synthetic result becomes human biological evidence, no candidate outcome has been opened, and no real execution authority is created.
 
 Terminal:
 
-`28_GATE_DESIGN_SELF_AUDITED_AGAINST_HISTORICAL_FREEZES__IMPLEMENTATION_NOT_AUTHORIZED__OUTCOMES_UNREAD__REAL_TD_OFF`
+`V1_SELF_AUDIT_AMENDMENT_PRESERVED_AS_HISTORY__V2_SCIENTIFIC_AMENDMENT_CONTROLS__OUTCOMES_UNREAD__REAL_TD_OFF`
