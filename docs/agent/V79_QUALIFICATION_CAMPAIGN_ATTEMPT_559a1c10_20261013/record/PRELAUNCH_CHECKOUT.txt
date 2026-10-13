@@ -1,0 +1,7 @@
+utc=2026-10-13T02:35:01Z
+git rev-parse HEAD: 559a1c104c8f1f56d2c05509eecf6b9dc05846a5
+git status --porcelain: [] lines=0
+authority: PR #308 comment 6134273489 (controller audit PASS, one 1,056-fit campaign)
+prior-execution detection: state A (no V79_V2_CORE_QUALIFICATION_CUSTODY/CAMPAIGN_RECEIPT/EXECUTION_AUTHORIZATION file on D:, C:/Users/dushy or WSL /home)
+package_dir=D:/jepa_wt_v79_qreal_cd6425b2/results/v79/v2_core_qualification/realized_worlds_v1 (498/498 files match frozen ledger 4e65f213; root 84949723; digest 40458efe; index 8ea3e0cb; runtime receipt 781d880a)
+fresh: custody_dir=D:/jepa_v79_qualification_campaign_559a1c10/fit_custody exists=no result_dir=D:/jepa_v79_qualification_campaign_559a1c10/result exists=no

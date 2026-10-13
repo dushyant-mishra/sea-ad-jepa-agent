@@ -1,0 +1,1 @@
+{"fit_seed_ledger_entries": 1056, "unique_fit_ids": 1056, "authorization_sha256": "2ce50c1637c61f30e10169774a54afe71a3cf3deed3010aabb9afefd0cdffd4a", "path": "D:\\jepa_v79_qualification_campaign_559a1c10\\controller\\V79_V2_CORE_QUALIFICATION_EXECUTION_AUTHORIZATION_V1.json"}

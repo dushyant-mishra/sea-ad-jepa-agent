@@ -1,0 +1,2 @@
+campaign_start_utc=2026-10-13T02:37:12Z invocation=1 head=559a1c104c8f1f56d2c05509eecf6b9dc05846a5 status=[] result_dir_existed=no cmd=python scripts/v79/run_v79_v2_core_qualification.py D:/jepa_wt_v79_qualification_559a1c10 D:/jepa_v79_qualification_campaign_559a1c10/fit_custody D:/jepa_v79_qualification_campaign_559a1c10/result 48581e7330020fd8c8e283fe95277bff6c9a585163c93920662d5fa9f6204d66
+campaign_exit=1 invocation=1 campaign_end_utc=2026-10-13T02:37:16Z status_after=[] fit_receipts=0 campaign_receipt=no

@@ -1,0 +1,2 @@
+prep_start_utc=2026-10-13T02:35:36Z head=559a1c104c8f1f56d2c05509eecf6b9dc05846a5 cmd=python scripts/v79/prepare_v79_v2_core_qualification_campaign.py D:/jepa_wt_v79_qualification_559a1c10 D:/jepa_wt_v79_qreal_cd6425b2/results/v79/v2_core_qualification/realized_worlds_v1 D:/jepa_v79_qualification_campaign_559a1c10/controller/V79_V2_CORE_QUALIFICATION_EXECUTION_AUTHORIZATION_V1.json D:/jepa_v79_qualification_campaign_559a1c10/fit_custody
+prep_exit=0 prep_end_utc=2026-10-13T02:35:43Z

@@ -1,0 +1,46 @@
+firewall_check_utc=2026-10-13T02:36:00Z
+custody top-level: blinded_fit_inputs V79_V2_CORE_FIT_CONTRACT_VIEW_V1.json V79_V2_CORE_QUALIFICATION_CUSTODY_V1.json V79_V2_CORE_QUALIFICATION_EXECUTION_AUTHORIZATION_V1.json 
+files: 148; world dirs: 12
+file extensions:      16 json     132 npy 
+python/scorer modules in custody: 0
+controller_truth / root manifest present: 0
+path names with Q-labels: 0
+json files containing '"Q0': 0 
+json files containing '"Q1': 0 
+json files containing 'Q00': 0 
+json files containing 'Q11': 0 
+json files containing 'world_index': 0 
+json files containing 'world_name': 0 
+json files containing 'controller_truth': 0 
+json files containing 'planted': 0 
+json files containing 'truth': 1 V79_V2_CORE_QUALIFICATION_CUSTODY_V1.json 
+json files containing 'operator': 1 V79_V2_CORE_FIT_CONTRACT_VIEW_V1.json 
+json files containing 'oracle': 0 
+json files containing 'scorer': 0 
+json files containing 'pathology': 0 
+json files containing 'rare_program': 0 
+json files containing 'target_discovery': 0 
+json files containing 'morabito': 0 
+--- context of 'truth' in custody receipt:
+--- context of 'operator' in fit contract view:
+B_class[class].c_class + B_source[source].c_source + u[donor]; u = W (sigma_d * eps), eps ~ N(0, I)","excluded_terms":["operator / matrix","donor x class","source x class","dataset or matrix ID"],"name":"V2_C
+--- distinct blinded array/file basenames per world:
+     12 design/cls.npy
+     12 design/donor.npy
+     12 design/log_lib.npy
+     12 design/src.npy
+     12 manifest.json
+     12 observations/new_donor/detected.npy
+     12 observations/new_donor/observed.npy
+     12 observations/same_donor/detected.npy
+     12 observations/same_donor/observed.npy
+     12 observations/train/detected.npy
+     12 observations/train/observed.npy
+     12 support.npy
+--- top-level blinded files:
+V79_V2_CORE_BLINDED_FIT_INDEX_V1.json
+--- custody receipt keys containing truth: {'truth_accessed': False}
+--- verdict: FIREWALL PASS. Custody top level is exactly the 4 allowed entries; 148 files (16 json, 132 npy) over 12 opaque worlds;
+    per-world files are design (class, donor, log_lib, source), observations (train / same_donor / new_donor detected+observed), support mask, blinded manifest;
+    no Q labels, world indices/names, controller truth, root manifest, planted parameters, operator arrays, scorer/gate modules, pathology, rare-program or target-discovery content.
+    'operator' occurs only in the frozen model's excluded_terms list; 'truth' only as the truth_accessed=false flag.

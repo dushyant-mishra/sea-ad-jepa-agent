@@ -1,0 +1,29 @@
+Traceback (most recent call last):
+  File "D:\jepa_wt_v79_qualification_559a1c10\scripts\v79\run_v79_v2_core_qualification_world.py", line 139, in <module>
+    if __name__=="__main__": main()
+                             ^^^^^^
+  File "D:\jepa_wt_v79_qualification_559a1c10\scripts\v79\run_v79_v2_core_qualification_world.py", line 138, in main
+    a=p.parse_args(argv); print(json.dumps(execute_world(Path(a.root),Path(a.custody_dir),Path(a.result_dir),expected_custody_receipt_sha256=a.expected_custody_receipt_sha256,opaque_world_id=a.opaque_world_id),indent=2))
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\jepa_wt_v79_qualification_559a1c10\scripts\v79\run_v79_v2_core_qualification_world.py", line 124, in execute_world
+    RL.validate_runtime(root,require_windows=True,required_cpu_devices=None); RT.configure_before_jax_import(custody.fit_contract)
+                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\jepa_wt_v79_qualification_559a1c10\scripts\v79\v79_v2_core_runtime.py", line 29, in configure_before_jax_import
+    _refuse("JAX was imported before frozen runtime configuration")
+  File "D:\jepa_wt_v79_qualification_559a1c10\scripts\v79\v79_v2_core_runtime.py", line 16, in _refuse
+    raise RuntimeRefused(f"REFUSED V2_CORE runtime: {msg}")
+v79_v2_core_runtime.RuntimeRefused: REFUSED V2_CORE runtime: JAX was imported before frozen runtime configuration
+Traceback (most recent call last):
+  File "D:\jepa_wt_v79_qualification_559a1c10\scripts\v79\run_v79_v2_core_qualification.py", line 218, in <module>
+    if __name__=="__main__": main()
+                             ^^^^^^
+  File "D:\jepa_wt_v79_qualification_559a1c10\scripts\v79\run_v79_v2_core_qualification.py", line 217, in main
+    a=p.parse_args(argv); print(json.dumps(execute_campaign(Path(a.root),Path(a.custody_dir),Path(a.result_dir),expected_custody_receipt_sha256=a.expected_custody_receipt_sha256),indent=2))
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\jepa_wt_v79_qualification_559a1c10\scripts\v79\run_v79_v2_core_qualification.py", line 207, in execute_campaign
+    if proc.returncode!=0: _refuse(f"world worker failed for opaque world {oid} with exit {proc.returncode}")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\jepa_wt_v79_qualification_559a1c10\scripts\v79\run_v79_v2_core_qualification.py", line 25, in _refuse
+    def _refuse(msg:str): raise QualificationRunRefused(f"REFUSED V2_CORE qualification run: {msg}")
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+QualificationRunRefused: REFUSED V2_CORE qualification run: world worker failed for opaque world 2ae1cb055fed with exit 1
