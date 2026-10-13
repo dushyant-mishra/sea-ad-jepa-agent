@@ -5,6 +5,7 @@ on:
     branches:
       - science/td-target-tournament-scaffold-20261011
       - science/td-real-target-tournament-executor-20261012
+      - audit/td-real-gate-executor-readiness-20261013
   workflow_dispatch:
 
 permissions:
@@ -44,6 +45,9 @@ jobs:
           print('pytest', pytest.__version__)
           PY
           } | tee qualification/environment.txt
+      - name: Audit outcome-blind real gate readiness matrix
+        run: |
+          python scripts/v5/audit_td_real_gate_executor_readiness_v1.py | tee qualification/real_gate_readiness.txt
       - name: Run exact synthetic metadata and real-executor framework harness
         run: |
           set -o pipefail
