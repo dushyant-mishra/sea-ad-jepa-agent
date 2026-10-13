@@ -40,12 +40,19 @@ BLOCKED = {
 }
 
 
-def _positive(n=10):
-    return [1.0] * n
+def _deltas(value: float, n=10, prefix="D"):
+    return [
+        {"donor_id": f"{prefix}{i:03d}", "delta": float(value)}
+        for i in range(n)
+    ]
 
 
-def _negative(n=10):
-    return [-1.0] * n
+def _positive(n=10, prefix="D"):
+    return _deltas(1.0, n=n, prefix=prefix)
+
+
+def _negative(n=10, prefix="D"):
+    return _deltas(-1.0, n=n, prefix=prefix)
 
 
 def test_exact_v2_scope_is_frozen():
@@ -65,7 +72,7 @@ def test_blocked_gate_has_no_direction_only_fallback():
 def test_g4_is_donor_primary_directional_recurrence_only():
     passed = D.evaluate_directional_gate("G4_DONOR_RECURRENCE", {"donor_deltas": _positive()})
     failed = D.evaluate_directional_gate("G4_DONOR_RECURRENCE", {"donor_deltas": _negative()})
-    unresolved = D.evaluate_directional_gate("G4_DONOR_RECURRENCE", {"donor_deltas": [1.0] * 7})
+    unresolved = D.evaluate_directional_gate("G4_DONOR_RECURRENCE", {"donor_deltas": _positive(7)})
     assert passed["status"] == "PASS"
     assert failed["status"] == "FAIL"
     assert unresolved["status"] == "NOT_ESTIMABLE"
@@ -79,8 +86,8 @@ def test_g3_relational_requires_b3_and_b4_noncompensating():
         {
             "candidate_id": "C2_RELATIONAL_SHARED",
             "subtests": {
-                "matched_wrong_cell": _positive(),
-                "fine_neighborhood_wrong_cell": _negative(),
+                "matched_wrong_cell": _positive(prefix="B3"),
+                "fine_neighborhood_wrong_cell": _negative(prefix="B4"),
             },
         },
     )
@@ -94,7 +101,7 @@ def test_g3_missing_required_relational_b4_is_not_estimable():
         "G3_CORRECT_CELL_SPECIFICITY",
         {
             "candidate_id": "C2_RELATIONAL_SHARED",
-            "subtests": {"matched_wrong_cell": _positive()},
+            "subtests": {"matched_wrong_cell": _positive(prefix="B3")},
         },
     )
     assert out["status"] == "NOT_ESTIMABLE"
@@ -105,9 +112,9 @@ def test_g5_requires_exact_current_sources_without_pooling():
         "G5_SOURCE_REPLICATION",
         {
             "source_donor_deltas": {
-                "HVS": _positive(),
-                "NPH52": _positive(),
-                "SEA_AD": _negative(),
+                "HVS": _positive(prefix="H"),
+                "NPH52": _positive(prefix="N"),
+                "SEA_AD": _negative(prefix="S"),
             }
         },
     )
@@ -119,11 +126,11 @@ def test_g10_requires_exact_candidate_mandatory_falsifier_set():
     evidence = {
         "candidate_id": "C1_SHARED_EMERGENT",
         "falsifier_donor_deltas": {
-            "constant_train_mean": _positive(),
-            "technical_operator_only": _positive(),
-            "address_support_operator": _positive(),
-            "matched_wrong_cell": _positive(),
-            "identity_support_only": _positive(),
+            "constant_train_mean": _positive(prefix="B0"),
+            "technical_operator_only": _positive(prefix="B1"),
+            "address_support_operator": _positive(prefix="B2"),
+            "matched_wrong_cell": _positive(prefix="B3"),
+            "identity_support_only": _positive(prefix="B5"),
         },
     }
     assert D.evaluate_directional_gate("G10_COLLAPSE_SHORTCUT_RESISTANCE", evidence)["status"] == "PASS"
