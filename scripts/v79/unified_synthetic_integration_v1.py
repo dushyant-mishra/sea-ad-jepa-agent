@@ -226,17 +226,11 @@ def build_unified_biology(config: UnifiedBiologyConfig, *, seed: int) -> Unified
                 probs = np.full(len(ix), base_p, dtype=float)
             activity[ix, p] = prng.binomial(1, probs).astype(bool)
 
+    # Preserve the stochastic realization exactly. A finite rare regime is allowed
+    # to realize zero positive cells even when donor-level prevalence is nonzero;
+    # never inject positives merely to satisfy a fixture or coverage expectation.
     rare_activity = activity.any(axis=1)
     rare_eligible = eligibility.any(axis=1)
-    # At deterministic fixture scale, ensure every configured regime is represented
-    # whenever it has eligible, active donors. This is not a prevalence calibration.
-    for p in range(n_programs):
-        if activity[:, p].any():
-            continue
-        candidates = np.flatnonzero(eligibility[:, p] & donor_active[latent.donor, p])
-        if len(candidates):
-            activity[int(candidates[0]), p] = True
-    rare_activity = activity.any(axis=1)
 
     perturbation_arm = _balanced_perturbation_arms(latent.donor, rng)
     perturbation_state = (perturbation_arm == 1) & rare_activity
