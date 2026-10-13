@@ -10,7 +10,7 @@ on:
       - 'scripts/v5/audit_td_real_gate_executor_readiness_v4.py'
       - 'tests/v5/test_td_real_directional_gate_executors_v2.py'
       - 'tests/v5/test_td_real_gate_executor_readiness_v4.py'
-      - 'results/target_discovery/real_tournament/TD_REAL_GATE_DESIGN_READINESS_V3.json'
+      - 'results/target_discovery/real_tournament/TD_REAL_DIRECTIONAL_GATES_V2_QUALIFICATION_RECEIPT.json'
       - '.github/workflows/td-real-directional-gates-v2-qualification.yml'
 
 jobs:
@@ -22,13 +22,38 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: python -m pip install pytest numpy scipy pandas
-      - name: Run V2 directional gate and readiness tests
+          python-version: '3.11.17'
+      - run: python -m pip install pytest==9.1.1 numpy==2.4.6 scipy==1.17.1 pandas==3.0.6
+      - name: Run V2 and inherited gate qualification suites
         run: >-
           python -m pytest -q
           tests/v5/test_td_real_directional_gate_executors_v2.py
           tests/v5/test_td_real_gate_executor_readiness_v4.py
+          tests/v5/test_td_real_quantitative_components_v1.py
+          tests/v5/test_td_real_quantitative_rule_recovery_map_v1.py
+          tests/v5/test_td_real_gate_rule_registry_v1.py
+          tests/v5/test_td_real_structural_gate_output_v1.py
+          tests/v5/test_td_real_gate_executor_readiness_v2.py
+          tests/v5/test_td_real_gate_executor_readiness_v3.py
+          tests/v5/test_td_real_gate_historical_equivalence_v1.py
+          tests/v5/test_td_controller_convergence_20261013.py
+      - name: Emit exact qualification receipt candidate
+        run: |
+          python - <<'PY'
+          import hashlib, json, pathlib, sys
+          import numpy, scipy, pandas, pytest
+          import scripts.v5.td_real_directional_gate_executors_v2 as D
+          import scripts.v5.td_real_quantitative_components_v1 as Q
+          import scripts.v5.td_real_tournament_contract_v1 as C
+          def sha(path): return hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest()
+          e,q,c=sha(D.__file__),sha(Q.__file__),sha(C.__file__)
+          bundle=D.canonical_sha256({'executor_sha256':e,'quantitative_components_sha256':q,'tournament_contract_sha256':c})
+          receipt={'schema':'JEPA_TD_REAL_DIRECTIONAL_GATES_V2_QUALIFICATION','status':'PASS_OUTCOME_BLIND_DIRECTIONAL_STRUCTURAL_EXECUTOR_MECHANICS','executor_sha256':e,'quantitative_components_sha256':q,'tournament_contract_sha256':c,'executor_bundle_sha256':bundle,'candidate_outcomes_opened':False,'real_tournament_authorized':False}
+          print('QUALIFICATION_RECEIPT_BEGIN')
+          print(json.dumps(receipt,sort_keys=True,separators=(',',':')))
+          print('QUALIFICATION_RECEIPT_END')
+          print('ENVIRONMENT',json.dumps({'python':sys.version.split()[0],'numpy':numpy.__version__,'scipy':scipy.__version__,'pandas':pandas.__version__,'pytest':pytest.__version__},sort_keys=True))
+          PY
       - name: Authority guard
         run: |
           echo BIOLOGICAL_OUTCOME_INPUTS_DOWNLOADED=false
