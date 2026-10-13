@@ -1,23 +1,29 @@
-# Project-custody small text evidence bundle — 2026-10-13
+# Project-custody evidence snapshot — 2026-10-13
 
-This archive preserves project/chat-only **non-secret** text and CSV evidence that was not safely attributable to an immutable GitHub path at takeover time. It deliberately excludes controller-truth bytes and large binary datasets/checkpoints.
+Status: `PARTIAL_TRANSPORT_SCRATCH__NON_AUTHORITATIVE__USE_CUSTODY_MANIFEST`
 
-Original archive: `PROJECT_CUSTODY_SMALL_TEXT_EVIDENCE_20261013.tar.gz`
-SHA-256: `796b7c246b01ddc78c4768f656a63c22b9dc6610c899e7f6992ef924282de6cb`
-Original size: 148362 bytes.
+This directory records an attempted convenience copy of project/chat-only non-secret text/CSV evidence. The connector interrupted/blocked the tail of the base64 transport, so these `*.b64.*` fragments are deliberately **not** an authority surface and must not be reconstructed or used as scientific evidence.
 
-GitHub stores the archive as base64 text parts named:
-`PROJECT_CUSTODY_SMALL_TEXT_EVIDENCE_20261013.tar.gz.b64.part00` ... `part12`.
+The authoritative custody record for project-only material is:
 
-Reconstruct exactly:
+`docs/agent/PROJECT_CUSTODY_ASSET_MANIFEST_20261013.csv`
 
-```bash
-cat PROJECT_CUSTODY_SMALL_TEXT_EVIDENCE_20261013.tar.gz.b64.part* | tr -d '\n' | base64 -d > PROJECT_CUSTODY_SMALL_TEXT_EVIDENCE_20261013.tar.gz
-sha256sum PROJECT_CUSTODY_SMALL_TEXT_EVIDENCE_20261013.tar.gz
-# must equal 796b7c246b01ddc78c4768f656a63c22b9dc6610c899e7f6992ef924282de6cb
-tar -tzf PROJECT_CUSTODY_SMALL_TEXT_EVIDENCE_20261013.tar.gz
-```
+That manifest freezes the original filenames, byte sizes, SHA-256 values, custody action and caveats. Large binary datasets/checkpoints and controller-truth bytes were intentionally never copied into this public handoff branch.
 
-Contents include the local rare-program mining audit/tables, rare synthetic geometry results/hash ledgers, the 41K split-archive checksum manifest, and local historical execution/repair notes. The exact per-file source hashes are in `docs/agent/PROJECT_CUSTODY_ASSET_MANIFEST_20261013.csv`.
+The science/governance evidence needed to continue the lane is preserved independently by immutable Git refs and exact non-secret receipts indexed in:
 
-The 50K `FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv` is not embedded because it is much larger; its exact size/SHA-256 and the duplicated `sample_row` caveat are frozen in the custody manifest and takeover/audit documents.
+- `docs/agent/TD_SYNTHETIC_CROSSCERT_COMPLETE_TAKEOVER_20261013.md`
+- `docs/agent/TD_SYNTHETIC_HISTORICAL_NO_REPEAT_LEDGER_20261013.md`
+- `docs/agent/CURRENT_LANE_GIT_OBJECT_INDEX_20261013.json`
+- `docs/agent/HISTORICAL_BRANCH_INDEX_20261013.txt`
+- `archive/td_synthetic_crosscert_20261013/final/`
+
+Original local convenience bundle identity, retained only for custody matching:
+
+- filename: `PROJECT_CUSTODY_SMALL_TEXT_EVIDENCE_20261013.tar.gz`
+- SHA-256: `796b7c246b01ddc78c4768f656a63c22b9dc6610c899e7f6992ef924282de6cb`
+- size: 148362 bytes
+
+Do **not** treat the partial base64 fragments in this directory as a valid copy of that bundle. A future agent should consume the GitHub historical refs/receipts first and request/recover a project-custody source file only if a specific unresolved question requires its bytes.
+
+The 50K `FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv` remains manifest-only because it is large. Its duplicated `sample_row` 0..24999 across A/B halves remains an unresolved row-identity caveat.
