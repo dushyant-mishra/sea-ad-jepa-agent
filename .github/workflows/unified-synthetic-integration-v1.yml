@@ -13,3 +13,28 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: python -m pip install pytest numpy pandas scipy
       - run: pytest tests/v79/test_unified_synthetic_integration_v1.py tests/v79/test_unified_synthetic_fit_view_v1.py tests/v79/test_unified_synthetic_controller_truth_v1.py tests/v79/test_finalize_unified_synthetic_integration_v1.py tests/v79/test_v79_rare_biology_generator_v1.py tests/test_v79_hierarchical_biology_v1.py tests/test_v79_observation_operator_v1.py -v
+      - name: Build deterministic non-authorizing integration receipt fixture
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from scripts.v79.unified_synthetic_integration_v1 import UnifiedBiologyConfig, build_unified_biology
+          from scripts.v79.unified_synthetic_fit_view_v1 import UnifiedObservationConfig, observe_unified_world
+          from scripts.v79.unified_synthetic_controller_truth_v1 import derive_controller_truth
+          from scripts.v79.finalize_unified_synthetic_integration_v1 import build_integration_receipt, write_integration_receipt_once
+
+          world = build_unified_biology(UnifiedBiologyConfig(), seed=20261013)
+          fit = observe_unified_world(world, UnifiedObservationConfig(), seed=20261014)
+          truth = derive_controller_truth(world)
+          receipt = build_integration_receipt(
+              world=world,
+              fit_view=fit,
+              controller_truth=truth,
+              repo_root=Path.cwd(),
+              integration_manifest_path=Path("results/v79/unified_synthetic/UNIFIED_SYNTHETIC_INTEGRATION_MANIFEST_V1.json"),
+          )
+          out = Path("/tmp/UNIFIED_SYNTHETIC_INTEGRATION_RECEIPT_V1.json")
+          write_integration_receipt_once(out, receipt)
+          print("UNIFIED_SYNTHETIC_RECEIPT_BEGIN")
+          print(out.read_text(encoding="utf-8"), end="")
+          print("UNIFIED_SYNTHETIC_RECEIPT_END")
+          PY
