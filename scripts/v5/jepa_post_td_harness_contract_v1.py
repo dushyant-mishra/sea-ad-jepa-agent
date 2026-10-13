@@ -39,7 +39,7 @@ _COMPOSITE_EXPANSION = {
 
 _COMPOSITE_REQUIRED_PASSES = {
     "C6": ("C1", "C3", "C6"),
-    "C4": ("C1", "C2", "C3", "C6", "C4"),
+    "C4": ("C1", "C2", "C3", "C4"),
 }
 
 _RUNTIME_FILES = (
@@ -57,51 +57,90 @@ def _canonical_sha256(value: object) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
-def _require_pass(qualifications: Mapping[str, str], candidate: str) -> None:
-    if qualifications.get(candidate) != "PASS":
+def _qualification_status(value: object) -> str:
+    if isinstance(value, str):
+        return value.upper()
+    if isinstance(value, Mapping):
+        raw = value.get("status")
+        if isinstance(raw, str):
+            return raw.upper()
+    return ""
+
+
+def _require_pass(qualifications: Mapping[str, object], candidate: str) -> object:
+    receipt = qualifications.get(candidate)
+    if _qualification_status(receipt) != "PASS":
         raise PostTDContractError(f"{candidate} must be PASS before it can enter a target portfolio")
+    return receipt
+
+
+def _portfolio_block(candidate: str, qualification_receipt: object) -> dict:
+    block = dict(_BLOCKS[candidate])
+    block["qualification_receipt"] = qualification_receipt
+    block["rare_preservation_cross_cutting"] = True
+    return block
 
 
 def build_target_portfolio(
     *,
-    selected_candidate: str,
-    qualifications: Mapping[str, str],
+    qualifications: Mapping[str, object],
+    selected_candidate: str | None = None,
+    foundation_candidates: Iterable[str] = (),
     specialist_candidates: Iterable[str] = (),
 ) -> dict:
-    selected = str(selected_candidate).upper()
-    if selected == "C5":
-        raise PostTDContractError("C5 is specialist-only and cannot be the foundation portfolio")
-    if selected not in {"C1", "C2", "C3", "C4", "C6"}:
-        raise PostTDContractError(f"unknown target candidate: {selected}")
+    foundations = tuple(str(x).upper() for x in foundation_candidates)
+    selected = None if selected_candidate is None else str(selected_candidate).upper()
+    if selected is not None and foundations:
+        raise PostTDContractError("use selected_candidate or foundation_candidates, not both")
 
-    if selected in _COMPOSITE_REQUIRED_PASSES:
-        for candidate in _COMPOSITE_REQUIRED_PASSES[selected]:
-            _require_pass(qualifications, candidate)
-        constituents = _COMPOSITE_EXPANSION[selected]
+    fused_candidate = None
+    if selected is not None:
+        if selected == "C5":
+            raise PostTDContractError("C5 is specialist-only and cannot be the foundation portfolio")
+        if selected not in {"C1", "C2", "C3", "C4", "C6"}:
+            raise PostTDContractError(f"unknown target candidate: {selected}")
+        if selected in _COMPOSITE_REQUIRED_PASSES:
+            for candidate in _COMPOSITE_REQUIRED_PASSES[selected]:
+                _require_pass(qualifications, candidate)
+            foundations = _COMPOSITE_EXPANSION[selected]
+            fused_candidate = selected
+        else:
+            _require_pass(qualifications, selected)
+            foundations = (selected,)
     else:
-        _require_pass(qualifications, selected)
-        constituents = (selected,)
+        if not foundations:
+            raise PostTDContractError("at least one foundation candidate is required")
+        if len(foundations) != len(set(foundations)):
+            raise PostTDContractError("foundation candidates must be unique")
+        unknown = set(foundations) - {"C1", "C2", "C3"}
+        if "C5" in foundations:
+            raise PostTDContractError("C5 is specialist-only and cannot be the foundation portfolio")
+        if unknown:
+            raise PostTDContractError(f"unknown foundation candidate(s): {sorted(unknown)}")
+        for candidate in foundations:
+            _require_pass(qualifications, candidate)
 
-    blocks = []
-    for candidate in constituents:
-        block = dict(_BLOCKS[candidate])
-        block["rare_preservation_cross_cutting"] = True
-        blocks.append(block)
+    blocks = [
+        _portfolio_block(candidate, _require_pass(qualifications, candidate))
+        for candidate in foundations
+    ]
 
     specialists = tuple(str(x).upper() for x in specialist_candidates)
+    if len(specialists) != len(set(specialists)):
+        raise PostTDContractError("specialist candidates must be unique")
     for specialist in specialists:
         if specialist != "C5":
             raise PostTDContractError(f"unknown specialist candidate: {specialist}")
-        _require_pass(qualifications, specialist)
-        block = dict(_BLOCKS[specialist])
-        block["rare_preservation_cross_cutting"] = True
-        blocks.append(block)
+        blocks.append(_portfolio_block(specialist, _require_pass(qualifications, specialist)))
 
     result = {
         "schema": PORTFOLIO_SCHEMA,
         "selected_candidate": selected,
+        "foundation_candidates": list(foundations),
+        "fused_candidate": fused_candidate,
+        "specialist_candidates": list(specialists),
         "blocks": blocks,
-        "qualifications": dict(sorted((str(k), str(v)) for k, v in qualifications.items())),
+        "qualifications": {str(k): v for k, v in sorted(qualifications.items(), key=lambda item: str(item[0]))},
         "authority": dict(_AUTHORITY_OFF),
     }
     result["portfolio_sha256"] = _canonical_sha256(result)
