@@ -57,6 +57,7 @@ jobs:
             tests/v5/test_td_relational_successor_estimability_v1.py \
             tests/v5/test_td_relational_successor_gate_v1.py \
             tests/v5/test_td_relational_successor_synthetic_adapter_v1.py \
+            tests/v5/test_td_relational_successor_observed_executor_v1.py \
             | tee qualification/pytest-focused.txt
       - name: Run relevant tournament spillover tests
         run: |
