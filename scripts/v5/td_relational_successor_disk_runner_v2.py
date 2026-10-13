@@ -136,6 +136,23 @@ def _blinded_path(output_path: Path | str) -> Path:
     return target.with_name(target.name + ".blinded_fit.json")
 
 
+def _guard_paths(*, binding_path: Path | str, output_path: Path | str,
+                 controller_manifest_path: Path | str | None = None) -> None:
+    binding = Path(binding_path).resolve()
+    output = Path(output_path).resolve()
+    blind = _blinded_path(output_path).resolve()
+    if output == blind:
+        raise DiskRunnerError("final and blinded output paths must be distinct")
+    protected = {binding}
+    if controller_manifest_path is not None:
+        controller = Path(controller_manifest_path).resolve()
+        if controller == binding:
+            raise DiskRunnerError("binding and controller manifest paths must be distinct")
+        protected.add(controller)
+    if output in protected or blind in protected:
+        raise DiskRunnerError("qualification outputs cannot overwrite binding or controller inputs")
+
+
 def run_disk_qualification(
     *,
     repo_root: Path | str,
@@ -145,6 +162,11 @@ def run_disk_qualification(
     authenticated_package_sha256: str,
     output_path: Path | str,
 ) -> dict:
+    _guard_paths(
+        binding_path=binding_path,
+        controller_manifest_path=controller_manifest_path,
+        output_path=output_path,
+    )
     package, adapter, _ = preflight_disk_package(
         binding_path=binding_path,
         fit_dir=fit_dir,
@@ -232,6 +254,7 @@ def _parser() -> argparse.ArgumentParser:
 def main(argv=None) -> int:
     args = _parser().parse_args(argv)
     if args.preflight_only:
+        _guard_paths(binding_path=args.binding, output_path=args.output)
         _, _, receipt = preflight_disk_package(
             binding_path=args.binding,
             fit_dir=args.fit_dir,
