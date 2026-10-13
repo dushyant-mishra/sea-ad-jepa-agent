@@ -1,7 +1,10 @@
 {
   "schema": "JEPA_LATEST_HANDOFF_POINTER_V1",
   "date": "2026-10-13",
+  "pr": 323,
   "branch": "handoff/jepa-lane-takeover-20261013",
+  "stack_base_pr": 322,
+  "stack_base_sha": "6d6ec998e38b5da5a5281ebba89c471de16f243f",
   "read_first": "docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261013.md",
   "state": "docs/agent/JEPA_LANE_TAKEOVER_STATE_20261013.json",
   "historical_ledger": "docs/agent/JEPA_HISTORICAL_ARCHITECTURE_DECISION_LEDGER_20261013.md",
