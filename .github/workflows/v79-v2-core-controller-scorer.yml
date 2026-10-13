@@ -5,6 +5,9 @@ on:
     paths:
       - 'scripts/v79/v79_v2_core_score*.py'
       - 'scripts/v79/run_v79_v2_core_scoring.py'
+      - 'scripts/v79/run_v79_v2_core_scoring_orchestrator.py'
+      - 'tests/v79/v79_v2_core_score_synthetic_universe.py'
+      - '.github/workflows/v79-v2-core-scoring-orchestrator-synthetic.yml'
       - 'tests/v79/test_v79_v2_core_score*.py'
       - '.github/workflows/v79-v2-core-controller-scorer.yml'
   workflow_dispatch:
@@ -43,6 +46,7 @@ jobs:
           tests/v79/test_v79_v2_core_score_descriptive_contract.py
           tests/v79/test_v79_v2_core_score_oracle.py
           tests/v79/test_v79_v2_core_score_runner.py
+          tests/v79/test_v79_v2_core_score_orchestrator.py
           -q -rA -p no:cacheprovider
       - name: Run controller scorer tests (Linux structural audit)
         if: runner.os != 'Windows'
@@ -59,6 +63,7 @@ jobs:
           tests/v79/test_v79_v2_core_score_descriptive_contract.py
           tests/v79/test_v79_v2_core_score_oracle.py
           tests/v79/test_v79_v2_core_score_runner.py
+          tests/v79/test_v79_v2_core_score_orchestrator.py
           -q -rA -p no:cacheprovider
           -k 'not test_builder_regenerates_final_and_draft_byte_for_byte'
       - name: Static trust-domain audit
@@ -77,4 +82,5 @@ jobs:
               text=p.read_text(encoding='utf-8')
               assert 'v79_v2_core_score' not in text
               assert 'controller_truth' not in text
+              assert 'run_v79_v2_core_scoring_orchestrator' not in text
           print('SCORER_TRUST_DOMAIN_AUDIT=PASS')
