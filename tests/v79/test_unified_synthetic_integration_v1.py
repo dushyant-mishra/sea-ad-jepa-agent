@@ -69,6 +69,27 @@ def test_no_posthoc_positive_is_injected_to_make_a_rare_regime_visible(monkeypat
     assert not w.rare_program_activity.any()
     assert not w.rare_activity.any()
 
+def test_context_conditioning_is_bound_to_central_identity_not_program_position(monkeypatch):
+    def fixed_prevalence(rng, n_donors, preset):
+        return np.ones(n_donors, dtype=bool), np.full(n_donors, 0.15, dtype=np.float32)
+    monkeypatch.setattr(U, "_draw_synthetic_donor_latent", fixed_prevalence)
+    cfg=UnifiedBiologyConfig(
+        n_cells=6000,n_genes=48,n_donors=30,
+        rare_regime_ids=("central","weak"), context_niche_multiplier=8.0,
+    )
+    w=build_unified_biology(cfg, seed=313)
+    central=w.rare_program_activity[:,0]
+    weak=w.rare_program_activity[:,1]
+    eligible_c=U._program_eligibility(
+        U.generate_latent_biology(U._biology_authority(), cfg.n_cells, cfg.n_genes, cfg.n_donors, 313), 2
+    )[:,0]
+    inside=eligible_c & w.context_niche
+    outside=eligible_c & ~w.context_niche
+    assert inside.any() and outside.any()
+    assert central[inside].mean() > central[outside].mean() + 0.15
+    # Weak remains an unconditioned stress program even though it is column 1.
+    assert abs(weak[w.rare_eligible & w.context_niche].mean() - weak[w.rare_eligible & ~w.context_niche].mean()) < 0.15
+
 def test_context_and_perturbation_design_are_embedded_in_same_population():
     w=build_unified_biology(UnifiedBiologyConfig(n_cells=1200,n_genes=64,n_donors=30), seed=211)
     assert w.context_niche.shape == (1200,)
