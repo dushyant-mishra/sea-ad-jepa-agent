@@ -1,0 +1,4 @@
+start_utc=2026-10-13T20:18:24.616Z head=7659030cd2fc9a2662c67a9bf4d23e0e8f3f1606 status=[]
+{"status": "READER_ACCEPTED", "inputs_unchanged": true, "forbidden_dir_accessed": false}
+exit=0
+end_utc=2026-10-13T20:18:26.307Z status_after=[]

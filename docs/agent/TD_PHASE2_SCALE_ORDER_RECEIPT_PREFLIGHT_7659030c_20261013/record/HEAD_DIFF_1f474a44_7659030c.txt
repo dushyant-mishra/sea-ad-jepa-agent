@@ -1,0 +1,25 @@
+git diff --stat 1f474a44a6baabc667dbfda726e0755426c732e7 7659030cd2fc9a2662c67a9bf4d23e0e8f3f1606
+ .../td-relational-blind-custody-v4-ci.yml          |   2 +-
+ .../v5/td_relational_successor_disk_runner_v3.py   |   7 +-
+ ...onal_successor_phase2_scale_order_regression.py | 211 +++++++++++++++++++++
+ 3 files changed, 218 insertions(+), 2 deletions(-)
+
+files changed:
+.github/workflows/td-relational-blind-custody-v4-ci.yml
+scripts/v5/td_relational_successor_disk_runner_v3.py
+tests/v5/test_td_relational_successor_phase2_scale_order_regression.py
+
+--- V4 FIT_ENGINE_FILES + readiness_v2 gate-bound files (_EXECUTOR_FILES, _DECISION_FILES) + readiness_v2 itself, blob identity 1f474a44a6baabc667dbfda726e0755426c732e7 vs 7659030cd2fc9a2662c67a9bf4d23e0e8f3f1606:
+UNCHANGED 5cd3c6a3e4b0d7ad0641b17a17e6cc54e607363b scripts/v5/td_test_qualification_package_v2.py
+UNCHANGED 9a6ae04381bac4f824ffcef34384a7e887a79fed scripts/v5/td_relational_successor_synthetic_adapter_v2.py
+UNCHANGED 6c3c75b4daba25316533d11dcb8e2dc874aa3f9b scripts/v5/td_relational_successor_estimability_v1.py
+UNCHANGED 1672c540fcd5c5c5e308b43d84092d844d33fc2e scripts/v5/td_relational_successor_gate_v2.py
+UNCHANGED 5c2a95a666a7675a5318aef9a9c5f0059b5b84c4 scripts/v5/td_relational_successor_observed_executor_v2.py
+UNCHANGED 248e9abf97feaeb8722c9d04c3f4c5ad76581bd0 scripts/v5/td_relational_successor_capability_reducer_v1.py
+UNCHANGED ce273ee58b3dbd29bdfe29ab0bc188b5cfe090dd scripts/v5/td_relational_successor_qualification_runner_v3.py
+UNCHANGED 942bbe0275aa87af8b6e9eda30d2ec9b8a91384d scripts/v5/td_relational_successor_disk_runner_v4.py
+UNCHANGED 57a0cb362995bfcd10b8d5a40f2b34094a7f72ae scripts/v5/td_relational_successor_geometry_v1.py
+UNCHANGED a9579e6486baa0839ba6c2c992ab64331221dfe0 scripts/v5/td_test_of_test_controller_v1.py
+UNCHANGED 8e9ac2be38da3338c2faa463e6cb3dd828e10200 scripts/v5/td_relational_successor_qualification_runner_v2.py
+UNCHANGED 7974b115057e68b498b939f584062d28f655ccca scripts/v5/td_relational_successor_disk_runner_v2.py
+UNCHANGED 18196a876e585d3d1bd3cd4f2b35c2af0f3fa910 scripts/v5/td_relational_successor_readiness_v2.py

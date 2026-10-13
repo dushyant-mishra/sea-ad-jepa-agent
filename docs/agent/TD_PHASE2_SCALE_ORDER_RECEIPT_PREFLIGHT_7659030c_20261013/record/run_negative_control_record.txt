@@ -1,0 +1,4 @@
+start_utc=2026-10-13T20:19:09.076Z head=1f474a44a6baabc667dbfda726e0755426c732e7 status=[] script_sha256=e472857383ce52ea885a62e19b107fec7066e47af8663ef0a5fc2adf36b09341
+{"status": "READER_REFUSED", "inputs_unchanged": true, "forbidden_dir_accessed": false}
+exit=1
+end_utc=2026-10-13T20:19:10.191Z status_after=[]
