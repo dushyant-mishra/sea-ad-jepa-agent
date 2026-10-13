@@ -22,3 +22,117 @@ jobs:
           python-version: '3.11'
       - run: python -m pip install --upgrade pip pytest numpy
       - run: pytest -q tests/v79/test_build_td_relational_synthetic_package_v2.py tests/v79/test_finalize_td_relational_synthetic_package_v2.py
+
+  certify-exact-td-preflight:
+    runs-on: ubuntu-latest
+    needs: focused-v2-package
+    env:
+      TD_SHA: 2397ab83d8ae9d0c762a8fd5f3919edc350d137f
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip numpy
+      - name: Generate prospective V2 package
+        run: |
+          rm -rf /tmp/tdv2-package /tmp/td316 /tmp/tdv2-cert
+          mkdir -p /tmp/tdv2-cert
+          python scripts/v79/build_td_relational_synthetic_package_v2.py /tmp/tdv2-package
+      - name: Fetch exact frozen TD head
+        run: |
+          git fetch --no-tags --depth=1 origin "$TD_SHA"
+          git worktree add --detach /tmp/td316 "$TD_SHA"
+          test "$(git -C /tmp/td316 rev-parse HEAD)" = "$TD_SHA"
+          test -z "$(git -C /tmp/td316 status --porcelain)"
+      - name: Hash exact TD V2 preflight interface
+        run: |
+          sha256sum /tmp/td316/scripts/v5/td_test_qualification_package_v2.py | awk '{print $1}' > /tmp/tdv2-cert/package_validator.sha256
+          sha256sum /tmp/td316/scripts/v5/td_relational_successor_synthetic_adapter_v2.py | awk '{print $1}' > /tmp/tdv2-cert/synthetic_adapter.sha256
+          sha256sum /tmp/td316/scripts/v5/td_relational_successor_disk_runner_v2.py | awk '{print $1}' > /tmp/tdv2-cert/disk_preflight.sha256
+      - name: Run exact PR316 preflight only
+        run: |
+          PACKAGE_SHA=$(python - <<'PY'
+          import json
+          print(json.load(open('/tmp/tdv2-package/TD_EXTERNAL_SYNTHETIC_PACKAGE_BINDING_V2.json'))['package_sha256'])
+          PY
+          )
+          python /tmp/td316/scripts/v5/td_relational_successor_disk_runner_v2.py \
+            --binding /tmp/tdv2-package/TD_EXTERNAL_SYNTHETIC_PACKAGE_BINDING_V2.json \
+            --fit-dir /tmp/tdv2-package/fit_views \
+            --authenticated-package-sha256 "$PACKAGE_SHA" \
+            --output /tmp/tdv2-cert/preflight_receipt.json \
+            --preflight-only
+          python - <<'PY'
+          import json
+          p=json.load(open('/tmp/tdv2-cert/preflight_receipt.json'))
+          assert p['status']=='READY_TO_EXECUTE_BLIND_FIT', p
+          assert p['challenge_count']==9, p
+          assert p['authority']['biological_qualification_executed'] is False, p
+          assert all(v is False for k,v in p['authority'].items() if k!='biological_qualification_executed'), p
+          print('PREFLIGHT_ONLY_OK')
+          PY
+      - name: Freeze deterministic transport against exact TD identity
+        run: |
+          VALIDATOR=$(cat /tmp/tdv2-cert/package_validator.sha256)
+          ADAPTER=$(cat /tmp/tdv2-cert/synthetic_adapter.sha256)
+          DISK=$(cat /tmp/tdv2-cert/disk_preflight.sha256)
+          python scripts/v79/finalize_td_relational_synthetic_package_v2.py \
+            --package-dir /tmp/tdv2-package \
+            --archive /tmp/tdv2-cert/JEPA_TD_RELATIONAL_SYNTHETIC_V2_20261013.tar.xz \
+            --td-commit "$TD_SHA" \
+            --package-validator-sha256 "$VALIDATOR" \
+            --synthetic-adapter-sha256 "$ADAPTER" \
+            --disk-preflight-sha256 "$DISK" \
+            --receipt /tmp/tdv2-cert/transport_receipt.json
+      - name: Build certification receipt and prove no biological execution artifact exists
+        run: |
+          test ! -e /tmp/tdv2-cert/preflight_receipt.json.blinded_fit.json
+          python - <<'PY'
+          import hashlib, json, pathlib
+          root=pathlib.Path('/tmp/tdv2-cert')
+          transport=json.load(open(root/'transport_receipt.json'))
+          preflight=json.load(open(root/'preflight_receipt.json'))
+          receipt={
+            'schema':'JEPA_TD_RELATIONAL_SYNTHETIC_V2_COMPATIBILITY_CERTIFICATION_V1',
+            'synthetic_commit_sha':'${{ github.sha }}',
+            'td_pr316_commit_sha':'2397ab83d8ae9d0c762a8fd5f3919edc350d137f',
+            'package_sha256':transport['package_sha256'],
+            'binding_sha256':transport['binding_sha256'],
+            'controller_manifest_sha256':transport['controller_manifest_canonical_sha256'],
+            'fit_view_sha256':transport['fit_view_sha256'],
+            'archive_sha256':transport['archive_sha256'],
+            'archive_size_bytes':transport['archive_size_bytes'],
+            'td_interface_hashes':transport['td_interface_hashes'],
+            'preflight_receipt_sha256':hashlib.sha256((root/'preflight_receipt.json').read_bytes()).hexdigest(),
+            'preflight_status':preflight['status'],
+            'challenge_count':preflight['challenge_count'],
+            'execute_blinded_fit_called':False,
+            'td_geometry_computed':False,
+            'controller_truth_opened':False,
+            'authority':{
+              'real_td_execution_authorized':False,
+              'target_selection_authorized':False,
+              'td60_authorized':False,
+              'stage4_authorized':False,
+              'training_authorized':False,
+            },
+          }
+          (root/'compatibility_certification_receipt.json').write_text(json.dumps(receipt,sort_keys=True,separators=(',',':')))
+          print(json.dumps(receipt,indent=2,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: JEPA_TD_RELATIONAL_SYNTHETIC_V2_20261013_certified
+          path: |
+            /tmp/tdv2-cert/JEPA_TD_RELATIONAL_SYNTHETIC_V2_20261013.tar.xz
+            /tmp/tdv2-cert/transport_receipt.json
+            /tmp/tdv2-cert/preflight_receipt.json
+            /tmp/tdv2-cert/compatibility_certification_receipt.json
+            /tmp/tdv2-cert/package_validator.sha256
+            /tmp/tdv2-cert/synthetic_adapter.sha256
+            /tmp/tdv2-cert/disk_preflight.sha256
+          if-no-files-found: error
+          compression-level: 0
