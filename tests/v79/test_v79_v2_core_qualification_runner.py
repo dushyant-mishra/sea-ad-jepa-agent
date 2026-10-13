@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 import hashlib
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -159,3 +160,9 @@ def test_qualification_processes_import_no_controller_or_scoring_modules():
             if isinstance(node,ast.Import): imported.update(alias.name for alias in node.names)
             elif isinstance(node,ast.ImportFrom) and node.module: imported.add(node.module)
         assert not (imported & forbidden)
+
+
+def test_world_worker_import_preserves_pre_jax_runtime_configuration_boundary():
+    code=f'''\nimport sys\nfrom pathlib import Path\nsys.path.insert(0, {str(HERE)!r})\nimport run_v79_v2_core_qualification_world\nimport v79_v2_core_runtime as RT\nassert "jax" not in sys.modules\nassert "jaxlib" not in sys.modules\nRT.configure_before_jax_import({{"resources":{{"xla_host_devices":4}},"inference":{{"chains":4}}}})\n'''
+    proc=subprocess.run([sys.executable,"-c",code],cwd=ROOT,text=True,capture_output=True)
+    assert proc.returncode==0, proc.stdout+proc.stderr
