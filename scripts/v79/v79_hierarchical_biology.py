@@ -153,6 +153,7 @@ def generate_latent_biology(authority: Mapping[str, Any] | BiologyAuthority, n_c
         baseline_log = rng.normal(a.baseline_log_mean, a.baseline_log_sd, size=n_genes)
     log_abundance = np.broadcast_to(baseline_log, (n_cells, n_genes)).copy()
 
+    # Anonymous coherent blocks: membership is sampled only from canonical positions.
     for cls, n_states in enumerate(a.substates_per_class):
         for st in range(n_states):
             ix = np.flatnonzero((broad_class == cls) & (substate == st))
