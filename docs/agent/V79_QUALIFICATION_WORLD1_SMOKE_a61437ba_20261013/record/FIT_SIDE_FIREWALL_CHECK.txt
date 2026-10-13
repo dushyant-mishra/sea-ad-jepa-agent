@@ -1,0 +1,20 @@
+firewall_check_utc=2026-10-13T03:19:10Z
+custody top-level: blinded_fit_inputs V79_V2_CORE_FIT_CONTRACT_VIEW_V1.json V79_V2_CORE_QUALIFICATION_CUSTODY_V1.json V79_V2_CORE_QUALIFICATION_EXECUTION_AUTHORIZATION_V1.json 
+files: 148; world dirs: 12
+python/scorer/gate files: 0; truth/root manifest: 0; Q-label paths: 0
+json files containing '"Q0': 0
+json files containing '"Q1': 0
+json files containing 'Q00': 0
+json files containing 'Q11': 0
+json files containing 'world_index': 0
+json files containing 'world_name': 0
+json files containing 'controller_truth': 0
+json files containing 'planted': 0
+json files containing 'oracle': 0
+json files containing 'scorer': 0
+json files containing 'pathology': 0
+json files containing 'rare_program': 0
+json files containing 'target_discovery': 0
+json files containing 'morabito': 0
+'truth' hits: V79_V2_CORE_QUALIFICATION_CUSTODY_V1.json  (truth_accessed=false flag); 'operator' hits: V79_V2_CORE_FIT_CONTRACT_VIEW_V1.json  (model excluded_terms)
+blinded per-world file set: design/cls.npy design/donor.npy design/log_lib.npy design/src.npy manifest.json observations/new_donor/detected.npy observations/new_donor/observed.npy observations/same_donor/detected.npy observations/same_donor/observed.npy observations/train/detected.npy observations/train/observed.npy support.npy 

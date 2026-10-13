@@ -1,0 +1,2 @@
+world_start_utc=2026-10-13T03:20:11Z head=a61437ba284e9e75b0557157ad68e56eacd8f8fe status=[] cmd=python scripts/v79/run_v79_v2_core_qualification_world.py D:/jepa_wt_v79_qual_world1_a61437ba D:/jepa_v79_qualification_world1_a61437ba/fit_custody D:/jepa_v79_qualification_world1_a61437ba/result c5116d6273f82fd3b3c5450b6bb8d701e03ef7d17ba6ada98eb5ff5aec906b63 2ae1cb055fed
+world_exit=0 world_end_utc=2026-10-13T03:55:34Z status_after=[] fit_receipts=88 npz=88 lock_present=no

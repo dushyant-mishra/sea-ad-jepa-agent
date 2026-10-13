@@ -1,0 +1,4 @@
+contention_check_utc=2026-10-13T03:19:43Z
+windows: machine_load_percent_avg=14; cpu_seconds_all_processes_in_5s=6.28; logical_cpus=16; python_processes=2
+wsl: loadavg=0.00 0.00 0.00 python_procs=0
+note: at launch a chrome browser process (pid 20204, user activity) used ~1.4 cores of 16 (7.2 cpu-s per 5 s); not stopped; disclosed as background load

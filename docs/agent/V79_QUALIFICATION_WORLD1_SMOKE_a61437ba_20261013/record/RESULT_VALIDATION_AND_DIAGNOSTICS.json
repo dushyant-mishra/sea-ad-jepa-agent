@@ -1,0 +1,78 @@
+{
+ "attempt_paths": {
+  "PRIMARY": 88
+ },
+ "expected_first_world_fits": 88,
+ "final_diagnosis_by_part": {
+  "detection:COMPLETE": 44,
+  "positive:COMPLETE": 44
+ },
+ "final_diagnosis_counts": {
+  "COMPLETE": 88
+ },
+ "fit_process_cpu_seconds": {
+  "max": 5.36,
+  "mean": 3.81,
+  "total": 335.5
+ },
+ "fit_wall_seconds": {
+  "max": 5.4,
+  "mean": 3.77,
+  "median": 3.68,
+  "min": 3.21,
+  "total": 331.6
+ },
+ "flags_across_receipts": {
+  "benchmark_run": [
+   "False"
+  ],
+  "code_sha": [
+   "a61437ba284e9e75b0557157ad68e56eacd8f8fe"
+  ],
+  "contract_sha256": [
+   "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26"
+  ],
+  "execution_mode": [
+   "QUALIFICATION"
+  ],
+  "opaque_world_id": [
+   "2ae1cb055fed"
+  ],
+  "qualification_fits_run": [
+   "1"
+  ],
+  "scoring_run": [
+   "False"
+  ],
+  "training_authorized": [
+   "False"
+  ],
+  "truth_accessed": [
+   "False"
+  ]
+ },
+ "genes": true,
+ "mean_tree_steps_range": [
+  15.0,
+  227.992
+ ],
+ "parts_per_gene_ok": true,
+ "peak_working_set_bytes": {
+  "max": 1359056896,
+  "median": 1090107392
+ },
+ "receipts_match_queue_items_in_order": true,
+ "runner_completed_prefix_validation": 88,
+ "sampler_settings_seen": [
+  "{\"chains\": 4, \"dense_mass\": false, \"draws_per_chain\": 1000, \"max_tree_depth\": 10, \"target_accept\": 0.9, \"warmup\": 1000}"
+ ],
+ "seeds_match_ledger": true,
+ "stage_use_counts": {
+  "PRIMARY": 88
+ },
+ "total_divergences_all_attempts": 0,
+ "total_divergences_final": 0,
+ "worst_ess_bulk": 603.0,
+ "worst_ess_tail": 425.0,
+ "worst_rhat": 1.01
+}

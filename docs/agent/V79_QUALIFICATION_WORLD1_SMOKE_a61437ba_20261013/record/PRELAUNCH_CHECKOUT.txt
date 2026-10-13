@@ -1,0 +1,8 @@
+utc=2026-10-13T03:18:14Z
+git rev-parse HEAD: a61437ba284e9e75b0557157ad68e56eacd8f8fe
+git status --porcelain: [] lines=0
+authority: PR #317 comment 6137248929 (one first-opaque-world 88-fit physical smoke at a61437ba); prior 559a1c10 campaign authority SPENT
+repair diff 559a1c10..a61437ba: 2 files (run_v79_v2_core_qualification_world.py: one import moved; tests)
+package_dir=D:/jepa_wt_v79_qreal_cd6425b2/results/v79/v2_core_qualification/realized_worlds_v1: files_now=498 ledger_mismatches=0 (ledger 4e65f213, 498 entries)
+spent attempt dirs untouched and NOT reused: D:/jepa_v79_qualification_campaign_559a1c10 (custody 48581e73, empty result)
+fresh: custody_dir=D:/jepa_v79_qualification_world1_a61437ba/fit_custody exists=no result_dir=D:/jepa_v79_qualification_world1_a61437ba/result exists=no

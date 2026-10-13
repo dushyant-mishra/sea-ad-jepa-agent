@@ -1,0 +1,29 @@
+{
+ "world_wall_seconds": 2123.0,
+ "startup_before_first_fit_s": 2.586827,
+ "sum_sampling_wall_s": 331.6,
+ "non_sampling_share": 0.844,
+ "per_fit_end_to_end_s": {
+  "mean": 24.18,
+  "median": 24.49,
+  "min": 7.86,
+  "max": 119.76
+ },
+ "per_fit_post_sampling_until_receipt_written_s": {
+  "mean": 21.32,
+  "max": 116.57
+ },
+ "mean_sampling_start_to_receipt_by_part_s": {
+  "detection": 33.7,
+  "positive": 16.5
+ },
+ "naive_full_campaign_projection_h": {
+  "12_worlds_x_this_world_wall_plus_frozen_settle": 7.48,
+  "frozen_benchmark_formula_mean_sampling_wall_x_1056_plus_settle": 1.51
+ },
+ "machine_cpu_percent_typeperf": {
+  "samples": 69,
+  "mean": 29.8,
+  "max": 41.4
+ }
+}
