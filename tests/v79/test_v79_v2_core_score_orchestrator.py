@@ -324,6 +324,22 @@ def test_cli_binds_the_authorization_to_the_clean_checked_out_head(universe, tru
     assert truth_calls == []
 
 
+def test_cli_refuses_when_executing_code_is_not_the_authorized_checkout(universe, truth_calls, monkeypatch, tmp_path):
+    """Added during GREEN: HEAD matches the authorization, so only the executing-code location check can refuse."""
+    O = _orchestrator()
+    other = tmp_path / "other_checkout"; other.mkdir()
+    monkeypatch.setattr(O, "_require_clean", lambda root: None)
+    monkeypatch.setattr(O, "_git_head", lambda root: universe.scorer_code_sha)
+    argv = ["--repo-root", str(other), "--campaign-result-dir", str(universe.result_dir), "--result-ledger", str(universe.result_ledger_path),
+            "--custody-dir", str(universe.custody_dir), "--realization-dir", str(universe.realization_dir),
+            "--authorization", str(universe.scoring_auth_path), "--authorization-sha256", universe.bindings["scoring_authorization_sha256"],
+            "--output-dir", str(universe.output_dir)]
+    with pytest.raises(O.OrchestratorRefused, match="scorer_code"):
+        O.main(argv)
+    assert truth_calls == [] and not universe.output_dir.exists()
+    O._require_executing_code_in(ROOT)  # the code under test is loaded from this checkout
+
+
 @pytest.mark.parametrize("damage", ["self_consistent_world_change", "extra_world", "missing_world", "resealed_realization_receipt", "root_manifest_bytes"])
 def test_truth_set_must_match_the_frozen_realization_authority(universe, truth_calls, damage):
     oid = universe.world_by_name["Q03_WEAK_SOURCE"]; wdir = universe.truth_root / oid

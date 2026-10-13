@@ -569,6 +569,17 @@ def _require_clean(root: Path) -> None:
         _refuse("scorer_code", "repository working tree is not clean")
 
 
+def _require_executing_code_in(root: Path) -> None:
+    """The authorization binds the checkout's HEAD, so the code actually executing must be that checkout's."""
+    base = (Path(root) / "scripts" / "v79").resolve()
+    for mod in (sys.modules[__name__], RQ, R, FC, F, L, C, QP, S, A, D, E, O, QN, T):
+        loaded = Path(mod.__file__).resolve()
+        try:
+            loaded.relative_to(base)
+        except ValueError:
+            _refuse("scorer_code", f"executing module {mod.__name__} is not loaded from the authorized checkout: {loaded}")
+
+
 def main(argv=None) -> dict:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("--repo-root", required=True, help="clean checkout of the authorized scorer head")
@@ -582,6 +593,7 @@ def main(argv=None) -> dict:
     a = p.parse_args(argv)
     root = Path(a.repo_root).resolve()
     _require_clean(root)
+    _require_executing_code_in(root)
     head = _git_head(root)
     receipt = run_qualification_scoring(
         repo_root=root, scorer_code_sha=head, authorization_path=Path(a.authorization), authorization_sha256=a.authorization_sha256,
