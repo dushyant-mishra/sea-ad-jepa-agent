@@ -7,7 +7,8 @@
     "pr315": "af03ef67d52651463944a6de3a08e101ad00e0ea"
   },
   "calibration": {
-    "stat1_50k_physical_row_status": "QUARANTINED_NOT_HARD_AUTHORITY"
+    "stat1_50k_physical_row_status": "QUARANTINED_NOT_HARD_AUTHORITY",
+    "rare_frequency_source": "SYNTHETIC_STRESS_PRESETS_NOT_EMPIRICAL_CALIBRATION"
   },
   "authority": {
     "target_selection_authorized": false,
