@@ -100,10 +100,23 @@ Synthetic known-truth can qualify estimand/gate implementation, direction, null 
 
 Current terminal is only `READY_TO_EXECUTE_BLIND_FIT`. There is no valid biological PASS/FAIL/NOT_ESTIMABLE result to report yet.
 
+## Pending action queue and audit gates
+
+1. **Phase-1 blinded synthetic TD fit:** run only against the exact cross-certified pair. Controller bytes must remain absent. Freeze the V4 blinded receipt and stop.
+2. **Receipt audit:** independently verify all nine opaque challenges, output completeness, engine identity, package/binding hashes, custody separation and absence of selective reruns. A failed receipt audit blocks truth opening.
+3. **Separate phase-2 authority:** only after receipt audit PASS may controller adjudication be authorized. Phase 2 must authenticate the frozen blind receipt before reading controller truth.
+4. **Capability-level adjudication:** preserve PASS/FAIL/`NOT_ESTIMABLE` per challenge and matched-control behavior. No aggregate rescue of a failed required capability.
+5. **Qualification decision:** explicitly state what TD machinery is qualified and what remains outside scope. Synthetic PASS does not authorize real TD automatically.
+6. **Macha Layer-A closeout when evidence arrives:** audit the final 1,056-fit Q00-Q11 receipt before any scoring authority. This is parallel/separate and must not mutate the frozen TD synthetic package.
+7. **STAT1 row-index repair before hard calibration:** recompute only the row-identity-dependent analyses using true physical row indexing; do not redo unrelated rare-biology work.
+8. **Broader unified biological/model qualification:** after TD synthetic test-of-test qualification, return to PR #315's Stage81A3 + V79 + PR311 integration, teacher/student recoverability, common/rare interference, EMA continuity and transport program.
+9. **Real TD only after explicit readiness:** require qualified synthetic gate behavior, any required Layer-A closeout, prospectively frozen real estimands/decision rules, and authenticated current data/split/support contracts.
+10. **Training remains OFF:** TD60, Stage4 and JEPA/foundation training need explicit future authority regardless of synthetic results.
+
 ## Audit rule for the successor
 
 Do not repeat a historical audit simply to establish personal familiarity. First consume the current takeover document, no-repeat ledger, branch index, immutable refs, and exact receipts. Reopen only a specific unresolved or contradicted item.
 
 ## Audit terminal
 
-`AUDIT_CUSTODY_COMPLETE__KNOWN_FAILURES_PRESERVED__SUPERSEDED_RUNS_MARKED__CURRENT_PREFLIGHT_FROZEN__NEXT_SCIENCE_RESULT_DOES_NOT_YET_EXIST`
+`AUDIT_CUSTODY_COMPLETE__KNOWN_FAILURES_PRESERVED__SUPERSEDED_RUNS_MARKED__PENDING_ACTION_QUEUE_FROZEN__CURRENT_PREFLIGHT_FROZEN__NEXT_SCIENCE_ACTION_PHASE1_BLINDED_FIT_ONLY`
