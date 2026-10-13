@@ -244,7 +244,7 @@ def build_unified_biology(config: UnifiedBiologyConfig, *, seed: int) -> Unified
             if not len(ix) or prevalence_p[donor] <= 0:
                 continue
             base_p = float(prevalence_p[donor])
-            if p == 1:
+            if regime == "central":
                 inside = context_niche[ix]
                 n_in = int(inside.sum())
                 p_in = min(0.5, base_p * config.context_niche_multiplier)
