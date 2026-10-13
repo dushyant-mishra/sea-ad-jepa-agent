@@ -36,6 +36,7 @@ jobs:
             sha256sum \
               scripts/v5/td_real_gate_rule_registry_v1.py \
               scripts/v5/td_query_information_guard.py \
+              scripts/v5/audit_td_real_gate_executor_readiness_v3.py \
               tests/v5/test_td_real_gate_rule_registry_v1.py \
               tests/v5/test_td_real_structural_gate_output_v1.py \
               tests/v5/test_td_real_gate_executor_readiness_v2.py \
@@ -46,12 +47,14 @@ jobs:
               results/target_discovery/real_tournament/TD_REAL_STRUCTURAL_GATE_QUALIFICATION_RECEIPT_V1.json \
               docs/superpowers/specs/2026-10-11-td-multitarget-tournament-prefreeze-v2.md
           } | tee qualification/identity.txt
-      - name: Validate V1 and projected V2 readiness without outcome reads
+      - name: Validate V1/V2/V3 readiness without outcome reads
         run: |
           set -o pipefail
           python scripts/v5/audit_td_real_gate_executor_readiness_v1.py | tee qualification/readiness_v1.txt
           python scripts/v5/audit_td_real_gate_executor_readiness_v2.py | tee qualification/readiness_v2.txt
+          python scripts/v5/audit_td_real_gate_executor_readiness_v3.py | tee qualification/readiness_v3.txt
           python scripts/v5/audit_td_real_gate_executor_readiness_v2.py --emit-matrix-json > qualification/readiness_matrix_v2.json
+          python scripts/v5/audit_td_real_gate_executor_readiness_v3.py --emit-matrix-json > qualification/readiness_matrix_v3.json
       - name: Run structural and framework qualification suites
         run: |
           set -o pipefail
