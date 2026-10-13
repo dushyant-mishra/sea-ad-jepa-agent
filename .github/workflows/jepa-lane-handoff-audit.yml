@@ -7,6 +7,7 @@ on:
     paths:
       - 'docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261013.md'
       - 'docs/agent/JEPA_LANE_TAKEOVER_STATE_20261013.json'
+      - 'docs/agent/JEPA_LATEST_HANDOFF_POINTER_20261013.json'
       - 'docs/agent/JEPA_EXTERNAL_ARTIFACT_CUSTODY_MANIFEST_20261013.csv'
       - 'docs/agent/JEPA_ACTIVE_BRANCH_PR_MAP_20261013.md'
       - 'docs/agent/external_context/**'
@@ -17,6 +18,7 @@ on:
     paths:
       - 'docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261013.md'
       - 'docs/agent/JEPA_LANE_TAKEOVER_STATE_20261013.json'
+      - 'docs/agent/JEPA_LATEST_HANDOFF_POINTER_20261013.json'
       - 'docs/agent/JEPA_EXTERNAL_ARTIFACT_CUSTODY_MANIFEST_20261013.csv'
       - 'docs/agent/JEPA_ACTIVE_BRANCH_PR_MAP_20261013.md'
       - 'docs/agent/external_context/**'
@@ -52,6 +54,22 @@ jobs:
         run: |
           python scripts/v5/verify_jepa_lane_handoff_state_v1.py | tee /tmp/handoff_state.txt
           grep -q 'PASS_JEPA_LANE_HANDOFF_STATE_V1' /tmp/handoff_state.txt
+      - name: Validate latest handoff pointer
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('docs/agent/JEPA_LATEST_HANDOFF_POINTER_20261013.json')
+          v=json.loads(p.read_text())
+          assert v['schema']=='JEPA_LATEST_HANDOFF_POINTER_V1'
+          assert v['branch']=='handoff/jepa-lane-takeover-20261013'
+          assert v['read_first']=='docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261013.md'
+          assert v['authority']['target_selection_authorized'] is False
+          assert v['authority']['representation_selection_authorized'] is False
+          assert v['authority']['td60_authorized'] is False
+          assert v['authority']['stage4_authorized'] is False
+          assert v['authority']['training_authorized'] is False
+          print('LATEST_HANDOFF_POINTER_BOUND')
+          PY
       - name: Run hostile takeover-manifest tests
         run: |
           python -m unittest tests.v5.test_verify_jepa_lane_takeover_manifest_v1 -v 2>&1 | tee /tmp/takeover_tests.txt
