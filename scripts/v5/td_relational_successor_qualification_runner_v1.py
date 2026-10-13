@@ -136,18 +136,43 @@ def execute_blinded_fit(adapter: A.RelationalQualificationAdapterReceipt) -> Bli
         control_profiles = fit.get("control_profiles")
         if not isinstance(control_profiles, Mapping):
             raise QualificationRunnerError(f"control_profiles missing from fit input: {challenge_id}")
-        primary_kwargs = {k: v for k, v in fit.items() if k != "control_profiles"}
-        profiles[challenge_id] = X.evaluate_observed_relational_profile(**primary_kwargs)
+
+        context = X.prepare_observed_relational_context(
+            source=fit["source"],
+            panel_id=fit["panel_id"],
+            z_values=fit["z_values"],
+            x_values=fit["x_values"],
+            y_values=fit["y_values"],
+            z_measured=fit["z_measured"],
+            x_measured=fit["x_measured"],
+            y_measured=fit["y_measured"],
+            z_feature_ids=fit["z_feature_ids"],
+            x_feature_ids=fit["x_feature_ids"],
+            y_feature_ids=fit["y_feature_ids"],
+            donor_ids=fit["donor_ids"],
+            operator_ids=fit["operator_ids"],
+            global_rows=fit["global_rows"],
+            source_library=fit["source_library"],
+            detected_genes=fit["detected_genes"],
+        )
+        profiles[challenge_id] = X.evaluate_prepared_relational_profile(
+            context,
+            profile_id=fit["profile_id"],
+            focal_mask=fit["focal_mask"],
+            neighbor_pool_mask=fit["neighbor_pool_mask"],
+            min_focal_anchors_per_donor=fit["min_focal_anchors_per_donor"],
+        )
         local_controls: dict[str, G.RelationalProfileReceipt] = {}
         for control_id, control in control_profiles.items():
             if not isinstance(control, Mapping):
                 raise QualificationRunnerError(f"invalid opaque control profile: {challenge_id}/{control_id}")
-            kwargs = dict(primary_kwargs)
-            kwargs["profile_id"] = f"{challenge_id}::{control_id}"
-            kwargs["focal_mask"] = control["focal_mask"]
-            kwargs["neighbor_pool_mask"] = control["neighbor_pool_mask"]
-            kwargs["min_focal_anchors_per_donor"] = control["min_focal_anchors_per_donor"]
-            local_controls[control_id] = X.evaluate_observed_relational_profile(**kwargs)
+            local_controls[control_id] = X.evaluate_prepared_relational_profile(
+                context,
+                profile_id=f"{challenge_id}::{control_id}",
+                focal_mask=control["focal_mask"],
+                neighbor_pool_mask=control["neighbor_pool_mask"],
+                min_focal_anchors_per_donor=control["min_focal_anchors_per_donor"],
+            )
         controls[challenge_id] = local_controls
 
     return BlindedFitReceipt(
