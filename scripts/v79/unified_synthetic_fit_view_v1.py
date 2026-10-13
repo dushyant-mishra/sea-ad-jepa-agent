@@ -8,7 +8,7 @@ import numpy as np
 
 from .unified_synthetic_integration_v1 import UnifiedBiologyWorld, world_as_latent_biology
 from .v79_observation_operator import observe_latent_biology
-from .v79_rare_biology_generator_v1 import REGIMES, SIGNS, SOURCES, VISIBILITY
+from .v79_rare_biology_generator_v1 import SIGNS, SOURCES, VISIBILITY
 
 
 @dataclass(frozen=True)
@@ -18,6 +18,7 @@ class UnifiedObservationConfig:
     realization_family: str = "independent_thinning"
     molecule_scale: float = 3.0
     technical_pseudo_rarity: bool = True
+    technical_pseudo_rarity_rate: float = 0.05
     atac_noise_scale: float = 0.35
 
     def __post_init__(self) -> None:
@@ -29,6 +30,8 @@ class UnifiedObservationConfig:
             raise ValueError("unknown realization_family")
         if self.molecule_scale <= 0 or self.atac_noise_scale < 0:
             raise ValueError("observation scales must be valid")
+        if not (0 < self.technical_pseudo_rarity_rate < 1):
+            raise ValueError("technical_pseudo_rarity_rate must lie in (0,1)")
 
 
 @dataclass(frozen=True)
@@ -154,11 +157,10 @@ def _atac_realization(world: UnifiedBiologyWorld, mode: str, rng: np.random.Gene
 
 
 def _apply_technical_pseudo_rarity(values: np.ndarray, support: np.ndarray, world: UnifiedBiologyWorld,
-                                   rng: np.random.Generator) -> np.ndarray:
+                                   rng: np.random.Generator, rate: float) -> np.ndarray:
     out = values.copy()
     eligible = ~np.asarray(world.rare_activity, dtype=bool)
-    rate = float(REGIMES["central"]["tail_fraction"])
-    pseudo = eligible & (rng.random(len(eligible)) < rate)
+    pseudo = eligible & (rng.random(len(eligible)) < float(rate))
     width = min(len(SIGNS), out.shape[1])
     if pseudo.any() and width:
         effect = rng.poisson(2.0, size=(int(pseudo.sum()), width)).astype(out.dtype) + 1
@@ -208,7 +210,9 @@ def observe_unified_world(world: UnifiedBiologyWorld, config: UnifiedObservation
     support = np.asarray(observed.structural_support, dtype=bool)
     rng = np.random.default_rng(int(seed) + 9091)
     if config.technical_pseudo_rarity:
-        values = _apply_technical_pseudo_rarity(values, support, world, rng)
+        values = _apply_technical_pseudo_rarity(
+            values, support, world, rng, config.technical_pseudo_rarity_rate
+        )
     atac_values = _atac_realization(world, config.multimodal_mode, rng, values.shape[1], config.atac_noise_scale)
     context_true, context_shuffled, context_distant = _context_views(values, world.donor_id, rng)
     address_index = np.arange(values.shape[1], dtype=np.int64)
