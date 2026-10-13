@@ -8,7 +8,9 @@ on:
     paths:
       - 'scripts/v79/build_td_relational_synthetic_package_v2_1.py'
       - 'scripts/v79/finalize_td_relational_synthetic_package_v2_1.py'
+      - 'scripts/v79/finalize_td_relational_synthetic_package_v2_1_1.py'
       - 'tests/v79/test_build_td_relational_synthetic_package_v2_1.py'
+      - 'tests/v79/test_finalize_td_relational_synthetic_package_v2_1_1.py'
       - 'docs/agent/TD_RELATIONAL_SYNTHETIC_V2_1_EXTERNAL_AUDIT_REPAIR_20261013.md'
       - '.github/workflows/td-relational-synthetic-v2-1-ci.yml'
 
@@ -28,10 +30,10 @@ jobs:
         run: |
           echo "HEAD=$(git rev-parse HEAD)"
           test -z "$(git status --short)"
-      - name: Compile successor generator
-        run: python -m compileall -q scripts/v79/build_td_relational_synthetic_package_v2_1.py scripts/v79/finalize_td_relational_synthetic_package_v2_1.py
-      - name: Run sealed-construction tests
-        run: python -m pytest -q tests/v79/test_build_td_relational_synthetic_package_v2_1.py
+      - name: Compile successor generator and finalizers
+        run: python -m compileall -q scripts/v79/build_td_relational_synthetic_package_v2_1.py scripts/v79/finalize_td_relational_synthetic_package_v2_1.py scripts/v79/finalize_td_relational_synthetic_package_v2_1_1.py
+      - name: Run sealed-construction and custody-identity tests
+        run: python -m pytest -q tests/v79/test_build_td_relational_synthetic_package_v2_1.py tests/v79/test_finalize_td_relational_synthetic_package_v2_1_1.py
       - name: Re-run frozen V2 package tests
         run: python -m pytest -q tests/v79/test_build_td_relational_synthetic_package_v2.py tests/v79/test_finalize_td_relational_synthetic_package_v2.py
       - name: Confirm tracked worktree unchanged
