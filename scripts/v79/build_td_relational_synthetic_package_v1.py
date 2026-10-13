@@ -1,5 +1,5 @@
 from __future__ import annotations
-import hashlib, json
+import hashlib, json, math
 from pathlib import Path
 from typing import Any
 import numpy as np
@@ -18,129 +18,114 @@ CAPABILITIES=(
  ('REL_NULL_NEGATIVE','NEGATIVE_TRUTH','FAIL'),
  ('REL_UNDERPOWERED_POSITIVE','UNDERIDENTIFIED_TRUTH','NOT_ESTIMABLE'),
 )
-AUTHORITY={
- 'synthetic_world_generation_authorized':False,'synthetic_world_regeneration_authorized':False,
+AUTHORITY={'synthetic_world_generation_authorized':False,'synthetic_world_regeneration_authorized':False,
  'qualification_model_fitting_authorized':False,'target_selection_authorized':False,
- 'td60_authorized':False,'stage4_authorized':False,'training_authorized':False,
-}
+ 'td60_authorized':False,'stage4_authorized':False,'training_authorized':False}
 
-def canon(obj:Any)->bytes:
-    return (json.dumps(obj,sort_keys=True,separators=(',',':'),ensure_ascii=True,allow_nan=False)+'\n').encode()
-def sha_bytes(b:bytes)->str: return hashlib.sha256(b).hexdigest()
-def sha_obj(x:Any)->str: return sha_bytes(canon(x))
-def pairwise(feat:np.ndarray)->np.ndarray:
-    feat=np.asarray(feat,float); dif=feat[:,None,:]-feat[None,:,:]
-    return np.rint(np.sqrt(np.sum(dif*dif,axis=2))*10000.0).astype(np.int64)
-def ids(n_donors:int,cells_per:int):
-    donors=[]; within=[]
-    for d in range(n_donors):
-        for i in range(cells_per): donors.append(f'D{d:02d}'); within.append(i)
-    return np.asarray(donors,object),np.asarray(within,int)
-def base_common(n_donors=5,cells_per=35):
-    donors,within=ids(n_donors,cells_per); n=len(donors)
-    return donors,within,np.asarray(['OP0']*n,object),np.arange(n,dtype=int)
-def null_maps(donors,operators,seed):
-    rng=np.random.default_rng(seed); n=len(donors); out=[]
-    for _ in range(N_NULL):
+def canon(x:Any)->bytes:
+    return (json.dumps(x,sort_keys=True,separators=(',',':'),ensure_ascii=True,allow_nan=False)+'\n').encode()
+def sha_bytes(x:bytes)->str:return hashlib.sha256(x).hexdigest()
+def sha_obj(x:Any)->str:return sha_bytes(canon(x))
+def pairwise(f):
+    a=np.asarray(f,float); d=a[:,None,:]-a[None,:,:]
+    return np.rint(np.sqrt(np.sum(d*d,axis=2))*10000).astype(np.int64)
+def ids(nd:int,nc:int=35):
+    return np.asarray([f'D{d:02d}' for d in range(nd) for _ in range(nc)],object),np.tile(np.arange(nc),nd)
+def common(nd=5,nc=35):
+    d,w=ids(nd,nc); n=len(d); return d,w,np.asarray(['OP0']*n,object),np.arange(n,dtype=int)
+def permuted_unit(w,mul,shift):
+    n=int(w.max())+1; return ((w*mul+shift)%n)/(n-1)
+def null_maps(donors,ops,seed):
+    n=len(donors); out=[]; allowed=[2,3,4,6,8,9,11,12,13,16,17,18,19,22,23,24,26,27,29,31,32,33,34]
+    for q in range(N_NULL):
         m=np.arange(n)
-        for d in sorted(set(donors.tolist())):
-            for o in sorted(set(operators.tolist())):
-                idx=np.where((donors==d)&(operators==o))[0]; p=idx[rng.permutation(len(idx))]
-                if np.array_equal(p,idx) and len(idx)>1: p=np.roll(p,1)
-                m[idx]=p
+        for dn in sorted(set(donors.tolist())):
+            for op in sorted(set(ops.tolist())):
+                idx=np.where((donors==dn)&(ops==op))[0]; k=len(idx)
+                choices=[a for a in allowed if math.gcd(a,k)==1] or [1]
+                a=choices[(q+seed)%len(choices)]; b=(q*7+seed)%k
+                local=(a*np.arange(k)+b)%k
+                if np.array_equal(local,np.arange(k)): local=np.roll(local,1)
+                m[idx]=idx[local]
         out.append(m.tolist())
     return out
-def opaque_id(capability:str,seed:int)->str:
-    return hashlib.sha256(f'{PACKAGE_ID}|{capability}|{seed}'.encode()).hexdigest()[:16]
+def opaque(cap,seed):return hashlib.sha256(f'{PACKAGE_ID}|{cap}|{seed}'.encode()).hexdigest()[:16]
 
-def coarse_geometry(seed:int,visibility:float=1.0):
-    donors,within,ops,rows=base_common(); rng=np.random.default_rng(seed)
-    coarse=(within//8).astype(float); fine=(within%8)/8.0
-    latent=np.c_[coarse,fine]; z=np.c_[coarse*5.0,fine*.2]
-    x=np.c_[coarse*5.0,rng.normal(0,1.2,len(rows))]
-    y=np.c_[coarse*5.0,rng.normal(0,1.2/visibility,len(rows))]
-    truth={'latent_coordinates':latent.tolist(),'relation_metric':'euclidean_on_latent_coordinates','relation_scope':'coarse_mesoscale','rare_state':[0]*len(rows),'island_id':[-1]*len(rows)}
-    return donors,ops,rows,z,x,y,np.ones(len(rows),bool),np.ones(len(rows),bool),truth
+def coarse(seed,visibility=1.0):
+    d,w,o,r=common(); c=(w//7).astype(float); fine=(w%7)/7
+    latent=np.c_[c,fine]; z=np.c_[c*8,fine*.1]
+    x=np.c_[c*8,permuted_unit(w,3,1)]; y=np.c_[c*8,permuted_unit(w,11,2)/visibility]
+    t={'latent_coordinates':latent.tolist(),'relation_metric':'euclidean_on_latent_coordinates','relation_scope':'coarse_mesoscale','rare_state':[0]*len(r),'island_id':[-1]*len(r)}
+    return d,o,r,z,x,y,np.ones(len(r),bool),np.ones(len(r),bool),t
 
-def fine_geometry(seed:int,n_donors=5,cells_per=35):
-    donors,within=ids(n_donors,cells_per); n=len(donors); ops=np.asarray(['OP0']*n,object); rows=np.arange(n); rng=np.random.default_rng(seed)
-    t=within/(cells_per-1); latent=np.c_[t,np.sin(2*np.pi*t)]
-    z=latent+rng.normal(0,.004,latent.shape); x=latent+rng.normal(0,.025,latent.shape); y=latent+rng.normal(0,.025,latent.shape)
-    truth={'latent_coordinates':latent.tolist(),'relation_metric':'euclidean_on_latent_coordinates','relation_scope':'fine_recurrent','rare_state':[0]*n,'island_id':[-1]*n}
-    return donors,ops,rows,z,x,y,np.ones(n,bool),np.ones(n,bool),truth
+def fine(seed,nd=5):
+    d,w,o,r=common(nd); u=w/34; latent=np.c_[u,np.sin(2*np.pi*u)]
+    z=latent; x=latent+np.c_[((w%3)-1)*.002,((w%5)-2)*.001]; y=latent+np.c_[((w%5)-2)*.001,((w%3)-1)*.002]
+    t={'latent_coordinates':latent.tolist(),'relation_metric':'euclidean_on_latent_coordinates','relation_scope':'fine_recurrent','rare_state':[0]*len(r),'island_id':[-1]*len(r)}
+    return d,o,r,z,x,y,np.ones(len(r),bool),np.ones(len(r),bool),t
 
-def rare_geometry(seed:int,multi=False,donor_restricted=False):
-    n_donors=6 if donor_restricted else 5
-    donors,within=ids(n_donors,35); n=len(donors); ops=np.asarray(['OP0']*n,object); rows=np.arange(n); rng=np.random.default_rng(seed)
-    active=set(range(5)) if donor_restricted else set(range(n_donors)); rare=np.zeros(n,bool); island=np.full(n,-1,int)
-    z=np.zeros((n,2)); x=np.zeros((n,2)); y=np.zeros((n,2)); latent=np.zeros((n,2))
-    for d in range(n_donors):
-        idx=np.where(donors==f'D{d:02d}')[0]; wi=within[idx]
-        z[idx]=np.c_[10+wi/4,np.zeros(len(idx))]
-        x[idx]=rng.normal([10,0],[2,2],(len(idx),2)); y[idx]=rng.normal([10,0],[2,2],(len(idx),2)); latent[idx]=np.c_[10+wi/4,np.zeros(len(idx))]
-        if d not in active: continue
-        groups=[idx[0:6],idx[20:26]] if multi else [idx[13:21]]; centers=[-4.0,4.0] if multi else [0.0]
+def rare(seed,multi=False,restricted=False):
+    nd=6 if restricted else 5; d,w,o,r=common(nd); n=len(r); active=set(range(5)) if restricted else set(range(nd))
+    rare=np.zeros(n,bool); island=np.full(n,-1,int)
+    z=np.c_[10+w/3,np.zeros(n)]; x=np.c_[10+permuted_unit(w,3,1)*8,np.zeros(n)]; y=np.c_[10+permuted_unit(w,11,2)*8,np.ones(n)]; latent=np.c_[10+w/3,np.zeros(n)]
+    for k in range(nd):
+        idx=np.where(d==f'D{k:02d}')[0]
+        if k not in active:continue
+        groups=[idx[:6],idx[20:26]] if multi else [idx[13:21]]; centers=[-4.,4.] if multi else [0.]
         for gi,(g,c) in enumerate(zip(groups,centers)):
             rare[g]=True; island[g]=gi; local=np.linspace(-.4,.4,len(g)); lat=np.c_[np.full(len(g),c),local]
-            latent[g]=lat; z[g]=lat+rng.normal(0,.003,lat.shape); x[g]=lat+rng.normal(0,.018,lat.shape); y[g]=lat+rng.normal(0,.018,lat.shape)
-    truth={'latent_coordinates':latent.tolist(),'relation_metric':'euclidean_on_latent_coordinates','relation_scope':'rare_local_islands','rare_state':rare.astype(int).tolist(),'island_id':island.tolist(),'active_donors':sorted(f'D{d:02d}' for d in active),'zero_prevalence_donors':sorted(set(donors.tolist())-set(f'D{d:02d}' for d in active))}
-    return donors,ops,rows,z,x,y,rare,np.ones(n,bool),truth
+            latent[g]=lat; z[g]=lat; x[g]=lat+np.c_[np.zeros(len(g)),((np.arange(len(g))%2)*2-1)*.001]; y[g]=lat+np.c_[np.zeros(len(g)),((np.arange(len(g))%3)-1)*.001]
+    t={'latent_coordinates':latent.tolist(),'relation_metric':'euclidean_on_latent_coordinates','relation_scope':'rare_local_islands','rare_state':rare.astype(int).tolist(),'island_id':island.tolist(),'active_donors':sorted(f'D{k:02d}' for k in active),'zero_prevalence_donors':sorted(set(d.tolist())-set(f'D{k:02d}' for k in active))}
+    return d,o,r,z,x,y,rare,np.ones(n,bool),t
 
-def technical_twin(seed:int):
-    donors,within,ops,rows=base_common(); n=len(rows); rng=np.random.default_rng(seed); pseudo=np.zeros(n,bool)
-    z=rng.normal(0,2,(n,2)); x=rng.normal(0,2,(n,2)); y=rng.normal(0,2,(n,2))
-    for d in range(5):
-        idx=np.where(donors==f'D{d:02d}')[0]; g=idx[13:21]; pseudo[g]=True; local=np.linspace(-.4,.4,len(g)); z[g]=np.c_[np.zeros(len(g)),local]+rng.normal(0,.003,(len(g),2))
-    truth={'latent_coordinates':rng.normal(0,1,(n,2)).tolist(),'relation_metric':'euclidean_on_latent_coordinates','relation_scope':'none_target','rare_state':[0]*n,'pseudo_rare':pseudo.astype(int).tolist(),'technical_twin':True}
-    return donors,ops,rows,z,x,y,pseudo,np.ones(n,bool),truth
+def technical(seed):
+    d,w,o,r=common(); n=len(r); pseudo=np.zeros(n,bool)
+    z=np.c_[permuted_unit(w,17,3)*10,np.zeros(n)]; x=np.c_[permuted_unit(w,3,1)*10,np.zeros(n)]; y=np.c_[permuted_unit(w,11,2)*10,np.ones(n)]
+    for k in range(5):
+        idx=np.where(d==f'D{k:02d}')[0]; g=idx[13:21]; pseudo[g]=True; z[g]=np.c_[np.zeros(len(g)),np.linspace(-.4,.4,len(g))]
+    latent=np.c_[permuted_unit(w,19,4),np.zeros(n)]
+    t={'latent_coordinates':latent.tolist(),'relation_metric':'euclidean_on_latent_coordinates','relation_scope':'none_target','rare_state':[0]*n,'pseudo_rare':pseudo.astype(int).tolist(),'technical_twin':True}
+    return d,o,r,z,x,y,pseudo,np.ones(n,bool),t
 
-def null_geometry(seed:int):
-    donors,within,ops,rows=base_common(); n=len(rows); rng=np.random.default_rng(seed)
-    z=rng.normal(0,1,(n,3)); x=rng.normal(0,1,(n,3)); y=rng.normal(0,1,(n,3))
-    truth={'latent_coordinates':rng.normal(0,1,(n,2)).tolist(),'relation_metric':'euclidean_on_latent_coordinates','relation_scope':'none_target','rare_state':[0]*n}
-    return donors,ops,rows,z,x,y,np.ones(n,bool),np.ones(n,bool),truth
+def null(seed):
+    d,w,o,r=common(); n=len(r); z=np.c_[permuted_unit(w,17,3)*10,np.zeros(n)]; x=np.c_[permuted_unit(w,3,1)*10,np.zeros(n)]; y=np.c_[permuted_unit(w,11,2)*10,np.ones(n)]; latent=np.c_[permuted_unit(w,19,4),np.zeros(n)]
+    t={'latent_coordinates':latent.tolist(),'relation_metric':'euclidean_on_latent_coordinates','relation_scope':'none_target','rare_state':[0]*n}
+    return d,o,r,z,x,y,np.ones(n,bool),np.ones(n,bool),t
 
-def underpowered(seed:int):
-    donors,within=ids(4,35); n=len(donors); ops=np.asarray(['OP0']*n,object); rows=np.arange(n); rng=np.random.default_rng(seed); t=within/34
-    latent=np.c_[t,np.sin(2*np.pi*t)]; z=latent+rng.normal(0,.003,latent.shape); x=latent+rng.normal(0,.02,latent.shape); y=latent+rng.normal(0,.02,latent.shape)
-    truth={'latent_coordinates':latent.tolist(),'relation_metric':'euclidean_on_latent_coordinates','relation_scope':'genuine_but_underpowered','rare_state':[0]*n,'underpowered_reason':'only_4_recurring_donors_below_frozen_minimum_5'}
-    return donors,ops,rows,z,x,y,np.ones(n,bool),np.ones(n,bool),truth
+def underpowered(seed):return fine(seed,nd=4)
 
-def challenge(cap:str,seed:int):
-    if cap=='REL_BROAD_MESO_POSITIVE': data=coarse_geometry(seed,1.0); source='SYN_A'
-    elif cap=='REL_SOURCE_VISIBILITY_STRESS': data=coarse_geometry(10101,.55); source='SYN_B'
-    elif cap=='REL_FINE_RECURRENT_POSITIVE': data=fine_geometry(seed); source='SYN_A'
-    elif cap=='REL_RARE_LOCAL_ISLAND_POSITIVE': data=rare_geometry(seed); source='SYN_A'
-    elif cap=='REL_MULTI_ISLAND_POSITIVE': data=rare_geometry(seed,multi=True); source='SYN_A'
-    elif cap=='REL_DONOR_RESTRICTED_POSITIVE': data=rare_geometry(seed,donor_restricted=True); source='SYN_A'
-    elif cap=='REL_TECHNICAL_TWIN_NEGATIVE': data=technical_twin(seed); source='SYN_A'
-    elif cap=='REL_NULL_NEGATIVE': data=null_geometry(seed); source='SYN_A'
+def make(cap,seed):
+    if cap=='REL_BROAD_MESO_POSITIVE': data=coarse(seed,1.0); source='SYN_A'
+    elif cap=='REL_SOURCE_VISIBILITY_STRESS': data=coarse(10101,.55); source='SYN_B'
+    elif cap=='REL_FINE_RECURRENT_POSITIVE': data=fine(seed); source='SYN_A'
+    elif cap=='REL_RARE_LOCAL_ISLAND_POSITIVE': data=rare(seed); source='SYN_A'
+    elif cap=='REL_MULTI_ISLAND_POSITIVE': data=rare(seed,multi=True); source='SYN_A'
+    elif cap=='REL_DONOR_RESTRICTED_POSITIVE': data=rare(seed,restricted=True); source='SYN_A'
+    elif cap=='REL_TECHNICAL_TWIN_NEGATIVE': data=technical(seed); source='SYN_A'
+    elif cap=='REL_NULL_NEGATIVE': data=null(seed); source='SYN_A'
     elif cap=='REL_UNDERPOWERED_POSITIVE': data=underpowered(seed); source='SYN_A'
-    else: raise KeyError(cap)
-    donors,ops,rows,zf,xf,yf,focal,pool,truth=data
-    fit={'source':source,'panel_id':'P0','z_distances':pairwise(zf).tolist(),'x_distances':pairwise(xf).tolist(),'y_distances':pairwise(yf).tolist(),'donor_ids':donors.tolist(),'operator_ids':ops.tolist(),'global_rows':rows.tolist(),'focal_mask':focal.astype(bool).tolist(),'neighbor_pool_mask':pool.astype(bool).tolist(),'null_y_identity_maps':null_maps(donors,ops,seed+9000),'min_focal_anchors_per_donor':1}
-    latent=np.asarray(truth['latent_coordinates'],float); truth['biological_distance_matrix_sha256']=sha_obj(pairwise(latent).tolist()); truth['entity_count']=len(rows)
-    rare=np.asarray(truth.get('rare_state',[0]*len(rows))); truth['donor_prevalence']={d:float(np.mean(rare[donors==d])) for d in sorted(set(donors.tolist()))}
-    return fit,truth
+    else:raise KeyError(cap)
+    d,o,r,z,x,y,focal,pool,t=data
+    fit={'source':source,'panel_id':'P0','z_distances':pairwise(z).tolist(),'x_distances':pairwise(x).tolist(),'y_distances':pairwise(y).tolist(),'donor_ids':d.tolist(),'operator_ids':o.tolist(),'global_rows':r.tolist(),'focal_mask':focal.astype(bool).tolist(),'neighbor_pool_mask':pool.astype(bool).tolist(),'null_y_identity_maps':null_maps(d,o,seed+9000),'min_focal_anchors_per_donor':1}
+    lat=np.asarray(t['latent_coordinates'],float); t['biological_distance_matrix_sha256']=sha_obj(pairwise(lat).tolist()); t['entity_count']=len(r); rr=np.asarray(t.get('rare_state',[0]*len(r))); t['donor_prevalence']={dn:float(np.mean(rr[d==dn])) for dn in sorted(set(d.tolist()))}
+    return fit,t
 
 def main(out_dir:str):
-    root=Path(out_dir); root.mkdir(parents=True,exist_ok=True); fit_dir=root/'fit_views'; fit_dir.mkdir(exist_ok=True)
-    truth={}; fit_records=[]; caps=[]; fit_manifest=[]; capability_ledger=[]
-    seeds={cap:316100+i*1009 for i,(cap,_,_) in enumerate(CAPABILITIES)}; seeds['REL_BROAD_MESO_POSITIVE']=10101; seeds['REL_SOURCE_VISIBILITY_STRESS']=10101
+    root=Path(out_dir); root.mkdir(parents=True,exist_ok=True); fd=root/'fit_views'; fd.mkdir(exist_ok=True)
+    truth={}; fits=[]; caps=[]; fm=[]; ledger=[]; seeds={cap:316100+i*1009 for i,(cap,_,_) in enumerate(CAPABILITIES)}; seeds['REL_BROAD_MESO_POSITIVE']=10101; seeds['REL_SOURCE_VISIBILITY_STRESS']=10101
     for cap,semantic,expected in CAPABILITIES:
-        cid=opaque_id(cap,seeds[cap]); fit,t=challenge(cap,seeds[cap]); fb=canon(fit); fsha=sha_bytes(fb); (fit_dir/f'{cid}.json').write_bytes(fb)
-        fit_records.append({'challenge_id':cid,'sha256':fsha}); caps.append({'capability_id':cap,'challenge_id':cid,'semantic_class':semantic})
-        fit_manifest.append({'challenge_id':cid,'payload_path':f'fit_views/{cid}.json','sha256':fsha,'row_count':len(fit['donor_ids']),'feature_count':3,'available_metadata_fields':['source','panel_id','donor_ids','operator_ids','global_rows','focal_mask','neighbor_pool_mask'],'donor_count':len(set(fit['donor_ids'])),'source_count':1,'operator_count':len(set(fit['operator_ids'])),'support_summary':{'focal_count':int(sum(fit['focal_mask'])),'neighbor_pool_count':int(sum(fit['neighbor_pool_mask']))}})
+        cid=opaque(cap,seeds[cap]); fit,t=make(cap,seeds[cap]); raw=canon(fit); fsha=sha_bytes(raw); (fd/f'{cid}.json').write_bytes(raw)
+        fits.append({'challenge_id':cid,'sha256':fsha}); caps.append({'capability_id':cap,'challenge_id':cid,'semantic_class':semantic})
+        fm.append({'challenge_id':cid,'payload_path':f'fit_views/{cid}.json','sha256':fsha,'row_count':len(fit['donor_ids']),'feature_count':3,'available_metadata_fields':['source','panel_id','donor_ids','operator_ids','global_rows','focal_mask','neighbor_pool_mask'],'donor_count':len(set(fit['donor_ids'])),'source_count':1,'operator_count':len(set(fit['operator_ids'])),'support_summary':{'focal_count':int(sum(fit['focal_mask'])),'neighbor_pool_count':int(sum(fit['neighbor_pool_mask']))}})
         t['biological_relational_truth_present']=semantic in {'POSITIVE_TRUTH','STRESS_TRUTH','UNDERIDENTIFIED_TRUTH'}
+        if cap=='REL_UNDERPOWERED_POSITIVE':t['underpowered_reason']='only_4_recurring_donors_below_frozen_minimum_5'
         truth[cid]={'capability_id':cap,'semantic_class':semantic,'expected_status':expected,'fit_view_sha256':fsha,'planted_truth':t,'source_visibility':'reduced_observation_quality_same_latent_truth' if cap=='REL_SOURCE_VISIBILITY_STRESS' else 'nominal','technical_or_null_designation':'technical_twin' if cap=='REL_TECHNICAL_TWIN_NEGATIVE' else ('null' if cap=='REL_NULL_NEGATIVE' else 'biological'),'underpowered':cap=='REL_UNDERPOWERED_POSITIVE'}
-        capability_ledger.append({'capability_id':cap,'coverage_status':'SATISFIED_NEW_PROSPECTIVE_WORLD','challenge_id':cid,'basis':'historical Stage81A3 broad/fine latent-factor mechanics' if cap in {'REL_BROAD_MESO_POSITIVE','REL_FINE_RECURRENT_POSITIVE'} else ('PR311 rare-biology semantics plus explicit new relational truth' if cap not in {'REL_NULL_NEGATIVE','REL_UNDERPOWERED_POSITIVE'} else 'prospective relational falsifier/support control'),'why_not_existing_world':'Existing frozen assets do not expose an explicit controller-separated C2 relational truth object in the exact PR316 blinded distance interface.'})
-    capmap={r['capability_id']:r['challenge_id'] for r in caps}; broad=capmap['REL_BROAD_MESO_POSITIVE']; stress=capmap['REL_SOURCE_VISIBILITY_STRESS']; shared=sha_obj(truth[broad]['planted_truth']['latent_coordinates']); truth[broad]['paired_latent_truth_sha256']=shared; truth[stress]['paired_latent_truth_sha256']=shared
+        ledger.append({'capability_id':cap,'coverage_status':'SATISFIED_NEW_PROSPECTIVE_WORLD','challenge_id':cid,'basis':'historical Stage81A3 broad/fine latent-factor mechanics' if cap in {'REL_BROAD_MESO_POSITIVE','REL_FINE_RECURRENT_POSITIVE'} else ('PR311 rare-biology semantics plus explicit new relational truth' if cap not in {'REL_NULL_NEGATIVE','REL_UNDERPOWERED_POSITIVE'} else 'prospective relational falsifier/support control'),'why_not_existing_world':'Existing frozen assets do not expose an explicit controller-separated C2 relational truth object in the exact PR316 blinded distance interface.'})
+    cm={r['capability_id']:r['challenge_id'] for r in caps}; broad=cm['REL_BROAD_MESO_POSITIVE']; stress=cm['REL_SOURCE_VISIBILITY_STRESS']; shared=sha_obj(truth[broad]['planted_truth']['latent_coordinates']); truth[broad]['paired_latent_truth_sha256']=shared; truth[stress]['paired_latent_truth_sha256']=shared
     controller={'schema':'JEPA_TD_RELATIONAL_SYNTHETIC_CONTROLLER_TRUTH_V1','package_id':PACKAGE_ID,'truth':truth}; cb=canon(controller); csha=sha_bytes(cb); (root/'controller_truth.json').write_bytes(cb)
-    manifest={'schema':'JEPA_TD_RELATIONAL_SYNTHETIC_CONTENT_MANIFEST_V1','package_id':PACKAGE_ID,'realization_id':sha_obj({'package':PACKAGE_ID,'seeds':seeds})[:24],'generator_contract':{'seed_ledger':seeds,'n_null':N_NULL,'td_outcomes_used_for_tuning':False},'fit_views':fit_records,'controller_truth_sha256':csha,'capabilities':caps,'capability_ledger':capability_ledger}; mb=canon(manifest); package_sha=sha_bytes(mb); (root/'content_manifest.json').write_bytes(mb)
-    binding={'schema':PACKAGE_SCHEMA,'package_id':PACKAGE_ID,'package_sha256':package_sha,'controller_truth_sha256':csha,'authority':AUTHORITY,'fit_view_fields':['source','panel_id','z_distances','x_distances','y_distances','donor_ids','operator_ids','global_rows','focal_mask','neighbor_pool_mask','null_y_identity_maps','min_focal_anchors_per_donor'],'fit_views':fit_records,'capabilities':caps}; (root/'TD_EXTERNAL_SYNTHETIC_PACKAGE_BINDING_V1.json').write_bytes(canon(binding))
-    (root/'fit_view_manifest.json').write_bytes(canon({'schema':'JEPA_TD_RELATIONAL_FIT_VIEW_MANIFEST_V1','package_id':PACKAGE_ID,'challenges':fit_manifest})); (root/'capability_ledger.json').write_bytes(canon({'schema':'JEPA_TD_RELATIONAL_CAPABILITY_LEDGER_V1','package_id':PACKAGE_ID,'capabilities':capability_ledger}))
-    adapter={r['challenge_id']:{'authenticated_fit_view_sha256':r['sha256'],'payload_path':f"fit_views/{r['challenge_id']}.json"} for r in fit_records}; (root/'TD_RELATIONAL_ADAPTER_PAYLOAD_INDEX_V1.json').write_bytes(canon({'schema':'JEPA_TD_RELATIONAL_ADAPTER_PAYLOAD_INDEX_V1','package_id':PACKAGE_ID,'payloads':adapter}))
-    return root
+    manifest={'schema':'JEPA_TD_RELATIONAL_SYNTHETIC_CONTENT_MANIFEST_V1','package_id':PACKAGE_ID,'realization_id':sha_obj({'package':PACKAGE_ID,'seeds':seeds})[:24],'generator_contract':{'seed_ledger':seeds,'n_null':N_NULL,'td_outcomes_used_for_tuning':False},'fit_views':fits,'controller_truth_sha256':csha,'capabilities':caps,'capability_ledger':ledger}; mb=canon(manifest); psha=sha_bytes(mb); (root/'content_manifest.json').write_bytes(mb)
+    binding={'schema':PACKAGE_SCHEMA,'package_id':PACKAGE_ID,'package_sha256':psha,'controller_truth_sha256':csha,'authority':AUTHORITY,'fit_view_fields':['source','panel_id','z_distances','x_distances','y_distances','donor_ids','operator_ids','global_rows','focal_mask','neighbor_pool_mask','null_y_identity_maps','min_focal_anchors_per_donor'],'fit_views':fits,'capabilities':caps}; (root/'TD_EXTERNAL_SYNTHETIC_PACKAGE_BINDING_V1.json').write_bytes(canon(binding))
+    (root/'fit_view_manifest.json').write_bytes(canon({'schema':'JEPA_TD_RELATIONAL_FIT_VIEW_MANIFEST_V1','package_id':PACKAGE_ID,'challenges':fm})); (root/'capability_ledger.json').write_bytes(canon({'schema':'JEPA_TD_RELATIONAL_CAPABILITY_LEDGER_V1','package_id':PACKAGE_ID,'capabilities':ledger})); adapter={r['challenge_id']:{'authenticated_fit_view_sha256':r['sha256'],'payload_path':f"fit_views/{r['challenge_id']}.json"} for r in fits}; (root/'TD_RELATIONAL_ADAPTER_PAYLOAD_INDEX_V1.json').write_bytes(canon({'schema':'JEPA_TD_RELATIONAL_ADAPTER_PAYLOAD_INDEX_V1','package_id':PACKAGE_ID,'payloads':adapter})); return root
 
 if __name__=='__main__':
     import sys
