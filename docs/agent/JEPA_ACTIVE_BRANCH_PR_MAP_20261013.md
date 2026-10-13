@@ -4,7 +4,7 @@ This file exists so a future agent does not choose a stale branch by title or re
 
 ## Read-first rule
 
-For this lane, use the **successor handoff branch** containing this file as navigation, but execute scientific code only from the exact branch/commit named by the relevant authority below.
+For this lane, use the **successor handoff PR #323 / branch** containing this file as navigation, but execute scientific code only from the exact branch/commit named by the relevant authority below.
 
 Do not merge/rebase/repoint frozen evidence branches merely to simplify history.
 
@@ -104,23 +104,20 @@ Do not merge/rebase/repoint frozen evidence branches merely to simplify history.
 ### PR #322 — robust target-portfolio pipeline audit after JEPA-Anything
 
 - branch: `science/jepa-robust-pipeline-post-jepa-anything-audit-20261013`
-- original head: `6b376b076fbf675e9ed43eea4e78df02e2f1454a`
-- role: non-authorizing architecture robustness audit and repaired-41K smoke probes
-- this session extends the branch with:
-  - historical decision ledger;
-  - gene-identity reclassification audit;
-  - downstream implementation-readiness audit;
-  - machine-readable ledgers;
-  - fail-closed takeover validator/tests/CI.
+- current frozen audit head: `6d6ec998e38b5da5a5281ebba89c471de16f243f`
+- exact audit CI: run `38442572857` PASS
+- role: non-authorizing architecture robustness audit, repaired-41K smoke probes, historical decision ledger, gene-identity reclassification and downstream readiness
 - current use: **audit/science navigation; no target/representation/training authority**
 
 ---
 
-## Successor takeover branch
+## Successor takeover branch / PR
 
-### `handoff/jepa-lane-takeover-20261013`
+### PR #323 — JEPA lane takeover handoff
 
-- base: the updated PR #322 audit branch
+- branch: `handoff/jepa-lane-takeover-20261013`
+- base: PR #322 exact audit head `6d6ec998e38b5da5a5281ebba89c471de16f243f`
+- state: open draft
 - role: single read-first handoff for future agents
 - contains:
   - all new audit ledgers inherited from PR #322;
@@ -128,9 +125,14 @@ Do not merge/rebase/repoint frozen evidence branches merely to simplify history.
   - external/local artifact custody manifest;
   - historical project text snapshots that existed only in the project environment;
   - branch/PR map;
-  - exact next-action and do-not-repeat rules.
+  - exact next-action and do-not-repeat rules;
+  - fail-closed handoff/custody validator and CI.
+
+The current PR head must be read from PR #323 metadata / its latest verified checkpoint comment because embedding a branch's own moving SHA inside a file would create a recursive self-binding problem.
 
 This branch is navigation/custody only. It does not supersede the scientific bytes on #313/#314/#316/#320/#321.
+
+Three accidental duplicate refs created during final verification are documented in `JEPA_BRANCH_CREATION_AUDIT_20261013.md` and `JEPA_BRANCH_CREATION_AUDIT_APPENDIX_20261013.md`. They carry no distinct work or authority and are not active lanes.
 
 ---
 
