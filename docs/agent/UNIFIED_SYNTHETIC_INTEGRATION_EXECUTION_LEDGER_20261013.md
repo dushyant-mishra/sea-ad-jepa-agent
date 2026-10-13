@@ -9,3 +9,5 @@ Ruling 1: PR #315 base does not physically contain the PR #253 `v79_hierarchical
 Ruling 2: the green post-TD harness was produced after PR #315. Downstream compatibility will be established against its frozen callable/identity without modifying TD estimands or decision rules. If exact materialization is required for CI, it must be byte-identical to the audited source and recorded as imported custody, not a new architecture.
 
 Ruling 3: the first slice is a deterministic mechanics fixture only. It asks no new biological question and performs no fitting, scoring, controller adjudication, target selection, or training.
+
+Dependency update — Macha/V79: the full frozen Q00-Q11 campaign execution is complete: 1,056/1,056 fits accounted for, 1,053 COMPLETE and 3 preserved `NOT_DIAGNOSED`, with no scoring, no truth access and no training. This closes execution completeness only. Final Layer-A scientific qualification remains pending separate scoring/controller authorization and audit; this integration must not claim that adjudication early.
