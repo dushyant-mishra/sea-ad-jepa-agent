@@ -39,20 +39,21 @@ def test_receipt_binds_fit_controller_manifest_and_source_bytes_with_authority_o
     assert not any(r["authority"].values())
 
 
-def test_receipt_refuses_manifest_that_relabels_quarantined_frequency_as_empirical(tmp_path):
+def test_receipt_refuses_manifest_that_relabels_quarantined_frequency_as_empirical():
     manifest=json.loads(MANIFEST.read_text())
     manifest["calibration"]["rare_frequency_source"]="EMPIRICAL_HUMAN_CALIBRATION"
-    bad=tmp_path/"manifest.json"
-    bad.write_text(json.dumps(manifest), encoding="utf-8")
-    w=build_unified_biology(UnifiedBiologyConfig(n_cells=120,n_genes=24,n_donors=8),seed=31)
-    f=observe_unified_world(w,UnifiedObservationConfig(),seed=32)
-    c=derive_controller_truth(w)
-    try:
-        build_integration_receipt(world=w,fit_view=f,controller_truth=c,repo_root=Path.cwd(),integration_manifest_path=bad)
-    except ValueError as exc:
-        assert "calibration" in str(exc)
-    else:
-        raise AssertionError("empirical relabeling of quarantined rarity calibration was accepted")
+    with tempfile.TemporaryDirectory(dir=Path.cwd()) as td:
+        bad=Path(td)/"manifest.json"
+        bad.write_text(json.dumps(manifest), encoding="utf-8")
+        w=build_unified_biology(UnifiedBiologyConfig(n_cells=120,n_genes=24,n_donors=8),seed=31)
+        f=observe_unified_world(w,UnifiedObservationConfig(),seed=32)
+        c=derive_controller_truth(w)
+        try:
+            build_integration_receipt(world=w,fit_view=f,controller_truth=c,repo_root=Path.cwd(),integration_manifest_path=bad)
+        except ValueError as exc:
+            assert "calibration" in str(exc)
+        else:
+            raise AssertionError("empirical relabeling of quarantined rarity calibration was accepted")
 
 
 def test_receipt_is_write_once():
