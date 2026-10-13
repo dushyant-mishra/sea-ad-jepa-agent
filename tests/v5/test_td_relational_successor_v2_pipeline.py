@@ -36,6 +36,7 @@ def _write_fit(path: Path, challenge_index: int, n: int = 3):
     x = np.zeros((n, 512), dtype=np.float32)
     y = np.zeros((n, 512), dtype=np.float32)
     measured = np.ones((n, 512), dtype=bool)
+    control_ids = np.asarray([f"c{challenge_index}-{j}" for j in range(A.OPAQUE_CONTROL_PROFILE_COUNT)], dtype="U16")
     np.savez(
         path,
         source=np.asarray("SYN", dtype="U8"), panel_id=np.asarray("P0", dtype="U8"),
@@ -51,10 +52,10 @@ def _write_fit(path: Path, challenge_index: int, n: int = 3):
         detected_genes=np.full(n, 512, dtype=np.int64),
         focal_mask=np.ones(n, dtype=bool), neighbor_pool_mask=np.ones(n, dtype=bool),
         min_focal_anchors_per_donor=np.asarray(1, dtype=np.int64),
-        control_ids=np.asarray([], dtype="U16"),
-        control_focal_masks=np.zeros((0, n), dtype=bool),
-        control_neighbor_pool_masks=np.zeros((0, n), dtype=bool),
-        control_min_focal_anchors_per_donor=np.asarray([], dtype=np.int64),
+        control_ids=control_ids,
+        control_focal_masks=np.ones((A.OPAQUE_CONTROL_PROFILE_COUNT, n), dtype=bool),
+        control_neighbor_pool_masks=np.ones((A.OPAQUE_CONTROL_PROFILE_COUNT, n), dtype=bool),
+        control_min_focal_anchors_per_donor=np.ones(A.OPAQUE_CONTROL_PROFILE_COUNT, dtype=np.int64),
     )
 
 
@@ -89,6 +90,7 @@ def test_v2_disk_preflight_authenticates_nine_opaque_npz_without_semantics(tmp_p
     assert not hasattr(package, "capabilities")
     assert adapter.status == "READY"
     assert set(adapter.fit_inputs) == {f"opaque-{i:02d}" for i in range(9)}
+    assert all(len(fit["control_profiles"]) == A.OPAQUE_CONTROL_PROFILE_COUNT for fit in adapter.fit_inputs.values())
     assert receipt["status"] == "READY_TO_EXECUTE_BLIND_FIT"
     assert receipt["authority"]["biological_qualification_executed"] is False
 
@@ -147,10 +149,10 @@ def test_v2_controller_semantics_remain_postfit_and_qualify_expected_behavior():
         profiles[cid] = _profile(cid, kind)
         controls[cid] = {}
         role_map = {}
-        if cap in Q.RARE_CONTROL_CAPABILITIES:
-            for j, role in enumerate(roles):
-                control_id = f"c{i}-{j}"
-                controls[cid][control_id] = _control(control_id, high=(cap == "REL_TECHNICAL_TWIN_NEGATIVE"))
+        for j, role in enumerate(roles):
+            control_id = f"c{i}-{j}"
+            controls[cid][control_id] = _control(control_id, high=(cap == "REL_TECHNICAL_TWIN_NEGATIVE"))
+            if cap in Q.RARE_CONTROL_CAPABILITIES:
                 role_map[role] = [control_id]
         claims[cap] = {
             "challenge_id": cid,
