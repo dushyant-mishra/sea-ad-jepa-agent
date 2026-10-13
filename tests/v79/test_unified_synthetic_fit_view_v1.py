@@ -1,5 +1,6 @@
 from __future__ import annotations
 import numpy as np
+import scripts.v79.unified_synthetic_fit_view_v1 as F
 from scripts.v79.unified_synthetic_integration_v1 import UnifiedBiologyConfig, build_unified_biology
 from scripts.v79.unified_synthetic_fit_view_v1 import UnifiedObservationConfig, observe_unified_world, serialize_fit_view
 
@@ -51,6 +52,12 @@ def test_same_nucleus_realizes_coupled_rna_atac_values():
     separate_atac=separate.atac_values.mean(axis=1)
     assert np.corrcoef(rna,same_atac)[0,1] > np.corrcoef(rna,separate_atac)[0,1]
     assert np.corrcoef(rna,same_atac)[0,1] > 0.10
+
+def test_pseudo_rarity_rate_is_synthetic_not_quarantined_stat1_authority():
+    assert not hasattr(F, "REGIMES")
+    cfg=UnifiedObservationConfig()
+    assert cfg.technical_pseudo_rarity_rate == 0.05
+    assert 0 < cfg.technical_pseudo_rarity_rate < 1
 
 def test_technical_pseudo_rarity_changes_observation_only_on_biologically_nonrare_cells():
     w=build_unified_biology(UnifiedBiologyConfig(n_cells=1200,n_genes=48,n_donors=30),seed=81)
