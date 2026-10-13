@@ -9,6 +9,7 @@ from typing import Mapping
 import numpy as np
 
 from .v79_hierarchical_biology import LatentBiology, generate_latent_biology
+from .v79_rare_biology_generator_v1 import REGIMES, RareWorldConfig, SIGNS, _donor_latent
 
 
 _SCHEMA = "UNIFIED_SYNTHETIC_INTEGRATION_MANIFEST_V1"
@@ -70,19 +71,22 @@ class UnifiedBiologyConfig:
     n_cells: int = 480
     n_genes: int = 48
     n_donors: int = 16
-    rare_fraction: float = 0.08
-    rare_effect_scale: float = 1.25
-    context_effect_scale: float = 0.25
-    perturbation_fraction: float = 0.05
+    rare_regime_ids: tuple[str, ...] = ("weak", "central", "strong", "extreme")
+    rare_effect_scale: float = 0.55
+    context_niche_fraction: float = 0.35
+    context_niche_multiplier: float = 8.0
+    perturb_response_delta: float = 0.35
     extra_metadata: Mapping[str, object] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if self.n_cells < 1 or self.n_genes < 8 or self.n_donors < 2:
             raise ValueError("invalid unified biology dimensions")
-        if not (0 < self.rare_fraction < 0.5):
-            raise ValueError("rare_fraction must be between 0 and 0.5")
-        if not (0 <= self.perturbation_fraction < 0.5):
-            raise ValueError("perturbation_fraction must be between 0 and 0.5")
+        if not self.rare_regime_ids or any(r not in REGIMES for r in self.rare_regime_ids):
+            raise ValueError("rare_regime_ids must use frozen PR311 regimes")
+        if not (0 < self.context_niche_fraction < 1):
+            raise ValueError("context_niche_fraction must lie in (0,1)")
+        if self.context_niche_multiplier <= 0 or self.perturb_response_delta < 0:
+            raise ValueError("context/perturbation parameters are invalid")
         if _contains_candidate(self.extra_metadata):
             raise ValueError("candidate identifiers are forbidden from generator configuration")
 
@@ -94,9 +98,14 @@ class UnifiedBiologyWorld:
     donor_id: np.ndarray
     continuous_factors: np.ndarray
     expected_molecular_state: np.ndarray
+    rare_regime_ids: tuple[str, ...]
     rare_eligible: np.ndarray
     rare_activity: np.ndarray
-    context_state: np.ndarray
+    rare_program_activity: np.ndarray
+    rare_donor_active: np.ndarray
+    rare_donor_prevalence: np.ndarray
+    context_niche: np.ndarray
+    perturbation_arm: np.ndarray
     perturbation_state: np.ndarray
     world_hash: str
 
@@ -117,8 +126,10 @@ def _biology_authority() -> dict[str, object]:
     }
 
 
-def _hash_arrays(arrays: Mapping[str, np.ndarray]) -> str:
+def _hash_arrays(arrays: Mapping[str, np.ndarray], *, labels: tuple[str, ...] = ()) -> str:
     h = sha256()
+    for label in labels:
+        h.update(label.encode("utf-8"))
     for name in sorted(arrays):
         a = np.ascontiguousarray(arrays[name])
         h.update(name.encode("utf-8"))
@@ -144,6 +155,39 @@ def _latent_with_expected(latent: LatentBiology, expected: np.ndarray) -> Latent
     )
 
 
+def _program_eligibility(latent: LatentBiology, n_programs: int) -> np.ndarray:
+    patterns = ((0, 1), (1, 0), (2, 0), (0, 0))
+    out = np.zeros((len(latent.donor), n_programs), dtype=bool)
+    for p in range(n_programs):
+        cls, state = patterns[p % len(patterns)]
+        out[:, p] = (latent.broad_class == cls) & (latent.substate == state)
+    return out
+
+
+def _context_niches(donor_id: np.ndarray, rng: np.random.Generator, fraction: float) -> np.ndarray:
+    niche = np.zeros(len(donor_id), dtype=bool)
+    for donor in np.unique(donor_id):
+        ix = np.flatnonzero(donor_id == donor)
+        n = len(ix)
+        if n < 2:
+            continue
+        count = max(2, min(n, int(round(n * fraction))))
+        start = int(rng.integers(0, n))
+        local = (start + np.arange(count)) % n
+        niche[ix[local]] = True
+    return niche
+
+
+def _balanced_perturbation_arms(donor_id: np.ndarray, rng: np.random.Generator) -> np.ndarray:
+    arms = np.zeros(len(donor_id), dtype=np.int8)
+    for donor in np.unique(donor_id):
+        ix = np.flatnonzero(donor_id == donor)
+        local = np.tile(np.array([0, 1, 2], dtype=np.int8), int(np.ceil(len(ix) / 3)))[:len(ix)]
+        rng.shuffle(local)
+        arms[ix] = local
+    return arms
+
+
 def build_unified_biology(config: UnifiedBiologyConfig, *, seed: int) -> UnifiedBiologyWorld:
     if _contains_candidate(config.extra_metadata):
         raise ValueError("candidate identifiers are forbidden from generator configuration")
@@ -151,30 +195,68 @@ def build_unified_biology(config: UnifiedBiologyConfig, *, seed: int) -> Unified
         _biology_authority(), config.n_cells, config.n_genes, config.n_donors, int(seed)
     )
     rng = np.random.default_rng(int(seed) + 100_003)
+    regimes = tuple(config.rare_regime_ids)
+    n_programs = len(regimes)
+    eligibility = _program_eligibility(latent, n_programs)
+    context_niche = _context_niches(latent.donor, rng, config.context_niche_fraction)
 
-    # Rare biology is an activity regime inside the same population. Eligibility is
-    # biological (lineage/state) and donor recurrence is explicit; source is absent.
-    rare_eligible = (latent.broad_class == 0) & (latent.substate == 1)
-    donor_active = rng.binomial(1, 0.40, config.n_donors).astype(bool)
-    donor_prevalence = np.where(donor_active, config.rare_fraction, 0.0)
-    rare_activity = rare_eligible & (rng.random(config.n_cells) < donor_prevalence[latent.donor])
-    if rare_eligible.any() and not rare_activity.any():
-        ix = int(np.flatnonzero(rare_eligible)[0])
-        rare_activity[ix] = True
+    donor_active = np.zeros((config.n_donors, n_programs), dtype=bool)
+    donor_prevalence = np.zeros((config.n_donors, n_programs), dtype=np.float32)
+    activity = np.zeros((config.n_cells, n_programs), dtype=bool)
+    for p, regime in enumerate(regimes):
+        prng = np.random.default_rng(int(seed) + 701 + 104729 * p)
+        rare_cfg = RareWorldConfig(seed=int(seed), n_donors=config.n_donors, cells_per_donor=1, regime=regime, world="rna_only")
+        active_p, prevalence_p = _donor_latent(prng, rare_cfg)
+        donor_active[:, p] = active_p.astype(bool)
+        donor_prevalence[:, p] = prevalence_p.astype(np.float32)
+        for donor in range(config.n_donors):
+            ix = np.flatnonzero((latent.donor == donor) & eligibility[:, p])
+            if not len(ix) or prevalence_p[donor] <= 0:
+                continue
+            base_p = float(prevalence_p[donor])
+            if p == 1:  # PR311 conditioned-context semantics embedded in this population.
+                inside = context_niche[ix]
+                n_in = int(inside.sum())
+                p_in = min(0.5, base_p * config.context_niche_multiplier)
+                expected = base_p * len(ix)
+                remaining = max(0.0, expected - p_in * n_in)
+                p_out = min(0.5, remaining / max(1, len(ix) - n_in))
+                probs = np.where(inside, p_in, p_out)
+            else:
+                probs = np.full(len(ix), base_p, dtype=float)
+            activity[ix, p] = prng.binomial(1, probs).astype(bool)
 
-    context_state = ((latent.broad_class == 1) & (latent.substate == 0)).astype(bool)
-    perturbation_state = rng.random(config.n_cells) < config.perturbation_fraction
+    rare_activity = activity.any(axis=1)
+    rare_eligible = eligibility.any(axis=1)
+    # At deterministic fixture scale, ensure every configured regime is represented
+    # whenever it has eligible, active donors. This is not a prevalence calibration.
+    for p in range(n_programs):
+        if activity[:, p].any():
+            continue
+        candidates = np.flatnonzero(eligibility[:, p] & donor_active[latent.donor, p])
+        if len(candidates):
+            activity[int(candidates[0]), p] = True
+    rare_activity = activity.any(axis=1)
+
+    perturbation_arm = _balanced_perturbation_arms(latent.donor, rng)
+    perturbation_state = (perturbation_arm == 1) & rare_activity
 
     expected = np.asarray(latent.latent_abundance, dtype=np.float64).copy()
-    rare_genes = np.arange(min(6, config.n_genes))
-    context_genes = np.arange(min(6, config.n_genes), min(12, config.n_genes))
-    perturb_genes = np.arange(min(12, config.n_genes), min(18, config.n_genes))
-    if len(rare_genes):
-        expected[np.ix_(rare_activity, rare_genes)] *= np.exp(config.rare_effect_scale)
-    if len(context_genes):
-        expected[np.ix_(context_state, context_genes)] *= np.exp(config.context_effect_scale)
-    if len(perturb_genes):
-        expected[np.ix_(perturbation_state, perturb_genes)] *= np.exp(-0.35)
+    sign_template = np.asarray(SIGNS, dtype=float)
+    block_width = min(len(sign_template), config.n_genes)
+    for p in range(n_programs):
+        genes = (np.arange(block_width) + p * block_width) % config.n_genes
+        signs = sign_template[:block_width]
+        cells = activity[:, p]
+        if cells.any():
+            multiplier = np.exp(config.rare_effect_scale * signs)
+            expected[np.ix_(cells, genes)] *= multiplier[None, :]
+    # PR311 perturbation actual/control/null semantics: only actual-arm rare cells
+    # receive the additional response; null arm has no biological response.
+    if perturbation_state.any():
+        genes = np.arange(block_width) % config.n_genes
+        response = np.exp(config.perturb_response_delta * sign_template[:block_width])
+        expected[np.ix_(perturbation_state, genes)] *= response[None, :]
     expected = expected.astype(np.float32)
 
     arrays = {
@@ -185,13 +267,17 @@ def build_unified_biology(config: UnifiedBiologyConfig, *, seed: int) -> Unified
         "expected_molecular_state": expected,
         "rare_eligible": rare_eligible.astype(bool),
         "rare_activity": rare_activity.astype(bool),
-        "context_state": context_state.astype(bool),
+        "rare_program_activity": activity.astype(bool),
+        "rare_donor_active": donor_active.astype(bool),
+        "rare_donor_prevalence": donor_prevalence.astype(np.float32),
+        "context_niche": context_niche.astype(bool),
+        "perturbation_arm": perturbation_arm.astype(np.int8),
         "perturbation_state": perturbation_state.astype(bool),
     }
     for arr in arrays.values():
         arr.setflags(write=False)
-    world_hash = _hash_arrays(arrays)
-    return UnifiedBiologyWorld(**arrays, world_hash=world_hash)
+    world_hash = _hash_arrays(arrays, labels=regimes)
+    return UnifiedBiologyWorld(**arrays, rare_regime_ids=regimes, world_hash=world_hash)
 
 
 def world_as_latent_biology(world: UnifiedBiologyWorld) -> LatentBiology:
