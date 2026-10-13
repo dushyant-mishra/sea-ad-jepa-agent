@@ -10,6 +10,12 @@ def test_controller_truth_is_deterministic_and_posthoc():
     assert controller_truth_sha256(a)==controller_truth_sha256(b)
     assert {"C1","C2","C3","C4","C5","C6"} <= set(a.candidate_mapping)
 
+def test_controller_truth_does_not_preassign_recoverability_outcomes():
+    w=build_unified_biology(UnifiedBiologyConfig(n_cells=360,n_genes=40,n_donors=12),seed=5)
+    truth=derive_controller_truth(w)
+    assert set(truth.recoverability) == {"C1","C2","C3","C4","C5","C6"}
+    assert set(truth.recoverability.values()) == {"UNASSESSED_PENDING_RECOVERABILITY_QUALIFICATION"}
+
 def test_fit_view_firewall_rejects_injected_controller_fields():
     w=build_unified_biology(UnifiedBiologyConfig(n_cells=240,n_genes=32,n_donors=12),seed=8)
     payload=serialize_fit_view(observe_unified_world(w,UnifiedObservationConfig(),seed=3))
