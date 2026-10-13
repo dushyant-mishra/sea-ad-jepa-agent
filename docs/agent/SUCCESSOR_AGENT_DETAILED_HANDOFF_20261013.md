@@ -232,6 +232,139 @@ The GitHub handoff/audit branches are the durable record. Chat history may help 
 
 If Macha later returns a completed 1,056-fit Q00-Q11 campaign, audit that evidence independently. Do not let a V79 Layer-A completion silently alter the already-frozen synthetic TD package or controller truth; any integration belongs in a separately governed successor step.
 
-## 17. Terminal
+## 17. Prioritized next action queue for the successor
 
-`SUCCESSOR_CAN_TAKE_OVER_WITHOUT_REDOING_HISTORY__CURRENT_PREFLIGHT_FROZEN__NEXT_ACTION_PHASE1_BLINDED_FIT_ONLY__CONTROLLER_TRUTH_SEALED__REAL_TD_AND_TRAINING_OFF`
+### Priority 0 — takeover integrity check before doing science
+
+Confirm that no newer controller ruling or authority branch supersedes this handoff. Then verify the exact frozen heads, package/receipt identities, and that the controller transport is absent from the phase-1 workspace. This is a short integrity check, not a historical re-audit.
+
+If any identity differs, stop and open a repair/audit issue. Do not execute with a “close enough” package or later branch head.
+
+### Priority 1 — execute the blinded synthetic TD phase 1 only
+
+Run the exact V4 blinded-fit phase at TD commit `1f474a44a6baabc667dbfda726e0755426c732e7` against the exact cross-certified V2.1 pre-fit transport.
+
+Requirements:
+
+- no controller archive, controller manifest, semantic mapping, capability labels, or expected statuses in phase-1 custody;
+- no code substitution relative to the frozen fit-engine identity;
+- write results outside authenticated input custody;
+- freeze the complete V4 blinded receipt and all output hashes;
+- record the exact TD commit, engine hashes, package hash, binding hash, fit-view hashes and command/runtime provenance;
+- stop when phase 1 completes.
+
+Do not run controller adjudication yet.
+
+### Priority 2 — independently audit the frozen phase-1 receipt
+
+Before any controller truth is introduced, verify:
+
+- all nine opaque challenges executed exactly once;
+- all expected fit outputs are present and authenticated;
+- no controller bytes were available during phase 1;
+- the blinded receipt binds the exact science-code/engine identity;
+- no input/output path collision occurred;
+- no challenge was selectively rerun, dropped, reordered for semantic reasons, or repaired after seeing a biological result;
+- no authority field silently enabled real TD or training.
+
+If this receipt audit fails, preserve the failed run and repair prospectively. Do not open truth to diagnose a fit-side custody failure.
+
+### Priority 3 — request/issue separate phase-2 controller authority
+
+Only after Priority 2 passes should the controller decide whether phase-2 adjudication may run.
+
+Phase 2 must authenticate the exact frozen blinded receipt **before** the controller transport is read. Then, and only then, map opaque challenge/control IDs to the nine prospective capability claims and adjudicate the test-of-test.
+
+Freeze a controller adjudication receipt that clearly distinguishes:
+
+- expected positive/negative/underidentified/stress truth;
+- TD PASS/FAIL/`NOT_ESTIMABLE` result;
+- control-role behavior;
+- any mismatch between designed truth and gate output;
+- whether failure is synthetic-world design, gate implementation, estimability/support logic, or custody/process failure.
+
+Stop after adjudication. A PASS does not authorize real TD automatically.
+
+### Priority 4 — controller decision on what the synthetic test-of-test actually qualifies
+
+If the test-of-test passes, write an explicit qualification decision stating exactly which TD relational executor/gate behaviors are now qualified and what remains outside scope.
+
+If any capability fails, do not average it away. Preserve capability-level failures and decide whether to:
+
+- reject/repair a synthetic challenge;
+- repair the TD gate/executor;
+- narrow the qualified claim;
+- retain a legitimate `NOT_ESTIMABLE` terminal.
+
+No aggregate “mostly passed” terminal should rescue a required failed capability.
+
+### Priority 5 — independently close Macha's Q00-Q11 Layer-A campaign when its final evidence arrives
+
+This can proceed in parallel with Priorities 1–4, but it is a separate authority chain.
+
+When Macha returns, audit the final 1,056-fit campaign receipt against the frozen authorization:
+
+- all 1,056 fit IDs and seeds represented exactly once;
+- contiguous completion, no selective reruns;
+- frozen Q00-Q11 bytes unchanged;
+- custody unchanged except lawful results;
+- COMPLETE / NOT_DIAGNOSED / recovery-stage counts;
+- divergences, worst R-hat, bulk ESS and tail ESS;
+- result hash ledger;
+- explicit confirmation that scoring/truth stayed closed.
+
+Only then can a separate controller ruling decide whether Q00-Q11 scoring is authorized.
+
+Do not make the TD synthetic phase-1 test wait on Macha unless a new defect shows the observation-layer result is a direct prerequisite.
+
+### Priority 6 — resolve the 50K physical-row / STAT1 caveat before hard calibration use
+
+Before using older STAT1 rare-program numbers as hard empirical calibration, reconstruct true physical row identity for the 50K sample and repeat only the affected residualization/tail calculations.
+
+Do not redo unrelated historical rare-biology audits. The purpose is narrowly to determine whether the duplicated `sample_row` field changed the prior STAT1 calibration conclusions.
+
+If results change, amend the relevant custody/handoff documents and any downstream design assumptions that used those numeric values.
+
+### Priority 7 — after synthetic TD qualification, return to the broader unified biological/model qualification program
+
+Once the relational TD machinery is known to behave correctly under blinded synthetic known truth, continue the larger program already designed in PR #315 rather than inventing a new architecture:
+
+1. integrate/reconcile Stage81A3 biological mechanics, V79 observation qualification and PR #311 rare/multimodal/context/perturbation components;
+2. preserve one unified biological population with common-to-rare program activity;
+3. materialize production-scale modern-reader/address/support semantics;
+4. keep controller truth separate from teacher/student lawful evidence;
+5. rehearse target portfolio convergence and block interference;
+6. qualify rich-teacher → partial-RNA student recoverability, stochasticity, teacher-private information and abstention;
+7. qualify shared-backbone versus specialist-head interference;
+8. qualify bounded learned-teacher/EMA continuity and transport.
+
+Training remains separately governed throughout.
+
+### Priority 8 — only after the synthetic/model qualification stack is clean, reopen real TD execution
+
+Real TD should only be considered after:
+
+- synthetic TD test-of-test qualification is explicit;
+- any required Layer-A observation/statistical qualification is closed;
+- real gate-specific estimands and decision rules are prospectively frozen without using historical outcomes to tune thresholds;
+- current data/split/support/custody contracts are authenticated.
+
+Then execute the real proposed sequence already frozen in the TD lane: qualify complementary blocks → test redundancy/interference → freeze portfolio → reconcile with same-nucleus multiome → donor-level replication/corroboration → regulatory/spatial/perturbation interpretation with claim boundaries → recoverability classification → shared-backbone/specialist qualification → support-aware transport → only then consider protected/pathology associations.
+
+### Priority 9 — actions that remain explicitly forbidden until later authority
+
+Do not:
+
+- promote/select a real biological target from the synthetic test alone;
+- infer real-human numerical cutoffs from planted synthetic effects;
+- open pathology/protected outcomes early;
+- run TD60, Stage4, or JEPA/foundation training without explicit authority;
+- use specialist multimodal evidence to rescue a failed RNA foundation block;
+- collapse same-nucleus and separate-nucleus evidence semantics;
+- regenerate Q00-Q11;
+- silently replace the frozen TD or synthetic execution heads with newer commits;
+- discard failed/superseded evidence that explains why the current design exists.
+
+## 18. Terminal
+
+`SUCCESSOR_CAN_TAKE_OVER_WITHOUT_REDOING_HISTORY__PRIORITIZED_NEXT_ACTIONS_FROZEN__CURRENT_PREFLIGHT_FROZEN__NEXT_ACTION_PHASE1_BLINDED_FIT_ONLY__CONTROLLER_TRUTH_SEALED__REAL_TD_AND_TRAINING_OFF`
