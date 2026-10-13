@@ -1,0 +1,1 @@
+Fresh successor handoff should branch directly from audited PR #322 head `8268a8a8fb33eccfd81fdf00ec0acdfdf6d0685a`, then add custody/read-first material only. This avoids the one-commit divergence on legacy PR #323.
