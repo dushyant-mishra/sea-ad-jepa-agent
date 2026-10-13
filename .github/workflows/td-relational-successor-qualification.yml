@@ -59,13 +59,13 @@ jobs:
             tests/v5/test_td_relational_successor_synthetic_adapter_v1.py \
             tests/v5/test_td_relational_successor_observed_executor_v1.py \
             | tee qualification/pytest-focused.txt
-      - name: Run relevant tournament spillover tests
+      - name: Run branch-local relational replay spillover tests
         run: |
           set -o pipefail
           python -m pytest -q \
-            tests/v5/test_td_v79_synthetic_crosswalk_v1.py \
-            tests/v5/test_td_real_tournament_gates_v1.py \
-            tests/v5/test_td_real_tournament_contract_v1.py \
+            tests/v5/test_build_td_relational_replay_manifest.py \
+            tests/v5/test_run_td_relational_replay_preflight.py \
+            tests/v5/test_audit_td_relational_replay_mapping_preflight.py \
             | tee qualification/pytest-spillover.txt
       - name: Confirm tracked worktree unchanged
         run: |
