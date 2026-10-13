@@ -22,8 +22,10 @@ def derive_controller_truth(world: UnifiedBiologyWorld) -> UnifiedControllerTrut
     expected = np.asarray(world.expected_molecular_state, dtype=np.float64)
     shared = expected.mean(axis=1)
     rare = np.asarray(world.rare_activity, dtype=bool)
-    context = np.asarray(world.context_state, dtype=bool)
+    programs = np.asarray(world.rare_program_activity, dtype=bool)
+    context = np.asarray(world.context_niche, dtype=bool)
     perturb = np.asarray(world.perturbation_state, dtype=bool)
+    arms = np.asarray(world.perturbation_arm, dtype=np.int8)
 
     # Candidate-specific semantics are derived only here, after the neutral world exists.
     mapping = {
@@ -48,6 +50,8 @@ def derive_controller_truth(world: UnifiedBiologyWorld) -> UnifiedControllerTrut
         "C5": {
             "kind": "regulatory_specialist",
             "rare_cell_count": int(rare.sum()),
+            "program_regimes": list(world.rare_regime_ids),
+            "program_positive_counts": programs.sum(axis=0).astype(int).tolist(),
         },
         "C6": {
             "kind": "shared_query_composite",
@@ -62,10 +66,22 @@ def derive_controller_truth(world: UnifiedBiologyWorld) -> UnifiedControllerTrut
         "C5": "TEACHER_PRIVATE" if int(rare.sum()) < max(2, len(rare) // 100) else "POINT_IDENTIFIABLE",
         "C6": "STOCHASTIC_IDENTIFIABLE",
     }
+    rare_by_regime = {
+        regime: {
+            "cell_positive_count": int(programs[:, p].sum()),
+            "donor_active_count": int(world.rare_donor_active[:, p].sum()),
+            "donor_prevalence_mean": float(world.rare_donor_prevalence[:, p].mean()),
+        }
+        for p, regime in enumerate(world.rare_regime_ids)
+    }
     counterfactual = {
         "rare_activity_count": int(rare.sum()),
-        "context_responsive_count": int(context.sum()),
+        "rare_by_regime": rare_by_regime,
+        "context_niche_count": int(context.sum()),
+        "context_rare_prevalence": float(rare[context].mean()) if context.any() else 0.0,
+        "noncontext_rare_prevalence": float(rare[~context].mean()) if (~context).any() else 0.0,
         "perturbed_count": int(perturb.sum()),
+        "perturbation_arm_counts": {str(a): int((arms == a).sum()) for a in (0, 1, 2)},
         "rare_expected_shift": float(expected[rare].mean() - expected[~rare].mean()) if rare.any() and (~rare).any() else 0.0,
     }
     return UnifiedControllerTruth(
@@ -84,6 +100,11 @@ def controller_truth_sha256(truth: UnifiedControllerTruth) -> str:
 _FORBIDDEN = {
     "rare_activity",
     "rare_eligible",
+    "rare_program_activity",
+    "rare_donor_active",
+    "rare_donor_prevalence",
+    "context_niche",
+    "perturbation_state",
     "expected_molecular_state",
     "candidate_mapping",
     "recoverability",
@@ -91,6 +112,7 @@ _FORBIDDEN = {
     "controller_truth_sha256",
     "counterfactual_truth",
     "latent_abundance",
+    "pseudo_rare",
 }
 
 
