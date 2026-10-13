@@ -1,3 +1,10 @@
+# NON-AUTHORITATIVE PARTIAL TRANSPORT SCRATCH — DO NOT RECONSTRUCT OR USE
+# The attempted base64 convenience copy was interrupted/blocked before completion.
+# Authoritative project-only custody is docs/agent/PROJECT_CUSTODY_ASSET_MANIFEST_20261013.csv.
+# Original local bundle: PROJECT_CUSTODY_SMALL_TEXT_EVIDENCE_20261013.tar.gz
+# Original local bundle SHA-256: 796b7c246b01ddc78c4768f656a63c22b9dc6610c899e7f6992ef924282de6cb
+# Original local bundle size: 148362 bytes
+# Historical expected fragment hashes below are retained only as debugging provenance; their presence does not assert that every fragment is committed.
 e86cee249a023b538db73b3912d5808f2212d117eab7f3e566df43565e3a3a2b  PROJECT_CUSTODY_SMALL_TEXT_EVIDENCE_20261013.tar.gz.b64.part00
 c436e43aac328f38f970a9044b0bfda0d6f51c5ff22d1bed451de2c728217bdf  PROJECT_CUSTODY_SMALL_TEXT_EVIDENCE_20261013.tar.gz.b64.part01
 bd7fcff190c7141c9a177164f620fc267556d8248907c498930cb9947786eea9  PROJECT_CUSTODY_SMALL_TEXT_EVIDENCE_20261013.tar.gz.b64.part02
