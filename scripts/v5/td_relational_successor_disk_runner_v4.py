@@ -60,7 +60,7 @@ def _validate_identity(value: object, expected: Mapping[str, str]) -> None:
 def run_blinded_fit_phase(
     *, repo_root: Path | str, binding_path: Path | str, fit_dir: Path | str,
     authenticated_package_sha256: str, blinded_output_path: Path | str,
-+) -> tuple[dict, str]:
+) -> tuple[dict, str]:
     """Phase 1 with no controller input and an explicit science-code identity binding."""
     output = V3._guard_new_output(
         blinded_output_path,
@@ -164,7 +164,6 @@ def adjudicate_frozen_blinded_phase(
         expected_blinded_receipt_sha256=expected_blinded_receipt_sha256,
     )
 
-    # First controller-truth access occurs only after both receipt bytes and fit-engine identity authenticate.
     controller_manifest = V3._read_controller_json(controller_manifest_path)
     gate_binding = R.build_relational_gate_binding(repo_root)
     try:
