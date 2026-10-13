@@ -1,0 +1,116 @@
+{
+  "schema": "JEPA_ROBUST_PIPELINE_SMOKE_AUDIT_V1",
+  "date": "2026-10-13",
+  "status": "NON_AUTHORIZING_ARCHITECTURE_SMOKE__NO_TARGET_SELECTION__NO_TRAINING_AUTHORITY",
+  "purpose": "Use already-frozen, gene-order-safe historical real-RNA pilot artifacts to stress assumptions behind the current C1/C2/C3/C6/C4/C5 target portfolio while the blinded synthetic test-of-test package is being repaired. These smoke tests cannot qualify or eliminate any candidate.",
+  "authority": {
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "real_tournament_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false
+  },
+  "input_safety": {
+    "discovery_expression_archive_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "program_weight_npz_sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+    "molecular_address_registry_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+    "expression_shape": [50000, 41238],
+    "gene_identity_rule": "Only the repaired 41,238-address molecular_address_index space was used. Pre-recovery gene-semantic artifacts with unbound feature order were excluded.",
+    "production_authority_boundary": "The 50k discovery archive is historical pilot/discovery material and not the complete 4.553M-cell production target authority."
+  },
+  "smokes": {
+    "C1_shared_state_warning": {
+      "historical_partial_evidence_ceiling": {
+        "heldout_combined_R2": {
+          "broad_common": 0.979218,
+          "weak_distributed": 0.952972,
+          "local": 0.994047,
+          "local_core": 0.975574,
+          "local_halo": 0.998738,
+          "core_halo": 0.999629,
+          "sparse_marker_like": 0.934011,
+          "innovation_tail": 0.575256
+        },
+        "heldout_combined_rare": {
+          "recurrent_5pct_AP": 0.340912,
+          "recurrent_5pct_AUROC": 0.936833,
+          "recurrent_1pct_AP": 0.031173,
+          "recurrent_1pct_AUROC": 0.866618
+        }
+      },
+      "historical_shortcut_warning": "The historical u205 representations retained very strong source/support predictability; for rich_H and partial_H source balanced accuracy was 1.0 and support_measured_count R2 remained approximately 0.9998/0.9909. This is a shortcut warning, not a C1 result.",
+      "interpretation": "Shared/common molecular structure is highly recoverable from complementary RNA in this pilot, but rare and innovation-tail recoverability is materially weaker and source/support imprint is strong. C1 must therefore retain source/operator/depth/support falsifiers and rare-preservation gates."
+    },
+    "C2_disjoint_view_relational_smoke": {
+      "method": "The seven independent historical program directions were reconstructed twice from deterministic disjoint halves of the 41,238 gene-address space. Within each donor, pairwise geometry and kNN neighborhoods from the two disjoint views were compared; a within-donor wrong-cell permutation was the null. Donors were capped deterministically at 80 cells for this smoke.",
+      "eligible_donors": 104,
+      "median_pairwise_distance_spearman": 0.8273653674,
+      "q25_pairwise_distance_spearman": 0.7928338613,
+      "median_wrong_cell_spearman": 0.0024305707,
+      "median_knn10_overlap": 0.39625,
+      "median_wrong_cell_knn10_overlap": 0.125,
+      "fraction_donors_observed_spearman_gt_wrong": 1.0,
+      "fraction_donors_observed_knn_overlap_gt_wrong": 1.0,
+      "source_median_spearman": {
+        "HVS": 0.8323731764,
+        "NPH52": 0.8096784512,
+        "SEA_AD": 0.8340635492
+      },
+      "interpretation": "This is supportive smoke evidence that distributed cross-view relational structure exists in the repaired pilot corpus. It does not qualify C2, locality, scale, or the current PR316 gate."
+    },
+    "C3_query_context_shortcut_smoke": {
+      "method": "Eight query genes were selected from a 200-gene program-weight-enriched pool on a deterministic donor split. For each query, an 8-gene same-cell associated target panel was learned on training donors. Query and target-panel direct contributions were removed from seven program-context scores. Ridge models were evaluated on held-out donors. This is an intentionally crude proxy, not the frozen C3 target/gate.",
+      "sample_cells": 8319,
+      "train_donors": 68,
+      "test_donors": 36,
+      "median_R2": {
+        "query_conditioned_context_proxy": 0.8525,
+        "q_count_only": 0.7121,
+        "technical_plus_q": 0.8732,
+        "context_plus_correct_q": 0.8538,
+        "context_plus_wrong_q": 0.8718
+      },
+      "median_increment_over_context": {
+        "correct_q_scalar": 0.0013,
+        "wrong_q_scalar": 0.0098
+      },
+      "interpretation": "The crude proxy does not establish query-specific increment and is readily matched or exceeded by technical/wrong-q controls. This is not evidence against C3; it is evidence that C3 must keep its exact Q1-Q8 anti-shortcut machinery and cannot be replaced by a generic local coexpression target."
+    },
+    "C5_regulatory_tail_source_stress": {
+      "method": "STAT1 and SPI1 expression were examined in 1,860 immune/microglia-like cells from the repaired 50k corpus. A simple global +2 SD tail was used only as a stress probe. Both addresses are structurally addressable across all 42 operators in the repaired support contract.",
+      "cells": 1860,
+      "donors": 85,
+      "STAT1": {
+        "tail_frequency": 0.0425,
+        "tail_donors": 15,
+        "source_tail_frequency": {"HVS": 0.0078, "NPH52": 0.2566, "SEA_AD": 0.0}
+      },
+      "SPI1": {
+        "tail_frequency": 0.0769,
+        "tail_donors": 42,
+        "source_tail_frequency": {"HVS": 0.1641, "NPH52": 0.3322, "SEA_AD": 0.0147}
+      },
+      "interpretation": "Large source shifts remain even when the gene is structurally addressable, so source differences cannot be treated as simple missing-gene effects. They may reflect biology, sensitivity/depth, or both. C5 requires matched source/operator/measurement-quality controls and cannot use a universal raw tail as regulatory truth."
+    },
+    "anonymous_orthogonal_factor_portability_smoke": {
+      "method": "On the frozen 84-cell cross-source truth table, a three-dimensional PCA/orthogonal basis was fit to seven independent historical program scores in pooled cells and separately by source. Principal angles compare source-specific to pooled top-3 subspaces.",
+      "principal_angles_degrees": {
+        "HVS": [88.25, 44.40, 2.37],
+        "NPH52": [62.03, 3.41, 0.06],
+        "SEA_AD": [82.86, 30.09, 3.33]
+      },
+      "interpretation": "The sample is too small for an inferential claim, but anonymous orthogonal axes/subspaces are not automatically portable biological objects. This reinforces the existing project rule that biological accountability belongs to qualified blocks/stable subspaces, not arbitrary factor coordinates."
+    }
+  },
+  "candidate_implications": {
+    "C1": "Remain active. Strong common-state recoverability is plausible, but old source/support imprint and weak rare-1% recoverability make shortcut and rare-preservation gates constitutive.",
+    "C2": "Remain active under existing replay/synthetic qualification rules. New smoke supports distributed relational structure but creates no locality or target authority.",
+    "C3": "Remain active. The proxy shortcut failure argues for preserving, not weakening, the exact query-specific target and Q1-Q8 falsifiers.",
+    "C6": "Do not smoke-promote from aggregate prediction. A fused model can improve a metric while the query increment is semantically invalid; constituent noncompensation and C6 increment remain required.",
+    "C4": "Same rule as C6 plus relational increment over C6. More components cannot substitute for constituent qualification.",
+    "C5": "Remain specialist-only. Source-shifted STAT1/SPI1 tails strengthen the need for source/operator/depth controls and same-nucleus recoverability classification; they do not create regulatory or causal authority."
+  },
+  "terminal": "SMOKE_COMPLETE__NO_CANDIDATE_PROMOTED_OR_ELIMINATED__KEEP_BLINDED_SYNTHETIC_AND_REAL_GATE_PIPELINES_UNCHANGED"
+}
