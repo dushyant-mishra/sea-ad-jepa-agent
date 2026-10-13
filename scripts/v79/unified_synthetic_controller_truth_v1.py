@@ -58,14 +58,17 @@ def derive_controller_truth(world: UnifiedBiologyWorld) -> UnifiedControllerTrut
             "components": ["C1", "C3"],
         },
     }
+
+    # Recoverability is deliberately not inferred from planted truth or prevalence.
+    # It is a downstream qualification result: teacher/student lawful evidence must
+    # establish point-identifiable, stochastic/distributional, teacher-private, or
+    # NOT_ESTIMABLE semantics. The synthetic core may expose truth for that test but
+    # must not pre-decide its outcome.
     recoverability = {
-        "C1": "POINT_IDENTIFIABLE",
-        "C2": "POINT_IDENTIFIABLE",
-        "C3": "STOCHASTIC_IDENTIFIABLE",
-        "C4": "STOCHASTIC_IDENTIFIABLE",
-        "C5": "TEACHER_PRIVATE" if int(rare.sum()) < max(2, len(rare) // 100) else "POINT_IDENTIFIABLE",
-        "C6": "STOCHASTIC_IDENTIFIABLE",
+        candidate: "UNASSESSED_PENDING_RECOVERABILITY_QUALIFICATION"
+        for candidate in mapping
     }
+
     rare_by_regime = {
         regime: {
             "cell_positive_count": int(programs[:, p].sum()),
