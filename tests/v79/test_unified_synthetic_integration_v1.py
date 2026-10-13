@@ -8,7 +8,6 @@ import scripts.v79.unified_synthetic_integration_v1 as U
 from scripts.v79.unified_synthetic_integration_v1 import (
     UnifiedBiologyConfig, build_unified_biology, validate_integration_manifest,
 )
-from scripts.v79.v79_rare_biology_generator_v1 import REGIMES
 
 MANIFEST = Path("results/v79/unified_synthetic/UNIFIED_SYNTHETIC_INTEGRATION_MANIFEST_V1.json")
 
@@ -30,6 +29,14 @@ def test_candidate_identifiers_are_rejected_from_config():
     with pytest.raises(ValueError, match="candidate"):
         UnifiedBiologyConfig(extra_metadata={"C2_relational": True})
 
+def test_quarantined_stat1_moments_are_not_executable_generator_authority():
+    m=json.loads(MANIFEST.read_text())
+    assert m["calibration"]["stat1_50k_physical_row_status"] == "QUARANTINED_NOT_HARD_AUTHORITY"
+    assert m["calibration"]["rare_frequency_source"] == "SYNTHETIC_STRESS_PRESETS_NOT_EMPIRICAL_CALIBRATION"
+    assert not hasattr(U, "_donor_latent")
+    assert not hasattr(U, "REGIMES")
+    assert tuple(U.SYNTHETIC_RARITY_PRESETS) == ("weak", "central", "strong", "extreme")
+
 def test_one_population_contains_common_and_rare_activity():
     w=build_unified_biology(UnifiedBiologyConfig(n_cells=720,n_genes=64,n_donors=24), seed=77)
     assert w.rare_activity.sum() > 0
@@ -39,27 +46,24 @@ def test_one_population_contains_common_and_rare_activity():
     assert w.expected_molecular_state.shape == (720,64)
     assert all("C1" not in name and "C2" not in name and "C3" not in name and "C4" not in name and "C5" not in name and "C6" not in name for name in w.__dataclass_fields__)
 
-def test_unified_population_reuses_all_pr311_rare_regimes_without_parallel_worlds():
+def test_unified_population_reuses_pr311_rare_challenge_classes_without_empirical_frequency_authority():
     cfg=UnifiedBiologyConfig(n_cells=2400,n_genes=64,n_donors=60)
     w=build_unified_biology(cfg, seed=107)
     assert tuple(w.rare_regime_ids) == ("weak","central","strong","extreme")
     assert w.rare_program_activity.shape == (2400,4)
     assert w.rare_donor_active.shape == (60,4)
     assert w.rare_donor_prevalence.shape == (60,4)
-    # Each column is a program-frequency regime inside the same cells/donors,
-    # not a separately generated world. Finite rare programs may lawfully realize
-    # zero cells; donor-active/prevalence truth remains the frozen PR311 authority.
     assert np.array_equal(w.rare_activity, w.rare_program_activity.any(axis=1))
     assert (w.rare_program_activity.sum(axis=0) > 0).sum() >= 3
     assert np.all(w.rare_donor_prevalence[~w.rare_donor_active] == 0)
     active_rates=w.rare_donor_active.mean(axis=0)
-    expected=np.array([REGIMES[r]["active_prob"] for r in w.rare_regime_ids])
+    expected=np.array([U.SYNTHETIC_RARITY_PRESETS[r]["active_prob"] for r in w.rare_regime_ids])
     assert np.max(np.abs(active_rates-expected)) < 0.20
 
 def test_no_posthoc_positive_is_injected_to_make_a_rare_regime_visible(monkeypatch):
-    def active_but_zero_prevalence(rng, cfg):
-        return np.ones(cfg.n_donors, dtype=bool), np.zeros(cfg.n_donors, dtype=np.float32)
-    monkeypatch.setattr(U, "_donor_latent", active_but_zero_prevalence)
+    def zero_prevalence(rng, n_donors, preset):
+        return np.ones(n_donors, dtype=bool), np.zeros(n_donors, dtype=np.float32)
+    monkeypatch.setattr(U, "_draw_synthetic_donor_latent", zero_prevalence)
     w=build_unified_biology(UnifiedBiologyConfig(n_cells=240,n_genes=32,n_donors=12), seed=91)
     assert w.rare_donor_active.all()
     assert not w.rare_program_activity.any()
@@ -70,6 +74,5 @@ def test_context_and_perturbation_design_are_embedded_in_same_population():
     assert w.context_niche.shape == (1200,)
     assert 0 < w.context_niche.mean() < 1
     assert set(np.unique(w.perturbation_arm)) == {0,1,2}
-    # Actual perturbation response is restricted to actual arm and biological rare activity.
     assert np.all(w.perturbation_state <= (w.perturbation_arm == 1))
     assert np.all(w.perturbation_state <= w.rare_activity)
