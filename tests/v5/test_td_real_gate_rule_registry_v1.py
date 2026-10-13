@@ -14,7 +14,6 @@ import td_real_tournament_contract_v1 as C  # noqa: E402
 
 CALLABLE_STRUCTURAL = {
     "G1_INTEGRITY_LINEAGE",
-    "G6_TEACHER_INFORMATION_ADVANTAGE",
     "R2_LOCALITY_RULE_FROZEN_NO_FINE_MINING",
     "Q1_Q_SCALAR_STUDENT_ABSENT",
     "Q2_Q_EXCLUDED_TEACHER_PRIMARY_ANCHOR",
@@ -32,8 +31,7 @@ def test_registry_covers_exact_frozen_gate_universe_once():
     universe = _gate_universe()
     assert len(universe) == 33
     assert set(R.RULES) == set(universe)
-    report = R.validate_rule_registry()
-    assert report == {
+    assert R.validate_rule_registry() == {
         "gate_count": 33,
         "callable_structural_count": len(CALLABLE_STRUCTURAL),
         "blocked_quantitative_count": 33 - len(CALLABLE_STRUCTURAL),
@@ -58,6 +56,14 @@ def test_only_explicitly_structural_rules_are_callable_before_quantitative_prefr
             assert rule["estimand_sha256"] == ""
             assert rule["decision_rule_sha256"] == ""
             assert rule["threshold_source"] == "BLOCKED_PROSPECTIVE_RULE_REQUIRED"
+
+
+def test_g6_remains_blocked_because_exact_contrast_and_threshold_are_not_frozen():
+    rule = R.RULES["G6_TEACHER_INFORMATION_ADVANTAGE"]
+    assert rule["readiness"] == "RULE_NOT_MATERIALIZED"
+    assert rule["threshold_source"] == "BLOCKED_PROSPECTIVE_RULE_REQUIRED"
+    with pytest.raises(R.GateRuleError):
+        R.evaluate_structural_gate("G6_TEACHER_INFORMATION_ADVANTAGE", {})
 
 
 def test_structural_rules_are_missing_evidence_not_estimable_and_contradictions_fail():
@@ -96,15 +102,6 @@ def test_structural_rules_pass_only_when_frozen_predicates_are_satisfied():
             "bound_identity_sha256": identities,
             "post_outcome_redesign": False,
             "post_outcome_relabeling": False,
-        },
-    ) == "PASS"
-    assert R.evaluate_structural_gate(
-        "G6_TEACHER_INFORMATION_ADVANTAGE",
-        {
-            "teacher_evidence_rights": ["same_cell_rna", "teacher_private_context"],
-            "student_evidence_rights": ["same_cell_rna"],
-            "withheld_target_fields": ["teacher_private_context"],
-            "transitive_target_leakage_detected": False,
         },
     ) == "PASS"
     assert R.evaluate_structural_gate(
