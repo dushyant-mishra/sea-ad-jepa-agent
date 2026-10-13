@@ -1,0 +1,20 @@
+{
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V1",
+  "date": "2026-10-13",
+  "branch": "handoff/jepa-lane-takeover-20261013",
+  "read_first": "docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261013.md",
+  "state": "docs/agent/JEPA_LANE_TAKEOVER_STATE_20261013.json",
+  "historical_ledger": "docs/agent/JEPA_HISTORICAL_ARCHITECTURE_DECISION_LEDGER_20261013.md",
+  "gene_identity_audit": "docs/agent/JEPA_GENE_IDENTITY_RECLASSIFICATION_AUDIT_20261013.md",
+  "downstream_readiness": "docs/agent/JEPA_DOWNSTREAM_IMPLEMENTATION_READINESS_AUDIT_20261013.md",
+  "artifact_custody": "docs/agent/JEPA_EXTERNAL_ARTIFACT_CUSTODY_MANIFEST_20261013.csv",
+  "branch_map": "docs/agent/JEPA_ACTIVE_BRANCH_PR_MAP_20261013.md",
+  "next_execution": "PR320 phase-1 blinded fit only; freeze V4 receipt; STOP before controller adjudication",
+  "authority": {
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false
+  }
+}
