@@ -9,9 +9,31 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.11.9'
       - run: python -m pip install --upgrade pip
-      - run: python -m pip install pytest numpy pandas scipy
+      - run: python -m pip install -r requirements/unified-synthetic-integration-v1.txt
+      - name: Verify pinned qualification runtime
+        run: |
+          python - <<'PY'
+          import sys
+          from importlib.metadata import version
+          observed = {
+              "python": ".".join(str(x) for x in sys.version_info[:3]),
+              "numpy": version("numpy"),
+              "pandas": version("pandas"),
+              "scipy": version("scipy"),
+              "pytest": version("pytest"),
+          }
+          expected = {
+              "python": "3.11.9",
+              "numpy": "2.3.5",
+              "pandas": "2.2.3",
+              "scipy": "1.17.0",
+              "pytest": "9.0.2",
+          }
+          assert observed == expected, (observed, expected)
+          print(observed)
+          PY
       - run: pytest tests/v79/test_unified_synthetic_integration_v1.py tests/v79/test_unified_synthetic_fit_view_v1.py tests/v79/test_unified_synthetic_controller_truth_v1.py tests/v79/test_finalize_unified_synthetic_integration_v1.py tests/v79/test_v79_rare_biology_generator_v1.py tests/test_v79_hierarchical_biology_v1.py tests/test_v79_observation_operator_v1.py -v
       - name: Build deterministic non-authorizing integration receipt fixture
         run: |
@@ -32,7 +54,7 @@ jobs:
               repo_root=Path.cwd(),
               integration_manifest_path=Path("results/v79/unified_synthetic/UNIFIED_SYNTHETIC_INTEGRATION_MANIFEST_V1.json"),
           )
-          out = Path("/tmp/UNIFIED_SYNTHETIC_INTEGRATION_RECEIPT_V1.json")
+          out = Path("/tmp/UNIFIED_SYNTHETIC_INTEGRATION_RECEIPT_V2.json")
           write_integration_receipt_once(out, receipt)
           print("UNIFIED_SYNTHETIC_RECEIPT_BEGIN")
           print(out.read_text(encoding="utf-8"), end="")
