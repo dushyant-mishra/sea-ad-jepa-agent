@@ -1,0 +1,11 @@
+# byte-exact copies: <sha256>  <copy>  <- <source>
+bce9f6d5ef7184f695602119cce346898fe76a96ed56d7fd2fe1fe9589e0c9d3  record/ADJUDICATE_RUN_RECORD.txt  <- D:/jepa_td_synthetic_phase2_20261013/record/ADJUDICATE_RUN_RECORD.txt
+6624a85657f1e0959cbb7b9a025670dfb7d2573fee3ce17fea04a58c6b6535cd  record/ADJUDICATE_STDERR.txt  <- D:/jepa_td_synthetic_phase2_20261013/record/ADJUDICATE_STDERR.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  record/ADJUDICATE_STDOUT.txt  <- D:/jepa_td_synthetic_phase2_20261013/record/ADJUDICATE_STDOUT.txt
+229660720ef221da2f8feade221e270174cb2f9d64782dcf79abe6e67322f827  record/ARCHIVE_VERIFICATION.txt  <- D:/jepa_td_synthetic_phase2_20261013/record/ARCHIVE_VERIFICATION.txt
+8bbbeaa21d53e08ea46b0ca497b7c0f9afe2345794773a7bc29580c4eab5ddd0  record/CHECKOUT_PRE.txt  <- D:/jepa_td_synthetic_phase2_20261013/record/CHECKOUT_PRE.txt
+795f4b6369534e65ed5bedf8a265f4c110a68cd7591bdf98c4f902f72d908f33  record/FAILURE_DIAGNOSIS.md  <- D:/jepa_td_synthetic_phase2_20261013/record/FAILURE_DIAGNOSIS.md
+cea310ff479a720a1f6a1662ed4d24dfee32265ed83958692ea78dae2c3bd088  record/INPUT_VERIFICATION.txt  <- D:/jepa_td_synthetic_phase2_20261013/record/INPUT_VERIFICATION.txt
+5d7405568fc9b583dedb797f583dcc0b18f517832d4efccdab2ae7fde40d95fa  record/PHASE2_ENVIRONMENT.txt  <- D:/jepa_td_synthetic_phase2_20261013/record/PHASE2_ENVIRONMENT.txt
+6a47ec2804f02578a07ba4dbf43f8368c7e005e8c4b173737310ca5c8f2a1d4a  record/POST_RUN_STATE.txt  <- D:/jepa_td_synthetic_phase2_20261013/record/POST_RUN_STATE.txt
+e67aace8dfa8b9823cf8635155a48f5a78faed0a45bf9edb6f7adcba07737684  input/TD_RELATIONAL_SUCCESSOR_BLINDED_FIT_RECEIPT_V4.json  <- D:/jepa_td_synthetic_phase2_20261013/frozen_receipt/TD_RELATIONAL_SUCCESSOR_BLINDED_FIT_RECEIPT_V4.json

@@ -1,0 +1,4 @@
+check_utc=2026-10-13T19:48:17Z
+prefit archive: sha256=ba0fa56a49ffa009a0225606fb48d8fb30c3bd410a6a264ef905db5d4bb18803 size=7018400 -> MATCH
+controller archive: sha256=f554e2a95315bb39cc8f7e366620bca5cb2126a4896b3790ed2c632e5cc6a328 size=2028 -> MATCH
+artifacts: prefit 11834580081 (zip 97c89d0e...), controller 11833833421 (zip 8e796017c01e50fd...), run 38438433970; cross-cert artifact not downloaded

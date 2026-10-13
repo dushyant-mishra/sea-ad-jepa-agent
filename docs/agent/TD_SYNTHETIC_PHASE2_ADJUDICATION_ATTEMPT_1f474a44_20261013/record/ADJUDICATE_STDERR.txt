@@ -1,0 +1,32 @@
+Traceback (most recent call last):
+  File "D:\jepa_wt_td_synth_phase2_1f474a44\scripts\v5\td_relational_successor_disk_runner_v4.py", line 116, in _fit_receipt_from_v4_document
+    return V3._fit_receipt_from_document(v3_document, package)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\jepa_wt_td_synth_phase2_1f474a44\scripts\v5\td_relational_successor_disk_runner_v3.py", line 233, in _fit_receipt_from_document
+    profiles = {cid: _profile(profiles_raw[cid]) for cid in package.fit_views}
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\jepa_wt_td_synth_phase2_1f474a44\scripts\v5\td_relational_successor_disk_runner_v3.py", line 233, in <dictcomp>
+    profiles = {cid: _profile(profiles_raw[cid]) for cid in package.fit_views}
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\jepa_wt_td_synth_phase2_1f474a44\scripts\v5\td_relational_successor_disk_runner_v3.py", line 200, in _profile
+    raise DiskRunnerV3Error("frozen profile scale grid mismatch")
+td_relational_successor_disk_runner_v3.DiskRunnerV3Error: frozen profile scale grid mismatch
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\jepa_wt_td_synth_phase2_1f474a44\scripts\v5\td_relational_successor_disk_runner_v4.py", line 265, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "D:\jepa_wt_td_synth_phase2_1f474a44\scripts\v5\td_relational_successor_disk_runner_v4.py", line 249, in main
+    receipt = adjudicate_frozen_blinded_phase(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\jepa_wt_td_synth_phase2_1f474a44\scripts\v5\td_relational_successor_disk_runner_v4.py", line 159, in adjudicate_frozen_blinded_phase
+    package, fit_receipt, actual_blinded_sha = authenticate_blinded_phase_inputs(
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\jepa_wt_td_synth_phase2_1f474a44\scripts\v5\td_relational_successor_disk_runner_v4.py", line 139, in authenticate_blinded_phase_inputs
+    fit_receipt = _fit_receipt_from_v4_document(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\jepa_wt_td_synth_phase2_1f474a44\scripts\v5\td_relational_successor_disk_runner_v4.py", line 118, in _fit_receipt_from_v4_document
+    raise DiskRunnerV4Error(str(exc)) from exc
+DiskRunnerV4Error: frozen profile scale grid mismatch

@@ -1,0 +1,5 @@
+pre_utc=2026-10-13T19:47:56Z
+authority: PR #329 @ cde596530d126795ab9421416af58f144b2ab41e (TD_PHASE2_CONTROLLER_AUTHORIZATION_20261013.md; TD_PHASE2_EXECUTION_PACKET_20261013.md; comment 6153767837)
+git rev-parse HEAD: 1f474a44a6baabc667dbfda726e0755426c732e7
+git status --porcelain (tracked+untracked): [] lines=0
+git status --porcelain --ignored: lines=0
