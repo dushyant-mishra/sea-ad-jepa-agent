@@ -25,14 +25,23 @@ def test_manifest_fails_closed_on_source_drift():
     with pytest.raises(ValueError, match="drift"):
         validate_integration_manifest(m)
 
+def test_manifest_requires_exact_calibration_boundary():
+    m=json.loads(MANIFEST.read_text())
+    m["calibration"].pop("pseudo_rarity_source")
+    with pytest.raises(ValueError, match="calibration"):
+        validate_integration_manifest(m)
+    m=json.loads(MANIFEST.read_text())
+    m["calibration"]["unexpected"]="drift"
+    with pytest.raises(ValueError, match="calibration"):
+        validate_integration_manifest(m)
+
 def test_candidate_identifiers_are_rejected_from_config():
     with pytest.raises(ValueError, match="candidate"):
         UnifiedBiologyConfig(extra_metadata={"C2_relational": True})
 
 def test_quarantined_stat1_moments_are_not_executable_generator_authority():
     m=json.loads(MANIFEST.read_text())
-    assert m["calibration"]["stat1_50k_physical_row_status"] == "QUARANTINED_NOT_HARD_AUTHORITY"
-    assert m["calibration"]["rare_frequency_source"] == "SYNTHETIC_STRESS_PRESETS_NOT_EMPIRICAL_CALIBRATION"
+    assert m["calibration"] == U.CALIBRATION_BOUNDARY
     assert not hasattr(U, "_donor_latent")
     assert not hasattr(U, "REGIMES")
     assert tuple(U.SYNTHETIC_RARITY_PRESETS) == ("weak", "central", "strong", "extreme")
@@ -80,15 +89,16 @@ def test_context_conditioning_is_bound_to_central_identity_not_program_position(
     w=build_unified_biology(cfg, seed=313)
     central=w.rare_program_activity[:,0]
     weak=w.rare_program_activity[:,1]
-    eligible_c=U._program_eligibility(
-        U.generate_latent_biology(U._biology_authority(), cfg.n_cells, cfg.n_genes, cfg.n_donors, 313), 2
-    )[:,0]
-    inside=eligible_c & w.context_niche
-    outside=eligible_c & ~w.context_niche
-    assert inside.any() and outside.any()
-    assert central[inside].mean() > central[outside].mean() + 0.15
-    # Weak remains an unconditioned stress program even though it is column 1.
-    assert abs(weak[w.rare_eligible & w.context_niche].mean() - weak[w.rare_eligible & ~w.context_niche].mean()) < 0.15
+    latent=U.generate_latent_biology(U._biology_authority(), cfg.n_cells, cfg.n_genes, cfg.n_donors, 313)
+    eligibility=U._program_eligibility(latent, 2)
+    inside_c=eligibility[:,0] & w.context_niche
+    outside_c=eligibility[:,0] & ~w.context_niche
+    assert inside_c.any() and outside_c.any()
+    assert central[inside_c].mean() > central[outside_c].mean() + 0.15
+    inside_w=eligibility[:,1] & w.context_niche
+    outside_w=eligibility[:,1] & ~w.context_niche
+    assert inside_w.any() and outside_w.any()
+    assert abs(weak[inside_w].mean() - weak[outside_w].mean()) < 0.15
 
 def test_context_and_perturbation_design_are_embedded_in_same_population():
     w=build_unified_biology(UnifiedBiologyConfig(n_cells=1200,n_genes=64,n_donors=30), seed=211)
