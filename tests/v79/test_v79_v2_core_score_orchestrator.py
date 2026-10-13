@@ -267,7 +267,7 @@ def test_internal_truth_read_during_authentication_is_blocked_by_the_executable_
 def test_campaign_receipt_mismatch_fails_before_truth_access(universe, truth_calls):
     p = universe.result_dir / UV.CAMPAIGN_RECEIPT_NAME
     p.write_bytes(p.read_bytes() + b" ")
-    _assert_refused_before_truth(universe, truth_calls, match="campaign_receipt")
+    _assert_refused_before_truth(universe, truth_calls, match="at campaign_receipt:")
 
 
 @pytest.mark.parametrize("damage", ["ledger_line", "extra_result_file", "draw_file_bytes", "missing_draw_file"])
@@ -280,28 +280,28 @@ def test_result_ledger_mismatch_fails_before_truth_access(universe, truth_calls,
         draw = next(p for p in sorted(universe.result_dir.glob("donor_effect_draws_*.npz")))
         if damage == "draw_file_bytes": draw.write_bytes(draw.read_bytes() + b"\0")
         else: draw.unlink()
-    _assert_refused_before_truth(universe, truth_calls, match="result_ledger")
+    _assert_refused_before_truth(universe, truth_calls, match="at result_ledger:")
 
 
 def test_campaign_code_sha_mismatch_fails_before_truth_access(universe, truth_calls, monkeypatch):
     universe.reseal_campaign(code_sha="9" * 40)
     _repatch(universe, monkeypatch, "campaign_receipt_sha256", "result_ledger_sha256", "result_file_count")
-    _assert_refused_before_truth(universe, truth_calls, match="campaign code")
+    _assert_refused_before_truth(universe, truth_calls, match="at campaign_receipt: .*campaign code head")
 
 
 def test_custody_prepared_for_another_executor_head_fails_before_truth_access(universe, truth_calls, monkeypatch):
     universe.bindings["custody_executor_code_head"] = "9" * 40
     universe.reseal_custody()
     _repatch(universe, monkeypatch, "custody_receipt_sha256", "campaign_receipt_sha256", "result_ledger_sha256", "result_file_count")
-    _assert_refused_before_truth(universe, truth_calls, match="custody")
+    _assert_refused_before_truth(universe, truth_calls, match="at custody: custody was prepared for executor head")
 
 
 def test_authorization_bound_to_another_scorer_head_fails_before_truth_access(universe, truth_calls):
-    _assert_refused_before_truth(universe, truth_calls, match="authorization", scorer_code_sha="8" * 40)
+    _assert_refused_before_truth(universe, truth_calls, match="at authorization: .*scorer code head differs", scorer_code_sha="8" * 40)
 
 
 def test_authorization_bytes_mismatch_fails_before_truth_access(universe, truth_calls):
-    _assert_refused_before_truth(universe, truth_calls, match="authorization", authorization_sha256="7" * 64)
+    _assert_refused_before_truth(universe, truth_calls, match="at authorization: .*SHA-256 mismatch", authorization_sha256="7" * 64)
 
 
 def test_cli_binds_the_authorization_to_the_clean_checked_out_head(universe, truth_calls, monkeypatch):
@@ -312,7 +312,7 @@ def test_cli_binds_the_authorization_to_the_clean_checked_out_head(universe, tru
             "--output-dir", str(universe.output_dir)]
     monkeypatch.setattr(O, "_require_clean", lambda root: None)
     monkeypatch.setattr(O, "_git_head", lambda root: "8" * 40)
-    with pytest.raises(O.OrchestratorRefused, match="authorization"):
+    with pytest.raises(O.OrchestratorRefused, match="at authorization: .*scorer code head differs"):
         O.main(argv)
 
     def dirty(root):
@@ -334,7 +334,7 @@ def test_cli_refuses_when_executing_code_is_not_the_authorized_checkout(universe
             "--custody-dir", str(universe.custody_dir), "--realization-dir", str(universe.realization_dir),
             "--authorization", str(universe.scoring_auth_path), "--authorization-sha256", universe.bindings["scoring_authorization_sha256"],
             "--output-dir", str(universe.output_dir)]
-    with pytest.raises(O.OrchestratorRefused, match="scorer_code"):
+    with pytest.raises(O.OrchestratorRefused, match="at scorer_code: executing module"):
         O.main(argv)
     assert truth_calls == [] and not universe.output_dir.exists()
     O._require_executing_code_in(ROOT)  # the code under test is loaded from this checkout
@@ -363,7 +363,8 @@ def test_truth_set_must_match_the_frozen_realization_authority(universe, truth_c
         rel.write_bytes((json.dumps(rec, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     else:
         p = universe.package_dir / UV.ROOT_MANIFEST_NAME; p.write_bytes(p.read_bytes() + b" ")
-    _assert_refused_before_truth(universe, truth_calls, match="realization_authority|truth_tree|blinded_inputs")
+    expected_step = {"self_consistent_world_change": "truth_tree"}.get(damage, "realization_authority")
+    _assert_refused_before_truth(universe, truth_calls, match=f"at {expected_step}:")
 
 
 @pytest.mark.parametrize("damage", ["missing", "extra", "duplicate", "substituted"])
@@ -388,7 +389,9 @@ def test_fit_identity_set_must_equal_the_frozen_1056_fit_queue(universe, truth_c
         rows[rows.index(victim)] = {"fit_id": fake, "path": f"fit_{fake}.json", "sha256": UV.sha_file(universe.result_dir / f"fit_{fake}.json")}
     universe.reseal_campaign(fit_rows=rows)
     _repatch(universe, monkeypatch, "campaign_receipt_sha256", "result_ledger_sha256", "result_file_count")
-    _assert_refused_before_truth(universe, truth_calls, match="campaign_receipt|fit_identity_set|fit_records")
+    # Cardinality and duplicates are refused by the campaign receipt itself; a well-formed substitute only by the queue identity check.
+    expected_step = "fit_identity_set" if damage == "substituted" else "campaign_receipt"
+    _assert_refused_before_truth(universe, truth_calls, match=f"at {expected_step}:")
 
 
 @pytest.mark.parametrize("damage", ["reclassified_to_complete", "complete_reclassified_to_not_diagnosed", "refit_bytes", "dropped"])
@@ -411,21 +414,21 @@ def test_frozen_not_diagnosed_fits_cannot_be_dropped_refit_or_reclassified(unive
     if damage != "refit_bytes":
         # Everything else re-frozen to the altered campaign: only the frozen NOT_DIAGNOSED authority can refuse it.
         _repatch(universe, monkeypatch, "campaign_receipt_sha256", "result_ledger_sha256", "result_file_count")
-        match = "campaign_receipt|not_diagnosed" if damage == "dropped" else "not_diagnosed"
+        match = "at campaign_receipt:" if damage == "dropped" else "at not_diagnosed_set:"
     else:
         # A refit changes bytes. The frozen campaign identity refuses it, whether it is met first through the
         # authorization (which binds the frozen campaign receipt) or through the campaign receipt itself.
-        match = "authorization|campaign_receipt"
+        match = "at authorization:"
     _assert_refused_before_truth(universe, truth_calls, match=match)
 
 
 def test_existing_output_directory_is_a_write_once_failure_before_truth(universe, truth_calls):
     universe.output_dir.mkdir()
-    _assert_refused_before_truth(universe, truth_calls, match="output")
+    _assert_refused_before_truth(universe, truth_calls, match="at output_guard: output directory already exists")
 
 
 def test_output_inside_an_input_authority_is_refused(universe, truth_calls):
-    _assert_refused_before_truth(universe, truth_calls, match="output", output_dir=universe.custody_dir / "scoring")
+    _assert_refused_before_truth(universe, truth_calls, match="at output_guard: output directory lies inside", output_dir=universe.custody_dir / "scoring")
 
 
 # ------------------------------------------------------------------ after the barrier
@@ -436,7 +439,7 @@ def test_truth_manifest_must_cross_link_to_the_blinded_index_after_the_barrier(u
     m = json.loads(mp.read_text(encoding="utf-8")); m["blinded_fit_manifest_sha256"] = "0" * 64; mp.write_bytes(UV.canon(m))
     universe.reseal_realization()
     _repatch(universe, monkeypatch, "realization_audit_receipt_sha256", "realization_ledger_sha256", "world_set_directory_digest")
-    with pytest.raises(O.OrchestratorRefused, match="truth_cross_identity"):
+    with pytest.raises(O.OrchestratorRefused, match="at truth_cross_identity:"):
         O.run_qualification_scoring(**universe.run_kwargs())
     assert truth_calls and all(c[1]["barrier_crossed"] for c in truth_calls)
     assert not (universe.output_dir / O.OUTPUT_NAMES["receipt"]).exists()
@@ -465,7 +468,7 @@ def test_input_changed_during_scoring_prevents_the_final_receipt(universe, monke
         return original(*args, **kwargs)
 
     monkeypatch.setattr(A, "build_adjudication_receipt", tamper_then_adjudicate)
-    with pytest.raises(O.OrchestratorRefused, match="input_reverification"):
+    with pytest.raises(O.OrchestratorRefused, match="at input_reverification:"):
         O.run_qualification_scoring(**universe.run_kwargs())
     assert not (universe.output_dir / O.OUTPUT_NAMES["receipt"]).exists()
 
@@ -528,7 +531,7 @@ def test_complete_scoring_run_is_truth_open_last_write_once_and_preserves_not_di
 
     # inputs unchanged; output is write-once
     assert _tree_hashes(universe.root, exclude=universe.output_dir) == before
-    with pytest.raises(O.OrchestratorRefused, match="output"):
+    with pytest.raises(O.OrchestratorRefused, match="at output_guard: output directory already exists"):
         O.run_qualification_scoring(**universe.run_kwargs())
 
 
