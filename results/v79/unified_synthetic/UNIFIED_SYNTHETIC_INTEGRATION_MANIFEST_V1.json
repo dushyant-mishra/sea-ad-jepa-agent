@@ -6,6 +6,11 @@
     "pr311": "2b6d3439105e087acdab53a318c57bbb468eae26",
     "pr315": "af03ef67d52651463944a6de3a08e101ad00e0ea"
   },
+  "perturbation_arm_semantics": {
+    "0": "CONTROL",
+    "1": "ACTIVE_RARE_PROGRAM_PERTURBATION",
+    "2": "MATCHED_PERTURB_NULL"
+  },
   "calibration": {
     "stat1_50k_physical_row_status": "QUARANTINED_NOT_HARD_AUTHORITY",
     "rare_frequency_source": "SYNTHETIC_STRESS_PRESETS_NOT_EMPIRICAL_CALIBRATION",
