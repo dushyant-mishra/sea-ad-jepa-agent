@@ -37,6 +37,7 @@ jobs:
               scripts/v5/td_real_gate_rule_registry_v1.py \
               scripts/v5/td_query_information_guard.py \
               tests/v5/test_td_real_gate_rule_registry_v1.py \
+              tests/v5/test_td_real_structural_gate_output_v1.py \
               tests/v5/test_td_real_gate_executor_readiness_v2.py \
               tests/v5/test_td_real_gate_historical_equivalence_v1.py \
               tests/v5/test_td_query_information_guard.py \
@@ -54,6 +55,7 @@ jobs:
           set -o pipefail
           python -m pytest -q \
             tests/v5/test_td_real_gate_rule_registry_v1.py \
+            tests/v5/test_td_real_structural_gate_output_v1.py \
             tests/v5/test_td_real_gate_executor_readiness_v2.py \
             tests/v5/test_td_real_gate_historical_equivalence_v1.py \
             tests/v5/test_td_query_information_guard.py \
