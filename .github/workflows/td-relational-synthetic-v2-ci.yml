@@ -28,6 +28,7 @@ jobs:
     needs: focused-v2-package
     env:
       TD_SHA: 2397ab83d8ae9d0c762a8fd5f3919edc350d137f
+      SYNTHETIC_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -91,14 +92,14 @@ jobs:
         run: |
           test ! -e /tmp/tdv2-cert/preflight_receipt.json.blinded_fit.json
           python - <<'PY'
-          import hashlib, json, pathlib
+          import hashlib, json, os, pathlib
           root=pathlib.Path('/tmp/tdv2-cert')
           transport=json.load(open(root/'transport_receipt.json'))
           preflight=json.load(open(root/'preflight_receipt.json'))
           receipt={
             'schema':'JEPA_TD_RELATIONAL_SYNTHETIC_V2_COMPATIBILITY_CERTIFICATION_V1',
-            'synthetic_commit_sha':'${{ github.sha }}',
-            'td_pr316_commit_sha':'2397ab83d8ae9d0c762a8fd5f3919edc350d137f',
+            'synthetic_commit_sha':os.environ['SYNTHETIC_SHA'],
+            'td_pr316_commit_sha':os.environ['TD_SHA'],
             'package_sha256':transport['package_sha256'],
             'binding_sha256':transport['binding_sha256'],
             'controller_manifest_sha256':transport['controller_manifest_canonical_sha256'],
