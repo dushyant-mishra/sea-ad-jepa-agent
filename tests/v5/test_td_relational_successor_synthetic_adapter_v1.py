@@ -39,19 +39,30 @@ def _payloads(pkg):
         'detected_genes':np.full(n,512,dtype=int),
         'focal_mask':np.ones(n,bool),'neighbor_pool_mask':np.ones(n,bool),
         'min_focal_anchors_per_donor':1,
+        'control_profiles':{},
     }
     return {cid:{'authenticated_fit_view_sha256':sha,'executor_input':dict(base)} for cid,sha in pkg.fit_views.items()}
 
 
 def test_complete_adapter_keeps_fit_side_blind_and_controller_map_separate():
-    pkg=_package(); r=A.build_relational_qualification_adapter(pkg,_payloads(pkg))
+    pkg=_package(); payloads=_payloads(pkg); first=next(iter(payloads))
+    n=3
+    payloads[first]['executor_input']['control_profiles']={
+        'opaque-control-a':{
+            'focal_mask':np.array([1,0,1],dtype=bool),
+            'neighbor_pool_mask':np.ones(n,dtype=bool),
+            'min_focal_anchors_per_donor':1,
+        }
+    }
+    r=A.build_relational_qualification_adapter(pkg,payloads)
     assert r.status=='READY'
     assert not r.missing_capabilities
     assert set(r.fit_inputs)==set(pkg.fit_views)
     assert set(r.controller_challenges)==set(pkg.fit_views)
+    assert 'opaque-control-a' in r.fit_inputs[first]['control_profiles']
     for cid,fit in r.fit_inputs.items():
         assert fit['profile_id']==cid
-        text=repr({k:v for k,v in fit.items() if k not in {'z_values','x_values','y_values','z_measured','x_measured','y_measured'}})
+        text=repr({k:v for k,v in fit.items() if k not in {'z_values','x_values','y_values','z_measured','x_measured','y_measured','control_profiles'}})
         assert 'REL_' not in text and 'POSITIVE_TRUTH' not in text and 'NEGATIVE_TRUTH' not in text
         assert 'expected_status' not in fit and 'controller_truth' not in fit
         assert 'z_distances' not in fit and 'null_y_identity_maps' not in fit
@@ -89,6 +100,18 @@ def test_executor_input_rejects_controller_semantics_precomputed_distances_and_u
         bad[first]['executor_input'][field]=value
         with pytest.raises(A.RelationalAdapterError,match='executor_input fields'):
             A.build_relational_qualification_adapter(pkg,bad)
+
+
+def test_control_profiles_must_be_opaque_and_contain_only_masks_and_support_minimum():
+    pkg=_package(); first=next(iter(pkg.fit_views))
+    bad=_payloads(pkg)
+    bad[first]['executor_input']['control_profiles']={'WRONG_CELL':{'focal_mask':np.ones(3,bool),'neighbor_pool_mask':np.ones(3,bool),'min_focal_anchors_per_donor':1}}
+    with pytest.raises(A.RelationalAdapterError,match='opaque'):
+        A.build_relational_qualification_adapter(pkg,bad)
+    bad=_payloads(pkg)
+    bad[first]['executor_input']['control_profiles']={'opaque-c':{'focal_mask':np.ones(3,bool),'neighbor_pool_mask':np.ones(3,bool),'min_focal_anchors_per_donor':1,'expected_status':'FAIL'}}
+    with pytest.raises(A.RelationalAdapterError,match='control profile fields'):
+        A.build_relational_qualification_adapter(pkg,bad)
 
 
 def test_adapter_has_no_generator_dependency():
