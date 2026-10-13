@@ -1,0 +1,82 @@
+{
+  "schema": "JEPA_TD_REAL_GATE_HISTORICAL_EQUIVALENCE_V1",
+  "date": "2026-10-13",
+  "scope": "OUTCOME_BLIND_ENGINEERING_ONLY",
+  "gate_groups": {
+    "EXACT_COMPONENT_REUSED_WITH_GATE_WRAPPER": [
+      "Q1_Q_SCALAR_STUDENT_ABSENT",
+      "Q3_TARGET_NORMALIZATION_Q_SCALAR_FREE"
+    ],
+    "NEW_PROSPECTIVE_STRUCTURAL_WRAPPER": [
+      "G1_INTEGRITY_LINEAGE",
+      "R2_LOCALITY_RULE_FROZEN_NO_FINE_MINING",
+      "Q2_Q_EXCLUDED_TEACHER_PRIMARY_ANCHOR"
+    ],
+    "NO_EXACT_QUALIFIED_GATE_EXECUTOR_FOUND__PROSPECTIVE_RULE_REQUIRED": [
+      "G2_NONTRIVIAL_BIOLOGICAL_CONTENT",
+      "G3_CORRECT_CELL_SPECIFICITY",
+      "G4_DONOR_RECURRENCE",
+      "G5_SOURCE_REPLICATION",
+      "G6_TEACHER_INFORMATION_ADVANTAGE",
+      "G7_EVIDENCE_CONVERGENCE",
+      "G8_MEASUREMENT_ROBUSTNESS",
+      "G9_LEARNED_TEACHER_CONTINUITY",
+      "G10_COLLAPSE_SHORTCUT_RESISTANCE",
+      "G11_TRANSFER",
+      "G12_COVERAGE_ABSTENTION",
+      "S1_DISJOINT_VIEW_RECURRENCE",
+      "S2_DONOR_BALANCED_SUBSPACE_STABILITY",
+      "S3_IDENTITY_SUPPORT_BASELINE_DEFEAT",
+      "R1_SCALE_FREE_RELATIONAL_RECURRENCE",
+      "R3_FINE_NEIGHBOR_WRONG_CELL_DEFEAT",
+      "R4_INCREMENT_OVER_C1_SHARED",
+      "Q4_Q_COUNT_ONLY_DEFEAT",
+      "Q5_Q_ADDRESS_ONLY_DEFEAT",
+      "Q6_QUERY_AGNOSTIC_DEFEAT",
+      "Q7_WRONG_Q_DEFEAT",
+      "Q8_TECHNICAL_PLUS_Q_DEFEAT",
+      "C6_INCREMENT_OVER_C1_C3",
+      "C4_INCREMENT_OVER_CONSTITUENTS",
+      "M1_CIRCULARITY_CONTROL",
+      "M2_INDEPENDENT_PROVENANCE",
+      "M3_CAUSAL_CLAIM_FALSE",
+      "M4_SUPPORT_ABSTENTION"
+    ]
+  },
+  "exact_reuse_evidence": {
+    "Q1_Q_SCALAR_STUDENT_ABSENT": {
+      "path": "scripts/v5/td_query_information_guard.py",
+      "git_blob_sha": "3ca60c5f82b7b07f5f6123a52e7b50f9027a6ebe",
+      "test_path": "tests/v5/test_td_query_information_guard.py",
+      "test_git_blob_sha": "849cfd9b65fadd0c54dfb9f534bcdddc413b4c98",
+      "equivalence_scope": "dependency-lineage exclusion of direct/transitive q scalar from the relevant sink only",
+      "does_not_supply_biological_threshold": true
+    },
+    "Q3_TARGET_NORMALIZATION_Q_SCALAR_FREE": {
+      "path": "scripts/v5/td_query_information_guard.py",
+      "git_blob_sha": "3ca60c5f82b7b07f5f6123a52e7b50f9027a6ebe",
+      "test_path": "tests/v5/test_td_query_information_guard.py",
+      "test_git_blob_sha": "849cfd9b65fadd0c54dfb9f534bcdddc413b4c98",
+      "equivalence_scope": "dependency-lineage exclusion of direct/transitive q scalar from the relevant sink only",
+      "does_not_supply_biological_threshold": true
+    }
+  },
+  "new_structural_wrapper_notes": {
+    "G1_INTEGRITY_LINEAGE": "Frozen prefreeze specification already defines a binary provenance/identity condition, but no exact prior callable gate executor was recovered. New wrapper checks the frozen structural predicate only.",
+    "R2_LOCALITY_RULE_FROZEN_NO_FINE_MINING": "Historical TD57C/TD59 artifacts provide locality history and negative prior, but are not an exact reusable gate executor. New wrapper checks only prospective locality freeze plus absence of forbidden fine-neighborhood mining.",
+    "Q2_Q_EXCLUDED_TEACHER_PRIMARY_ANCHOR": "Frozen candidate definition requires the primary teacher anchor to exclude q scalar; no exact prior callable gate executor was recovered. New wrapper checks this structural predicate only."
+  },
+  "historical_descriptive_cutoffs_promoted": false,
+  "candidate_outcomes_opened": false,
+  "real_tournament_qualify_eligible": false,
+  "authority": {
+    "value_read_authorized": false,
+    "real_tournament_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false
+  },
+  "terminal": "FIVE_STRUCTURAL_RULES_MATERIALIZED_OR_REUSED__TWENTY_EIGHT_UNIQUE_RULES_STILL_REQUIRE_PROSPECTIVE_MATERIALIZATION__NO_REAL_TD_AUTHORITY"
+}

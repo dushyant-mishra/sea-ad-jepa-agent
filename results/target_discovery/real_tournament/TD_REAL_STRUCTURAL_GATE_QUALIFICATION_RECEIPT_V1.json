@@ -1,0 +1,9 @@
+{
+  "schema": "JEPA_TD_REAL_STRUCTURAL_GATE_QUALIFICATION_V1",
+  "status": "PASS_OUTCOME_BLIND_STRUCTURAL_EXECUTOR_MECHANICS",
+  "registry_sha256": "54f30906d156e9535f4d1043380d4c5c44c73e77c884abd315e9c39bb1cec560",
+  "query_guard_sha256": "0a0d91f15e3b0519a9adf342702f28d10acabd3de56e00bfa7875ec3385c3d91",
+  "executor_bundle_sha256": "d97c75ce673b2fe629289ffb8597061c21fe7da7e13fa0f8401e617ff7989ee8",
+  "candidate_outcomes_opened": false,
+  "real_tournament_authorized": false
+}

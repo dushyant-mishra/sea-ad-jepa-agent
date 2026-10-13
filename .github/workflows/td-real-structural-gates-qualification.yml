@@ -1,0 +1,101 @@
+name: TD real structural gates qualification
+
+on:
+  push:
+    branches:
+      - engineering/td-real-gate-rule-materialization-20261013
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  structural-gate-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install focused dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest numpy pandas scipy scikit-learn
+      - name: Bind exact head and structural-rule identities
+        run: |
+          set -euo pipefail
+          test -z "$(git status --short)"
+          mkdir -p qualification
+          {
+            echo "HEAD=$(git rev-parse HEAD)"
+            echo "STATUS_BEFORE=[]"
+            python --version
+            sha256sum \
+              scripts/v5/td_real_gate_rule_registry_v1.py \
+              scripts/v5/td_query_information_guard.py \
+              scripts/v5/audit_td_real_gate_executor_readiness_v3.py \
+              tests/v5/test_td_real_gate_rule_registry_v1.py \
+              tests/v5/test_td_real_structural_gate_output_v1.py \
+              tests/v5/test_td_real_gate_executor_readiness_v2.py \
+              tests/v5/test_td_real_gate_executor_readiness_v3.py \
+              tests/v5/test_td_real_gate_historical_equivalence_v1.py \
+              tests/v5/test_td_query_information_guard.py \
+              results/target_discovery/real_tournament/TD_REAL_GATE_HISTORICAL_EQUIVALENCE_V1.json \
+              results/target_discovery/real_tournament/TD_REAL_STRUCTURAL_GATE_QUALIFICATION_RECEIPT_V1.json \
+              docs/superpowers/specs/2026-10-11-td-multitarget-tournament-prefreeze-v2.md
+          } | tee qualification/identity.txt
+      - name: Validate V1/V2/V3 readiness without outcome reads
+        run: |
+          set -o pipefail
+          python scripts/v5/audit_td_real_gate_executor_readiness_v1.py | tee qualification/readiness_v1.txt
+          python scripts/v5/audit_td_real_gate_executor_readiness_v2.py | tee qualification/readiness_v2.txt
+          python scripts/v5/audit_td_real_gate_executor_readiness_v3.py | tee qualification/readiness_v3.txt
+          python scripts/v5/audit_td_real_gate_executor_readiness_v2.py --emit-matrix-json > qualification/readiness_matrix_v2.json
+          python scripts/v5/audit_td_real_gate_executor_readiness_v3.py --emit-matrix-json > qualification/readiness_matrix_v3.json
+      - name: Run structural and framework qualification suites
+        run: |
+          set -o pipefail
+          python -m pytest -q \
+            tests/v5/test_td_real_gate_rule_registry_v1.py \
+            tests/v5/test_td_real_structural_gate_output_v1.py \
+            tests/v5/test_td_real_gate_executor_readiness_v2.py \
+            tests/v5/test_td_real_gate_executor_readiness_v3.py \
+            tests/v5/test_td_real_gate_historical_equivalence_v1.py \
+            tests/v5/test_td_query_information_guard.py \
+            tests/v5/test_td_real_tournament_contract_v1.py \
+            tests/v5/test_td_real_tournament_case_ledger_v1.py \
+            tests/v5/test_td_real_candidate_adapters_v1.py \
+            tests/v5/test_td_real_tournament_falsifiers_v1.py \
+            tests/v5/test_td_real_tournament_gates_v1.py \
+            tests/v5/test_td_real_tournament_bundle_v1.py \
+            tests/v5/test_run_td_real_target_tournament_once.py \
+            tests/v5/test_td_protected_evidence_controller_v1.py \
+            | tee qualification/pytest.txt
+      - name: Assert authority remains closed and record no-outcome-input surface
+        run: |
+          python - <<'PY' | tee qualification/authority.txt
+          import json
+          from pathlib import Path
+          contract = json.loads(Path('results/target_discovery/real_tournament/TD_REAL_TOURNAMENT_CONTRACT_V1.json').read_text())
+          assert all(value is False for value in contract['authority'].values())
+          print('AUTHORITY_ALL_FALSE=true')
+          print('BIOLOGICAL_OUTCOME_INPUTS_DOWNLOADED=false')
+          print('CONTROLLER_TRUTH_INPUTS_DOWNLOADED=false')
+          print('REAL_TOURNAMENT_EXECUTED=false')
+          PY
+      - name: Confirm tracked worktree clean
+        run: |
+          STATUS="$(git status --short --untracked-files=no)"
+          echo "STATUS_AFTER_TRACKED=[$STATUS]" | tee qualification/worktree.txt
+          test -z "$STATUS"
+      - name: Upload qualification receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td-real-structural-gates-qualification-${{ github.sha }}
+          path: qualification/
+          if-no-files-found: error
+          retention-days: 90
