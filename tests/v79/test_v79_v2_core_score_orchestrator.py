@@ -362,7 +362,8 @@ def test_fit_identity_set_must_equal_the_frozen_1056_fit_queue(universe, truth_c
         fake = "f" * 64; (universe.result_dir / f"fit_{fake}.json").write_bytes((universe.result_dir / victim["path"]).read_bytes())
         rows.append({"fit_id": fake, "path": f"fit_{fake}.json", "sha256": victim["sha256"]})
     elif damage == "duplicate":
-        rows[rows.index(victim)] = dict(rows[0])
+        source = next(r for r in rows if r["fit_id"] != victim["fit_id"])
+        rows[rows.index(victim)] = dict(source)
         (universe.result_dir / victim["path"]).unlink(); (universe.result_dir / f"donor_effect_draws_{victim['fit_id']}.npz").unlink()
     else:
         fake = "e" * 64
@@ -433,6 +434,22 @@ def test_partial_scoring_cannot_produce_a_successful_final_receipt(universe, tru
 
     monkeypatch.setattr(E, "build_gate_evaluations", boom)
     with pytest.raises((O.OrchestratorRefused, RuntimeError)):
+        O.run_qualification_scoring(**universe.run_kwargs())
+    assert not (universe.output_dir / O.OUTPUT_NAMES["receipt"]).exists()
+
+
+def test_input_changed_during_scoring_prevents_the_final_receipt(universe, monkeypatch):
+    """Added during GREEN after mutation planning showed post-run input re-verification was otherwise untested."""
+    O = _orchestrator()
+    original = A.build_adjudication_receipt
+
+    def tamper_then_adjudicate(*args, **kwargs):
+        draw = next(p for p in sorted(universe.result_dir.glob("donor_effect_draws_*.npz")))
+        draw.write_bytes(draw.read_bytes() + b"\0")
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(A, "build_adjudication_receipt", tamper_then_adjudicate)
+    with pytest.raises(O.OrchestratorRefused, match="input_reverification"):
         O.run_qualification_scoring(**universe.run_kwargs())
     assert not (universe.output_dir / O.OUTPUT_NAMES["receipt"]).exists()
 

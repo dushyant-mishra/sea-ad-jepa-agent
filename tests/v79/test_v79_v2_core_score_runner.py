@@ -18,6 +18,13 @@ def _canon(x): return (json.dumps(x,sort_keys=True,separators=(",",":"),ensure_a
 def _sha_bytes(b): return hashlib.sha256(b).hexdigest()
 
 
+@pytest.fixture(autouse=True)
+def _synthetic_frozen_campaign(monkeypatch):
+    """Synthetic campaign identity for these unit tests; the frozen production value is pinned in
+    test_v79_v2_core_score_orchestrator.py::test_frozen_production_bindings_are_exact_full_values."""
+    monkeypatch.setattr(A,"CAMPAIGN_RECEIPT_SHA256","a"*64)
+
+
 def _auth(campaign_sha="a"*64,code="b"*40):
     return {
         "schema":A.AUTH_SCHEMA,"scoring_authorized":True,"qualification_campaign_controller_pass":True,
@@ -71,8 +78,9 @@ def test_new_donor_metric_convention_is_frozen_by_part():
 
 
 def test_scoring_run_receipt_binds_all_outputs_and_keeps_downstream_off():
+    outputs={k:f"{i+1:064x}" for i,k in enumerate(R.SCORING_OUTPUT_KEYS)}
     r=R.scoring_run_receipt(scorer_code_sha="b"*40,campaign_receipt_sha256="a"*64,scoring_authorization_sha256="c"*64,
-                            scored_rows_sha256="d"*64,gate_table_sha256="e"*64,descriptive_metrics_sha256="f"*64,adjudication_sha256="1"*64)
+                            outputs=outputs,authentication_steps=["output_guard"])
     assert r["qualification_scoring_run"] is True
     assert r["real_train_posterior_authorized"] is False and r["factorial_science_authorized"] is False and r["training_authorized"] is False
-    assert set(r["outputs"])=={"scored_rows","gate_table","descriptive_metrics","adjudication"}
+    assert set(r["outputs"])=={"scored_rows","gate_table","heldout_oracle","descriptive_metrics","adjudication"}

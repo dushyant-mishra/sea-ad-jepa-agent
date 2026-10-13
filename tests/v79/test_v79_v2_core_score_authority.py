@@ -12,6 +12,15 @@ sys.path.insert(0,str(HERE))
 import v79_v2_core_score_authority as A  # noqa: E402
 
 
+@pytest.fixture(autouse=True)
+def _synthetic_frozen_campaign(monkeypatch):
+    """These unit tests use synthetic campaign identities. The exact frozen production values are pinned in
+    test_v79_v2_core_score_orchestrator.py::test_frozen_production_bindings_are_exact_full_values."""
+    monkeypatch.setattr(A,"CAMPAIGN_RECEIPT_SHA256","c"*64)
+    monkeypatch.setattr(A,"CAMPAIGN_CODE_SHA","a"*40)
+    monkeypatch.setattr(A,"CUSTODY_RECEIPT_SHA256","b"*64)
+
+
 def _campaign():
     rows=[{"fit_id":f"{i:064x}","path":f"fit_{i:04d}.json","sha256":f"{i+1:064x}"} for i in range(A.EXPECTED_FITS)]
     return {"schema":A.CAMPAIGN_SCHEMA,"code_sha":"a"*40,"custody_receipt_sha256":"b"*64,
@@ -45,12 +54,14 @@ def _gate_table(*,hard_fail=None,limit_fail=None):
             "counts":{"hard_statistical":260,"hard_rule":28,"limit_statistical":4,"limit_rule":0},"alpha_per_gate":0.05/260}
 
 
-def test_completed_campaign_requires_exact_1056_fit_ledger_and_boundary_flags(tmp_path):
+def test_completed_campaign_requires_exact_1056_fit_ledger_and_boundary_flags(tmp_path, monkeypatch):
     rec=_campaign(); raw=A._canon(rec); p=tmp_path/"campaign.json"; p.write_bytes(raw); sha=hashlib.sha256(raw).hexdigest()
+    monkeypatch.setattr(A,"CAMPAIGN_RECEIPT_SHA256",sha)
     got=A.load_completed_campaign(p,expected_sha256=sha)
     assert got["qualification_fits_run"]==1056 and len(got["fit_records"])==1056
-    bad=dict(rec); bad["scoring_run"]=True; p2=tmp_path/"bad.json"; p2.write_bytes(A._canon(bad))
-    with pytest.raises(A.ScoreAuthorityRefused): A.load_completed_campaign(p2,expected_sha256=hashlib.sha256(p2.read_bytes()).hexdigest())
+    bad=dict(rec); bad["scoring_run"]=True; p2=tmp_path/"bad.json"; p2.write_bytes(A._canon(bad)); bad_sha=hashlib.sha256(p2.read_bytes()).hexdigest()
+    monkeypatch.setattr(A,"CAMPAIGN_RECEIPT_SHA256",bad_sha)
+    with pytest.raises(A.ScoreAuthorityRefused, match="boundary"): A.load_completed_campaign(p2,expected_sha256=bad_sha)
 
 
 def test_scoring_authorization_is_post_campaign_only_and_cannot_cross_downstream_gates():
