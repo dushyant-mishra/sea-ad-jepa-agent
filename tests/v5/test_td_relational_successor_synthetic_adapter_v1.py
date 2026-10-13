@@ -23,12 +23,21 @@ def _package(missing=()):
 
 def _payloads(pkg):
     n=3
+    values=np.zeros((n,512),dtype=float)
+    measured=np.ones((n,512),dtype=bool)
     base={
         'source':'UNIT','panel_id':'P0',
-        'z_distances':np.zeros((n,n)),'x_distances':np.zeros((n,n)),'y_distances':np.zeros((n,n)),
-        'donor_ids':np.array(['D0','D0','D0']), 'operator_ids':np.array([0,0,0]), 'global_rows':np.arange(n),
+        'z_values':values.copy(),'x_values':values.copy(),'y_values':values.copy(),
+        'z_measured':measured.copy(),'x_measured':measured.copy(),'y_measured':measured.copy(),
+        'z_feature_ids':[f'Z{i:04d}' for i in range(512)],
+        'x_feature_ids':[f'X{i:04d}' for i in range(512)],
+        'y_feature_ids':[f'Y{i:04d}' for i in range(512)],
+        'donor_ids':np.array(['D0','D0','D0'],dtype=object),
+        'operator_ids':np.array(['O0','O0','O0'],dtype=object),
+        'global_rows':np.arange(n),
+        'source_library':np.full(n,1000.0),
+        'detected_genes':np.full(n,512,dtype=int),
         'focal_mask':np.ones(n,bool),'neighbor_pool_mask':np.ones(n,bool),
-        'null_y_identity_maps':np.tile(np.arange(n),(64,1)),
         'min_focal_anchors_per_donor':1,
     }
     return {cid:{'authenticated_fit_view_sha256':sha,'executor_input':dict(base)} for cid,sha in pkg.fit_views.items()}
@@ -42,9 +51,10 @@ def test_complete_adapter_keeps_fit_side_blind_and_controller_map_separate():
     assert set(r.controller_challenges)==set(pkg.fit_views)
     for cid,fit in r.fit_inputs.items():
         assert fit['profile_id']==cid
-        text=repr(fit)
+        text=repr({k:v for k,v in fit.items() if k not in {'z_values','x_values','y_values','z_measured','x_measured','y_measured'}})
         assert 'REL_' not in text and 'POSITIVE_TRUTH' not in text and 'NEGATIVE_TRUTH' not in text
         assert 'expected_status' not in fit and 'controller_truth' not in fit
+        assert 'z_distances' not in fit and 'null_y_identity_maps' not in fit
     assert all(v is False for v in r.authority.values())
 
 
@@ -67,14 +77,18 @@ def test_fit_hash_drift_or_extra_mutable_generation_fields_fail_closed():
         A.build_relational_qualification_adapter(pkg,payloads)
 
 
-def test_executor_input_rejects_controller_or_semantic_fields():
+def test_executor_input_rejects_controller_semantics_precomputed_distances_and_upstream_nulls():
     pkg=_package(); payloads=_payloads(pkg); first=next(iter(payloads))
-    payloads[first]['executor_input']['expected_status']='PASS'
-    with pytest.raises(A.RelationalAdapterError,match='executor_input fields'):
-        A.build_relational_qualification_adapter(pkg,payloads)
-    payloads=_payloads(pkg); payloads[first]['executor_input']['R']=np.array([1,0,0])
-    with pytest.raises(A.RelationalAdapterError,match='executor_input fields'):
-        A.build_relational_qualification_adapter(pkg,payloads)
+    for field,value in (
+        ('expected_status','PASS'),
+        ('R',np.array([1,0,0])),
+        ('z_distances',np.zeros((3,3))),
+        ('null_y_identity_maps',np.tile(np.arange(3),(64,1))),
+    ):
+        bad=_payloads(pkg)
+        bad[first]['executor_input'][field]=value
+        with pytest.raises(A.RelationalAdapterError,match='executor_input fields'):
+            A.build_relational_qualification_adapter(pkg,bad)
 
 
 def test_adapter_has_no_generator_dependency():
