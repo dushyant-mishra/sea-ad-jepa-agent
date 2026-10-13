@@ -95,7 +95,7 @@ def test_blinded_fit_receipt_is_durably_written_before_controller_truth_opens(mo
             return {"controller": "stub"}
         raise AssertionError(p)
 
-    package = SimpleNamespace(package_id="pkg", package_sha256="a" * 64)
+    package = SimpleNamespace(package_id="pkg", package_sha256="a" * 64, fit_views={})
     adapter = SimpleNamespace(status="READY")
     fit_receipt = SimpleNamespace(package_id="pkg", package_sha256="a" * 64, profiles={}, controls={}, authority={})
     qualification = SimpleNamespace(status="QUALIFIED")
