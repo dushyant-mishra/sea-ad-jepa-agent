@@ -125,6 +125,56 @@ def allowed_teacher_policies(block_type: str) -> tuple[str, ...]:
     raise PostTDContractError(f"unknown biological block type: {block}")
 
 
+def derive_teacher_evidence_set(
+    *,
+    policy: str,
+    measured_addresses: Iterable[int],
+    student_visible_addresses: Iterable[int],
+    query_address: int | None,
+    target_block_addresses: Iterable[int],
+) -> frozenset[int]:
+    """Derive lawful teacher evidence without reading expression values.
+
+    This is a structural mask constructor. It cannot select a target, infer biology,
+    or grant training authority.
+    """
+    value = str(policy).upper()
+    measured = frozenset(int(x) for x in measured_addresses)
+    student = frozenset(int(x) for x in student_visible_addresses)
+    block = frozenset(int(x) for x in target_block_addresses)
+    if not student <= measured:
+        raise PostTDContractError("student-visible evidence must be a subset of measured evidence")
+    if not block <= measured:
+        raise PostTDContractError("target block must be a subset of measured evidence")
+    if query_address is not None and int(query_address) not in measured:
+        raise PostTDContractError("query address must be measured when supplied")
+    query = None if query_address is None else int(query_address)
+
+    if value == "RICH_Q_VISIBLE_REFERENCE":
+        if query is None:
+            raise PostTDContractError("RICH_Q_VISIBLE_REFERENCE requires a query address")
+        return measured
+    if value == "RICH_Q_BLIND_COMPLEMENTARY":
+        if query is None:
+            raise PostTDContractError("RICH_Q_BLIND_COMPLEMENTARY requires a query address")
+        return frozenset(x for x in measured if x != query)
+    if value == "SAME_EVIDENCE_Q_BLIND_CONTROL":
+        if query is None:
+            raise PostTDContractError("SAME_EVIDENCE_Q_BLIND_CONTROL requires a query address")
+        return frozenset(x for x in student if x != query)
+    if value == "WHOLE_BLOCK_BLIND_CONDITIONAL":
+        return measured - block
+    if value == "RICH_COMPLEMENTARY":
+        return measured
+    if value == "SAME_EVIDENCE_CONTROL":
+        return student
+    if value == "RESIDUAL_DIAGNOSTIC":
+        if query is None:
+            raise PostTDContractError("RESIDUAL_DIAGNOSTIC requires a query address")
+        return measured
+    raise PostTDContractError(f"unknown teacher evidence policy: {value}")
+
+
 def validate_teacher_topology(
     topology: str,
     *,
