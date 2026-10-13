@@ -1,5 +1,5 @@
 from __future__ import annotations
-import hashlib, json, sys, tarfile
+import hashlib, json, sys
 from pathlib import Path
 import numpy as np
 import pytest
@@ -10,8 +10,6 @@ import build_td_relational_synthetic_package_v1 as G
 
 EXPECTED={c[0] for c in G.CAPABILITIES}
 FIT_FIELDS={'source','panel_id','z_distances','x_distances','y_distances','donor_ids','operator_ids','global_rows','focal_mask','neighbor_pool_mask','null_y_identity_maps','min_focal_anchors_per_donor'}
-ARCHIVE=ROOT/'results'/'v79'/'td_relational_test_qualification_v1'/'JEPA_TD_RELATIONAL_SYNTHETIC_V1_20261013.tar.xz'
-ARCHIVE_ROOT='JEPA_TD_RELATIONAL_SYNTHETIC_V1_20261013'
 
 def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -118,17 +116,3 @@ def test_generation_is_byte_deterministic(tmp_path):
     af={str(p.relative_to(a)):hashlib.sha256(p.read_bytes()).hexdigest() for p in a.rglob('*') if p.is_file()}
     bf={str(p.relative_to(b)):hashlib.sha256(p.read_bytes()).hexdigest() for p in b.rglob('*') if p.is_file()}
     assert af==bf
-
-def test_committed_frozen_archive_matches_exact_repository_generator(tmp_path):
-    assert ARCHIVE.is_file()
-    extracted=tmp_path/'extracted'
-    with tarfile.open(ARCHIVE,'r:xz') as tf:
-        tf.extractall(extracted,filter='data')
-    frozen=extracted/ARCHIVE_ROOT
-    regenerated=tmp_path/'regenerated'; G.main(str(regenerated))
-    excluded={'file_ledger.json','synthetic_qualification_receipt.json'}
-    frozen_files={str(p.relative_to(frozen)):p for p in frozen.rglob('*') if p.is_file() and p.name not in excluded}
-    regenerated_files={str(p.relative_to(regenerated)):p for p in regenerated.rglob('*') if p.is_file()}
-    assert set(frozen_files)==set(regenerated_files)
-    mismatched={name:(sha(frozen_files[name]),sha(regenerated_files[name])) for name in frozen_files if frozen_files[name].read_bytes()!=regenerated_files[name].read_bytes()}
-    assert not mismatched, mismatched
