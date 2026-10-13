@@ -1,0 +1,135 @@
+{
+  "authenticated_blinded_receipt_sha256": "e67aace8dfa8b9823cf8635155a48f5a78faed0a45bf9edb6f7adcba07737684",
+  "binding_sha256_match": true,
+  "blinded_receipt_sha256_match": true,
+  "controller_read_sentinel_triggered": false,
+  "controls_per_challenge": [
+    5
+  ],
+  "fit_engine_identity_at_repo_root": {
+    "scripts/v5/td_relational_successor_capability_reducer_v1.py": "bde674193184102ce78d771c45653968d4c47f29547dec7c2912a37d8d4df052",
+    "scripts/v5/td_relational_successor_disk_runner_v4.py": "ae3f9a580ddb10173e5af349355d5affe8ac06fb91985fb0f4f21691b28c6903",
+    "scripts/v5/td_relational_successor_estimability_v1.py": "0b6424dc00e9f7a37e637ca8a8ea1fdf7a0ce59a9b5170af8591609d234103ef",
+    "scripts/v5/td_relational_successor_gate_v2.py": "bac57df539e2729cda927f52cceba4d4e4b5b55400ae023bf660db17bb31d92a",
+    "scripts/v5/td_relational_successor_observed_executor_v2.py": "3fdd4e37e3c25a4fc119410a74b48d81e0194216da0acc81e083ea1fc0798d05",
+    "scripts/v5/td_relational_successor_qualification_runner_v3.py": "b0cf3985ab03c4f7d5bc3bc1e58e2bc0bccbd8c45430342733c08c2e0cb59f08",
+    "scripts/v5/td_relational_successor_synthetic_adapter_v2.py": "c76aff20dedc5768cf1a59af5dd96187a9e71e318f7abe5a201811b6a34e3e8e",
+    "scripts/v5/td_test_qualification_package_v2.py": "aeedae32ae4c6cde8741ea9bbeee5459915fac6b8e33ab4e2d9531675c2e130d"
+  },
+  "fit_engine_identity_bound_in_receipt": {
+    "scripts/v5/td_relational_successor_capability_reducer_v1.py": "bde674193184102ce78d771c45653968d4c47f29547dec7c2912a37d8d4df052",
+    "scripts/v5/td_relational_successor_disk_runner_v4.py": "ae3f9a580ddb10173e5af349355d5affe8ac06fb91985fb0f4f21691b28c6903",
+    "scripts/v5/td_relational_successor_estimability_v1.py": "0b6424dc00e9f7a37e637ca8a8ea1fdf7a0ce59a9b5170af8591609d234103ef",
+    "scripts/v5/td_relational_successor_gate_v2.py": "bac57df539e2729cda927f52cceba4d4e4b5b55400ae023bf660db17bb31d92a",
+    "scripts/v5/td_relational_successor_observed_executor_v2.py": "3fdd4e37e3c25a4fc119410a74b48d81e0194216da0acc81e083ea1fc0798d05",
+    "scripts/v5/td_relational_successor_qualification_runner_v3.py": "b0cf3985ab03c4f7d5bc3bc1e58e2bc0bccbd8c45430342733c08c2e0cb59f08",
+    "scripts/v5/td_relational_successor_synthetic_adapter_v2.py": "c76aff20dedc5768cf1a59af5dd96187a9e71e318f7abe5a201811b6a34e3e8e",
+    "scripts/v5/td_test_qualification_package_v2.py": "aeedae32ae4c6cde8741ea9bbeee5459915fac6b8e33ab4e2d9531675c2e130d"
+  },
+  "fit_engine_identity_match": true,
+  "fit_receipt_authority": {
+    "real_execution_authorized": false,
+    "stage4_authorized": false,
+    "target_selection_authorized": false,
+    "td60_authorized": false,
+    "training_authorized": false
+  },
+  "forbidden_dir": "d:\\jepa_td_synthetic_phase2_7659030c_20261013\\phase2_controller",
+  "forbidden_dir_accessed": false,
+  "frozen_scale_labels": [
+    "1/8",
+    "1/6",
+    "1/4",
+    "1/3",
+    "1/2"
+  ],
+  "inputs_post": {
+    "binding": "ab29bacd07fc6697eff8dfe48461ec5f1cc1ec7d378724b10def93910f98ac44",
+    "blinded_receipt": "e67aace8dfa8b9823cf8635155a48f5a78faed0a45bf9edb6f7adcba07737684"
+  },
+  "inputs_pre": {
+    "binding": "ab29bacd07fc6697eff8dfe48461ec5f1cc1ec7d378724b10def93910f98ac44",
+    "blinded_receipt": "e67aace8dfa8b9823cf8635155a48f5a78faed0a45bf9edb6f7adcba07737684"
+  },
+  "inputs_unchanged": true,
+  "loaded_modules": {
+    "disk_runner_v3": "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_disk_runner_v3.py",
+    "disk_runner_v4": "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_disk_runner_v4.py",
+    "gate_v2": "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_gate_v2.py"
+  },
+  "lossless_reserialization_byte_identical": true,
+  "n_challenges": 9,
+  "n_control_profiles": 45,
+  "n_primary_profiles": 9,
+  "non_stdlib_paths_accessed": [
+    "d:\\jepa_td_synthetic_phase2_7659030c_20261013\\frozen_receipt\\td_relational_successor_blinded_fit_receipt_v4.json",
+    "d:\\jepa_td_synthetic_phase2_7659030c_20261013\\phase2_package\\pre_fit\\td_external_synthetic_package_binding_v2.json",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_capability_reducer_v1.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_disk_runner_v1.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_disk_runner_v2.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_disk_runner_v3.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_disk_runner_v4.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_estimability_v1.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_gate_v1.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_gate_v2.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_geometry_v1.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_observed_executor_v1.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_observed_executor_v2.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_qualification_runner_v1.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_qualification_runner_v2.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_qualification_runner_v3.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_readiness_v1.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_readiness_v2.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_synthetic_adapter_v1.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_relational_successor_synthetic_adapter_v2.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_test_of_test_controller_v1.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_test_qualification_package_v1.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\__pycache__\\td_test_qualification_package_v2.cpython-311.pyc",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_capability_reducer_v1.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_disk_runner_v1.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_disk_runner_v2.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_disk_runner_v3.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_disk_runner_v4.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_estimability_v1.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_gate_v1.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_gate_v2.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_geometry_v1.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_observed_executor_v1.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_observed_executor_v2.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_qualification_runner_v1.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_qualification_runner_v2.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_qualification_runner_v3.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_readiness_v1.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_readiness_v2.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_synthetic_adapter_v1.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_relational_successor_synthetic_adapter_v2.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_test_of_test_controller_v1.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_test_qualification_package_v1.py",
+    "d:\\jepa_wt_td_synth_phase2_7659030c\\scripts\\v5\\td_test_qualification_package_v2.py"
+  ],
+  "package_id": "JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_20261013",
+  "package_sha256": "0977c30f6551df72e244423e1b37733cafa9178099bd0b9ab796beb8a52d2115",
+  "raw_on_disk_scale_key_orders": [
+    [
+      "1/2",
+      "1/3",
+      "1/4",
+      "1/6",
+      "1/8"
+    ]
+  ],
+  "reconstructed_scale_key_orders": [
+    [
+      "1/8",
+      "1/6",
+      "1/4",
+      "1/3",
+      "1/2"
+    ]
+  ],
+  "repo_root": "D:\\jepa_wt_td_synth_phase2_7659030c",
+  "reserialized_sha256": "e67aace8dfa8b9823cf8635155a48f5a78faed0a45bf9edb6f7adcba07737684",
+  "schema": "JEPA_TD_PHASE2_FROZEN_RECEIPT_READER_PREFLIGHT_V1",
+  "status": "READER_ACCEPTED"
+}

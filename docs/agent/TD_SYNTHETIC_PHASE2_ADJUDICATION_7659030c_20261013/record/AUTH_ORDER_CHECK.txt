@@ -1,0 +1,17 @@
+52:def _validate_identity(value: object, expected: Mapping[str, str]) -> None:
+65:    output = V3._guard_new_output(
+85:        "fit_engine_identity": fit_engine_identity(repo_root),
+106:    expected_identity = fit_engine_identity(repo_root)
+107:    _validate_identity(document.get("fit_engine_identity"), expected_identity)
+121:def authenticate_blinded_phase_inputs(
+123:    blinded_receipt_path: Path | str, expected_blinded_receipt_sha256: str,
+133:    if not isinstance(expected_blinded_receipt_sha256, str) or len(expected_blinded_receipt_sha256) != 64:
+136:    if actual_blinded_sha != expected_blinded_receipt_sha256:
+150:    expected_blinded_receipt_sha256: str, controller_manifest_path: Path | str,
+154:    output = V3._guard_new_output(
+159:    package, fit_receipt, actual_blinded_sha = authenticate_blinded_phase_inputs(
+164:        expected_blinded_receipt_sha256=expected_blinded_receipt_sha256,
+167:    controller_manifest = V3._read_controller_json(controller_manifest_path)
+188:        "fit_engine_identity": fit_engine_identity(repo_root),
+230:        output = V3._guard_new_output(args.output, protected_files=(args.binding,), fit_dir=args.fit_dir)
+255:        expected_blinded_receipt_sha256=args.blinded_receipt_sha256,

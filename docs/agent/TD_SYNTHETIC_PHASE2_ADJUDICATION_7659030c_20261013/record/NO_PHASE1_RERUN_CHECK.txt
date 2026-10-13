@@ -1,0 +1,7 @@
+check_utc=2026-10-13T22:05:55Z
+remote branches matching phase1:
+  origin/evidence/td-synthetic-phase1-blinded-fit-1f474a44-20261013
+origin/evidence/td-synthetic-phase1-blinded-fit-1f474a44-20261013 a1aed169be5f4552208128f9d71b2d601a657393 2026-10-13T13:57:00-04:00 evidence(td): synthetic phase-1 blinded fit (V4) at 1f474a44 — receipt frozen, controller unopened
+frozen receipt at a1aed169 == copy used here: YES
+previous workspace frozen receipt sha: e67aace8dfa8b9823cf8635155a48f5a78faed0a45bf9edb6f7adcba07737684
+this session ran no run_blinded_fit_phase / 'fit' subcommand

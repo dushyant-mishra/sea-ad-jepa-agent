@@ -1,0 +1,6 @@
+check_utc=2026-10-13T22:04:39Z
+prefit artifact 11834580081 zip sha256=97c89d0e1781b7fe8a3a0e4c5b84bcf181e7e1636cbcb0f81a2679a3dc076798 (GitHub digest 97c89d0e1781b7fe8a3a0e4c5b84bcf181e7e1636cbcb0f81a2679a3dc076798)
+controller artifact 11833833421 zip sha256=8e796017c01e50fd483278d0eec6f94513e949324665c84b877ae4b7cd621364 (GitHub digest 8e796017c01e50fd483278d0eec6f94513e949324665c84b877ae4b7cd621364)
+prefit archive: sha256=ba0fa56a49ffa009a0225606fb48d8fb30c3bd410a6a264ef905db5d4bb18803 size=7018400 -> MATCH
+controller archive: sha256=f554e2a95315bb39cc8f7e366620bca5cb2126a4896b3790ed2c632e5cc6a328 size=2028 -> MATCH
+run 38438433970; separated_transport_receipt.json present in prefit zip, not extracted

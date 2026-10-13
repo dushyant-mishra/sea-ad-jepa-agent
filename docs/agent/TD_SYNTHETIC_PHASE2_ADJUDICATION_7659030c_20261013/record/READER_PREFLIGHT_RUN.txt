@@ -1,0 +1,4 @@
+preflight_tool_sha256=e472857383ce52ea885a62e19b107fec7066e47af8663ef0a5fc2adf36b09341 start_utc=2026-10-13T22:06:14.923Z head=7659030cd2fc9a2662c67a9bf4d23e0e8f3f1606
+{"status": "READER_ACCEPTED", "inputs_unchanged": true, "forbidden_dir_accessed": false}
+exit=0
+end_utc=2026-10-13T22:06:15.682Z status_after=[]
