@@ -1,0 +1,11 @@
+{
+  "outputs": {
+    "adjudication": "fd19a1c69925ee3992f3d69eb36a2cb7fc34c301172c4cf232b724b3b38160a8",
+    "descriptive_metrics": "aec58a396da5516a275bff91b63ae09155a902df817f19f6a9e266fec447438d",
+    "gate_table": "96bfaa982e5aac0e6a30bf7359510829d80cbb8f24cc84b165b6bf158e85c21b",
+    "heldout_oracle": "ac313d3f4035b440444433f7fb798f09516142c397e58d619820a9a0e90fa792",
+    "scored_rows": "7b3bef4dcb7bd7492407ac9d7c605a04be5e90776302db94a3f0af73e1a1cd6a"
+  },
+  "receipt": "D:\\jepa_v79_scoring_run_ac1e73d7_20261013\\scoring_output\\V79_V2_CORE_QUALIFICATION_SCORING_RUN_RECEIPT_V2.json",
+  "receipt_sha256": "ef10852e534fe8a83c3aebd832ad3a531d755d06185464441494712818e8abfd"
+}

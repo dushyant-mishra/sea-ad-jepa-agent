@@ -1,0 +1,9 @@
+pre_utc=2026-10-13T23:29:49Z
+authority: controller scoring authorization 4793d8f9... (commit 3291f2af), issued for scorer head ac1e73d7; one-shot
+checkout: D:/jepa_v79_scoring_exec_ac1e73d7 (fresh detached worktree)
+git rev-parse HEAD: ac1e73d79489438634aaeeca035d229875f3186a
+git status --porcelain --untracked-files=all: lines=0
+git status --porcelain --ignored: lines=0
+orchestrator blob: 2e3768ffe3d3f01401e08bd8d2d820a88212a78d sha256=7a46bbfe1450c371e7742f01203f51369ea432afc27b6b9bf5c99688012d2abf
+output dir (must not exist): D:/jepa_v79_scoring_run_ac1e73d7_20261013/scoring_output exists=NO
+PR policy: scorer branch PR-less; no PR workflow triggered

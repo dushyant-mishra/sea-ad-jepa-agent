@@ -1,0 +1,13 @@
+post_utc=2026-10-13T23:33:24Z
+git rev-parse HEAD: ac1e73d79489438634aaeeca035d229875f3186a
+git status --porcelain --untracked-files=all: lines=0; --ignored lines=0
+invocations: 1 (RUN_STARTED.marker 2026-10-13T23:30:13.391Z); no rerun
+exit: run_exit=0; stderr bytes: 0
+output dir entries: 6 [V79_V2_CORE_DESCRIPTIVE_METRICS_V1.json V79_V2_CORE_GATE_SCORE_TABLE_V1.json V79_V2_CORE_HELDOUT_ORACLE_SET_V1.json V79_V2_CORE_QUALIFICATION_ADJUDICATION_V1.json V79_V2_CORE_QUALIFICATION_SCORING_RUN_RECEIPT_V2.json V79_V2_CORE_SCORED_ROWS_V1.json ]
+post-run non-truth input identities (orchestrator also re-verified all inputs before writing the receipt):
+  campaign receipt a0065925789c58409a85ccbf72d24f5c7b1be142a4d17eddc434babdf0d0e340
+  result ledger d467bb9b51336278ee46566173148a4f112eaa79cf578b8bbfae502cb4388b89
+  custody receipt c5116d6273f82fd3b3c5450b6bb8d701e03ef7d17ba6ada98eb5ff5aec906b63
+  authorization copy 4793d8f9024891a6572337246c76dea871b65ebde476d8f3983c483498b80337
+controller truth: read only by the orchestrator after the barrier (receipt truth_open_last); by me: never read or hashed
+PR: none opened; no PR workflow triggered
