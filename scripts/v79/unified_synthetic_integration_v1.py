@@ -9,7 +9,7 @@ from typing import Mapping
 import numpy as np
 
 from .v79_hierarchical_biology import LatentBiology, generate_latent_biology
-from .v79_rare_biology_generator_v1 import REGIMES, RareWorldConfig, SIGNS, _donor_latent
+from .v79_rare_biology_generator_v1 import SIGNS
 
 
 _SCHEMA = "UNIFIED_SYNTHETIC_INTEGRATION_MANIFEST_V1"
@@ -29,6 +29,17 @@ _AUTHORITY_KEYS = (
     "synthetic_training_authorized",
 )
 _CANDIDATE = re.compile(r"(?:^|[^A-Z0-9])C[1-6](?:[^A-Z0-9]|$)", re.IGNORECASE)
+
+# Synthetic stress presets only. These values intentionally do not reuse the
+# quarantined STAT1/50K empirical donor-frequency moments from PR #311.
+# They preserve the qualitative weak/central/strong/extreme rarity ordering
+# needed for mechanics rehearsal while carrying no human-prevalence authority.
+SYNTHETIC_RARITY_PRESETS = {
+    "weak": {"active_prob": 0.42, "alpha": 2.0, "beta": 10.0},
+    "central": {"active_prob": 0.27, "alpha": 2.0, "beta": 11.0},
+    "strong": {"active_prob": 0.18, "alpha": 2.0, "beta": 13.0},
+    "extreme": {"active_prob": 0.11, "alpha": 2.0, "beta": 15.0},
+}
 
 
 @dataclass(frozen=True)
@@ -61,7 +72,11 @@ def validate_integration_manifest(manifest: Mapping[str, object]) -> Integration
     if any(authority[k] is not False for k in _AUTHORITY_KEYS):
         raise ValueError("integration authority escalation refused")
     calibration = manifest.get("calibration")
-    if not isinstance(calibration, Mapping) or calibration.get("stat1_50k_physical_row_status") != "QUARANTINED_NOT_HARD_AUTHORITY":
+    if (
+        not isinstance(calibration, Mapping)
+        or calibration.get("stat1_50k_physical_row_status") != "QUARANTINED_NOT_HARD_AUTHORITY"
+        or calibration.get("rare_frequency_source") != "SYNTHETIC_STRESS_PRESETS_NOT_EMPIRICAL_CALIBRATION"
+    ):
         raise ValueError("50K STAT1 calibration caveat missing")
     return IntegrationAuthority(dict(sources), {k: False for k in _AUTHORITY_KEYS}, dict(calibration))
 
@@ -81,8 +96,8 @@ class UnifiedBiologyConfig:
     def __post_init__(self) -> None:
         if self.n_cells < 1 or self.n_genes < 8 or self.n_donors < 2:
             raise ValueError("invalid unified biology dimensions")
-        if not self.rare_regime_ids or any(r not in REGIMES for r in self.rare_regime_ids):
-            raise ValueError("rare_regime_ids must use frozen PR311 regimes")
+        if not self.rare_regime_ids or any(r not in SYNTHETIC_RARITY_PRESETS for r in self.rare_regime_ids):
+            raise ValueError("rare_regime_ids must use frozen synthetic challenge classes")
         if not (0 < self.context_niche_fraction < 1):
             raise ValueError("context_niche_fraction must lie in (0,1)")
         if self.context_niche_multiplier <= 0 or self.perturb_response_delta < 0:
@@ -188,6 +203,20 @@ def _balanced_perturbation_arms(donor_id: np.ndarray, rng: np.random.Generator) 
     return arms
 
 
+def _draw_synthetic_donor_latent(
+    rng: np.random.Generator,
+    n_donors: int,
+    preset: Mapping[str, float],
+) -> tuple[np.ndarray, np.ndarray]:
+    active = rng.binomial(1, float(preset["active_prob"]), int(n_donors)).astype(bool)
+    prevalence = np.zeros(int(n_donors), dtype=np.float32)
+    n_active = int(active.sum())
+    if n_active:
+        p = rng.beta(float(preset["alpha"]), float(preset["beta"]), n_active)
+        prevalence[active] = np.clip(p, 0.01, 0.50).astype(np.float32)
+    return active, prevalence
+
+
 def build_unified_biology(config: UnifiedBiologyConfig, *, seed: int) -> UnifiedBiologyWorld:
     if _contains_candidate(config.extra_metadata):
         raise ValueError("candidate identifiers are forbidden from generator configuration")
@@ -205,16 +234,17 @@ def build_unified_biology(config: UnifiedBiologyConfig, *, seed: int) -> Unified
     activity = np.zeros((config.n_cells, n_programs), dtype=bool)
     for p, regime in enumerate(regimes):
         prng = np.random.default_rng(int(seed) + 701 + 104729 * p)
-        rare_cfg = RareWorldConfig(seed=int(seed), n_donors=config.n_donors, cells_per_donor=1, regime=regime, world="rna_only")
-        active_p, prevalence_p = _donor_latent(prng, rare_cfg)
-        donor_active[:, p] = active_p.astype(bool)
-        donor_prevalence[:, p] = prevalence_p.astype(np.float32)
+        active_p, prevalence_p = _draw_synthetic_donor_latent(
+            prng, config.n_donors, SYNTHETIC_RARITY_PRESETS[regime]
+        )
+        donor_active[:, p] = active_p
+        donor_prevalence[:, p] = prevalence_p
         for donor in range(config.n_donors):
             ix = np.flatnonzero((latent.donor == donor) & eligibility[:, p])
             if not len(ix) or prevalence_p[donor] <= 0:
                 continue
             base_p = float(prevalence_p[donor])
-            if p == 1:  # PR311 conditioned-context semantics embedded in this population.
+            if p == 1:
                 inside = context_niche[ix]
                 n_in = int(inside.sum())
                 p_in = min(0.5, base_p * config.context_niche_multiplier)
@@ -226,9 +256,6 @@ def build_unified_biology(config: UnifiedBiologyConfig, *, seed: int) -> Unified
                 probs = np.full(len(ix), base_p, dtype=float)
             activity[ix, p] = prng.binomial(1, probs).astype(bool)
 
-    # Preserve the stochastic realization exactly. A finite rare regime is allowed
-    # to realize zero positive cells even when donor-level prevalence is nonzero;
-    # never inject positives merely to satisfy a fixture or coverage expectation.
     rare_activity = activity.any(axis=1)
     rare_eligible = eligibility.any(axis=1)
 
@@ -245,8 +272,6 @@ def build_unified_biology(config: UnifiedBiologyConfig, *, seed: int) -> Unified
         if cells.any():
             multiplier = np.exp(config.rare_effect_scale * signs)
             expected[np.ix_(cells, genes)] *= multiplier[None, :]
-    # PR311 perturbation actual/control/null semantics: only actual-arm rare cells
-    # receive the additional response; null arm has no biological response.
     if perturbation_state.any():
         genes = np.arange(block_width) % config.n_genes
         response = np.exp(config.perturb_response_delta * sign_template[:block_width])
