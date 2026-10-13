@@ -62,6 +62,7 @@ jobs:
             tests/v5/test_td_relational_successor_capability_reducer_v1.py \
             tests/v5/test_td_relational_successor_qualification_runner_v1.py \
             tests/v5/test_td_relational_successor_readiness_v1.py \
+            tests/v5/test_td_relational_successor_disk_runner_v1.py \
             | tee qualification/pytest-focused.txt
       - name: Run branch-local relational replay spillover tests
         run: |
