@@ -1,0 +1,1 @@
+Successor implementation source: implementation/jepa-post-td-harness-prefreeze-20261013 @ 97dd73f49e1554053bbfab6c5369377a23a72ceb.
