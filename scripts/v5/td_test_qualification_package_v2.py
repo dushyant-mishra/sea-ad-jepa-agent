@@ -28,6 +28,10 @@ FORBIDDEN_FIT_VIEW_FIELDS = frozenset({
     "semantic_class", "control_roles", "z_distances", "x_distances", "y_distances",
     "null_y_identity_maps", "pair_coordinates", "pair_signs", "observed_statistic", "null_statistics",
 })
+FORBIDDEN_CHALLENGE_ID_TOKENS = (
+    "REL_", "POSITIVE", "NEGATIVE", "UNDERPOWER", "UNDERIDENT", "STRESS", "RARE",
+    "BROAD", "MESO", "FINE", "NULL", "TECHNICAL", "DONOR_RESTRICTED", "MULTI_ISLAND",
+)
 
 
 @dataclass(frozen=True)
@@ -99,6 +103,8 @@ def validate_external_package_binding(binding: Mapping, *, authenticated_package
         sha = rec.get("sha256")
         if not isinstance(challenge_id, str) or not challenge_id:
             raise PackageBindingError("challenge_id must be an opaque nonempty string")
+        if any(token in challenge_id.upper() for token in FORBIDDEN_CHALLENGE_ID_TOKENS):
+            raise PackageBindingError(f"challenge_id must be semantically opaque: {challenge_id}")
         if challenge_id in fit_views:
             raise PackageBindingError(f"duplicate challenge_id: {challenge_id}")
         if not _is_sha256(sha):
