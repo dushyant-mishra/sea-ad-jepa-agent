@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Mapping
 
-from .unified_synthetic_integration_v1 import UnifiedBiologyWorld
+from .unified_synthetic_integration_v1 import CALIBRATION_BOUNDARY, UnifiedBiologyWorld
 from .unified_synthetic_fit_view_v1 import UnifiedFitView, fit_view_sha256
 from .unified_synthetic_controller_truth_v1 import UnifiedControllerTruth, controller_truth_sha256
 
@@ -24,11 +24,6 @@ _SOURCE_COMMITS = {
     "v79_pr253": "1a0ab6e1108af924ca13e81caa3c70f3101d251c",
     "pr311": "2b6d3439105e087acdab53a318c57bbb468eae26",
     "pr315": "af03ef67d52651463944a6de3a08e101ad00e0ea",
-}
-_CALIBRATION = {
-    "stat1_50k_physical_row_status": "QUARANTINED_NOT_HARD_AUTHORITY",
-    "rare_frequency_source": "SYNTHETIC_STRESS_PRESETS_NOT_EMPIRICAL_CALIBRATION",
-    "pseudo_rarity_source": "SYNTHETIC_STRESS_PRESET_NOT_EMPIRICAL_CALIBRATION",
 }
 _INTEGRATION_SOURCE_FILES = (
     "scripts/v79/unified_synthetic_integration_v1.py",
@@ -81,7 +76,7 @@ def build_integration_receipt(*, world: UnifiedBiologyWorld, fit_view: UnifiedFi
     except Exception as exc:
         raise ValueError("integration manifest must be inside repository") from exc
     manifest=json.loads(manifest_path.read_text(encoding="utf-8"))
-    if manifest.get("calibration") != _CALIBRATION:
+    if manifest.get("calibration") != CALIBRATION_BOUNDARY:
         raise ValueError("integration manifest calibration boundary differs")
     manifest_sha=_sha_file(manifest_path)
     source_identity=_integration_source_identity(root)
@@ -94,7 +89,7 @@ def build_integration_receipt(*, world: UnifiedBiologyWorld, fit_view: UnifiedFi
         "source_commits": _SOURCE_COMMITS,
         "integration_manifest_sha256": manifest_sha,
         "integration_source_sha256": source_identity,
-        "calibration": _CALIBRATION,
+        "calibration": CALIBRATION_BOUNDARY,
     }
     package_sha = sha256(_canon(package_identity)).hexdigest()
     return {
@@ -107,7 +102,7 @@ def build_integration_receipt(*, world: UnifiedBiologyWorld, fit_view: UnifiedFi
         "controller_truth_sha256": controller_sha,
         "synthetic_package_sha256": package_sha,
         "controller_in_fit_package": False,
-        "calibration": dict(_CALIBRATION),
+        "calibration": dict(CALIBRATION_BOUNDARY),
         "authority": dict(_AUTHORITY),
     }
 
@@ -121,7 +116,7 @@ def write_integration_receipt_once(path: Path, receipt: Mapping[str, object]) ->
     authority = receipt.get("authority")
     if not isinstance(authority, Mapping) or any(value is not False for value in authority.values()):
         raise ValueError("authority escalation refused")
-    if receipt.get("calibration") != _CALIBRATION:
+    if receipt.get("calibration") != CALIBRATION_BOUNDARY:
         raise ValueError("receipt calibration boundary differs")
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_bytes(_canon(receipt))
