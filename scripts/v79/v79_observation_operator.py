@@ -148,7 +148,7 @@ def observe_latent_biology(latent: LatentBiology, authority: Mapping[str, Any] |
             s = float(weights.sum())
             if totals[i] > 0 and s > 0:
                 dense[i] = rng.multinomial(int(totals[i]), weights / s)
-    else:
+    else:  # pragma: no cover - validator prevents this
         raise ValueError("unsupported realization family")
 
     counts = sparse.csr_matrix(dense)
