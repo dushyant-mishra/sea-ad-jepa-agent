@@ -34,6 +34,7 @@ def test_receipt_binds_fit_controller_manifest_and_source_bytes_with_authority_o
     assert r["calibration"] == {
         "stat1_50k_physical_row_status": "QUARANTINED_NOT_HARD_AUTHORITY",
         "rare_frequency_source": "SYNTHETIC_STRESS_PRESETS_NOT_EMPIRICAL_CALIBRATION",
+        "pseudo_rarity_source": "SYNTHETIC_STRESS_PRESET_NOT_EMPIRICAL_CALIBRATION",
     }
     assert not any(r["authority"].values())
 
