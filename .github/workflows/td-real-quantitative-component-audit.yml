@@ -1,0 +1,39 @@
+name: TD real quantitative component audit
+
+on:
+  push:
+    branches:
+      - engineering/td-real-quantitative-rule-recovery-20261013
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quantitative-components:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pytest
+        run: python -m pip install pytest
+      - name: Bind head
+        run: |
+          test -z "$(git status --short)"
+          echo "HEAD=$(git rev-parse HEAD)"
+      - name: Run reusable-component regressions
+        run: |
+          python -m pytest -q \
+            tests/v5/test_td_real_quantitative_components_v1.py \
+            tests/v5/test_td_real_quantitative_rule_recovery_map_v1.py \
+            tests/v5/test_td_target_tournament_precision.py \
+            tests/v5/test_td_precision_donor_identity.py \
+            tests/v5/test_td_donor_resampling_audit.py
+      - name: Confirm clean and no authority
+        run: |
+          test -z "$(git status --short --untracked-files=no)"
+          echo 'BIOLOGICAL_OUTCOMES_OPENED=false'
+          echo 'REAL_TD_AUTHORIZED=false'
