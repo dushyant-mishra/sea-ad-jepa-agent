@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 import hashlib
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -159,3 +160,15 @@ def test_qualification_processes_import_no_controller_or_scoring_modules():
             if isinstance(node,ast.Import): imported.update(alias.name for alias in node.names)
             elif isinstance(node,ast.ImportFrom) and node.module: imported.add(node.module)
         assert not (imported & forbidden)
+
+
+def test_world_worker_import_preserves_pre_jax_runtime_configuration_boundary():
+    code=f'''\nimport sys\nfrom pathlib import Path\nsys.path.insert(0, {str(HERE)!r})\nimport run_v79_v2_core_qualification_world\nimport v79_v2_core_runtime as RT\nassert "jax" not in sys.modules\nassert "jaxlib" not in sys.modules\nRT.configure_before_jax_import({{"resources":{{"xla_host_devices":4}},"inference":{{"chains":4}}}})\n'''
+    proc=subprocess.run([sys.executable,"-c",code],cwd=ROOT,text=True,capture_output=True)
+    assert proc.returncode==0, proc.stdout+proc.stderr
+
+
+def test_world_worker_execute_world_reaches_configured_jax_through_real_entrypoint(tmp_path):
+    code=f'''\nimport os\nimport sys\nfrom contextlib import contextmanager\nfrom pathlib import Path\nfrom types import SimpleNamespace\nfor name in ("JAX_PLATFORMS","JAX_ENABLE_X64","JAX_DEFAULT_MATMUL_PRECISION","XLA_FLAGS"):\n    os.environ.pop(name,None)\nsys.path.insert(0, {str(HERE)!r})\nimport run_v79_v2_core_qualification_world as W\noid="000000000001"\nqueue=[]\nfor g in range(44):\n    for part in ("detection","positive"):\n        queue.append({{"opaque_world_id":oid,"fit_id":f"{{len(queue)+1:064x}}"}})\nhead="a"*40\ncustody=SimpleNamespace(\n    receipt={{"executor_code_head":head}},\n    queue=tuple(queue),\n    seed_by_fit_id={{x["fit_id"]:123456 for x in queue}},\n    fit_contract={{"resources":{{"xla_host_devices":4}},"inference":{{"chains":4}}}},\n    blinded_index=object(),\n)\nW._require_clean=lambda root: None\nW._git_head=lambda root: head\nW.C.load_qualification_custody=lambda *args,**kwargs: custody\nW.Q.completed_prefix=lambda *args,**kwargs: 0\nW.RL.validate_runtime=lambda *args,**kwargs: None\nW.F.load_blinded_world=lambda *args,**kwargs: SimpleNamespace(opaque_world_id=oid)\n@contextmanager\ndef lock(_path):\n    yield\nW.RM.single_heavy_fit_lock=lock\nW._fit_one=lambda **kwargs: None\nout=W.execute_world(Path({str(ROOT)!r}),Path("unused-custody"),Path({str(tmp_path)!r}),expected_custody_receipt_sha256="b"*64,opaque_world_id=oid)\nassert out=={{"opaque_world_id":oid,"completed":88,"already_complete":False}}\nimport jax\nassert len(jax.devices())==4\nassert all(str(d.platform).lower()=="cpu" for d in jax.devices())\n'''
+    proc=subprocess.run([sys.executable,"-c",code],cwd=ROOT,text=True,capture_output=True)
+    assert proc.returncode==0, proc.stdout+proc.stderr

@@ -15,7 +15,6 @@ import numpy as np
 
 import v79_v2_core_fit_contract as FC
 import v79_v2_core_fit_outputs as O
-import v79_v2_core_fit_predictive as P
 import v79_v2_core_fit_runner as R
 import v79_v2_core_fit_surface as F
 import v79_v2_core_identified_summary as I
@@ -55,6 +54,7 @@ def _write_npz_once(path:Path,**arrays)->str:
     os.replace(tmp,path); return _sha(path)
 
 def _heldout_predictive(active_samples:Mapping[str,np.ndarray], world:F.BlindedWorld, *, gene_index:int, part:str)->dict:
+    import v79_v2_core_fit_predictive as P
     same=F.load_gene_inputs(world,gene_index=gene_index,replicate="same_donor")
     new=F.load_gene_inputs(world,gene_index=gene_index,replicate="new_donor")
     if part=="detection":
