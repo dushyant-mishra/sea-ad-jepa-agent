@@ -33,7 +33,7 @@ jobs:
       - name: Compile TD implementation
         run: python -m compileall -q scripts/v5
       - name: Run V4 engine custody tests
-        run: python -m pytest -q tests/v5/test_td_relational_successor_v3_custody.py tests/v5/test_td_relational_successor_v4_engine_identity.py
+        run: python -m pytest -q tests/v5/test_td_relational_successor_v3_custody.py tests/v5/test_td_relational_successor_v4_engine_identity.py tests/v5/test_td_relational_successor_phase2_scale_order_regression.py
       - name: Re-run frozen V2 focused qualification suite
         run: |
           python -m pytest -q \
