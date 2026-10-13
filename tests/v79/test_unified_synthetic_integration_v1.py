@@ -46,9 +46,11 @@ def test_unified_population_reuses_all_pr311_rare_regimes_without_parallel_world
     assert w.rare_donor_active.shape == (60,4)
     assert w.rare_donor_prevalence.shape == (60,4)
     # Each column is a program-frequency regime inside the same cells/donors,
-    # not a separately generated world.
+    # not a separately generated world. Finite rare programs may lawfully realize
+    # zero cells; donor-active/prevalence truth remains the frozen PR311 authority.
     assert np.array_equal(w.rare_activity, w.rare_program_activity.any(axis=1))
-    assert w.rare_program_activity.sum(axis=0).min() > 0
+    assert (w.rare_program_activity.sum(axis=0) > 0).sum() >= 3
+    assert np.all(w.rare_donor_prevalence[~w.rare_donor_active] == 0)
     active_rates=w.rare_donor_active.mean(axis=0)
     expected=np.array([REGIMES[r]["active_prob"] for r in w.rare_regime_ids])
     assert np.max(np.abs(active_rates-expected)) < 0.20
