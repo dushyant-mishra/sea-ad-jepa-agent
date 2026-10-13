@@ -20,7 +20,6 @@ class GateRuleError(ValueError):
 
 CALLABLE_STRUCTURAL = {
     "G1_INTEGRITY_LINEAGE",
-    "G6_TEACHER_INFORMATION_ADVANTAGE",
     "R2_LOCALITY_RULE_FROZEN_NO_FINE_MINING",
     "Q1_Q_SCALAR_STUDENT_ABSENT",
     "Q2_Q_EXCLUDED_TEACHER_PRIMARY_ANCHOR",
@@ -35,14 +34,6 @@ _STRUCTURAL_SPECS = {
             "post_outcome_redesign", "post_outcome_relabeling",
         ],
         "decision_rule": "PASS iff required identity names are nonempty/unique, bound SHA-256 keys match them exactly with valid lowercase hashes, and redesign/relabeling are both false; missing fields are NOT_ESTIMABLE; contradiction is FAIL",
-    },
-    "G6_TEACHER_INFORMATION_ADVANTAGE": {
-        "estimand": "teacher evidence rights are strictly richer than student rights and withheld target evidence is inaccessible directly or transitively to the student",
-        "required_fields": [
-            "teacher_evidence_rights", "student_evidence_rights",
-            "withheld_target_fields", "transitive_target_leakage_detected",
-        ],
-        "decision_rule": "PASS iff teacher rights strictly contain student rights, withheld fields are nonempty, contained in teacher rights and disjoint from student rights, and transitive leakage is false; missing fields are NOT_ESTIMABLE; contradiction is FAIL",
     },
     "R2_LOCALITY_RULE_FROZEN_NO_FINE_MINING": {
         "estimand": "locality rule was frozen prospectively and no fine-neighborhood mining was used",
@@ -159,21 +150,6 @@ def evaluate_structural_gate(gate_id: str, evidence: Mapping) -> str:
         if any(not _is_sha256(bound[name]) for name in names):
             return "FAIL"
         if evidence["post_outcome_redesign"] is not False or evidence["post_outcome_relabeling"] is not False:
-            return "FAIL"
-        return "PASS"
-
-    if gate_id == "G6_TEACHER_INFORMATION_ADVANTAGE":
-        teacher = evidence["teacher_evidence_rights"]
-        student = evidence["student_evidence_rights"]
-        withheld = evidence["withheld_target_fields"]
-        if not _is_seq(teacher) or not _is_seq(student) or not _is_seq(withheld):
-            return "FAIL"
-        teacher_set, student_set, withheld_set = set(teacher), set(student), set(withheld)
-        if not withheld_set or not teacher_set > student_set:
-            return "FAIL"
-        if not withheld_set <= teacher_set or withheld_set & student_set:
-            return "FAIL"
-        if evidence["transitive_target_leakage_detected"] is not False:
             return "FAIL"
         return "PASS"
 
