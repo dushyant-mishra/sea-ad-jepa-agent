@@ -6,6 +6,7 @@ on:
       - science/td-target-tournament-scaffold-20261011
       - science/td-real-target-tournament-executor-20261012
       - audit/td-real-gate-executor-readiness-20261013
+      - engineering/td-real-gate-rule-materialization-20261013
   workflow_dispatch:
 
 permissions:
@@ -52,6 +53,7 @@ jobs:
         run: |
           set -o pipefail
           python -m pytest -q \
+            tests/v5/test_td_real_gate_rule_registry_v1.py \
             tests/v5/test_td_donor_resampling_audit.py \
             tests/v5/test_td_gate_case_coverage.py \
             tests/v5/test_td_gate_case_coverage_envelope.py \
