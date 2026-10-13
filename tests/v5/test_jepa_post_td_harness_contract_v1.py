@@ -17,20 +17,78 @@ SPEC.loader.exec_module(M)
 
 
 class PostTDHarnessContractTests(unittest.TestCase):
+    def test_independent_c1_c3_blocks_survive_c6_failure(self):
+        p = M.build_target_portfolio(
+            foundation_candidates=("C1", "C3"),
+            qualifications={"C1": "PASS", "C3": "PASS", "C6": "FAIL"},
+        )
+        self.assertEqual([b["candidate"] for b in p["blocks"]], ["C1", "C3"])
+        self.assertEqual([b["block_type"] for b in p["blocks"]], ["SHARED", "QUERY"])
+        self.assertIsNone(p["fused_candidate"])
+
+    def test_independent_c1_c2_c3_blocks_survive_c4_failure(self):
+        p = M.build_target_portfolio(
+            foundation_candidates=("C1", "C2", "C3"),
+            qualifications={"C1": "PASS", "C2": "PASS", "C3": "PASS", "C4": "FAIL"},
+        )
+        self.assertEqual([b["candidate"] for b in p["blocks"]], ["C1", "C2", "C3"])
+        self.assertEqual([b["block_type"] for b in p["blocks"]], ["SHARED", "RELATIONAL", "QUERY"])
+
+    def test_c6_cannot_rescue_failed_constituent(self):
+        for failed in ("C1", "C3"):
+            qualifications = {"C1": "PASS", "C3": "PASS", "C6": "PASS"}
+            qualifications[failed] = "FAIL"
+            with self.assertRaisesRegex(M.PostTDContractError, failed):
+                M.build_target_portfolio(selected_candidate="C6", qualifications=qualifications)
+
+    def test_c4_cannot_rescue_failed_constituent(self):
+        for failed in ("C1", "C2", "C3"):
+            qualifications = {"C1": "PASS", "C2": "PASS", "C3": "PASS", "C4": "PASS"}
+            qualifications[failed] = "FAIL"
+            with self.assertRaisesRegex(M.PostTDContractError, failed):
+                M.build_target_portfolio(selected_candidate="C4", qualifications=qualifications)
+
+    def test_c5_cannot_be_only_foundation_in_multiblock_api(self):
+        with self.assertRaisesRegex(M.PostTDContractError, "specialist"):
+            M.build_target_portfolio(
+                foundation_candidates=("C5",),
+                qualifications={"C5": "PASS"},
+            )
+
+    def test_not_estimable_is_never_promoted_to_foundation(self):
+        with self.assertRaisesRegex(M.PostTDContractError, "C3"):
+            M.build_target_portfolio(
+                foundation_candidates=("C1", "C3"),
+                qualifications={"C1": "PASS", "C3": "NOT_ESTIMABLE"},
+            )
+
+    def test_individual_block_qualification_receipts_are_preserved(self):
+        c1 = {"status": "PASS", "receipt_sha256": "1" * 64}
+        c3 = {"status": "PASS", "receipt_sha256": "3" * 64}
+        p = M.build_target_portfolio(
+            foundation_candidates=("C1", "C3"),
+            qualifications={"C1": c1, "C3": c3},
+        )
+        receipts = {b["candidate"]: b["qualification_receipt"] for b in p["blocks"]}
+        self.assertEqual(receipts["C1"], c1)
+        self.assertEqual(receipts["C3"], c3)
+
     def test_c6_expands_to_shared_and_query_after_constituent_passes(self):
         p = M.build_target_portfolio(
             selected_candidate="C6",
             qualifications={"C1": "PASS", "C3": "PASS", "C6": "PASS"},
         )
         self.assertEqual([b["block_type"] for b in p["blocks"]], ["SHARED", "QUERY"])
+        self.assertEqual(p["fused_candidate"], "C6")
         self.assertFalse(p["authority"]["training_authorized"])
 
     def test_c4_expands_to_shared_query_relational(self):
         p = M.build_target_portfolio(
             selected_candidate="C4",
-            qualifications={"C1": "PASS", "C2": "PASS", "C3": "PASS", "C6": "PASS", "C4": "PASS"},
+            qualifications={"C1": "PASS", "C2": "PASS", "C3": "PASS", "C4": "PASS"},
         )
         self.assertEqual([b["block_type"] for b in p["blocks"]], ["SHARED", "QUERY", "RELATIONAL"])
+        self.assertEqual(p["fused_candidate"], "C4")
 
     def test_composite_cannot_bypass_constituent_qualification(self):
         with self.assertRaisesRegex(M.PostTDContractError, "C3"):
