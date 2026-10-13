@@ -19,6 +19,8 @@ CALLABLE_STRUCTURAL = {
     "Q2_Q_EXCLUDED_TEACHER_PRIMARY_ANCHOR",
     "Q3_TARGET_NORMALIZATION_Q_SCALAR_FREE",
 }
+QUERY_GUARD_SHA = "3ca60c5f82b7b07f5f6123a52e7b50f9027a6ebe"
+QUERY_GUARD_TEST_SHA = "849cfd9b65fadd0c54dfb9f534bcdddc413b4c98"
 
 
 def _gate_universe():
@@ -58,6 +60,18 @@ def test_only_explicitly_structural_rules_are_callable_before_quantitative_prefr
             assert rule["threshold_source"] == "BLOCKED_PROSPECTIVE_RULE_REQUIRED"
 
 
+def test_q1_q3_reuse_exact_historical_dependency_guard():
+    for gate_id in {"Q1_Q_SCALAR_STUDENT_ABSENT", "Q3_TARGET_NORMALIZATION_Q_SCALAR_FREE"}:
+        reuse = R.RULES[gate_id]["historical_reuse"]
+        assert reuse == {
+            "path": "scripts/v5/td_query_information_guard.py",
+            "git_blob_sha": QUERY_GUARD_SHA,
+            "test_path": "tests/v5/test_td_query_information_guard.py",
+            "test_git_blob_sha": QUERY_GUARD_TEST_SHA,
+            "status": "EXACT_COMPONENT_REUSED_WITH_GATE_WRAPPER",
+        }
+
+
 def test_g6_remains_blocked_because_exact_contrast_and_threshold_are_not_frozen():
     rule = R.RULES["G6_TEACHER_INFORMATION_ADVANTAGE"]
     assert rule["readiness"] == "RULE_NOT_MATERIALIZED"
@@ -76,11 +90,17 @@ def test_structural_rules_are_missing_evidence_not_estimable_and_contradictions_
     ) == "FAIL"
     assert R.evaluate_structural_gate(
         "Q1_Q_SCALAR_STUDENT_ABSENT",
-        {"q_scalar_student_present": True, "deterministic_q_leakage_detected": False},
+        {
+            "dependency_graph": {"student_head": ["q_scalar"], "q_scalar": []},
+            "dependency_roles": {"student_head": "student_sink", "q_scalar": "q_scalar"},
+        },
     ) == "FAIL"
     assert R.evaluate_structural_gate(
         "Q3_TARGET_NORMALIZATION_Q_SCALAR_FREE",
-        {"target_normalization_uses_q_scalar": True},
+        {
+            "dependency_graph": {"target_norm": ["q_scalar"], "q_scalar": []},
+            "dependency_roles": {"target_norm": "target_normalization_sink", "q_scalar": "q_scalar"},
+        },
     ) == "FAIL"
 
 
@@ -110,7 +130,10 @@ def test_structural_rules_pass_only_when_frozen_predicates_are_satisfied():
     ) == "PASS"
     assert R.evaluate_structural_gate(
         "Q1_Q_SCALAR_STUDENT_ABSENT",
-        {"q_scalar_student_present": False, "deterministic_q_leakage_detected": False},
+        {
+            "dependency_graph": {"student_head": ["q_address", "masked_rna"], "q_address": [], "masked_rna": []},
+            "dependency_roles": {"student_head": "student_sink", "q_address": "q_address", "masked_rna": "lawful_evidence"},
+        },
     ) == "PASS"
     assert R.evaluate_structural_gate(
         "Q2_Q_EXCLUDED_TEACHER_PRIMARY_ANCHOR",
@@ -118,8 +141,20 @@ def test_structural_rules_pass_only_when_frozen_predicates_are_satisfied():
     ) == "PASS"
     assert R.evaluate_structural_gate(
         "Q3_TARGET_NORMALIZATION_Q_SCALAR_FREE",
-        {"target_normalization_uses_q_scalar": False},
+        {
+            "dependency_graph": {"target_norm": ["context_counts"], "context_counts": []},
+            "dependency_roles": {"target_norm": "target_normalization_sink", "context_counts": "teacher_non_q_evidence"},
+        },
     ) == "PASS"
+
+
+def test_query_gate_wrappers_refuse_vacuous_graphs_without_the_relevant_sink():
+    evidence = {
+        "dependency_graph": {"teacher_aux": []},
+        "dependency_roles": {"teacher_aux": "teacher_aux_sink"},
+    }
+    assert R.evaluate_structural_gate("Q1_Q_SCALAR_STUDENT_ABSENT", evidence) == "FAIL"
+    assert R.evaluate_structural_gate("Q3_TARGET_NORMALIZATION_Q_SCALAR_FREE", evidence) == "FAIL"
 
 
 def test_quantitative_rules_cannot_be_evaluated_through_structural_entrypoint():
