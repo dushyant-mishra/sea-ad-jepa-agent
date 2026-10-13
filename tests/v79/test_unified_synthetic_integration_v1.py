@@ -7,6 +7,7 @@ import pytest
 from scripts.v79.unified_synthetic_integration_v1 import (
     UnifiedBiologyConfig, build_unified_biology, validate_integration_manifest,
 )
+from scripts.v79.v79_rare_biology_generator_v1 import REGIMES
 
 MANIFEST = Path("results/v79/unified_synthetic/UNIFIED_SYNTHETIC_INTEGRATION_MANIFEST_V1.json")
 
@@ -36,3 +37,27 @@ def test_one_population_contains_common_and_rare_activity():
     assert len(np.unique(w.donor_id)) == 24
     assert w.expected_molecular_state.shape == (720,64)
     assert all("C1" not in name and "C2" not in name and "C3" not in name and "C4" not in name and "C5" not in name and "C6" not in name for name in w.__dataclass_fields__)
+
+def test_unified_population_reuses_all_pr311_rare_regimes_without_parallel_worlds():
+    cfg=UnifiedBiologyConfig(n_cells=2400,n_genes=64,n_donors=60)
+    w=build_unified_biology(cfg, seed=107)
+    assert tuple(w.rare_regime_ids) == ("weak","central","strong","extreme")
+    assert w.rare_program_activity.shape == (2400,4)
+    assert w.rare_donor_active.shape == (60,4)
+    assert w.rare_donor_prevalence.shape == (60,4)
+    # Each column is a program-frequency regime inside the same cells/donors,
+    # not a separately generated world.
+    assert np.array_equal(w.rare_activity, w.rare_program_activity.any(axis=1))
+    assert w.rare_program_activity.sum(axis=0).min() > 0
+    active_rates=w.rare_donor_active.mean(axis=0)
+    expected=np.array([REGIMES[r]["active_prob"] for r in w.rare_regime_ids])
+    assert np.max(np.abs(active_rates-expected)) < 0.20
+
+def test_context_and_perturbation_design_are_embedded_in_same_population():
+    w=build_unified_biology(UnifiedBiologyConfig(n_cells=1200,n_genes=64,n_donors=30), seed=211)
+    assert w.context_niche.shape == (1200,)
+    assert 0 < w.context_niche.mean() < 1
+    assert set(np.unique(w.perturbation_arm)) == {0,1,2}
+    # Actual perturbation response is restricted to actual arm and biological rare activity.
+    assert np.all(w.perturbation_state <= (w.perturbation_arm == 1))
+    assert np.all(w.perturbation_state <= w.rare_activity)
