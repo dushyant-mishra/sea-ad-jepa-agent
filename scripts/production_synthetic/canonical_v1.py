@@ -410,7 +410,7 @@ def _parse_float(text):
 
 
 def load_canonical_json(data: bytes) -> Any:
-    """Strictly parse a JSON artifact (see module docstring, item 5)."""
+    """Strictly parse a JSON artifact (see module docstring, item 4)."""
     if not isinstance(data, bytes):
         raise CanonicalError(f"load_canonical_json requires bytes, got {type(data).__name__}")
     try:
