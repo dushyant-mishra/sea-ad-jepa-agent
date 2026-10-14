@@ -1,0 +1,30 @@
+name: TD real G12 claim envelope guard V1
+
+on:
+  push:
+    branches:
+      - implementation/td-real-g12-claim-envelope-guard-v1-20261014
+  pull_request:
+    paths:
+      - 'scripts/v5/td_real_g12_claim_envelope_guard_v1.py'
+      - 'tests/v5/test_td_real_g12_claim_envelope_guard_v1.py'
+      - '.github/workflows/td-real-g12-claim-envelope-guard-v1.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: scripts/v5:.
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.17'
+      - run: python -m pip install pytest==9.1.1
+      - name: Run G12 claim envelope guard tests
+        run: python -m pytest -q tests/v5/test_td_real_g12_claim_envelope_guard_v1.py
+      - name: Authority guard
+        run: |
+          echo BIOLOGICAL_OUTCOME_INPUTS_DOWNLOADED=false
+          echo REAL_TOURNAMENT_EXECUTED=false
+          echo AUTHORITY_ALL_FALSE=true
