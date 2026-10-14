@@ -44,7 +44,7 @@ Three fresh-authorization STOP gates are mandatory:
 2. `STOP_B_SEALED_QUALIFICATION` — after pre-exposure realism/freeze and before any sealed qualification run.
 3. `STOP_C_FINALIZER` — after qualification evidence is frozen and before `finalize_package(...)` is invoked.
 
-Tasks 1–3 may begin under the reviewed plan. P1–P6 must be present in this plan before Task 4 starts. Tasks may implement code for later stages on fixture worlds, but no STOP gate may be crossed without fresh owner authorization.
+Tasks 1–3 may begin under the reviewed plan. P1–P6 are now incorporated in this plan; Task 4 may begin only after this amended plan receives the focused plan-amendment acceptance implied by the review. Tasks may implement code for later stages on fixture worlds, but no STOP gate may be crossed without fresh owner authorization.
 
 ## Pre-exposure ordering law
 
