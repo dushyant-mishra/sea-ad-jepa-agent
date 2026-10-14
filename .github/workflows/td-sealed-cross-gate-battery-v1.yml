@@ -1,0 +1,68 @@
+name: TD sealed cross-gate battery V1
+
+on:
+  push:
+    branches:
+      - qualification/td-sealed-cross-gate-battery-v1-20261014
+  pull_request:
+    paths:
+      - 'scripts/v5/td_sealed_cross_gate_battery_v1.py'
+      - 'tests/v5/test_td_sealed_cross_gate_battery_v1.py'
+      - '.github/workflows/td-sealed-cross-gate-battery-v1.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: .
+      TD_BATTERY_R1_ROOT: ${{ github.workspace }}/frozen/r1
+      TD_BATTERY_G6_ROOT: ${{ github.workspace }}/frozen/g6
+      TD_BATTERY_G7_ROOT: ${{ github.workspace }}/frozen/g7
+      TD_BATTERY_G9_ROOT: ${{ github.workspace }}/frozen/g9
+      TD_BATTERY_G2_ROOT: ${{ github.workspace }}/frozen/g2
+      TD_BATTERY_INCREMENT_ROOT: ${{ github.workspace }}/frozen/increment
+    steps:
+      - name: Checkout battery harness
+        uses: actions/checkout@v4
+      - name: Checkout exact R1 head
+        uses: actions/checkout@v4
+        with:
+          ref: 1df20029defaa2bcd7a51869c1026ac6075b1323
+          path: frozen/r1
+      - name: Checkout exact G6 head
+        uses: actions/checkout@v4
+        with:
+          ref: bb1e35d33deb52236829012be452e4c4d8b362fc
+          path: frozen/g6
+      - name: Checkout exact G7 head
+        uses: actions/checkout@v4
+        with:
+          ref: d90047308d633e259195a54501a230373b36d043
+          path: frozen/g7
+      - name: Checkout exact G9 head
+        uses: actions/checkout@v4
+        with:
+          ref: 6e5182e2dc4e8e263e8cbd309aed6494b5ea7a55
+          path: frozen/g9
+      - name: Checkout exact G2 head
+        uses: actions/checkout@v4
+        with:
+          ref: c174d05215f14bda5292c07559b10445bc17d86c
+          path: frozen/g2
+      - name: Checkout exact increment head
+        uses: actions/checkout@v4
+        with:
+          ref: b7c317c640aa231a7d5ec1fa12271a39bfee86e6
+          path: frozen/increment
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.17'
+      - run: python -m pip install pytest==9.1.1 numpy==2.4.6
+      - name: Run sealed cross-gate exam
+        run: python -m pytest -q tests/v5/test_td_sealed_cross_gate_battery_v1.py
+      - name: Authority guard
+        run: |
+          echo BIOLOGICAL_OUTCOME_INPUTS_DOWNLOADED=false
+          echo HUMAN_THRESHOLDS_IMPORTED=false
+          echo REAL_TOURNAMENT_EXECUTED=false
+          echo AUTHORITY_ALL_FALSE=true
