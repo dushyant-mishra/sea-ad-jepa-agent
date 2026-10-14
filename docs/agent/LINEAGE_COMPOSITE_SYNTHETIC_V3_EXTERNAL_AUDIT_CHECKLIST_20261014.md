@@ -39,8 +39,8 @@ The auditor should answer every item explicitly as `PASS`, `FAIL`, or `UNCLEAR`,
 22. Biological novelty and measurement-domain novelty are independently controllable.
 23. Held-out source/technology alone cannot define biological novelty.
 24. Represented measurement-domain axes have held-out transfer or explicit single-level justification.
-25. G11/G12 registry is frozen before outcomes and claim scope cannot shrink after results.
-26. Zero-supported strata remain explicitly `NOT_ESTIMABLE`.
+25. G11/G12 registry follows PR #349-or-explicit-successor split-bound support semantics and freezes claim scope before outcomes.
+26. Zero-supported strata and blocked evidence-contract strata remain explicit and distinct.
 
 ## Multimodal / query / regulatory / perturbation
 27. Same-nucleus RNA+ATAC shares the same hidden nucleus.
@@ -54,7 +54,7 @@ The auditor should answer every item explicitly as `PASS`, `FAIL`, or `UNCLEAR`,
 
 ## Teacher/student/recoverability
 35. Hidden controller state and expected molecular state never become lawful teacher inputs.
-36. G6-style teacher/student diagnostics match model/search rights except intended evidence-right difference.
+36. G6-style teacher/student diagnostics match model/search rights except intended evidence-right difference and exercise the substantive reference-margin path where required.
 37. Finite diagnostic failure is not labeled information-theoretic impossibility.
 38. Recoverability is controller-derived after generation, not preassigned to favor a target.
 
@@ -62,7 +62,7 @@ The auditor should answer every item explicitly as `PASS`, `FAIL`, or `UNCLEAR`,
 39. Development and sealed qualification realizations use independent seeds.
 40. Producer, fit and controller domains are physically separable for sealed qualification.
 41. Fit custody excludes latent truth, expected molecular state, estimability truth, revealing challenge roles, candidate mapping and held-out outcomes.
-42. Synthetic qualification uses the intended real downstream reader/gate/teacher-student interfaces rather than a synthetic-only shortcut.
+42. Synthetic qualification uses the intended real downstream reader/gate/teacher-student interfaces rather than a synthetic-only shortcut, with C4 full rehearsal blocked until the downstream C6 prerequisite is repaired.
 43. Final receipt binds code, transitive dependencies, runtime, calibration artifacts, world/package identities, fit/controller identities and authority flags.
 
 ## Downstream portfolio / authority
