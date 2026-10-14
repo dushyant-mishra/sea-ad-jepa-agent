@@ -18,13 +18,15 @@ This review cannot grant real-TD, target-selection, representation-selection, St
 Global authority remains:
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
-## Live heads to verify first
+## Live custody to verify first
 
-- PR #344 production-synthetic design: expected head `dd5d801665d03a8c9fbdb4a416bc11be460c5a7c`
-- PR #324 synthetic operational handoff: expected head `bb5ca60c2c5ebe46e486116851174607490fb030`
-- PR #325 synthetic historical audit/no-repeat: expected head `bfeb2b868aa84cb94594869ef5cb196af286db90`
-- PR #322 real-TD executable audit/custody: expected head `9a3de06861f19b71ee3b1d7e2b1b15b85c811571`
-- PR #323 real-TD navigation/handoff: expected head `606ee8706692f202b8a44fe04008dbe95fcb71f4`
+PR #344 design-content state was completed at head `dd5d801665d03a8c9fbdb4a416bc11be460c5a7c`. Subsequent commits on the same branch are documentation/audit-packaging commits only. The exact current packaged head is recorded in PR #344 external-audit pointer comment `6160369417`; verify the live PR head before auditing and inspect any delta after that pointer.
+
+Other expected custody identities at handoff preparation:
+- PR #324 synthetic operational handoff: `bb5ca60c2c5ebe46e486116851174607490fb030`
+- PR #325 synthetic historical audit/no-repeat: `bfeb2b868aa84cb94594869ef5cb196af286db90`
+- PR #322 real-TD executable audit/custody: `9a3de06861f19b71ee3b1d7e2b1b15b85c811571`
+- PR #323 real-TD navigation/handoff: `606ee8706692f202b8a44fe04008dbe95fcb71f4`
 - PR #328 fixture base: exact head `25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec`
 - V80 qualified executable source: `b840067e4c9439e4cb4aa9e8c649ef2f6064a142`
 - V80 receipt: `346407af801a7fabc5dbd27136dcf5c9abe61e87d438018b98da192333eb9c32`
