@@ -53,7 +53,7 @@ jobs:
       - name: Checkout exact G8 repaired head
         uses: actions/checkout@v4
         with:
-          ref: ce1b43464ae1d79894b7738c6dc025559dffbf36
+          ref: 95dd474a02ce571722df9e8f08b42e81af2e8736
           path: frozen/g8
       - name: Checkout exact increment head
         uses: actions/checkout@v4
