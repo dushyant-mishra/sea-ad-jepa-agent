@@ -20,6 +20,7 @@ class G8ContractError(ValueError):
 
 UNIT_SCHEMA = "JEPA_TD_REAL_G8_REFERENCE_UNIT_V2"
 METRIC_SCHEMA = "JEPA_TD_REAL_G8_METRIC_CONTRACT_V2"
+SUPPORT_SCHEMA = "JEPA_TD_REAL_G8_SUPPORT_CONTRACT_V2"
 _HEX64 = re.compile(r"^[0-9a-f]{64}$")
 _REALIZATION = "INDEPENDENT_TECHNICAL_MONTE_CARLO_PAIR_CONDITIONAL_ON_FIXED_REAL_UNIT"
 _ORIENTATION = "SMALLER_IS_MORE_STABLE"
@@ -119,6 +120,35 @@ def validate_metric_contract(contract: Mapping[str, object]) -> dict:
     return dict(contract)
 
 
+def validate_support_contract(contract: Mapping[str, object]) -> dict:
+    if not isinstance(contract, Mapping):
+        raise G8ContractError("support contract must be a mapping")
+    required = {
+        "schema", "candidate_id", "source", "donor_id", "endpoint_id",
+        "input_binding_sha256", "support_universe_sha256", "frozen_before_values",
+        "full_count_anchor_required", "structural_blockers_excluded",
+        "measured_zero_retained",
+    }
+    if set(contract) != required:
+        raise G8ContractError("exact support contract required")
+    if contract["schema"] != SUPPORT_SCHEMA:
+        raise G8ContractError("support schema mismatch")
+    for key in ("candidate_id", "source", "donor_id", "endpoint_id"):
+        if not isinstance(contract[key], str) or not contract[key]:
+            raise G8ContractError(f"{key} must be a nonempty string")
+    _require_hash(contract["input_binding_sha256"], "support input binding")
+    _require_hash(contract["support_universe_sha256"], "support universe")
+    if contract["frozen_before_values"] is not True:
+        raise G8ContractError("support contract must be frozen before values")
+    if contract["full_count_anchor_required"] is not True:
+        raise G8ContractError("support contract requires a full-count anchor")
+    if contract["structural_blockers_excluded"] is not True:
+        raise G8ContractError("structural blockers must be excluded upstream of G8")
+    if contract["measured_zero_retained"] is not True:
+        raise G8ContractError("measured zero must remain a supported measurement")
+    return dict(contract)
+
+
 def support_fraction(*, eligible_atoms: Sequence[str], atom_states: Mapping[str, str]) -> dict:
     if isinstance(eligible_atoms, (str, bytes)) or not isinstance(eligible_atoms, Sequence) or not eligible_atoms:
         raise G8ContractError("eligible_atoms must be a nonempty sequence")
@@ -197,20 +227,26 @@ def build_calibration_plan(
 def execution_readiness(
     *,
     unit_manifest: Mapping[str, object],
-    metric_contract_qualified: bool,
-    support_universe_qualified: bool,
+    metric_contract: Mapping[str, object],
+    support_contract: Mapping[str, object],
 ) -> dict:
     unit = validate_unit_manifest(unit_manifest)
-    ready = metric_contract_qualified is True and support_universe_qualified is True
+    metric = validate_metric_contract(metric_contract)
+    support = validate_support_contract(support_contract)
+
+    if metric["candidate_id"] != unit["candidate_id"] or metric["metric_manifest_sha256"] != unit["metric_manifest_sha256"]:
+        raise G8ContractError("metric binding mismatch for G8 reference unit")
+
+    support_keys = ("candidate_id", "source", "donor_id", "endpoint_id", "input_binding_sha256", "support_universe_sha256")
+    if any(support[key] != unit[key] for key in support_keys):
+        raise G8ContractError("support binding mismatch for G8 reference unit")
+
     return {
         "schema": "JEPA_TD_REAL_G8_EXECUTION_READINESS_V2",
-        "status": (
-            "READY_FOR_OUTCOME_BLIND_G8_REFERENCE_GENERATION_ONLY"
-            if ready else "BLOCKED_G8_CONTRACT_DEPENDENCY"
-        ),
+        "status": "READY_FOR_OUTCOME_BLIND_G8_REFERENCE_GENERATION_ONLY",
         "unit": unit,
-        "metric_contract_qualified": bool(metric_contract_qualified),
-        "support_universe_qualified": bool(support_universe_qualified),
+        "metric_contract": metric,
+        "support_contract": support,
         "human_g8_adjudication_authorized": False,
         "authority": dict(_NO_AUTHORITY),
     }
