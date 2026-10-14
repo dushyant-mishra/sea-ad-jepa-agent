@@ -21,7 +21,7 @@
   "v80": {
     "pr": 348,
     "branch": "science/v80-sparse-positive-successor-qualification-20261013",
-    "snapshot_head": "a7074090591255fb48c92f7313400e0f3ad54424",
+    "snapshot_head": "060d79dab23c2e262b546e86122029727fe8fa6a",
     "base_head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
     "scope": "SYNTHETIC_BENCHMARK_PACKAGE_ONLY__NO_SUCCESSOR_ESTIMATOR",
     "seed_root": 41000000,
@@ -53,9 +53,9 @@
       "scientific_failure": false
     },
     "snapshot_ci": {
-      "v80_run": 38503728605,
-      "pr328_regression_run": 38503728563,
-      "status": "IN_PROGRESS_AT_AUDIT_SNAPSHOT"
+      "v80_run": 38504021101,
+      "pr328_regression_run": 38504021126,
+      "status": "QUEUED_AT_AUDIT_SNAPSHOT__RECHECK_EXACT_HEAD"
     }
   },
   "authority": {
@@ -68,5 +68,5 @@
     "synthetic_training_authorized": false,
     "real_training_authorized": false
   },
-  "next_audit_action": "READ_PR348_EXACT_CURRENT_HEAD_AND_LATEST_CI__AUDIT_ONLY_DELTAS_NEWER_THAN_SNAPSHOT__DO_NOT_RERUN_V79_OR_HISTORICAL_RED"
+  "next_audit_action": "READ_PR348_EXACT_CURRENT_HEAD_AND_LATEST_CI__AUDIT_ONLY_DELTAS_NEWER_THAN_060d79da__DO_NOT_RERUN_V79_OR_HISTORICAL_RED"
 }
