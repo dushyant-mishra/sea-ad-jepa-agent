@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Fresh-context, minimal-token hostile review packet for the final Task 0 custody decision after old PR #356 Tasks 1–2 were located and controller-verified.
+Fresh-context, minimal-token hostile review packet for the final Task 0 custody decision after old PR #356 Tasks 1–2 were located, controller-verified, and incorporated into current Task 0 custody.
 
 This packet is navigation/evidence only. Macha must form an independent verdict from the exact bytes/receipts cited below rather than accepting controller conclusions.
 
@@ -20,17 +20,27 @@ No candidate outcomes, `reader_validation`, or `reader_oracle` may be opened for
 
 PR #381
 
-Exact head:
-`6059e1d7bb30bd61d3f1f47d46a77e6322c525c0`
+Exact consolidated review head:
+`c80d7398b41f10208ec1622bc52599383b940be6`
 
 Base:
 `9328f1c00faee8a0ebf1910d412ea129bab566be`
 
-Focused GREEN:
-- workflow run `38632619995`
+Current consolidation RED:
+- head `49cb69a7f654c5c8d7e43c471f61c8457feea705`
+- run `38645338293`, job `116130670310`
+- intended result: `27 passed, 2 failed in 0.14s`
+- exact failures: missing exact old Task1/2 controller-verified evidence and stale old Task3/4 executable states.
 
-Inherited GREEN:
-- workflow run `38632619965`
+Intermediate inherited-state repair:
+- head `36c856c8883de4ec254b5717e8e69348a78454c5`
+- run `38645619049` failed only because an older test still permitted only pre-merger in-flight state names; that stale assertion was corrected.
+
+Final exact-head GREEN:
+- focused workflow `38645994312`, job `116132861396`: success, `29 passed in 0.07s`
+- inherited `unified synthetic integration v1` run `38645994388`: success.
+
+Delta from predecessor green `6059e1d7bb30bd61d3f1f47d46a77e6322c525c0` to current head is six files only, all custody/test/prose surfaces; no scientific producer/gate/target/calibration/data code changed.
 
 Read these Task 0 outputs first:
 
@@ -41,7 +51,9 @@ Read these Task 0 outputs first:
 5. `results/target_discovery/unified_qualification_v1/PREMERGER_MERGED_CUSTODY_COMPLETENESS_V1.json`
 6. `scripts/v5/td_unified/premerger_migration_task0.py`
 7. `scripts/v5/td_unified/premerger_custody_completeness_v1.py`
-8. corresponding Task 0 hostile tests.
+8. `tests/v5/td_unified/test_premerger_migration_task0.py`
+9. `tests/v5/td_unified/test_premerger_custody_completeness_v1.py`
+10. `docs/agent/UNIFIED_TD_PREMERGER_REAUDIT_COMPLETENESS_ADDENDUM_20261014.md`
 
 ### B. Old PR #356 Tasks 1–2 exact implementation
 
@@ -101,11 +113,13 @@ Required closure condition:
 ### F5–F9 completeness
 
 Confirm Task 0 now preserves without promotion:
-- F5: old PR #356 Tasks 1–4 separately from stopped old Tasks 5–12;
+- F5: old PR #356 Tasks 1–2 as exact controller-verified substrate pending independent review; old Tasks 3–4 stopped after merger with requirements migrating only; old Tasks 5–12 stopped independently;
 - F6: Foundation `SUBSPACE_ONLY`, technology invariance not qualified, partial matrix coverage/source-acquisition limits;
 - F7: multimodal/SCENIC+/ATAC same-vs-separate nucleus and independent-measurement boundaries;
 - F8: runtime safety as post-science training prerequisite rather than target authority;
 - F9: FULL104 denominator/source channel, evidence-burden, estimability/zero-fill and metric-blindness obligations.
+
+Explicitly verify that no current Task 0 machine/prose surface authorizes restarting old Task 3 or Task 4.
 
 ---
 
@@ -166,10 +180,10 @@ This does **not** satisfy unified Task 2. Unified Task 2 is `TD_EXECUTION_MANIFE
 
 ## 4. Consolidation law to review
 
-Audit head containing controller analysis:
-`3891ac7376876a7c7f884a0d8a69e92596918656` or later descendant on PR #322.
+Controller analysis is on PR #322, branch:
+`science/jepa-robust-pipeline-post-jepa-anything-audit-20261013`
 
-Relevant controller files:
+Relevant files:
 
 - `results/target_discovery/unified_qualification_v1/MACHA_OLD_SYNTH_TASK1_2_CONTROLLER_VERIFICATION_V1.json`
 - `results/target_discovery/unified_qualification_v1/MACHA_TASK1_2_ABSORPTION_MATRIX_V1.json`
@@ -180,7 +194,7 @@ Required independent decision:
 
 - accept, amend, or reject the proposed migration of old Task 1 into unified Task 1 primitives;
 - accept, amend, or reject the proposed migration of old Task 2 primarily into unified Task 4/later custody obligations;
-- confirm old Task 3/4 remain **not authorized to start**;
+- confirm old Task 3/4 remain **not authorized to start** and requirements migrate only;
 - confirm old Tasks 5–12 remain stopped as an independent authority program.
 
 ---
@@ -203,8 +217,8 @@ Do not:
 
 Return exactly enough evidence to bind the decision:
 
-1. exact Task 0 head reviewed;
-2. exact old Task 1–2 head reviewed;
+1. exact Task 0 head reviewed: must be `c80d7398b41f10208ec1622bc52599383b940be6` unless explicitly declaring branch movement and refusing acceptance;
+2. exact old Task 1–2 head reviewed: `ff597faf2182522a320ec5322f8db9b67c9c6094`;
 3. exact controller review run IDs inspected;
 4. findings as `CRITICAL | IMPORTANT | MINOR`, each with file/contract locus;
 5. explicit F1 verdict;
