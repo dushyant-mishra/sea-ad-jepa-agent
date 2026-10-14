@@ -12,7 +12,8 @@
       "canonical_json_bytes",
       "raw_sha256",
       "semantic_sha256",
-      "ordered_registry_digest"
+      "ordered_registry_digest",
+      "semantic_row_set_sha256"
     ],
     "unified_destinations": [
       "scripts/v5/td_unified/canonical_v1.py",
@@ -29,11 +30,13 @@
       "authority schema validation"
     ],
     "direct_reuse_requirements": [
-      "deterministic canonical bytes",
+      "deterministic canonical bytes on the shared JSON-native domain",
       "stable semantic identity under JSON key permutation",
-      "stable ordered-registry identity under storage reordering when identity keys are stable",
+      "canonical ordered-registry identity changes when coordinate row order changes",
+      "separate scientifically keyed semantic row-set identity is invariant to storage/shard reordering",
       "raw transport hash distinguishes distinct bytes",
-      "non-JSON/nonfinite scientific values rejected",
+      "unified authority root rejects or explicitly boundary-converts NumPy/non-JSON scientific values",
+      "nonfinite scientific values rejected",
       "declared digest never trusted as authentication",
       "no PR/branch-derived scientific identity",
       "no synthetic/generator authority embedded"
@@ -45,7 +48,9 @@
       "source files and test files enumerated",
       "canonical vectors captured",
       "hostile copied-digest mutation rejected",
-      "conflicting dependency identities rejected or explicitly outside old scope"
+      "conflicting dependency identities rejected or explicitly outside old scope",
+      "old and unified canonical bytes cross-checked on JSON-native values",
+      "historical synthetic digest namespace not reused as unified receipt namespace"
     ]
   },
   "old_task_2": {
@@ -97,13 +102,22 @@
       "secret scanner uses dummy fixtures in public tests",
       "production secret/nonce absent from repo",
       "exposure state transitions tested",
-      "successor-version hostile tests present"
+      "successor-version hostile tests present",
+      "single-genesis external anchor obligation preserved",
+      "external ledger-head publication obligation preserved",
+      "method-local and lineage-wide qualification-draw accounting preserved",
+      "reveal-time realization regeneration obligation preserved",
+      "full committed-tree secret-scan obligation preserved",
+      "defect-record independent-review obligation preserved"
     ]
   },
   "consolidation_rules": [
     "ONE_CANONICAL_SERIALIZER_AFTER_MIGRATION",
     "ONE_CANONICAL_DIGEST_LAW_AFTER_MIGRATION",
     "ONE_AUTHORITY_MODEL_ONLY",
+    "ORDERED_REGISTRY_IS_ORDER_SENSITIVE",
+    "KEYED_SEMANTIC_ROW_SET_IS_STORAGE_ORDER_INVARIANT",
+    "JSON_NATIVE_UNIFIED_AUTHORITY_DOMAIN",
     "NO_PARALLEL_SYNTHETIC_MANIFEST_OR_REGISTRY",
     "OLD_TASK2_CUSTODY_DOES_NOT_REPLACE_UNIFIED_POPULATION_ACCESS_LAW",
     "NO_UNIFIED_STAGE_INHERITANCE_FROM_OLD_TASK_GREEN_STATUS"
