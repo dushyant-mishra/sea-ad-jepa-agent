@@ -21,11 +21,11 @@ class DirectionalGateError(ValueError):
 
 CLAIM_BOUNDARY = "DIRECTIONAL_OR_STRUCTURAL_QUALIFICATION_ONLY__NO_BIOLOGICAL_MAGNITUDE_CLAIM"
 NO_AUTHORITY = {
+    "value_read_authorized": False,
     "real_tournament_authorized": False,
     "target_selection_authorized": False,
     "representation_selection_authorized": False,
     "td60_authorized": False,
-    "production_ema_selection_authorized": False,
     "stage4_authorized": False,
     "training_authorized": False,
 }
@@ -165,14 +165,18 @@ def _aggregate_subtests(required: Sequence[str], supplied: Mapping, *, alpha_fam
     results, statuses = {}, []
     for name in required:
         if name not in supplied:
-            results[name] = {"status": "NOT_ESTIMABLE"}; statuses.append("NOT_ESTIMABLE"); continue
-        results[name] = _directional(supplied[name], alpha_eff=alpha_eff); statuses.append(results[name]["status"])
+            results[name] = {"status": "NOT_ESTIMABLE"}
+            statuses.append("NOT_ESTIMABLE")
+            continue
+        results[name] = _directional(supplied[name], alpha_eff=alpha_eff)
+        statuses.append(results[name]["status"])
     return {"status": Q.noncompensating_status(statuses), "subtests": results, "alpha_family": alpha_family, "alpha_eff": alpha_eff}
 
 
 def _evaluate_g3(evidence: Mapping, *, alpha_family: float) -> dict:
     candidate_id = evidence.get("candidate_id")
-    if not isinstance(candidate_id, str): return _result("NOT_ESTIMABLE")
+    if not isinstance(candidate_id, str):
+        return _result("NOT_ESTIMABLE")
     required = _required_wrong_cell_subtests(candidate_id)
     agg = _aggregate_subtests(required, evidence.get("subtests", {}), alpha_family=alpha_family)
     return _result(agg.pop("status"), candidate_id=candidate_id, required_subtests=list(required), **agg)
@@ -180,25 +184,37 @@ def _evaluate_g3(evidence: Mapping, *, alpha_family: float) -> dict:
 
 def _evaluate_g5(evidence: Mapping, *, alpha_family: float) -> dict:
     supplied = evidence.get("source_donor_deltas")
-    if not isinstance(supplied, Mapping): return _result("NOT_ESTIMABLE", strata={})
+    if not isinstance(supplied, Mapping):
+        return _result("NOT_ESTIMABLE", strata={})
     extra = set(supplied) - set(_REQUIRED_SOURCES)
-    if extra: raise DirectionalGateError(f"unexpected source strata: {sorted(extra)}")
-    alpha_eff = alpha_family / len(_REQUIRED_SOURCES); strata, statuses = {}, []
+    if extra:
+        raise DirectionalGateError(f"unexpected source strata: {sorted(extra)}")
+    alpha_eff = alpha_family / len(_REQUIRED_SOURCES)
+    strata, statuses = {}, []
     for source in _REQUIRED_SOURCES:
-        if source not in supplied: strata[source] = {"status": "NOT_ESTIMABLE"}; statuses.append("NOT_ESTIMABLE"); continue
-        strata[source] = _directional(supplied[source], alpha_eff=alpha_eff); statuses.append(strata[source]["status"])
+        if source not in supplied:
+            strata[source] = {"status": "NOT_ESTIMABLE"}
+            statuses.append("NOT_ESTIMABLE")
+            continue
+        strata[source] = _directional(supplied[source], alpha_eff=alpha_eff)
+        statuses.append(strata[source]["status"])
     return _result(Q.noncompensating_status(statuses), strata=strata, required_sources=list(_REQUIRED_SOURCES), alpha_family=alpha_family, alpha_eff=alpha_eff)
 
 
 def _evaluate_g10(evidence: Mapping, *, alpha_family: float) -> dict:
     candidate_id = evidence.get("candidate_id")
-    if not isinstance(candidate_id, str): return _result("NOT_ESTIMABLE", subtests={})
+    if not isinstance(candidate_id, str):
+        return _result("NOT_ESTIMABLE", subtests={})
     registry = _candidate_registry()
-    if candidate_id not in registry: raise DirectionalGateError(f"unknown candidate_id: {candidate_id}")
-    required = tuple(registry[candidate_id]["mandatory_falsifiers"]); supplied = evidence.get("falsifier_donor_deltas", {})
-    if not isinstance(supplied, Mapping): return _result("NOT_ESTIMABLE", subtests={})
+    if candidate_id not in registry:
+        raise DirectionalGateError(f"unknown candidate_id: {candidate_id}")
+    required = tuple(registry[candidate_id]["mandatory_falsifiers"])
+    supplied = evidence.get("falsifier_donor_deltas", {})
+    if not isinstance(supplied, Mapping):
+        return _result("NOT_ESTIMABLE", subtests={})
     extra = set(supplied) - set(required)
-    if extra: raise DirectionalGateError(f"unexpected mandatory-falsifier evidence: {sorted(extra)}")
+    if extra:
+        raise DirectionalGateError(f"unexpected mandatory-falsifier evidence: {sorted(extra)}")
     agg = _aggregate_subtests(required, supplied, alpha_family=alpha_family)
     return _result(agg.pop("status"), candidate_id=candidate_id, required_falsifiers=list(required), **agg)
 
@@ -210,7 +226,8 @@ def _string_set(value, field: str) -> set[str]:
 
 
 def _evaluate_m1(evidence: Mapping) -> dict:
-    if "construction_evidence_ids" not in evidence or "deciding_evidence_ids" not in evidence: return _result("NOT_ESTIMABLE")
+    if "construction_evidence_ids" not in evidence or "deciding_evidence_ids" not in evidence:
+        return _result("NOT_ESTIMABLE")
     construction = _string_set(evidence["construction_evidence_ids"], "construction_evidence_ids")
     deciding = _string_set(evidence["deciding_evidence_ids"], "deciding_evidence_ids")
     overlap = sorted(construction & deciding)
@@ -219,43 +236,62 @@ def _evaluate_m1(evidence: Mapping) -> dict:
 
 def _evaluate_m2(evidence: Mapping) -> dict:
     required = ("provenance_authenticated", "independent_of_target_selection")
-    if any(field not in evidence for field in required): return _result("NOT_ESTIMABLE")
+    if any(field not in evidence for field in required):
+        return _result("NOT_ESTIMABLE")
     values = {field: evidence[field] for field in required}
-    if any(value not in (True, False) for value in values.values()): raise DirectionalGateError("M2 provenance predicates must be boolean")
+    if any(type(value) is not bool for value in values.values()):
+        raise DirectionalGateError("M2 provenance predicates must be boolean")
     return _result("PASS" if all(values.values()) else "FAIL", raw_sufficient_statistics=values)
 
 
 def _evaluate_m3(evidence: Mapping) -> dict:
-    if "causal_claim_asserted" not in evidence: return _result("NOT_ESTIMABLE")
+    if "causal_claim_asserted" not in evidence:
+        return _result("NOT_ESTIMABLE")
     value = evidence["causal_claim_asserted"]
-    if value is False: return _result("PASS", raw_sufficient_statistics={"causal_claim_asserted": False})
-    if value is True: return _result("FAIL", raw_sufficient_statistics={"causal_claim_asserted": True})
+    if value is False:
+        return _result("PASS", raw_sufficient_statistics={"causal_claim_asserted": False})
+    if value is True:
+        return _result("FAIL", raw_sufficient_statistics={"causal_claim_asserted": True})
     raise DirectionalGateError("causal_claim_asserted must be boolean")
 
 
 def _evaluate_m4(evidence: Mapping) -> dict:
     fields = ("unsupported_converted_to_numeric", "missing_evidence_treated_as_zero", "imputation_used")
-    if any(field not in evidence for field in fields): return _result("NOT_ESTIMABLE")
+    if any(field not in evidence for field in fields):
+        return _result("NOT_ESTIMABLE")
     values = {field: evidence[field] for field in fields}
-    if any(value not in (True, False) for value in values.values()): raise DirectionalGateError("M4 support/abstention predicates must be boolean")
+    if any(type(value) is not bool for value in values.values()):
+        raise DirectionalGateError("M4 support/abstention predicates must be boolean")
     return _result("FAIL" if any(values.values()) else "PASS", raw_sufficient_statistics=values)
 
 
 def evaluate_directional_gate(gate_id: str, evidence: Mapping, *, alpha_family: float = 0.01) -> dict:
-    if gate_id in BLOCKED_V2_GATES: raise DirectionalGateError(f"blocked prospective rule has no direction-only fallback: {gate_id}")
-    if gate_id not in CLEARED_V2_GATES: raise DirectionalGateError(f"unknown or unauthorized V2 gate: {gate_id}")
-    if not isinstance(evidence, Mapping): raise DirectionalGateError("evidence must be a mapping")
-    if not isinstance(alpha_family, (int, float)) or not (0.0 < float(alpha_family) < 1.0): raise DirectionalGateError("alpha_family must lie in (0,1)")
+    if gate_id in BLOCKED_V2_GATES:
+        raise DirectionalGateError(f"blocked prospective rule has no direction-only fallback: {gate_id}")
+    if gate_id not in CLEARED_V2_GATES:
+        raise DirectionalGateError(f"unknown or unauthorized V2 gate: {gate_id}")
+    if not isinstance(evidence, Mapping):
+        raise DirectionalGateError("evidence must be a mapping")
+    if not isinstance(alpha_family, (int, float)) or not (0.0 < float(alpha_family) < 1.0):
+        raise DirectionalGateError("alpha_family must lie in (0,1)")
     alpha_family = float(alpha_family)
-    if gate_id == "G3_CORRECT_CELL_SPECIFICITY": return _evaluate_g3(evidence, alpha_family=alpha_family)
-    if gate_id == "G5_SOURCE_REPLICATION": return _evaluate_g5(evidence, alpha_family=alpha_family)
-    if gate_id == "G10_COLLAPSE_SHORTCUT_RESISTANCE": return _evaluate_g10(evidence, alpha_family=alpha_family)
-    if gate_id == "M1_CIRCULARITY_CONTROL": return _evaluate_m1(evidence)
-    if gate_id == "M2_INDEPENDENT_PROVENANCE": return _evaluate_m2(evidence)
-    if gate_id == "M3_CAUSAL_CLAIM_FALSE": return _evaluate_m3(evidence)
-    if gate_id == "M4_SUPPORT_ABSTENTION": return _evaluate_m4(evidence)
+    if gate_id == "G3_CORRECT_CELL_SPECIFICITY":
+        return _evaluate_g3(evidence, alpha_family=alpha_family)
+    if gate_id == "G5_SOURCE_REPLICATION":
+        return _evaluate_g5(evidence, alpha_family=alpha_family)
+    if gate_id == "G10_COLLAPSE_SHORTCUT_RESISTANCE":
+        return _evaluate_g10(evidence, alpha_family=alpha_family)
+    if gate_id == "M1_CIRCULARITY_CONTROL":
+        return _evaluate_m1(evidence)
+    if gate_id == "M2_INDEPENDENT_PROVENANCE":
+        return _evaluate_m2(evidence)
+    if gate_id == "M3_CAUSAL_CLAIM_FALSE":
+        return _evaluate_m3(evidence)
+    if gate_id == "M4_SUPPORT_ABSTENTION":
+        return _evaluate_m4(evidence)
     if gate_id in _SINGLE_DIRECTIONAL:
-        if "donor_deltas" not in evidence: return _result("NOT_ESTIMABLE")
+        if "donor_deltas" not in evidence:
+            return _result("NOT_ESTIMABLE")
         out = _directional(evidence["donor_deltas"], alpha_eff=alpha_family)
         return _result(out["status"], raw_sufficient_statistics=out["raw_sufficient_statistics"], alpha_eff=alpha_family)
     raise DirectionalGateError(f"cleared gate implementation pending TDD cycle: {gate_id}")
@@ -269,17 +305,22 @@ def authenticate_qualification_receipt(receipt: Mapping) -> str:
     if receipt.get("candidate_outcomes_opened") is not False or receipt.get("real_tournament_authorized") is not False:
         raise DirectionalGateError("V2 directional qualification may not open outcomes or authorize real tournament")
     executor_sha, quantitative_sha, contract_sha = _file_sha256(__file__), _file_sha256(Q.__file__), _file_sha256(C.__file__)
-    if receipt.get("executor_sha256") != executor_sha: raise DirectionalGateError("executor SHA-256 mismatch")
-    if receipt.get("quantitative_components_sha256") != quantitative_sha: raise DirectionalGateError("quantitative components SHA-256 mismatch")
-    if receipt.get("tournament_contract_sha256") != contract_sha: raise DirectionalGateError("tournament contract SHA-256 mismatch")
+    if receipt.get("executor_sha256") != executor_sha:
+        raise DirectionalGateError("executor SHA-256 mismatch")
+    if receipt.get("quantitative_components_sha256") != quantitative_sha:
+        raise DirectionalGateError("quantitative components SHA-256 mismatch")
+    if receipt.get("tournament_contract_sha256") != contract_sha:
+        raise DirectionalGateError("tournament contract SHA-256 mismatch")
     bundle = canonical_sha256({"executor_sha256": executor_sha, "quantitative_components_sha256": quantitative_sha, "tournament_contract_sha256": contract_sha})
-    if receipt.get("executor_bundle_sha256") != bundle: raise DirectionalGateError("executor bundle SHA-256 mismatch")
+    if receipt.get("executor_bundle_sha256") != bundle:
+        raise DirectionalGateError("executor bundle SHA-256 mismatch")
     return bundle
 
 
 def execute_directional_gate(gate_id: str, evidence: Mapping, *, qualification_receipt: Mapping, alpha_family: float = 0.01) -> dict:
     bundle = authenticate_qualification_receipt(qualification_receipt)
-    if gate_id not in CLEARED_V2_GATES: raise DirectionalGateError(f"gate is not a V2-cleared executor: {gate_id}")
+    if gate_id not in CLEARED_V2_GATES:
+        raise DirectionalGateError(f"gate is not a V2-cleared executor: {gate_id}")
     raw = dict(evidence) if isinstance(evidence, Mapping) else evidence
     evaluated = evaluate_directional_gate(gate_id, evidence, alpha_family=alpha_family)
     rule = RULES[gate_id]
