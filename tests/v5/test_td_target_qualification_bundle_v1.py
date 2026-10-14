@@ -34,11 +34,18 @@ def _gate_receipts():
     }
 
 
-def _tournament(selection="NONE", candidate_id=None):
+def _tournament(selection="NONE", candidate_id=None, terminal=None):
+    if terminal is None:
+        terminal = (
+            "NO_TARGET_WINNER__REDESIGN_BEFORE_PROTECTED_CONFIRMATION"
+            if selection == "NONE"
+            else "SINGLE_CANDIDATE_ELIGIBLE_FOR_PROTECTED_CONFIRMATION__NO_TARGET_AUTHORITY"
+        )
     return {
         "schema": "JEPA_TD_AUTHENTICATED_TOURNAMENT_OUTPUT_V1",
         "selection": selection,
         "candidate_id": candidate_id,
+        "terminal": terminal,
         "receipt_sha256": "a" * 64,
     }
 
@@ -71,7 +78,21 @@ def test_none_is_valid_first_class_target_bundle_outcome():
     assert bundle["selected_candidate"] is None
     assert bundle["selection"] == "NONE"
     assert bundle["canonical_addresses"] == []
+    assert bundle["tournament_terminal"] == "NO_TARGET_WINNER__REDESIGN_BEFORE_PROTECTED_CONFIRMATION"
     assert len(bundle["bundle_sha256"]) == 64
+
+
+def test_none_preserves_unresolved_terminal_instead_of_collapsing_to_clean_no_winner():
+    T = _load()
+    terminal = "FOUNDATION_CANDIDATE_UNRESOLVED__CONTINUE_TESTABLE_ROUTES__NO_TARGET_AUTHORITY"
+    bundle = T.build_target_qualification_bundle(
+        tournament_output=_tournament("NONE", None, terminal),
+        execution_manifest=_manifest(), gate_receipts=_gate_receipts(),
+        policy_identities=_policies(), canonical_addresses=[],
+        known_limitations=["one or more candidates remained unresolved"],
+    )
+    assert bundle["selection"] == "NONE"
+    assert bundle["tournament_terminal"] == terminal
 
 
 def test_selected_candidate_requires_nonempty_identity_and_canonical_addresses():
@@ -141,6 +162,17 @@ def test_bundle_digest_changes_on_scientific_field_mutation_and_validation_detec
         assert "digest" in str(exc).lower() or "sha" in str(exc).lower()
     else:
         raise AssertionError("tampered target bundle validated")
+
+
+def test_tournament_terminal_is_digest_bound():
+    T = _load()
+    bundle = T.build_target_qualification_bundle(
+        tournament_output=_tournament(), execution_manifest=_manifest(), gate_receipts=_gate_receipts(),
+        policy_identities=_policies(), canonical_addresses=[], known_limitations=["x"],
+    )
+    tampered = copy.deepcopy(bundle)
+    tampered["tournament_terminal"] = "FOUNDATION_CANDIDATE_UNRESOLVED__CONTINUE_TESTABLE_ROUTES__NO_TARGET_AUTHORITY"
+    assert T.compute_bundle_sha256(tampered) != bundle["bundle_sha256"]
 
 
 def test_policy_identity_set_is_exact_and_hash_bound():
