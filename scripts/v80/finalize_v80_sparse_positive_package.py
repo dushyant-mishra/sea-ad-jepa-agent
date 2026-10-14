@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 from hashlib import sha256
+from importlib.metadata import version
 import json
 from pathlib import Path
+import sys
 from typing import Iterable, Mapping
 
 from .v80_sparse_positive_benchmark import (
@@ -31,6 +33,14 @@ _AUTHORITY = {
     "real_training_authorized": False,
 }
 
+_RUNTIME = {"python": "3.11.9", "numpy": "2.3.5"}
+_SOURCE_FILES = (
+    "scripts/v80/v80_sparse_positive_benchmark.py",
+    "scripts/v80/v80_sparse_positive_adjudicator.py",
+    "scripts/v80/finalize_v80_sparse_positive_package.py",
+)
+_NONREG_PATH = "results/v80/sparse_positive/V80_V79_NONREGRESSION_BINDING_V1.json"
+
 
 def _canon(value: object) -> bytes:
     return (json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n").encode("utf-8")
@@ -50,17 +60,52 @@ def _sha_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def _inside(root: Path, path: Path) -> Path:
+    resolved = path.resolve(strict=True)
+    try:
+        resolved.relative_to(root)
+    except Exception as exc:
+        raise ValueError(f"custody path escapes repository: {path}") from exc
+    return resolved
+
+
+def _runtime_identity() -> dict[str, str]:
+    observed = {
+        "python": ".".join(str(x) for x in sys.version_info[:3]),
+        "numpy": version("numpy"),
+    }
+    if observed != _RUNTIME:
+        raise ValueError(f"runtime environment drift detected: {observed}")
+    return observed
+
+
 def _load_contract(contract_path: Path) -> dict[str, object]:
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     if contract.get("schema") != "V80_SPARSE_POSITIVE_QUALIFICATION_CONTRACT_V1":
         raise ValueError("V80 contract schema differs")
-    binding = contract.get("v79_immutable_binding")
-    if binding != _V79_BINDING:
+    if contract.get("v79_immutable_binding") != _V79_BINDING:
         raise ValueError("V79 immutable historical binding differs")
-    authority = contract.get("authority")
-    if authority != _AUTHORITY:
+    if contract.get("authority") != _AUTHORITY:
         raise ValueError("authority boundary differs")
     return contract
+
+
+def _validate_nonreg(path: Path) -> dict[str, object]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("schema") != "V80_V79_NONREGRESSION_BINDING_V1":
+        raise ValueError("V79 non-regression binding schema differs")
+    v79 = payload.get("v79", {})
+    required = {
+        "historical_result": "NOT_QUALIFIED",
+        "contract_sha256": _V79_BINDING["contract_sha256"],
+        "world_set_digest": _V79_BINDING["world_set_digest"],
+        "scorer_orchestrator_head": _V79_BINDING["scorer_orchestrator_head"],
+        "final_scoring_receipt_sha256": _V79_BINDING["final_receipt_sha256"],
+    }
+    for key, expected in required.items():
+        if v79.get(key) != expected:
+            raise ValueError(f"V79 non-regression binding differs: {key}")
+    return payload
 
 
 def build_package_receipt(
@@ -74,17 +119,24 @@ def build_package_receipt(
     path = Path(contract_path)
     if not path.is_absolute():
         path = root / path
-    try:
-        path.resolve(strict=True).relative_to(root)
-    except Exception as exc:
-        raise ValueError("contract must be inside repository custody") from exc
+    path = _inside(root, path)
     contract = _load_contract(path)
+    nonreg_path = _inside(root, root / _NONREG_PATH)
+    _validate_nonreg(nonreg_path)
+    source_identity = {
+        rel: _sha_file(_inside(root, root / rel))
+        for rel in _SOURCE_FILES
+    }
+    runtime = _runtime_identity()
     fit = serialize_fit_transport(world_tuple)
     controller = serialize_controller_transport(world_tuple)
     return {
         "schema": "V80_SPARSE_POSITIVE_PACKAGE_RECEIPT_V1",
         "status": "BENCHMARK_PACKAGE_ONLY__NO_ESTIMATOR_RUN",
         "contract_sha256": _sha_file(path),
+        "nonregression_binding_sha256": _sha_file(nonreg_path),
+        "source_sha256": source_identity,
+        "runtime_environment": runtime,
         "benchmark_identity_sha256": benchmark_identity(world_tuple),
         "fit_transport_sha256": _sha_obj(fit),
         "controller_transport_sha256": _sha_obj(controller),
