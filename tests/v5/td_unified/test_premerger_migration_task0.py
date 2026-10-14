@@ -18,6 +18,7 @@ UNRESOLVED = RESULT_DIR / "PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json"
 DECOMPOSITION = RESULT_DIR / "PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json"
 MACHA_STREAMS = RESULT_DIR / "PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json"
 TAXONOMY = RESULT_DIR / "TASK0_MIGRATION_TAXONOMY_V1.json"
+COMPLETENESS = RESULT_DIR / "PREMERGER_MERGED_CUSTODY_COMPLETENESS_V1.json"
 
 
 def _load(path: Path):
@@ -80,6 +81,81 @@ def test_macha_stream_unresolved_registration_obligations_are_retained():
     ids = {item["item_id"] for item in unresolved["items"]}
     assert "U_MACHA_REAL_TD_HISTORY_REGISTRATION" in ids
     assert "U_MACHA_V79_HISTORY_REGISTRATION" in ids
+
+
+def test_merged_custody_completeness_extension_covers_reaudit_gaps():
+    payload = _load(COMPLETENESS)
+    assert payload["schema"] == "PREMERGER_MERGED_CUSTODY_COMPLETENESS_V1"
+    assert payload["global_authority"] == GLOBAL_AUTHORITY
+    assert payload["task1_blocked"] is True
+    groups = {group["group_id"]: group for group in payload["custody_groups"]}
+    assert set(groups) == {
+        "ACTIVE_PR356_TASKS_1_4",
+        "FOUNDATION_REPRESENTATION_CURRENT_STATE",
+        "MULTIMODAL_SCENIC_ATAC_CUSTODY",
+        "RUNTIME_TRAINING_SAFETY_HANDOFF",
+        "FULL104_INFORMATION_CHANNEL_INVARIANTS",
+    }
+    for group in groups.values():
+        assert group["unified_destination"]
+        assert group["objects"]
+        assert group["review_obligations"]
+
+
+def test_old_pr356_tasks_1_4_are_not_flattened_into_superseded_tasks_4_12():
+    payload = _load(COMPLETENESS)
+    group = next(g for g in payload["custody_groups"] if g["group_id"] == "ACTIVE_PR356_TASKS_1_4")
+    by_id = {obj["object_id"]: obj for obj in group["objects"]}
+    assert {"PR356_TASK1", "PR356_TASK2", "PR356_TASK3", "PR356_TASK4", "PR356_TASKS5_12"}.issubset(by_id)
+    assert by_id["PR356_TASK1"]["state"] in {"ACTIVE_PREMERGER_IMPLEMENTATION", "AWAITING_EXACT_REVIEWED_HEAD"}
+    assert by_id["PR356_TASK2"]["state"] in {"ACTIVE_PREMERGER_IMPLEMENTATION", "PENDING_SEQUENTIAL_PREMERGER_IMPLEMENTATION", "AWAITING_EXACT_REVIEWED_HEAD"}
+    assert by_id["PR356_TASK3"]["state"] in {"ACTIVE_PREMERGER_IMPLEMENTATION", "PENDING_SEQUENTIAL_PREMERGER_IMPLEMENTATION", "AWAITING_EXACT_REVIEWED_HEAD"}
+    assert by_id["PR356_TASK4"]["state"] == "BLOCKED_ON_TASKS1_3_REVIEWS"
+    assert by_id["PR356_TASKS5_12"]["state"] == "SUPERSEDED_INDEPENDENT_EXECUTION"
+    assert by_id["PR356_TASKS5_12"]["continue_independently"] is False
+
+
+def test_current_representation_constraints_are_explicitly_preserved():
+    payload = _load(COMPLETENESS)
+    group = next(g for g in payload["custody_groups"] if g["group_id"] == "FOUNDATION_REPRESENTATION_CURRENT_STATE")
+    joined = json.dumps(group, sort_keys=True)
+    for token in ["SUBSPACE_ONLY", "TECHNOLOGY_INVARIANCE_NOT_QUALIFIED", "34_OF_42", "SOURCE_ACQUISITION_SIGNAL"]:
+        assert token in joined
+
+
+def test_multimodal_and_runtime_custody_are_explicitly_preserved():
+    payload = _load(COMPLETENESS)
+    groups = {g["group_id"]: g for g in payload["custody_groups"]}
+    multimodal = json.dumps(groups["MULTIMODAL_SCENIC_ATAC_CUSTODY"], sort_keys=True)
+    runtime = json.dumps(groups["RUNTIME_TRAINING_SAFETY_HANDOFF"], sort_keys=True)
+    for token in ["SCENIC", "ATAC", "STAGE75F", "INCOMPLETE_STOPPED", "SAME_NUCLEUS", "SEPARATE_NUCLEUS"]:
+        assert token in multimodal
+    for token in ["EMA", "Q_SAFETY", "COORDINATE_VALUE_COUPLING", "OPTIMIZER_COMPLETION_BEFORE_EMA"]:
+        assert token in runtime
+
+
+def test_full104_information_channel_invariants_are_explicitly_preserved():
+    payload = _load(COMPLETENESS)
+    group = next(g for g in payload["custody_groups"] if g["group_id"] == "FULL104_INFORMATION_CHANNEL_INVARIANTS")
+    joined = json.dumps(group, sort_keys=True)
+    for token in ["NORMALIZATION_DENOMINATOR_SOURCE_CHANNEL", "ADDRESS_PARITY_NE_EVIDENCE_PARITY", "ZERO_FILL_CAN_CREATE_FALSE_EASE", "WITHIN_DONOR_METRIC_BLINDNESS"]:
+        assert token in joined
+
+
+def test_reaudit_unresolved_items_are_machine_visible():
+    unresolved = _load(UNRESOLVED)
+    ids = {item["item_id"] for item in unresolved["items"]}
+    assert {
+        "U_MACHA_SYNTH_TASK1_CANONICAL_IDENTITY_ACTIVE",
+        "U_MACHA_SYNTH_TASK2_CUSTODY_RNG_ACTIVE_OR_PENDING",
+        "U_MACHA_SYNTH_TASK3_CALIBRATION_PROVENANCE_ACTIVE_OR_PENDING",
+        "U_MACHA_SYNTH_TASK4_BIOLOGY_BLOCKED_ON_1_3_REVIEWS",
+        "U_OLD_SYNTH_TASKS5_12_NO_INDEPENDENT_CONTINUATION",
+        "U_FOUNDATION_REPRESENTATION_CUSTODY",
+        "U_MULTIMODAL_REGULATORY_CUSTODY",
+        "U_RUNTIME_TRAINING_SAFETY_CUSTODY",
+        "U_FULL104_INFORMATION_CHANNEL_CUSTODY",
+    }.issubset(ids)
 
 
 def test_every_artifact_has_exactly_one_allowed_migration_class():
