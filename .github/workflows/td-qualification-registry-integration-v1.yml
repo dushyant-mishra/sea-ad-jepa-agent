@@ -1,0 +1,36 @@
+name: TD qualification registry integration V1
+
+on:
+  push:
+    branches:
+      - integration/td-qualification-registry-v1-20261014
+  pull_request:
+    paths:
+      - 'scripts/v5/td_qualification_registry_v1.py'
+      - 'scripts/v5/td_execution_manifest_v1.py'
+      - 'scripts/v5/td_case_bundle_v1.py'
+      - 'scripts/v5/td_target_qualification_bundle_v1.py'
+      - 'scripts/v5/td_downstream_certification_v1.py'
+      - 'tests/v5/test_td_qualification_registry_v1.py'
+      - 'tests/v5/test_td_execution_manifest_v1.py'
+      - 'tests/v5/test_td_case_bundle_v1.py'
+      - 'tests/v5/test_td_target_qualification_bundle_v1.py'
+      - 'tests/v5/test_td_downstream_certification_v1.py'
+      - 'tests/v5/test_td_qualification_integration_v1.py'
+      - 'results/target_discovery/qualification/TD_QUALIFICATION_REGISTRY_V1.json'
+      - '.github/workflows/td-qualification-registry-integration-v1.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1
+      - name: Run qualification registry tests
+        run: python -m pytest -q tests/v5/test_td_qualification_registry_v1.py
+      - name: Authority guard
+        run: |
+          ! grep -R "TARGET_WINNER_\|REPRESENTATION_WINNER_\|REAL_TRAINING_ON\|STAGE4_AUTHORIZED" scripts/v5/td_*qualification*_v1.py scripts/v5/td_execution_manifest_v1.py scripts/v5/td_case_bundle_v1.py scripts/v5/td_downstream_certification_v1.py 2>/dev/null
