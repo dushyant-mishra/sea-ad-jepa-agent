@@ -40,6 +40,16 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+def _library(text: str) -> tuple[int, bool]:
+    """Parse a per-cell library size; accept only integer-valued text, flag float formatting."""
+    if text.isdigit():
+        return int(text), False
+    head, dot, tail = text.partition(".")
+    if dot and head.isdigit() and tail and set(tail) == {"0"}:
+        return int(head), True
+    raise RuntimeError(f"non-integer source_library value: {text!r}")
+
+
 def _block(task):
     root, row, scalar_mask = task
     counts_path, meta_path = root / row["counts_path"], root / row["meta_path"]
@@ -61,7 +71,9 @@ def _block(task):
            "selection_rows": [int(r["selection_row"]) for r in meta], "groups": {}}
     S = np.asarray(m.sum(axis=1)).ravel().astype(np.int64)
     nnz = np.diff(m.indptr)
-    L = np.array([int(r["source_library"]) for r in meta], dtype=np.int64)
+    parsed = [_library(r["source_library"]) for r in meta]
+    L = np.array([v for v, _ in parsed], dtype=np.int64)
+    out["library_float_formatted_rows"] = sum(1 for _, f in parsed if f)
     row_of_entry = np.repeat(np.arange(m.shape[0]), nnz)
     miss = {p: np.bincount(row_of_entry, weights=np.power(1.0 - p, data), minlength=m.shape[0]) for p in DEPTHS}
     donors = np.array([r["donor_id"] for r in meta])
@@ -124,6 +136,7 @@ def main() -> None:
         for res, r in zip(pool.map(_block, tasks, chunksize=4), rows):
             for k in ("negative_entries", "explicit_zero_entries", "entries_outside_measured_scalar"):
                 checks[k] += res[k]
+            checks[f"library_float_formatted_rows__source={r['source']}"] += res["library_float_formatted_rows"]
             seen.extend(res["selection_rows"])
             for d, g in res["groups"].items():
                 key = (d, int(r["operator_index"]))
