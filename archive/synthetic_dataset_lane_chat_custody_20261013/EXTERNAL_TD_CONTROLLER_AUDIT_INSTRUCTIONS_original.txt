@@ -1,0 +1,305 @@
+Audit the current TD/downstream controller work independently. Do not assume the controller's conclusions are correct. Your job is to try to falsify them.
+
+Repository:
+`dushyant-mishra/sea-ad-jepa-agent`
+
+Focus on these exact milestones.
+
+## 1. Synthetic TD phase-2 qualification
+
+Audit:
+
+- repaired reader PR #330, exact repaired head:
+  `7659030cd2fc9a2662c67a9bf4d23e0e8f3f1606`
+- phase-2 evidence branch:
+  `evidence/td-synthetic-phase2-adjudication-7659030c-20261013`
+- evidence head:
+  `ef95199f`
+- frozen phase-2 receipt SHA-256:
+  `5382034332f24b0e37954b4f8e2cefe958f21ff644e6fd1ffec150d2478aa61b`
+- independent controller audit PR #336:
+  `audit/td-phase2-independent-20261013`
+- exact audit head:
+  `b92f335b53a93805a5d05330dc0d61f0479b1dcf`
+
+Verify independently:
+
+1. the repaired phase-2 run occurred exactly once;
+2. the phase-1 receipt was unchanged;
+3. the eight frozen fit-engine files remained unchanged;
+4. controller truth was not opened before authenticated phase-2 adjudication;
+5. all input/archive/binding/controller hashes match the frozen custody records;
+6. the phase-2 receipt hashes to exactly `53820343...aa61b`;
+7. all 9 challenge expected/observed statuses genuinely match;
+8. `QUALIFIED` is supported by the receipt rather than inferred from narrative;
+9. all downstream authority flags are false;
+10. no real TD, target selection, TD60, Stage4, EMA selection or training occurred.
+
+Attempt to identify any hidden contamination, post-hoc repair, rerun, receipt rewrite, authority drift or controller exposure.
+
+The correct scientific scope, if the audit passes, is only:
+
+`TEST_QUALIFICATION_ONLY`
+
+Do not interpret synthetic qualification as evidence that C1/C2/C3/C4/C5/C6 are biologically valid in human data.
+
+---
+
+## 2. Controller convergence state
+
+Audit draft PR #337:
+
+- branch:
+  `audit/td-controller-convergence-20261013`
+- exact head:
+  `054a87a117aa0bbefafc5032fa354544e038162a`
+
+Verify that it reconciles, rather than conflates, these two facts:
+
+1. the sealed synthetic relational TD test is qualified;
+2. the real biological tournament is still blocked.
+
+Check especially that:
+
+- candidate biological outcomes remain unopened;
+- historical descriptive cutoffs were not silently promoted;
+- all real execution/selection/training authority flags remain false;
+- the unresolved real-gate count is supported by the machine-readable artifacts;
+- no synthetic result is being used as a biological PASS.
+
+Try to falsify the claimed terminal:
+
+`SYNTHETIC_RELATIONAL_TEST_QUALIFIED__REAL_TOURNAMENT_BLOCKED_ON_PROSPECTIVE_RULES__NO_BIOLOGICAL_AUTHORITY`
+
+---
+
+## 3. Real gate readiness / structural executor work
+
+Audit the stacked real-gate engineering from PRs #333–#335.
+
+Key claims to verify independently:
+
+- original matrix:
+  - 198 candidate×gate rows;
+  - 117 required roles originally `RULE_NOT_MATERIALIZED`;
+  - 81 `NOT_APPLICABLE`;
+- later structural qualification:
+  - only 17 required roles promoted to mechanically qualified structural executors;
+  - 100 required roles remained blocked;
+- exactly 28 unique unresolved biological gate rules remain.
+
+Check that the 17 promoted roles are genuinely structural/provenance rules and do not smuggle in biological performance thresholds.
+
+Check that the remaining 28 were not promoted merely because generic statistical helper code exists.
+
+Specifically inspect whether:
+
+- donor remains the biological replication unit;
+- source/operator remains an observation process;
+- measured zero remains distinct from structural unmeasurement;
+- `NOT_ESTIMABLE` is preserved;
+- no aggregate score can rescue a required failed constituent;
+- C6/C4 cannot rescue failed constituent blocks;
+- C5 cannot become the sole foundation portfolio.
+
+Try to find any gate marked callable or qualified without a complete callable artifact containing exact executor/estimand/decision-rule identities.
+
+---
+
+## 4. TargetPortfolio repair
+
+Audit PR #332, exact head:
+
+`902054ad62eede84086fc2e0a90ceb27e2191da7`
+
+Verify the repaired contract supports independent qualified blocks rather than forcing fusion.
+
+Required cases:
+
+1. `C1 PASS + C3 PASS + C6 FAIL` still yields a valid C1+C3 portfolio.
+2. `C1 PASS + C2 PASS + C3 PASS + C4 FAIL` still permits separate C1+C2+C3 representation.
+3. C6 cannot rescue C1 or C3 failure.
+4. C4 cannot rescue C1/C2/C3 failure.
+5. C5 cannot become sole foundation.
+6. `NOT_ESTIMABLE` is never silently promoted.
+7. legacy fused behavior remains valid where scientifically applicable.
+
+Check that the repair is adapter/contract work only and did not create representation or training authority.
+
+---
+
+## 5. Prospective real-gate design — highest-priority scientific review
+
+Audit draft PR #338:
+
+- branch:
+  `design/td-real-gate-prospective-contracts-20261013`
+- exact head:
+  `1013ceabdabb1e32e1265c1fb71e80baedc57abc`
+
+Files:
+
+- `docs/superpowers/specs/2026-10-13-td-real-gate-prospective-contracts-design.md`
+- `docs/superpowers/specs/2026-10-13-td-real-gate-prospective-contracts-self-audit-amendment.md`
+
+This is design only. No executor implementation should exist on this PR.
+
+Please review the scientific/statistical contract aggressively.
+
+Questions to answer:
+
+### A. Is the common inferential law defensible?
+
+The proposal uses:
+
+- donor-primary paired contrasts;
+- familywise `alpha = 0.01`;
+- Bonferroni across simultaneous within-gate subtests;
+- exact donor sign tests;
+- `NOT_ESTIMABLE` when donor/null resolution is insufficient;
+- non-compensating aggregation.
+
+Assess whether this is appropriate for the frozen biological questions or whether it introduces unjustified conservatism, loss of power, invalid independence assumptions, or hidden multiplicity problems.
+
+Do not suggest relaxing thresholds after seeing candidate outcomes.
+
+### B. Are the gate estimands scientifically valid?
+
+Review each unresolved gate, especially:
+
+- G2 nontrivial biological content;
+- G3 correct-cell specificity;
+- G4 donor recurrence;
+- G5 source replication;
+- G6 teacher information advantage;
+- G7 evidence convergence;
+- G8 measurement robustness;
+- G9 learned-teacher continuity;
+- G10 shortcut resistance;
+- G11 transfer;
+- G12 coverage/abstention;
+- S1/S2/S3;
+- R1/R3/R4;
+- Q4–Q8;
+- C6 increment;
+- C4 increment;
+- M1–M4.
+
+For every gate, ask:
+
+1. Is the estimand explicit enough to implement without looking at outcomes?
+2. Is the positive direction unambiguous?
+3. Is the biological replication unit correct?
+4. Are support and source/operator semantics preserved?
+5. Is PASS/FAIL/NOT_ESTIMABLE fully specified?
+6. Does it answer the frozen scientific question?
+7. Does it accidentally add a new candidate definition?
+8. Does it reuse a historical result beyond its lawful scope?
+
+### C. Historical compatibility
+
+Cross-check PR #338 against the frozen historical specs, especially:
+
+- `2026-10-11-td-multitarget-tournament-prefreeze-v2.md`
+- `2026-10-11-td-measurement-noise-floor-prefreeze.md`
+- `2026-10-12-td-c6-shared-query-composite-v1.md`
+- corrected relational replay/routing specs
+- historical G6/G7 custody designs
+- target convergence / protected confirmation specs.
+
+Look for silent drift.
+
+Important distinctions:
+
+- historical execution-stage labels “G6/G7” are not the same as current promotion gates `G6_TEACHER_INFORMATION_ADVANTAGE` and `G7_EVIDENCE_CONVERGENCE`;
+- G8 should preserve the already-frozen 25/50/75/100% empirical same-cell count split/thinning protocol;
+- C6/C4 increment should remain anchored to their frozen constituent-comparison logic;
+- fine-scale relational failure must not be generalized to absence of relational biology;
+- source failure must remain source-scoped;
+- `NOT_ESTIMABLE != FAIL`.
+
+### D. Look for arbitrary new scientific choices
+
+Flag any choice that lacks a prior freeze or clear scientific justification, including:
+
+- arbitrary effect-size margins;
+- arbitrary donor/cell-count floors;
+- arbitrary latent similarity thresholds;
+- post-hoc source exclusions;
+- new locality searches;
+- new candidate definitions;
+- hidden architecture assumptions;
+- treating p-value significance as biological magnitude where the gate requires substantive effect;
+- treating synthetic calibration as human effect-size calibration.
+
+If a gate cannot be prospectively completed without a genuinely new scientific choice, say so explicitly and recommend it remain:
+
+`BLOCKED_PROSPECTIVE_RULE_REQUIRED`
+
+rather than inventing a rule.
+
+---
+
+## 6. Historical closed-results discipline
+
+Confirm the current work does not reopen or reinterpret closed experiments without new evidence.
+
+In particular, do not permit silent reuse of:
+
+- spent PR #314;
+- PROD41K T1 defective evidence;
+- hidden-RNA/CELL anchor;
+- ANCHOR_ONLY;
+- T0/T1/TCTX;
+- V6R5B;
+- Stage69–71 graph auxiliary;
+- old rare-head benchmark-lock;
+- historical `.996` EMA;
+- pre-repair gene-semantic NPH/cross-source results without repaired molecular-address binding.
+
+Also verify that mechanics-only evidence affected by none of the gene-ID incident remains distinguishable from biological authority.
+
+---
+
+## Return format
+
+Please return a concise but rigorous audit with these headings:
+
+### 1. Overall verdict
+One of:
+- `PASS`
+- `PASS_WITH_REQUIRED_FIXES`
+- `FAIL`
+
+### 2. Critical findings
+Only issues that could invalidate qualification, change scientific interpretation, create authority drift, or bias future outcomes.
+
+For every finding give:
+- severity: CRITICAL / HIGH / MEDIUM;
+- exact file/line or commit/receipt;
+- why it matters scientifically or procedurally;
+- exact required correction.
+
+### 3. Phase-2 custody verdict
+State whether synthetic phase-2 remains independently valid and whether controller truth/custody was preserved.
+
+### 4. Real-gate readiness verdict
+State the independently verified counts and whether any gate has been over-promoted.
+
+### 5. PR #338 scientific-design verdict
+State which gate contracts are acceptable, which need repair, and which must remain blocked pending a genuinely prospective scientific choice.
+
+### 6. Authority verdict
+Explicitly state whether any of these are authorized:
+- real TD;
+- target selection;
+- representation selection;
+- TD60;
+- production EMA selection;
+- Stage4;
+- real JEPA training.
+
+### 7. Recommended next action
+Give the narrowest scientifically lawful next step.
+
+Do not implement fixes during the audit unless separately asked. Do not open biological candidate outcomes simply to finish the review.
