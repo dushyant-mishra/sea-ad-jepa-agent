@@ -36,6 +36,12 @@ def _is_sha256(value: object) -> bool:
     return isinstance(value, str) and len(value) == 64 and all(c in "0123456789abcdef" for c in value)
 
 
+def _exact_nonempty(value: object, label: str) -> str:
+    if not isinstance(value, str) or not value or value != value.strip() or "\0" in value:
+        raise TargetBundleError(f"{label} must be an exact nonempty trimmed NUL-free string")
+    return value
+
+
 def _canonical_payload(bundle: Mapping[str, object]) -> dict:
     payload = copy.deepcopy(dict(bundle))
     payload.pop("bundle_sha256", None)
@@ -101,6 +107,7 @@ def build_target_qualification_bundle(
     selection = tournament_output.get("selection")
     if selection not in {"NONE", "SELECTED"}:
         raise TargetBundleError("tournament selection must be NONE or SELECTED")
+    terminal = _exact_nonempty(tournament_output.get("terminal"), "tournament terminal")
     if not _is_sha256(tournament_output.get("receipt_sha256")):
         raise TargetBundleError("tournament output receipt digest invalid")
 
@@ -136,6 +143,7 @@ def build_target_qualification_bundle(
         "schema": "JEPA_TD_TARGET_QUALIFICATION_BUNDLE_V1",
         "selection": selection,
         "selected_candidate": selected,
+        "tournament_terminal": terminal,
         "canonical_addresses": list(canonical_addresses),
         "execution_mode": manifest["mode"],
         "registry_sha256": manifest["registry_sha256"],
@@ -157,6 +165,7 @@ def validate_target_qualification_bundle(bundle: Mapping[str, object]) -> dict:
     digest = bundle.get("bundle_sha256")
     if not _is_sha256(digest) or compute_bundle_sha256(bundle) != digest:
         raise TargetBundleError("target qualification bundle digest mismatch")
+    _exact_nonempty(bundle.get("tournament_terminal"), "tournament terminal")
     manifest = _validate_manifest(bundle.get("execution_manifest"))
     if bundle.get("execution_mode") != manifest["mode"] or bundle.get("registry_sha256") != manifest["registry_sha256"]:
         raise TargetBundleError("target qualification bundle manifest binding mismatch")
