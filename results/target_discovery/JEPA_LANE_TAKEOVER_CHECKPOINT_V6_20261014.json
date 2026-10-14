@@ -1,0 +1,125 @@
+{
+  "schema": "JEPA_LANE_TAKEOVER_CHECKPOINT_V6_20261014",
+  "status": "OUTCOME_BLIND_CONTRACT_HARDENING_CONTINUES__MACHA_REAL_DATA_AUDIT_IN_PARALLEL__REAL_TD_OFF",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "candidate_outcomes_opened": false,
+  "real_tournament_authorized": false,
+  "surfaces": {
+    "g11_g12_population_registry": {
+      "pr": 349,
+      "head": "1ab453e5cb60efb209a8eee2aecb61c5ea0fbfc7",
+      "status": "POPULATION_FROZEN__CANDIDATE_EVIDENCE_SUPPORT_BLOCKED"
+    },
+    "r1_semantics": {
+      "pr": 350,
+      "head": "9b9078c102fa346644d6eb2bda4ff7b4bdfe854a",
+      "status": "ANCHORED_CELL_TRIPLET_SEMANTICS_REPAIRED"
+    },
+    "c4_requires_c6": {
+      "pr": 351,
+      "head": "2abcb9fe156eac340ff12adff9426ed38d929e3e",
+      "focused_run": 38511967467,
+      "full_harness_run": 38511967480,
+      "status": "QUALIFIED"
+    },
+    "g6": {
+      "pr": 352,
+      "head": "bb1e35d33deb52236829012be452e4c4d8b362fc",
+      "status": "DECISION_MECHANICS_QUALIFIED__REAL_REFERENCE_AND_EVIDENCE_RIGHTS_REQUIRED"
+    },
+    "r1_known_truth_stress": {
+      "pr": 353,
+      "head": "1df20029defaa2bcd7a51869c1026ac6075b1323",
+      "status": "MECHANICAL_STRESS_QUALIFIED"
+    },
+    "g7": {
+      "pr": 354,
+      "head": "d90047308d633e259195a54501a230373b36d043",
+      "status": "SUPPORT_AWARE_TERMINAL_DECISION_QUALIFIED"
+    },
+    "g9_s1_s2": {
+      "pr": 355,
+      "head": "6e5182e2dc4e8e263e8cbd309aed6494b5ea7a55",
+      "status": "ADVERSE_TAIL_GEOMETRY_ENGINE_QUALIFIED"
+    },
+    "g2": {
+      "pr": 357,
+      "head": "c174d05215f14bda5292c07559b10445bc17d86c",
+      "red_run": 38512093799,
+      "green_run": 38512253360,
+      "status": "DECISION_MECHANICS_QUALIFIED__REAL_REFERENCE_SUPPORT_ENDPOINTS_REQUIRED"
+    },
+    "r4_c6_c4_increment": {
+      "pr": 358,
+      "head": "b7c317c640aa231a7d5ec1fa12271a39bfee86e6",
+      "green_run": 38513741344,
+      "status": "COMMON_NOISE_RELATIVE_INCREMENT_MECHANICS_QUALIFIED"
+    },
+    "g8_mechanics_ancestor": {
+      "pr": 343,
+      "head": "82d17bfb1650d97a95d5424160126791f09d7494",
+      "status": "CONFORMAL_BOUND_AND_INTEGER_THINNING_MECHANICS_QUALIFIED"
+    },
+    "g8_realization_contract": {
+      "pr": 359,
+      "head": "bfb1a892b91f2301ed74f19b0b8a8355955e8ac2",
+      "red_runs": [38513517940, 38513801072, 38514130879],
+      "green_run": 38514202609,
+      "status": "REALIZATION_METRIC_SUPPORT_CONTRACT_QUALIFIED__REAL_REFERENCE_REQUIRED",
+      "family_alpha": 0.01,
+      "protected_endpoints": 6,
+      "alpha_eff": 0.0016666666666666668,
+      "minimum_technical_calibration_draws_per_depth_reference_unit": 599,
+      "biological_replication_unit": "DONOR",
+      "technical_draws_increase_biological_n": false
+    },
+    "g12_claim_envelope_guard": {
+      "pr": 360,
+      "head": "01ebdb9384b42d5cfae3de03c2adf5b6b327ee81",
+      "red_run": 38514373398,
+      "green_run": 38514426750,
+      "status": "NO_POSTHOC_SCOPE_SHRINKAGE_RUNTIME_GUARD_QUALIFIED"
+    }
+  },
+  "population": {
+    "rows": 6351753,
+    "donors": 149,
+    "operators": 42,
+    "sources": 3,
+    "donor_operator_strata": 2028,
+    "reader_fit_donors": 104,
+    "reader_validation_donors": 22,
+    "reader_oracle_donors": 23
+  },
+  "standing_semantics": {
+    "not_estimable_is_not_fail": true,
+    "numerical_failure_is_not_biological_fail": true,
+    "measured_zero_is_measurement": true,
+    "unsupported_or_unresolved_is_not_zero": true,
+    "source_failures_noncompensating": true,
+    "candidate_outcomes_cannot_set_thresholds": true,
+    "synthetic_worlds_are_test_of_test_only": true,
+    "v79_status": "NOT_QUALIFIED_PERMANENT",
+    "v80_scope": "BENCHMARK_PACKAGE_QUALIFICATION_ONLY"
+  },
+  "macha": {
+    "role": "INDEPENDENT_HOSTILE_EXTERNAL_REVIEW_AND_REAL_DATA_QUALIFICATION",
+    "candidate_outcomes_must_remain_sealed": true,
+    "authorized_scopes": [
+      "OUTCOME_BLIND_CALIBRATION",
+      "SUPPORT_MAPPING",
+      "ESTIMABILITY_QUALIFICATION",
+      "REFERENCE_GENERATION",
+      "EXTERNAL_AUDIT"
+    ],
+    "artifacts_pending": true
+  },
+  "next_actions": [
+    "AUDIT_MACHA_ARTIFACTS_AGAINST_EXACT_HEADS_AND_BINDINGS",
+    "MATERIALIZE_CANDIDATE_EVIDENCE_ADDRESS_QUERY_SUPPORT_OVERLAYS",
+    "QUALIFY_REAL_SAME_METRIC_MEASUREMENT_REFIT_AND_NULL_REFERENCES_WHERE_LAWFUL",
+    "BUILD_SEALED_CROSS_GATE_SYNTHETIC_ADVERSARIAL_BATTERY_AFTER_DESIGN_FREEZE",
+    "REGENERATE_FULL_198_ROW_117_REQUIRED_READINESS_MATRIX_AFTER_REAL_DATA_DEPENDENCIES_ARE_AUDITED",
+    "KEEP_REAL_TD_OFF_UNTIL_ALL_REQUIRED_PREOUTCOME_DEPENDENCIES_ARE_FROZEN"
+  ]
+}
