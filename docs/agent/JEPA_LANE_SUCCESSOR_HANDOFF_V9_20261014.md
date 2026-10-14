@@ -1,6 +1,6 @@
 # JEPA lane successor handoff V9 — 2026-10-14
 
-Status: `REAL_DATA_SUPPORT_AUTHENTICATED__MACHA_HOSTILE_REPAIRS_SYSTEM_REQUALIFIED__HUMAN_GATE_EXECUTION_BLOCKED__REAL_TD_OFF`
+Status: `REAL_DATA_SUPPORT_AUTHENTICATED__MACHA_HOSTILE_REPAIRS_SYSTEM_REQUALIFIED__CONCURRENCY_RECONCILED__HUMAN_GATE_EXECUTION_BLOCKED__REAL_TD_OFF`
 
 Canonical historical audit/custody remains PR #322. PR #323 remains navigation/takeover only.
 
@@ -59,10 +59,12 @@ Therefore:
 ## Macha-driven repair set
 
 ### PR #364 — G8 V3
-Exact head:
-`ce1b43464ae1d79894b7738c6dc025559dffbf36`
+Current exact executable head:
+`95dd474a02ce571722df9e8f08b42e81af2e8736`
 
-RED `38517833746`; focused GREEN `38517982781`; final broad GREEN `38518100272`.
+Historical repair lineage: RED `38517833746`; focused GREEN `38517982781`; historical broad GREEN at ancestor `ce1b43464ae1d79894b7738c6dc025559dffbf36` in `38518100272`; current descendant broad GREEN `38572243458`.
+
+`95dd474a...` is exactly one commit ahead of `ce1b4346...`; the only scientific-tree difference is package-qualifying the inherited V2 reference import. Scientific rule unchanged; executable robustness improved.
 
 Repairs:
 - cell/address/draw-keyed, storage-order-invariant integer thinning;
@@ -150,14 +152,24 @@ Current status:
 
 PR #369 replaces #363 as the current cross-gate system exam for the repaired dependency set.
 
-Exact battery head:
-`03f44ea81fe4bb3f9f450d11bc8a9a46be9374ee`
+Current exact battery head:
+`651d7a5a1d4f4047d5ac875cc603f9151c2fed36`
 
-RED `38520281669`:
-- all seven exact dependency heads checked out successfully;
-- test collection failed solely because the V3 battery runner was absent.
+Exact current dependency set:
+- R1 `949d76ff03cb57c5a88fef9efdb79fced9154024`
+- G6 `4110d4478c3353d86740dd135d62460ff7a7611f`
+- G7 `5a711f9a4ea0328445a05dadc1e011efb16a3c13`
+- geometry `8d6b23a18051f64463ee9b2649f4fe5fc7123f0d`
+- G2 `42df903d6190b7aa1b8eb65d810ab813cd327445`
+- G8 `95dd474a02ce571722df9e8f08b42e81af2e8736`
+- increment `b7c317c640aa231a7d5ec1fa12271a39bfee86e6`
 
-GREEN `38520451709`:
+Qualification lineage:
+- RED `38520281669`: all seven exact dependency heads checked out successfully and collection failed solely because the V3 battery runner was absent;
+- original GREEN `38520451709` at original repair heads;
+- exact-head requalification GREEN `38577104444` after G8 advanced to descendant `95dd474a...`: all exact dependency checkouts, sealed V3 exam and authority guard passed.
+
+The V3 exam confirms:
 - previously sealed V2 worlds still match on unchanged diagnostic paths;
 - G8 reference-generation firewall matches;
 - G6 zero-margin and typed-qualification firewalls match;
@@ -167,6 +179,17 @@ GREEN `38520451709`:
 - exact-head identity and authority guards pass.
 
 This qualifies the repaired mechanics/firewalls as a system. It is not biological evidence and does not make a human gate executable.
+
+## Concurrency reconciliation
+
+A second repair lane produced PRs #370–#374 before discovering that #365–#369 already existed. Those duplicates were audited rather than promoted:
+- #370 closed as superseded by #365; its target-scale hash would have overstated closure relative to #365's explicit open scale contract;
+- #371 closed as superseded by #366; its extra diagnostic restrictions are not promoted ahead of the future producer/static-policy contract;
+- #372 closed as superseded by #367; its detection-matching downgrade conflicts with recovered historical TD57B law;
+- #373 closed as superseded by #368; it overreached by hard-coding the full historical falsifier catalog as current candidate policy;
+- #374 closed as superseded by current #369 because it depended on #370–#373.
+
+No duplicate branch is current authority.
 
 ## Current unaffected / still-current supporting surfaces
 
