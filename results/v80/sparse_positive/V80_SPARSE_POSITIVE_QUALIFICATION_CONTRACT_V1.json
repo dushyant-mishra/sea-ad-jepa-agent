@@ -5,6 +5,14 @@
   "n_genes_per_world": 24,
   "n_donors": 24,
   "cells_per_donor": 80,
+  "requested_estimand": {
+    "scope": "PER_GENE_FULL_TWO_PART_MODEL",
+    "detection_component": "FULL_COEFFICIENT_VECTOR_FOR_INTERCEPT_DEPTH_CELL_CLASS_SOURCE_PLUS_DONOR_EFFECTS",
+    "positive_component": "POSITIVE_LOCATION_PLUS_DONOR_EFFECTS",
+    "complete_requires_all_requested_components_estimable": true,
+    "sp05_nonestimability_reason": "NO_MEASURED_POSITIVE_OBSERVATIONS_FOR_POSITIVE_COMPONENT",
+    "sp06_nonestimability_reason": "DETECTION_DESIGN_EXACT_RANK_DEFICIENCY_CELL_CLASS_EQUALS_SOURCE"
+  },
   "challenge_families": [
     "SP00_BALANCED_ESTIMABLE",
     "SP01_ULTRASPARSE_ESTIMABLE",
