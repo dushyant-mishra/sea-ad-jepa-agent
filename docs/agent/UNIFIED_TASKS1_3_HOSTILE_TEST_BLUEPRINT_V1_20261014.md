@@ -13,10 +13,13 @@ This blueprint refines the accepted implementation plan without changing its aut
 4. Supply two parents with the same declared identity but different canonical payloads: reject.
 5. Change only navigation PR/branch metadata: scientific digest must not change if navigation metadata is outside scientific payload; navigation must never confer authority.
 6. Change decision-bearing code/policy/input identity: scientific receipt identity must change.
-7. Nonfinite float, bytes, set, tuple-with-ambiguous-semantics, or other non-JSON scientific value: reject unless prospectively encoded by an explicit schema representation.
-8. Canonical key order permutation: same canonical digest.
-9. Stable registry rows reordered with stable scientific identity keys: same ordered-registry digest.
-10. Same semantic JSON with different raw transport bytes: semantic digest may agree; raw transport hash must differ.
+7. Nonfinite float, bytes, set, tuple, NumPy scalar or other non-JSON scientific value: reject unless prospectively encoded by an explicit schema/boundary representation before canonicalization.
+8. Canonical mapping-key permutation: same canonical bytes/digest.
+9. Reorder rows in the canonical coordinate registry: the **ordered-registry digest must change**. The coordinate order is scientific state, not storage noise.
+10. Reorder/shard-concatenate a scientifically keyed row set without changing keyed rows: the **semantic row-set identity must remain unchanged**. This is the storage-order-invariant identity, distinct from the ordered registry.
+11. Same semantic JSON with different raw transport bytes: semantic digest may agree; raw transport hash must differ.
+12. Old synthetic canonical bytes and unified canonical bytes must match exactly on the shared JSON-native domain, while their domain-separated scientific digest namespaces remain distinct by design.
+13. A producer hands NumPy scalars directly to the unified identity root: reject or require explicit producer-boundary conversion to JSON-native primitives; NumPy dtype behavior is not part of unified authority.
 
 ### Authority hostile cases
 1. `PASS`, `GREEN`, `QUALIFIED`, `MECHANICALLY_QUALIFIED`, `SYNTHETIC_TEST_QUALIFIED` cannot deserialize as `qualification_stage`.
@@ -27,7 +30,7 @@ This blueprint refines the accepted implementation plan without changing its aut
 6. Stage cannot skip promotion requirements because ordinal value is higher.
 
 ### Consolidation-specific regression
-If Macha old Task 1 is accepted, unified tests must import/use the accepted canonical primitive or compare against frozen canonical test vectors. A second independently coded serializer that can diverge is a failure.
+Unified Task 1 must preserve the accepted old Task 1 byte law on the shared JSON-native domain through frozen cross-implementation known-answer tests. A second serializer that can diverge is a failure. Historical synthetic-specific digest domains must not be silently reused as unified scientific-receipt authority.
 
 ## Task 2 — TD execution manifest + population/access law
 
