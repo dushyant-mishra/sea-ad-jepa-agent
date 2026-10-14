@@ -32,7 +32,7 @@ EXACT_GATE_HEADS = {
     "G7": "5a711f9a4ea0328445a05dadc1e011efb16a3c13",
     "G9": "8d6b23a18051f64463ee9b2649f4fe5fc7123f0d",
     "G2": "42df903d6190b7aa1b8eb65d810ab813cd327445",
-    "G8": "ce1b43464ae1d79894b7738c6dc025559dffbf36",
+    "G8": "95dd474a02ce571722df9e8f08b42e81af2e8736",
     "INCREMENT": "b7c317c640aa231a7d5ec1fa12271a39bfee86e6",
 }
 
