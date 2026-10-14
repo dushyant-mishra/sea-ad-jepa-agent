@@ -1,31 +1,36 @@
 # Synthetic dataset lane successor handoff V3 — 2026-10-13
 
-Status: `CURRENT__SUPERSEDES_V2_FOR_PRESENT_TENSE_SYNTHETIC_LANE_STATE__V80_SUCCESSOR_WORK_ADDED`
+Status: `CURRENT__SUPERSEDES_V2_FOR_PRESENT_TENSE__V80_BENCHMARK_PACKAGE_NOW_QUALIFIED__SUCCESSOR_ESTIMATOR_STILL_UNQUALIFIED`
 
-Terminal: `SYNTHETIC_LANE_TAKEOVER_READY__HISTORY_CONSOLIDATED__PR328_FIXTURE_QUALIFIED__PR344_V2_REVIEW_PENDING__V80_SPARSE_POSITIVE_SUCCESSOR_PACKAGE_IN_PROGRESS__V79_REMAINS_NOT_QUALIFIED__TRAINING_OFF`
+Terminal:
+
+`SYNTHETIC_HISTORY_CONSOLIDATED__PR328_MECHANICS_FIXTURE_QUALIFIED__V79_FROZEN_NOT_QUALIFIED__V80_SPARSE_POSITIVE_BENCHMARK_PACKAGE_QUALIFIED__PR344_PRODUCTION_SPEC_V2_AWAITS_USER_REVIEW__SUCCESSOR_ESTIMATOR_NOT_YET_QUALIFIED__TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
 ## Mission
 
-Own the synthetic dataset / known-truth substrate lane only. Do not take over real Target Discovery adjudication, V79 scoring execution, target selection, representation selection, TD60, Stage4, or training unless explicitly reassigned.
+Take over the synthetic dataset / known-truth substrate lane only. Do not restart repository archaeology, do not rerun V79, do not implement or qualify a successor estimator unless the user explicitly assigns that work, and do not cross into real TD adjudication, target selection, representation selection, TD60, Stage4, or training.
 
-This handoff exists so a successor starts from the current exact state rather than repeating Stage81/V72/V79 archaeology or accidentally modifying a closed failed qualification.
+The synthetic lane owns synthetic biological truth, population/cell-state generation, acquisition/observation/modality projection, synthetic support semantics, query/context/perturbation challenge construction, multimodal worlds, sealed producer/fit/controller packaging, deterministic realization/hostile tests, and estimator-independent synthetic qualification worlds.
+
+The synthetic lane does not own real TD gate law/execution, V79 scorer execution or reinterpretation, successor-estimator implementation unless explicitly reassigned, target/representation selection, TD60, Stage4, or training authority.
 
 ## Read first
 
-1. This file.
-2. `docs/agent/SYNTHETIC_DATASET_LANE_CURRENT_STATE_V2_20261013.json`.
-3. `docs/agent/SYNTHETIC_DATASET_LANE_V80_SCRIPT_RESULT_INDEX_20261013.csv`.
-4. `docs/agent/SYNTHETIC_DATASET_LANE_PROJECT_ARTIFACT_CUSTODY_20261013.csv`.
-5. Companion audit branch `audit/td-synthetic-historical-custody-20261013`:
+1. `docs/agent/SYNTHETIC_DATASET_LANE_SUCCESSOR_HANDOFF_V3_20261013.md`
+2. `docs/agent/SYNTHETIC_DATASET_LANE_CURRENT_STATE_V3_20261013.json`
+3. `docs/agent/SYNTHETIC_DATASET_LANE_SCRIPT_RESULT_INDEX_20261013.csv`
+4. `docs/agent/SYNTHETIC_DATASET_LANE_PROJECT_ARTIFACT_CUSTODY_20261013.csv`
+5. Companion audit PR #325:
    - `docs/agent/SYNTHETIC_DATASET_LANE_HISTORICAL_AUDIT_COMPENDIUM_20261013.md`
    - `docs/agent/SYNTHETIC_DATASET_LANE_NO_REPEAT_LEDGER_20261013.md`
-   - `docs/agent/SYNTHETIC_DATASET_LANE_V80_AUDIT_DELTA_20261013.md`
-   - `docs/agent/SYNTHETIC_DATASET_LANE_V80_AUDIT_STATE_20261013.json`
-6. PR #328 exact head `25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec` — qualified mechanics/interface fixture only.
-7. PR #344 exact audited design head `f10d4f62b59a35cc443302ab8863c33d51b2b1de` — production lineage-composite design V2, implementation still off pending user review.
-8. PR #348 current sparse-positive successor branch `science/v80-sparse-positive-successor-qualification-20261013` — see current machine state for exact head.
+   - `docs/agent/SYNTHETIC_DATASET_LANE_AUDIT_STATE_V2_20261013.json`
+   - `docs/agent/V80_SPARSE_POSITIVE_HISTORICAL_AUDIT_DELTA_20261013.md`
+6. PR #328 @ `25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec` — qualified mechanics/interface fixture only.
+7. PR #339 @ `7e955445f938d24dec9cf177e27d60433b8ab97e` — spent hostile audit; four findings repaired in PR #328.
+8. PR #348 current head `9ad04d43ffe7bd387da8d2315f63b5758df4f9f8` — qualified V80 sparse-positive benchmark package. Executable source authority is exact head `b840067e4c9439e4cb4aa9e8c649ef2f6064a142`; later commits add only the exact CI receipt and execution ledger.
+9. PR #344 @ `f10d4f62b59a35cc443302ab8863c33d51b2b1de` — production lineage-composite design V2; user review required before implementation planning.
 
-V1/V2 handoffs remain preserved as historical custody. Use V3 for present-tense decisions.
+Older handoff/current-state versions remain historical custody only.
 
 ## Global authority
 
@@ -33,159 +38,233 @@ V1/V2 handoffs remain preserved as historical custody. Use V3 for present-tense 
 
 Synthetic work does not create human biological authority.
 
-## PR #328 — frozen mechanics/interface fixture
+## PR #328 — frozen qualified mechanics fixture
 
-PR #328 is complete within its declared limited scope and must not be silently expanded.
+Status: `QUALIFIED_MECHANICS_INTERFACE_FIXTURE_ONLY`.
 
-Verified V2 identities:
-- receipt SHA-256 `0cc1bc599dd0e77ec46f603d8a7edbb7da58762020a68d703b403dc7bf0a4dad`
+Verified identities:
+- receipt V2 `0cc1bc599dd0e77ec46f603d8a7edbb7da58762020a68d703b403dc7bf0a4dad`
 - world `dedd53c3b93eecdf28b73f229574a0cda4971371a3a6282f4b9e12fa44d09e66`
 - fit view `fc5fa5c071903460da8c0d4644a3b18022f45b178f2c60a727710cadc2fb350a`
 - controller truth `120c4e47bb7d667360c0786bb6004f02166d0f189c4a2b33b478545c7296c05f`
-- manifest `9b74681f57601225aa26037fa1eac439be067143bfb900cdcd5f73af0dbc8d3b`
-- package `9f2f3b7a53d5862a2a08bbd23c1d42f990f0f055616fbce7a1491493cda3fb41`
+- integration manifest `9b74681f57601225aa26037fa1eac439be067143bfb900cdcd5f73af0dbc8d3b`
+- package `9f2f3b7a53d5862a2a08bbd23c1d42f990f0f055616fbce7a1491493cda3fb41`.
 
-Pinned runtime: Python 3.11.9; NumPy 2.3.5; pandas 2.2.3; SciPy 1.17.0; pytest 9.0.2.
+Pinned runtime: Python 3.11.9, NumPy 2.3.5, pandas 2.2.3, SciPy 1.17.0, pytest 9.0.2.
 
-Do not rerun its hostile audit unless executable bytes, dependency identities, runtime, or perturbation semantics change.
+PR #339 found four repairable issues: scope overclaim, incomplete transitive executable custody, unpinned runtime, and under-specified perturbation-null semantics. All four were prospectively repaired without changing world or fit-view hashes. Do not repeat that audit unless executable bytes, dependency identities, runtime, or perturbation semantics change.
 
-## PR #344 — production lineage-composite design
+PR #328 is not the production simulator and grants no target/representation/training authority.
 
-PR #344 V1 failed self-audit because it over-promoted Stage81A3/A3R authority. V2 corrected this and is the only design to review.
+## V79 — immutable historical failed qualification
 
-Current V2 state:
-`PASS_DESIGN_SCOPE_AND_AUTHORITY__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF`
+V79 remains permanently `NOT_QUALIFIED` and cannot be rescued.
 
-No production implementation plan/code is authorized from V1. Do not conflate PR #344 with the bounded V80 sparse-positive successor work below.
-
-## V79 — permanently closed failed qualification
-
-V79 historical qualification remains:
-`NOT_QUALIFIED`
-
-Frozen result:
+Exact identities:
 - scorer/orchestrator head `ac1e73d79489438634aaeeca035d229875f3186a`
-- contract SHA-256 `57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26`
+- frozen Contract V2 `57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26`
 - world-set digest `40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286`
 - realization ledger `4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65`
 - realization audit receipt `6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3`
-- final scoring receipt `ef10852e534fe8a83c3aebd832ad3a531d755d06185464441494712818e8abfd`
-- 291 / 292 gates PASS
-- sole hard failure: Q08 sparse-detection positive convergence; 3 of 44 fits `NOT_DIAGNOSED`.
+- final scoring receipt `ef10852e534fe8a83c3aebd832ad3a531d755d06185464441494712818e8abfd`.
 
-Never rescue V79 by changing thresholds, excluding/refitting the three failed genes, regenerating worlds, or relabeling the historical result. V79 is immutable evidence.
+Final result:
+- 1,056 fits scored;
+- 1,053 COMPLETE;
+- 3 NOT_DIAGNOSED;
+- 291/292 gates PASS;
+- sole hard FAIL: `Q08_SPARSE_DETECTION` positive world, `CONVERGENCE_ALL_FITS_DIAGNOSED`, 3 of 44 fits NOT_DIAGNOSED;
+- all post-terminal gates passed.
 
-## PR #348 — V80 sparse-positive successor benchmark/package
+The three historical failed fit IDs are custody evidence only. They must not determine new seeds, thresholds, world parameters, selection, retries, or exemptions. No V79 rerun, threshold change, exclusion/refit, rescue, or reinterpretation is authorized.
 
-Purpose: create a new prospectively frozen, independently seeded synthetic qualification package for a future successor estimator. It does **not** modify V79 and does **not** implement the future estimator.
+## PR #348 — qualified V80 sparse-positive successor benchmark package
 
-Base: PR #328 exact head.
+Purpose: address V79 correctly by creating a new prospectively frozen, independently seeded benchmark/custody/adjudication package for a future successor estimator. V80 does not modify or rerun V79 and does not implement the future estimator.
 
-Frozen contract:
-`results/v80/sparse_positive/V80_SPARSE_POSITIVE_QUALIFICATION_CONTRACT_V1.json`
+Current PR head:
+`9ad04d43ffe7bd387da8d2315f63b5758df4f9f8`
 
-Non-regression binding:
-`results/v80/sparse_positive/V80_V79_NONREGRESSION_BINDING_V1.json`
+Qualified executable source head:
+`b840067e4c9439e4cb4aa9e8c649ef2f6064a142`
 
-Design:
-`docs/superpowers/specs/2026-10-13-v80-sparse-positive-successor-qualification-design.md`
+### Authoritative files
 
-Plan:
-`docs/superpowers/plans/2026-10-13-v80-sparse-positive-successor-qualification.md`
+- design: `docs/superpowers/specs/2026-10-13-v80-sparse-positive-successor-qualification-design.md`
+- plan: `docs/superpowers/plans/2026-10-13-v80-sparse-positive-successor-qualification.md`
+- producer: `scripts/v80/v80_sparse_positive_benchmark.py`
+- adjudicator: `scripts/v80/v80_sparse_positive_adjudicator.py`
+- finalizer: `scripts/v80/finalize_v80_sparse_positive_package.py`
+- contract: `results/v80/sparse_positive/V80_SPARSE_POSITIVE_QUALIFICATION_CONTRACT_V1.json`
+- V79 non-regression binding: `results/v80/sparse_positive/V80_V79_NONREGRESSION_BINDING_V1.json`
+- receipt: `results/v80/sparse_positive/V80_SPARSE_POSITIVE_PACKAGE_RECEIPT_V1.json`
+- execution ledger: `docs/agent/V80_SPARSE_POSITIVE_BENCHMARK_EXECUTION_LEDGER_20261013.md`
+- workflow: `.github/workflows/v80-sparse-positive-benchmark.yml`.
 
-### Frozen V80 scientific semantics
+### Frozen V80 identities
 
-Eight families, 24 genes/world, 24 donors, 80 cells/donor, seed root 41,000,000:
-- SP00 balanced estimable
-- SP01 ultrasparse estimable
-- SP02 donor-imbalanced estimable
-- SP03 source-shift estimable
-- SP04 support-thinned estimable
-- SP05 no-positive-support, `NOT_ESTIMABLE_BY_CONSTRUCTION`
-- SP06 exact rank deficiency, `NOT_ESTIMABLE_BY_CONSTRUCTION`
-- SP07 new-donor estimable
+Receipt file SHA-256:
+`346407af801a7fabc5dbd27136dcf5c9abe61e87d438018b98da192333eb9c32`
+
+Receipt identities:
+- benchmark `16a08b29c7e083377f4dde6e16ac6d55a3358ed45475c74161fbaba29a4afc38`
+- fit transport `77f89e8336ec2a2d0184abbd81bfd7d6ff04f2dc57aa80891b6d8021869737b3`
+- controller transport `24120a8c3426c02b9747a57b3197b81df40aeae44a727988a2c43235f046f2e7`
+- contract `7124da87c9cd21e315474720b1fa2de899462484bfeddfe586c77058f1d2c519`
+- V79 non-regression binding `b83d7e0becbe5480353db657b553b7bb65251d3b88136be1d6c3cdda365c4819`
+- 8 worlds / 192 per-gene fits.
+
+Source SHA-256:
+- producer `72785526901e7cc708531fae830b74001c718720b13d4c26e4760953c9e83d1f`
+- adjudicator `f9bc546db0236ac7c168b270da3106deff0953f3067fe14fb2e8224622b32ca1`
+- finalizer `d143941baf4cdd4073955ffa1a9d77a7c7236e97a3989a193d01a796d82cbfde`.
+
+Receipt runtime: Python 3.11.9; NumPy 2.3.5.
+
+### Qualification evidence
+
+Final workflow run:
+`38504094639`
+
+On the exact qualified source head:
+- V80 focused/hostile/custody tests: 18/18 PASS;
+- inherited PR #328 regression: 73/73 PASS;
+- producer job PASS;
+- fit-only validation PASS with controller artifact absent;
+- controller-only validation PASS with fit artifact absent.
+
+CI artifacts:
+- fit artifact `11867590706`, digest `sha256:4cec8966cff7bdddb3640903f4525328d23ed3482e2b232ead1bc440993fca71`
+- controller artifact `11866917064`, digest `sha256:184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46`
+- receipt artifact `11867366245`, digest `sha256:97e264cfe76709f5098b346e56130716640e6c8ce8562974d6ab126ac82a47fe`.
+
+### Frozen challenge law
+
+Eight families:
+- `SP00_BALANCED_ESTIMABLE`
+- `SP01_ULTRASPARSE_ESTIMABLE`
+- `SP02_DONOR_IMBALANCED_ESTIMABLE`
+- `SP03_SOURCE_SHIFT_ESTIMABLE`
+- `SP04_SUPPORT_THINNED_ESTIMABLE`
+- `SP05_NO_POSITIVE_SUPPORT_NOT_ESTIMABLE`
+- `SP06_RANK_DEFICIENT_NOT_ESTIMABLE`
+- `SP07_NEW_DONOR_ESTIMABLE`.
+
+Parameters: 24 genes/world, 24 donors, 80 cells/donor, seed root 41,000,000.
+
+SP05/SP06 are mathematically non-estimable by construction, not simply difficult cases.
 
 Fit statuses are exactly:
 - `COMPLETE`
 - `NOT_ESTIMABLE`
-- `NUMERICAL_FAILURE`
+- `NUMERICAL_FAILURE`.
 
-These are semantically distinct. `NUMERICAL_FAILURE` is always a hard failure and can never be relabeled as lawful abstention. `NOT_ESTIMABLE` is correct only when the controller truth says non-estimability was constructed prospectively. False abstention on an estimable case fails.
+Hard rules:
+- numerical failure always fails;
+- false abstention fails;
+- false certainty on a constructed non-estimable case fails;
+- held-out outcomes are controller-side only;
+- estimator returns raw estimates/predictions, controller computes recovery metrics;
+- no aggregate rescue;
+- future successor must pass V80 and non-regress on immutable V79 Q00-Q11 worlds;
+- all 291 historical V79 hard passes remain protected.
 
-SP05 non-estimability: no measured positive observations for the requested positive component.
-SP06 non-estimability: detection design is exactly rank deficient because cell class equals source.
+### TDD and recursive self-audit history — spent evidence
 
-The six estimable families must retain positive support and full-rank requested design.
+Initial RED:
+- head `e3a4cef88581171a76427e97e119e3223c14133d`
+- workflow `38502749914`
+- V80 focused tests: 20 failed / 1 passed because `scripts/v80` implementation did not yet exist.
 
-### V80 non-regression law
+This is expected engineering RED, not scientific failure. Do not rerun it simply to reproduce RED.
 
-A future successor estimator must be evaluated on:
-1. immutable existing V79 Q00-Q11 worlds; and
-2. the new V80 sparse-positive package.
+Recursive self-audit caught and fixed before final freeze:
+1. post-hoc positive-injection shortcut — removed; hostile RED regression added;
+2. world-level rather than per-gene estimability — tightened to every gene;
+3. estimator self-scoring — replaced by controller-side scoring;
+4. held-out outcome leakage — moved to controller custody;
+5. incomplete receipt source/runtime binding — hardened;
+6. negative-test custody-path construction defect — fixed without weakening security;
+7. median-gate test-scope defect — fixed without changing frozen gate/world parameters.
 
-It may not regenerate or modify V79. All 291 historical V79 hard passes must remain passes. The original Q08 numerical failure may not recur on an estimable fit. Aggregate rescue is forbidden.
+These audits are closed unless V80 bytes or semantics change.
 
-### TDD history — do not repeat
+### V80 boundary
 
-First intentional RED head: `e3a4cef88581171a76427e97e119e3223c14133d`.
-Workflow run `38502749914`, job `115653252417`.
-Result: **20 failed / 1 passed**.
-The one passing test was the prospective contract identity/authority test. All other failures were expected because `scripts.v80` did not exist; representative failure was `ModuleNotFoundError: No module named 'scripts.v80'`.
+V80 qualifies only the benchmark/custody/adjudication package.
 
-This is valid TDD evidence, not a scientific benchmark failure. Do not rerun this old RED commit simply to reproduce RED.
+`SUCCESSOR_ESTIMATOR_NOT_YET_QUALIFIED`
 
-Implementation files subsequently added:
-- `scripts/v80/v80_sparse_positive_benchmark.py`
-- `scripts/v80/v80_sparse_positive_adjudicator.py`
-- `scripts/v80/finalize_v80_sparse_positive_package.py`
-- `scripts/v80/__init__.py`
-- `tests/v80/test_v80_sparse_positive_benchmark.py`
-- `tests/v80/test_v80_sparse_positive_hostile.py`
-- `.github/workflows/v80-sparse-positive-benchmark.yml`
+Before any successor-estimator qualification run, the estimator owner must freeze prospectively:
+- exact estimator source/head;
+- runtime/dependencies;
+- initialization;
+- optimization/retry policy;
+- lawful abstention rule;
+- output schema/parser;
+- one-shot authorization.
 
-At handoff creation, PR #348 had advanced beyond the initial GREEN-attempt head; consult `SYNTHETIC_DATASET_LANE_CURRENT_STATE_V2_20261013.json` and PR #348 directly for the exact latest head/CI conclusion. Never infer a green qualification from the existence of implementation files alone.
+A later successor PASS qualifies only that exact successor identity. It never changes the V79 historical result.
 
-## Historical ancestry — do not restart
+## PR #344 — production lineage-composite synthetic design
 
-The following audits are spent unless a valid replay trigger exists:
+Head:
+`f10d4f62b59a35cc443302ab8863c33d51b2b1de`
+
+Controlling spec:
+`docs/superpowers/specs/2026-10-13-lineage-composite-production-synthetic-design-v2.md`
+
+Status:
+`PASS_DESIGN_SCOPE_AND_AUTHORITY__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF`
+
+V1 failed self-audit and is preserved. V2 corrected Stage81A3/A3R authority mistakes. Do not implement V1.
+
+## Historical ancestry — no-repeat classification
+
+Do not restart these audits:
 - Stage81A3: mechanistic/design ancestor only; architecture incomplete.
 - Stage81A3R: reuse three-state support/address closure; global-state pilot NOT FROZEN.
-- V72-V75: production population/measurement ancestry; V75 only qualified 100K measurement architecture.
+- V72–V74: one-hidden-truth multi-dataset population/sharding/allocation/calibration-consumption mechanics.
+- V75: 100K measurement architecture qualified; 500K indeterminate.
 - V77: broad-class-as-generative-biology qualitative lesson only.
-- V78: falsified signed-field/marginal-repair negative prior; no arm promoted.
-- Stage70: rare auxiliary negative prior.
+- V78: falsified signed-field/marginal-repair family; no arm promoted.
+- Stage70: rare-auxiliary negative prior.
 - Stage71: graph negative prior; randomized controls mandatory.
-- V53-V58: regulatory specificity/nuisance-control lessons, not human thresholds.
+- V53–V58: regulatory specificity/nuisance-control lessons, not human thresholds.
 - PR #163/#178: query/normalization leakage firewall; corrected T_A/T_B synthetic comparison NOT_INFORMATIVE for human target choice.
 - PR #199/#312: controller oracle versus lawful teacher/student evidence and recoverability boundary.
-- PR #318-#321: sealed fit/controller packaging pattern.
-- PR #339: spent hostile audit of PR #328; four findings repaired prospectively.
+- PR #318–#321: sealed fit/controller packaging pattern.
+- PR #328: qualified mechanics/interface fixture only.
+- PR #348: qualified estimator-independent sparse-positive benchmark package only.
 
-Valid replay triggers only:
-- source bytes changed;
-- scientific question changed;
-- concrete contradiction discovered;
-- historical audit explicitly left the same issue unresolved;
-- prospective authority boundary changed;
-- runtime/dependency drift invalidates custody.
+Synthetic effects, rarity rates, stress rates, and qualification thresholds do not become human biological authority.
 
-## Local/project-only custody
+## Data and custody
 
 Read `docs/agent/SYNTHETIC_DATASET_LANE_PROJECT_ARTIFACT_CUSTODY_20261013.csv`.
 
-Large archives/checkpoints/NPZs are manifest-only and are not to be recreated from similar files. Missing bytes mean missing custody.
+Large archives/checkpoints/NPZs remain manifest-only. Missing bytes are missing custody; do not reconstruct or silently substitute.
 
-The external V79 scored-row artifact remains outside ordinary Git, identified by SHA-256:
+External V79 scored-row artifact SHA-256:
 `7b3bef4dcb7bd7492407ac9d7c605a04be5e90776302db94a3f0af73e1a1cd6a`.
+
+Historical 50K discovery freeze caveat: 50,000 physical rows but only 25,000 unique `sample_row` values. STAT1 residual/tail numerical calibration that treated `sample_row` as a unique physical row remains quarantined. PR #328 rare-frequency and pseudo-rarity settings are synthetic stress presets, not empirical human calibration.
+
+## No-repeat law
+
+Historical work is spent by default. Reopen only if exact bytes changed, the scientific question materially changed, a concrete contradiction is found, the prior audit left the same issue unresolved, an authority boundary changes prospectively, or runtime/dependency drift invalidates custody.
+
+Negative priors remain negative. `NOT_FROZEN` stays `NOT_FROZEN`. V79 stays `NOT_QUALIFIED` forever; only a distinct prospectively qualified successor can earn separate authority.
 
 ## Exact next actions for successor
 
-1. Read PR #348 exact current head and CI; do not assume completion from this handoff snapshot.
-2. If V80 CI is red, diagnose only the current delta under systematic debugging; do not rewrite the frozen contract to make tests pass.
-3. Require full focused + hostile V80 suite and inherited PR #328 regression green on the same exact head.
-4. Freeze a deterministic V80 package receipt only after exact-head CI is green and hostile audit is clean.
-5. Do **not** run or design the successor estimator in the synthetic lane unless explicitly reassigned. Hand the frozen V80 package to the inference owner.
-6. Preserve V79 `NOT_QUALIFIED` forever regardless of V80 outcome.
-7. After V80 package closure, return to PR #344 V2 user review and, only if approved, production synthetic implementation planning.
+1. Treat PR #348 as complete at the benchmark-package level; do not modify V80 worlds, thresholds, or status semantics absent a new prospectively frozen scientific question.
+2. Do not implement/run a successor estimator from the synthetic lane unless explicitly reassigned. If reassigned, require the prospective estimator freeze and one-shot authorization above.
+3. Return to PR #344 V2 user review.
+4. Only after user approval of PR #344 V2, write the production implementation plan and execute under TDD plus recursive hostile self-auditing.
+5. Preserve physical producer/fit/controller separation in any sealed production qualification realization.
+6. Keep all downstream authority OFF.
 
-No real TD, target/representation selection, Stage4, or training authority is created by any of the above.
+Global authority remains:
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
