@@ -1,0 +1,42 @@
+{
+  "schema": "LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_CURRENT_STATE_V1",
+  "date": "2026-10-13",
+  "base_pr": 328,
+  "base_head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+  "branch": "science/lineage-composite-production-synthetic-20261013",
+  "design_v1": {
+    "path": "docs/superpowers/specs/2026-10-13-lineage-composite-production-synthetic-design.md",
+    "status": "SUPERSEDED_BY_RECURSIVE_SELF_AUDIT_V2__DO_NOT_IMPLEMENT"
+  },
+  "design_v2": {
+    "path": "docs/superpowers/specs/2026-10-13-lineage-composite-production-synthetic-design-v2.md",
+    "status": "SELF_AUDIT_PASS__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF"
+  },
+  "self_audits": [
+    "docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_SPEC_SELF_AUDIT_V1_20261013.md",
+    "docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_SPEC_SELF_AUDIT_V2_20261013.md"
+  ],
+  "implementation_units": [
+    "lineage_authority_supersession_registry",
+    "master_biology_successor",
+    "acquisition_scaling_successor",
+    "canonical_address_support_successor",
+    "observation_modalities_successor",
+    "query_regulatory_hostile_families",
+    "packaging_blinding_successor",
+    "same_pipeline_rehearsal",
+    "production_scale_rehearsal_freeze"
+  ],
+  "known_external_dependencies": [
+    "downstream_target_portfolio_multi_block_repair",
+    "future_full_scale_resource_compatibility_gate",
+    "separate_sealed_qualification_execution_authorization"
+  ],
+  "target_winner": null,
+  "representation_winner": null,
+  "stage4_authorized": false,
+  "synthetic_training_authorized": false,
+  "real_training_authorized": false,
+  "implementation_authorized": false,
+  "terminal": "LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_DESIGN_V2__SELF_AUDIT_PASS__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF__TRAINING_OFF"
+}
