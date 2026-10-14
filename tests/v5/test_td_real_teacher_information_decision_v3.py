@@ -4,6 +4,8 @@ import importlib.util
 
 import pytest
 
+SCALE_SHA = "d" * 64
+
 
 def _load():
     name = "scripts.v5.td_real_teacher_information_decision_v3"
@@ -13,10 +15,11 @@ def _load():
     return D
 
 
-def _probe(values, *, binding="a" * 64):
+def _probe(values, *, binding="a" * 64, scale_sha=SCALE_SHA):
     return {
         "status": "PASS",
         "input_binding_sha256": binding,
+        "target_scale_contract_sha256": scale_sha,
         "donor_deltas": [
             {"donor_id": f"D{i:02d}", "delta": float(v)}
             for i, v in enumerate(values)
@@ -24,7 +27,7 @@ def _probe(values, *, binding="a" * 64):
     }
 
 
-def _reference(values, *, binding="a" * 64, kind="U_MEASUREMENT"):
+def _reference(values, *, binding="a" * 64, kind="U_MEASUREMENT", scale_sha=SCALE_SHA):
     return {
         "schema": "JEPA_TD_REAL_G6_REFERENCE_MARGIN_V3",
         "frozen": True,
@@ -34,6 +37,7 @@ def _reference(values, *, binding="a" * 64, kind="U_MEASUREMENT"):
         "reference_kind": kind,
         "donor_margins": {f"D{i:02d}": float(v) for i, v in enumerate(values)},
         "input_binding_sha256": binding,
+        "target_scale_contract_sha256": scale_sha,
         "reference_receipt_sha256": "b" * 64,
         "independent_non_degenerate_reference": True,
     }
@@ -71,7 +75,6 @@ def test_nonsignificant_positive_pattern_is_inconclusive_not_biological_fail():
         probe_result=_probe(values),
         reference_artifact=_reference([0.25] * 10),
         external_qualification_receipt_sha256=None,
-        alpha=0.01,
     )
     assert out["diagnostic_status"] == "INCONCLUSIVE"
     assert out["status"] == "NOT_ESTIMABLE"
@@ -106,6 +109,27 @@ def test_reference_requires_exact_binding_and_positive_independent_margin():
     )
     assert out["status"] == "NOT_ESTIMABLE"
     assert out["reason"] == "NONDEGENERATE_SUBSTANTIVE_MARGIN_NOT_ESTABLISHED"
+
+
+def test_target_scale_contract_must_match_exactly():
+    D = _load()
+    with pytest.raises(D.TeacherInformationDecisionV3Error, match="scale"):
+        D.adjudicate_g6_v3(
+            probe_result=_probe([1.0] * 8, scale_sha="d" * 64),
+            reference_artifact=_reference([0.25] * 8, scale_sha="e" * 64),
+            external_qualification_receipt_sha256=None,
+        )
+
+
+def test_alpha_is_frozen_and_not_caller_selectable():
+    D = _load()
+    with pytest.raises(D.TeacherInformationDecisionV3Error, match="alpha"):
+        D.adjudicate_g6_v3(
+            probe_result=_probe([1.0] * 8),
+            reference_artifact=_reference([0.25] * 8),
+            external_qualification_receipt_sha256=None,
+            alpha=0.05,
+        )
 
 
 def test_nonfinite_inputs_are_numerical_failure_not_exception_or_biological_fail():
