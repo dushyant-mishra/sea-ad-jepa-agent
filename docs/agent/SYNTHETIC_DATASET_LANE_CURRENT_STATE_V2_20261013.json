@@ -46,7 +46,9 @@
   "v80": {
     "pr": 348,
     "branch": "science/v80-sparse-positive-successor-qualification-20261013",
-    "snapshot_head": "060d79dab23c2e262b546e86122029727fe8fa6a",
+    "active_branch": true,
+    "last_observed_head": "b840067e4c9439e4cb4aa9e8c649ef2f6064a142",
+    "instruction": "ALWAYS_QUERY_PR348_CURRENT_HEAD_BEFORE_RESUMING__DO_NOT_ASSUME_LAST_OBSERVED_HEAD_IS_FINAL",
     "base_pr328_head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
     "purpose": "PROSPECTIVE_SYNTHETIC_SPARSE_POSITIVE_SUCCESSOR_QUALIFICATION_PACKAGE_ONLY",
     "successor_estimator_implemented": false,
@@ -67,11 +69,12 @@
       "result": "20_FAILED_1_PASSED",
       "interpretation": "EXPECTED_TDD_RED__SCRIPTS_V80_ABSENT__NOT_SCIENTIFIC_FAILURE"
     },
-    "implementation_files_present": ["scripts/v80/__init__.py","scripts/v80/v80_sparse_positive_benchmark.py","scripts/v80/v80_sparse_positive_adjudicator.py","scripts/v80/finalize_v80_sparse_positive_package.py","tests/v80/test_v80_sparse_positive_benchmark.py","tests/v80/test_v80_sparse_positive_hostile.py",".github/workflows/v80-sparse-positive-benchmark.yml"],
-    "snapshot_ci": {
-      "v80_run": 38504021101,
-      "pr328_regression_run": 38504021126,
-      "status_at_snapshot": "QUEUED__RECHECK_PR348_EXACT_HEAD_BEFORE_CLAIMING_GREEN"
+    "implementation_files_present_last_observed": ["scripts/v80/__init__.py","scripts/v80/v80_sparse_positive_benchmark.py","scripts/v80/v80_sparse_positive_adjudicator.py","scripts/v80/finalize_v80_sparse_positive_package.py","tests/v80/test_v80_sparse_positive_benchmark.py","tests/v80/test_v80_sparse_positive_hostile.py","tests/v80/test_v80_sparse_positive_custody.py",".github/workflows/v80-sparse-positive-benchmark.yml"],
+    "last_observed_ci": {
+      "v80_run": 38504094639,
+      "v80_status": "IN_PROGRESS",
+      "pr328_regression_run": 38504094661,
+      "pr328_regression_status": "SUCCESS"
     },
     "authority": {
       "successor_estimator_qualified": false,
@@ -84,6 +87,6 @@
       "real_training_authorized": false
     }
   },
-  "next_action": "READ_PR348_EXACT_CURRENT_HEAD_AND_CI__COMPLETE_V80_PACKAGE_WITHOUT_CHANGING_FROZEN_CONTRACT__THEN_RETURN_TO_PR344_V2_REVIEW",
+  "next_action": "QUERY_PR348_LIVE_HEAD_AND_LATEST_CI__AUDIT_ONLY_NEW_DELTAS__COMPLETE_V80_PACKAGE_WITHOUT_CHANGING_FROZEN_CONTRACT__THEN_RETURN_TO_PR344_V2_REVIEW",
   "no_repeat_trigger_required": true
 }
