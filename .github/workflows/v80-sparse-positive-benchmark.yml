@@ -1,0 +1,19 @@
+name: v80 sparse-positive benchmark
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.9'
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install numpy==2.3.5 pytest==9.0.2 scipy==1.17.0 pandas==2.2.3
+      - name: V80 focused tests
+        run: pytest tests/v80/test_v80_sparse_positive_benchmark.py -v
+      - name: PR328 inherited regression
+        run: pytest tests/v79/test_unified_synthetic_integration_v1.py tests/v79/test_unified_synthetic_fit_view_v1.py tests/v79/test_unified_synthetic_controller_truth_v1.py tests/v79/test_finalize_unified_synthetic_integration_v1.py tests/v79/test_v79_rare_biology_generator_v1.py tests/test_v79_hierarchical_biology_v1.py tests/test_v79_observation_operator_v1.py -q
