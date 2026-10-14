@@ -4,7 +4,7 @@
   "global_authority":"TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
   "architecture_head":"3064ca545f0c94859ea989cd49a04fcbd5b9a303",
   "plan_head":"9328f1c00faee8a0ebf1910d412ea129bab566be",
-  "audit_head":"9fb32951d8e3db2b075dc21d476601698d759ffc",
+  "audit_head":"7129ecacf6351f5848870a3bf14f3c2dfd0e5452",
   "task0_head":"c80d7398b41f10208ec1622bc52599383b940be6",
   "task0_focused_run":38645994312,
   "task0_focused_job":116132861396,
@@ -24,6 +24,8 @@
   "old_task3_state":"STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY",
   "old_task4_state":"STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY",
   "old_tasks5_12_independent_execution_authorized":false,
+  "analysis_tasks1_12_contracts_frozen":true,
+  "runtime_eligibility_receipt_required_before_training_eligible":true,
   "next_required_event":"MACHA_INDEPENDENT_REVIEW_OF_TASK0_c80d7398_AND_OLD_TASK1_2_ff597faf",
   "next_implementation_after_acceptance":"UNIFIED_TASK1_RED_FIRST",
   "new_custody_groups":["ACTIVE_PR356_TASKS_1_4","FOUNDATION_REPRESENTATION_CURRENT_STATE","MULTIMODAL_SCENIC_ATAC_CUSTODY","RUNTIME_TRAINING_SAFETY_HANDOFF","FULL104_INFORMATION_CHANNEL_INVARIANTS"],
@@ -32,7 +34,9 @@
     "results/target_discovery/JEPA_MERGED_LANE_AUDIT_STATE_V2_20261014.json",
     "docs/agent/JEPA_MERGED_LANE_MASTER_AUDIT_INDEX_V1_20261014.md",
     "docs/agent/MACHA_TASK0_FINAL_INDEPENDENT_REVIEW_PACKET_V1_20261014.md",
-    "docs/agent/UNIFIED_TASK1_4_PR356_CONSOLIDATION_ADAPTER_CONTRACT_V1_20261014.md",
-    "docs/agent/UNIFIED_TASK12_INDEPENDENT_HOSTILE_WHOLE_PIPELINE_AUDIT_CONTRACT_V1_20261014.md"
+    "results/target_discovery/unified_qualification_v1/SCIENTIFIC_RECEIPT_AUTHORITY_SCHEMA_BLUEPRINT_V1.json",
+    "docs/agent/UNIFIED_TASK2_MANIFEST_ACCESS_SCHEMA_CONTRACT_V1_20261014.md",
+    "docs/agent/UNIFIED_TASK12_INDEPENDENT_HOSTILE_WHOLE_PIPELINE_AUDIT_CONTRACT_V1_20261014.md",
+    "results/target_discovery/unified_qualification_v1/RUNTIME_ELIGIBILITY_RECEIPT_SCHEMA_BLUEPRINT_V1.json"
   ]
 }
