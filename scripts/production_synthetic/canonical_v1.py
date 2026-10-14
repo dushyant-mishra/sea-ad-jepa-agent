@@ -16,12 +16,14 @@ redefine it):
    - ``None`` -> ``null`` is the ONLY missing-value representation. A measured
      zero (``0`` / ``0.0``) is never ``null``.
    - NaN and +/-Inf are REJECTED, never mapped to ``null``.
-   - Python ints are exact (arbitrary precision).
+   - Python ints are exact up to the interpreter's int-to-str digit limit
+     (4300 digits by default); larger ints are rejected, never truncated.
    - Floats use shortest round-trip ``repr``; ``-0.0`` is normalized to
      ``0.0``. An integer-valued float stays a float (``1.0`` != ``1``).
    - numpy integer / floating / bool scalars convert to the Python equivalent
      (a numpy float is widened to float64 first, so float32 0.1 serializes as
-     its float64 value). numpy arrays are rejected.
+     its float64 value). numpy arrays and numpy datetime64/timedelta64 (incl. NaT) are
+     rejected.
    - Sequences: lists and tuples are both arrays (tuple == list); list order is
      significant. Sets, frozensets, bytes, complex and any other type are
      rejected.
@@ -40,7 +42,14 @@ redefine it):
    each row's canonical content, in the given order. Rejects empty registries,
    empty/duplicated/missing identity keys, missing-valued (``None``) identity
    values and duplicate identity tuples. Reordering rows changes the digest.
-5. ``semantic_row_set_sha256(rows, identity_keys)``: ORDER-INVARIANT identity of
+5. ``load_canonical_json(data)``: strict loader for JSON file artifacts. Parses
+   UTF-8 bytes (one leading BOM stripped), rejects duplicate object keys,
+   NaN/Infinity/-Infinity, overflowing floats (1e999), trailing garbage and
+   non-bytes input. A JSON file artifact's semantic identity is
+   ``semantic_sha256(load_canonical_json(raw_bytes))`` while its raw identity is
+   ``raw_sha256(raw_bytes)``; whitespace/line-ending/key-order variants share
+   the former.
+6. ``semantic_row_set_sha256(rows, identity_keys)``: ORDER-INVARIANT identity of
    a row set (the one helper beyond the four core interfaces). Rows are sorted
    by the canonical encoding of their identity tuple, so permuted rows or
    shards concatenated in any order give the same identity; any value change,
@@ -49,6 +58,7 @@ redefine it):
 from __future__ import annotations
 
 import hashlib
+import json
 import math
 from collections.abc import Mapping
 from typing import Any, Iterable, Sequence
@@ -62,13 +72,14 @@ __all__ = [
     "semantic_sha256",
     "ordered_registry_digest",
     "semantic_row_set_sha256",
+    "load_canonical_json",
 ]
 
 _JSON_DOMAIN = b"JEPA-PRODUCTION-SYNTHETIC-SEMANTIC-V1\x00"
 _TEXT_DOMAIN = b"JEPA-PRODUCTION-SYNTHETIC-SEMANTIC-TEXT-V1\x00"
 _REGISTRY_DOMAIN = b"JEPA-PRODUCTION-SYNTHETIC-ORDERED-REGISTRY-V1\x00"
 _ROWSET_DOMAIN = b"JEPA-PRODUCTION-SYNTHETIC-ROW-SET-V1\x00"
-_BOM = "﻿"
+_BOM = chr(0xFEFF)  # U+FEFF byte order mark
 
 
 class CanonicalError(ValueError):
@@ -91,8 +102,6 @@ def _enc_str(s: str) -> str:
             out.append("\\n")
         elif ch == "\t":
             out.append("\\t")
-        elif ch == "\r":
-            out.append("\\r")
         elif ch == "\b":
             out.append("\\b")
         elif ch == "\f":
@@ -119,8 +128,13 @@ def _enc(obj: Any, out: list) -> None:
         out.append("null")
     elif isinstance(obj, (bool, np.bool_)):
         out.append("true" if bool(obj) else "false")
+    elif isinstance(obj, (np.datetime64, np.timedelta64)):
+        raise CanonicalError(f"unsupported type for canonical serialization: {type(obj).__name__}")
     elif isinstance(obj, (int, np.integer)):
-        out.append(str(int(obj)))
+        try:
+            out.append(str(int(obj)))
+        except ValueError as exc:  # interpreter int->str digit limit
+            raise CanonicalError("integer too large to serialize exactly") from exc
     elif isinstance(obj, (float, np.floating)):
         out.append(_enc_float(float(obj)))
     elif isinstance(obj, str):
@@ -199,8 +213,9 @@ def _check_keys(identity_keys: Sequence[str]) -> list:
         raise CanonicalError("identity_keys must be non-empty")
     if any(not isinstance(k, str) for k in keys):
         raise CanonicalError("identity_keys must all be str")
+    keys = [_norm_eol(k) for k in keys]  # row keys are normalized the same way
     if len(set(keys)) != len(keys):
-        raise CanonicalError("identity_keys must be unique")
+        raise CanonicalError("identity_keys must be unique (after line-ending normalization)")
     return keys
 
 
@@ -208,10 +223,15 @@ def _identity_bytes(row: Any, keys: list, pos: int) -> bytes:
     if not isinstance(row, Mapping):
         raise CanonicalError(f"row {pos} is not a mapping")
     ident = []
+    norm_row = {}
+    for rk, rv in row.items():
+        if not isinstance(rk, str):
+            raise CanonicalError(f"row {pos} has a non-str key {type(rk).__name__}")
+        norm_row[_norm_eol(rk)] = rv
     for k in keys:
-        if k not in row:
+        if k not in norm_row:
             raise CanonicalError(f"row {pos} is missing identity key {k!r}")
-        v = row[k]
+        v = norm_row[k]
         if v is None:
             raise CanonicalError(f"row {pos} has a missing value for identity key {k!r}")
         ident.append(v)
@@ -258,3 +278,46 @@ def semantic_row_set_sha256(rows: Iterable[Mapping], identity_keys: Sequence[str
         body.update(_frame(entries[ident]))
     header = canonical_json_bytes({"identity_keys": keys, "n_rows": len(entries)})
     return hashlib.sha256(_ROWSET_DOMAIN + _frame(header) + body.digest()).hexdigest()
+
+
+def _no_dupes(pairs):
+    d = {}
+    for k, v in pairs:
+        if k in d:
+            raise CanonicalError(f"duplicate JSON object key: {k!r}")
+        d[k] = v
+    return d
+
+
+def _bad_constant(name):
+    raise CanonicalError(f"non-finite JSON constant rejected: {name}")
+
+
+def _parse_float(text):
+    x = float(text)
+    if math.isinf(x):
+        raise CanonicalError(f"float overflows to Inf: {text}")
+    return x
+
+
+def load_canonical_json(data: bytes) -> Any:
+    """Strictly parse a JSON artifact (see module docstring, item 5)."""
+    if not isinstance(data, bytes):
+        raise CanonicalError(f"load_canonical_json requires bytes, got {type(data).__name__}")
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise CanonicalError(f"JSON artifact is not valid UTF-8: {exc}") from exc
+    if text.startswith(_BOM):
+        text = text[len(_BOM):]
+    try:
+        return json.loads(
+            text,
+            object_pairs_hook=_no_dupes,
+            parse_constant=_bad_constant,
+            parse_float=_parse_float,
+        )
+    except CanonicalError:
+        raise
+    except (ValueError, RecursionError) as exc:
+        raise CanonicalError(f"invalid JSON artifact: {exc}") from exc

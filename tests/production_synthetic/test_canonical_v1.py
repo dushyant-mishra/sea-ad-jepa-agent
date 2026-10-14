@@ -244,3 +244,51 @@ def test_full_41238_registry_digest_deterministic_and_swap_sensitive():
     # the order-invariant set identity does not move under the same swap
     assert C.semantic_row_set_sha256(s, keys) == C.semantic_row_set_sha256(rows, keys)
     assert C.ordered_registry_digest((r for r in rows), keys) == d1
+
+
+def test_huge_int_beyond_str_limit_rejected_as_canonical_error():
+    with pytest.raises(C.CanonicalError):
+        C.canonical_json_bytes(10 ** 5000)
+
+
+def test_numpy_datetime_and_timedelta_rejected():
+    for bad in (np.timedelta64(5, "s"), np.timedelta64("NaT"), np.datetime64("2020-01-01"), np.datetime64("NaT")):
+        with pytest.raises(C.CanonicalError):
+            C.canonical_json_bytes({"x": bad})
+
+
+def test_identity_keys_normalized_like_row_keys():
+    rows = [{"a\r\n": 1, "v": 0}, {"a\r\n": 2, "v": 0}]
+    d = C.ordered_registry_digest(rows, ["a\n"])
+    assert d == C.ordered_registry_digest([{"a\n": 1, "v": 0}, {"a\n": 2, "v": 0}], ["a\r\n"])
+    assert C.semantic_row_set_sha256(rows, ["a\n"]) == C.semantic_row_set_sha256(rows, ["a\r\n"])
+    with pytest.raises(C.CanonicalError):
+        C.ordered_registry_digest(rows, ["a\n", "a\r\n"])
+
+
+def test_load_canonical_json_equivalent_serializations():
+    a, b = b'{"a":1}', b'{ "a" : 1 }\r\n'
+    assert C.raw_sha256(a) != C.raw_sha256(b)
+    assert C.semantic_sha256(C.load_canonical_json(a)) == C.semantic_sha256(C.load_canonical_json(b))
+    assert C.load_canonical_json(b"\xef\xbb\xbf" + a) == {"a": 1}
+    assert C.load_canonical_json(b"[1.0,1]") == [1.0, 1]
+    assert isinstance(C.load_canonical_json(b"[1.0]")[0], float)
+
+
+def test_load_canonical_json_rejections():
+    for bad in (b'{"a":1,"a":2}', b'{"a":{"b":1,"b":1}}', b'{"a":NaN}', b'[Infinity]', b'[-Infinity]',
+                b'{"a":1} x', b'{"a":1}{"b":2}', b'[1e999]', b'\xff', b'', b'{', b'[1' + b'0' * 5000 + b']'):
+        with pytest.raises(C.CanonicalError):
+            C.load_canonical_json(bad)
+    with pytest.raises(C.CanonicalError):
+        C.load_canonical_json('{"a":1}')
+
+
+def test_row_set_missing_identity_key_and_none_identity_rejected():
+    rows = _rows(5)
+    with pytest.raises(C.CanonicalError):
+        C.semantic_row_set_sha256(rows, ["nope"])
+    bad = [dict(r) for r in rows]
+    bad[1]["address_id"] = None
+    with pytest.raises(C.CanonicalError):
+        C.semantic_row_set_sha256(bad, ["address_id"])
