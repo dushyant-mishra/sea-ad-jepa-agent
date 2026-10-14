@@ -1,0 +1,65 @@
+{
+  "schema": "JEPA_LANE_CURRENT_CUSTODY_STATE_20261014_V1",
+  "status": "HISTORICAL_AUDITS_CONSOLIDATED__CURRENT_GATE_IMPLEMENTATIONS_CUSTODIED__PHASE2_AUTHORIZED_ONCE_NOT_EXECUTED__REAL_TD_OFF",
+  "authority": {
+    "controller_adjudication_authorized_once": true,
+    "phase2_executed": false,
+    "real_td_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "production_ema_selection_authorized": false,
+    "multimodal_training_authorized": false,
+    "jepa_training_authorized": false
+  },
+  "canonical_prs": {
+    "audit": {"pr": 322, "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013"},
+    "handoff": {"pr": 323, "branch": "handoff/jepa-lane-takeover-20261013"},
+    "phase2_authorization": {"pr": 329, "head": "9663c3b45e8ea58bfc5624ff9cb4ed7a67e4d0f7"},
+    "blocked_gate_design": {"pr": 341, "head": "8ae96cbddfc29749c72ec1bbceef9ff6a40f2fe4"},
+    "g8": {"pr": 343, "head": "82d17bfb1650d97a95d5424160126791f09d7494", "workflow_run": 38489523630, "verification": "11 passed in 0.16s"},
+    "g6": {"pr": 345, "head": "f16ba70f7066db2928e31f31b7785831a8fc10f2", "workflow_run": 38489595232, "verification": "10 passed in 4.04s"},
+    "g7": {"pr": 346, "head": "5a314bdeda9078d5f65e995e49d2ebf5274751f6", "workflow_run": 38490004001, "verification": "9 passed in 0.03s"},
+    "r1_manifest": {"pr": 347, "head": "877242a6c8206ea35a73ebf111cb6b52bbe79109", "workflow_run": 38490456813, "verification": "13 passed in 0.04s"}
+  },
+  "phase1_phase2_bindings": {
+    "td_execution_commit": "1f474a44a6baabc667dbfda726e0755426c732e7",
+    "phase1_evidence_commit": "a1aed169be5f4552208128f9d71b2d601a657393",
+    "package_sha256": "0977c30f6551df72e244423e1b37733cafa9178099bd0b9ab796beb8a52d2115",
+    "prefit_archive_sha256": "ba0fa56a49ffa009a0225606fb48d8fb30c3bd410a6a264ef905db5d4bb18803",
+    "binding_sha256": "ab29bacd07fc6697eff8dfe48461ec5f1cc1ec7d378724b10def93910f98ac44",
+    "blinded_receipt_sha256": "e67aace8dfa8b9823cf8635155a48f5a78faed0a45bf9edb6f7adcba07737684",
+    "controller_archive_sha256": "f554e2a95315bb39cc8f7e366620bca5cb2126a4896b3790ed2c632e5cc6a328",
+    "controller_manifest_raw_sha256": "87219ad5f2bc1c514c6771c52dbf0e2529645a7221aaafd0774a8d3e186d03f9",
+    "controller_semantic_commitment": "a3d8ea34339aa06d995d498c2651d4dfd4e1058eec3640a7cd7ea1128efce293"
+  },
+  "external_assets": {
+    "repaired_41k_combined": {"size": 607959761, "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7"},
+    "calibration_bundle": {"size": 410278055, "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"},
+    "expression_bundle": {"size": 3599456, "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4"},
+    "program_npz": {"size": 1531109, "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70"},
+    "defective_checkpoints": {"size": 71356460, "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c", "role": "FORENSIC_ONLY"},
+    "defective_t1_u0200": {"size": 233729581, "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c", "role": "FORENSIC_ONLY"}
+  },
+  "open_work": {
+    "phase2": "execute exactly once independently, freeze receipt, audit before interpretation",
+    "g2": "meaningful effect/noise-relative magnitude criterion unresolved",
+    "r4_c6_c4": "increment criteria unresolved; noncompensation required",
+    "g9_s1_s2": "target-geometry-specific alignment and recurrence criteria unresolved; historical 0.50 thresholds forbidden",
+    "g11": "candidate x transfer-stratum applicability map required",
+    "g12": "pre-outcome claim/coverage envelope required",
+    "teacher_target": "exact human teacher-target semantics remain open; G6 probe must not define target"
+  },
+  "do_not_repeat": [
+    "PR314 corrected replay",
+    "defective PROD41K T1 resume",
+    "gene-ID historical archaeology absent changed bytes/binding",
+    "graph failure interpreted as rare/relational biology absent",
+    "G7 count thinning",
+    "G8 treated as biological evidence restriction",
+    "TD57C fine-locality mining on same evidence",
+    "historical 0.50 subspace threshold promotion",
+    "NOT_ESTIMABLE converted to FAIL"
+  ]
+}
