@@ -1,0 +1,18 @@
+{
+  "schema":"JEPA_MERGED_LANE_TAKEOVER_CHECKPOINT_V12",
+  "date":"2026-10-14",
+  "global_authority":"TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "architecture_head":"3064ca545f0c94859ea989cd49a04fcbd5b9a303",
+  "plan_head":"5b6bf07e7d8b69b286ea430b09765a5ee4743325",
+  "task0_head":"6059e1d7bb30bd61d3f1f47d46a77e6322c525c0",
+  "task0_focused_run":38632619995,
+  "task0_inherited_run":38632619965,
+  "task0_state":"F1_F9_GREEN__FINAL_ACCEPTANCE_DEFERRED",
+  "unified_task1_blocked":true,
+  "macha_current_instruction":"FINISH_OLD_SYNTHETIC_TASKS_1_AND_2_ONLY__THEN_STOP_FOR_MERGED_AUDIT_AND_CONSOLIDATION",
+  "old_task3_authorized":false,
+  "old_task4_authorized":false,
+  "old_tasks5_12_independent_execution_authorized":false,
+  "new_custody_groups":["ACTIVE_PR356_TASKS_1_4","FOUNDATION_REPRESENTATION_CURRENT_STATE","MULTIMODAL_SCENIC_ATAC_CUSTODY","RUNTIME_TRAINING_SAFETY_HANDOFF","FULL104_INFORMATION_CHANNEL_INVARIANTS"],
+  "read_first":["docs/agent/JEPA_MERGED_LANE_SUCCESSOR_HANDOFF_V12_20261014.md","results/target_discovery/JEPA_MERGED_LANE_AUDIT_STATE_V2_20261014.json","docs/agent/JEPA_MERGED_LANE_TASK0_F5_F9_INTEGRATION_DELTA_20261014.md"]
+}
