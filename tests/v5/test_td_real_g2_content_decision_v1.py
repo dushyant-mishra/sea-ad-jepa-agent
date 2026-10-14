@@ -16,16 +16,17 @@ def _qual(ok=True):
     }
 
 
-def _rows(*, sources=("SEA_AD",), endpoints=("PRIMARY",), candidate=0.80, baselines=None, donors=8):
+def _rows(*, sources=("SEA_AD",), endpoints=("PRIMARY",), candidate=0.80, baselines=None, donors=8, shared_donor_ids=False):
     baselines = baselines or {name: 0.20 for name in BASELINES}
     rows = []
     for source in sources:
         for endpoint in endpoints:
             for i in range(donors):
+                donor_id = f"D{i:02d}" if shared_donor_ids else f"{source}_{endpoint}_D{i:02d}"
                 rows.append({
                     "source": source,
                     "endpoint": endpoint,
-                    "donor_id": f"{source}_{endpoint}_D{i:02d}",
+                    "donor_id": donor_id,
                     "candidate_score": float(candidate),
                     "baseline_scores": {name: float(value) for name, value in baselines.items()},
                     "support_state": "SUPPORTED",
@@ -34,7 +35,18 @@ def _rows(*, sources=("SEA_AD",), endpoints=("PRIMARY",), candidate=0.80, baseli
     return rows
 
 
-def _reference(rows, *, margin=0.10, binding=BINDING):
+def _unit_key(row):
+    return f'{row["source"]}::{row["endpoint"]}::{row["donor_id"]}'
+
+
+def _reference(rows, *, margin=0.10, binding=BINDING, per_unit=None):
+    margins = {
+        _unit_key(r): float(margin)
+        for r in rows
+        if r["support_state"] == "SUPPORTED"
+    }
+    if per_unit:
+        margins.update({str(k): float(v) for k, v in per_unit.items()})
     return {
         "schema": G.REFERENCE_SCHEMA,
         "frozen": True,
@@ -44,7 +56,7 @@ def _reference(rows, *, margin=0.10, binding=BINDING):
         "input_binding_sha256": binding,
         "reference_namespace_disjoint": True,
         "reference_receipt_sha256": "b" * 64,
-        "margins": {r["donor_id"]: float(margin) for r in rows if r["support_state"] == "SUPPORTED"},
+        "margins": margins,
     }
 
 
@@ -94,6 +106,22 @@ def test_required_sources_and_endpoints_are_noncompensating():
     assert out["status"] == "FAIL"
     assert out["stratum_status"]["SEA_AD::PRIMARY"] == "PASS"
     assert out["stratum_status"]["NPH52::PRIMARY"] == "FAIL"
+
+
+def test_same_donor_can_have_distinct_endpoint_bound_margins():
+    rows = _rows(endpoints=("PRIMARY", "SECONDARY"), donors=8, shared_donor_ids=True)
+    secondary_key = "SEA_AD::SECONDARY::D00"
+    out = G.adjudicate_g2(
+        rows=rows,
+        required_strata=[("SEA_AD", "PRIMARY"), ("SEA_AD", "SECONDARY")],
+        frozen_baseline_ids=BASELINES,
+        decision_qualification=_qual(),
+        reference_artifact=_reference(rows, margin=0.10, per_unit={secondary_key: 0.90}),
+        alpha=0.01,
+    )
+    assert out["stratum_status"]["SEA_AD::PRIMARY"] == "PASS"
+    assert out["stratum_status"]["SEA_AD::SECONDARY"] == "FAIL"
+    assert out["status"] == "FAIL"
 
 
 def test_structural_or_blocked_support_abstains_instead_of_zero_fill():
