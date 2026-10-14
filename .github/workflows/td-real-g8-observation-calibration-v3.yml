@@ -17,6 +17,8 @@ on:
 jobs:
   qualify:
     runs-on: ubuntu-24.04
+    env:
+      PYTHONPATH: scripts/v5:.
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
