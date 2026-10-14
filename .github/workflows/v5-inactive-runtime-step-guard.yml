@@ -1,0 +1,64 @@
+name: v5-inactive-runtime-step-guard
+
+on:
+  pull_request:
+    paths:
+      - 'src/sea_ad_jepa/v5/__init__.py'
+      - 'src/sea_ad_jepa/v5/prefreeze_runtime_authority.py'
+      - 'src/sea_ad_jepa/v5/inactive_guarded_update_v1.py'
+      - 'src/sea_ad_jepa/v5/inactive_checkpoint_binding_v1.py'
+      - 'src/sea_ad_jepa/v5/_inactive_checkpoint_binding_impl_v1.py'
+      - 'src/sea_ad_jepa/v5/inactive_update_reference.py'
+      - 'src/sea_ad_jepa/v5/ema_bound_runtime_proof_v1.py'
+      - 'src/sea_ad_jepa/v5/_ema_bound_runtime_proof_impl_v1.py'
+      - 'src/sea_ad_jepa/v5/ema_presentation_v1.py'
+      - 'src/sea_ad_jepa/v5/ema_persisted_continuation_v2.py'
+      - 'src/sea_ad_jepa/v5/runtime_target_semantics_boundary_v1.py'
+      - 'src/sea_ad_jepa/v5/prefreeze_guarded_rehearsal.py'
+      - 'tests/test_v5_canonical_runtime_convergence_red.py'
+      - 'tests/test_v5_inactive_runtime_step_guard_v1.py'
+      - 'tests/test_v5_prefreeze_runtime_torch_integration.py'
+      - 'tests/test_v5_prefreeze_checkpoint_binding_v1.py'
+      - 'tests/test_teacher_student_v5_inactive_update_reference.py'
+      - 'tests/test_v5_durable_checkpoint_completion_v1.py'
+      - 'tests/test_v5_ema_configuration_binding_red.py'
+      - 'tests/test_v5_ema_presentation_successor_red.py'
+      - 'tests/test_v5_ema_canonicalization_red.py'
+      - 'tests/test_v5_ema_completed_update_proof_red.py'
+      - 'tests/test_v5_ema_presentation_cursor_red.py'
+      - 'tests/test_v5_ema_persisted_continuation_red.py'
+      - 'tests/test_v5_ema_continuation_canonicalization_red.py'
+      - 'tests/test_v5_mechanics_loss_not_target_authority_red.py'
+      - '.github/workflows/v5-inactive-runtime-step-guard.yml'
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependency
+        run: |
+          python -m pip install --disable-pip-version-check pytest numpy
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Run focused runtime safety tests
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python -m pytest -q \
+            tests/test_v5_canonical_runtime_convergence_red.py \
+            tests/test_v5_inactive_runtime_step_guard_v1.py \
+            tests/test_v5_prefreeze_runtime_torch_integration.py \
+            tests/test_v5_prefreeze_checkpoint_binding_v1.py \
+            tests/test_teacher_student_v5_inactive_update_reference.py \
+            tests/test_v5_durable_checkpoint_completion_v1.py \
+            tests/test_v5_ema_configuration_binding_red.py \
+            tests/test_v5_ema_presentation_successor_red.py \
+            tests/test_v5_ema_canonicalization_red.py \
+            tests/test_v5_ema_completed_update_proof_red.py \
+            tests/test_v5_ema_presentation_cursor_red.py \
+            tests/test_v5_ema_persisted_continuation_red.py \
+            tests/test_v5_ema_continuation_canonicalization_red.py \
+            tests/test_v5_mechanics_loss_not_target_authority_red.py

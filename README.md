@@ -6,29 +6,30 @@ This repository is a pathology-blind, donor-aware JEPA research project built ar
 
 For the live scientific boundary, read [`START_HERE.md`](START_HERE.md) first. Historical artifacts remain evidence/provenance; old “current” labels or next-action text do not override the canonical startup surface.
 
-## Current status — October 5, 2026
+## Current status — October 6, 2026
 
 - **V75 100K measurement architecture is qualified within its declared scope.**
+- **Premise qualification V3 is frozen and merged as governance.**
+- **Canonical V5 runtime mechanics are converged on draft PR #224 for bounded prefreeze rehearsal only.**
+- **The current engineering frontier is binding that exact runtime proof into shared qualification interface PR #223.**
+- **Executed q-safety remains unproven until the adapter+runtime path physically demonstrates it.**
 - **500K promotion is not authorized.**
-- **No production teacher target is currently qualified.**
+- **No production teacher target or representation is currently qualified.**
 - **Target lineage reconstruction is complete.**
 - **Training and multimodal training are OFF.**
-- **Stage 4 is not authorized.**
+- **Stage A execution and Stage 4 are not authorized.**
+- **TEST remains sealed and Morabito protected.**
 - **`width=160` is network/token capacity, not a biological-dimension result.**
-- **The synthetic learned-state scaling ladder is stopped.**
 
 ## Current task
 
-The current task is **premise qualification prefreeze**, not another target-lineage audit and not model training. Before any deciding TRAIN-only result is opened, the project is freezing:
+The current task is **shared-interface binding of the physically qualified canonical V5 runtime**, not another runtime implementation, not model training, and not another target-design cycle.
 
-- P1-P6 premise gates;
-- representation families: global, query-local, program, and structured combined state;
-- a claim ladder separating RNA representation, transferable biological state, regulatory support, and causal prediction;
-- a Stage-A real-RNA **prefreeze** contract with zero encoder optimizer and zero EMA updates;
-- external-validation asset roles and independence/exposure status;
-- foundation-population estimand choices, with no estimand selected yet.
+The canonical runtime successor already exercises the actual V5 AdamW path with fail-closed optimizer ownership, unscale-before-gradient-validation, finite and skipped GradScaler behavior, explicit optimizer completion before EMA, bound checkpoint state, bounded restart equivalence, transitive runtime provenance, and persisted checkpoint write/hash/reload verification. Alternate donor-era mutation/rehearsal paths are not canonical.
 
-Stage A is not execution authority until its open governance fields are prospectively closed. Real-RNA target-object recoverability is not automatically biological-truth recoverability. Donor, operator, study and technology transport are separate evidence axes. Rare/novel RNA structure is not automatically biological novelty.
+The next engineering question is whether PR #223 can machine-verify the exact PR #224 runtime proof before it reports `PROVEN_BY_BOUND_RUNTIME`. A pair of caller-supplied digest strings must not be sufficient. Q-safety remains policy-only until the repaired adapter plus bound runtime physically executes and proves the required transformations.
+
+This work is mechanics only. Historical `CurrentTrainingAuthorityV2` / `OptimizerGuardV4` code is provenance, not current authority. Real-RNA execution, Stage A, production training, 500K and Stage 4 remain NOT AUTHORIZED.
 
 ## Authority freshness
 
@@ -39,6 +40,7 @@ A completed, blocked or superseded task must not remain advertised as current. `
 See:
 
 - [`docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`](docs/agent/JEPA_LATEST_HANDOFF_POINTER.json)
+- [`docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json`](docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json)
 - [`docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md`](docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md)
 - [`docs/agent/CURRENT_AUTHORITY_INDEX.md`](docs/agent/CURRENT_AUTHORITY_INDEX.md)
 - [`docs/agent/CURRENT_SUPERSESSION_MAP.md`](docs/agent/CURRENT_SUPERSESSION_MAP.md)
