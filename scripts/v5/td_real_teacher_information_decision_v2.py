@@ -1,10 +1,11 @@
 """Prospective margin-aware decision contract for real-TD G6.
 
 Consumes the already-qualified finite ridge probe output and an independently
-qualified same-metric reference artifact.  A positive raw teacher advantage is
+qualified same-metric reference artifact. A positive raw teacher advantage is
 not sufficient: donor-level student-minus-teacher MSE deltas must exceed their
 pre-frozen technical/refit margins before donor-primary sign testing.
 
+Probe and reference must bind the exact same frozen deciding input realization.
 This module does not read human values itself and grants no execution authority.
 """
 from __future__ import annotations
@@ -50,6 +51,12 @@ def _number(value, label: str, *, nonnegative: bool = False) -> float:
     return out
 
 
+def _hex(value, label: str) -> str:
+    if not isinstance(value, str) or not HEX64.fullmatch(value):
+        raise TeacherInformationDecisionError(f"{label} must be lowercase 64-hex")
+    return value
+
+
 def _probe_qualification_valid(value) -> bool:
     return bool(
         isinstance(value, Mapping)
@@ -60,12 +67,13 @@ def _probe_qualification_valid(value) -> bool:
     )
 
 
-def _normalize_probe(probe_result: Mapping) -> tuple[str, list[tuple[str, float]]]:
+def _normalize_probe(probe_result: Mapping) -> tuple[str, str, list[tuple[str, float]]]:
     if not isinstance(probe_result, Mapping):
         raise TeacherInformationDecisionError("probe_result must be a mapping")
     status = probe_result.get("status")
     if status not in {"PASS", "FAIL", "NOT_ESTIMABLE"}:
         raise TeacherInformationDecisionError("probe_result status must be PASS, FAIL, or NOT_ESTIMABLE")
+    binding = _hex(probe_result.get("input_binding_sha256"), "probe input_binding_sha256")
     raw = probe_result.get("donor_deltas")
     if not isinstance(raw, list):
         raise TeacherInformationDecisionError("probe_result donor_deltas must be a list")
@@ -83,10 +91,14 @@ def _normalize_probe(probe_result: Mapping) -> tuple[str, list[tuple[str, float]
             raise TeacherInformationDecisionError(f"duplicate probe donor: {donor}")
         seen.add(donor)
         normalized.append((donor, _number(row["delta"], f"probe delta for {donor}")))
-    return status, normalized
+    return status, binding, normalized
 
 
-def _validate_reference(reference_artifact: Mapping, probe_donors: set[str]) -> dict[str, float]:
+def _validate_reference(
+    reference_artifact: Mapping,
+    probe_donors: set[str],
+    deciding_binding: str,
+) -> dict[str, float]:
     if not isinstance(reference_artifact, Mapping):
         raise TeacherInformationDecisionError("a frozen qualified reference artifact is required")
     required = {
@@ -117,10 +129,12 @@ def _validate_reference(reference_artifact: Mapping, probe_donors: set[str]) -> 
         raise TeacherInformationDecisionError("reference_kind is not an allowed G6 substantive margin")
     if reference_artifact["deciding_namespace_disjoint"] is not True:
         raise TeacherInformationDecisionError("reference and deciding namespaces must be disjoint")
-    for key in ("input_binding_sha256", "reference_receipt_sha256"):
-        value = reference_artifact[key]
-        if not isinstance(value, str) or not HEX64.fullmatch(value):
-            raise TeacherInformationDecisionError(f"{key} must be lowercase 64-hex")
+    ref_binding = _hex(reference_artifact["input_binding_sha256"], "reference input_binding_sha256")
+    _hex(reference_artifact["reference_receipt_sha256"], "reference_receipt_sha256")
+    if ref_binding != deciding_binding:
+        raise TeacherInformationDecisionError(
+            "reference input binding must equal the exact probe deciding input binding"
+        )
 
     raw_margins = reference_artifact["donor_margins"]
     if not isinstance(raw_margins, Mapping):
@@ -146,12 +160,13 @@ def adjudicate_g6_human_decision(
     if not (0.0 < alpha_value < 1.0):
         raise TeacherInformationDecisionError("alpha must lie in (0,1)")
 
-    probe_status, probe_deltas = _normalize_probe(probe_result)
+    probe_status, deciding_binding, probe_deltas = _normalize_probe(probe_result)
     if probe_status == "NOT_ESTIMABLE":
         return {
             "schema": "JEPA_TD_REAL_G6_MARGIN_AWARE_DECISION_V2",
             "status": "NOT_ESTIMABLE",
             "reason": "PROBE_NOT_ESTIMABLE",
+            "input_binding_sha256": deciding_binding,
             "donor_contrasts": [],
             "sign_test": None,
             "claim_boundary": "FINITE_LINEAR_DIAGNOSTIC_ONLY__NO_INFORMATION_THEORETIC_ABSENCE_CLAIM",
@@ -163,6 +178,7 @@ def adjudicate_g6_human_decision(
             "schema": "JEPA_TD_REAL_G6_MARGIN_AWARE_DECISION_V2",
             "status": "NOT_ESTIMABLE",
             "reason": "PROBE_REJECTION_POWER_NOT_QUALIFIED",
+            "input_binding_sha256": deciding_binding,
             "donor_contrasts": [],
             "sign_test": None,
             "claim_boundary": "FINITE_LINEAR_DIAGNOSTIC_ONLY__NO_INFORMATION_THEORETIC_ABSENCE_CLAIM",
@@ -170,7 +186,7 @@ def adjudicate_g6_human_decision(
         }
 
     donor_set = {donor for donor, _ in probe_deltas}
-    margins = _validate_reference(reference_artifact, donor_set)
+    margins = _validate_reference(reference_artifact, donor_set, deciding_binding)
     donor_contrasts = [
         {
             "donor_id": donor,
@@ -202,6 +218,7 @@ def adjudicate_g6_human_decision(
         "metric": METRIC,
         "orientation": ORIENTATION,
         "reference_kind": reference_artifact["reference_kind"],
+        "input_binding_sha256": deciding_binding,
         "donor_contrasts": donor_contrasts,
         "sign_test": sign_test,
         "raw_probe_status": probe_status,
