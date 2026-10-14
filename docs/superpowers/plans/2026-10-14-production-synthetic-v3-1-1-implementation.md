@@ -11,13 +11,18 @@
 **Controlling specs:**
 - `docs/superpowers/specs/2026-10-14-lineage-composite-production-synthetic-v3-1-consolidated-corrective-amendment.md`
   - Git blob SHA: `48e71346c74378729e39a4de6b80699d3cb43d15`
-  - SHA-256: `234af6df…c65b`
+  - SHA-256: `234af6dffa6f5d8bef03802a2eee4d8f65714ecd77718fa99c9b66e1d958b65c`
 - `docs/superpowers/specs/2026-10-14-lineage-composite-production-synthetic-v3-1-1-erratum.md`
   - Git blob SHA: `977faa75e37c31610122e7ad45d2fc26dac536a3`
-  - SHA-256: `ab1ae1bb…363f`
+  - SHA-256: `ab1ae1bb67765cc025f580205d7c082ee4af470dd39ef23c4f000414e8e9363f`
   - controls only the E1–E7 clauses it explicitly amends.
 
-**Plan-review provenance:** Macha PR #356 review `docs/agent/MACHA_PR356_PLAN_REVIEW_20261014.md`, audit branch commit `16e411f330c01604d443c735d9b0bc28ed988cf2`, verdict `PLAN_ACCEPTED_WITH_REQUIRED_PLAN_AMENDMENTS_P1_P6__TASKS_1_3_MAY_START__AMEND_BEFORE_TASK_4`. This review is non-controlling evidence; P1–P6 are encoded below because they implement already-controlling V3.1/V3.1.1 obligations.
+**Plan-binding addendum:**
+- `docs/superpowers/plans/2026-10-14-production-synthetic-v3-1-1-binding-notes-f1-n3-n6.md`
+- controls execution semantics only for F1 and N3–N6.
+- where this plan conflicts with that addendum on F1/N3–N6, the addendum controls; the two controlling specs above remain higher authority.
+
+**Plan-review provenance:** Macha PR #356 review `docs/agent/MACHA_PR356_PLAN_REVIEW_20261014.md`, audit branch commit `16e411f330c01604d443c735d9b0bc28ed988cf2`, verdict `PLAN_ACCEPTED_WITH_REQUIRED_PLAN_AMENDMENTS_P1_P6__TASKS_1_3_MAY_START__AMEND_BEFORE_TASK_4`. Focused amended-plan acceptance is recorded on the audit branch at commit `2507b967`; it authorizes Task 4 only after Tasks 1–3 each clear their per-task reviews. These reviews are non-controlling evidence; the plan and addendum encode their binding execution implications.
 
 `docs/agent/**`, PR descriptions and review prose are non-controlling. They may supply audit evidence and navigation only.
 
@@ -27,6 +32,7 @@
 - Generator source, distributions, mechanism mixture, observation/calibration distributions, difficulty/stress grid, controls, registries, serialization and realization budgets freeze before any downstream exposure to a production generator version.
 - After downstream exposure, no later version may become easier except a documented generator-defect repair under V3.1.1 E1; that version is `POST_EXPOSURE_VERSION`, inherits no qualification and must requalify.
 - The controller, not any implementer/reviewer subagent, authors and holds the withheld-family specification and nonce off-repo.
+- No public code path may uniquely identify the withheld family unless that code path is exercised independently by development/fixture worlds; otherwise the unique code also stays controller-side/off-repo per N3.
 - Every decision-bearing number has provenance `AUTHENTICATED_EMPIRICAL_CALIBRATION`, `PINNED_EXECUTOR_MATHEMATICS`, or `PROSPECTIVE_CONVENTION`.
 - Candidate-shaped latent/mechanism families and PR #328 disjoint-block/candidate decomposition are prohibited production biology.
 - Controller estimability uses each pinned executor's own finite-sample law where one exists, so foreseeable decision-layer insufficiency is represented prospectively as `IDENTIFIABLE_BUT_UNDERPOWERED`; do not rely on the E5 well-powered exception as normal behavior.
@@ -44,7 +50,7 @@ Three fresh-authorization STOP gates are mandatory:
 2. `STOP_B_SEALED_QUALIFICATION` — after pre-exposure realism/freeze and before any sealed qualification run.
 3. `STOP_C_FINALIZER` — after qualification evidence is frozen and before `finalize_package(...)` is invoked.
 
-Tasks 1–3 may begin under the reviewed plan. P1–P6 are now incorporated in this plan; Task 4 may begin only after this amended plan receives the focused plan-amendment acceptance implied by the review. Tasks may implement code for later stages on fixture worlds, but no STOP gate may be crossed without fresh owner authorization.
+Tasks 1–3 may begin under the reviewed plan. Task 4 may begin after Tasks 1–3 each finish and clear their required fresh-context per-task reviews. Tasks may implement code for later stages on fixture worlds, but no STOP gate may be crossed without fresh owner authorization.
 
 ## Pre-exposure ordering law
 
@@ -56,11 +62,13 @@ Tasks 1–3 may begin under the reviewed plan. P1–P6 are now incorporated in t
 
 ## Withheld-family custody law
 
-- Generic mechanism code may be public; the actual withheld-family specification/parameterization/applicability/scoring data are controller-authored and stored off-repo.
-- No implementer or reviewer subagent receives the production withheld specification or nonce.
+- Generic mechanism code may be public only when the same code path is exercised by non-withheld development/fixture realizations.
+- The actual withheld-family specification/parameterization/applicability/scoring data are controller-authored and stored off-repo.
+- If a mechanism code path would be uniquely exercised only by the withheld family, that code path remains controller-side/off-repo until reveal.
+- No implementer or reviewer subagent receives the production withheld specification, nonce, or withheld-only code.
 - Only `H(withheld_spec || controller_nonce || generator_semantic_hash || class_tag)` is committed before qualification.
-- Before publishing the commitment, the controller runs a private repository-tree scan proving the withheld plaintext/preimage is absent from every committed file; only a boolean attestation and tree identity are published.
-- Unit tests use dummy secrets to verify the scanner/commit-reveal machinery without exposing the production secret.
+- Before publishing the commitment, the controller runs a private repository-tree scan proving the withheld plaintext/preimage is absent from every committed file and that no committed public path uniquely identifies the withheld family; only a boolean attestation and tree identity are published.
+- Unit tests use dummy secrets to verify scanner/commit-reveal and unique-code-path leak detection without exposing the production secret.
 - Reveal occurs only after sealed fit outputs are irrevocably frozen.
 
 ## Fresh dependency classification — amended plan freeze
@@ -72,13 +80,14 @@ Every dependency is an open moving PR. The binding fixture must fail closed on *
 | #350 R1 | `9b9078c102fa346644d6eb2bda4ff7b4bdfe854a` | exact-head workflow green | `NOT_REHEARSED_BLOCKED_EXTERNAL`: semantic/static manifest, not complete d/q/null/decision executor. |
 | #351 C4←C6 | `2abcb9fe156eac340ff12adff9426ed38d929e3e` | moved from original plan by test-only delta; targeted and full harness now green | `NOT_REHEARSED_BLOCKED_EXTERNAL`: block now rests on V3.1 §15 receipt-enforcement, simultaneous constituent/composite representation and fail-closed NOT_ESTIMABLE gaps, not CI. |
 | #352 G6 | `bb1e35d33deb52236829012be452e4c4d8b362fc` | exact-head workflow green | `NOT_REHEARSED_BLOCKED_EXTERNAL`: non-degenerate independently qualified margin generator/human decision contract still absent. |
-| #353 R1 stress | `1df20029defaa2bcd7a51869c1026ac6075b1323` | exact-head workflow green | `SEMANTICS_COMPATIBLE_FIXTURE_ONLY`: hostile fixture, not pinned real R1 executor. |
+| #353 R1 stress | `1df20029defaa2bcd7a51869c1026ac6075b1323` | exact-head workflow green | `SEMANTICS_COMPATIBLE_FIXTURE_ONLY`: useful semantics fixture, but not an adversarial R1-control source and not the pinned real R1 executor. |
 | #354 G7 decision | `d90047308d633e259195a54501a230373b36d043` | exact-head workflow green | `SEMANTICS_COMPATIBLE_FIXTURE_ONLY`: inherited validator still lacks content-hash/anti-thinning enforcement required by E3. |
 | #355 G9/S1/S2 | `6e5182e2dc4e8e263e8cbd309aed6494b5ea7a55` | exact-head workflow green but geometry audit STOP | `SEMANTICS_COMPATIBLE_FIXTURE_ONLY__IMPLEMENTATION_REPAIR_REQUIRED_BEFORE_PROMOTION`: one-donor-short null draws can map measurable stability FAIL to NOT_ESTIMABLE; extra-source rows are silently dropped; caller supplies precomputed displacements, so leakage/null/seed guarantees are not enforced by the decision function. No promotion until the real lane repairs and independently qualifies these mechanics. |
 
 Standing dependencies:
 - #349 is scope-limited compatible for donor/support mapping only.
 - #343 remains blocked for human G8. Current plan status: `CONFORMAL_BOUND_MECHANICS_QUALIFIED__CALIBRATION_REALIZATION_AND_ENDPOINT_SEMANTICS_OPEN__HUMAN_G8_NOT_EXECUTABLE`. #343 itself freezes `alpha_eff=0.01/6` and `n=599`; open issues are the calibration realization/reference units, displacement interface and support-fraction denominator. V3.1 §13's older blocker label remains historical spec text; the fail-closed result is unchanged.
+- #343's thinning implementation is **not reusable** in production synthetic code: it is storage-order keyed, lacks the four-state measurement distinction, and does not thin/update normalization library size.
 - #346 contributes static G7 rights vocabulary but is not content-enforcing same code path.
 
 ## Authenticated real stress inputs (non-blocking calibration candidates)
@@ -135,12 +144,13 @@ These constrain observation/support stress only; they do not set latent biology.
 
 **Files:** create `scripts/production_synthetic/custody_v1.py`, `tests/production_synthetic/test_custody_v1.py`, `tests/production_synthetic/test_custody_v1_hostile.py`.
 
-**Interfaces:** `freeze_generator_version`, `commit_secret`, `derive_stream`, `record_exposure`, `validate_successor_version`, `attest_realization_set`, `scan_secret_absence`.
+**Interfaces:** `freeze_generator_version`, `commit_secret`, `derive_stream`, `record_exposure`, `validate_successor_version`, `attest_realization_set`, `scan_secret_absence`, `attest_no_unique_withheld_code_path`.
 
 - [ ] Write RED tests for ≥256-bit nonce, deterministic domain separation by scientific identity, row-order-invariant streams, exact realization budget, and commit/reveal mismatch failure.
 - [ ] Using dummy secrets, test `scan_secret_absence(repo_tree, secret_bytes)` fails if any tracked file contains/matches the dummy preimage and emits only a boolean/tree attestation.
+- [ ] Using dummy withheld fixtures, test a committed code path uniquely attributable to the withheld family triggers custody failure; public mechanism code is allowed only if exercised by non-withheld fixture/development worlds too.
 - [ ] Hostile tests reject integer-offset seed namespaces, seed replacement/discard and easier exposed successors; documented defect repair yields `POST_EXPOSURE_VERSION` with no inherited qualification.
-- [ ] Implement custody state machines. Production withheld data remain off-repo/controller-only by construction.
+- [ ] Implement custody state machines. Production withheld data and withheld-only code remain off-repo/controller-only by construction.
 - [ ] Run custody tests → PASS.
 - [ ] Commit `feat: enforce sealed synthetic custody`.
 - [ ] Fresh-context review before Task 3.
@@ -159,7 +169,7 @@ These constrain observation/support stress only; they do not set latent biology.
 - [ ] Add exact authenticated support-hole fixtures only after artifact/hash validation; reader-fit calibration remains observation-side.
 - [ ] Implement and run `pytest tests/production_synthetic/test_calibration_v1.py -v` → PASS.
 - [ ] Commit `feat: add calibration and numeric provenance firewall`.
-- [ ] Fresh-context review. **Task 4 may not begin until the amended plan/P1–P6 review gate is accepted.**
+- [ ] Fresh-context review. **Task 4 may begin only after Tasks 1–3 each clear their per-task reviews.**
 
 ### Task 4: Candidate-neutral hidden biology
 
@@ -177,14 +187,16 @@ These constrain observation/support stress only; they do not set latent biology.
 
 **Files:** create `scripts/production_synthetic/observation_v1.py`, `tests/production_synthetic/test_observation_v1.py`, `tests/production_synthetic/test_observation_v1_hostile.py`.
 
-**Interfaces:** `ObservationBundle`, physical RNA/ATAC/fragment observers, `thin_measured_scalar_by_cell(...)`.
+**Interfaces:** `ObservationBundle`, physical RNA/ATAC/fragment observers, `thin_measured_scalar_by_cell(...) -> ThinnedMeasurement` where the result binds thinned counts and the corresponding normalization-library quantity.
 
 - [ ] Test imbalanced/ragged donor×operator allocation, source-asymmetric support, held-out/source-shift and balanced control regimes, including authenticated real support holes when available.
 - [ ] RNA: nonnegative integer counts, nonlinear depth/detection, measured zero retained as measurement.
 - [ ] ATAC/fragments: bound genome/contig/TSS/peak-or-tile namespace and sparse physical process; dense expected-state teacher shortcut rejected.
 - [ ] Same-nucleus quality coupling; separate-nucleus independent draws and row-alignment hostile tests.
 - [ ] Ambient RNA/doublet pseudo-rarity does not activate rare biological truth; matched perturbation null shares delivery burden; contaminated null is controller-detectable.
-- [ ] **V3.1 §13 synthetic thinning:** `thin_measured_scalar_by_cell` operates only on `MEASURED_SCALAR` count entries, keys randomness to cell/scientific identity, passes `STRUCTURALLY_UNMEASURED` and `MEASURED_COLLISION_UNRESOLVED` through unchanged, and preserves a thinned-to-zero value as `MEASURED_SCALAR`.
+- [ ] **V3.1 §13 + N4 synthetic thinning:** `thin_measured_scalar_by_cell` operates only on `MEASURED_SCALAR` count entries, keys randomness to cell/scientific identity, passes `STRUCTURALLY_UNMEASURED` and `MEASURED_COLLISION_UNRESOLVED` through unchanged, preserves a thinned-to-zero value as `MEASURED_SCALAR`, and recomputes/thins the corresponding normalization-library quantity under the same measurement realization.
+- [ ] Hostile test rejects counts-thinned/library-unthinned inconsistency and rejects exposure of the original full-depth library after thinning.
+- [ ] **N5:** do not import, wrap, copy, or use the PR #343 thinning function as production implementation authority; implement prospectively from this contract and verify no dependency on storage order.
 - [ ] **§22.14:** any repeated-realization depth stress is explicitly tagged `SYNTHETIC_ONLY` and cannot be used as human real-lane authority.
 - [ ] Implement, test → PASS, commit, fresh-context review.
 
@@ -225,6 +237,8 @@ These constrain observation/support stress only; they do not set latent biology.
 - [ ] During implementation, use fixture worlds from a non-production test generator only.
 - [ ] Freeze applicability before exposure; applicable controls are hard gates.
 - [ ] Cover wrong/permuted query, query-agnostic capacity control, semantic/nuisance twins, randomized relational/graph, source/library/marker-only, capacity-only composite, perturbation null/contaminated-null, value-permutation and support/mask-swap controls.
+- [ ] **N6:** add a library-size-only R1 negative control in which library/depth cues exist but expected-state R1 truth carries no corresponding biological relation signal; success driven by the library-only cue is shortcut failure. The control role stays controller-only and applicability/hard-gate status freezes before exposure.
+- [ ] Do not treat PR #353 as providing this adversarial control family; #353 remains semantics fixture only.
 - [ ] Null-draw counts come from precision budget.
 - [ ] Trivial-baseline ceilings carry numeric provenance and are evaluated as pre-exposure realism metrics; convention ceilings require frozen sensitivity analysis.
 - [ ] Implement, fixture-test → PASS, commit, fresh-context review. No production exposure occurs in this task.
@@ -238,7 +252,7 @@ These constrain observation/support stress only; they do not set latent biology.
 - [ ] Fit allowlist excludes latent/expected state, outcomes, estimability truth, challenge/perturbation roles, twin linkage, candidate mapping and controller verdicts.
 - [ ] Opaque exchangeable IDs and chance-level role-predictability test.
 - [ ] Raw/semantic hash and order invariance.
-- [ ] Commitment tests prove withheld plaintext is absent before reveal and realization set is bound before scoring; production secret remains controller-only/off-repo.
+- [ ] Commitment tests prove withheld plaintext and withheld-only code are absent before reveal and realization set is bound before scoring; production secret remains controller-only/off-repo.
 - [ ] **§22.8:** manifest records historical R5 prose PASS claims as `DESIGN_TEXT_PRESENT__NOT_TESTED`, never executable evidence.
 - [ ] **§22.12:** normalize Stage70/71 history to #325 authority labels (`NEGATIVE_PRIOR` / `INTERNAL_ROBUSTNESS_ONLY` as applicable), not conflicting legacy labels.
 - [ ] Implement, test → PASS, commit, fresh-context review.
@@ -281,8 +295,8 @@ These constrain observation/support stress only; they do not set latent biology.
 
 **Interfaces:** `finalize_package(inputs) -> FinalReceipt`.
 
-- [ ] Tests require exact source/dependency hashes, both controlling spec blob SHA and SHA-256 identities, numeric provenance, registries, custody commitments/reveals, complete realization set, controls, code-path classifications and all authority fields false.
-- [ ] Negative tests: blocked gates cannot become PASS; missing provenance/withheld commitment fails; `POST_EXPOSURE_VERSION` requires full requalification lineage.
+- [ ] Tests require exact source/dependency hashes, both controlling spec Git blob SHA identities **and the full 64-character SHA-256 values** listed at the top of this plan and in the F1/N3–N6 addendum, numeric provenance, registries, custody commitments/reveals, complete realization set, controls, code-path classifications and all authority fields false.
+- [ ] Negative tests reject shortened/truncated spec SHA-256 strings, blocked gates promoted to PASS, missing provenance/withheld commitment, and `POST_EXPOSURE_VERSION` without full requalification lineage.
 - [ ] Workflow runs `tests/production_synthetic/` and eligible inherited fixture regressions only; never human outcomes/successor-estimator qualification.
 - [ ] Pin runtime requirements and record exact execution versions in receipt.
 - [ ] Implement and run fixture/local test suite; no finalizer invocation yet.
@@ -300,17 +314,19 @@ These constrain observation/support stress only; they do not set latent biology.
 - Resolving V79 terminal-lock vs V80 291-pass successor-selection law.
 - Successor estimator, human target tournament, target/representation selection, TD60, Stage4 or training.
 
-## Plan self-review after P1–P6
+## Plan self-review after P1–P6 + F1/N3–N6
 
 - **P1:** fixture-only Tasks 8/10; production first exposure is after realism freeze and goes through `record_exposure`.
-- **P2:** production withheld spec is controller-authored off-repo; subagents never see it; private tree-scan attestation proves no committed plaintext/preimage.
+- **P2/N3:** production withheld spec is controller-authored off-repo; subagents never see it; public mechanism code must be exercised outside the withheld family or remain off-repo; private tree-scan attestation covers both plaintext and unique-code-path leakage.
 - **P3:** STOP_A, STOP_B and STOP_C require fresh authorization.
 - **P4:** §20/§22.9 state/stratum minima + distinct poison tests, §13 thinning, §22.14 synthetic-only repeated depth, §22.13 address-universe check, §22.8 R5 label, §22.12 Stage70/71 labels, §22.7 controller-only verdicts are all assigned to owning tests.
+- **N4/N5:** Task 5 thins measured-scalar counts and the matching normalization library under cell-identity keyed randomness, preserves support states, and does not reuse #343's thinning implementation.
+- **N6:** Task 8 owns a library-size-only adversarial R1 negative control; #353 is not treated as hostile-control authority.
 - **P5:** #351 updated to `2abcb9fe…`; G8 status updated; every moving dependency fails closed on head movement; #355 cannot promote without implementation repair and separate review.
-- **P6:** controlling specs are cited by both Git blob SHA and SHA-256.
+- **P6/F1:** controlling specs are cited by Git blob SHA and full 64-character SHA-256; Task 12 explicitly rejects shortened forms.
 - **N1/N2:** executor finite-sample estimability and in-repo controlling spec identities remain explicit.
 - **Authority:** unchanged and false throughout.
 
 ## Execution handoff
 
-Execution mode is **subagent-driven**, sequential on one stacked branch. Each task requires a separate fresh-context implementer and fresh-context reviewer; no subagent touches real-lane PRs. The controller alone manages the withheld-family secret. Tasks 1–3 are the only tasks allowed to start before the amended-plan review gate for Task 4. Production realizations, sealed qualification and finalization remain separately authorization-gated.
+Execution mode is **subagent-driven**, sequential on one stacked branch. Each task requires a separate fresh-context implementer and fresh-context reviewer; no subagent touches real-lane PRs. The controller alone manages the withheld-family secret. Tasks 1–3 may start now. Task 4 begins only after Tasks 1–3 each clear their per-task reviews. Production realizations, sealed qualification and finalization remain separately authorization-gated.
