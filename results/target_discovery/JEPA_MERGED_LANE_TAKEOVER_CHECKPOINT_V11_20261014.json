@@ -1,0 +1,26 @@
+{
+  "schema": "JEPA_MERGED_LANE_TAKEOVER_CHECKPOINT_V11",
+  "date": "2026-10-14",
+  "audit_pr": 322,
+  "audit_head": "ea7245025ab7f0cf588cbc2fb997992886246d7a",
+  "handoff_pr": 323,
+  "architecture": {"pr": 379, "head": "3064ca545f0c94859ea989cd49a04fcbd5b9a303"},
+  "plan": {"pr": 380, "head": "5b6bf07e7d8b69b286ea430b09765a5ee4743325"},
+  "task0": {"pr": 381, "head": "0b07550eaff5d327225693f10e7fc9cbce4dc515", "review": "PENDING", "task1_blocked": true},
+  "macha": {"old_synthetic_tasks_allowed": [1, 2], "stop_after_task": 2, "then": "AUDIT_CONSOLIDATE_MERGE"},
+  "downstream": {"only_handoff": "TARGET_QUALIFICATION_BUNDLE_V1", "training_authorized": false},
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "read_first": [
+    "docs/agent/JEPA_MERGED_LANE_MASTER_AUDIT_INDEX_V1_20261014.md",
+    "results/target_discovery/JEPA_MERGED_LANE_AUDIT_STATE_V1_20261014.json",
+    "docs/agent/JEPA_MERGED_LANE_EXTERNAL_ARTIFACT_CUSTODY_V1_20261014.csv",
+    "docs/agent/JEPA_MERGED_LANE_SUCCESSOR_HANDOFF_V11_20261014.md"
+  ],
+  "next_actions": [
+    "WAIT_FOR_TASK0_INDEPENDENT_REVIEW",
+    "WAIT_FOR_MACHA_OLD_SYNTHETIC_TASK2_STOP",
+    "AUDIT_AND_CONSOLIDATE_MACHA_TASKS_1_2",
+    "FREEZE_TASK0_CUSTODY_TRANSFER",
+    "START_UNIFIED_TASK1_RED_FIRST"
+  ]
+}
