@@ -1,0 +1,111 @@
+{
+  "schema": "MACHA_TASK1_2_ABSORPTION_MATRIX_V1",
+  "date": "2026-10-14",
+  "authority": "ANALYSIS_ONLY__NO_UNIFIED_PROMOTION",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "current_operational_instruction": "FINISH_OLD_TASKS_1_2_ONLY__THEN_STOP_FOR_MERGED_AUDIT_AND_CONSOLIDATION",
+  "acceptance_classes": ["DIRECT_REUSE", "ADAPT_AND_WRAP", "TEST_ONLY", "REJECT"],
+  "old_task_1": {
+    "source_pr": 356,
+    "name": "Canonical identity and serialization contract",
+    "expected_interfaces": [
+      "canonical_json_bytes",
+      "raw_sha256",
+      "semantic_sha256",
+      "ordered_registry_digest"
+    ],
+    "unified_destinations": [
+      "scripts/v5/td_unified/canonical_v1.py",
+      "unified Task 1 canonical primitives",
+      "all authenticated artifact identity paths"
+    ],
+    "can_complete_unified_task_1_alone": false,
+    "missing_unified_task_1_scope": [
+      "recursive authority-bearing receipt verification",
+      "parent/dependency chain verification to frozen root",
+      "QualificationStage",
+      "ActiveLineageStatus",
+      "authority_scope",
+      "authority schema validation"
+    ],
+    "direct_reuse_requirements": [
+      "deterministic canonical bytes",
+      "stable semantic identity under JSON key permutation",
+      "stable ordered-registry identity under storage reordering when identity keys are stable",
+      "raw transport hash distinguishes distinct bytes",
+      "non-JSON/nonfinite scientific values rejected",
+      "declared digest never trusted as authentication",
+      "no PR/branch-derived scientific identity",
+      "no synthetic/generator authority embedded"
+    ],
+    "mandatory_return_checks": [
+      "exact head/base frozen",
+      "RED and GREEN run identities",
+      "fresh review verdict",
+      "source files and test files enumerated",
+      "canonical vectors captured",
+      "hostile copied-digest mutation rejected",
+      "conflicting dependency identities rejected or explicitly outside old scope"
+    ]
+  },
+  "old_task_2": {
+    "source_pr": 356,
+    "name": "Freeze-before-use custody, withheld commitments and identity-keyed RNG",
+    "expected_interfaces": [
+      "freeze_generator_version",
+      "commit_secret",
+      "derive_stream",
+      "record_exposure",
+      "validate_successor_version",
+      "attest_realization_set",
+      "scan_secret_absence",
+      "attest_no_unique_withheld_code_path"
+    ],
+    "primary_unified_destination": "unified Task 4 sealed qualification challenge custody",
+    "secondary_unified_destinations": [
+      "shared identity-keyed RNG primitive",
+      "CaseBundle/challenge realization custody",
+      "sealed challenge commitment/reveal"
+    ],
+    "does_not_satisfy_unified_task_2": true,
+    "reason_not_unified_task_2": "unified Task 2 owns TD_EXECUTION_MANIFEST_V1 and current-TD population/access law, not synthetic challenge custody",
+    "direct_reuse_requirements": [
+      ">=256-bit nonce enforcement",
+      "domain separation by scientific identity",
+      "storage-order invariant streams",
+      "no integer-offset namespaces",
+      "no seed replacement/discard",
+      "exact realization budget attestation",
+      "append-only exposure",
+      "commit/reveal mismatch failure",
+      "secret absence scan",
+      "unique withheld-only code-path detection",
+      "post-exposure repair has new identity and no inherited qualification"
+    ],
+    "hard_rejection_conditions": [
+      "creates alternate execution manifest",
+      "defines human qualification authority",
+      "truth flows into producer/executor/controller inputs",
+      "seed shopping permitted",
+      "post-exposure qualification inherited",
+      "known-truth success promoted to human biological validity"
+    ],
+    "mandatory_return_checks": [
+      "exact head/base frozen",
+      "RED and GREEN run identities",
+      "fresh review verdict",
+      "secret scanner uses dummy fixtures in public tests",
+      "production secret/nonce absent from repo",
+      "exposure state transitions tested",
+      "successor-version hostile tests present"
+    ]
+  },
+  "consolidation_rules": [
+    "ONE_CANONICAL_SERIALIZER_AFTER_MIGRATION",
+    "ONE_CANONICAL_DIGEST_LAW_AFTER_MIGRATION",
+    "ONE_AUTHORITY_MODEL_ONLY",
+    "NO_PARALLEL_SYNTHETIC_MANIFEST_OR_REGISTRY",
+    "OLD_TASK2_CUSTODY_DOES_NOT_REPLACE_UNIFIED_POPULATION_ACCESS_LAW",
+    "NO_UNIFIED_STAGE_INHERITANCE_FROM_OLD_TASK_GREEN_STATUS"
+  ]
+}
