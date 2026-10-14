@@ -5,9 +5,10 @@ import pytest
 import scripts.v5.td_real_teacher_information_decision_v2 as D
 
 
-def _probe(deltas, *, status="PASS"):
+def _probe(deltas, *, status="PASS", binding="a" * 64):
     return {
         "status": status,
+        "input_binding_sha256": binding,
         "donor_deltas": [
             {"donor_id": f"D{i:02d}", "delta": float(value)}
             for i, value in enumerate(deltas)
@@ -25,7 +26,7 @@ def _qualification():
     }
 
 
-def _reference(margins):
+def _reference(margins, *, binding="a" * 64):
     return {
         "schema": "JEPA_TD_REAL_G6_REFERENCE_MARGIN_V1",
         "frozen": True,
@@ -37,7 +38,7 @@ def _reference(margins):
             f"D{i:02d}": float(value) for i, value in enumerate(margins)
         },
         "deciding_namespace_disjoint": True,
-        "input_binding_sha256": "a" * 64,
+        "input_binding_sha256": binding,
         "reference_receipt_sha256": "b" * 64,
     }
 
@@ -106,6 +107,16 @@ def test_reference_donor_roster_must_match_probe_exactly():
         )
 
 
+def test_reference_input_binding_must_match_probe_exactly():
+    with pytest.raises(D.TeacherInformationDecisionError, match="binding"):
+        D.adjudicate_g6_human_decision(
+            probe_result=_probe([1.0] * 8, binding="a" * 64),
+            probe_qualification=_qualification(),
+            reference_artifact=_reference([0.25] * 8, binding="c" * 64),
+            alpha=0.01,
+        )
+
+
 def test_positive_raw_deltas_below_margin_cannot_pass():
     out = D.adjudicate_g6_human_decision(
         probe_result=_probe([0.5] * 8),
@@ -127,6 +138,7 @@ def test_teacher_advantage_beyond_margin_can_pass():
     )
     assert out["status"] == "PASS"
     assert out["sign_test"]["pass"] is True
+    assert out["input_binding_sha256"] == "a" * 64
     assert all(row["margin_adjusted_delta"] > 0 for row in out["donor_contrasts"])
 
 
