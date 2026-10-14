@@ -17,6 +17,8 @@
   - SHA-256: `ab1ae1bb…363f`
   - controls only the E1–E7 clauses it explicitly amends.
 
+**Plan-review provenance:** Macha PR #356 review `docs/agent/MACHA_PR356_PLAN_REVIEW_20261014.md`, audit branch commit `16e411f330c01604d443c735d9b0bc28ed988cf2`, verdict `PLAN_ACCEPTED_WITH_REQUIRED_PLAN_AMENDMENTS_P1_P6__TASKS_1_3_MAY_START__AMEND_BEFORE_TASK_4`. This review is non-controlling evidence; P1–P6 are encoded below because they implement already-controlling V3.1/V3.1.1 obligations.
+
 `docs/agent/**`, PR descriptions and review prose are non-controlling. They may supply audit evidence and navigation only.
 
 ## Global constraints
