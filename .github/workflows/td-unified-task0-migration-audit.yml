@@ -1,0 +1,30 @@
+name: TD unified Task 0 migration audit
+
+on:
+  pull_request:
+    paths:
+      - 'tests/v5/td_unified/test_premerger_migration_task0.py'
+      - 'tests/v5/td_unified/test_premerger_custody_completeness_v1.py'
+      - 'scripts/v5/td_unified/premerger_migration_task0.py'
+      - 'scripts/v5/td_unified/premerger_custody_completeness_v1.py'
+      - 'results/target_discovery/unified_qualification_v1/**'
+      - 'docs/agent/UNIFIED_TD_PREMERGER_MIGRATION_CUSTODY_AUDIT_20261014.md'
+      - 'docs/agent/UNIFIED_TD_PREMERGER_REAUDIT_COMPLETENESS_ADDENDUM_20261014.md'
+      - '.github/workflows/td-unified-task0-migration-audit.yml'
+  workflow_dispatch:
+
+jobs:
+  task0-migration-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pytest
+        run: python -m pip install 'pytest>=9,<10'
+      - name: Run Task 0 hostile validator tests
+        run: >-
+          python -m pytest -q
+          tests/v5/td_unified/test_premerger_migration_task0.py
+          tests/v5/td_unified/test_premerger_custody_completeness_v1.py

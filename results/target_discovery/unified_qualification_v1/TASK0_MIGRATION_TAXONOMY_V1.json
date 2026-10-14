@@ -1,0 +1,26 @@
+{
+  "schema": "TASK0_MIGRATION_TAXONOMY_V1",
+  "date": "2026-10-14",
+  "controlling_plan_amendment_head": "5b6bf07e7d8b69b286ea430b09765a5ee4743325",
+  "controlling_plan_amendment_path": "docs/superpowers/plans/2026-10-14-unified-td-qualification-downstream-custody-v1-task0-taxonomy-amendment.md",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "allowed_migration_classes": [
+    "REUSABLE_SHARED_INFRASTRUCTURE",
+    "KNOWN_TRUTH_SUBSTRATE",
+    "KNOWN_TRUTH_CHALLENGE_ASSET",
+    "DEVELOPMENT_FIXTURE",
+    "HISTORICAL_NEGATIVE_CONTROL",
+    "HISTORICAL_BIOLOGICAL_EVIDENCE",
+    "PRODUCTION_INTERFACE_DEPENDENCY",
+    "SUPERSEDED_PARALLEL_IMPLEMENTATION",
+    "CLOSED_FAILED_EXPERIMENT",
+    "NEEDS_REVIEW_BEFORE_CLASSIFICATION"
+  ],
+  "historical_biological_evidence_semantics": {
+    "definition": "Frozen historical biological evidence bound to the exact execution law under which it was produced.",
+    "confers_current_unified_authority": false,
+    "rerun_for_migration_allowed": false,
+    "requires_new_prospective_execution_for_current_authority": true,
+    "motivating_artifact": "MACHA_PR314_CORRECTED_REPLAY"
+  }
+}
