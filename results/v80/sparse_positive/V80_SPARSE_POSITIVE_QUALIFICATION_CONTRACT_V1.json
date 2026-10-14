@@ -1,0 +1,43 @@
+{
+  "schema": "V80_SPARSE_POSITIVE_QUALIFICATION_CONTRACT_V1",
+  "status": "PROSPECTIVE__NO_ESTIMATOR_RUN",
+  "seed_root": 41000000,
+  "n_genes_per_world": 24,
+  "n_donors": 24,
+  "cells_per_donor": 80,
+  "challenge_families": [
+    "SP00_BALANCED_ESTIMABLE",
+    "SP01_ULTRASPARSE_ESTIMABLE",
+    "SP02_DONOR_IMBALANCED_ESTIMABLE",
+    "SP03_SOURCE_SHIFT_ESTIMABLE",
+    "SP04_SUPPORT_THINNED_ESTIMABLE",
+    "SP05_NO_POSITIVE_SUPPORT_NOT_ESTIMABLE",
+    "SP06_RANK_DEFICIENT_NOT_ESTIMABLE",
+    "SP07_NEW_DONOR_ESTIMABLE"
+  ],
+  "fit_statuses": ["COMPLETE", "NOT_ESTIMABLE", "NUMERICAL_FAILURE"],
+  "controller_estimability": ["ESTIMABLE", "NOT_ESTIMABLE_BY_CONSTRUCTION"],
+  "synthetic_recovery_thresholds": {
+    "detection_intercept_median_abs_error_max": 0.35,
+    "positive_location_median_abs_error_max": 0.30,
+    "donor_effect_rank_correlation_median_min": 0.45,
+    "heldout_detection_logloss_delta_max": 0.02,
+    "heldout_positive_logdensity_delta_max": 0.05
+  },
+  "v79_immutable_binding": {
+    "scorer_orchestrator_head": "ac1e73d79489438634aaeeca035d229875f3186a",
+    "contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+    "world_set_digest": "40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286",
+    "final_receipt_sha256": "ef10852e534fe8a83c3aebd832ad3a531d755d06185464441494712818e8abfd",
+    "historical_result": "NOT_QUALIFIED"
+  },
+  "authority": {
+    "real_data_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "synthetic_training_authorized": false,
+    "real_training_authorized": false
+  }
+}
