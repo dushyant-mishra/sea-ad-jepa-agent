@@ -49,21 +49,42 @@ def test_crlf_vs_lf_text_same_semantic_different_raw():
     crlf = lf.replace(b"\n", b"\r\n")
     cr = lf.replace(b"\n", b"\r")
     assert len({C.raw_sha256(lf), C.raw_sha256(crlf), C.raw_sha256(cr)}) == 3
-    assert C.semantic_sha256(lf) == C.semantic_sha256(crlf) == C.semantic_sha256(cr)
-    assert C.semantic_sha256(lf) != C.semantic_sha256(lf + b"x")
+    t = C.semantic_text_sha256
+    assert t(lf) == t(crlf) == t(cr)
+    assert t(lf) != t(lf + b"x")
 
 
 def test_text_bom_stripped_and_bad_utf8_rejected():
-    assert C.semantic_sha256(b"\xef\xbb\xbfabc") == C.semantic_sha256(b"abc")
+    assert C.semantic_text_sha256(b"\xef\xbb\xbfabc") == C.semantic_text_sha256(b"abc")
     with pytest.raises(C.CanonicalError):
-        C.semantic_sha256(b"\xff\xfe\x00")
+        C.semantic_text_sha256(b"\xff\xfe\x00")
+    with pytest.raises(C.CanonicalError):
+        C.semantic_text_sha256("str")
+
+
+def test_semantic_sha256_rejects_bytes_no_type_dispatch():
+    for bad in (b"abc", b"", bytearray(b"x")):
+        with pytest.raises(C.CanonicalError):
+            C.semantic_sha256(bad)
+
+
+def test_json_file_identity_vs_text_identity():
+    a = b'{"a":1,"b":[1,2]}'
+    b = b'\xef\xbb\xbf{ "b" : [1, 2],\r\n  "a" : 1 }\r\n'
+    assert C.raw_sha256(a) != C.raw_sha256(b)
+    assert C.semantic_json_file_sha256(a) == C.semantic_json_file_sha256(b)
+    assert C.semantic_text_sha256(a) != C.semantic_text_sha256(b)
+    assert C.semantic_json_file_sha256(a) == C.semantic_sha256({"a": 1, "b": [1, 2]})
+    with pytest.raises(C.CanonicalError):
+        C.semantic_json_file_sha256(b'{"a":1,"a":2}')
 
 
 def test_string_values_line_endings_normalized_no_unicode_normalization():
     assert C.canonical_json_bytes("a\r\nb\rc") == C.canonical_json_bytes("a\nb\nc")
     assert C.canonical_json_bytes({"k\r\n": 1}) == C.canonical_json_bytes({"k\n": 1})
     # identifiers stay exact: composed vs decomposed e-acute differ
-    assert C.semantic_sha256("é") != C.semantic_sha256("é")
+    assert C.semantic_sha256("\u00e9") != C.semantic_sha256("e\u0301")
+    assert C.canonical_json_bytes("\u00e9") == b'"\xc3\xa9"'
 
 
 def test_nan_inf_rejected():
@@ -134,9 +155,9 @@ def test_semantic_differs_from_raw_for_identical_bytes():
     obj = {"a": 1}
     data = C.canonical_json_bytes(obj)
     assert C.semantic_sha256(obj) != C.raw_sha256(data)
-    assert C.semantic_sha256(b"abc") != C.raw_sha256(b"abc")
+    assert C.semantic_text_sha256(b"abc") != C.raw_sha256(b"abc")
     # text-domain and json-domain are distinct too
-    assert C.semantic_sha256(b'"abc"') != C.semantic_sha256("abc")
+    assert C.semantic_text_sha256(b'"abc"') != C.semantic_sha256("abc")
 
 
 def _rows(n=50):
@@ -317,3 +338,109 @@ def test_loader_rejects_keys_colliding_after_eol_normalization():
         C.load_canonical_json(rb'{"a\r\n":1,"a\n":2}')
     with pytest.raises(C.CanonicalError):
         C.load_canonical_json(rb'{"x":{"a\r":1,"a\n":2}}')
+
+
+def test_non_iterable_rows_rejected_in_both_digests():
+    for bad in (None, 5, 1.5):
+        with pytest.raises(C.CanonicalError):
+            C.ordered_registry_digest(bad, ["a"])
+        with pytest.raises(C.CanonicalError):
+            C.semantic_row_set_sha256(bad, ["a"])
+
+
+def test_identity_key_order_canonicalized_in_both_digests():
+    rows = [{"a": i, "b": str(i), "v": 0} for i in range(5)]
+    assert C.ordered_registry_digest(rows, ["a", "b"]) == C.ordered_registry_digest(rows, ["b", "a"])
+    assert C.semantic_row_set_sha256(rows, ["a", "b"]) == C.semantic_row_set_sha256(rows, ("b", "a"))
+    assert C.ordered_registry_digest(rows, ["a", "b"]) != C.ordered_registry_digest(rows, ["a"])
+
+
+@pytest.mark.skipif(np.dtype(np.longdouble).itemsize <= 8, reason="longdouble is float64 on this platform")
+def test_wide_numpy_float_rejected():
+    with pytest.raises(C.CanonicalError):
+        C.canonical_json_bytes(np.longdouble(0.1))
+
+
+def test_numpy_float16_float32_widen_to_float64():
+    assert C.canonical_json_bytes(np.float16(0.5)) == b"0.5"
+    assert C.canonical_json_bytes(np.float32(0.1)) == repr(float(np.float32(0.1))).encode()
+
+
+def _rand_obj(rng, depth=0):
+    kind = rng.randrange(8 if depth < 4 else 6)
+    if kind == 0:
+        return None
+    if kind == 1:
+        return rng.random() < 0.5
+    if kind == 2:
+        return rng.randrange(-10 ** 12, 10 ** 12)
+    if kind == 3:
+        return rng.choice([0.0, -0.0, 1.0, 0.1, 1e16, 1e-5, 5e-324, 1.7976931348623157e308,
+                           rng.uniform(-1e6, 1e6), rng.uniform(-1, 1) * 10.0 ** rng.randrange(-300, 300)])
+    if kind in (4, 5):
+        alphabet = ["a", "b", "\x00", "\x1f", "\t", "\n", "\x7f", "é", "é", "\U0001F600", '"', "\\", " "]
+        return "".join(rng.choice(alphabet) for _ in range(rng.randrange(0, 6)))
+    if kind == 6:
+        return [_rand_obj(rng, depth + 1) for _ in range(rng.randrange(0, 4))]
+    return {_rand_obj_key(rng): _rand_obj(rng, depth + 1) for _ in range(rng.randrange(0, 4))}
+
+
+def _rand_obj_key(rng):
+    alphabet = ["k", "j", "\n", "é", "\U0001F600", '"', "\\", "\x01"]
+    return "".join(rng.choice(alphabet) for _ in range(rng.randrange(0, 4)))
+
+
+def test_canonical_bytes_are_a_fixed_point_of_strict_load_property():
+    rng = random.Random(20261014)
+    for _ in range(3000):
+        x = _rand_obj(rng)
+        b = C.canonical_json_bytes(x)
+        assert C.canonical_json_bytes(C.load_canonical_json(b)) == b
+
+
+# ---------------------------------------------------------------------------
+# Known-answer tests: frozen byte format. Values were computed once from the
+# implementation and cross-checked against an independent re-implementation
+# written only from the module docstring. A change here is a format break.
+# ---------------------------------------------------------------------------
+
+def test_kat_canonical_bytes_with_escapes_unicode_and_floats():
+    obj = {
+        "s": "\x00\x1f\t\n\x7fé\U0001F600",
+        "f": [1e16, 1e-5, 5e-324, 0.1, -0.0, 1.0],
+    }
+    expected = (
+        b'{"f":[1e+16,1e-05,5e-324,0.1,0.0,1.0],'
+        b'"s":"\\u0000\\u001f\\t\\n\x7f\xc3\xa9\xf0\x9f\x98\x80"}'
+    )
+    assert C.canonical_json_bytes(obj) == expected
+
+
+def test_kat_semantic_sha256_json_object():
+    obj = {"b": [1, 2.5, None, True], "a": {"z": 0, "y": 0.0}, "c": "x"}
+    assert C.canonical_json_bytes(obj) == b'{"a":{"y":0.0,"z":0},"b":[1,2.5,null,true],"c":"x"}'
+    assert C.semantic_sha256(obj) == "9985d6352461c786289baa95b34c9523d607f6559dd0df4f02b8ab43ab321ecd"
+
+
+def test_kat_semantic_text_sha256():
+    assert C.semantic_text_sha256(b"id\tv\r\nA\t1\r\n") == (
+        "383690d22cc9059e6132f0b6ad1ef3ef9f9e9c4e3caf183ec57a4667df61165b"
+    )
+    assert C.semantic_text_sha256(b"id\tv\nA\t1\n") == (
+        "383690d22cc9059e6132f0b6ad1ef3ef9f9e9c4e3caf183ec57a4667df61165b"
+    )
+
+
+def test_kat_registry_and_row_set_digests():
+    rows = [{"i": 0, "n": "A"}, {"i": 1, "n": "B"}, {"i": 2, "n": "C"}]
+    assert C.ordered_registry_digest(rows, ["i"]) == (
+        "5d2356c29572e267f707a806e8ca28c7a8addd7c98b83d32395b4ab24e8c1387"
+    )
+    assert C.ordered_registry_digest(rows, ["n", "i"]) == (
+        "034242f85237cd803e081c91fa6adc709f68e8b7740026bf42655e6b6f2b8d39"
+    )
+    assert C.ordered_registry_digest(rows, ["i", "n"]) == C.ordered_registry_digest(rows, ["n", "i"])
+    assert C.semantic_row_set_sha256(rows, ["i"]) == (
+        "7c65a8d0ddf15b5411458a2c91437c6001c701f0db51433d8eefcdbf8c3a5586"
+    )
+    assert C.semantic_row_set_sha256(rows[::-1], ["i"]) == C.semantic_row_set_sha256(rows, ["i"])

@@ -1,65 +1,120 @@
-"""Canonical identity and serialization contract for production synthetic V3.1.1.
+r"""Canonical identity and serialization contract for production synthetic V3.1.1.
 
 Implements V3.1 section 3: every identity-bearing artifact has a raw-byte
 SHA-256 and a semantic SHA-256 computed from a canonical serialization.
 
-Contract (each decision is a single authority; nothing else in the package may
-redefine it):
+This docstring is a byte-level specification: a second implementation that
+follows it must reproduce every digest bit for bit. Each decision is a single
+authority; nothing else in the package may redefine it. All digests are
+lowercase hex SHA-256. ``||`` is byte concatenation.
 
-1. ``raw_sha256(data)``: plain SHA-256 hex of the exact bytes. Only ``bytes``
-   is accepted; ``str``, ``bytearray`` and ``memoryview`` are rejected rather
-   than silently encoded.
-2. ``canonical_json_bytes(obj)``: UTF-8, mapping keys sorted by Unicode code
-   point, compact separators, no trailing newline.
-   - Mapping keys must be ``str`` (anything else, including bool, is rejected).
-   - ``bool`` is never an int; ``True`` -> ``true``.
-   - ``None`` -> ``null`` is the ONLY missing-value representation. A measured
-     zero (``0`` / ``0.0``) is never ``null``.
-   - NaN and +/-Inf are REJECTED, never mapped to ``null``.
-   - Python ints are exact up to the interpreter's int-to-str digit limit
+Public functions: ``canonical_json_bytes``, ``raw_sha256``, ``semantic_sha256``,
+``ordered_registry_digest`` (the four core interfaces) plus these extras:
+``semantic_row_set_sha256``, ``load_canonical_json``, ``semantic_text_sha256``
+and ``semantic_json_file_sha256``. ``CanonicalError`` (a ``ValueError``) is
+raised for every rejection.
+
+1. CANONICAL JSON BYTES (``canonical_json_bytes``)
+   Output is UTF-8 with no BOM, no insignificant whitespace (separators are
+   exactly "," and ":") and no trailing newline.
+   - null: ``None`` -> ``null``. This is the ONLY missing-value representation.
+     A measured zero is never null. NaN and +/-Inf are REJECTED.
+   - bool: ``true`` / ``false`` (Python bool and numpy bool_). A bool is never
+     an integer.
+   - int: decimal digits with optional leading "-", no "+", no leading zeros,
+     exact (arbitrary precision) up to the interpreter's int-to-str digit limit
      (4300 digits by default); larger ints are rejected, never truncated.
-   - Floats use shortest round-trip ``repr``; ``-0.0`` is normalized to
-     ``0.0``. An integer-valued float stays a float (``1.0`` != ``1``).
-   - numpy integer / floating / bool scalars convert to the Python equivalent
-     (a numpy float is widened to float64 first, so float32 0.1 serializes as
-     its float64 value). numpy arrays and numpy datetime64/timedelta64 (incl. NaT) are
-     rejected.
-   - Sequences: lists and tuples are both arrays (tuple == list); list order is
-     significant. Sets, frozensets, bytes, complex and any other type are
-     rejected.
-   - String values and keys: CRLF and lone CR are normalized to LF. No Unicode
-     normalization (NFC/NFD) is applied; identifiers stay exact. Keys that
-     collide after line-ending normalization are rejected.
-   - Every rejection raises ``CanonicalError``.
-3. ``semantic_sha256(obj)``: SHA-256 over a domain prefix + canonical bytes, so
-   a semantic identity can never equal the raw identity of the same bytes.
-   If ``obj`` is ``bytes`` it is a UTF-8 text artifact: strict decode, strip
-   one leading BOM, normalize CRLF/CR to LF, then hash under a distinct text
-   domain prefix (line-ending-equivalent text shares a semantic identity while
-   raw hashes differ). Other objects hash under the JSON domain prefix.
-4. ``ordered_registry_digest(rows, identity_keys)``: ORDER-SENSITIVE digest of a
-   registry (positional index semantics). Binds row count, identity keys and
-   each row's canonical content, in the given order. Rejects empty registries,
-   empty/duplicated/missing identity keys, missing-valued (``None``) identity
-   values and duplicate identity tuples. Reordering rows changes the digest.
-5. ``load_canonical_json(data)``: strict loader for JSON file artifacts. Parses
-   UTF-8 bytes (one leading BOM stripped), rejects duplicate object keys,
-   NaN/Infinity/-Infinity, overflowing floats (1e999), trailing garbage and
-   non-bytes input, lone-surrogate strings, object keys that collide after
-   CRLF/CR->LF normalization, and nonzero float literals that underflow to
-   0.0 (a nonzero value must never become a measured zero; a literal whose
-   mantissa is all zeros, e.g. 0e-400 or -0.0, is a true zero and is accepted).
-   Nonzero literals are otherwise parsed as float64, so excess digits or
-   subnormal rounding (0.10000000000000000001 -> 0.1) are accepted as ordinary
-   float64 rounding, never to zero. A JSON file artifact's semantic identity is
-   ``semantic_sha256(load_canonical_json(raw_bytes))`` while its raw identity is
-   ``raw_sha256(raw_bytes)``; whitespace/line-ending/key-order variants share
-   the former.
-6. ``semantic_row_set_sha256(rows, identity_keys)``: ORDER-INVARIANT identity of
-   a row set (the one helper beyond the four core interfaces). Rows are sorted
-   by the canonical encoding of their identity tuple, so permuted rows or
-   shards concatenated in any order give the same identity; any value change,
-   addition or removal changes it. Own domain prefix; same rejections as (4).
+     numpy integer scalars convert to Python int.
+   - float: take float64, replace -0.0 by 0.0, then write Python 3 ``repr`` of
+     that float64 (shortest round-trip). Exponent form is used by ``repr`` when
+     the decimal exponent is < -4 or >= 16 and is written like ``1e+16``,
+     ``1e-05``, ``5e-324``, ``1.5e+300`` (always a sign and at least two
+     exponent digits; NO ".0" is inserted before an exponent). Otherwise
+     positional form is used and an integer-valued float keeps its ".0"
+     (``1.0``, ``100000.0``, ``0.0``). So ``1.0`` and ``1`` are different
+     bytes. numpy float16/float32 are widened to float64 first (float32 0.1
+     writes as 0.10000000149011612); numpy floating types wider than 8 bytes
+     (longdouble where it is wider than float64) are REJECTED.
+   - str: line endings are normalized first (CRLF -> LF, then lone CR -> LF);
+     NO Unicode normalization (NFC/NFD) is applied, identifiers stay exact.
+     The string is written between double quotes with exactly this escape
+     table: ``"`` -> ``\"``; ``\`` -> ``\\``; LF -> ``\n``; TAB -> ``\t``;
+     BS (0x08) -> ``\b``; FF (0x0c) -> ``\f``; every other code point below
+     0x20 -> ``\u`` followed by four LOWERCASE hex digits (e.g. ``\u0000``,
+     ``\u001f``; CR can never occur after normalization). DEL (0x7f) and all
+     non-ASCII code points are written raw as UTF-8 (no ``\u`` escapes, no
+     surrogate pairs). "/" is not escaped. Lone surrogates are rejected.
+   - mapping: keys must be ``str`` (anything else, including bool, is
+     rejected); keys are line-ending-normalized with the same rule and keys
+     that collide after normalization are rejected. Members are emitted sorted
+     by key in Unicode code point order (Python ``str`` ordering). This is NOT
+     RFC 8785 / JCS ordering, which sorts by UTF-16 code unit and differs for
+     code points above U+FFFF. Format: ``{key:value,key:value}``.
+   - list and tuple: both are arrays, ``[v,v]``, order is significant. A tuple
+     is indistinguishable from a list.
+   - Rejected types: set, frozenset, bytes/bytearray, complex, numpy arrays,
+     numpy datetime64/timedelta64 (incl. NaT), and any other object.
+
+2. RAW IDENTITY: ``raw_sha256(data)`` = SHA-256(data) of the exact bytes. Only
+   ``bytes`` is accepted; ``str``, ``bytearray`` and ``memoryview`` are
+   rejected rather than silently encoded.
+
+3. SEMANTIC IDENTITIES. Each kind has its own literal domain prefix (bytes,
+   including the trailing NUL) so no semantic identity can equal a raw one, and
+   no two kinds can collide:
+     JSON domain    = b"JEPA-PRODUCTION-SYNTHETIC-SEMANTIC-V1\x00"
+     TEXT domain    = b"JEPA-PRODUCTION-SYNTHETIC-SEMANTIC-TEXT-V1\x00"
+     REGISTRY domain= b"JEPA-PRODUCTION-SYNTHETIC-ORDERED-REGISTRY-V1\x00"
+     ROW-SET domain = b"JEPA-PRODUCTION-SYNTHETIC-ROW-SET-V1\x00"
+   - ``semantic_sha256(obj)`` = SHA-256(JSON domain || canonical_json_bytes(obj)).
+     There is NO type dispatch: ``bytes`` input is REJECTED. Use one of the two
+     explicit entry points below for file artifacts.
+   - ``semantic_text_sha256(raw)`` (text artifacts, e.g. TSV/CSV/Markdown):
+     strict UTF-8 decode, strip ONE leading U+FEFF, CRLF -> LF then lone
+     CR -> LF, re-encode UTF-8; digest = SHA-256(TEXT domain || those bytes).
+   - ``semantic_json_file_sha256(raw)`` (JSON file artifacts) =
+     ``semantic_sha256(load_canonical_json(raw))``. Whitespace, line-ending,
+     BOM and key-order variants of the same JSON share this identity, while
+     their raw hashes and ``semantic_text_sha256`` values differ.
+
+4. STRICT LOADER (``load_canonical_json(data: bytes)``): parses UTF-8 JSON (one
+   leading BOM stripped) and rejects duplicate object keys (also keys that
+   collide after CRLF/CR -> LF normalization), NaN/Infinity/-Infinity,
+   overflowing floats (1e999), trailing garbage, non-bytes input, lone-surrogate
+   strings, and nonzero float literals that underflow to 0.0 (a nonzero value
+   must never become a measured zero; a literal whose mantissa is all zeros,
+   e.g. 0e-400 or -0.0, is a true zero and is accepted). Other nonzero
+   literals parse as float64, so excess digits or subnormal rounding
+   (0.10000000000000000001 -> 0.1) are accepted as ordinary float64 rounding,
+   never to zero. Ints parse exactly; floats parse as float.
+
+5. FRAMING AND IDENTITY KEYS (used by both row digests below).
+   frame(b) = len(b) as 8-byte big-endian unsigned || b.
+   ``identity_keys`` must be a non-empty list/tuple of unique ``str`` names
+   (not a bare string). Names are line-ending-normalized like row keys, must
+   stay unique after normalization, and are then SORTED by code point, so
+   ["a", "b"] and ["b", "a"] give the same digest. Every row must be a mapping
+   containing every identity key with a non-None value (``None`` can never be
+   an identity). identity_bytes(row) = canonical_json_bytes([row[k] for k in
+   sorted identity keys]). Duplicate identity_bytes are rejected. ``rows`` must
+   be a non-empty iterable of mappings (None / a number is rejected).
+   header = canonical_json_bytes({"identity_keys": <sorted keys>,
+   "n_rows": <row count>}).
+
+6. ``ordered_registry_digest(rows, identity_keys)``: ORDER-SENSITIVE (positional
+   index semantics; a consistent reordering MUST change it).
+   body = SHA-256 over, for each row in the GIVEN order,
+          frame(canonical_json_bytes(row))        (raw 32-byte digest)
+   digest = SHA-256(REGISTRY domain || frame(header) || body).
+
+7. ``semantic_row_set_sha256(rows, identity_keys)``: ORDER-INVARIANT identity of a
+   row set (permuted rows, or shards concatenated in any order, give the same
+   value; any value change, addition or removal changes it). Entries
+   (identity_bytes, canonical_json_bytes(row)) are sorted BYTEWISE (unsigned
+   byte order) by identity_bytes.
+   body = SHA-256 over, for each entry in that order,
+          frame(identity_bytes) || frame(row_bytes)   (raw 32-byte digest)
+   digest = SHA-256(ROW-SET domain || frame(header) || body).
 """
 from __future__ import annotations
 
@@ -79,6 +134,8 @@ __all__ = [
     "ordered_registry_digest",
     "semantic_row_set_sha256",
     "load_canonical_json",
+    "semantic_text_sha256",
+    "semantic_json_file_sha256",
 ]
 
 _JSON_DOMAIN = b"JEPA-PRODUCTION-SYNTHETIC-SEMANTIC-V1\x00"
@@ -142,6 +199,8 @@ def _enc(obj: Any, out: list) -> None:
         except ValueError as exc:  # interpreter int->str digit limit
             raise CanonicalError("integer too large to serialize exactly") from exc
     elif isinstance(obj, (float, np.floating)):
+        if isinstance(obj, np.floating) and obj.dtype.itemsize > 8:
+            raise CanonicalError(f"numpy floating type wider than float64 is not supported: {obj.dtype}")
         out.append(_enc_float(float(obj)))
     elif isinstance(obj, str):
         out.append(_enc_str(_norm_eol(obj)))
@@ -196,19 +255,33 @@ def raw_sha256(data: bytes) -> str:
 
 def semantic_sha256(obj: Any) -> str:
     """Domain-separated SHA-256 of the canonical serialization of ``obj``."""
-    if isinstance(obj, bytes):
-        try:
-            text = obj.decode("utf-8")
-        except UnicodeDecodeError as exc:
-            raise CanonicalError(f"text artifact is not valid UTF-8: {exc}") from exc
-        if text.startswith(_BOM):
-            text = text[len(_BOM):]
+    if isinstance(obj, (bytes, bytearray, memoryview)):
+        raise CanonicalError(
+            "semantic_sha256 does not accept bytes; use semantic_text_sha256 or semantic_json_file_sha256"
+        )
+    return hashlib.sha256(_JSON_DOMAIN + canonical_json_bytes(obj)).hexdigest()
+
+
+def semantic_text_sha256(raw: bytes) -> str:
+    """Semantic identity of a UTF-8 text artifact (BOM and line endings normalized)."""
+    if not isinstance(raw, bytes):
+        raise CanonicalError(f"semantic_text_sha256 requires bytes, got {type(raw).__name__}")
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise CanonicalError(f"text artifact is not valid UTF-8: {exc}") from exc
+    if text.startswith(_BOM):
+        text = text[len(_BOM):]
+    try:
         payload = _norm_eol(text).encode("utf-8")
-        domain = _TEXT_DOMAIN
-    else:
-        payload = canonical_json_bytes(obj)
-        domain = _JSON_DOMAIN
-    return hashlib.sha256(domain + payload).hexdigest()
+    except UnicodeEncodeError as exc:  # unreachable for strictly decoded input
+        raise CanonicalError(f"text is not valid Unicode: {exc}") from exc
+    return hashlib.sha256(_TEXT_DOMAIN + payload).hexdigest()
+
+
+def semantic_json_file_sha256(raw: bytes) -> str:
+    """Semantic identity of a JSON file artifact: semantic_sha256(load_canonical_json(raw))."""
+    return semantic_sha256(load_canonical_json(raw))
 
 
 def _check_keys(identity_keys: Sequence[str]) -> list:
@@ -222,7 +295,14 @@ def _check_keys(identity_keys: Sequence[str]) -> list:
     keys = [_norm_eol(k) for k in keys]  # row keys are normalized the same way
     if len(set(keys)) != len(keys):
         raise CanonicalError("identity_keys must be unique (after line-ending normalization)")
-    return keys
+    return sorted(keys)  # key-name order must not matter
+
+
+def _iter_rows(rows):
+    try:
+        return iter(rows)
+    except TypeError as exc:
+        raise CanonicalError(f"rows must be an iterable of mappings, got {type(rows).__name__}") from exc
 
 
 def _identity_bytes(row: Any, keys: list, pos: int) -> bytes:
@@ -254,7 +334,7 @@ def ordered_registry_digest(rows: Iterable[Mapping], identity_keys: Sequence[str
     body = hashlib.sha256()
     seen = set()
     n = 0
-    for pos, row in enumerate(rows):
+    for pos, row in enumerate(_iter_rows(rows)):
         ident = _identity_bytes(row, keys, pos)
         if ident in seen:
             raise CanonicalError(f"duplicate identity at row {pos}: {ident.decode('utf-8')}")
@@ -271,7 +351,7 @@ def semantic_row_set_sha256(rows: Iterable[Mapping], identity_keys: Sequence[str
     """Order-invariant identity of a row set keyed by ``identity_keys``."""
     keys = _check_keys(identity_keys)
     entries = {}
-    for pos, row in enumerate(rows):
+    for pos, row in enumerate(_iter_rows(rows)):
         ident = _identity_bytes(row, keys, pos)
         if ident in entries:
             raise CanonicalError(f"duplicate identity at row {pos}: {ident.decode('utf-8')}")
