@@ -16,6 +16,7 @@ RESULT_DIR = ROOT / "results" / "target_discovery" / "unified_qualification_v1"
 MATRIX = RESULT_DIR / "PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1.json"
 UNRESOLVED = RESULT_DIR / "PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json"
 DECOMPOSITION = RESULT_DIR / "PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json"
+MACHA_STREAMS = RESULT_DIR / "PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json"
 
 
 def _load(path: Path):
@@ -28,7 +29,35 @@ def test_required_task0_outputs_validate():
     assert report["global_authority"] == GLOBAL_AUTHORITY
     assert report["artifact_count"] >= 30
     assert report["decomposition_child_count"] >= 8
+    assert report["macha_stream_artifact_count"] >= 8
     assert report["unresolved_count"] >= 8
+
+
+def test_two_macha_custody_streams_are_machine_traceable():
+    payload = _load(MACHA_STREAMS)
+    assert payload["global_authority"] == GLOBAL_AUTHORITY
+    streams = {stream["stream_id"]: stream for stream in payload["streams"]}
+    assert set(streams) == {"MACHA_REAL_TD_CORRECTED_REPLAY", "MACHA_V79_BAYESIAN_KNOWN_TRUTH"}
+    real_ids = {a["artifact_id"] for a in streams["MACHA_REAL_TD_CORRECTED_REPLAY"]["artifacts"]}
+    synth_ids = {a["artifact_id"] for a in streams["MACHA_V79_BAYESIAN_KNOWN_TRUTH"]["artifacts"]}
+    assert {"MACHA_PR314_CORRECTED_REPLAY", "MACHA_PR316_FINE_RARE_SUCCESSOR", "MACHA_REAL_DATA_AUDIT", "MACHA_REPAIR_LINEAGE_364_369"}.issubset(real_ids)
+    assert {"MACHA_PR261_V79_BAYESIAN_HANDOFF", "MACHA_V79_Q00_Q11_REALIZATION_CUSTODY", "MACHA_V79_TERMINAL_NOT_QUALIFIED", "MACHA_V80_BENCHMARK_PACKAGE"}.issubset(synth_ids)
+    for stream in streams.values():
+        assert stream["historical_scientific_custodian"] == "Macha"
+        assert stream["unified_destination"]
+        assert stream["review_obligations"]
+        for artifact in stream["artifacts"]:
+            assert artifact["migration_class"] in MIGRATION_CLASSES
+            assert artifact["destination_in_unified_architecture"]
+            assert artifact["historical_evidence_retained"] is True
+            assert artifact["current_authority"] != "CURRENT_UNIFIED_SCIENTIFIC_AUTHORITY"
+
+
+def test_macha_stream_unresolved_registration_obligations_are_retained():
+    unresolved = _load(UNRESOLVED)
+    ids = {item["item_id"] for item in unresolved["items"]}
+    assert "U_MACHA_REAL_TD_HISTORY_REGISTRATION" in ids
+    assert "U_MACHA_V79_HISTORY_REGISTRATION" in ids
 
 
 def test_every_artifact_has_exactly_one_allowed_migration_class():
