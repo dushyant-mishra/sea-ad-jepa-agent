@@ -11,15 +11,7 @@
     "g6": {"pr":352,"head":"bb1e35d33deb52236829012be452e4c4d8b362fc","status":"DECISION_MECHANICS_QUALIFIED__REAL_REFERENCE_AND_EVIDENCE_RIGHTS_REQUIRED"},
     "r1_known_truth_stress": {"pr":353,"head":"1df20029defaa2bcd7a51869c1026ac6075b1323","status":"MECHANICAL_STRESS_QUALIFIED"},
     "g7_v2_historical": {"pr":354,"head":"d90047308d633e259195a54501a230373b36d043","status":"SUPERSEDED_FOR_EXECUTION_BY_SOURCE_AWARE_V3"},
-    "g7_v3": {
-      "pr":362,
-      "head":"5a711f9a4ea0328445a05dadc1e011efb16a3c13",
-      "red_run":38516230483,
-      "focused_green_run":38516327638,
-      "v2_v3_regression_green_run":38516377221,
-      "pull_request_green_run":38516424568,
-      "status":"SOURCE_AWARE_REQUIRED_SOURCE_NONCOMPENSATION_QUALIFIED"
-    },
+    "g7_v3": {"pr":362,"head":"5a711f9a4ea0328445a05dadc1e011efb16a3c13","red_run":38516230483,"focused_green_run":38516327638,"v2_v3_regression_green_run":38516377221,"pull_request_green_run":38516424568,"status":"SOURCE_AWARE_REQUIRED_SOURCE_NONCOMPENSATION_QUALIFIED"},
     "g9_s1_s2": {"pr":355,"head":"6e5182e2dc4e8e263e8cbd309aed6494b5ea7a55","status":"ADVERSE_TAIL_GEOMETRY_ENGINE_QUALIFIED"},
     "g2": {"pr":357,"head":"c174d05215f14bda5292c07559b10445bc17d86c","status":"DECISION_MECHANICS_QUALIFIED__REAL_REFERENCE_SUPPORT_ENDPOINTS_REQUIRED"},
     "r4_c6_c4_increment": {"pr":358,"head":"b7c317c640aa231a7d5ec1fa12271a39bfee86e6","green_run":38513741344,"status":"COMMON_NOISE_RELATIVE_INCREMENT_MECHANICS_QUALIFIED"},
@@ -27,7 +19,7 @@
     "g8_realization_contract": {"pr":359,"head":"bfb1a892b91f2301ed74f19b0b8a8355955e8ac2","green_run":38514202609,"minimum_technical_calibration_draws_per_depth_reference_unit":599,"biological_replication_unit":"DONOR","technical_draws_increase_biological_n":false,"status":"REALIZATION_METRIC_SUPPORT_CONTRACT_QUALIFIED__REAL_REFERENCE_REQUIRED"},
     "g12_claim_envelope_guard": {"pr":360,"head":"01ebdb9384b42d5cfae3de03c2adf5b6b327ee81","red_run":38514373398,"green_run":38514426750,"status":"NO_POSTHOC_SCOPE_SHRINKAGE_RUNTIME_GUARD_QUALIFIED"},
     "sealed_cross_gate_v1_historical": {"pr":361,"head":"b2e27a87247f806f56f70d0ebbb52142dcbabdb5","red_run":38515307787,"green_run":38515478727,"status":"QUALIFIED_FOR_FROZEN_G7_V2_DEPENDENCY_SET"},
-    "sealed_cross_gate_v2": {"pr":363,"head":"fcb47d052b7c7b5c1600949b5829e0c296b49e79","red_run":38516504615,"green_run":38516691236,"g7_head":"5a711f9a4ea0328445a05dadc1e011efb16a3c13","status":"CURRENT_SYSTEM_MECHANICS_QUALIFICATION_GREEN__SYNTHETIC_TEST_OF_TEST_ONLY"}
+    "sealed_cross_gate_v2": {"pr":363,"head":"fcb47d052b7c7b5c1600949b5829e0c296b49e79","red_run":38516504615,"green_run":38516691236,"pull_request_green_run":38516796782,"g7_head":"5a711f9a4ea0328445a05dadc1e011efb16a3c13","status":"CURRENT_SYSTEM_MECHANICS_QUALIFICATION_GREEN__SYNTHETIC_TEST_OF_TEST_ONLY"}
   },
   "standing_semantics": {
     "not_estimable_is_not_fail": true,
