@@ -1,0 +1,60 @@
+{
+  "schema": "SYNTHETIC_DATASET_LANE_AUDIT_STATE_V1",
+  "date": "2026-10-13",
+  "terminal": "SYNTHETIC_HISTORY_CONSOLIDATED__NO_REPEAT_BY_DEFAULT__PR328_MECHANICS_FIXTURE_QUALIFIED__PR344_V2_USER_REVIEW_REQUIRED__TRAINING_OFF",
+  "authority": {
+    "human_biology_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "synthetic_training_authorized": false,
+    "real_training_authorized": false
+  },
+  "current_refs": {
+    "pr328_head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+    "pr339_head": "7e955445f938d24dec9cf177e27d60433b8ab97e",
+    "pr344_head": "f10d4f62b59a35cc443302ab8863c33d51b2b1de",
+    "pr344_spec": "docs/superpowers/specs/2026-10-13-lineage-composite-production-synthetic-design-v2.md"
+  },
+  "historical_classification": [
+    {"lineage":"Stage81A3","class":"MECHANISTIC_ARCHITECTURAL_ANCESTOR","status":"ARCHITECTURE_INCOMPLETE"},
+    {"lineage":"Stage81A3R support/address","class":"NARROW_REUSABLE_SUPPORT_AUTHORITY","status":"THREE_STATE_SUPPORT"},
+    {"lineage":"Stage81A3R global-state pilot","class":"UNFROZEN_DIAGNOSTIC","status":"NO_PRODUCTION_DIMENSION_AUTHORITY"},
+    {"lineage":"Stage70 rare auxiliary","class":"NEGATIVE_PRIOR","status":"NO_LOCKED_BENCHMARK"},
+    {"lineage":"Stage71 graph auxiliary","class":"NEGATIVE_PRIOR","status":"RANDOMIZED_GRAPH_CONTROL_REQUIRED"},
+    {"lineage":"Regulatory V53-V58","class":"NEGATIVE_DIAGNOSTIC_CONTROL_LIBRARY","status":"NO_HUMAN_THRESHOLD_AUTHORITY"},
+    {"lineage":"PR163_PR178","class":"QUERY_LEAKAGE_CONTROL_AUTHORITY","status":"SYNTHETIC_TARGET_COMPARISON_NOT_INFORMATIVE_FOR_HUMAN_TARGET"},
+    {"lineage":"PR199_PR312","class":"PRIVILEGED_INFORMATION_RECOVERABILITY_BOUNDARY","status":"CONTROLLER_ORACLE_NOT_TEACHER"},
+    {"lineage":"V72-V74","class":"REUSABLE_PRODUCTION_MECHANICS","status":"ONE_HIDDEN_TRUTH_SHARDING_ALLOCATION_CALIBRATION_CONSUMPTION"},
+    {"lineage":"V75","class":"NARROW_QUALIFIED_MEASUREMENT_ARCHITECTURE","status":"100K_PASS__500K_INDETERMINATE"},
+    {"lineage":"V77","class":"QUALITATIVE_LESSON_ONLY","status":"BROAD_CLASS_GENERATIVE"},
+    {"lineage":"V78","class":"FROZEN_NEGATIVE_PRIOR","status":"NO_ARM_PROMOTED"},
+    {"lineage":"V79","class":"REUSABLE_OBSERVATION_AND_BLINDING_MECHANICS","status":"FINAL_SCORING_NOT_QUALIFIED_ONE_Q08_CONVERGENCE_FAIL"},
+    {"lineage":"PR311","class":"HISTORICAL_COMPONENT_EVIDENCE","status":"STAT1_50K_NUMERICAL_FREQUENCY_QUARANTINED"},
+    {"lineage":"PR315","class":"CANDIDATE_NEUTRAL_ARCHITECTURE_ANCESTOR","status":"ANCESTRY_MAP_SUPERSEDED_BY_PR344_V2"},
+    {"lineage":"PR318-PR321","class":"SEALED_PACKAGING_PATTERN","status":"REUSABLE_FOR_FINAL_QUALIFICATION"},
+    {"lineage":"PR328","class":"QUALIFIED_MECHANICS_INTERFACE_FIXTURE","status":"FROZEN_LIMITED_SCOPE"},
+    {"lineage":"PR339","class":"SPENT_EXTERNAL_AUDIT","status":"FOUR_FINDINGS_REPAIRED_IN_PR328"},
+    {"lineage":"PR344_design_v1","class":"FAILED_SELF_AUDIT_EVIDENCE","status":"SUPERSEDED_DO_NOT_IMPLEMENT"},
+    {"lineage":"PR344_design_v2","class":"CURRENT_PRODUCTION_DESIGN","status":"USER_REVIEW_REQUIRED_IMPLEMENTATION_OFF"}
+  ],
+  "quarantines": [
+    "STAT1_50K_DUPLICATED_SAMPLE_ROW_PHYSICAL_IDENTITY",
+    "STAGE81A3R_GLOBAL_STATE_NOT_FROZEN",
+    "V78_SIGNED_FIELD_AND_MARGINAL_REPAIR_FALSIFIED",
+    "HISTORICAL_T1_CHECKPOINT_FORENSIC_ONLY",
+    "MORABITO_NOT_PRISTINE_UNSEEN_VALIDATION",
+    "SYNTHETIC_EFFECT_SIZES_NOT_HUMAN_THRESHOLDS"
+  ],
+  "no_repeat_trigger_required": true,
+  "valid_replay_triggers": [
+    "UNDERLYING_BYTES_CHANGED",
+    "SCIENTIFIC_QUESTION_CHANGED",
+    "CONCRETE_CONTRADICTION_FOUND",
+    "HISTORICAL_AUDIT_LEFT_SAME_ISSUE_UNRESOLVED",
+    "AUTHORITY_BOUNDARY_PROSPECTIVELY_CHANGED",
+    "RUNTIME_OR_DEPENDENCY_CHANGE_INVALIDATES_CUSTODY"
+  ],
+  "next_lawful_synthetic_action": "USER_REVIEW_AND_APPROVAL_OF_PR344_V2_THEN_IMPLEMENTATION_PLAN"
+}
