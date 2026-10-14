@@ -40,9 +40,14 @@ def _validate_alpha(alpha: float) -> float:
 
 
 def minimum_calibration_size(alpha: float) -> int:
-    """Minimum n such that a one-sided conformal order statistic is observed."""
+    """Minimum n with (n+1)*alpha >= 1, never rounded anti-conservatively."""
     alpha = _validate_alpha(alpha)
-    return max(1, int(math.ceil((1.0 / alpha) - 1.0 - 1e-12)))
+    n = max(1, int(math.floor(1.0 / alpha)) - 1)
+    while (n + 1) * alpha < 1.0:
+        n += 1
+    while n > 1 and n * alpha >= 1.0:
+        n -= 1
+    return n
 
 
 def _validate_displacements(scores: Sequence[float]) -> list[float]:
@@ -86,7 +91,7 @@ def upper_prediction_bound(scores: Sequence[float], *, alpha: float) -> dict:
             "required_n": required_n,
             "alpha": alpha,
         }
-    rank = int(math.ceil((n + 1) * (1.0 - alpha) - 1e-12))
+    rank = (n + 1) - int(math.floor((n + 1) * alpha))
     if rank < 1 or rank > n:
         return {
             "status": "NOT_ESTIMABLE_CALIBRATION_RESOLUTION",
@@ -118,7 +123,7 @@ def lower_prediction_bound(scores: Sequence[float], *, alpha: float) -> dict:
             "required_n": required_n,
             "alpha": alpha,
         }
-    rank = int(math.floor((n + 1) * alpha + 1e-12))
+    rank = int(math.floor((n + 1) * alpha))
     if rank < 1 or rank > n:
         return {
             "status": "NOT_ESTIMABLE_CALIBRATION_RESOLUTION",
