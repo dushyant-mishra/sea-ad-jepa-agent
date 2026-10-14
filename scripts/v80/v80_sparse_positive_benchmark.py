@@ -39,6 +39,7 @@ class SparsePositiveWorld:
     family: str
     opaque_id: str
     estimability_truth: str
+    nonestimability_reason: str | None
     donor_id: np.ndarray
     source: np.ndarray
     cell_class: np.ndarray
@@ -50,6 +51,13 @@ class SparsePositiveWorld:
     positive_value: np.ndarray
     latent_detection_intercept: np.ndarray
     latent_positive_location: np.ndarray
+    latent_detection_donor_effect: np.ndarray
+    latent_positive_donor_effect: np.ndarray
+    latent_detection_probability: np.ndarray
+    latent_positive_mu: np.ndarray
+    detection_fixed_effect_tail: np.ndarray
+    positive_depth_effect: float
+    positive_sigma: float
 
 
 def _canon(value: object) -> bytes:
@@ -71,8 +79,7 @@ def _opaque_id(seed_root: int, family_index: int) -> str:
 def _split_from_donor(donor_id: np.ndarray) -> np.ndarray:
     out = np.empty(len(donor_id), dtype=object)
     for donor in np.unique(donor_id):
-        label = "test" if int(donor) % 5 == 0 else "train"
-        out[donor_id == donor] = label
+        out[donor_id == donor] = "test" if int(donor) % 5 == 0 else "train"
     return out.astype(str)
 
 
@@ -111,8 +118,6 @@ def _make_world(config: SparsePositiveConfig, seed_root: int, family_index: int,
     support = np.ones((n_cells, n_genes), dtype=bool)
     if family == "SP04_SUPPORT_THINNED_ESTIMABLE":
         support = rng.random((n_cells, n_genes)) < 0.55
-        # Structural support is fixed prospectively and independently of realized
-        # detection outcomes. Keep lawful support in both train/test donor blocks.
         for g in range(n_genes):
             support[: config.cells_per_donor, g] = True
             support[config.cells_per_donor : 2 * config.cells_per_donor, g] = True
@@ -122,37 +127,50 @@ def _make_world(config: SparsePositiveConfig, seed_root: int, family_index: int,
     latent_detection_intercept += np.linspace(-0.18, 0.18, n_genes)
     latent_positive_location = np.linspace(-0.25, 0.25, n_genes).astype(np.float64)
 
-    if base_rate == 0.0:
-        detected = np.zeros((n_cells, n_genes), dtype=bool)
-    else:
-        donor_effect = rng.normal(0.0, 0.25, config.n_donors)
-        if family == "SP02_DONOR_IMBALANCED_ESTIMABLE":
-            donor_effect += np.where(np.arange(config.n_donors) % 4 == 0, 1.0, -0.35)
-        source_coef = 0.75 if family == "SP03_SOURCE_SHIFT_ESTIMABLE" else 0.20
-        eta = (
-            latent_detection_intercept[None, :]
-            + 0.30 * depth_z[:, None]
-            + 0.25 * cell_class[:, None]
-            + source_coef * source[:, None]
-            + donor_effect[donor_id, None]
-        )
-        prob = _sigmoid(eta)
-        detected = (rng.random((n_cells, n_genes)) < prob) & support
+    latent_detection_donor_effect = rng.normal(0.0, 0.25, config.n_donors)
+    if family == "SP02_DONOR_IMBALANCED_ESTIMABLE":
+        latent_detection_donor_effect += np.where(np.arange(config.n_donors) % 4 == 0, 1.0, -0.35)
+    source_coef = 0.75 if family == "SP03_SOURCE_SHIFT_ESTIMABLE" else 0.20
+    detection_fixed_effect_tail = np.asarray([0.30, 0.25, source_coef], dtype=np.float64)
+    eta = (
+        latent_detection_intercept[None, :]
+        + detection_fixed_effect_tail[0] * depth_z[:, None]
+        + detection_fixed_effect_tail[1] * cell_class[:, None]
+        + detection_fixed_effect_tail[2] * source[:, None]
+        + latent_detection_donor_effect[donor_id, None]
+    )
+    latent_detection_probability = np.zeros((n_cells, n_genes), dtype=np.float64) if base_rate == 0.0 else _sigmoid(eta)
+    detected = (rng.random((n_cells, n_genes)) < latent_detection_probability) & support
 
+    positive_sigma = 0.35
+    positive_depth_effect = 0.10
+    latent_positive_donor_effect = rng.normal(0.0, 0.12, config.n_donors)
+    latent_positive_mu = (
+        latent_positive_location[None, :]
+        + positive_depth_effect * depth_z[:, None]
+        + latent_positive_donor_effect[donor_id, None]
+    )
     positive_value = np.zeros((n_cells, n_genes), dtype=np.float64)
     if detected.any():
-        noise = rng.normal(0.0, 0.35, (n_cells, n_genes))
-        donor_pos = rng.normal(0.0, 0.12, config.n_donors)
-        mu = latent_positive_location[None, :] + 0.10 * depth_z[:, None] + donor_pos[donor_id, None]
-        positive_value[detected] = np.exp(mu[detected] + noise[detected])
+        noise = rng.normal(0.0, positive_sigma, (n_cells, n_genes))
+        positive_value[detected] = np.exp(latent_positive_mu[detected] + noise[detected])
 
-    estimability = NOT_ESTIMABLE if family in {
-        "SP05_NO_POSITIVE_SUPPORT_NOT_ESTIMABLE",
-        "SP06_RANK_DEFICIENT_NOT_ESTIMABLE",
-    } else ESTIMABLE
+    if family == "SP05_NO_POSITIVE_SUPPORT_NOT_ESTIMABLE":
+        estimability = NOT_ESTIMABLE
+        reason = "NO_MEASURED_POSITIVE_OBSERVATIONS_FOR_POSITIVE_COMPONENT"
+    elif family == "SP06_RANK_DEFICIENT_NOT_ESTIMABLE":
+        estimability = NOT_ESTIMABLE
+        reason = "DETECTION_DESIGN_EXACT_RANK_DEFICIENCY_CELL_CLASS_EQUALS_SOURCE"
+    else:
+        estimability = ESTIMABLE
+        reason = None
 
-    arrays = (donor_id, source, cell_class, depth_z, split, design, support, detected,
-              positive_value, latent_detection_intercept, latent_positive_location)
+    arrays = (
+        donor_id, source, cell_class, depth_z, split, design, support, detected, positive_value,
+        latent_detection_intercept, latent_positive_location, latent_detection_donor_effect,
+        latent_positive_donor_effect, latent_detection_probability, latent_positive_mu,
+        detection_fixed_effect_tail,
+    )
     for arr in arrays:
         arr.setflags(write=False)
 
@@ -160,6 +178,7 @@ def _make_world(config: SparsePositiveConfig, seed_root: int, family_index: int,
         family=family,
         opaque_id=_opaque_id(seed_root, family_index),
         estimability_truth=estimability,
+        nonestimability_reason=reason,
         donor_id=donor_id,
         source=source,
         cell_class=cell_class,
@@ -171,6 +190,13 @@ def _make_world(config: SparsePositiveConfig, seed_root: int, family_index: int,
         positive_value=positive_value,
         latent_detection_intercept=latent_detection_intercept,
         latent_positive_location=latent_positive_location,
+        latent_detection_donor_effect=latent_detection_donor_effect,
+        latent_positive_donor_effect=latent_positive_donor_effect,
+        latent_detection_probability=latent_detection_probability,
+        latent_positive_mu=latent_positive_mu,
+        detection_fixed_effect_tail=detection_fixed_effect_tail,
+        positive_depth_effect=positive_depth_effect,
+        positive_sigma=positive_sigma,
     )
 
 
@@ -223,6 +249,7 @@ def serialize_controller_transport(worlds: Iterable[SparsePositiveWorld]) -> dic
             "opaque_world_id": world.opaque_id,
             "challenge_family": world.family,
             "estimability_truth": world.estimability_truth,
+            "nonestimability_reason": world.nonestimability_reason,
         })
         for g in range(world.support.shape[1]):
             fit_truth.append({
@@ -231,8 +258,17 @@ def serialize_controller_transport(worlds: Iterable[SparsePositiveWorld]) -> dic
                 "challenge_family": world.family,
                 "gene_index": g,
                 "estimability_truth": world.estimability_truth,
-                "latent_detection_intercept": float(world.latent_detection_intercept[g]),
+                "nonestimability_reason": world.nonestimability_reason,
+                "latent_detection_fixed_effects": [
+                    float(world.latent_detection_intercept[g]),
+                    *[float(x) for x in world.detection_fixed_effect_tail],
+                ],
                 "latent_positive_location": float(world.latent_positive_location[g]),
+                "latent_detection_donor_effect": _array_list(world.latent_detection_donor_effect),
+                "latent_positive_donor_effect": _array_list(world.latent_positive_donor_effect),
+                "latent_detection_probability": _array_list(world.latent_detection_probability[:, g]),
+                "latent_positive_mu": _array_list(world.latent_positive_mu[:, g]),
+                "positive_sigma": float(world.positive_sigma),
             })
     return {
         "schema": "V80_SPARSE_POSITIVE_CONTROLLER_TRANSPORT_V1",
@@ -256,10 +292,9 @@ def validate_fit_transport(payload: dict[str, object]) -> None:
     if payload.get("schema") != "V80_SPARSE_POSITIVE_FIT_TRANSPORT_V1":
         raise ValueError("fit transport schema differs")
     forbidden = {
-        "estimability_truth",
-        "latent_detection_intercept",
-        "latent_positive_location",
-        "challenge_family",
+        "estimability_truth", "nonestimability_reason", "latent_detection_fixed_effects",
+        "latent_positive_location", "latent_detection_donor_effect", "latent_positive_donor_effect",
+        "latent_detection_probability", "latent_positive_mu", "positive_sigma", "challenge_family",
         "controller_truth",
     }
     leaked = forbidden.intersection(set(_walk_keys(payload)))
