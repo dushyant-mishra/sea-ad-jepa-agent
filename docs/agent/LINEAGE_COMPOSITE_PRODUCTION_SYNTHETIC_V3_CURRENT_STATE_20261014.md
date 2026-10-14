@@ -2,7 +2,7 @@
 
 Date: 2026-10-14
 
-Status: `PASS_DESIGN_SCOPE_AND_INTERNAL_CONSISTENCY__EXTERNAL_AUDIT_REQUESTED__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF`
+Status: `EXTERNAL_REQUIRED_AMENDMENTS_INCORPORATED__R5_SELF_AUDIT_PASS__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF`
 
 Historical base design:
 `docs/superpowers/specs/2026-10-13-lineage-composite-production-synthetic-design-v2.md`
@@ -10,44 +10,64 @@ Historical base design:
 Controlling prospective amendment:
 `docs/superpowers/specs/2026-10-14-lineage-composite-production-synthetic-design-v3-amendment.md`
 
-Current real-TD/downstream alignment addendum:
+Historical cross-lane alignment addendum (partially superseded by corrections below):
 `docs/superpowers/specs/2026-10-14-lineage-composite-production-synthetic-v3-crosslane-alignment-addendum.md`
 
-External-audit package:
-- `docs/agent/LINEAGE_COMPOSITE_SYNTHETIC_V3_EXTERNAL_AUDIT_HANDOFF_20261014.md`
-- `docs/agent/LINEAGE_COMPOSITE_SYNTHETIC_V3_EXTERNAL_AUDIT_CHECKLIST_20261014.md`
+Controlling external-audit corrections:
+`docs/superpowers/specs/2026-10-14-lineage-composite-production-synthetic-v3-external-audit-corrections-v1.md`
 
-Preserved internal review/audit chain:
+Fresh combined self-audit:
+`docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3_SELF_AUDIT_R5_EXTERNAL_CORRECTIONS_20261014.md`
+
+Preserved prior audit chain:
 - `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V2_REVIEW_DELTA_20261014.md`
-- `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3_SELF_AUDIT_R1_20261014.md`
-- `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3_SELF_AUDIT_R2_20261014.md`
-- `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3_SELF_AUDIT_R3_20261014.md`
-- `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3_SELF_AUDIT_R4_20261014.md`
+- V3 self-audits R1-R4
+- external audit handoff/checklist
 
-The current design explicitly includes:
-- broad V79-style challenge geometry without rewriting V79 as qualified;
-- V80-style estimable/non-estimable sparse-positive challenge principles without copying frozen V80 worlds or thresholds;
-- authenticated real-distribution observation calibration with provenance and anti-circularity rules;
-- V72-V75 scope boundary: qualified measurement mechanics may be reused, but 96 anonymous synthetic features are not canonical 41,238-address identity authority;
-- biological-evidence response separated from measurement-depth response;
+## External hostile-audit amendments incorporated
+
+1. **R1 corrected:** relational identity is the anchor/comparison **cell triplet** `q(i;j,k)=sign(d(i,j)-d(i,k))`; repaired molecular addresses define the molecular ruler/views, not the relation triplet.
+2. **G11/G12 updated:** synthetic rehearsal targets PR #349-or-explicit-successor semantics with reader partition binding and `SUPPORTED | UNSUPPORTED_STRUCTURAL | BLOCKED_EVIDENCE_CONTRACT`.
+3. **TargetPortfolio blocker added:** full C4 same-code-path rehearsal is blocked until downstream code requires independently qualified C6 as the C4 comparator/prerequisite.
+4. **G6 strengthened:** full synthetic rehearsal must exercise a substantive reference margin as well as direction under matched rights; sign alone is insufficient for a full PASS analogue.
+5. **G8 pinned:** canonical rehearsal must use PR #343-or-explicit-successor multiplicity mechanics, including 25/50/75 depth references, two endpoints per depth, `alpha_eff=0.01/6`, and minimum 599 calibration realizations per required depth/reference unit.
+6. **Process repaired:** R5 reviews V2 + V3 + cross-lane + corrective amendment as one combined controlling design.
+
+## Preserved design law
+
+- candidate-neutral biology;
+- V79 remains immutable `NOT_QUALIFIED`;
+- V80 remains a separately frozen qualified benchmark/package; successor estimator unqualified;
+- authenticated real-distribution observation calibration cannot become latent human prevalence/effect authority;
+- V75 96 anonymous features cannot become canonical 41,238-address identity;
+- three-state support plus measured-zero distinction;
+- biological evidence separated from measurement depth;
 - biological novelty separated from measurement-domain OOD;
-- current 41,238-address fail-closed semantics;
-- compatibility with current outcome-blind G7, G8, G11/G12, G6, R1 and TargetPortfolio mechanics;
+- query/normalization leakage firewall;
+- same-nucleus vs separate-nucleus multimodal identity semantics;
+- controller/teacher/student separation;
 - development vs independently seeded sealed qualification realizations;
-- physically separate producer/fit/controller custody for sealed qualification;
-- same-real-downstream-code-path requirement.
+- physical producer/fit/controller separation;
+- same-real-downstream-code-path requirement;
+- composite/non-compensation rules;
+- all human target/representation/TD60/Stage4/training authority remains off.
 
-Requested external verdict is design-only:
-- `APPROVE_V3_FOR_IMPLEMENTATION_PLANNING`
-- `APPROVE_WITH_REQUIRED_AMENDMENTS`
-- `REJECT_V3_DESIGN`
+## Explicit remaining external blockers
 
-If approved, the next lawful action is only `WRITE_IMPLEMENTATION_PLAN_ONLY`.
+- downstream TargetPortfolio C4/C6 prerequisite repair must be hash-bound before full portfolio rehearsal can qualify;
+- real G11/G12/G6/G8/R1 contracts may advance; implementation must pin exact current successor heads;
+- human technical calibration and human teacher-target/evidence-right freezes remain real-lane responsibilities.
 
-No implementation plan, production generator code, world realization, fitting, scoring, target selection, representation selection, TD60, Stage4, synthetic training or real training is authorized.
+## Next lawful action
+
+If the owner accepts the amended design state, the maximum next authorization is:
+
+`WRITE_IMPLEMENTATION_PLAN_ONLY`
+
+No production implementation, realization, fitting, scoring, target selection, representation selection, TD60, Stage4, synthetic training or real training is authorized.
 
 Binding authority remains:
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
 Terminal:
-`LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_DESIGN_V3__CROSSLANE_ALIGNED__EXTERNAL_AUDIT_REQUESTED__IMPLEMENTATION_OFF__TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+`LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3__EXTERNAL_AMENDMENTS_INCORPORATED__R5_SELF_AUDIT_PASS__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF__TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
