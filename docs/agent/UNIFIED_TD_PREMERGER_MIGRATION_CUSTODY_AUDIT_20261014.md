@@ -4,9 +4,10 @@
 
 This document is the human-readable Task 0 audit required by PR #380.
 
-Task 0 base / accepted plan head:
+Task 0 controlling plan lineage:
 
-`9328f1c00faee8a0ebf1910d412ea129bab566be`
+- accepted predecessor / Task-0 plan head: `9328f1c00faee8a0ebf1910d412ea129bab566be`
+- prospective migration-taxonomy amendment head: `5b6bf07e7d8b69b286ea430b09765a5ee4743325`
 
 Controlling architecture head:
 
@@ -33,23 +34,22 @@ Task 0 was conducted as a custody/classification audit, not a biological rerun.
 - broad support discovery recomputed: **NO**
 - historical reference artifacts regenerated merely for classification: **NO**
 - old failed experiments rerun or rescued: **NO**
+- PR #314 corrected replay rerun: **NO**
+- V79/Q00–Q11 historical realization rerun: **NO**
 
 Existing authenticated machine-readable audits and exact Git identities were reused wherever they already answered the custody question. Missing exact historical artifact digests were not invented. Such entries are anchored through the canonical audit wrapper or recorded as dependencies rather than receiving a manufactured identity.
 
-## Canonical sources reused
+## Controlling migration taxonomy
 
-The migration audit deliberately starts from prior audited custody rather than treating the latest prose handoff as the whole project history.
+The accepted Task-0 amendment originally froze nine migration classes. During Task 0, PR #314 exposed a genuine missing semantic category: frozen historical biological evidence produced by a spent old-law execution.
 
-Primary sources were:
+The plan was prospectively amended at exact head `5b6bf07e7d8b69b286ea430b09765a5ee4743325` before the implementation contract was treated as closed. The complete controlling taxonomy is machine mirrored in:
 
-1. `docs/agent/SYNTHETIC_DATASET_LANE_AUDIT_STATE_V2_20261013.json` at `bfeb2b868aa84cb94594869ef5cb196af286db90`, blob `e45da12da6f27bdf1241e70922c26e7be542faa0`.
-2. `results/target_discovery/JEPA_LANE_TAKEOVER_CHECKPOINT_V10_20261014.json` at `6a514010ec9f5cb003cf8ed660e9e991b352d425`, blob `eaf49cbc493aad3fe1397087eb3c08b358f7590f`.
-3. accepted unified architecture PR #379 at `3064ca545f0c94859ea989cd49a04fcbd5b9a303`.
-4. accepted Task-0 plan PR #380 at `9328f1c00faee8a0ebf1910d412ea129bab566be`.
-5. exact repaired TD unit heads #364–#369 and current supporting surfaces where already frozen in the takeover checkpoint.
-6. the two historically separate Macha custody streams, preserved through `PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json` and the human-readable dual-stream addendum.
+`results/target_discovery/unified_qualification_v1/TASK0_MIGRATION_TAXONOMY_V1.json`
 
-This avoids unnecessary replay while still preserving exact branch/head navigation and active authority boundaries.
+The taxonomy now includes `HISTORICAL_BIOLOGICAL_EVIDENCE`, defined as frozen historical biological evidence bound to the exact execution law under which it was produced. It is non-promoting, non-current, cannot confer unified authority, and cannot be rerun merely for migration.
+
+The Task 0 hostile suite now checks exact equality between that controlling taxonomy artifact and the validator enum and separately rejects undeclared migration classes.
 
 ## Required machine-readable outputs
 
@@ -59,12 +59,13 @@ Task 0 produces:
 - `results/target_discovery/unified_qualification_v1/PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json`
 - `results/target_discovery/unified_qualification_v1/PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json`
 - `results/target_discovery/unified_qualification_v1/PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json`
+- `results/target_discovery/unified_qualification_v1/TASK0_MIGRATION_TAXONOMY_V1.json`
 
 The migration matrix contains the classified significant synthetic, TD and downstream inventory, exact identities where already available, historical defects, retained components, superseded components, destination under the unified architecture, requalification requirements, and unresolved-work references.
 
-The mixed-artifact decomposition registry is mandatory whenever the matrix marks an artifact as `mixed_historical_object`. It gives every separable child role its own machine-classified migration class, authority state, destination, requalification rule and exact-identity attestation. A prose `decomposition_note` is not sufficient for validation.
+The mixed-artifact decomposition registry machine-separates reusable and superseded roles rather than leaving contradictory authority in one parent record.
 
-The Macha dual-stream custody registry is a normative machine-enforced extension of the migration matrix. It separately preserves (1) real-TD/corrected-replay/hostile-qualification history and (2) V79/Bayesian/known-truth history, each with exact historical anchors, destinations, unresolved registration obligations, and future reviewer obligations. This prevents either stream from being flattened into generic review context.
+The dual-Macha-stream custody registry separately preserves the real-TD/corrected-replay evidence stream and the V79/Bayesian/known-truth stream with explicit unified destinations and review obligations.
 
 The unresolved-work ledger distinguishes work that is genuinely incomplete from work that is intentionally obsolete or closed.
 
@@ -87,48 +88,6 @@ The following survive as reusable infrastructure or requirements, subject to the
 
 The former synthetic Tasks 1–3 were never completed as production implementation. Their requirements survive, but implementation is redirected to the accepted unified plan after Task 0 rather than being resumed on PR #356.
 
-### Machine decomposition of mixed historical objects
-
-The F1 repair makes the split machine-visible rather than prose-only:
-
-- `V79_QUALIFICATION` → reusable observation/blinding mechanics **plus** a separate permanently failed estimator-qualification child;
-- `PR328_MECHANICS_FIXTURE` → reusable mechanics/hostile-fixture child **plus** a separate superseded production-biology-assumptions child;
-- `PR344_V3_1_V3_1_1` → surviving known-truth substrate/custody/challenge requirements **plus** a separate superseded independent gate/controller-authority child;
-- `PR356_SYNTH_PLAN` → reusable Tasks 1–3 infrastructure requirements **plus** a separate stopped/frozen Tasks 4–12 parallel-plan child.
-
-Consumers must not collapse these child records back into the parent migration class.
-
-### Exact-identity fail-closed rule
-
-The F2 repair makes `exact_identity_available` mandatory on every top-level artifact and every decomposition child. If it is `true`, both the source commit and required artifact digest must be present. If exact artifact bytes genuinely were not frozen, it is `false` and custody rests on the recorded canonical wrapper/receipt basis; missing historical digests are never invented.
-
-### Two Macha scientific-custody streams
-
-The merger does not reduce Macha to a generic external reviewer. Task 0 preserves two distinct inherited bodies of scientific context.
-
-**Real-TD / corrected-replay / hostile-qualification stream**
-
-- PR #314 at `c6899a2910244a0352c0c57e7aea6e3026191da1` is the one spent corrected TD56→TD57B→TD57C→TD59 replay and remains frozen historical biological evidence under that old execution law; it is not current unified authority and is not rerun for migration.
-- PR #316 at `2397ab83d8ae9d0c762a8fd5f3919edc350d137f` is prospective fine/rare successor design/history.
-- Macha real-data hostile audit at `ccc3a08939694f5d35b3048c94ec44f44618eef4` supplies authenticated support/calibration facts and current repair requirements.
-- #364–#369 are the controlling post-Macha repair lineage, preserved only at their demonstrated mechanics/interface authority.
-
-Destination: registry historical-evidence layer, prerequisite graph, real-support calibration and gate/challenge requirements.
-
-**V79 / Bayesian geometry / known-truth stream**
-
-- PR #261 at `f68c56b78b7a7f6d9590b922f94249b9f2f7f18f` is the historical V79 Bayesian-geometry custody index.
-- Q00–Q11 realization/custody history is retained through the canonical synthetic audit wrapper as known-truth challenge/custody evidence; it must be re-expressed through CaseBundle/TruthBundle and sealed-exam laws.
-- V79 remains permanently `NOT_QUALIFIED`; its failures remain negative priors/challenge/no-repeat material.
-- V80 remains benchmark/package qualified only, with no inherited successor-estimator authority.
-- later #344/#356 work is separately decomposed into surviving substrate/custody requirements versus superseded parallel authority.
-
-Destination: known-truth substrate, CaseBundle/TruthBundle, sealed qualification infrastructure, negative priors, observation/population realism and challenge assets.
-
-Macha remains independent reviewer **plus historical scientific custodian**. Review briefs must invoke the relevant inherited stream: Task 4/5 reviews use V79/Bayesian/Q00–Q11 history; Task 6/7 reviews use corrected-replay/real-TD history; Task 9 uses both.
-
-The unresolved ledger now explicitly carries `U_MACHA_REAL_TD_HISTORY_REGISTRATION` and `U_MACHA_V79_HISTORY_REGISTRATION` so later unified implementation cannot silently drop either stream after Task 0.
-
 ### Known-truth substrate/challenge material retained
 
 The accepted PR #344 V3.1/V3.1.1 work is decomposed rather than discarded wholesale. The surviving pieces include:
@@ -145,6 +104,12 @@ The accepted PR #344 V3.1/V3.1.1 work is decomposed rather than discarded wholes
 Its old interpretation as an independently advancing synthetic gate/controller system is superseded.
 
 PR #328 remains a development mechanics/interface fixture. Its mechanics and hostile-test patterns can be reused; its artificial biological construction cannot acquire production substrate authority.
+
+### Historical biological evidence retained under original law
+
+PR #314's one authorized corrected TD56→TD57B→TD57C→TD59 replay is retained as `HISTORICAL_BIOLOGICAL_EVIDENCE`.
+
+Its Pattern-A result remains frozen evidence under the exact historical corrected-replay execution law. It does not inherit the unified producer/executor law, does not promote any current candidate or gate, and is not rerun for migration. Any current-authority use requires a new prospective unified execution identity and qualification chain.
 
 ### Historical negative controls retained permanently
 
@@ -168,17 +133,46 @@ These migrate into schema laws, producer contracts, challenge families, regressi
 
 V78 remains a falsified signed-field/marginal-repair experiment.
 
-V79 remains permanently `NOT_QUALIFIED`; its failed estimator qualification is not rescued by the unified architecture. Reusable observation/blinding mechanics are separated from the failed authority claim in the machine decomposition registry.
+V79 remains permanently `NOT_QUALIFIED`; its failed estimator qualification is not rescued by the unified architecture. Reusable observation/blinding mechanics are separated from the failed authority claim.
 
 Historical PROD41K/T1 checkpoints remain forensic only and do not regain representation authority.
 
 ### Parallel implementations stopped/frozen
 
-PR #356's independent interpretation of synthetic Tasks 4–12 is superseded. Only the Tasks 1–3 infrastructure requirements migrate forward, represented as a distinct child record.
+PR #356's independent interpretation of synthetic Tasks 4–12 is superseded. Only the Tasks 1–3 infrastructure requirements migrate forward.
 
 Concurrent duplicate gate-repair PRs #370–#378 remain historical evidence only. The controlling repair set remains the exact surfaces identified in the current takeover checkpoint.
 
 No duplicate synthetic gate, target selector, TD controller, winner selector, target qualification engine or downstream certification engine is allowed to continue accumulating scientific authority.
+
+## Macha dual-stream custody
+
+Macha remains both an independent reviewer and the historical scientific custodian for two distinct inherited streams.
+
+### Real-TD / corrected replay / hostile qualification
+
+This stream contains:
+
+- PR #314 spent corrected replay evidence;
+- PR #316 prospective fine/rare successor design/history;
+- Macha real-data hostile audit at `ccc3a08939694f5d35b3048c94ec44f44618eef4`;
+- the controlling post-Macha repair lineage #364–#369.
+
+Its destination is the TD registry historical-evidence layer, prerequisite graph, support calibration and challenge/gate requirements.
+
+### V79 / Bayesian geometry / known truth
+
+This stream contains:
+
+- PR #261 V79 Bayesian geometry takeover history;
+- Q00–Q11 realization/custody lineage;
+- permanent V79 `NOT_QUALIFIED` result;
+- V80 benchmark/package-only qualification;
+- later production-synthetic design/custody lessons.
+
+Its destination is CaseBundle/TruthBundle known-truth infrastructure, sealed qualification custody, negative priors, observation/population realism and challenge assets.
+
+Future review briefs must invoke the relevant inherited stream: Task 4/5 use the V79/Bayesian corpus; Task 6/7 use the real-TD/corrected-replay corpus; Task 9 uses both.
 
 ## Current repaired TD units: migration status
 
@@ -252,55 +246,65 @@ The unresolved ledger includes, at minimum:
 - sealed final-qualification infrastructure;
 - Tasks 1–3 unified foundation implementation;
 - exact downstream certification;
-- historical V79/V80 successor-estimator conflict if that estimator work is ever resumed;
-- explicit unified registration of Macha's frozen real-TD/corrected-replay evidence stream;
-- explicit unified registration of Macha's V79/Bayesian/Q00–Q11 known-truth history.
+- Macha real-TD/corrected-replay history registration under bounded historical authority;
+- Macha V79/Bayesian/Q00–Q11 history registration as known-truth/negative-prior custody;
+- the historical V79/V80 successor-estimator conflict if that estimator work is ever resumed.
 
-This prevents “unfinished” from being confused with “superseded” and prevents historical-custodian context from disappearing after the lane merger.
+This prevents “unfinished” from being confused with “superseded.”
 
 ## RED/GREEN protocol
 
-Initial Task 0 RED head:
+Initial Task 0 RED:
 
-`b47a71c6d3502d3e3e80fbae36fd293a080ff599`
+- head `b47a71c6d3502d3e3e80fbae36fd293a080ff599`
+- focused workflow/job `38614044619` / `116024422726`: expected failure before implementation existed.
 
-Focused RED workflow/job:
+F1/F2 regression RED:
 
-`38614044619` / `116024422726`
+- head `42aac927b3929d0f3f6798446382cce9da665d96`
+- focused workflow/job `38616574261` / `116033071246`: expected failure for machine decomposition and exact-identity bypass tests.
 
-The hostile-validator step failed before the initial implementation existed.
+Dual-Macha-stream regression RED:
 
-The prior pre-review implementation head `ce4eacc263b02b1fa15505951d5377ae710e3330` then had focused GREEN workflow/job `38615085846` / `116028001027` (`13 passed in 0.14s`) and inherited integration workflow/job `38615085515` / `116027999675` GREEN. Those runs are historical evidence only because controller pre-review comment `6175540043` found blocking F1/F2 defects on that exact head.
+- head `a64350a25805ba0436b5f5deebe4d7cca3199ebc`
+- focused workflow `38617488658`: expected failure before dual-stream custody existed.
 
-A second regression-only RED head `42aac927b3929d0f3f6798446382cce9da665d96` was frozen. Focused workflow/job `38616574261` / `116033071246` failed at the hostile Task 0 test step, demonstrating the decomposition and exact-identity bypass tests fail against the old implementation.
+F4 migration-taxonomy governance RED:
 
-The F1/F2 implementation reached `4d7a99c4a07ef4ef314b39163ec561c117d7bac2` and received focused Task 0 workflow/job `38616934876` / `116034306973` GREEN (`15 passed in 0.06s`) plus inherited integration workflow/job `38616934888` / `116034309851` GREEN.
+- head `05cd5a866f4d67f46486d01639c71be21fdc3c41`
+- focused workflow/job `38626163233` / `116065743951`
+- result: **1 failed, 18 passed**; the only failure was the missing plan-bound `TASK0_MIGRATION_TAXONOMY_V1.json` artifact.
 
-A subsequent Task 0 custody review found that the two Macha historical scientific streams were not yet separately traceable. Regression-only head `a64350a25805ba0436b5f5deebe4d7cca3199ebc` added those requirements; focused workflow `38617488658` failed, preserving the expected RED before dual-stream implementation.
+Fresh F4 GREEN implementation head:
 
-The dual-stream implementation was completed and then documented. Exact-head GREEN must bind the final documentation head before independent review; the currently frozen final head will be recorded in the PR review request after CI completes.
+`4417949b1ba43354c658cc0f8bc90d99c73a68f9`
 
-This document is not an independent review verdict.
+Exact-head focused workflow/job:
+
+`38626296737` / `116066190345`: **SUCCESS**, **19 passed in 0.10s**.
+
+Exact-head inherited integration workflow/job:
+
+`38626296857` / `116066190511`: **SUCCESS**.
+
+This controller-side verification is not an independent review verdict.
 
 ## Closure self-audit status
 
-Controller-side audit requirements after the current repairs:
+Controller-side audit result before independent review:
 
 - caller can gain authority by writing a PR/branch name: **NO by schema/validator contract**
-- deleting `exact_identity_available` is accepted: **NO; fail-closed required-field check**
-- a prose-only mixed-object decomposition is accepted: **NO; machine decomposition registry required**
-- Macha's real-TD and V79 histories can be flattened into one generic reviewer context: **NO; two machine-enforced custody streams required**
-- PR #314 can be silently promoted to current unified authority: **NO; frozen old-execution-law evidence only**
-- V79 can be rescued by migration: **NO; permanently NOT_QUALIFIED**
-- V80 can imply successor-estimator qualification: **NO; benchmark/package only**
 - a missing migration class is accepted: **NO**
+- implementation may invent a migration class outside the controlling taxonomy: **NO; enum/taxonomy equality is tested and undeclared classes fail**
 - a failed experiment can silently become active: **NO**
 - a superseded parallel implementation can remain ambiguously authoritative: **NO**
+- mixed historical authority can survive solely as prose decomposition: **NO**
+- Macha's two inherited scientific streams can collapse into one generic review stream: **NO**
 - unresolved work may disappear from the ledger: **NO**
 - candidate/protected outcomes were opened for classification: **NO**
 - global authority changed: **NO**
 
-The remaining required check after final exact-head GREEN CI is a **fresh independent Task 0 implementation review**. This controller-side self-audit is not a substitute for that review.
+The remaining required check is a **fresh independent Task 0 implementation review** at exact head `4417949b1ba43354c658cc0f8bc90d99c73a68f9`. This controller-side self-audit is not a substitute for that review.
 
 ## What Task 0 does not authorize
 
@@ -316,4 +320,4 @@ Task 0 does not authorize:
 - Stage4;
 - training eligibility or training authorization.
 
-The next lawful action after final exact-head GREEN evidence is to request a fresh independent Task 0 review and stop.
+The next lawful action is fresh independent Task 0 review of exact head `4417949b1ba43354c658cc0f8bc90d99c73a68f9`, then stop.
