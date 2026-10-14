@@ -37,10 +37,16 @@ def _target_bundle(selection="SELECTED"):
         "relational_semantics_sha256": "a" * 64,
         "observation_operator_contract_sha256": "b" * 64,
     }
+    terminal = (
+        "SINGLE_CANDIDATE_ELIGIBLE_FOR_PROTECTED_CONFIRMATION__NO_TARGET_AUTHORITY"
+        if selection == "SELECTED"
+        else "NO_TARGET_WINNER__REDESIGN_BEFORE_PROTECTED_CONFIRMATION"
+    )
     tournament = {
         "schema": "JEPA_TD_AUTHENTICATED_TOURNAMENT_OUTPUT_V1",
         "selection": selection,
         "candidate_id": "C1" if selection == "SELECTED" else None,
+        "terminal": terminal,
         "receipt_sha256": "c" * 64,
     }
     return T.build_target_qualification_bundle(
