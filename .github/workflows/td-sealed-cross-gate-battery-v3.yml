@@ -1,0 +1,74 @@
+name: TD sealed cross-gate battery V3
+
+on:
+  push:
+    branches:
+      - qualification/td-sealed-cross-gate-battery-v3-macha-repairs-20261014
+  pull_request:
+    paths:
+      - 'scripts/v5/td_sealed_cross_gate_battery_v3.py'
+      - 'tests/v5/test_td_sealed_cross_gate_battery_v3.py'
+      - '.github/workflows/td-sealed-cross-gate-battery-v3.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    env:
+      PYTHONPATH: .
+      TD_BATTERY_R1_ROOT: ${{ github.workspace }}/frozen/r1
+      TD_BATTERY_G6_ROOT: ${{ github.workspace }}/frozen/g6
+      TD_BATTERY_G7_ROOT: ${{ github.workspace }}/frozen/g7
+      TD_BATTERY_G9_ROOT: ${{ github.workspace }}/frozen/g9
+      TD_BATTERY_G2_ROOT: ${{ github.workspace }}/frozen/g2
+      TD_BATTERY_G8_ROOT: ${{ github.workspace }}/frozen/g8
+      TD_BATTERY_INCREMENT_ROOT: ${{ github.workspace }}/frozen/increment
+    steps:
+      - name: Checkout battery harness
+        uses: actions/checkout@v4
+      - name: Checkout exact R1 repaired head
+        uses: actions/checkout@v4
+        with:
+          ref: 949d76ff03cb57c5a88fef9efdb79fced9154024
+          path: frozen/r1
+      - name: Checkout exact G6 repaired head
+        uses: actions/checkout@v4
+        with:
+          ref: 4110d4478c3353d86740dd135d62460ff7a7611f
+          path: frozen/g6
+      - name: Checkout exact G7 V3 head
+        uses: actions/checkout@v4
+        with:
+          ref: 5a711f9a4ea0328445a05dadc1e011efb16a3c13
+          path: frozen/g7
+      - name: Checkout exact geometry repaired head
+        uses: actions/checkout@v4
+        with:
+          ref: 8d6b23a18051f64463ee9b2649f4fe5fc7123f0d
+          path: frozen/g9
+      - name: Checkout exact G2 repaired head
+        uses: actions/checkout@v4
+        with:
+          ref: 42df903d6190b7aa1b8eb65d810ab813cd327445
+          path: frozen/g2
+      - name: Checkout exact G8 repaired head
+        uses: actions/checkout@v4
+        with:
+          ref: ce1b43464ae1d79894b7738c6dc025559dffbf36
+          path: frozen/g8
+      - name: Checkout exact increment head
+        uses: actions/checkout@v4
+        with:
+          ref: b7c317c640aa231a7d5ec1fa12271a39bfee86e6
+          path: frozen/increment
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.17'
+      - run: python -m pip install pytest==9.1.1 numpy==2.4.6 scipy==1.15.3
+      - name: Run sealed cross-gate V3 exam
+        run: python -m pytest -q tests/v5/test_td_sealed_cross_gate_battery_v3.py
+      - name: Authority guard
+        run: |
+          echo BIOLOGICAL_OUTCOME_INPUTS_DOWNLOADED=false
+          echo HUMAN_THRESHOLDS_IMPORTED=false
+          echo REAL_TOURNAMENT_EXECUTED=false
+          echo AUTHORITY_ALL_FALSE=true
