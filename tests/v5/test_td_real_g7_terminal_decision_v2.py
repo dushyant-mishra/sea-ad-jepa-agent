@@ -8,25 +8,37 @@ def _qual(ok=True):
     return {"schema":G.QUAL_SCHEMA,"status":G.QUAL_PASS,"known_truth_power_qualified":ok}
 
 
-def _ref(donors, margin=0.1):
+def _ref(donors, margin=0.1, binding="1"*64):
     return {
         "schema":G.REFERENCE_SCHEMA,"frozen":True,"qualified":True,"metric":G.METRIC,
         "orientation":G.ORIENTATION,"reference_kind":"U_REFIT","deciding_namespace_disjoint":True,
-        "input_binding_sha256":"1"*64,"reference_receipt_sha256":"2"*64,
+        "input_binding_sha256":binding,"reference_receipt_sha256":"2"*64,
         "donor_margins":{d:margin for d in donors},
     }
 
 
-def _rows(n=8, displacement=0.02, added=1):
+def _rows(n=8, displacement=0.02, added=1, binding="1"*64):
     return [{"donor_id":f"D{i}","terminal_displacement":displacement,
              "penultimate_supported_evidence":10,"full_supported_evidence":10+added,
-             "added_supported_evidence":added} for i in range(n)]
+             "added_supported_evidence":added,"input_binding_sha256":binding} for i in range(n)]
 
 
 def test_convergence_pass_requires_change_within_qualified_margin_across_donors():
     rows=_rows()
     out=G.adjudicate_g7_terminal(rows=rows, decision_qualification=_qual(), reference_artifact=_ref([r["donor_id"] for r in rows]))
     assert out["status"]=="PASS"
+
+
+def test_reference_must_bind_exact_deciding_realization():
+    rows=_rows(binding="3"*64)
+    with pytest.raises(G.G7DecisionError, match="input binding"):
+        G.adjudicate_g7_terminal(rows=rows, decision_qualification=_qual(), reference_artifact=_ref([r["donor_id"] for r in rows], binding="1"*64))
+
+
+def test_mixed_deciding_bindings_are_rejected():
+    rows=_rows(); rows[-1]["input_binding_sha256"]="4"*64
+    with pytest.raises(G.G7DecisionError, match="single deciding input"):
+        G.adjudicate_g7_terminal(rows=rows, decision_qualification=_qual(), reference_artifact=_ref([r["donor_id"] for r in rows]))
 
 
 def test_nominal_right_with_zero_added_support_is_not_evidence_of_convergence():
