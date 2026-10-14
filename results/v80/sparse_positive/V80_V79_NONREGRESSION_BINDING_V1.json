@@ -1,0 +1,31 @@
+{
+  "schema": "V80_V79_NONREGRESSION_BINDING_V1",
+  "purpose": "SUCCESSOR_ESTIMATOR_MUST_BE_EVALUATED_ON_IMMUTABLE_V79_WORLDS_PLUS_NEW_V80_SPARSE_POSITIVE_PACKAGE",
+  "v79": {
+    "historical_result": "NOT_QUALIFIED",
+    "contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+    "world_set_digest": "40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286",
+    "realization_ledger_sha256": "4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65",
+    "realization_audit_receipt_sha256": "6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3",
+    "scorer_orchestrator_head": "ac1e73d79489438634aaeeca035d229875f3186a",
+    "final_scoring_receipt_sha256": "ef10852e534fe8a83c3aebd832ad3a531d755d06185464441494712818e8abfd",
+    "passed_gates": 291,
+    "total_gates": 292,
+    "failed_gate": "Q08_SPARSE_DETECTION_POSITIVE__CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "failed_fit_count": 3
+  },
+  "successor_rule": {
+    "regenerate_v79_worlds": false,
+    "modify_v79_contract": false,
+    "modify_v79_result": false,
+    "evaluate_successor_on_existing_v79_worlds": true,
+    "require_prior_v79_hard_passes_to_remain_pass": true,
+    "original_q08_numerical_failure_may_recur_on_estimable_fit": false,
+    "aggregate_rescue_authorized": false
+  },
+  "authority": {
+    "successor_estimator_qualified": false,
+    "real_data_authorized": false,
+    "training_authorized": false
+  }
+}
