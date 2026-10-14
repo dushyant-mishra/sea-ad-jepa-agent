@@ -1,0 +1,31 @@
+{
+  "authority": {
+    "real_tournament_authorized": false,
+    "representation_selection_authorized": false,
+    "stage4_authorized": false,
+    "target_selection_authorized": false,
+    "td60_authorized": false,
+    "training_authorized": false,
+    "value_read_authorized": false
+  },
+  "canonical_registry_payload_sha256": "50b29d7e1137c5a457fd0b528580030dedfbeff1b809e2b426f8f640ae38486d",
+  "foundation_support_rule": "POPULATION_STRATA_FROZEN__FOUNDATION_CANDIDATE_SUPPORT_BLOCKED_UNTIL_EXACT_EVIDENCE_RIGHTS_AND_ADDRESS_QUERY_SUPPORT_ARE_FROZEN",
+  "metadata_database_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+  "observed_population": {
+    "donor_operator_pairs": 2028,
+    "donors": 149,
+    "operators": 42,
+    "partition_donors": {
+      "reader_fit": 104,
+      "reader_oracle": 23,
+      "reader_validation": 22
+    },
+    "rows": 6351753,
+    "sources": 3
+  },
+  "reader_split_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+  "schema": "JEPA_TD_REAL_POPULATION_SUPPORT_REGISTRY_FREEZE_RECEIPT_V2",
+  "specialist_support_rule": "C5_UNSUPPORTED_STRUCTURAL_IN_FOUNDATION_RNA_REGISTRY_PENDING_SEPARATE_FROZEN_REGULATORY_CHROMATIN_EVIDENCE_REGISTRY",
+  "status": "OUTCOME_BLIND_POPULATION_SUPPORT_REGISTRY_FROZEN__NO_BIOLOGICAL_AUTHORITY",
+  "technology_rule": "ALL_CURRENT_FOUNDATION_STRATA_SN_RNA_SEQ__TECHNOLOGY_TRANSFER_BLOCKED_DEPENDENCY"
+}
