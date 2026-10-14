@@ -254,11 +254,22 @@ DECISIONS (each is the single authority for its quantity)
    withheld family: the reference's family must already be revealed; UNCHANGED
    requires the same withheld-spec semantic hash and CHANGED_BY_DEFECT a
    different one (otherwise it is a disguised reroll); any mismatch is a hard
-   custody failure that voids the version's qualification. OPEN ISSUE for the
-   controller: a successor declaring UNCHANGED after its reference has been
-   revealed carries a withheld family that is already public, so its withheld
-   check cannot be secret in the E2 sense; this module records and checks it
-   but cannot make it secret.
+   custody failure that voids the version's qualification.
+   WITHHELD-CHECK ELIGIBILITY (fail closed). WITHHELD_COMMITTED records
+   withheld_check_secret: false when the version declares UNCHANGED and any
+   version sharing that family through UNCHANGED declarations (its reference
+   and, transitively, the reference's own references) has already been
+   revealed, and true otherwise; replay recomputes it. ``withheld_check_eligible
+   (ledger, generator_semantic_hash)`` returns True only when the family was
+   committed while secret AND no sharing version was revealed before this
+   version's SYNTH_QUALIFICATION fit output froze (a later disclosure also
+   makes the check public before its fit); it returns False for any version
+   without a committed withheld family. It reflects the ledger as it stands,
+   so the qualification task must evaluate it after the version's fit is
+   frozen. A version with withheld_check_secret false can never satisfy the E2
+   withheld-family qualification check. Issuing a fresh withheld family after
+   a reveal is an open design question for the deciding lane and is NOT
+   implemented here: CHANGED_BY_DEFECT remains the only change path.
 
 7. REALIZATION SET (``attest_realization_set(root, class_tag, budget, emitted,
    ledger, *, freeze) -> RealizationAttestation``; ``freeze`` is an added
@@ -441,6 +452,7 @@ __all__ = [
     "scan_secret_absence",
     "require_secret_absence",
     "attest_no_unique_withheld_code_path",
+    "withheld_check_eligible",
 ]
 
 SYNTH_DEBUG = "SYNTH_DEBUG"
@@ -1157,6 +1169,24 @@ def _withheld_reference(led: CustodyLedger, gsh: str):
     return None
 
 
+def _shared_family_versions(led: CustodyLedger, gsh: str, change: Any) -> list:
+    """Ancestors that, by UNCHANGED declarations, carry the same withheld family as ``gsh``."""
+    out = []
+    g, declared = gsh, change
+    while declared == WITHHELD_UNCHANGED:
+        ref = _withheld_reference(led, g)
+        if ref is None:
+            break
+        out.append(ref)
+        committed = _payloads(led, "WITHHELD_COMMITTED", generator_semantic_hash=ref)
+        g, declared = ref, committed[0]["withheld_family_change"]
+    return out
+
+
+def _withheld_revealed(led: CustodyLedger, gsh: str) -> bool:
+    return bool(_payloads(led, "REVEALED", reveal_type=_REVEAL_WITHHELD, generator_semantic_hash=gsh))
+
+
 def _open_qualification_runs(led: CustodyLedger) -> set:
     exposed = {p["generator_semantic_hash"] for p in _payloads(led, "EXPOSURE_RECORDED",
                                                                realization_class=SYNTH_QUALIFICATION)}
@@ -1322,8 +1352,8 @@ def _v_nonce_committed(led: CustodyLedger, p: dict) -> None:
 
 def _v_withheld_committed(led: CustodyLedger, p: dict) -> None:
     _exact_keys(p, ("generator_semantic_hash", "withheld_class_tag", "withheld_family_commitment",
-                    "nonce_commitment", "withheld_family_change", "secret_absence", "code_path_attestation"),
-                "WITHHELD_COMMITTED payload")
+                    "nonce_commitment", "withheld_family_change", "withheld_check_secret", "secret_absence",
+                    "code_path_attestation"), "WITHHELD_COMMITTED payload")
     fr = _frozen_freeze(led, p["generator_semantic_hash"])
     gsh = fr.generator_semantic_hash
     _require_live_version(led, gsh)
@@ -1345,6 +1375,9 @@ def _v_withheld_committed(led: CustodyLedger, p: dict) -> None:
             )
         if change == WITHHELD_UNCHANGED and listed:
             raise CustodyError("W1: the successor's defect record declares a withheld-family change, not UNCHANGED")
+    secret = not any(_withheld_revealed(led, g) for g in _shared_family_versions(led, gsh, change))
+    if p["withheld_check_secret"] is not secret:
+        raise CustodyError("withheld_check_secret does not match the ledger (whether the reused family is public)")
     if p["withheld_family_commitment"] != fr.withheld_family_commitment:
         raise CustodyError("WITHHELD_COMMITTED does not match the commitment bound by the frozen generator")
     _hex64(p["nonce_commitment"], "nonce_commitment")
@@ -1667,17 +1700,43 @@ def record_withheld_commitment(freeze: GeneratorFreeze, ledger: CustodyLedger, *
     if len({s["tree_identity"] for s in scans}) != 1 or len({s["files_scanned"] for s in scans}) != 1:
         raise CustodyError("all secret-absence scans must cover one and the same tree")
     _check_code_path_attestation(code_path_attestation)
+    led = _require_ledger(ledger)
+    secret = not any(_withheld_revealed(led, g)
+                     for g in _shared_family_versions(led, fr.generator_semantic_hash, withheld_family_change))
     payload = {
         "generator_semantic_hash": fr.generator_semantic_hash,
         "withheld_class_tag": withheld_class_tag,
         "withheld_family_commitment": fr.withheld_family_commitment,
         "nonce_commitment": nonce_commitment,
         "withheld_family_change": withheld_family_change,
+        "withheld_check_secret": secret,
         "secret_absence": {"tree_identity": scans[0]["tree_identity"], "secrets_scanned": len(scans),
                            "files_scanned": scans[0]["files_scanned"]},
         "code_path_attestation": dict(code_path_attestation),
     }
-    return _require_ledger(ledger)._append("WITHHELD_COMMITTED", payload)
+    return led._append("WITHHELD_COMMITTED", payload)
+
+
+def withheld_check_eligible(ledger: CustodyLedger, generator_semantic_hash: str) -> bool:
+    """True only if this version's withheld family was committed while secret and stayed secret until its
+    qualification fit froze; False for any version without a committed withheld family (fail closed)."""
+    led = _require_ledger(ledger)
+    committed = _payloads(led, "WITHHELD_COMMITTED", generator_semantic_hash=generator_semantic_hash)
+    if not committed or committed[0]["withheld_check_secret"] is not True:
+        return False
+    shared = set(_shared_family_versions(led, generator_semantic_hash, committed[0]["withheld_family_change"]))
+    fit_index = None
+    for i, e in enumerate(led._entries):
+        p = e["payload"]
+        if (e["kind"] == "FIT_OUTPUT_FROZEN" and p["generator_semantic_hash"] == generator_semantic_hash
+                and p["class_tag"] == SYNTH_QUALIFICATION):
+            fit_index = i
+    for i, e in enumerate(led._entries):
+        p = e["payload"]
+        if (e["kind"] == "REVEALED" and p["reveal_type"] == _REVEAL_WITHHELD
+                and p["generator_semantic_hash"] in shared and (fit_index is None or i < fit_index)):
+            return False  # the shared family became public before this version's sealed fit froze
+    return True
 
 
 def attest_realization_set(root: bytes, class_tag: str, budget: int, emitted: Iterable[Mapping],

@@ -1029,6 +1029,93 @@ def test_no_withheld_reveal_while_a_lineage_sealed_run_is_open(tmp_path):
     CU.reveal_withheld_family(child, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
 
 
+# --------------------- withheld-check eligibility: a reused family must still be secret
+
+def _withheld_entry(led, freeze):
+    return [e["payload"] for e in led.entries()
+            if e["kind"] == "WITHHELD_COMMITTED" and e["payload"]["generator_semantic_hash"] == freeze.generator_semantic_hash][0]
+
+
+def test_unchanged_family_committed_before_the_reference_reveal_is_eligible(tmp_path):
+    p0, q0, child, q1, led = _qualified_parent_and_child(tmp_path, DUMMY_WITHHELD_SPEC, reveal_parent=False)
+    assert _withheld_entry(led, child)["withheld_check_secret"] is True
+    assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is True
+    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, fit_output_sha256=_h("parent fit"))
+    CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
+    assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is True  # revealed after its fit froze
+    assert CU.withheld_check_eligible(led, p0.generator_semantic_hash) is True  # lineage root
+
+
+def test_unchanged_family_committed_after_the_reference_reveal_is_ineligible(tmp_path):
+    p0, q0, child, q1, led = _qualified_parent_and_child(tmp_path, DUMMY_WITHHELD_SPEC, reveal_parent=True)
+    assert _withheld_entry(led, child)["withheld_check_secret"] is False
+    assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is False
+    CU.reveal_withheld_family(child, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
+    assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is False  # reveal does not repair it
+    CU.CustodyLedger.from_bytes(led.to_bytes(), expected_head=led.head)
+
+
+def test_reused_family_disclosed_before_the_successor_fit_is_ineligible(tmp_path):
+    p0, q0 = make_world()
+    led = CU.CustodyLedger()
+    prepare(p0, q0, led, make_tree(tmp_path))
+    expose(p0, led, QUAL, "exp-p0")
+    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, fit_output_sha256=_h("p0 fit"))
+    child, q1 = make_world(set_snr(0.3))
+    successor(p0, child, led)
+    CU.record_generator_freeze(child, led)
+    commit_and_attest(child, q1, led, make_tree(tmp_path, "tree_child"), change="UNCHANGED")
+    assert _withheld_entry(led, child)["withheld_check_secret"] is True  # still secret when committed ...
+    CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
+    assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is False  # ... public before its fit
+
+
+def test_family_shared_through_an_unrevealed_parent_is_public_once_the_grandparent_is_revealed(tmp_path):
+    p0, q0 = make_world()
+    led = CU.CustodyLedger()
+    prepare(p0, q0, led, make_tree(tmp_path))
+    expose(p0, led, QUAL, "exp-p0")
+    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, fit_output_sha256=_h("p0 fit"))
+    p1, q1 = make_world(set_snr(0.3))
+    successor(p0, p1, led)
+    CU.record_generator_freeze(p1, led)
+    commit_and_attest(p1, q1, led, make_tree(tmp_path, "tree_p1"), change="UNCHANGED")  # p0 still secret
+    CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
+    p2, q2 = make_world(set_snr(0.2))
+    successor(p1, p2, led)
+    CU.record_generator_freeze(p2, led)
+    commit_and_attest(p2, q2, led, make_tree(tmp_path, "tree_p2"), change="UNCHANGED")
+    assert _withheld_entry(led, p2)["withheld_check_secret"] is False  # p1 unrevealed, but p0 shares the family
+    assert CU.withheld_check_eligible(led, p2.generator_semantic_hash) is False
+
+
+def test_changed_by_defect_family_is_secret_and_eligible(tmp_path):
+    p0, q0, child, q1, led = _qualified_parent_and_child(
+        tmp_path, EASIER_WITHHELD_SPEC, change="CHANGED_BY_DEFECT", defect_components=["withheld_family"])
+    assert _withheld_entry(led, child)["withheld_check_secret"] is True
+    assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is True
+
+
+def test_version_without_a_withheld_commitment_is_ineligible(exposed_parent):
+    p0, led = exposed_parent
+    child, _ = make_world(set_snr(0.3))
+    successor(p0, child, led)
+    CU.record_generator_freeze(child, led)
+    assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is False
+    assert CU.withheld_check_eligible(led, _h("never frozen")) is False
+
+
+def test_forged_withheld_check_secret_flag_is_refused_on_replay(tmp_path):
+    p0, q0, child, q1, led = _qualified_parent_and_child(tmp_path, DUMMY_WITHHELD_SPEC, reveal_parent=True)
+    entries = [(e["kind"], e["payload"]) for e in led.entries()]
+    idx = [i for i, (k, p) in enumerate(entries)
+           if k == "WITHHELD_COMMITTED" and p["generator_semantic_hash"] == child.generator_semantic_hash][0]
+    entries[idx][1]["withheld_check_secret"] = True
+    raw, head = _forge(entries)
+    with pytest.raises(CustodyError):
+        CU.CustodyLedger.from_bytes(raw, expected_head=head)
+
+
 # ------------------------------------- N-c: requalification prerequisites
 
 @pytest.mark.parametrize("incomparable", [False, True])
