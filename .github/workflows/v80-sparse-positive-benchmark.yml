@@ -1,0 +1,125 @@
+name: v80 sparse-positive benchmark
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.9'
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install numpy==2.3.5 pytest==9.0.2 scipy==1.17.0 pandas==2.2.3
+      - name: V80 focused and hostile tests
+        run: pytest tests/v80 -v
+      - name: PR328 inherited regression
+        run: pytest tests/v79/test_unified_synthetic_integration_v1.py tests/v79/test_unified_synthetic_fit_view_v1.py tests/v79/test_unified_synthetic_controller_truth_v1.py tests/v79/test_finalize_unified_synthetic_integration_v1.py tests/v79/test_v79_rare_biology_generator_v1.py tests/test_v79_hierarchical_biology_v1.py tests/test_v79_observation_operator_v1.py -q
+
+  producer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.9'
+      - run: python -m pip install numpy==2.3.5
+      - name: Build independent fit/controller transports and receipt
+        run: |
+          mkdir -p /tmp/v80_fit /tmp/v80_controller /tmp/v80_receipt
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.v80.v80_sparse_positive_benchmark import (
+              build_sparse_positive_worlds,
+              serialize_fit_transport,
+              serialize_controller_transport,
+          )
+          from scripts.v80.finalize_v80_sparse_positive_package import build_package_receipt
+
+          worlds = build_sparse_positive_worlds(seed_root=41000000)
+          fit = serialize_fit_transport(worlds)
+          controller = serialize_controller_transport(worlds)
+          receipt = build_package_receipt(
+              worlds=worlds,
+              repo_root=Path.cwd(),
+              contract_path=Path('results/v80/sparse_positive/V80_SPARSE_POSITIVE_QUALIFICATION_CONTRACT_V1.json'),
+          )
+          Path('/tmp/v80_fit/fit_transport.json').write_text(json.dumps(fit, sort_keys=True, separators=(',', ':')) + '\n')
+          Path('/tmp/v80_controller/controller_transport.json').write_text(json.dumps(controller, sort_keys=True, separators=(',', ':')) + '\n')
+          Path('/tmp/v80_receipt/V80_SPARSE_POSITIVE_PACKAGE_RECEIPT_V1.json').write_text(json.dumps(receipt, sort_keys=True, separators=(',', ':')) + '\n')
+          print(json.dumps(receipt, sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v80-sparse-positive-fit-transport
+          path: /tmp/v80_fit/fit_transport.json
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v80-sparse-positive-controller-transport
+          path: /tmp/v80_controller/controller_transport.json
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v80-sparse-positive-package-receipt
+          path: /tmp/v80_receipt/V80_SPARSE_POSITIVE_PACKAGE_RECEIPT_V1.json
+          if-no-files-found: error
+          retention-days: 30
+
+  fit-validation:
+    needs: producer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.9'
+      - run: python -m pip install numpy==2.3.5
+      - uses: actions/download-artifact@v4
+        with:
+          name: v80-sparse-positive-fit-transport
+          path: /tmp/v80_fit_only
+      - name: Validate fit transport without controller artifact
+        run: |
+          test ! -e /tmp/v80_fit_only/controller_transport.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.v80.v80_sparse_positive_benchmark import validate_fit_transport, FAMILIES
+          p = Path('/tmp/v80_fit_only/fit_transport.json')
+          payload = json.loads(p.read_text())
+          validate_fit_transport(payload)
+          raw = p.read_text()
+          assert all(family not in raw for family in FAMILIES)
+          assert 'estimability_truth' not in raw
+          assert 'latent_detection_intercept' not in raw
+          print('FIT_TRANSPORT_BLIND_PASS')
+          PY
+
+  controller-validation:
+    needs: producer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: v80-sparse-positive-controller-transport
+          path: /tmp/v80_controller_only
+      - name: Validate controller transport without fit artifact
+        run: |
+          test ! -e /tmp/v80_controller_only/fit_transport.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/v80_controller_only/controller_transport.json').read_text())
+          assert payload['schema'] == 'V80_SPARSE_POSITIVE_CONTROLLER_TRANSPORT_V1'
+          assert len(payload['worlds']) == 8
+          assert len(payload['fits']) == 192
+          statuses = {x['estimability_truth'] for x in payload['fits']}
+          assert statuses == {'ESTIMABLE', 'NOT_ESTIMABLE_BY_CONSTRUCTION'}
+          print('CONTROLLER_TRANSPORT_CUSTODY_PASS')
+          PY
