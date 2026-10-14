@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[3]
 RESULT_DIR = ROOT / "results" / "target_discovery" / "unified_qualification_v1"
 MATRIX = RESULT_DIR / "PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1.json"
 UNRESOLVED = RESULT_DIR / "PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json"
+DECOMPOSITION = RESULT_DIR / "PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json"
 
 
 def _load(path: Path):
@@ -39,9 +40,22 @@ def test_every_artifact_has_exactly_one_allowed_migration_class():
 def test_available_exact_identity_is_not_omitted():
     matrix = _load(MATRIX)
     for artifact in matrix["artifacts"]:
-        if artifact.get("exact_identity_available", False):
+        assert "exact_identity_available" in artifact
+        if artifact["exact_identity_available"]:
             assert artifact.get("source_commit")
             assert artifact.get("artifact_digest")
+
+
+def test_validator_rejects_deleted_exact_identity_attestation(tmp_path: Path):
+    matrix = _load(MATRIX)
+    unresolved = _load(UNRESOLVED)
+    matrix["artifacts"][0].pop("exact_identity_available")
+    bad_matrix = tmp_path / "matrix.json"
+    ledger = tmp_path / "ledger.json"
+    bad_matrix.write_text(json.dumps(matrix), encoding="utf-8")
+    ledger.write_text(json.dumps(unresolved), encoding="utf-8")
+    with pytest.raises(ValueError, match="exact_identity_available"):
+        validate_migration_outputs(bad_matrix, ledger)
 
 
 def test_parallel_authority_is_never_ambiguously_active():
@@ -89,10 +103,15 @@ def test_conflicting_classes_require_explicit_decomposition():
     matrix = _load(MATRIX)
     artifact_ids = [a["artifact_id"] for a in matrix["artifacts"]]
     assert len(artifact_ids) == len(set(artifact_ids))
+    decomposition = _load(DECOMPOSITION)
+    by_parent = {entry["parent_artifact_id"]: entry for entry in decomposition["decompositions"]}
     for artifact in matrix["artifacts"]:
         assert not isinstance(artifact["migration_class"], list)
         if artifact.get("mixed_historical_object", False):
-            assert artifact.get("decomposition_note")
+            assert artifact["artifact_id"] in by_parent
+            children = by_parent[artifact["artifact_id"]]["children"]
+            assert len(children) >= 2
+            assert len({child["migration_class"] for child in children}) >= 2
 
 
 def test_navigation_metadata_never_confers_authority():
