@@ -1,0 +1,66 @@
+{
+  "schema": "SYNTHETIC_DATASET_LANE_CURRENT_STATE_V3",
+  "date": "2026-10-13/14",
+  "lane": "synthetic_dataset",
+  "global_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "pr328": {
+    "head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+    "status": "QUALIFIED_MECHANICS_INTERFACE_FIXTURE_ONLY"
+  },
+  "pr344": {
+    "head": "f10d4f62b59a35cc443302ab8863c33d51b2b1de",
+    "status": "PASS_DESIGN_SCOPE_AND_AUTHORITY__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF"
+  },
+  "v79": {
+    "result": "NOT_QUALIFIED",
+    "immutable": true,
+    "final_receipt_sha256": "ef10852e534fe8a83c3aebd832ad3a531d755d06185464441494712818e8abfd",
+    "contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+    "world_set_digest": "40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286",
+    "gates_pass": 291,
+    "gates_total": 292,
+    "only_failure": "Q08_SPARSE_DETECTION_POSITIVE__CONVERGENCE_ALL_FITS_DIAGNOSED__3_OF_44_NOT_DIAGNOSED",
+    "rescue_authorized": false,
+    "rerun_authorized": false
+  },
+  "v80": {
+    "pr": 348,
+    "branch": "science/v80-sparse-positive-successor-qualification-20261013",
+    "qualified_source_head": "b840067e4c9439e4cb4aa9e8c649ef2f6064a142",
+    "current_documentation_head_at_freeze": "9ad04d43ffe7bd387da8d2315f63b5758df4f9f8",
+    "status": "SPARSE_POSITIVE_BENCHMARK_PACKAGE_QUALIFIED__NO_ESTIMATOR_RUN",
+    "workflow_run": 38504094639,
+    "focused_hostile_custody_tests": "18_PASS",
+    "inherited_pr328_regression": "73_PASS",
+    "producer": "PASS",
+    "fit_only_validation": "PASS",
+    "controller_only_validation": "PASS",
+    "receipt_path": "results/v80/sparse_positive/V80_SPARSE_POSITIVE_PACKAGE_RECEIPT_V1.json",
+    "receipt_sha256": "346407af801a7fabc5dbd27136dcf5c9abe61e87d438018b98da192333eb9c32",
+    "benchmark_identity_sha256": "16a08b29c7e083377f4dde6e16ac6d55a3358ed45475c74161fbaba29a4afc38",
+    "fit_transport_sha256": "77f89e8336ec2a2d0184abbd81bfd7d6ff04f2dc57aa80891b6d8021869737b3",
+    "controller_transport_sha256": "24120a8c3426c02b9747a57b3197b81df40aeae44a727988a2c43235f046f2e7",
+    "contract_sha256": "7124da87c9cd21e315474720b1fa2de899462484bfeddfe586c77058f1d2c519",
+    "nonregression_binding_sha256": "b83d7e0becbe5480353db657b553b7bb65251d3b88136be1d6c3cdda365c4819",
+    "n_worlds": 8,
+    "n_fits": 192,
+    "artifacts": {
+      "fit": {"id":11867590706,"digest":"sha256:4cec8966cff7bdddb3640903f4525328d23ed3482e2b232ead1bc440993fca71"},
+      "controller": {"id":11866917064,"digest":"sha256:184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46"},
+      "receipt": {"id":11867366245,"digest":"sha256:97e264cfe76709f5098b346e56130716640e6c8ce8562974d6ab126ac82a47fe"}
+    },
+    "successor_estimator_implemented": false,
+    "successor_estimator_qualified": false,
+    "next_owner_action": "PROSPECTIVELY_FREEZE_SUCCESSOR_ESTIMATOR_AND_ONE_SHOT_QUALIFICATION_ON_IMMUTABLE_V79_PLUS_V80"
+  },
+  "authority": {
+    "human_biology_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "synthetic_training_authorized": false,
+    "real_training_authorized": false
+  },
+  "next_synthetic_lane_action": "RETURN_TO_PR344_V2_USER_REVIEW_AFTER_ESTIMATOR_OWNER_RECEIVES_V80_PACKAGE"
+}
