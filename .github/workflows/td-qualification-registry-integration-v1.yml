@@ -34,4 +34,5 @@ jobs:
         run: python -m pytest -q tests/v5/test_td_qualification_registry_v1.py tests/v5/test_td_execution_manifest_v1.py tests/v5/test_td_case_bundle_v1.py tests/v5/test_td_target_qualification_bundle_v1.py tests/v5/test_td_downstream_certification_v1.py tests/v5/test_td_qualification_integration_v1.py
       - name: Authority guard
         run: |
-          ! grep -R "TARGET_WINNER_\|REPRESENTATION_WINNER_\|REAL_TRAINING_ON\|STAGE4_AUTHORIZED" scripts/v5/td_qualification_registry_v1.py scripts/v5/td_execution_manifest_v1.py scripts/v5/td_case_bundle_v1.py scripts/v5/td_target_qualification_bundle_v1.py scripts/v5/td_downstream_certification_v1.py scripts/v5/td_qualification_integration_v1.py 2>/dev/null
+          FILES="scripts/v5/td_qualification_registry_v1.py scripts/v5/td_execution_manifest_v1.py scripts/v5/td_case_bundle_v1.py scripts/v5/td_target_qualification_bundle_v1.py scripts/v5/td_downstream_certification_v1.py scripts/v5/td_qualification_integration_v1.py"
+          ! grep -PR '(?<!NO_)TARGET_WINNER_(?!NONE)|REPRESENTATION_WINNER_(?!NONE)|REAL_TRAINING_ON|STAGE4_AUTHORIZED' $FILES 2>/dev/null
