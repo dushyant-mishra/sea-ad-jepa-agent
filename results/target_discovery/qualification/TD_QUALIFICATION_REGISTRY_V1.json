@@ -1,0 +1,307 @@
+{
+  "schema": "JEPA_TD_QUALIFICATION_REGISTRY_V1",
+  "system_qualification": {
+    "pr": 369,
+    "head_sha": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+    "workflow_run_id": 38577104444,
+    "conclusion": "MACHA_REPAIR_SET_SYSTEM_MECHANICS_AND_FIREWALLS_REQUALIFIED__REAL_REFERENCE_AND_PRODUCER_DEPENDENCIES_REMAIN_BLOCKED"
+  },
+  "gates": {
+    "R1": {
+      "gate_id": "R1",
+      "scientific_role": "RELATIONAL_SHARED_INVARIANCE",
+      "lifecycle_state": "SYNTHETIC_KNOWN_TRUTH_QUALIFIED",
+      "executor": {
+        "commit_sha": "949d76ff03cb57c5a88fef9efdb79fced9154024",
+        "path": "scripts/v5/td_real_r1_executor_v3.py"
+      },
+      "producer": {
+        "status": "REQUIRED_UNQUALIFIED",
+        "role": "DEPTH_DETECTION_MATCHED_Y_CELL_IDENTITY_NULL_PRODUCER"
+      },
+      "metric": {
+        "id": "ANCHORED_CELL_TRIPLET_ORDER_AGREEMENT",
+        "orientation": "LARGER_IS_BETTER"
+      },
+      "support_universe": "DONOR_SOURCE_OPERATOR_SUPPORT_DEPTH_DETECTION_BLOCK",
+      "statistical_law": "DONOR_PRIMARY_MATCHED_NULL_NONCOMPENSATING_REQUIRED_SOURCES",
+      "required_real_artifacts": [
+        {"id": "R1_REAL_U_REFIT", "status": "MISSING"},
+        {"id": "R1_Y_CELL_IDENTITY_NULL_RECEIPT", "status": "MISSING"}
+      ],
+      "required_challenge_families": [
+        "TECHNICAL_LIBRARY_DEPTH_ONLY_NEGATIVE",
+        "PLANTED_WITHIN_BLOCK_RELATIONAL_POSITIVE",
+        "STRATUM_MISMATCH",
+        "SPARSE_SUPPORT"
+      ],
+      "synthetic_qualification": {
+        "system_pr": 369,
+        "system_head_sha": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+        "workflow_run_id": 38577104444,
+        "status": "PASS_SYSTEM_MECHANICS_FIREWALLS"
+      },
+      "open_prerequisites": [
+        "QUALIFIED_REAL_Y_CELL_IDENTITY_NULL_PRODUCER",
+        "REAL_SAME_METRIC_U_REFIT_REFERENCE"
+      ],
+      "authority": {"target_selection": false, "representation_selection": false, "td60": false, "stage4": false, "real_training": false}
+    },
+    "G2": {
+      "gate_id": "G2",
+      "scientific_role": "NONTRIVIAL_BIOLOGICAL_CONTENT",
+      "lifecycle_state": "SYNTHETIC_KNOWN_TRUTH_QUALIFIED",
+      "executor": {
+        "commit_sha": "42df903d6190b7aa1b8eb65d810ab813cd327445",
+        "path": "scripts/v5/td_real_g2_content_decision_v2.py"
+      },
+      "producer": {
+        "status": "REQUIRED_UNQUALIFIED",
+        "role": "CANDIDATE_SPECIFIC_BASELINE_STRATA_POLICY_AND_SCORE_PRODUCER"
+      },
+      "metric": {
+        "id": "CANDIDATE_ADVANTAGE_OVER_STRONGEST_APPLICABLE_FROZEN_BASELINE",
+        "orientation": "LARGER_IS_BETTER"
+      },
+      "support_universe": "CANDIDATE_SPECIFIC_REQUIRED_SOURCE_ENDPOINT_DONOR_SUPPORT",
+      "statistical_law": "ONE_SIDED_DONOR_PRIMARY_SIGN_RECURRENCE_FAMILY_ALPHA_0P01_NONCOMPENSATING",
+      "required_real_artifacts": [
+        {"id": "G2_STATIC_POLICY_RECEIPT", "status": "MISSING"},
+        {"id": "G2_SAME_METRIC_SUBSTANTIVE_MARGIN", "status": "MISSING"}
+      ],
+      "required_challenge_families": [
+        "SHORTCUT_ONLY_SIGNAL",
+        "RAW_POSITIVE_BELOW_MARGIN",
+        "MISSING_BASELINE_ARM",
+        "SOURCE_NONCOMPENSATION",
+        "UNDERPOWERED_OR_UNSUPPORTED",
+        "WRONG_REFERENCE_BINDING"
+      ],
+      "synthetic_qualification": {
+        "system_pr": 369,
+        "system_head_sha": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+        "workflow_run_id": 38577104444,
+        "status": "PASS_SYSTEM_MECHANICS_FIREWALLS"
+      },
+      "open_prerequisites": [
+        "CANDIDATE_SPECIFIC_STATIC_G2_POLICY",
+        "INDEPENDENT_REAL_SAME_METRIC_SUBSTANTIVE_MARGIN"
+      ],
+      "authority": {"target_selection": false, "representation_selection": false, "td60": false, "stage4": false, "real_training": false}
+    },
+    "G6": {
+      "gate_id": "G6",
+      "scientific_role": "TEACHER_PRIVATE_INFORMATION_INCREMENT",
+      "lifecycle_state": "SYNTHETIC_KNOWN_TRUTH_QUALIFIED",
+      "executor": {
+        "commit_sha": "4110d4478c3353d86740dd135d62460ff7a7611f",
+        "path": "scripts/v5/td_real_teacher_information_decision_v3.py"
+      },
+      "producer": {
+        "status": "REQUIRED_UNQUALIFIED",
+        "role": "TEACHER_STUDENT_TARGET_EVIDENCE_AND_MEASUREMENT_MARGIN_PRODUCER"
+      },
+      "metric": {
+        "id": "DONOR_BALANCED_OUTER_MSE_DELTA",
+        "orientation": "LARGER_IS_BETTER",
+        "scale_contract": "OPEN"
+      },
+      "support_universe": "CANDIDATE_SPECIFIC_TEACHER_STUDENT_CONSTRUCTIBILITY",
+      "statistical_law": "DONOR_PRIMARY_SUBSTANTIVE_MARGIN_DECISION",
+      "required_real_artifacts": [
+        {"id": "G6_NONDEGENERATE_MEASUREMENT_MARGIN", "status": "MISSING"},
+        {"id": "G6_INDEPENDENT_DECISION_QUALIFICATION_RECEIPT", "status": "MISSING"},
+        {"id": "G6_METRIC_SCALE_CONTRACT", "status": "MISSING"}
+      ],
+      "required_challenge_families": [
+        "ZERO_REFIT_MARGIN",
+        "TYPED_TOKEN_SELF_QUALIFICATION",
+        "RAW_POSITIVE_BELOW_MARGIN",
+        "TARGET_OR_QUERY_LEAKAGE",
+        "UNDERPOWERED_SUPPORT"
+      ],
+      "synthetic_qualification": {
+        "system_pr": 369,
+        "system_head_sha": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+        "workflow_run_id": 38577104444,
+        "status": "PASS_SYSTEM_MECHANICS_FIREWALLS"
+      },
+      "open_prerequisites": [
+        "PRODUCED_SUBSTANTIVE_MEASUREMENT_MARGIN",
+        "INDEPENDENT_QUALIFICATION_RECEIPT",
+        "METRIC_SCALE_CONTRACT"
+      ],
+      "authority": {"target_selection": false, "representation_selection": false, "td60": false, "stage4": false, "real_training": false}
+    },
+    "G7": {
+      "gate_id": "G7",
+      "scientific_role": "TERMINAL_EVIDENCE_CONVERGENCE",
+      "lifecycle_state": "SYNTHETIC_KNOWN_TRUTH_QUALIFIED",
+      "executor": {
+        "commit_sha": "5a711f9a4ea0328445a05dadc1e011efb16a3c13",
+        "path": "scripts/v5/td_real_g7_terminal_decision_v3.py"
+      },
+      "producer": {
+        "status": "REQUIRED_UNQUALIFIED",
+        "role": "SOURCE_AWARE_EVIDENCE_LADDER_AND_REFERENCE_PRODUCER"
+      },
+      "metric": {
+        "id": "TERMINAL_PENULTIMATE_TO_FULL_DISPLACEMENT",
+        "orientation": "SMALLER_IS_MORE_CONVERGED"
+      },
+      "support_universe": "REQUIRED_SOURCE_DONOR_ADDED_PHYSICAL_EVIDENCE_SUPPORT",
+      "statistical_law": "PER_SOURCE_DONOR_RECURRENCE_NONCOMPENSATING",
+      "required_real_artifacts": [
+        {"id": "G7_SAME_METRIC_REFERENCE", "status": "MISSING"},
+        {"id": "G7_SOURCE_SUPPORT_RECEIPT", "status": "MISSING"}
+      ],
+      "required_challenge_families": [
+        "TRUE_CONVERGED",
+        "TRUE_NONCONVERGED",
+        "NO_ADDED_SUPPORT",
+        "UNDERPOWERED_SOURCE",
+        "SOURCE_ASYMMETRY"
+      ],
+      "synthetic_qualification": {
+        "system_pr": 369,
+        "system_head_sha": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+        "workflow_run_id": 38577104444,
+        "status": "PASS_SYSTEM_MECHANICS_FIREWALLS"
+      },
+      "open_prerequisites": [
+        "REAL_SOURCE_AWARE_EVIDENCE_SUPPORT_RECEIPT",
+        "REAL_SAME_METRIC_REFERENCE"
+      ],
+      "authority": {"target_selection": false, "representation_selection": false, "td60": false, "stage4": false, "real_training": false}
+    },
+    "G8": {
+      "gate_id": "G8",
+      "scientific_role": "MEASUREMENT_DEPTH_ROBUSTNESS",
+      "lifecycle_state": "SYNTHETIC_KNOWN_TRUTH_QUALIFIED",
+      "executor": {
+        "commit_sha": "95dd474a02ce571722df9e8f08b42e81af2e8736",
+        "path": "scripts/v5/td_real_g8_realization_contract_v3.py"
+      },
+      "producer": {
+        "status": "REQUIRED_UNQUALIFIED",
+        "role": "FULL_LIBRARY_OBSERVATION_AWARE_THINNING_AND_REFERENCE_PRODUCER"
+      },
+      "metric": {
+        "id": "CANDIDATE_SPECIFIC_FULL_TO_THINNED_DISPLACEMENT_AND_SUPPORT",
+        "orientation": "ENDPOINT_SPECIFIC",
+        "statistical_estimand": "OPEN"
+      },
+      "support_universe": "FULL_COUNT_LAWFUL_SUPPORTED_ATOMS_BEFORE_THINNING",
+      "statistical_law": "SIX_ENDPOINT_CONFORMAL_MECHANICS_ALPHA_0P01_OVER_6__HUMAN_EXCHANGEABILITY_OPEN",
+      "required_real_artifacts": [
+        {"id": "G8_QUALIFIED_STATISTICAL_ESTIMAND", "status": "MISSING"},
+        {"id": "G8_REAL_REFERENCE_ENVELOPE", "status": "MISSING"}
+      ],
+      "required_challenge_families": [
+        "OFF_ADDRESS_LIBRARY_MASS",
+        "STORAGE_ORDER_INVARIANCE",
+        "STRUCTURAL_MEASUREMENT_STATE",
+        "CONFORMAL_BOUNDARY_ROUNDING",
+        "PSEUDOREPLICATION_TRAP"
+      ],
+      "synthetic_qualification": {
+        "system_pr": 369,
+        "system_head_sha": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+        "workflow_run_id": 38577104444,
+        "status": "PASS_SYSTEM_MECHANICS_FIREWALLS"
+      },
+      "open_prerequisites": [
+        "PROSPECTIVELY_FROZEN_QUALIFIED_STATISTICAL_ESTIMAND_AND_EXCHANGEABILITY_ARGUMENT",
+        "REAL_REFERENCE_GENERATION"
+      ],
+      "authority": {"target_selection": false, "representation_selection": false, "td60": false, "stage4": false, "real_training": false}
+    },
+    "G9_S1_S2": {
+      "gate_id": "G9_S1_S2",
+      "scientific_role": "COMMON_GEOMETRY_RECURRENCE_AND_STABILITY",
+      "lifecycle_state": "SYNTHETIC_KNOWN_TRUTH_QUALIFIED",
+      "executor": {
+        "commit_sha": "8d6b23a18051f64463ee9b2649f4fe5fc7123f0d",
+        "path": "scripts/v5/td_real_geometry_recurrence_engine_v2.py"
+      },
+      "producer": {
+        "status": "REQUIRED_UNQUALIFIED",
+        "role": "SUPPORT_DISPLACEMENT_ALIGNMENT_AND_ADVERSE_NULL_PRODUCER"
+      },
+      "metric": {
+        "id": "ROTATION_INVARIANT_PROJECTOR_GEOMETRY_DISPLACEMENT",
+        "orientation": "SMALLER_IS_BETTER",
+        "eigengap_contract": "OPEN"
+      },
+      "support_universe": "REQUIRED_SOURCE_SUPPORTED_DONORS_WITH_PROSPECTIVE_NULL_RESOLUTION",
+      "statistical_law": "ADVERSE_LOWER_NULL_TAIL_PLUS_ABSOLUTE_STABILITY_NONCOMPENSATING",
+      "required_real_artifacts": [
+        {"id": "GEOMETRY_QUALIFIED_PRODUCER_RECEIPT", "status": "MISSING"},
+        {"id": "GEOMETRY_SAME_METRIC_REFERENCE", "status": "MISSING"},
+        {"id": "GEOMETRY_EIGENGAP_CONTRACT", "status": "MISSING"}
+      ],
+      "required_challenge_families": [
+        "ROTATED_SAME_SUBSPACE",
+        "ORTHOGONAL_BEHAVIOR",
+        "UNSTABLE_DESPITE_NULL_DEFEAT",
+        "UNDERRESOLVED_NULL",
+        "SOURCE_NONCOMPENSATION",
+        "ALIGNMENT_LEAKAGE",
+        "NONORTHOGONAL_ALIGNMENT_FORGERY"
+      ],
+      "synthetic_qualification": {
+        "system_pr": 369,
+        "system_head_sha": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+        "workflow_run_id": 38577104444,
+        "status": "PASS_SYSTEM_MECHANICS_FIREWALLS"
+      },
+      "open_prerequisites": [
+        "INDEPENDENTLY_QUALIFIED_SUPPORT_DISPLACEMENT_ALIGNMENT_NULL_PRODUCER",
+        "REAL_SAME_METRIC_REFERENCE",
+        "PROSPECTIVE_EIGENGAP_CONTRACT"
+      ],
+      "authority": {"target_selection": false, "representation_selection": false, "td60": false, "stage4": false, "real_training": false}
+    },
+    "R4_C6_C4": {
+      "gate_id": "R4_C6_C4",
+      "scientific_role": "NOISE_RELATIVE_INCREMENT_ADJUDICATION",
+      "lifecycle_state": "SYNTHETIC_KNOWN_TRUTH_QUALIFIED",
+      "executor": {
+        "commit_sha": "b7c317c640aa231a7d5ec1fa12271a39bfee86e6",
+        "path": "scripts/v5/td_real_increment_decision_v1.py"
+      },
+      "producer": {
+        "status": "REQUIRED_UNQUALIFIED",
+        "role": "CANDIDATE_INCREMENT_AND_SAME_METRIC_REFERENCE_PRODUCER"
+      },
+      "metric": {
+        "id": "NOISE_RELATIVE_CANDIDATE_INCREMENT",
+        "orientation": "LARGER_IS_BETTER"
+      },
+      "support_universe": "CANDIDATE_SPECIFIC_COMPARATOR_SUPPORT",
+      "statistical_law": "R4_C2_OVER_C1__C6_OVER_C1_AND_C3_SEPARATELY__C4_ONLY_OVER_INDEPENDENTLY_QUALIFIED_C6",
+      "required_real_artifacts": [
+        {"id": "INCREMENT_SAME_METRIC_REFERENCE", "status": "MISSING"},
+        {"id": "C6_INDEPENDENT_QUALIFICATION_RECEIPT", "status": "MISSING"}
+      ],
+      "required_challenge_families": [
+        "TINY_POSITIVE_BELOW_MARGIN",
+        "C6_BEATS_ONLY_ONE_CONSTITUENT",
+        "C4_WITHOUT_C6",
+        "SUPPORT_LOSS"
+      ],
+      "synthetic_qualification": {
+        "system_pr": 369,
+        "system_head_sha": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+        "workflow_run_id": 38577104444,
+        "status": "PASS_SYSTEM_MECHANICS_FIREWALLS"
+      },
+      "open_prerequisites": [
+        "REAL_SAME_METRIC_REFERENCE",
+        "INDEPENDENT_C6_QUALIFICATION"
+      ],
+      "authority": {"target_selection": false, "representation_selection": false, "td60": false, "stage4": false, "real_training": false}
+    }
+  },
+  "authority": {"target_selection": false, "representation_selection": false, "td60": false, "stage4": false, "real_training": false}
+}
