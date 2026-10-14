@@ -3,20 +3,28 @@
   "date": "2026-10-13/14",
   "lane": "synthetic_dataset",
   "global_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "current_terminal": "PR328_MECHANICS_FIXTURE_QUALIFIED__V79_FROZEN_NOT_QUALIFIED__V80_BENCHMARK_PACKAGE_QUALIFIED__SUCCESSOR_ESTIMATOR_NOT_YET_QUALIFIED__PR344_V2_USER_REVIEW_REQUIRED",
   "pr328": {
     "head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
-    "status": "QUALIFIED_MECHANICS_INTERFACE_FIXTURE_ONLY"
-  },
-  "pr344": {
-    "head": "f10d4f62b59a35cc443302ab8863c33d51b2b1de",
-    "status": "PASS_DESIGN_SCOPE_AND_AUTHORITY__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF"
+    "status": "QUALIFIED_MECHANICS_INTERFACE_FIXTURE_ONLY",
+    "receipt_v2_sha256": "0cc1bc599dd0e77ec46f603d8a7edbb7da58762020a68d703b403dc7bf0a4dad",
+    "world_sha256": "dedd53c3b93eecdf28b73f229574a0cda4971371a3a6282f4b9e12fa44d09e66",
+    "fit_view_sha256": "fc5fa5c071903460da8c0d4644a3b18022f45b178f2c60a727710cadc2fb350a",
+    "controller_truth_sha256": "120c4e47bb7d667360c0786bb6004f02166d0f189c4a2b33b478545c7296c05f",
+    "manifest_sha256": "9b74681f57601225aa26037fa1eac439be067143bfb900cdcd5f73af0dbc8d3b",
+    "package_sha256": "9f2f3b7a53d5862a2a08bbd23c1d42f990f0f055616fbce7a1491493cda3fb41",
+    "external_audit_pr": 339,
+    "external_audit_repairs_complete": true
   },
   "v79": {
     "result": "NOT_QUALIFIED",
     "immutable": true,
-    "final_receipt_sha256": "ef10852e534fe8a83c3aebd832ad3a531d755d06185464441494712818e8abfd",
+    "scorer_orchestrator_head": "ac1e73d79489438634aaeeca035d229875f3186a",
     "contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
     "world_set_digest": "40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286",
+    "realization_ledger_sha256": "4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65",
+    "realization_audit_receipt_sha256": "6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3",
+    "final_receipt_sha256": "ef10852e534fe8a83c3aebd832ad3a531d755d06185464441494712818e8abfd",
     "gates_pass": 291,
     "gates_total": 292,
     "only_failure": "Q08_SPARSE_DETECTION_POSITIVE__CONVERGENCE_ALL_FITS_DIAGNOSED__3_OF_44_NOT_DIAGNOSED",
@@ -44,14 +52,51 @@
     "nonregression_binding_sha256": "b83d7e0becbe5480353db657b553b7bb65251d3b88136be1d6c3cdda365c4819",
     "n_worlds": 8,
     "n_fits": 192,
+    "runtime": {"python":"3.11.9","numpy":"2.3.5"},
+    "source_sha256": {
+      "scripts/v80/v80_sparse_positive_benchmark.py": "72785526901e7cc708531fae830b74001c718720b13d4c26e4760953c9e83d1f",
+      "scripts/v80/v80_sparse_positive_adjudicator.py": "f9bc546db0236ac7c168b270da3106deff0953f3067fe14fb2e8224622b32ca1",
+      "scripts/v80/finalize_v80_sparse_positive_package.py": "d143941baf4cdd4073955ffa1a9d77a7c7236e97a3989a193d01a796d82cbfde"
+    },
     "artifacts": {
       "fit": {"id":11867590706,"digest":"sha256:4cec8966cff7bdddb3640903f4525328d23ed3482e2b232ead1bc440993fca71"},
       "controller": {"id":11866917064,"digest":"sha256:184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46"},
       "receipt": {"id":11867366245,"digest":"sha256:97e264cfe76709f5098b346e56130716640e6c8ce8562974d6ab126ac82a47fe"}
     },
+    "challenge_families": [
+      "SP00_BALANCED_ESTIMABLE",
+      "SP01_ULTRASPARSE_ESTIMABLE",
+      "SP02_DONOR_IMBALANCED_ESTIMABLE",
+      "SP03_SOURCE_SHIFT_ESTIMABLE",
+      "SP04_SUPPORT_THINNED_ESTIMABLE",
+      "SP05_NO_POSITIVE_SUPPORT_NOT_ESTIMABLE",
+      "SP06_RANK_DEFICIENT_NOT_ESTIMABLE",
+      "SP07_NEW_DONOR_ESTIMABLE"
+    ],
+    "fit_statuses": ["COMPLETE","NOT_ESTIMABLE","NUMERICAL_FAILURE"],
+    "historical_red": {
+      "head": "e3a4cef88581171a76427e97e119e3223c14133d",
+      "workflow": 38502749914,
+      "result": "20_FAILED_1_PASSED",
+      "class": "EXPECTED_TDD_RED_NOT_SCIENTIFIC_FAILURE"
+    },
+    "recursive_self_audit_repairs": [
+      "removed_posthoc_positive_injection_shortcut",
+      "tightened_estimability_to_every_gene",
+      "moved_recovery_scoring_controller_side",
+      "removed_heldout_outcomes_from_fit_custody",
+      "hardened_receipt_source_and_runtime_binding",
+      "fixed_negative_test_custody_path_without_weakening_security",
+      "fixed_median_gate_test_scope_without_changing_gate_or_world"
+    ],
     "successor_estimator_implemented": false,
     "successor_estimator_qualified": false,
-    "next_owner_action": "PROSPECTIVELY_FREEZE_SUCCESSOR_ESTIMATOR_AND_ONE_SHOT_QUALIFICATION_ON_IMMUTABLE_V79_PLUS_V80"
+    "next_owner_action": "PROSPECTIVELY_FREEZE_SUCCESSOR_ESTIMATOR_AND_ONE_SHOT_QUALIFICATION_ON_IMMUTABLE_V79_PLUS_V80_IF_EXPLICITLY_ASSIGNED"
+  },
+  "pr344": {
+    "head": "f10d4f62b59a35cc443302ab8863c33d51b2b1de",
+    "status": "PASS_DESIGN_SCOPE_AND_AUTHORITY__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF",
+    "controlling_spec": "docs/superpowers/specs/2026-10-13-lineage-composite-production-synthetic-design-v2.md"
   },
   "authority": {
     "human_biology_authorized": false,
@@ -62,5 +107,6 @@
     "synthetic_training_authorized": false,
     "real_training_authorized": false
   },
-  "next_synthetic_lane_action": "RETURN_TO_PR344_V2_USER_REVIEW_AFTER_ESTIMATOR_OWNER_RECEIVES_V80_PACKAGE"
+  "next_synthetic_lane_action": "RETURN_TO_PR344_V2_USER_REVIEW__THEN_ONLY_AFTER_APPROVAL_WRITE_PRODUCTION_IMPLEMENTATION_PLAN",
+  "no_repeat_trigger_required": true
 }
