@@ -11,7 +11,7 @@ import math
 import re
 from collections.abc import Mapping, Sequence
 
-import td_real_measurement_reference_v1 as REF
+from scripts.v5 import td_real_measurement_reference_v1 as REF
 
 
 class G8ContractError(ValueError):
