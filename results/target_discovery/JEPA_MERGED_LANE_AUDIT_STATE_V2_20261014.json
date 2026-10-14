@@ -4,27 +4,77 @@
   "supersedes_for_current_navigation": "JEPA_MERGED_LANE_AUDIT_STATE_V1",
   "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
   "unified_architecture": {"pr":379,"head":"3064ca545f0c94859ea989cd49a04fcbd5b9a303"},
-  "unified_plan": {"pr":380,"head":"5b6bf07e7d8b69b286ea430b09765a5ee4743325"},
+  "unified_plan": {"pr":380,"head":"9328f1c00faee8a0ebf1910d412ea129bab566be"},
   "task0": {
     "pr":381,
-    "head":"6059e1d7bb30bd61d3f1f47d46a77e6322c525c0",
-    "state":"GREEN__FINAL_CUSTODY_ACCEPTANCE_DEFERRED",
-    "focused_run":38632619995,
-    "focused_conclusion":"SUCCESS",
-    "inherited_run":38632619965,
+    "head":"c80d7398b41f10208ec1622bc52599383b940be6",
+    "state":"CONTROLLER_REPAIRED_AND_EXACT_HEAD_GREEN__FINAL_INDEPENDENT_ACCEPTANCE_PENDING",
+    "focused_run":38645994312,
+    "focused_job":116132861396,
+    "focused_result":"SUCCESS__29_PASSED_IN_0_07S",
+    "inherited_run":38645994388,
     "inherited_conclusion":"SUCCESS",
+    "red_head":"49cb69a7f654c5c8d7e43c471f61c8457feea705",
+    "red_run":38645338293,
+    "red_job":116130670310,
+    "red_result":"INTENDED_FAILURE__27_PASSED_2_FAILED_IN_0_14S",
     "completeness_artifact":"results/target_discovery/unified_qualification_v1/PREMERGER_MERGED_CUSTODY_COMPLETENESS_V1.json",
     "findings_repaired":["F1","F2","F3","F4","F5","F6","F7","F8","F9"],
+    "independent_reviewer_required":"Macha",
     "unified_task1_blocked":true
   },
   "f5_old_pr356": {
     "historical_execution_law":"Task1 review -> Task2 review -> Task3 review -> checkpoint -> Task4; Tasks5-12 formerly independent",
-    "current_controller_instruction":"FINISH_OLD_TASKS_1_AND_2_ONLY__THEN_STOP_FOR_MERGED_AUDIT_AND_CONSOLIDATION",
-    "task1":{"state":"IN_FLIGHT_OR_AWAITING_EXACT_REVIEWED_HEAD","destination":"shared canonical identity infrastructure"},
-    "task2":{"state":"IN_FLIGHT_OR_AWAITING_EXACT_REVIEWED_HEAD","destination":"shared custody/RNG/sealed-challenge infrastructure"},
-    "task3":{"state":"DO_NOT_START_UNDER_CURRENT_CONTROLLER_INSTRUCTION","destination_if_later_authorized":"shared calibration/provenance/realism infrastructure"},
-    "task4":{"state":"DO_NOT_START__BLOCKED_ON_CONSOLIDATION_AND_NEW_AUTHORITY","destination_if_later_authorized":"KNOWN_TRUTH_CASEBUNDLE_V1/TRUTH_BUNDLE_V1 substrate"},
+    "current_controller_instruction":"OLD_TASKS1_2_EXACT_SUBSTRATE_LOCATED_AND_CONTROLLER_VERIFIED__OLD_TASKS3_4_STOPPED_AFTER_MERGER_REQUIREMENTS_MIGRATE_ONLY__OLD_TASKS5_12_NO_INDEPENDENT_CONTINUATION",
+    "exact_task1_2_head":"ff597faf2182522a320ec5322f8db9b67c9c6094",
+    "controller_review_pr":382,
+    "controller_focused_run":38644641042,
+    "controller_focused_job":116128364543,
+    "controller_pytest_result":"332 passed in 8.94s",
+    "controller_inherited_run":38644640881,
+    "task1":{
+      "state":"CONTROLLER_VERIFIED_REUSE_SUBSTRATE__INDEPENDENT_REVIEW_PENDING",
+      "classification":"ADAPT_AND_WRAP__DIRECT_REUSE_CANDIDATE_FOR_CANONICAL_PRIMITIVES",
+      "destination":"shared canonical byte/identity substrate feeding unified Task1",
+      "unified_task_complete":false
+    },
+    "task2":{
+      "state":"CONTROLLER_VERIFIED_REUSE_SUBSTRATE__INDEPENDENT_REVIEW_PENDING",
+      "classification":"ADAPT_AND_WRAP__SEALED_CUSTODY_RNG_SUBSTRATE",
+      "destination":"shared custody/RNG mechanics primarily for unified Task4/finalizer",
+      "unified_task_complete":false
+    },
+    "task3":{
+      "state":"STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY",
+      "continue_in_old_lane":false,
+      "implementation_head_required":false,
+      "destination":"unified calibration/provenance/realism requirements after Task0 acceptance"
+    },
+    "task4":{
+      "state":"STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY",
+      "continue_in_old_lane":false,
+      "implementation_head_required":false,
+      "destination":"KNOWN_TRUTH_CASEBUNDLE_V1/TRUTH_BUNDLE_V1 substrate requirements after prior unified tasks"
+    },
     "tasks5_12":{"state":"SUPERSEDED_INDEPENDENT_EXECUTION","continue_independently":false}
+  },
+  "analysis_layer": {
+    "implementation_started": false,
+    "old_task1_compatibility_vectors":"results/target_discovery/unified_qualification_v1/OLD_TASK1_CANONICAL_COMPATIBILITY_VECTORS_V1.json",
+    "old_task2_compatibility_vectors":"results/target_discovery/unified_qualification_v1/OLD_TASK2_CUSTODY_COMPATIBILITY_VECTORS_V1.json",
+    "task2_manifest_access_contract":"docs/agent/UNIFIED_TASK2_MANIFEST_ACCESS_SCHEMA_CONTRACT_V1_20261014.md",
+    "task3_prerequisite_graph":"results/target_discovery/unified_qualification_v1/INITIAL_TD_PREREQUISITE_GRAPH_BLUEPRINT_V1.json",
+    "task4_custody_contract":"docs/agent/UNIFIED_TASK4_SEALED_CHALLENGE_CUSTODY_CONTRACT_V1_20261014.md",
+    "task5_case_truth_contract":"docs/agent/UNIFIED_TASK5_CASEBUNDLE_TRUTH_EQUIVALENCE_CONTRACT_V1_20261014.md",
+    "task6_registration_blueprint":"results/target_discovery/unified_qualification_v1/INITIAL_REPAIRED_UNIT_REGISTRATION_BLUEPRINT_V1.json",
+    "task7_tqb_blueprint":"results/target_discovery/unified_qualification_v1/TARGET_QUALIFICATION_BUNDLE_SCHEMA_BLUEPRINT_V1.json",
+    "task8_downstream_blueprint":"results/target_discovery/unified_qualification_v1/DOWNSTREAM_CERTIFICATION_SCHEMA_BLUEPRINT_V1.json",
+    "task9_challenge_expectations":"results/target_discovery/unified_qualification_v1/CHALLENGE_FAMILY_EXPECTATION_BLUEPRINT_V1.json",
+    "task10_rehearsal_contract":"docs/agent/UNIFIED_TASK10_REHEARSAL_EXECUTION_CONTRACT_V1_20261014.md",
+    "task11_finalizer_contract":"docs/agent/UNIFIED_TASK11_FINALIZER_CI_CONTRACT_V1_20261014.md",
+    "task12_hostile_audit_contract":"docs/agent/UNIFIED_TASK12_INDEPENDENT_HOSTILE_WHOLE_PIPELINE_AUDIT_CONTRACT_V1_20261014.md",
+    "runtime_eligibility_bridge_required":true,
+    "runtime_receipt":"RUNTIME_ELIGIBILITY_RECEIPT_V1"
   },
   "f6_representation": {
     "source_pr":276,
@@ -47,7 +97,8 @@
   "f8_runtime_training_safety": {
     "sources":[{"pr":223,"head":"71bf55dda89fa2099933160eeee734ab2167324d"},{"pr":224,"head":"9d00684e08ba34ef8d7b04e478b9c380cd36d537"}],
     "laws":["OPTIMIZER_COMPLETION_BEFORE_EMA","NO_EMA_ADVANCE_ON_REJECTED_OR_INCOMPLETE_UPDATE","TYPED_AUTHENTICATED_CHECKPOINT_RECEIPT_CONTINUATION","COORDINATE_VALUE_COUPLING","Q_SAFETY_REQUIRES_FINAL_JOIN_EXECUTION","RUNTIME_PROOF_NE_SCIENTIFIC_TARGET_AUTHORITY"],
-    "destination":"post-downstream-certification runtime/training eligibility prerequisites"
+    "destination":"post-downstream-certification runtime/training eligibility prerequisites",
+    "downstream_certified_does_not_imply_training_eligible":true
   },
   "f9_full104_information_channels": {
     "source_pr":33,
@@ -66,5 +117,16 @@
     "G12":"01ebdb9384b42d5cfae3de03c2adf5b6b327ee81",
     "SYSTEM_BATTERY":"651d7a5a1d4f4047d5ac875cc603f9151c2fed36"
   },
-  "no_repeat":["DO_NOT_REDOWNLOAD_AUTHENTICATED_REAL_DATA","DO_NOT_REPEAT_GENERIC_SUPPORT_CENSUS","DO_NOT_RERUN_SPENT_PR314_CORRECTED_REPLAY","DO_NOT_RERUN_V79","DO_NOT_PROMOTE_V80_TO_ESTIMATOR_OR_HUMAN_AUTHORITY","DO_NOT_REVIVE_PRS_375_378","DO_NOT_OPEN_READER_VALIDATION_OR_ORACLE_TO_RESCUE_ESTIMABILITY","DO_NOT_START_OLD_TASK3_OR_TASK4_BEFORE_TASK1_2_CONSOLIDATION","DO_NOT_START_UNIFIED_TASK1_BEFORE_TASK0_FINAL_ACCEPTANCE"]
+  "no_repeat":[
+    "DO_NOT_REDOWNLOAD_AUTHENTICATED_REAL_DATA",
+    "DO_NOT_REPEAT_GENERIC_SUPPORT_CENSUS",
+    "DO_NOT_RERUN_SPENT_PR314_CORRECTED_REPLAY",
+    "DO_NOT_RERUN_V79",
+    "DO_NOT_PROMOTE_V80_TO_ESTIMATOR_OR_HUMAN_AUTHORITY",
+    "DO_NOT_REVIVE_PRS_375_378",
+    "DO_NOT_OPEN_READER_VALIDATION_OR_ORACLE_TO_RESCUE_ESTIMABILITY",
+    "DO_NOT_RESTART_OLD_TASK3_OR_TASK4",
+    "DO_NOT_CONTINUE_OLD_TASKS5_12_INDEPENDENTLY",
+    "DO_NOT_START_UNIFIED_TASK1_BEFORE_TASK0_INDEPENDENT_ACCEPTANCE"
+  ]
 }
