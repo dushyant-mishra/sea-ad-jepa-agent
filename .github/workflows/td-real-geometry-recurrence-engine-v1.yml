@@ -8,6 +8,7 @@ on:
     paths:
       - 'scripts/v5/td_real_geometry_recurrence_engine_v1.py'
       - 'tests/v5/test_td_real_geometry_recurrence_engine_v1.py'
+      - 'tests/v5/test_td_real_geometry_recurrence_engine_v1_hostile.py'
       - '.github/workflows/td-real-geometry-recurrence-engine-v1.yml'
 
 jobs:
@@ -21,8 +22,8 @@ jobs:
         with:
           python-version: '3.11.17'
       - run: python -m pip install pytest==9.1.1 numpy
-      - name: Run geometry recurrence known-truth tests
-        run: python -m pytest -q tests/v5/test_td_real_geometry_recurrence_engine_v1.py
+      - name: Run geometry recurrence known-truth and hostile tests
+        run: python -m pytest -q tests/v5/test_td_real_geometry_recurrence_engine_v1.py tests/v5/test_td_real_geometry_recurrence_engine_v1_hostile.py
       - name: Authority guard
         run: |
           echo HUMAN_VALUES_DOWNLOADED=false
