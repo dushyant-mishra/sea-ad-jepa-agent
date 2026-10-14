@@ -17,6 +17,7 @@ MATRIX = RESULT_DIR / "PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1.json"
 UNRESOLVED = RESULT_DIR / "PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json"
 DECOMPOSITION = RESULT_DIR / "PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json"
 MACHA_STREAMS = RESULT_DIR / "PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json"
+TAXONOMY = RESULT_DIR / "TASK0_MIGRATION_TAXONOMY_V1.json"
 
 
 def _load(path: Path):
@@ -31,6 +32,27 @@ def test_required_task0_outputs_validate():
     assert report["decomposition_child_count"] >= 8
     assert report["macha_stream_artifact_count"] >= 8
     assert report["unresolved_count"] >= 8
+
+
+def test_validator_enum_exactly_matches_controlling_migration_taxonomy():
+    taxonomy = _load(TAXONOMY)
+    assert taxonomy["schema"] == "TASK0_MIGRATION_TAXONOMY_V1"
+    assert taxonomy["global_authority"] == GLOBAL_AUTHORITY
+    assert taxonomy["controlling_plan_amendment_head"] == "5b6bf07e7d8b69b286ea430b09765a5ee4743325"
+    assert set(taxonomy["allowed_migration_classes"]) == set(MIGRATION_CLASSES)
+    assert len(taxonomy["allowed_migration_classes"]) == len(MIGRATION_CLASSES)
+
+
+def test_validator_rejects_undeclared_migration_class_extension(tmp_path: Path):
+    matrix = _load(MATRIX)
+    unresolved = _load(UNRESOLVED)
+    matrix["artifacts"][0]["migration_class"] = "UNDECLARED_MIGRATION_CLASS"
+    bad_matrix = tmp_path / "PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1.json"
+    ledger = tmp_path / "PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json"
+    bad_matrix.write_text(json.dumps(matrix), encoding="utf-8")
+    ledger.write_text(json.dumps(unresolved), encoding="utf-8")
+    with pytest.raises(ValueError, match="invalid migration_class"):
+        validate_migration_outputs(bad_matrix, ledger)
 
 
 def test_two_macha_custody_streams_are_machine_traceable():
