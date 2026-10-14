@@ -5,6 +5,7 @@ import importlib.util
 import inspect
 import json
 from pathlib import Path
+import tempfile
 
 import numpy as np
 import pytest
@@ -248,16 +249,17 @@ def test_finalizer_binds_exact_v79_history_and_keeps_authority_off(tmp_path):
         F.write_transport_once(path, receipt)
 
 
-def test_finalizer_refuses_v79_binding_drift(tmp_path):
+def test_finalizer_refuses_v79_binding_drift():
     B = _benchmark()
     F = _finalizer()
     contract = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
     contract["v79_immutable_binding"]["historical_result"] = "PASS"
-    bad = tmp_path / "bad.json"
-    bad.write_text(json.dumps(contract), encoding="utf-8")
-    with pytest.raises(ValueError, match="V79|binding|historical"):
-        F.build_package_receipt(
-            worlds=B.build_sparse_positive_worlds(seed_root=41000000),
-            repo_root=Path.cwd(),
-            contract_path=bad,
-        )
+    with tempfile.TemporaryDirectory(dir=Path.cwd()) as td:
+        bad = Path(td) / "bad.json"
+        bad.write_text(json.dumps(contract), encoding="utf-8")
+        with pytest.raises(ValueError, match="V79|binding|historical"):
+            F.build_package_receipt(
+                worlds=B.build_sparse_positive_worlds(seed_root=41000000),
+                repo_root=Path.cwd(),
+                contract_path=bad,
+            )
