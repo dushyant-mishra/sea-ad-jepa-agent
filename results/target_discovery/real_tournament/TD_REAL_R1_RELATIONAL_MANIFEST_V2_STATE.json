@@ -1,0 +1,21 @@
+{
+  "schema": "TD_REAL_R1_RELATIONAL_MANIFEST_V2_STATE",
+  "date": "2026-10-14",
+  "candidate_id": "C2_RELATIONAL_SHARED",
+  "relation_family": "SCALE_FREE_TRIPLET_ORDER",
+  "relation_object": "ANCHORED_CELL_TRIPLET_ORDER",
+  "molecular_ruler": "TIE_AWARE_PAIR_ORDER_CONCORDANCE_ON_REPAIRED_41K_ADDRESS_PAIRS",
+  "required_sources": ["HVS", "NPH52", "SEA_AD"],
+  "scale_class": "GLOBAL_SCALE_FREE",
+  "recurrence_statistic": "DONOR_MEAN_EXACT_TRIPLET_ORDER_AGREEMENT",
+  "adverse_null_summary_rule": "PER_DONOR_UPPER_QUANTILE_AT_EXTERNALLY_FROZEN_GATE_ALPHA",
+  "substantive_reference_rule": "SEPARATELY_QUALIFIED_SAME_METRIC_U_REFIT_REQUIRED",
+  "human_pass_authorized": false,
+  "real_tournament_authorized": false,
+  "target_selection_authorized": false,
+  "representation_selection_authorized": false,
+  "td60_authorized": false,
+  "stage4_authorized": false,
+  "training_authorized": false,
+  "terminal": "R1_RELATIONAL_OBJECT_REPAIRED__HUMAN_PASS_UNAUTHORIZED__REAL_TD_OFF"
+}
