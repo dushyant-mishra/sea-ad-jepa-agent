@@ -2,15 +2,31 @@
 
 Status: `OUTCOME_BLIND_HISTORY_CLASSIFICATION__NO_RELATIONAL_BIOLOGICAL_AUTHORITY`
 
-Purpose: determine what the historical graph/rare-tail lanes do and do not answer for current `R1_SCALE_FREE_RELATIONAL_RECURRENCE` and `R4_INCREMENT_OVER_C1_SHARED` before any new executor is implemented.
+Purpose: determine what the historical graph/rare-tail/relational lanes do and do not answer for current `R1_SCALE_FREE_RELATIONAL_RECURRENCE` and `R4_INCREMENT_OVER_C1_SHARED` before any new executor is implemented.
 
 ## Classification
 
 Current R1/R4 state:
 
-`OPEN_CURRENT_ESTIMAND__HISTORICAL_CONTROL_PRIORS_REUSABLE__OLD_GRAPH_RESULTS_NOT_CURRENT_RELATIONAL_AUTHORITY`
+`OPEN_CURRENT_ESTIMAND__STRONG_HISTORICAL_SCALE_FREE_PRIOR__CONTROL_PRIORS_REUSABLE__OLD_RESULTS_NOT_CURRENT_RELATIONAL_AUTHORITY`
 
 ## Historical facts that constrain the new work
+
+### Historical TD56 / TD57B / TD57C / TD59 relational sequence
+
+The corrected-replay interpretation prefreeze records the historical relational facts explicitly:
+
+- TD56S: positive disjoint-view within-donor relational geometry in HVS/NPH52/SEA_AD;
+- TD57B: **24/24 prospective PASS** for donor-recurrent scale-free triplet order;
+- TD57C: immutable FAIL `NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL` for nearest-third fine locality;
+- TD59: **24/24 prospective PASS** on the nearest-half mesoscale screen, but nearest-half was explicitly not a production constant;
+- TD60 was prospectively frozen but never qualifyingly executed.
+
+The interpretation contract also froze that no new locality fractions may be searched on the same archive and that TD57C cannot be rescued by reinterpretation. A future corrected TD57C PASS would be a new divergence/hypothesis requiring independent prospective confirmation, not a rewrite of the historical FAIL.
+
+These are strong historical priors, but they are not current biological authority because the current lane has repaired provenance/gene-address semantics and a new candidate contract. The corrected replay itself was not authorized by that interpretation document.
+
+Consequence: current R1 should preserve the **broad/scale-free** relational question as the primary relational incumbent and must not mine or reopen fine-local nearest-third structure. Mesoscale history may guide predeclared strata only under a new independent contract; historical nearest-half cannot become a production constant.
 
 ### Stage30/31/35 graph controls
 
@@ -44,19 +60,20 @@ These lanes can inform hostile controls and non-compensation. They cannot be pro
 
 R1 must not ask whether STRING/GRN topology improves a disease-prediction benchmark. Its current question is narrower and more primitive:
 
-> Do the exact predeclared relational quantities recur across lawful disjoint views more strongly than a donor-preserving relation-label null, at each required predeclared scale/source stratum?
+> Do the exact predeclared broad/scale-free relational quantities recur across lawful disjoint views more strongly than a donor-preserving relation-label null, at each required predeclared source/scale stratum?
 
 Prospective constraints:
 
-1. relational pair/set identities and scale strata are frozen before values;
-2. no nearest-fraction, locality-radius, pair-set or graph-source mining after outcomes;
-3. observed recurrence uses the same pair identities in both lawful views;
-4. the adverse donor-preserving null retains donor/support structure while breaking the declared relation identity;
-5. historical graph/random controls motivate this null but do not set its numerical threshold;
-6. PASS requires recurrence beyond the adverse null bound and beyond separately qualified refit variability;
-7. fine-scale FAIL remains fine-scale only; source FAIL remains source-scoped;
-8. unresolved relation/support states are abstention/NOT_ESTIMABLE, not zero relation;
-9. R1 does not itself establish an increment over C1—that is R4.
+1. broad/scale-free is the historical incumbent; fine nearest-third is closed and cannot be mined/reopened on the same evidence;
+2. relational unit identities and any allowed scale strata are frozen before values;
+3. no nearest-fraction, locality-radius, pair-set or graph-source mining after outcomes;
+4. observed recurrence uses the same relational identities in both lawful views;
+5. the adverse donor-preserving null retains donor/support structure while breaking the declared relation identity;
+6. historical graph/random controls motivate this null but do not set its numerical threshold;
+7. PASS requires recurrence beyond the adverse null bound and beyond separately qualified refit variability;
+8. fine-scale historical FAIL remains fine-scale only; source FAIL remains source-scoped;
+9. unresolved relation/support states are abstention/NOT_ESTIMABLE, not zero relation;
+10. R1 does not itself establish an increment over C1—that is R4.
 
 ## Consequences for R4
 
@@ -80,16 +97,19 @@ Prospective constraints:
 
 R1 still requires the **candidate-specific relational manifest** that freezes:
 
-- relational unit IDs / pair IDs;
-- scale/source strata;
+- relational unit IDs / pair or triplet IDs;
+- whether the primary object is pairwise geometry, triplet order, or another already-authorized scale-free object;
+- required source/scale strata without reopening historical fine-local mining;
 - recurrence statistic and orientation;
 - lawful view construction;
 - donor-preserving null permutation unit;
 - support/abstention semantics.
+
+The historical 24/24 TD57B result is a strong reason to preserve scale-free triplet order as a candidate incumbent, but it is not enough to silently copy its exact panel into the repaired current tournament. The current manifest must bind the repaired molecular addresses and evidence rights prospectively.
 
 Without that static manifest, a generic R1 executor would leave too many degrees of freedom and is not yet honest to implement.
 
 R4's generic matched-increment mechanics can be implemented later, but biological execution remains stage-dependent on independent C1 qualification and commensurate reference artifacts.
 
 Terminal:
-`OLD_GRAPH_AND_RARE_LANES_CLASSIFIED__R1_ESTIMAND_REMAINS_OPEN__R4_REQUIRES_QUALIFIED_C1__NO_RELATIONAL_BIOLOGICAL_AUTHORITY`
+`HISTORICAL_SCALE_FREE_RELATIONAL_PRIOR_PRESERVED__FINE_LOCALITY_REMAINS_CLOSED__R1_REQUIRES_REPAIRED_STATIC_MANIFEST__R4_REQUIRES_QUALIFIED_C1__NO_RELATIONAL_BIOLOGICAL_AUTHORITY`
