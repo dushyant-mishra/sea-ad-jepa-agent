@@ -1,0 +1,144 @@
+{
+  "schema": "DOWNSTREAM_CERTIFICATION_SCHEMA_BLUEPRINT_V1",
+  "date": "2026-10-14",
+  "authority": "ANALYSIS_ONLY__TASK8_SCHEMA_BLUEPRINT__NO_DOWNSTREAM_CERTIFICATION",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "required_receipt_fields": [
+    "receipt_schema",
+    "receipt_identity",
+    "target_qualification_bundle_digest",
+    "target_qualification_bundle_terminal_state",
+    "execution_manifest_digest",
+    "qualification_registry_digest",
+    "inherited_obligations",
+    "obligation_test_receipts",
+    "observation_contract_digest",
+    "evidence_rights_contract_digest",
+    "support_universe_digest",
+    "estimability_scope_digest",
+    "normalization_library_contract_digest",
+    "falsifier_set_digest",
+    "negative_control_set_digest",
+    "target_semantics_digest",
+    "representation_semantics_digest",
+    "multimodal_provenance_digest",
+    "teacher_construction_digest",
+    "student_restriction_digest",
+    "evaluation_contract_digest",
+    "actual_downstream_access_receipt_digest",
+    "downstream_output_digest",
+    "known_limitations",
+    "forbidden_interpretations",
+    "qualification_stage",
+    "active_lineage_status",
+    "authority_scope",
+    "parent_receipt_digests"
+  ],
+  "exact_consumption_laws": [
+    "RECOMPUTE_EXACT_TQB_DIGEST",
+    "NO_SUPPORT_SCOPE_WIDENING",
+    "NO_ESTIMABILITY_SCOPE_WIDENING",
+    "NO_TARGET_OR_RELATION_SEMANTIC_SUBSTITUTION",
+    "NO_OBSERVATION_OR_EVIDENCE_RIGHTS_SUBSTITUTION",
+    "NO_PRODUCER_EXECUTOR_REFERENCE_OR_REPRESENTATION_SUBSTITUTION",
+    "NO_DROPPED_FALSIFIER_OR_NEGATIVE_CONTROL",
+    "EVERY_MANDATORY_INHERITED_OBLIGATION_HAS_AN_EXERCISED_TEST_RECEIPT",
+    "TARGET_NONE_REMAINS_TARGET_NONE_DOWNSTREAM"
+  ],
+  "historical_hostile_obligations": [
+    "NORMALIZATION_LEAKAGE",
+    "QUERY_LEAKAGE",
+    "HIDDEN_TOTAL_LEAKAGE",
+    "SUPPORT_LEAKAGE",
+    "WRONG_CELL_PAIRING",
+    "DONOR_SOURCE_LEAKAGE",
+    "FAKE_RICH_TEACHER",
+    "TEACHER_STUDENT_ORACLE_CONFUSION",
+    "EVIDENCE_STARVATION",
+    "TARGET_SEMANTICS_DRIFT",
+    "STABLE_SUBSPACE_VS_UNSTABLE_AXIS",
+    "UNLAWFUL_SUPPORT_WIDENING"
+  ],
+  "f6_representation_obligations": [
+    "AXIS_SEMANTICS_SUBSTITUTED_FOR_SUBSPACE",
+    "UNIVERSAL_TECH_TRANSFER_CLAIMED_FROM_PARTIAL_COVERAGE",
+    "UNAVAILABLE_MATRICES_DROPPED_FROM_LIMITATION_SCOPE",
+    "SOURCE_ACQUISITION_SIGNAL_DECLARED_PURE_TECHNICAL_WITHOUT_QUALIFICATION"
+  ],
+  "f7_multimodal_obligations": [
+    "SAME_AND_SEPARATE_NUCLEUS_CONFLATED",
+    "RNA_DERIVED_EDGE_USED_AS_INDEPENDENT_REGULATORY_TRUTH",
+    "NEAREST_GENE_PROMOTED_TO_CAUSAL_TARGET",
+    "INCOMPLETE_SCENIC_WORK_PROMOTED",
+    "STRUCTURALLY_IDENTICAL_GRAPH_CONTROL_ACCEPTED"
+  ],
+  "f9_information_channel_obligations": [
+    "DENOMINATOR_SOURCE_SHORTCUT_UNTESTED",
+    "ADDRESS_PARITY_TREATED_AS_EVIDENCE_PARITY",
+    "NONESTIMABLE_TARGET_ZERO_FILLED",
+    "METRIC_USED_TO_CERTIFY_ABSENCE_OF_CHANNEL_IT_IS_INVARIANT_TO"
+  ],
+  "teacher_student_minimum_bindings": {
+    "teacher": [
+      "measured_target_object_identity",
+      "teacher_observation_scope",
+      "teacher_input_evidence_identity",
+      "teacher_normalization_contract",
+      "teacher_hidden_oracle_access_forbidden",
+      "teacher_construction_code_identity"
+    ],
+    "student": [
+      "student_allowed_input_scope",
+      "queried_value_access_policy",
+      "student_evidence_restriction_identity",
+      "student_normalization_contract",
+      "student_hidden_oracle_access_forbidden",
+      "student_construction_code_identity"
+    ],
+    "evaluation": [
+      "pairing_identity",
+      "donor_source_split_identity",
+      "metric_identity",
+      "support_estimability_scope",
+      "negative_control_set",
+      "representation_scope"
+    ]
+  },
+  "fail_closed_cases": [
+    "TQB_DIGEST_MISMATCH",
+    "TQB_PARENT_MOVED_OR_REVOKED",
+    "INHERITED_OBLIGATION_MISSING",
+    "INHERITED_OBLIGATION_UNEXERCISED",
+    "SUPPORT_OR_ESTIMABILITY_SCOPE_WIDENED",
+    "TARGET_OR_RELATION_SEMANTICS_CHANGED",
+    "TEACHER_NOT_CONSTRUCTED_FROM_DECLARED_MEASURED_TARGET",
+    "STUDENT_RECEIVES_FORBIDDEN_QUERY_OR_ORACLE_INFORMATION",
+    "DONOR_OR_SOURCE_LEAKAGE",
+    "REPRESENTATION_SUBSPACE_LIMIT_DROPPED",
+    "MULTIMODAL_PROVENANCE_ERASED",
+    "NORMALIZATION_SOURCE_SHORTCUT_UNTESTED",
+    "NONESTIMABLE_ZERO_FILL",
+    "METRIC_BLINDNESS_LIMITATION_DROPPED"
+  ],
+  "stage_law": {
+    "successful_stage": "DOWNSTREAM_CERTIFIED",
+    "does_not_imply_training_eligible": true,
+    "runtime_eligibility_receipt_required_before_training_eligible": true,
+    "does_not_imply_training_authorized": true
+  },
+  "runtime_bridge": {
+    "receipt": "RUNTIME_ELIGIBILITY_RECEIPT_V1",
+    "required_after_downstream_certification": true,
+    "minimum_requirements": [
+      "OPTIMIZER_COMPLETION_BEFORE_EMA",
+      "NO_EMA_ADVANCE_ON_REJECTED_OR_INCOMPLETE_UPDATE",
+      "TYPED_PHYSICAL_CHECKPOINT_RECEIPT_BINDING",
+      "RUNTIME_SOURCE_PROVENANCE_BINDING",
+      "COORDINATE_VALUE_COUPLING",
+      "Q_SAFETY_FINAL_JOIN_EXECUTION"
+    ],
+    "cannot_expand_scientific_scope": true
+  },
+  "withdrawn_finding": "FULL104_G_WITHDRAWN__DO_NOT_RESURRECT",
+  "terminal": "TASK8_DOWNSTREAM_SCHEMA_BLUEPRINT_FROZEN__EXACT_TQB_CONSUMPTION_AND_INHERITED_OBLIGATIONS_REQUIRED__NO_CERTIFICATION_ISSUED"
+}
