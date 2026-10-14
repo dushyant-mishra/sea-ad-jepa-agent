@@ -6,6 +6,8 @@ import hashlib
 import json
 from collections.abc import Mapping
 
+from scripts.v5 import td_execution_manifest_v1 as M
+
 
 class TargetBundleError(ValueError):
     pass
@@ -23,6 +25,15 @@ _POLICY_KEYS = {
     "observation_operator_contract_sha256",
 }
 _GATE_STATUSES = {"PASS", "FAIL", "NOT_ESTIMABLE", "NUMERICAL_FAILURE"}
+_SELECTED_TERMINALS = {
+    "SINGLE_CANDIDATE_ELIGIBLE_FOR_PROTECTED_CONFIRMATION__NO_TARGET_AUTHORITY",
+}
+_NONE_TERMINALS = {
+    "NO_TARGET_WINNER__REDESIGN_BEFORE_PROTECTED_CONFIRMATION",
+    "FOUNDATION_CANDIDATE_UNRESOLVED__CONTINUE_TESTABLE_ROUTES__NO_TARGET_AUTHORITY",
+    "MULTIPLE_QUALIFIED_TARGETS__PROTECTED_HEAD_TO_HEAD_REQUIRED__NO_TARGET_AUTHORITY",
+    "NUMERICAL_FAILURE__REPAIR_BEFORE_TD_ROUTING__NO_TARGET_AUTHORITY",
+}
 _AUTHORITY = {
     "target_selection": False,
     "representation_selection": False,
@@ -40,6 +51,17 @@ def _exact_nonempty(value: object, label: str) -> str:
     if not isinstance(value, str) or not value or value != value.strip() or "\0" in value:
         raise TargetBundleError(f"{label} must be an exact nonempty trimmed NUL-free string")
     return value
+
+
+def _validate_selection_terminal(selection: object, terminal: object) -> None:
+    if selection == "SELECTED":
+        if terminal not in _SELECTED_TERMINALS:
+            raise TargetBundleError("SELECTED tournament selection is incoherent with tournament terminal")
+    elif selection == "NONE":
+        if terminal not in _NONE_TERMINALS:
+            raise TargetBundleError("NONE tournament selection is incoherent with tournament terminal")
+    else:
+        raise TargetBundleError("tournament selection must be NONE or SELECTED")
 
 
 def _canonical_payload(bundle: Mapping[str, object]) -> dict:
@@ -65,19 +87,10 @@ def _validate_policy_identities(policy_identities: Mapping[str, object]) -> dict
 
 
 def _validate_manifest(manifest: Mapping[str, object]) -> dict:
-    if not isinstance(manifest, Mapping) or manifest.get("schema") != "JEPA_TD_EXECUTION_MANIFEST_V1":
-        raise TargetBundleError("execution manifest schema mismatch")
-    if manifest.get("mode") not in {"SYNTHETIC_REHEARSAL", "HUMAN_TD"}:
-        raise TargetBundleError("execution manifest mode invalid")
-    if not _is_sha256(manifest.get("registry_sha256")):
-        raise TargetBundleError("execution manifest registry digest invalid")
-    gates = manifest.get("gates")
-    if not isinstance(gates, Mapping) or not gates:
-        raise TargetBundleError("execution manifest gate set missing")
-    authority = manifest.get("authority")
-    if not isinstance(authority, Mapping) or any(value is not False for value in authority.values()):
-        raise TargetBundleError("execution manifest authority must remain closed")
-    return copy.deepcopy(dict(manifest))
+    try:
+        return M.validate_execution_manifest(manifest)
+    except M.ManifestError as exc:
+        raise TargetBundleError(f"execution manifest authentication failed: {exc}") from exc
 
 
 def _validate_gate_receipts(gate_receipts: Mapping[str, object], expected_gates: set[str]) -> dict:
@@ -105,9 +118,8 @@ def build_target_qualification_bundle(
     if not isinstance(tournament_output, Mapping) or tournament_output.get("schema") != "JEPA_TD_AUTHENTICATED_TOURNAMENT_OUTPUT_V1":
         raise TargetBundleError("authenticated tournament output schema mismatch")
     selection = tournament_output.get("selection")
-    if selection not in {"NONE", "SELECTED"}:
-        raise TargetBundleError("tournament selection must be NONE or SELECTED")
     terminal = _exact_nonempty(tournament_output.get("terminal"), "tournament terminal")
+    _validate_selection_terminal(selection, terminal)
     if not _is_sha256(tournament_output.get("receipt_sha256")):
         raise TargetBundleError("tournament output receipt digest invalid")
 
@@ -152,7 +164,7 @@ def build_target_qualification_bundle(
         "gate_receipts": receipts,
         "policy_identities": policies,
         "known_limitations": list(known_limitations),
-        "downstream_human_eligible": bool(manifest["mode"] == "HUMAN_TD"),
+        "downstream_human_eligible": bool(manifest["mode"] == "HUMAN_TD" and selection == "SELECTED"),
         "authority": dict(_AUTHORITY),
     }
     bundle["bundle_sha256"] = compute_bundle_sha256(bundle)
@@ -165,7 +177,18 @@ def validate_target_qualification_bundle(bundle: Mapping[str, object]) -> dict:
     digest = bundle.get("bundle_sha256")
     if not _is_sha256(digest) or compute_bundle_sha256(bundle) != digest:
         raise TargetBundleError("target qualification bundle digest mismatch")
-    _exact_nonempty(bundle.get("tournament_terminal"), "tournament terminal")
+    terminal = _exact_nonempty(bundle.get("tournament_terminal"), "tournament terminal")
+    selection = bundle.get("selection")
+    _validate_selection_terminal(selection, terminal)
+    selected = bundle.get("selected_candidate")
+    addresses = bundle.get("canonical_addresses")
+    if selection == "NONE":
+        if selected is not None or addresses != []:
+            raise TargetBundleError("NONE bundle cannot carry selected candidate or target addresses")
+    else:
+        if not isinstance(selected, str) or not selected or not isinstance(addresses, list) or not addresses:
+            raise TargetBundleError("SELECTED bundle requires candidate identity and target addresses")
+
     manifest = _validate_manifest(bundle.get("execution_manifest"))
     if bundle.get("execution_mode") != manifest["mode"] or bundle.get("registry_sha256") != manifest["registry_sha256"]:
         raise TargetBundleError("target qualification bundle manifest binding mismatch")
@@ -176,6 +199,7 @@ def validate_target_qualification_bundle(bundle: Mapping[str, object]) -> dict:
     authority = bundle.get("authority")
     if not isinstance(authority, Mapping) or set(authority) != set(_AUTHORITY) or any(value is not False for value in authority.values()):
         raise TargetBundleError("target qualification bundle authority must remain closed")
-    if bundle.get("execution_mode") != "HUMAN_TD" and bundle.get("downstream_human_eligible") is not False:
-        raise TargetBundleError("non-human execution bundle cannot be human-downstream eligible")
+    expected_human = bool(manifest["mode"] == "HUMAN_TD" and selection == "SELECTED")
+    if bundle.get("downstream_human_eligible") is not expected_human:
+        raise TargetBundleError("downstream human eligibility is incoherent with manifest mode and target selection")
     return copy.deepcopy(dict(bundle))
