@@ -1,0 +1,31 @@
+name: TD real G2 content decision V2
+
+on:
+  push:
+    branches:
+      - fix/td-real-g2-policy-status-v2-20261014
+  pull_request:
+    paths:
+      - 'scripts/v5/td_real_g2_content_decision_v1.py'
+      - 'scripts/v5/td_real_g2_content_decision_v2.py'
+      - 'tests/v5/test_td_real_g2_content_decision_v1.py'
+      - 'tests/v5/test_td_real_g2_content_decision_v2.py'
+      - '.github/workflows/td-real-g2-content-decision-v2.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1 numpy==2.4.6 scipy==1.15.3
+      - name: Run inherited G2 V1 plus V2 hostile repair tests
+        run: >-
+          python -m pytest -q
+          tests/v5/test_td_real_g2_content_decision_v1.py
+          tests/v5/test_td_real_g2_content_decision_v2.py
+      - name: Authority guard
+        run: |
+          ! grep -R "TARGET_WINNER_\|REAL_TRAINING_ON\|STAGE4_AUTHORIZED" scripts/v5/td_real_g2_content_decision_v2.py 2>/dev/null
