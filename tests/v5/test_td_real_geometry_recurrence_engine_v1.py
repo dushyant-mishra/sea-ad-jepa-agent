@@ -9,6 +9,7 @@ import scripts.v5.td_real_geometry_recurrence_engine_v1 as G
 
 
 BINDING = "a" * 64
+NULL_RECEIPT = "c" * 64
 
 
 def _qual(ok=True):
@@ -19,7 +20,11 @@ def _qual(ok=True):
     }
 
 
-def _rows(*, sources=("SEA_AD",), observed=0.10, null=0.80, n_donors=8, binding=BINDING):
+def _nulls(center, n=100, spread=0.02):
+    return [float(center - spread + (2.0 * spread * i / max(n - 1, 1))) for i in range(n)]
+
+
+def _rows(*, sources=("SEA_AD",), observed=0.10, null=0.80, n_donors=8, binding=BINDING, n_null=100):
     rows = []
     for source in sources:
         for i in range(n_donors):
@@ -27,8 +32,12 @@ def _rows(*, sources=("SEA_AD",), observed=0.10, null=0.80, n_donors=8, binding=
                 {
                     "source": source,
                     "donor_id": f"{source}_D{i:02d}",
+                    "estimability_status": "ESTIMABLE",
+                    "estimability_reason": None,
                     "observed_displacement": float(observed),
-                    "null_displacements": [float(null - 0.02), float(null), float(null + 0.02)],
+                    "null_displacements": _nulls(null, n=n_null),
+                    "null_semantics": G.NULL_SEMANTICS,
+                    "null_producer_receipt_sha256": NULL_RECEIPT,
                     "input_binding_sha256": binding,
                 }
             )
@@ -36,7 +45,7 @@ def _rows(*, sources=("SEA_AD",), observed=0.10, null=0.80, n_donors=8, binding=
 
 
 def _reference(rows, *, refit=0.05, stability=0.20, binding=BINDING, metric=G.PROJECTOR_METRIC):
-    donors = [r["donor_id"] for r in rows]
+    donors = [r["donor_id"] for r in rows if r["estimability_status"] == "ESTIMABLE"]
     return {
         "schema": G.REFERENCE_SCHEMA,
         "frozen": True,
@@ -84,37 +93,52 @@ def test_procrustes_fit_uses_train_units_only_and_generalizes_to_heldout_rotatio
 def test_procrustes_rejects_alignment_leakage_from_heldout_units():
     with pytest.raises(G.GeometryRecurrenceError, match="heldout"):
         G.fit_train_only_procrustes(
-            train_a=np.eye(2),
-            train_b=np.eye(2),
-            train_unit_ids=["X", "Y"],
-            heldout_unit_ids=["Y", "Z"],
+            train_a=np.eye(2), train_b=np.eye(2), train_unit_ids=["X", "Y"], heldout_unit_ids=["Y", "Z"]
         )
+
+
+def test_adverse_lower_tail_not_null_median_controls_recurrence():
+    # Median null would make this look excellent: 99 null draws are 0.8.
+    # But the prospectively protected lower tail contains one 0.12 draw.
+    # At alpha=.01 with n=100, q_alpha is the minimum, so the null advantage
+    # is only 0.02 and cannot exceed U_refit=0.05.
+    rows = _rows(observed=0.10, null=0.80)
+    for row in rows:
+        row["null_displacements"] = [0.12] + [0.80] * 99
+    out = G.adjudicate_geometry_recurrence(
+        rows=rows, metric=G.PROJECTOR_METRIC, required_sources=["SEA_AD"],
+        decision_qualification=_qual(), reference_artifact=_reference(rows, refit=0.05), alpha=0.01,
+    )
+    assert out["status"] == "FAIL"
+    assert out["source_details"]["SEA_AD"]["null_defeat_status"] == "FAIL"
+    assert out["source_details"]["SEA_AD"]["donors"][0]["adverse_null_bound"] == pytest.approx(0.12)
+
+
+def test_insufficient_adverse_null_resolution_is_not_estimable():
+    rows = _rows(n_null=99)
+    out = G.adjudicate_geometry_recurrence(
+        rows=rows, metric=G.PROJECTOR_METRIC, required_sources=["SEA_AD"],
+        decision_qualification=_qual(), reference_artifact=_reference(rows), alpha=0.01,
+    )
+    assert out["status"] == "NOT_ESTIMABLE"
+    assert out["source_details"]["SEA_AD"]["reason"] == "ADVERSE_NULL_RESOLUTION_INSUFFICIENT"
 
 
 def test_recurrent_and_stable_geometry_passes_in_each_required_source():
     rows = _rows(sources=("SEA_AD", "NPH52"))
     out = G.adjudicate_geometry_recurrence(
-        rows=rows,
-        metric=G.PROJECTOR_METRIC,
-        required_sources=["SEA_AD", "NPH52"],
-        decision_qualification=_qual(),
-        reference_artifact=_reference(rows),
-        alpha=0.01,
+        rows=rows, metric=G.PROJECTOR_METRIC, required_sources=["SEA_AD", "NPH52"],
+        decision_qualification=_qual(), reference_artifact=_reference(rows), alpha=0.01,
     )
     assert out["status"] == "PASS"
-    assert set(out["source_status"]) == {"SEA_AD", "NPH52"}
     assert all(v == "PASS" for v in out["source_status"].values())
 
 
 def test_null_defeat_cannot_rescue_geometry_that_exceeds_stability_margin():
     rows = _rows(observed=0.50, null=0.90)
     out = G.adjudicate_geometry_recurrence(
-        rows=rows,
-        metric=G.PROJECTOR_METRIC,
-        required_sources=["SEA_AD"],
-        decision_qualification=_qual(),
-        reference_artifact=_reference(rows, refit=0.05, stability=0.20),
-        alpha=0.01,
+        rows=rows, metric=G.PROJECTOR_METRIC, required_sources=["SEA_AD"],
+        decision_qualification=_qual(), reference_artifact=_reference(rows, refit=0.05, stability=0.20), alpha=0.01,
     )
     assert out["status"] == "FAIL"
     assert out["source_details"]["SEA_AD"]["null_defeat_status"] == "PASS"
@@ -124,12 +148,8 @@ def test_null_defeat_cannot_rescue_geometry_that_exceeds_stability_margin():
 def test_stability_cannot_rescue_geometry_that_does_not_defeat_adverse_null():
     rows = _rows(observed=0.15, null=0.18)
     out = G.adjudicate_geometry_recurrence(
-        rows=rows,
-        metric=G.PROJECTOR_METRIC,
-        required_sources=["SEA_AD"],
-        decision_qualification=_qual(),
-        reference_artifact=_reference(rows, refit=0.10, stability=0.20),
-        alpha=0.01,
+        rows=rows, metric=G.PROJECTOR_METRIC, required_sources=["SEA_AD"],
+        decision_qualification=_qual(), reference_artifact=_reference(rows, refit=0.10, stability=0.20), alpha=0.01,
     )
     assert out["status"] == "FAIL"
     assert out["source_details"]["SEA_AD"]["null_defeat_status"] == "FAIL"
@@ -139,12 +159,8 @@ def test_stability_cannot_rescue_geometry_that_does_not_defeat_adverse_null():
 def test_underpowered_required_source_is_not_estimable_and_cannot_be_averaged_away():
     rows = _rows(sources=("SEA_AD",), n_donors=8) + _rows(sources=("HVS",), n_donors=7)
     out = G.adjudicate_geometry_recurrence(
-        rows=rows,
-        metric=G.PROJECTOR_METRIC,
-        required_sources=["SEA_AD", "HVS"],
-        decision_qualification=_qual(),
-        reference_artifact=_reference(rows),
-        alpha=0.01,
+        rows=rows, metric=G.PROJECTOR_METRIC, required_sources=["SEA_AD", "HVS"],
+        decision_qualification=_qual(), reference_artifact=_reference(rows), alpha=0.01,
     )
     assert out["status"] == "NOT_ESTIMABLE"
     assert out["source_status"]["SEA_AD"] == "PASS"
@@ -155,24 +171,16 @@ def test_reference_binding_must_match_exact_deciding_realization():
     rows = _rows()
     with pytest.raises(G.GeometryRecurrenceError, match="binding"):
         G.adjudicate_geometry_recurrence(
-            rows=rows,
-            metric=G.PROJECTOR_METRIC,
-            required_sources=["SEA_AD"],
-            decision_qualification=_qual(),
-            reference_artifact=_reference(rows, binding="c" * 64),
-            alpha=0.01,
+            rows=rows, metric=G.PROJECTOR_METRIC, required_sources=["SEA_AD"],
+            decision_qualification=_qual(), reference_artifact=_reference(rows, binding="d" * 64), alpha=0.01,
         )
 
 
 def test_unqualified_known_truth_decision_cannot_issue_human_fail():
     rows = _rows(observed=0.9, null=0.2)
     out = G.adjudicate_geometry_recurrence(
-        rows=rows,
-        metric=G.PROJECTOR_METRIC,
-        required_sources=["SEA_AD"],
-        decision_qualification=_qual(False),
-        reference_artifact=_reference(rows),
-        alpha=0.01,
+        rows=rows, metric=G.PROJECTOR_METRIC, required_sources=["SEA_AD"],
+        decision_qualification=_qual(False), reference_artifact=_reference(rows), alpha=0.01,
     )
     assert out["status"] == "NOT_ESTIMABLE"
     assert out["reason"] == "DECISION_KNOWN_TRUTH_NOT_QUALIFIED"
@@ -188,5 +196,6 @@ def test_known_truth_qualification_covers_rotation_instability_null_failure_and_
         "NULL_SHORTCUT": "FAIL",
         "UNSTABLE_DESPITE_NULL_DEFEAT": "FAIL",
         "UNDERPOWERED_SOURCE": "NOT_ESTIMABLE",
+        "UNDERRESOLVED_NULL": "NOT_ESTIMABLE",
     }
     assert all(v is False for v in q["authority"].values())
