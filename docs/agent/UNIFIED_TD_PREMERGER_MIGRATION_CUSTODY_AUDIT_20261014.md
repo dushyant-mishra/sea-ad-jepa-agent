@@ -241,7 +241,12 @@ The prior pre-review implementation head `ce4eacc263b02b1fa15505951d5377ae710e33
 
 A second regression-only RED head `42aac927b3929d0f3f6798446382cce9da665d96` was then frozen. Focused workflow/job `38616574261` / `116033071246` failed at the hostile Task 0 test step, demonstrating the new decomposition and exact-identity bypass tests fail against the old implementation.
 
-The repaired head must receive fresh exact-head GREEN CI and then a fresh independent review. This document is not an independent review verdict.
+Repaired implementation head `4d7a99c4a07ef4ef314b39163ec561c117d7bac2` received exact-head GREEN evidence before this documentation freeze:
+
+- focused Task 0 workflow/job `38616934876` / `116034306973`: **SUCCESS**, `15 passed in 0.06s`;
+- inherited unified synthetic integration workflow/job `38616934888` / `116034309851`: **SUCCESS**.
+
+Because this documentation commit itself advances the branch head, fresh exact-head CI on the final documentation head is still required before independent review. This document is not an independent review verdict.
 
 ## Closure self-audit status
 
@@ -257,7 +262,7 @@ Controller-side audit requirements after F1/F2 repair:
 - candidate/protected outcomes were opened for classification: **NO**
 - global authority changed: **NO**
 
-The remaining required check after repaired exact-head GREEN CI is a **fresh independent Task 0 implementation review**. This controller-side self-audit is not a substitute for that review.
+The remaining required check after final exact-head GREEN CI is a **fresh independent Task 0 implementation review**. This controller-side self-audit is not a substitute for that review.
 
 ## What Task 0 does not authorize
 
@@ -273,4 +278,4 @@ Task 0 does not authorize:
 - Stage4;
 - training eligibility or training authorization.
 
-The next lawful action after repaired exact-head GREEN evidence is to request a fresh independent Task 0 review and stop.
+The next lawful action after final exact-head GREEN evidence is to request a fresh independent Task 0 review and stop.
