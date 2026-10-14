@@ -1,0 +1,103 @@
+{
+  "schema": "DOWNSTREAM_HISTORICAL_EXACT_ASSET_LEDGER_DELTA2_V1",
+  "date": "2026-10-14",
+  "authority": "HISTORICAL_EVIDENCE_CUSTODY_ONLY__NO_DOWNSTREAM_OR_TRAINING_AUTHORITY",
+  "parent_ledger": "results/target_discovery/unified_qualification_v1/DOWNSTREAM_HISTORICAL_EXACT_ASSET_LEDGER_V1.json",
+  "assets": [
+    {
+      "asset_id": "HISTORICAL_TARGET_QUERY_SHARED_IDENTITY_CODE_PATH",
+      "package_ids": ["D", "P"],
+      "commit": "c2bd13e8389dd25dc61612ef2aea88dc53099029",
+      "path": "src/sea_ad_jepa/v4/ipb_jepa.py",
+      "evidence": "BlockPredictor.block_queries(identity_embedding, blocks) averages the supplied gene identity embedding for hidden target addresses; historical runtime passes the online encoder tokenizer gene_identity table.",
+      "supporting_test": "tests/v4/test_stage81a3_ipb_jepa.py",
+      "classification": "HISTORICAL_MECHANIC_AND_OPEN_SHORTCUT_PATH",
+      "retain": [
+        "TARGET_ADDRESS_IDENTITY_IS_EXPLICIT_PREDICTOR_INPUT",
+        "TARGET_IDENTITY_SHORTCUT_MUST_BE_QUALIFIED_NOT_REDISCOVERED",
+        "NO_CLAIM_OF_HIDDEN_EXPRESSION_LEAK_FROM_IDENTITY_PATH_ALONE"
+      ],
+      "future_requirement": "Package D must test fixed/separate address code and identity-only/full comparators under the exact TQB target and current runtime."
+    },
+    {
+      "asset_id": "V5_SEMANTIC_SCOPE_CARRYOVER_AUDIT",
+      "package_ids": ["B", "G", "M", "P"],
+      "branch": "planning/v5-teacher-student-ema-canonical-20260915",
+      "commit": "88c45b97b3e9a4ad3c0fd178c992f844fd58dbab",
+      "path": "docs/agent/V5_SEMANTIC_AND_SCOPE_CARRYOVER_AUDIT_20260915.md",
+      "blob_sha": "99ac33114a29713a55aa7c745566d421ffa1ddb1",
+      "classification": "HISTORICAL_SCOPE_LIMITATION",
+      "retain": [
+        "NAMES_DO_NOT_CREATE_CAUSAL_OR_BIOLOGICAL_AUTHORITY",
+        "COMMON_CORE_SUPPORT_IS_COMPARABILITY_NOT_BIOLOGY_AUTHORITY",
+        "NATIVE_SUPPORT_NE_AUTOMATIC_PRIVATE_BIOLOGY",
+        "DIMENSION_ESTIMAND_AUTHORITY_NE_BASE_TRAINING_ESTIMAND_AUTHORITY",
+        "QUALIFICATION_RANK_CEILING_NE_PRODUCTION_MODEL_WIDTH",
+        "OBSERVATION_FIREWALL_NE_MEASUREMENT_FREE_PROOF"
+      ]
+    },
+    {
+      "asset_id": "V5_PREEXECUTION_HARDCODED_CARRYOVER_NEGATIVE",
+      "package_ids": ["J", "M", "P"],
+      "branch": "planning/v5-teacher-student-ema-canonical-20260915",
+      "commit": "88c45b97b3e9a4ad3c0fd178c992f844fd58dbab",
+      "path": "src/sea_ad_jepa/v5/trainer_preexecution_contract_v2.py",
+      "blob_sha": "8a861f13bc0e020d323803d7949613737078d984",
+      "classification": "SUPERSEDED_PARALLEL_MECHANIC_WITH_REUSABLE_ORDERING",
+      "retain": [
+        "MECHANICS_CHAIN_ORDER",
+        "CRITICAL_TESTS_MUST_EXECUTE_PASS",
+        "NO_FLEX_AFTER_FREEZE_OR_OPTIMIZER_START",
+        "PREEXECUTION_OBJECT_CANNOT_SELF_AUTHORIZE_TRAINING"
+      ],
+      "forbidden_current_authority": [
+        "EXACT_6_BLOCK_ASSUMPTION",
+        "EXACT_48_TENSOR_ASSUMPTION",
+        "PROTECTED_48_NAMES",
+        "HISTORICAL_128X8_REGRESSION_AS_CURRENT_REQUIRED_TEST"
+      ]
+    },
+    {
+      "asset_id": "V5_DEPTH_DERIVED_PROTECTED_REGISTRY_PATTERN",
+      "package_ids": ["J", "L", "M"],
+      "branch": "planning/v5-teacher-student-ema-canonical-20260915",
+      "commit": "88c45b97b3e9a4ad3c0fd178c992f844fd58dbab",
+      "path": "src/sea_ad_jepa/v5/production_protected_registry_authority_v1.py",
+      "blob_sha": "d6b46738a9cd99b5e42f577c934954336c8e7145",
+      "classification": "REUSABLE_SHARED_INFRASTRUCTURE_PATTERN",
+      "retain": [
+        "MODEL_DEPTH_DERIVES_TENSOR_COUNT",
+        "EXACT_DEPTH_X_ROLE_X_PARAMETER_REGISTRY",
+        "CANONICAL_REGISTRY_DIGEST",
+        "TRAINING_AUTHORIZED_FALSE"
+      ]
+    },
+    {
+      "asset_id": "V5_ATOMIC_CHECKPOINT_CURRENT_REGISTRY_PATTERN",
+      "package_ids": ["J", "L", "M", "O", "P"],
+      "branch": "planning/v5-teacher-student-ema-canonical-20260915",
+      "commit": "88c45b97b3e9a4ad3c0fd178c992f844fd58dbab",
+      "path": "src/sea_ad_jepa/v5/atomic_checkpoint_guard_v3.py",
+      "blob_sha": "f1f3ed3b46faa202a9f2131150fae5b1ed14530d",
+      "classification": "REUSABLE_PATTERN_REQUIRING_CURRENT_AUTHORITY_REBINDING",
+      "retain": [
+        "CURRENT_REGISTRY_SHA_BINDING",
+        "GRADIENT_MOTION_ADAM_MOMENT_NONCOMPENSATING_GATES",
+        "EMA_EXPOSURE_CLOCK_CHRONOLOGY",
+        "AUTHORITY_FIELDSET_EXACTNESS",
+        "FORBIDDEN_GATE_FIREWALL"
+      ],
+      "repair_before_current_authority": [
+        "REMOVE_IMPORT_DEPENDENCE_ON_HARDCODED_PREEXECUTION_V2_AUTHORITY_VOCABULARY",
+        "NEUTRALIZE_Z_BIO_SEMANTIC_NAMES_IN_DECISION_BEARING_RECEIPTS",
+        "REBIND_THRESHOLDS_AND_Q_SAFETY_TO_CURRENT_TQB_AND_RUNTIME"
+      ]
+    }
+  ],
+  "unresolved_exact_byte_recovery": [
+    "V5_FAIL_CLOSED_WRAPPER_THAT_DEFAULTS_TO_V4_PRODUCTION_UPDATE",
+    "OPTIMIZER_GUARD_LEGACY_TARGET_RECEIPT_VALIDATOR",
+    "CURRENT_V5_CHECKPOINT_V3_TEST_FILE_SET"
+  ],
+  "recovery_rule": "If exact bytes remain unreachable, preserve handoff/index claim as navigation evidence only and do not invent source identity."
+}
