@@ -9,13 +9,15 @@ script,scripts/v80/finalize_v80_sparse_positive_package.py,PRESENT_ON_PR348,Bind
 script,scripts/v80/__init__.py,PRESENT_ON_PR348,Package marker,No independent science audit needed
 test,tests/v80/test_v80_sparse_positive_benchmark.py,PRESENT_ON_PR348,Core contract/world/adjudication/finalizer tests,Preserve RED/GREEN history
 test,tests/v80/test_v80_sparse_positive_hostile.py,PRESENT_ON_PR348,Hostile leakage/status/custody tests,Preserve failures and fixes
+test,tests/v80/test_v80_sparse_positive_custody.py,PRESENT_ON_PR348,Physical/custody separation checks,Audit deltas only
 workflow,.github/workflows/v80-sparse-positive-benchmark.yml,PRESENT_ON_PR348,Pinned CI plus inherited PR328 regression,Re-run only on changed head
 red_head,e3a4cef88581171a76427e97e119e3223c14133d,20_FAIL_1_PASS,Intentional TDD RED before scripts/v80 existed,Spent evidence do not rerun for familiarity
 red_workflow_run,38502749914,FAIL_EXPECTED,TDD RED workflow,Spent evidence
 red_job,115653252417,FAIL_EXPECTED__MODULE_NOT_FOUND_SCRIPTS_V80,TDD RED job,Spent evidence
-snapshot_head,060d79dab23c2e262b546e86122029727fe8fa6a,PR348_CURRENT_AT_FINAL_HANDOFF_SNAPSHOT,Implementation branch snapshot,Check for newer head before work
-snapshot_v80_ci,38504021101,QUEUED_AT_SNAPSHOT,V80 focused+hostile CI,Read final result before acting
-snapshot_pr328_ci,38504021126,QUEUED_AT_SNAPSHOT,Inherited PR328 regression,Read final result before acting
+active_branch,science/v80-sparse-positive-successor-qualification-20261013,LIVE_BRANCH,Current V80 work,Always query PR348 exact head before resuming
+last_observed_head,b840067e4c9439e4cb4aa9e8c649ef2f6064a142,LAST_OBSERVED_NOT_FINAL,Latest head observed during handoff consolidation,Check for newer head first
+last_observed_v80_ci,38504094639,IN_PROGRESS_AT_OBSERVATION,V80 focused+hostile CI,Read final result before acting
+last_observed_pr328_ci,38504094661,SUCCESS,Inherited PR328 regression at last observed head,Recheck if head changes
 v79_result,ef10852e534fe8a83c3aebd832ad3a531d755d06185464441494712818e8abfd,NOT_QUALIFIED__291_OF_292_PASS,Frozen historical qualification result,Never rescue or overwrite
 v79_world_set,40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286,IMMUTABLE,World-set non-regression substrate,Never regenerate
 v79_scored_rows,7b3bef4dcb7bd7492407ac9d7c605a04be5e90776302db94a3f0af73e1a1cd6a,EXTERNAL_LOCAL_CUSTODY,40MB historical scored rows,Do not commit ordinary Git; retain external custody
