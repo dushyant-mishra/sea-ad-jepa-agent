@@ -29,8 +29,8 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install pytest==9.1.1
-      - name: Run qualification registry tests
-        run: python -m pytest -q tests/v5/test_td_qualification_registry_v1.py
+      - name: Run qualification registry and execution manifest tests
+        run: python -m pytest -q tests/v5/test_td_qualification_registry_v1.py tests/v5/test_td_execution_manifest_v1.py
       - name: Authority guard
         run: |
-          ! grep -R "TARGET_WINNER_\|REPRESENTATION_WINNER_\|REAL_TRAINING_ON\|STAGE4_AUTHORIZED" scripts/v5/td_*qualification*_v1.py scripts/v5/td_execution_manifest_v1.py scripts/v5/td_case_bundle_v1.py scripts/v5/td_downstream_certification_v1.py 2>/dev/null
+          ! grep -R "TARGET_WINNER_\|REPRESENTATION_WINNER_\|REAL_TRAINING_ON\|STAGE4_AUTHORIZED" scripts/v5/td_qualification_registry_v1.py scripts/v5/td_execution_manifest_v1.py scripts/v5/td_case_bundle_v1.py scripts/v5/td_target_qualification_bundle_v1.py scripts/v5/td_downstream_certification_v1.py 2>/dev/null
