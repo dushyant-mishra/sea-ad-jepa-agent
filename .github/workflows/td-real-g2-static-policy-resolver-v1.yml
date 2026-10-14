@@ -6,7 +6,9 @@ on:
       - implementation/td-real-g2-static-policy-resolver-v1-20261014
   pull_request:
     paths:
+      - 'scripts/v5/td_real_g2_content_decision_v2.py'
       - 'scripts/v5/td_real_g2_static_policy_resolver_v1.py'
+      - 'tests/v5/test_td_real_g2_content_decision_v2.py'
       - 'tests/v5/test_td_real_g2_static_policy_resolver_v1.py'
       - '.github/workflows/td-real-g2-static-policy-resolver-v1.yml'
 
@@ -27,8 +29,8 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install pytest==9.1.1
-      - name: Run G2 static-policy resolver tests
-        run: python -m pytest -q tests/v5/test_td_real_g2_static_policy_resolver_v1.py
+      - name: Run controlling G2 V2 plus static-policy resolver tests
+        run: python -m pytest -q tests/v5/test_td_real_g2_content_decision_v2.py tests/v5/test_td_real_g2_static_policy_resolver_v1.py
       - name: Authority guard
         run: |
           ! grep -R "TARGET_WINNER_\|REAL_TRAINING_ON\|STAGE4_AUTHORIZED" scripts/v5/td_real_g2_static_policy_resolver_v1.py 2>/dev/null
