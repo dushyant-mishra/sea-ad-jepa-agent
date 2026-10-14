@@ -26,7 +26,7 @@ Old PR #356 Tasks 1–2 are **shared implementation substrate**, not completed u
 
 The unified lane must preserve one scientific canonical encoding and one authority model. Therefore:
 
-1. the old Task 1 canonical **byte serialization law** is migrated as the compatibility baseline;
+1. the old Task 1 canonical **byte serialization law** is migrated as the compatibility baseline on the shared JSON-native value domain;
 2. unified receipt digests use unified domain separation and unified schemas, not historical `JEPA-PRODUCTION-SYNTHETIC-*` authority labels;
 3. old Task 2 custody/RNG mechanics migrate primarily into unified Task 4 sealed challenge custody and later finalizer/whole-pipeline obligations;
 4. unified Task 2 remains a new `TD_EXECUTION_MANIFEST_V1` + population/access-law implementation;
@@ -48,13 +48,15 @@ The following old functions define tested behavior that the unified implementati
 - `ordered_registry_digest(rows, identity_keys)`
 - `semantic_row_set_sha256(rows, identity_keys)`
 
-The migration target is **behavioral equivalence**, not import-path authority.
+The migration target is **behavioral equivalence on the shared JSON-native scientific domain**, not import-path authority and not full historical Python-type acceptance.
+
+The old implementation intentionally accepts NumPy scalar types as convenience inputs. Unified Task 1 is the project scientific-identity root and is specified around JSON scientific values/stdlib primitives. Therefore NumPy scalars do **not** become part of the unified canonical type system merely for compatibility. Producers must convert such values to explicit JSON-native primitives before identity calculation, or unified canonicalization must reject them. This prevents NumPy dtype/version behavior from becoming part of scientific identity.
 
 ### 2.2 Unified wrappers/new authority functions
 
 Unified Task 1 still implements:
 
-- `canonical_bytes(payload)` — uses the migrated canonical byte law;
+- `canonical_bytes(payload)` — uses the migrated canonical byte law on JSON-native values;
 - `canonical_sha256(payload)` — unified domain-separated scientific-object digest;
 - `verify_scientific_receipt(receipt, object_resolver)` — recursive payload/parent verification;
 - `QualificationStage`;
@@ -68,15 +70,16 @@ Old `semantic_sha256` is not, by itself, the unified scientific-receipt authorit
 
 Before unified Task 1 can be GREEN, add known-answer and cross-implementation tests proving:
 
-- identical supported objects produce byte-for-byte identical canonical JSON bytes under old and unified encoders;
-- CRLF/CR normalization, missing-value, bool/int, int/float, negative-zero and non-finite behavior match;
+- identical **JSON-native** supported objects produce byte-for-byte identical canonical JSON bytes under old and unified encoders;
+- CRLF/CR normalization, missing-value, bool/int, int/float, negative-zero and non-finite behavior match on that shared domain;
 - duplicate normalized keys fail in both implementations;
 - nonzero float-underflow-to-zero fails in both strict loaders;
+- unified canonicalization rejects or requires explicit boundary conversion for NumPy scalar inputs rather than silently making NumPy part of scientific identity;
 - the 41,238-row ordered registry behavior stays order-sensitive;
 - scientific row-set identity remains storage/shard-order invariant;
 - old semantic digest domains and new unified receipt digest domains are **different by design** even when they consume identical canonical bytes.
 
-A compatibility mismatch is a Task 1 blocker; do not silently choose one implementation.
+A compatibility mismatch on the shared JSON-native domain is a Task 1 blocker; do not silently choose one implementation.
 
 ### 2.4 Forbidden shortcut
 
@@ -85,6 +88,8 @@ Do not implement unified Task 1 as:
 `from scripts.production_synthetic.canonical_v1 import semantic_sha256 as canonical_sha256`
 
 That would collapse a historical synthetic namespace into unified authority and omit A1/A9 receipt/parent/state/scope requirements.
+
+Do not import NumPy into unified canonical identity solely to preserve the old convenience extension. Producer adapters own conversion to JSON-native scientific values.
 
 ---
 
@@ -168,8 +173,8 @@ The requirements from old Task 3 calibration/provenance and old Task 4 biology m
 
 1. Freeze exact source head `ff597faf2182522a320ec5322f8db9b67c9c6094` as historical reusable substrate evidence.
 2. Start unified Task 1 RED-first on the accepted unified implementation branch.
-3. Add old↔unified canonical compatibility tests before copying/adapting encoder logic.
-4. Implement unified canonical bytes + receipt recursion + authority model.
+3. Add old↔unified canonical compatibility tests on the shared JSON-native domain before copying/adapting encoder logic.
+4. Implement unified canonical bytes + receipt recursion + authority model, keeping NumPy conversion outside the authority root.
 5. Independently review/freeze unified Task 1 exact head.
 6. Implement unified Task 2 manifest/access law from scratch using Task 1 primitives.
 7. Independently review/freeze unified Task 2 exact head.
@@ -185,6 +190,7 @@ Stop immediately if any implementation attempts to:
 
 - treat old Task 1/2 PASS strings or CI as unified authority promotion;
 - reuse a synthetic-specific digest namespace as the unified receipt namespace without an explicit compatibility/domain decision;
+- make NumPy scalar/dtype behavior part of the unified scientific identity root solely for historical convenience compatibility;
 - import old synthetic gate/controller winner authority;
 - make `reader_validation` or `reader_oracle` available through a generic held-out flag;
 - start old Task 3/4 in parallel;
