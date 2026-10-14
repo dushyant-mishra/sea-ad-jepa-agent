@@ -1,6 +1,6 @@
 {
   "schema": "JEPA_LANE_TAKEOVER_CHECKPOINT_V9_20261014",
-  "status": "REAL_DATA_SUPPORT_AUTHENTICATED__MACHA_HOSTILE_REPAIRS_SYSTEM_REQUALIFIED__HUMAN_GATE_EXECUTION_BLOCKED__REAL_TD_OFF",
+  "status": "REAL_DATA_SUPPORT_AUTHENTICATED__MACHA_HOSTILE_REPAIRS_SYSTEM_REQUALIFIED__CONCURRENCY_RECONCILED__HUMAN_GATE_EXECUTION_BLOCKED__REAL_TD_OFF",
   "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
   "candidate_outcomes_opened": false,
   "real_tournament_authorized": false,
@@ -60,10 +60,13 @@
     },
     "g8_v3_repair": {
       "pr": 364,
-      "head": "ce1b43464ae1d79894b7738c6dc025559dffbf36",
+      "head": "95dd474a02ce571722df9e8f08b42e81af2e8736",
+      "historical_ancestor_head": "ce1b43464ae1d79894b7738c6dc025559dffbf36",
       "red_run": 38517833746,
       "focused_green_run": 38517982781,
-      "broad_green_run": 38518100272,
+      "historical_broad_green_run": 38518100272,
+      "current_broad_green_run": 38572243458,
+      "head_movement_classification": "SCIENTIFIC_RULE_UNCHANGED__EXECUTABLE_ROBUSTNESS_IMPROVED",
       "status": "OBSERVATION_OPERATOR_REPAIRED__CONFORMAL_ARITHMETIC_BOUNDARY_REPAIRED__G8_STATISTICAL_ESTIMAND_BLOCKED__NO_REFERENCE_GENERATION_AUTHORITY"
     },
     "g6_v3_repair": {
@@ -106,10 +109,23 @@
     },
     "sealed_cross_gate_v3": {
       "pr": 369,
-      "head": "03f44ea81fe4bb3f9f450d11bc8a9a46be9374ee",
+      "head": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
       "red_run": 38520281669,
-      "green_run": 38520451709,
+      "original_green_run": 38520451709,
+      "current_exact_head_requalification_run": 38577104444,
       "status": "CURRENT_SYSTEM_MECHANICS_AND_FIREWALL_REQUALIFICATION_GREEN__SYNTHETIC_TEST_OF_TEST_ONLY"
+    }
+  },
+  "concurrency_reconciliation": {
+    "status": "COMPLETE",
+    "duplicate_prs_closed": [370, 371, 372, 373, 374],
+    "controlling_repair_prs": [364, 365, 366, 367, 368, 369],
+    "notes": {
+      "370": "SUPERSEDED_BY_365__TARGET_SCALE_HASH_WOULD_OVERSTATE_OPEN_SCALE_CONTRACT",
+      "371": "SUPERSEDED_BY_366__FUTURE_PRODUCER_STATIC_POLICY_OWNS_EXTRA_DIAGNOSTIC_RESTRICTIONS",
+      "372": "SUPERSEDED_BY_367__DETECTION_DOWNGRADE_CONFLICTED_WITH_RECOVERED_TD57B_HISTORY",
+      "373": "SUPERSEDED_BY_368__HISTORICAL_FALSIFIER_CATALOG_NOT_AUTOMATIC_CURRENT_STATIC_POLICY",
+      "374": "SUPERSEDED_BY_369__DEPENDED_ON_NONCONTROLLING_DUPLICATE_REPAIR_HEADS"
     }
   },
   "standing_semantics": {
