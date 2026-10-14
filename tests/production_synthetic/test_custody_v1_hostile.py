@@ -2,9 +2,11 @@
 
 Each test is an attack the custody layer must refuse: integer-offset seed
 namespaces, seed replacement/discard/shopping, re-emission, early or mismatched
-reveal, easier post-exposure successors (E1), laundering through unexposed
-intermediates, withheld plaintext in public config (E2), unique withheld-only
-public code paths (N3) and hand-forged ledgers.
+reveal, easier post-exposure successors (E1) including changed frozen
+components, laundering through unexposed intermediates, use of superseded
+versions, a withheld commitment not bound to the qualification nonce (E2),
+withheld plaintext in public config, unique withheld-only public code paths
+(N3), echoing of supplied names, and hand-forged ledgers.
 
 All secrets are DUMMY values generated in-test; nothing here is a production
 secret. Files are written only under pytest ``tmp_path``.
@@ -24,6 +26,11 @@ DEBUG = "SYNTH_DEBUG"
 WTAG = "SYNTH_QUALIFICATION_WITHHELD"
 ENTRY_FORMAT = "JEPA-PRODUCTION-SYNTHETIC-CUSTODY-LEDGER-ENTRY-V1"
 LEDGER_FORMAT = "JEPA-PRODUCTION-SYNTHETIC-CUSTODY-LEDGER-V1"
+E1_COMPONENTS = [
+    "generator_source", "transitive_dependencies", "parameter_distributions", "mechanism_mixture",
+    "observation_calibration_distributions", "stress_regimes", "applicability_control_matrix", "registries",
+    "serialization_contract", "realization_budgets",
+]
 
 DUMMY_WITHHELD_SPEC = {
     "DUMMY_family": {"composition": "DUMMY_pair_of_shared_programs", "weight": 0.125},
@@ -41,12 +48,22 @@ def dummy_nonce():
     return secrets.token_bytes(32)
 
 
+def _chain_text(exc):
+    """Every message a traceback of ``exc`` would display (cause/context chain included)."""
+    out = []
+    e = exc
+    while e is not None:
+        out.append(f"{type(e).__name__}: {e}")
+        e = e.__cause__ if e.__cause__ is not None else (None if e.__suppress_context__ else e.__context__)
+    return "\n".join(out)
+
+
 def base_spec():
     return {
         "generator_source": {"scripts/production_synthetic/fixture_generator.py": _h("fixture-src")},
         "transitive_dependencies": {"numpy==2.4.6": _h("numpy-wheel")},
         "parameter_distributions": {"library_size": {"law": "lognormal", "mu": 8.0, "sigma": 0.5}},
-        "mechanism_mixture": {"weights": {"program_a": 0.5, "program_b": 0.5}},
+        "mechanism_mixture": {"weights": {"program_a": 0.4, "program_b": 0.4, "novelty_program": 0.2}},
         "observation_calibration_distributions": {"dropout": {"law": "beta", "a": 2.0, "b": 5.0}},
         "difficulty_grid": {
             "signal_to_noise": {"level": 0.5, "harder_direction": "decreasing"},
@@ -62,21 +79,23 @@ def base_spec():
             "novelty_regimes": ["out_of_basis_program"],
             "measurement_challenges": ["collision_unresolved"],
         },
-        "applicability_control_matrix": {"matched_null": ["all_targets"]},
+        "applicability_control_matrix": {"matched_null": ["all_targets", "rare_targets"]},
         "registries": {"address_registry": _h("addr"), "modality_namespace_registry": _h("mod")},
         "serialization_contract": {"canonical_module": "canonical_v1", "format_version": 1},
         "realization_budgets": {DEBUG: 3, QUAL: 4},
     }
 
 
-def make_world(edit=None, withheld=DUMMY_WITHHELD_SPEC):
+def make_world(edit=None, withheld=DUMMY_WITHHELD_SPEC, commitment_nonce=None):
+    """Freeze a fixture generator; the E2 commitment uses the returned SYNTH_QUALIFICATION nonce."""
     spec = base_spec()
     if edit is not None:
         edit(spec)
-    wnonce = dummy_nonce()
+    qnonce = dummy_nonce()
     pre = CU.generator_precommitment_semantic_hash(spec)
-    spec["withheld_family_commitment"] = CU.withheld_family_commitment(wnonce, withheld, pre, WTAG)
-    return CU.freeze_generator_version(spec), wnonce
+    spec["withheld_family_commitment"] = CU.withheld_family_commitment(
+        commitment_nonce if commitment_nonce is not None else qnonce, withheld, pre, WTAG)
+    return CU.freeze_generator_version(spec), qnonce
 
 
 def make_tree(tmp_path, name="tree"):
@@ -102,25 +121,30 @@ def emit(root, class_tag, budget):
     return rows
 
 
-def commit_withheld(freeze, wnonce, ledger, tree):
-    scans = [CU.require_secret_absence(tree, wnonce)]
-    CU.record_withheld_commitment(freeze, ledger, withheld_class_tag=WTAG, secret_absence_attestations=scans,
-                                  code_path_attestation=code_path_attestation())
+def commit_withheld(freeze, qnonce, ledger, tree):
+    scans = [CU.require_secret_absence(tree, qnonce)]
+    CU.record_withheld_commitment(freeze, ledger, withheld_class_tag=WTAG, nonce_commitment=CU.nonce_commitment(qnonce),
+                                  secret_absence_attestations=scans, code_path_attestation=code_path_attestation())
 
 
-def prepare(freeze, wnonce, ledger, tree, attest=True):
-    CU.record_generator_freeze(freeze, ledger)
-    commit_withheld(freeze, wnonce, ledger, tree)
+def commit_and_attest(freeze, qnonce, ledger, tree, attest=True):
+    nonces = {DEBUG: dummy_nonce(), QUAL: qnonce}
+    for tag in (DEBUG, QUAL):
+        CU.record_nonce_commitment(freeze, ledger, class_tag=tag, nonce_commitment=CU.nonce_commitment(nonces[tag]))
+    commit_withheld(freeze, qnonce, ledger, tree)
     out = {}
     for tag in (DEBUG, QUAL):
-        n = dummy_nonce()
-        CU.record_nonce_commitment(freeze, ledger, class_tag=tag, nonce_commitment=CU.nonce_commitment(n))
         budget = freeze.realization_budget(tag)
-        root = CU.sealed_root(n, freeze.generator_semantic_hash, tag, budget)
-        out[tag] = (n, root)
+        root = CU.sealed_root(nonces[tag], freeze.generator_semantic_hash, tag, budget)
+        out[tag] = (nonces[tag], root)
         if attest:
             CU.attest_realization_set(root, tag, budget, emit(root, tag, budget), ledger, freeze=freeze)
     return out
+
+
+def prepare(freeze, qnonce, ledger, tree, attest=True):
+    CU.record_generator_freeze(freeze, ledger)
+    return commit_and_attest(freeze, qnonce, ledger, tree, attest)
 
 
 def expose(freeze, ledger, class_tag=DEBUG, exposure_id="exp-1"):
@@ -136,12 +160,13 @@ def successor(parent, child, ledger, defect_record=None):
     )
 
 
-def defect(parent, child, affected, **over):
+def defect(parent, child, affected=(), components=(), **over):
     rec = {
         "parent_generator_semantic_hash": parent.generator_semantic_hash,
         "child_generator_semantic_hash": child.generator_semantic_hash,
         "defect_description": "DUMMY: fixture generator violated its frozen design contract",
         "affected_dimensions": list(affected),
+        "affected_components": list(components),
         "generator_side_evidence_sha256": _h("DUMMY generator-side evidence"),
         "justification_source": "GENERATOR_DEFECT_AGAINST_FROZEN_SPEC",
         "incomparable": False,
@@ -158,19 +183,28 @@ def set_snr(level):
 
 @pytest.fixture
 def exposed_parent(tmp_path):
-    parent, wnonce = make_world()
+    parent, qnonce = make_world()
     led = CU.CustodyLedger()
-    prepare(parent, wnonce, led, make_tree(tmp_path))
+    prepare(parent, qnonce, led, make_tree(tmp_path))
     expose(parent, led)
     return parent, led
 
 
 @pytest.fixture
 def committed(tmp_path):
-    fr, wnonce = make_world()
+    fr, qnonce = make_world()
     led = CU.CustodyLedger()
-    roots = prepare(fr, wnonce, led, make_tree(tmp_path), attest=False)
-    return fr, led, roots, wnonce
+    roots = prepare(fr, qnonce, led, make_tree(tmp_path), attest=False)
+    return fr, led, roots, qnonce
+
+
+@pytest.fixture
+def exposed_qual(tmp_path):
+    fr, qnonce = make_world()
+    led = CU.CustodyLedger()
+    roots = prepare(fr, qnonce, led, make_tree(tmp_path))
+    expose(fr, led, QUAL)
+    return fr, led, roots, qnonce
 
 
 # ------------------------------------------------- integer seed namespaces
@@ -190,7 +224,7 @@ def committed(tmp_path):
 ])
 def test_stream_root_rejects_integer_seeds_and_non_root_forms(root):
     with pytest.raises(CustodyError):
-        CU.derive_stream(root, ("purpose_tag", "noise"))
+        CU.derive_stream(root, ("world_id", "w0"), ("purpose_tag", "noise"))
 
 
 @pytest.mark.parametrize("part", [
@@ -214,15 +248,15 @@ def test_stream_root_rejects_integer_seeds_and_non_root_forms(root):
 ])
 def test_stream_identity_rejects_integer_offsets_and_unknown_keys(part):
     with pytest.raises(CustodyError):
-        CU.derive_stream(secrets.token_bytes(32), ("purpose_tag", "noise"), part)
+        CU.derive_stream(secrets.token_bytes(32), ("world_id", "w0"), ("purpose_tag", "noise"), part)
 
 
 def test_stream_identity_rejects_duplicate_keys():
     root = secrets.token_bytes(32)
     with pytest.raises(CustodyError):
-        CU.derive_stream(root, ("purpose_tag", "a"), ("purpose_tag", "b"))
+        CU.derive_stream(root, ("world_id", "w0"), ("purpose_tag", "a"), ("purpose_tag", "b"))
     with pytest.raises(CustodyError):
-        CU.derive_stream(root, ("purpose_tag", "a"), ("cell_id", "c1"), ("cell_id", "c1"))
+        CU.derive_stream(root, ("world_id", "w0"), ("purpose_tag", "a"), ("cell_id", "c1"), ("cell_id", "c1"))
 
 
 @pytest.mark.parametrize("tag", ["DEV", "SEALED", "SYNTH_SEALED", "SYNTH_DEV", "synth_qualification", "QUAL", ""])
@@ -241,44 +275,33 @@ def test_committed_nonce_cannot_be_replaced(committed):
         CU.record_nonce_commitment(fr, led, class_tag=DEBUG, nonce_commitment=CU.nonce_commitment(dummy_nonce()))
 
 
-def test_nonce_cannot_be_reused_across_classes(tmp_path):
-    fr, wnonce = make_world()
+def test_nonce_cannot_be_reused_across_classes():
+    fr, _ = make_world()
     led = CU.CustodyLedger()
     CU.record_generator_freeze(fr, led)
-    commit_withheld(fr, wnonce, led, make_tree(tmp_path))
     n = dummy_nonce()
     CU.record_nonce_commitment(fr, led, class_tag=DEBUG, nonce_commitment=CU.nonce_commitment(n))
     with pytest.raises(CustodyError):
         CU.record_nonce_commitment(fr, led, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(n))
 
 
-def test_nonce_cannot_be_reused_by_a_successor_version(exposed_parent, tmp_path):
+def test_nonce_cannot_be_reused_by_a_successor_version(exposed_parent):
     parent, led = exposed_parent
-    child, wnonce = make_world(set_snr(0.3))
+    child, _ = make_world(set_snr(0.3))
     successor(parent, child, led)
     CU.record_generator_freeze(child, led)
-    commit_withheld(child, wnonce, led, make_tree(tmp_path, "tree2"))
     reused = [e["payload"]["nonce_commitment"] for e in led.entries() if e["kind"] == "NONCE_COMMITTED"][0]
     with pytest.raises(CustodyError):
         CU.record_nonce_commitment(child, led, class_tag=QUAL, nonce_commitment=reused)
 
 
-def test_qualification_nonce_requires_prior_withheld_commitment():
-    fr, _ = make_world()
-    led = CU.CustodyLedger()
-    CU.record_generator_freeze(fr, led)
-    with pytest.raises(CustodyError):
-        CU.record_nonce_commitment(fr, led, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(dummy_nonce()))
-
-
 def test_nonce_commitment_after_exposure_is_refused(tmp_path):
-    fr, wnonce = make_world()
+    fr, qnonce = make_world()
     led = CU.CustodyLedger()
     CU.record_generator_freeze(fr, led)
-    commit_withheld(fr, wnonce, led, make_tree(tmp_path))
-    nq = dummy_nonce()
-    CU.record_nonce_commitment(fr, led, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(nq))
-    rq = CU.sealed_root(nq, fr.generator_semantic_hash, QUAL, 4)
+    CU.record_nonce_commitment(fr, led, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(qnonce))
+    commit_withheld(fr, qnonce, led, make_tree(tmp_path))
+    rq = CU.sealed_root(qnonce, fr.generator_semantic_hash, QUAL, 4)
     CU.attest_realization_set(rq, QUAL, 4, emit(rq, QUAL, 4), led, freeze=fr)
     expose(fr, led, QUAL)
     with pytest.raises(CustodyError):
@@ -336,7 +359,6 @@ def test_re_emission_after_attestation_is_refused(committed):
     replacement = [dict(r, content_sha256=_h("re-drawn " + r["realization_id"])) for r in rows]
     with pytest.raises(CustodyError):
         CU.attest_realization_set(root, QUAL, 4, replacement, led, freeze=fr)
-    # a whole fresh draw from a different root for the same class is also re-emission
     other_root = CU.sealed_root(dummy_nonce(), fr.generator_semantic_hash, QUAL, 4)
     with pytest.raises(CustodyError, match="re-emission"):
         CU.attest_realization_set(other_root, QUAL, 4, emit(other_root, QUAL, 4), led, freeze=fr)
@@ -350,11 +372,10 @@ def test_one_root_cannot_back_two_classes(committed):
         CU.attest_realization_set(root, QUAL, 4, emit(root, QUAL, 4), led, freeze=fr)
 
 
-def test_attestation_requires_committed_nonce(tmp_path):
-    fr, wnonce = make_world()
+def test_attestation_requires_committed_nonce():
+    fr, _ = make_world()
     led = CU.CustodyLedger()
     CU.record_generator_freeze(fr, led)
-    commit_withheld(fr, wnonce, led, make_tree(tmp_path))
     root = CU.sealed_root(dummy_nonce(), fr.generator_semantic_hash, QUAL, 4)
     with pytest.raises(CustodyError):
         CU.attest_realization_set(root, QUAL, 4, emit(root, QUAL, 4), led, freeze=fr)
@@ -380,11 +401,9 @@ def test_seed_shopping_with_an_uncommitted_nonce_is_caught_at_reveal(committed):
     committed_nonce = roots[QUAL][0]
     shopped_nonce = dummy_nonce()
     shopped_root = CU.sealed_root(shopped_nonce, fr.generator_semantic_hash, QUAL, 4)
-    # the producer-side attestation cannot see the nonce, so it binds the shopped set ...
     CU.attest_realization_set(shopped_root, QUAL, 4, emit(shopped_root, QUAL, 4), led, freeze=fr)
     expose(fr, led, QUAL)
     CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("fit"))
-    # ... and the reveal proves it was not drawn from the committed nonce
     with pytest.raises(CustodyError):
         CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=committed_nonce)
     with pytest.raises(CustodyError):
@@ -393,21 +412,12 @@ def test_seed_shopping_with_an_uncommitted_nonce_is_caught_at_reveal(committed):
 
 # ------------------------------------------------------------ reveal custody
 
-@pytest.fixture
-def exposed_qual(tmp_path):
-    fr, wnonce = make_world()
-    led = CU.CustodyLedger()
-    roots = prepare(fr, wnonce, led, make_tree(tmp_path))
-    expose(fr, led, QUAL)
-    return fr, led, roots, wnonce
-
-
 def test_reveal_before_fit_output_frozen_is_refused(exposed_qual):
-    fr, led, roots, wnonce = exposed_qual
+    fr, led, roots, qnonce = exposed_qual
     with pytest.raises(CustodyError):
-        CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=roots[QUAL][0])
+        CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=qnonce)
     with pytest.raises(CustodyError):
-        CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=wnonce, withheld_class_tag=WTAG)
+        CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=qnonce, withheld_class_tag=WTAG)
 
 
 def test_fit_output_cannot_be_frozen_before_exposure(committed):
@@ -426,41 +436,98 @@ def test_fit_output_is_frozen_once(exposed_qual):
 
 
 def test_reveal_mismatch_and_alternative_withheld_draw_are_hard_failures(exposed_qual):
-    fr, led, roots, wnonce = exposed_qual
+    fr, led, roots, qnonce = exposed_qual
     CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("fit"))
     with pytest.raises(CustodyError):
         CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=dummy_nonce())
     alternative = dict(DUMMY_WITHHELD_SPEC, DUMMY_budget=3)
     with pytest.raises(CustodyError):
-        CU.reveal_withheld_family(fr, led, withheld_spec=alternative, nonce=wnonce, withheld_class_tag=WTAG)
+        CU.reveal_withheld_family(fr, led, withheld_spec=alternative, nonce=qnonce, withheld_class_tag=WTAG)
     with pytest.raises(CustodyError):
         CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=dummy_nonce(),
                                   withheld_class_tag=WTAG)
     with pytest.raises(CustodyError):
-        CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=wnonce,
+        CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=qnonce,
                                   withheld_class_tag="SYNTH_QUALIFICATION_OTHER")
-    CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=roots[QUAL][0])
-    CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=wnonce, withheld_class_tag=WTAG)
+    CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=qnonce)
+    CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=qnonce, withheld_class_tag=WTAG)
     with pytest.raises(CustodyError):
-        CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=roots[QUAL][0])
+        CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=qnonce)
     with pytest.raises(CustodyError):
-        CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=wnonce, withheld_class_tag=WTAG)
+        CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=qnonce, withheld_class_tag=WTAG)
 
 
 def test_withheld_reveal_requires_the_qualification_fit_to_be_frozen(exposed_qual):
-    fr, led, roots, wnonce = exposed_qual
+    fr, led, roots, qnonce = exposed_qual
     expose(fr, led, DEBUG, "exp-debug")
     CU.record_fit_output_frozen(fr, led, class_tag=DEBUG, fit_output_sha256=_h("debug fit"))
     with pytest.raises(CustodyError):
-        CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=wnonce, withheld_class_tag=WTAG)
+        CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=qnonce, withheld_class_tag=WTAG)
 
 
 def test_no_qualification_exposure_after_reveal(exposed_qual):
-    fr, led, roots, wnonce = exposed_qual
+    fr, led, roots, qnonce = exposed_qual
     CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("fit"))
-    CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=roots[QUAL][0])
+    CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=qnonce)
     with pytest.raises(CustodyError):
         expose(fr, led, QUAL, "exp-after-reveal")
+
+
+# ------------------------------- B3 / E2: withheld nonce = qualification nonce
+
+def test_withheld_commitment_requires_and_binds_the_prior_qualification_nonce(tmp_path):
+    fr, qnonce = make_world()
+    led = CU.CustodyLedger()
+    tree = make_tree(tmp_path)
+    CU.record_generator_freeze(fr, led)
+    with pytest.raises(CustodyError):
+        commit_withheld(fr, qnonce, led, tree)  # qualification nonce not yet committed
+    dnonce = dummy_nonce()
+    CU.record_nonce_commitment(fr, led, class_tag=DEBUG, nonce_commitment=CU.nonce_commitment(dnonce))
+    with pytest.raises(CustodyError):
+        commit_withheld(fr, dnonce, led, tree)  # only a debug nonce exists
+    CU.record_nonce_commitment(fr, led, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(qnonce))
+    with pytest.raises(CustodyError):
+        commit_withheld(fr, dnonce, led, tree)  # declares the debug nonce
+    commit_withheld(fr, qnonce, led, tree)
+    payload = [e["payload"] for e in led.entries() if e["kind"] == "WITHHELD_COMMITTED"][0]
+    assert payload["nonce_commitment"] == CU.nonce_commitment(qnonce)
+
+
+def test_withheld_commitment_built_with_the_debug_nonce_is_rejected(tmp_path):
+    debug_nonce = dummy_nonce()
+    fr, qnonce = make_world(commitment_nonce=debug_nonce)  # P3: commitment uses the debug nonce
+    led = CU.CustodyLedger()
+    tree = make_tree(tmp_path)
+    CU.record_generator_freeze(fr, led)
+    CU.record_nonce_commitment(fr, led, class_tag=DEBUG, nonce_commitment=CU.nonce_commitment(debug_nonce))
+    CU.record_nonce_commitment(fr, led, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(qnonce))
+    with pytest.raises(CustodyError):
+        commit_withheld(fr, debug_nonce, led, tree)  # its true nonce is not the qualification nonce
+    commit_withheld(fr, qnonce, led, tree)  # a false declaration passes the commit check ...
+    for tag, n in ((DEBUG, debug_nonce), (QUAL, qnonce)):
+        budget = fr.realization_budget(tag)
+        root = CU.sealed_root(n, fr.generator_semantic_hash, tag, budget)
+        CU.attest_realization_set(root, tag, budget, emit(root, tag, budget), led, freeze=fr)
+        expose(fr, led, tag, "exp-" + tag)
+        CU.record_fit_output_frozen(fr, led, class_tag=tag, fit_output_sha256=_h("fit " + tag))
+    CU.reveal_class_nonce(fr, led, class_tag=DEBUG, nonce=debug_nonce)  # a debug reveal opens nothing withheld
+    with pytest.raises(CustodyError):
+        CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=debug_nonce,
+                                  withheld_class_tag=WTAG)
+    with pytest.raises(CustodyError):  # ... and the commitment can never be opened: hard failure
+        CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=qnonce, withheld_class_tag=WTAG)
+
+
+def test_qualification_nonce_cannot_leak_through_another_reveal_path(exposed_qual):
+    fr, led, roots, qnonce = exposed_qual
+    expose(fr, led, DEBUG, "exp-debug")
+    CU.record_fit_output_frozen(fr, led, class_tag=DEBUG, fit_output_sha256=_h("debug fit"))
+    with pytest.raises(CustodyError):
+        CU.reveal_class_nonce(fr, led, class_tag=DEBUG, nonce=qnonce)
+    with pytest.raises(CustodyError):
+        CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=qnonce, withheld_class_tag=WTAG)
+    assert not any(e["kind"] == "REVEALED" for e in led.entries())
 
 
 # ---------------------------------------------- E1: easier exposed successors
@@ -475,8 +542,32 @@ EASIER_EDITS = {
     "imbalance_challenge_removed": lambda s: s["challenge_families"]["population_imbalance_challenges"].clear(),
     "novelty_regime_removed": lambda s: s["challenge_families"]["novelty_regimes"].clear(),
     "measurement_challenge_removed": lambda s: s["challenge_families"]["measurement_challenges"].clear(),
-    "stress_regime_removed": lambda s: s["stress_regimes"].pop("batch_shift"),
-    "stress_regime_relaxed": lambda s: s["stress_regimes"]["depth_collapse"].update(depth_scale=0.9),
+}
+
+COMPONENT_PROBES = {
+    "novelty_weight_zero": (
+        "mechanism_mixture", lambda s: s["mechanism_mixture"]["weights"].update(novelty_program=0.0)),
+    "dropout_beta_2_5_to_1_50": (
+        "observation_calibration_distributions",
+        lambda s: s["observation_calibration_distributions"]["dropout"].update(a=1.0, b=50.0)),
+    "control_matrix_shrunk": (
+        "applicability_control_matrix",
+        lambda s: s["applicability_control_matrix"]["matched_null"].remove("rare_targets")),
+    "library_sigma_0_5_to_0_01": (
+        "parameter_distributions", lambda s: s["parameter_distributions"]["library_size"].update(sigma=0.01)),
+    "qualification_budget_4_to_1": ("realization_budgets", lambda s: s["realization_budgets"].update({QUAL: 1})),
+    "debug_budget_removed": ("realization_budgets", lambda s: s["realization_budgets"].pop(DEBUG)),
+    "generator_source_changed": (
+        "generator_source",
+        lambda s: s["generator_source"].update({"scripts/production_synthetic/fixture_generator.py": _h("edited")})),
+    "dependency_added": (
+        "transitive_dependencies", lambda s: s["transitive_dependencies"].update({"scipy==1.14.1": _h("scipy")})),
+    "registry_changed": ("registries", lambda s: s["registries"].update(address_registry=_h("addr-v2"))),
+    "serialization_changed": ("serialization_contract", lambda s: s["serialization_contract"].update(format_version=2)),
+    "stress_regime_added": ("stress_regimes", lambda s: s["stress_regimes"].update(new_regime={"x": 1})),
+    "stress_regime_relaxed": (
+        "stress_regimes", lambda s: s["stress_regimes"]["depth_collapse"].update(depth_scale=0.9)),
+    "stress_regime_removed": ("stress_regimes", lambda s: s["stress_regimes"].pop("batch_shift")),
 }
 
 
@@ -490,6 +581,23 @@ def test_easier_exposed_successor_without_defect_record_is_refused(exposed_paren
     assert len(led) == n_before  # nothing was recorded
     with pytest.raises(CustodyError):
         CU.record_generator_freeze(child, led)
+
+
+@pytest.mark.parametrize("probe", list(COMPONENT_PROBES))
+def test_changed_frozen_component_after_exposure_requires_a_covering_defect_record(exposed_parent, probe):
+    component, edit = COMPONENT_PROBES[probe]
+    parent, led = exposed_parent
+    child, _ = make_world(edit)
+    n_before = len(led)
+    with pytest.raises(CustodyError):
+        successor(parent, child, led)  # would otherwise read as SUCCESSOR_NOT_EASIER
+    with pytest.raises(CustodyError):
+        successor(parent, child, led, defect(parent, child, components=[c for c in E1_COMPONENTS if c != component]))
+    assert len(led) == n_before
+    disp = successor(parent, child, led, defect(parent, child, components=[component]))
+    assert disp.disposition == "POST_EXPOSURE_VERSION"
+    assert disp.changed_components == (component,)
+    assert disp.inherits_qualification is False and disp.requires_realism_rerun is True
 
 
 @pytest.mark.parametrize("source", ["DOWNSTREAM_METHOD_FAILURE", "METHOD_PERFORMANCE",
@@ -511,27 +619,42 @@ def test_defect_record_with_downstream_fields_is_refused(exposed_parent):
         successor(parent, child, led, rec)
 
 
-def test_defect_record_must_name_exact_hashes_and_cover_every_easier_dimension(exposed_parent):
+def test_defect_record_must_name_exact_hashes_and_cover_every_change(exposed_parent):
     parent, led = exposed_parent
 
     def two_easier(spec):
         spec["difficulty_grid"]["signal_to_noise"]["level"] = 0.9
         spec["challenge_families"]["control_families"].remove("matched_null")
+        spec["parameter_distributions"]["library_size"]["sigma"] = 0.01
 
     child, _ = make_world(two_easier)
     easier = ["difficulty_grid/signal_to_noise", "challenge_families/control_families/matched_null"]
+    comps = ["parameter_distributions"]
     for rec in (
-        defect(parent, child, easier, parent_generator_semantic_hash=_h("other")),
-        defect(parent, child, easier, child_generator_semantic_hash=parent.generator_semantic_hash),
-        defect(parent, child, easier[:1]),
-        defect(parent, child, []),
-        defect(parent, child, easier, defect_description="   "),
-        defect(parent, child, easier, generator_side_evidence_sha256="see attached"),
-        defect(parent, child, easier, incomparable="no"),
-        {k: v for k, v in defect(parent, child, easier).items() if k != "defect_description"},
+        defect(parent, child, easier, comps, parent_generator_semantic_hash=_h("other")),
+        defect(parent, child, easier, comps, child_generator_semantic_hash=parent.generator_semantic_hash),
+        defect(parent, child, easier[:1], comps),
+        defect(parent, child, easier, []),
+        defect(parent, child, [], []),
+        defect(parent, child, easier, comps + ["not_a_component"]),
+        defect(parent, child, easier, comps + comps),
+        defect(parent, child, easier, comps, defect_description="   "),
+        defect(parent, child, easier, comps, generator_side_evidence_sha256="see attached"),
+        defect(parent, child, easier, comps, incomparable="no"),
+        {k: v for k, v in defect(parent, child, easier, comps).items() if k != "affected_components"},
     ):
         with pytest.raises(CustodyError):
             successor(parent, child, led, rec)
+    assert successor(parent, child, led, defect(parent, child, easier, comps)).disposition == "POST_EXPOSURE_VERSION"
+
+
+def test_defect_record_naming_nothing_is_refused_even_for_a_harder_child(exposed_parent):
+    parent, led = exposed_parent
+    child, _ = make_world(set_snr(0.3))  # nothing easier, nothing changed
+    with pytest.raises(CustodyError):
+        successor(parent, child, led, defect(parent, child, [], []))
+    disp = successor(parent, child, led, defect(parent, child, ["difficulty_grid/signal_to_noise"]))
+    assert disp.disposition == "POST_EXPOSURE_VERSION"
 
 
 def test_documented_defect_yields_post_exposure_version_without_inherited_qualification(exposed_parent):
@@ -569,8 +692,7 @@ def test_laundering_through_an_unexposed_harder_intermediate_is_refused(exposed_
     p2_easier, _ = make_world(set_snr(0.9))  # easier than exposed p0
     with pytest.raises(CustodyError):
         successor(p1, p2_easier, led)
-    # rolling back only the never-exposed hardening (back to p0's level) is lawful
-    p2_rollback, _ = make_world(set_snr(0.5))
+    p2_rollback, _ = make_world(set_snr(0.5))  # rolling back only never-exposed hardening is lawful
     disp = successor(p1, p2_rollback, led)
     assert disp.disposition == "SUCCESSOR_NOT_EASIER"
     assert disp.floor_generator_semantic_hash == p0.generator_semantic_hash
@@ -581,7 +703,7 @@ def test_post_exposure_version_is_a_floor_for_further_relaxation(exposed_parent)
     p1, _ = make_world(set_snr(0.7))
     successor(p0, p1, led, defect(p0, p1, ["difficulty_grid/signal_to_noise"]))
     CU.record_generator_freeze(p1, led)
-    p2, _ = make_world(set_snr(0.9))  # relaxes the defect-corrected level further
+    p2, _ = make_world(set_snr(0.9))
     with pytest.raises(CustodyError):
         successor(p1, p2, led)
     p2_same, _ = make_world(set_snr(0.7))
@@ -616,6 +738,27 @@ def test_forged_exposure_state_is_refused(exposed_parent):
         CU.validate_successor_version(p0, child, parent_exposure_state=other, ledger=led)
 
 
+def test_stale_exposure_state_is_refused(exposed_parent):
+    p0, led = exposed_parent
+    stale = CU.exposure_state(p0, led)
+    # advance the ledger without changing the exposure count: only the head check can catch this
+    CU.record_fit_output_frozen(p0, led, class_tag=DEBUG, fit_output_sha256=_h("debug fit"))
+    child, _ = make_world(set_snr(0.3))
+    with pytest.raises(CustodyError):
+        CU.validate_successor_version(p0, child, parent_exposure_state=stale, ledger=led)
+    CU.validate_successor_version(p0, child, parent_exposure_state=CU.exposure_state(p0, led), ledger=led)
+
+
+def test_record_exposure_checks_the_expected_ledger_head(tmp_path):
+    fr, qnonce = make_world()
+    led = CU.CustodyLedger()
+    prepare(fr, qnonce, led, make_tree(tmp_path))
+    good = {"exposure_id": "e", "method_id": "m", "realization_class": DEBUG}
+    with pytest.raises(CustodyError):
+        CU.record_exposure(fr, good, led, expected_ledger_head=_h("some other head"))
+    CU.record_exposure(fr, good, led, expected_ledger_head=led.head)
+
+
 def test_new_version_cannot_skip_successor_validation(exposed_parent):
     p0, led = exposed_parent
     child, _ = make_world(set_snr(0.3))
@@ -629,6 +772,111 @@ def test_new_version_cannot_skip_successor_validation(exposed_parent):
     CU.record_generator_freeze(child, led)
     with pytest.raises(CustodyError):
         CU.record_generator_freeze(child, led)
+
+
+# -------------------------------------------- B2: strictly linear lineage
+
+def test_superseded_version_cannot_be_committed():
+    v1, q1 = make_world()
+    led = CU.CustodyLedger()
+    CU.record_generator_freeze(v1, led)
+    v2, _ = make_world(set_snr(0.9))  # easier, validated before any exposure
+    assert successor(v1, v2, led).disposition == "PRE_EXPOSURE_REVISION"
+    with pytest.raises(CustodyError):
+        CU.record_nonce_commitment(v1, led, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(q1))
+    with pytest.raises(CustodyError):
+        CU.record_nonce_commitment(v1, led, class_tag=DEBUG, nonce_commitment=CU.nonce_commitment(dummy_nonce()))
+
+
+def test_superseded_version_cannot_receive_a_withheld_commitment(tmp_path):
+    v1, q1 = make_world()
+    led = CU.CustodyLedger()
+    CU.record_generator_freeze(v1, led)
+    CU.record_nonce_commitment(v1, led, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(q1))
+    v2, _ = make_world(set_snr(0.9))
+    successor(v1, v2, led)
+    with pytest.raises(CustodyError):
+        commit_withheld(v1, q1, led, make_tree(tmp_path))
+
+
+def test_superseded_version_cannot_be_attested_or_exposed(tmp_path):
+    v1, q1 = make_world()
+    led = CU.CustodyLedger()
+    roots = prepare(v1, q1, led, make_tree(tmp_path), attest=False)
+    rd = roots[DEBUG][1]
+    CU.attest_realization_set(rd, DEBUG, 3, emit(rd, DEBUG, 3), led, freeze=v1)
+    v2, _ = make_world(set_snr(0.9))
+    assert successor(v1, v2, led).disposition == "PRE_EXPOSURE_REVISION"
+    rq = roots[QUAL][1]
+    with pytest.raises(CustodyError):
+        CU.attest_realization_set(rq, QUAL, 4, emit(rq, QUAL, 4), led, freeze=v1)
+    with pytest.raises(CustodyError):
+        expose(v1, led, DEBUG)  # P2: the easier pre-exposure successor cannot be bypassed by exposing V1
+
+
+def test_second_successor_of_the_same_parent_is_refused():
+    v1, _ = make_world()
+    led = CU.CustodyLedger()
+    CU.record_generator_freeze(v1, led)
+    v2, _ = make_world(set_snr(0.3))
+    v3, _ = make_world(set_snr(0.4))
+    successor(v1, v2, led)
+    with pytest.raises(CustodyError):
+        successor(v1, v3, led)
+
+
+# ------------------------------------- N-c: requalification prerequisites
+
+@pytest.mark.parametrize("incomparable", [False, True])
+def test_defect_corrected_version_needs_requalification_prerequisites_before_exposure(exposed_parent, tmp_path,
+                                                                                        incomparable):
+    p0, led = exposed_parent
+    p1, q1 = make_world(set_snr(0.9))
+    disp = successor(p0, p1, led, defect(p0, p1, ["difficulty_grid/signal_to_noise"], incomparable=incomparable))
+    assert disp.disposition == ("NEW_SCIENTIFIC_TESTBED" if incomparable else "POST_EXPOSURE_VERSION")
+    CU.record_generator_freeze(p1, led)
+    commit_and_attest(p1, q1, led, make_tree(tmp_path, "tree_p1"))
+    with pytest.raises(CustodyError):
+        expose(p1, led)
+    for bad in ("not-hex", _h("x").upper(), None):
+        with pytest.raises(CustodyError):
+            CU.record_requalification_prerequisites(p1, led, realism_rerun_receipt_sha256=bad,
+                                                    withheld_check_plan_sha256=_h("plan"))
+        with pytest.raises(CustodyError):
+            CU.record_requalification_prerequisites(p1, led, realism_rerun_receipt_sha256=_h("realism"),
+                                                    withheld_check_plan_sha256=bad)
+    CU.record_requalification_prerequisites(p1, led, realism_rerun_receipt_sha256=_h("realism"),
+                                            withheld_check_plan_sha256=_h("plan"))
+    with pytest.raises(CustodyError):
+        CU.record_requalification_prerequisites(p1, led, realism_rerun_receipt_sha256=_h("realism2"),
+                                                withheld_check_plan_sha256=_h("plan2"))
+    expose(p1, led)
+    CU.CustodyLedger.from_bytes(led.to_bytes(), expected_head=led.head)
+
+
+def test_superseded_defect_corrected_version_cannot_record_prerequisites(exposed_parent):
+    p0, led = exposed_parent
+    p1, _ = make_world(set_snr(0.9))
+    successor(p0, p1, led, defect(p0, p1, ["difficulty_grid/signal_to_noise"]))
+    CU.record_generator_freeze(p1, led)
+    p2, _ = make_world(set_snr(0.8))  # harder than the floor p1
+    successor(p1, p2, led)
+    with pytest.raises(CustodyError, match="superseded"):
+        CU.record_requalification_prerequisites(p1, led, realism_rerun_receipt_sha256=_h("realism"),
+                                                withheld_check_plan_sha256=_h("plan"))
+
+
+def test_requalification_prerequisites_apply_only_to_defect_corrected_versions(exposed_parent):
+    p0, led = exposed_parent
+    with pytest.raises(CustodyError):
+        CU.record_requalification_prerequisites(p0, led, realism_rerun_receipt_sha256=_h("realism"),
+                                                withheld_check_plan_sha256=_h("plan"))
+    p1, _ = make_world(set_snr(0.3))
+    successor(p0, p1, led)
+    CU.record_generator_freeze(p1, led)
+    with pytest.raises(CustodyError):
+        CU.record_requalification_prerequisites(p1, led, realism_rerun_receipt_sha256=_h("realism"),
+                                                withheld_check_plan_sha256=_h("plan"))
 
 
 # --------------------------------------- E2 / N3: withheld plaintext leakage
@@ -653,37 +901,41 @@ def test_freeze_rejects_withheld_plaintext_in_public_spec(edit):
 
 
 def test_withheld_commitment_requires_clean_scan_and_code_path_attestations(tmp_path):
-    fr, wnonce = make_world()
+    fr, qnonce = make_world()
     led = CU.CustodyLedger()
     CU.record_generator_freeze(fr, led)
+    CU.record_nonce_commitment(fr, led, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(qnonce))
     clean = make_tree(tmp_path, "clean")
     leaky = make_tree(tmp_path, "leaky")
     (leaky / "scripts" / "config.json").write_bytes(C.canonical_json_bytes(DUMMY_WITHHELD_SPEC))
     leak_scan = CU.scan_secret_absence(leaky, C.canonical_json_bytes(DUMMY_WITHHELD_SPEC))
     assert leak_scan["secret_absent"] is False
-    good_scan = CU.scan_secret_absence(clean, wnonce)
+    good_scan = CU.scan_secret_absence(clean, qnonce)
     other = make_tree(tmp_path, "other")  # same file count, different content
     (other / "scripts" / "public_mechanism.py").write_bytes(b"def shared_kernel(x):\n    return 2 * x\n")
-    other_tree_scan = CU.scan_secret_absence(other, wnonce)
+    other_tree_scan = CU.scan_secret_absence(other, qnonce)
     assert other_tree_scan["files_scanned"] == good_scan["files_scanned"]
     assert other_tree_scan["tree_identity"] != good_scan["tree_identity"]
     cpa = code_path_attestation()
+    nc = CU.nonce_commitment(qnonce)
     bad_cases = [
         dict(secret_absence_attestations=[leak_scan], code_path_attestation=cpa),
         dict(secret_absence_attestations=[good_scan, other_tree_scan], code_path_attestation=cpa),
         dict(secret_absence_attestations=[dict(good_scan, matched_path="scripts/x.py")], code_path_attestation=cpa),
         dict(secret_absence_attestations=[], code_path_attestation=cpa),
-        dict(secret_absence_attestations=[good_scan], code_path_attestation=dict(cpa, no_unique_withheld_public_path=False)),
+        dict(secret_absence_attestations=[good_scan],
+             code_path_attestation=dict(cpa, no_unique_withheld_public_path=False)),
         dict(secret_absence_attestations=[good_scan], code_path_attestation=dict(cpa, withheld_paths=["m.py::x"])),
+        dict(secret_absence_attestations=[good_scan], code_path_attestation=dict(cpa, withheld_paths_count=1)),
     ]
     for kwargs in bad_cases:
         with pytest.raises(CustodyError):
-            CU.record_withheld_commitment(fr, led, withheld_class_tag=WTAG, **kwargs)
-    CU.record_withheld_commitment(fr, led, withheld_class_tag=WTAG, secret_absence_attestations=[good_scan],
-                                  code_path_attestation=cpa)
+            CU.record_withheld_commitment(fr, led, withheld_class_tag=WTAG, nonce_commitment=nc, **kwargs)
+    CU.record_withheld_commitment(fr, led, withheld_class_tag=WTAG, nonce_commitment=nc,
+                                  secret_absence_attestations=[good_scan], code_path_attestation=cpa)
     with pytest.raises(CustodyError):
-        CU.record_withheld_commitment(fr, led, withheld_class_tag=WTAG, secret_absence_attestations=[good_scan],
-                                      code_path_attestation=cpa)
+        CU.record_withheld_commitment(fr, led, withheld_class_tag=WTAG, nonce_commitment=nc,
+                                      secret_absence_attestations=[good_scan], code_path_attestation=cpa)
 
 
 def test_withheld_only_public_code_path_fails_without_echoing_it():
@@ -691,8 +943,8 @@ def test_withheld_only_public_code_path_fails_without_echoing_it():
     shared = "pkg/biology.py::shared_program_kernel"
     with pytest.raises(CustodyError) as exc:
         CU.attest_no_unique_withheld_code_path({shared, secret_name}, {shared}, {shared, secret_name})
-    assert "DUMMY_withheld_only_composition_branch" not in str(exc.value)
-    assert "biology.py" not in str(exc.value)
+    assert "DUMMY_withheld_only_composition_branch" not in _chain_text(exc.value)
+    assert "biology.py" not in _chain_text(exc.value)
 
 
 @pytest.mark.parametrize("args", [
@@ -706,6 +958,62 @@ def test_withheld_only_public_code_path_fails_without_echoing_it():
 def test_code_path_attestation_rejects_vacuous_or_malformed_inputs(args):
     with pytest.raises(CustodyError):
         CU.attest_no_unique_withheld_code_path(*args)
+
+
+@pytest.mark.parametrize("empty_position", [0, 1, 2])
+def test_empty_code_path_sets_are_refused_as_vacuous(empty_position):
+    args = [{"pkg/a.py::f"}, {"pkg/a.py::f"}, {"pkg/a.py::f"}]
+    args[empty_position] = set()
+    with pytest.raises(CustodyError, match="empty"):
+        CU.attest_no_unique_withheld_code_path(*args)
+
+
+# ------------------------------------------------- N-b: nothing supplied is echoed
+
+def test_code_path_digest_failure_does_not_echo_paths():
+    hidden = "DUMMY_hidden_" + "branch"
+    a, b = "pkg/x.py::" + hidden + "\r\nz", "pkg/x.py::" + hidden + "\nz"  # collide after normalization
+    with pytest.raises(CustodyError) as exc:
+        CU.attest_no_unique_withheld_code_path({b}, {a, b}, {a, b})
+    assert hidden not in _chain_text(exc.value)
+    lone = "pkg/x.py::" + hidden + "\ud800"
+    with pytest.raises(CustodyError) as exc:
+        CU.attest_no_unique_withheld_code_path({lone}, {lone}, {lone})
+    assert hidden not in _chain_text(exc.value)
+
+
+def test_unknown_keys_are_reported_by_count_not_name(exposed_parent):
+    hidden = "DUMMY_unlisted_" + "component"
+    spec = base_spec()
+    spec["withheld_family_commitment"] = _h("x")
+    spec[hidden] = {"x": 1}
+    with pytest.raises(CustodyError) as exc:
+        CU.freeze_generator_version(spec)
+    assert hidden not in _chain_text(exc.value)
+    p0, led = exposed_parent
+    child, _ = make_world(set_snr(0.9))
+    rec = defect(p0, child, ["difficulty_grid/signal_to_noise"])
+    rec[hidden] = 1
+    with pytest.raises(CustodyError) as exc:
+        successor(p0, child, led, rec)
+    assert hidden not in _chain_text(exc.value)
+    with pytest.raises(CustodyError) as exc:
+        CU.record_exposure(p0, {"exposure_id": "e9", "method_id": "m", "realization_class": DEBUG, hidden: 1}, led)
+    assert hidden not in _chain_text(exc.value)
+
+
+def test_withheld_spec_key_collision_is_not_echoed(exposed_qual):
+    hidden = "DUMMY_hidden_" + "key"
+    colliding = {hidden + "\r\n": 1, hidden + "\n": 2}
+    pre = CU.generator_precommitment_semantic_hash(base_spec())
+    with pytest.raises(CustodyError) as exc:
+        CU.withheld_family_commitment(dummy_nonce(), colliding, pre, WTAG)
+    assert hidden not in _chain_text(exc.value)
+    fr, led, roots, qnonce = exposed_qual
+    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("fit"))
+    with pytest.raises(CustodyError) as exc:
+        CU.reveal_withheld_family(fr, led, withheld_spec=colliding, nonce=qnonce, withheld_class_tag=WTAG)
+    assert hidden not in _chain_text(exc.value)
 
 
 # ----------------------------------------------------------- forged ledgers
@@ -740,10 +1048,10 @@ def test_chain_recomputed_after_deleting_an_entry_is_caught_by_the_anchor(expose
     parent, led = exposed_parent
     entries = [(e["kind"], e["payload"]) for e in led.entries()]
     assert entries[-1][0] == "EXPOSURE_RECORDED"
-    raw, head = _forge(entries[:-1])  # hide the exposure, then re-chain consistently
-    CU.CustodyLedger.from_bytes(raw)  # semantically valid on its own ...
+    raw, head = _forge(entries[:-1])
+    CU.CustodyLedger.from_bytes(raw)
     with pytest.raises(CustodyError):
-        CU.CustodyLedger.from_bytes(raw, expected_head=led.head)  # ... but not the published ledger
+        CU.CustodyLedger.from_bytes(raw, expected_head=led.head)
 
 
 @pytest.mark.parametrize("override", [
@@ -765,7 +1073,7 @@ def test_forged_attestation_with_wrong_counts_is_refused_on_replay(committed, ov
 
 @pytest.mark.parametrize("field", ["root_commitment", "authorized_ids_digest"])
 def test_forged_attestation_digest_is_caught_at_reveal(exposed_qual, field):
-    fr, led, roots, _ = exposed_qual
+    fr, led, roots, qnonce = exposed_qual
     CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("fit"))
     entries = [(e["kind"], e["payload"]) for e in led.entries()]
     idx = [i for i, (k, p) in enumerate(entries) if k == "REALIZATION_SET_ATTESTED" and p["class_tag"] == QUAL][0]
@@ -773,7 +1081,17 @@ def test_forged_attestation_digest_is_caught_at_reveal(exposed_qual, field):
     raw, head = _forge(entries)
     forged = CU.CustodyLedger.from_bytes(raw, expected_head=head)  # chain- and order-valid
     with pytest.raises(CustodyError):
-        CU.reveal_class_nonce(fr, forged, class_tag=QUAL, nonce=roots[QUAL][0])
+        CU.reveal_class_nonce(fr, forged, class_tag=QUAL, nonce=qnonce)
+
+
+def test_forged_withheld_entry_bound_to_another_nonce_is_refused_on_replay(committed):
+    fr, led, roots, qnonce = committed
+    entries = [(e["kind"], e["payload"]) for e in led.entries()]
+    idx = [i for i, (k, _) in enumerate(entries) if k == "WITHHELD_COMMITTED"][0]
+    entries[idx][1]["nonce_commitment"] = CU.nonce_commitment(roots[DEBUG][0])
+    raw, head = _forge(entries)
+    with pytest.raises(CustodyError):
+        CU.CustodyLedger.from_bytes(raw, expected_head=head)
 
 
 def test_forged_generator_entry_with_wrong_hash_is_refused():
