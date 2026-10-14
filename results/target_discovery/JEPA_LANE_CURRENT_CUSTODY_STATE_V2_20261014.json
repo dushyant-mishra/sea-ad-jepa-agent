@@ -1,0 +1,67 @@
+{
+  "schema": "JEPA_LANE_CURRENT_CUSTODY_STATE_V2_20261014",
+  "status": "CURRENT_SUCCESSOR_NAVIGATION_STATE",
+  "canonical_audit": {
+    "pr": 322,
+    "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
+    "master_index": "docs/agent/JEPA_LANE_MASTER_AUDIT_INDEX_20261014.md",
+    "master_state": "results/target_discovery/JEPA_LANE_MASTER_AUDIT_STATE_20261014.json",
+    "no_repeat_matrix": "docs/agent/JEPA_LANE_NO_REPEAT_MATRIX_20261014.csv",
+    "file_index": "docs/agent/JEPA_LANE_CUSTODY_FILE_INDEX_20261014.csv",
+    "external_asset_manifest": "docs/agent/JEPA_EXTERNAL_ARTIFACT_CUSTODY_MANIFEST_20261013.csv"
+  },
+  "canonical_handoff": {
+    "pr": 323,
+    "branch": "handoff/jepa-lane-takeover-20261013",
+    "read_first": "docs/agent/JEPA_LANE_SUCCESSOR_HANDOFF_V2_20261014.md"
+  },
+  "phase2": {
+    "status": "COMPLETED_AND_INDEPENDENTLY_AUDITED",
+    "receipt_sha256": "5382034332f24b0e37954b4f8e2cefe958f21ff644e6fd1ffec150d2478aa61b",
+    "qualification": "QUALIFIED",
+    "challenge_matches": "9/9",
+    "audit_pr": 336,
+    "audit_head": "b92f335b53a93805a5d05330dc0d61f0479b1dcf",
+    "audit_terminal": "PASS_PHASE2_EXECUTION_AND_CUSTODY",
+    "scope": "TEST_QUALIFICATION_ONLY",
+    "rerun_authorized": false
+  },
+  "current_real_gate_sources": {
+    "directional_structural": {"pr": 340, "head": "42c3af6ba6d82737a465620f801e896239849184"},
+    "transfer_coverage": {"pr": 342, "head": "f7e90c41bab10c7ff4abb3e69446975634483656"},
+    "measurement_reference": {"pr": 343, "head": "82d17bfb1650d97a95d5424160126791f09d7494"},
+    "teacher_information_probe": {"pr": 345, "head": "f16ba70f7066db2928e31f31b7785831a8fc10f2"},
+    "evidence_ladder": {"pr": 346, "head": "5a314bdeda9078d5f65e995e49d2ebf5274751f6"},
+    "relational_manifest": {"pr": 347, "head": "877242a6c8206ea35a73ebf111cb6b52bbe79109"}
+  },
+  "current_unresolved_work": [
+    "instantiate_and_freeze_real_G11_G12_population_evidence_support_registry",
+    "generate_lawful_human_G8_technical_calibration_reference",
+    "freeze_exact_human_G6_teacher_target_and_teacher_student_evidence_rights",
+    "freeze_G7_terminal_stability_decision_law",
+    "freeze_R1_recurrence_scalar_null_summary_and_substantive_rule",
+    "freeze_G9_S1_S2_target_geometry_alignment_null_and_reference",
+    "solve_G2_same_metric_meaningful_magnitude_reference",
+    "solve_R4_C6_C4_same_metric_meaningful_increment_references"
+  ],
+  "synthetic": {
+    "mechanics_fixture_pr": 328,
+    "mechanics_fixture_head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+    "mechanics_fixture_status": "QUALIFIED_MECHANICS_INTERFACE_ONLY",
+    "production_design_pr": 344,
+    "production_design_head": "f10d4f62b59a35cc443302ab8863c33d51b2b1de",
+    "production_design_status": "USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF",
+    "v79_status": "SEPARATE_NOT_QUALIFIED__291_OF_292__Q08_FAIL"
+  },
+  "authority": {
+    "real_td_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "production_ema_selection_authorized": false,
+    "training_authorized": false,
+    "terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "takeover_rule": "VERIFY_CURRENT_HEADS_AND_CUSTODY__DO_NOT_RESTART_HISTORICAL_AUDIT__CONTINUE_ONLY_EXPLICIT_UNRESOLVED_WORK"
+}
