@@ -1,0 +1,70 @@
+{
+  "schema": "OLD_TASK1_CANONICAL_COMPATIBILITY_VECTORS_V1",
+  "date": "2026-10-14",
+  "authority": "ANALYSIS_ONLY__PREIMPLEMENTATION_COMPATIBILITY_ORACLE__NO_UNIFIED_PROMOTION",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "source_branch": "implementation/production-synthetic-v3-1-1-20261014",
+  "source_head_sha": "ff597faf2182522a320ec5322f8db9b67c9c6094",
+  "source_test_path": "tests/production_synthetic/test_canonical_v1.py",
+  "source_test_blob_sha": "0bce5cbdde37112f316ffc1386342b34c0ed4d41",
+  "scope": "shared JSON-native canonical-byte behavior and frozen historical digest vectors; historical synthetic digest namespaces are compatibility evidence only and are not unified authority namespaces",
+  "vectors": [
+    {
+      "vector_id": "CANONICAL_BYTES_ESCAPES_UNICODE_FLOATS",
+      "input_json_description": "object with s=U+0000,U+001F,TAB,LF,DEL,e-acute,emoji and f=[1e16,1e-5,5e-324,0.1,-0.0,1.0]",
+      "expected_utf8_escaped": "{\"f\":[1e+16,1e-05,5e-324,0.1,0.0,1.0],\"s\":\"\\u0000\\u001f\\t\\n<DEL>é😀\"}",
+      "notes": [
+        "<DEL> denotes raw U+007F byte 0x7f, not a JSON escape",
+        "é and emoji are raw UTF-8",
+        "-0.0 canonicalizes to 0.0"
+      ]
+    },
+    {
+      "vector_id": "SEMANTIC_JSON_OBJECT",
+      "input": {"b":[1,2.5,null,true],"a":{"z":0,"y":0.0},"c":"x"},
+      "expected_canonical_utf8": "{\"a\":{\"y\":0.0,\"z\":0},\"b\":[1,2.5,null,true],\"c\":\"x\"}",
+      "historical_synthetic_semantic_sha256": "9985d6352461c786289baa95b34c9523d607f6559dd0df4f02b8ab43ab321ecd",
+      "unified_requirement": "canonical bytes must match exactly on JSON-native domain; unified receipt digest must use its own domain and therefore need not equal this historical digest"
+    },
+    {
+      "vector_id": "SEMANTIC_TEXT_EOL_NORMALIZATION",
+      "lf_text": "id\tv\nA\t1\n",
+      "crlf_text": "id\tv\r\nA\t1\r\n",
+      "historical_synthetic_semantic_text_sha256": "383690d22cc9059e6132f0b6ad1ef3ef9f9e9c4e3caf183ec57a4667df61165b",
+      "required_relation": "LF_AND_CRLF_EQUAL_SEMANTIC_TEXT_IDENTITY__RAW_BYTES_DIFFER"
+    },
+    {
+      "vector_id": "ORDERED_REGISTRY_I_KEY",
+      "rows": [{"i":0,"n":"A"},{"i":1,"n":"B"},{"i":2,"n":"C"}],
+      "identity_keys": ["i"],
+      "historical_ordered_registry_sha256": "5d2356c29572e267f707a806e8ca28c7a8addd7c98b83d32395b4ab24e8c1387",
+      "required_order_semantics": "ROW_REORDER_MUST_CHANGE_DIGEST"
+    },
+    {
+      "vector_id": "ORDERED_REGISTRY_I_N_KEYS",
+      "rows": [{"i":0,"n":"A"},{"i":1,"n":"B"},{"i":2,"n":"C"}],
+      "identity_keys": ["i","n"],
+      "historical_ordered_registry_sha256": "034242f85237cd803e081c91fa6adc709f68e8b7740026bf42655e6b6f2b8d39",
+      "required_identity_key_semantics": "IDENTITY_KEY_NAME_ORDER_IS_CANONICALIZED__ROWS_REMAIN_ORDER_SENSITIVE"
+    },
+    {
+      "vector_id": "SEMANTIC_ROW_SET_I_KEY",
+      "rows": [{"i":0,"n":"A"},{"i":1,"n":"B"},{"i":2,"n":"C"}],
+      "identity_keys": ["i"],
+      "historical_semantic_row_set_sha256": "7c65a8d0ddf15b5411458a2c91437c6001c701f0db51433d8eefcdbf8c3a5586",
+      "required_order_semantics": "ROW_AND_SHARD_REORDER_MUST_NOT_CHANGE_DIGEST"
+    }
+  ],
+  "rejection_vectors": [
+    "NaN_OR_INFINITY",
+    "DUPLICATE_JSON_KEYS",
+    "KEYS_COLLIDING_AFTER_EOL_NORMALIZATION",
+    "NONZERO_FLOAT_LITERAL_UNDERFLOWING_TO_ZERO",
+    "LONE_SURROGATE",
+    "MISSING_IDENTITY_KEY",
+    "NONE_IDENTITY_VALUE",
+    "DUPLICATE_SCIENTIFIC_IDENTITY",
+    "NON_JSON_NATIVE_VALUE_AT_UNIFIED_AUTHORITY_BOUNDARY"
+  ],
+  "unified_task1_gate": "MUST_MATCH_SHARED_JSON_NATIVE_CANONICAL_BYTES_AND_ORDER_SEMANTICS_BEFORE_GREEN__DO_NOT_REUSE_HISTORICAL_SYNTHETIC_DIGEST_DOMAIN_AS_UNIFIED_AUTHORITY"
+}
