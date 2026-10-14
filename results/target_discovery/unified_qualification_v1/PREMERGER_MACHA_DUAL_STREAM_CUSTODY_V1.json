@@ -1,0 +1,164 @@
+{
+  "schema": "PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1",
+  "date": "2026-10-14",
+  "normative_relation": "Machine-enforced extension of PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1 for Macha-owned historical scientific context. These records preserve evidence/custody and do not create current unified authority.",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "streams": [
+    {
+      "stream_id": "MACHA_REAL_TD_CORRECTED_REPLAY",
+      "historical_scientific_custodian": "Macha",
+      "scientific_scope": "real-TD corrected replay, hostile qualification, real-support audit, and post-audit repair lineage",
+      "unified_destination": "TD qualification registry historical-evidence layer, prerequisite graph, real-support calibration, gate/challenge requirements",
+      "review_obligations": [
+        "Task 6/controller review must check corrected-replay semantics and frozen historical execution law",
+        "Task 7/gate-registration review must check hostile real-TD defects and post-Macha repair lineage",
+        "Task 9/challenge-world review must include failure modes learned from corrected replay and real-data hostile audit"
+      ],
+      "unresolved_item_ids": ["U_MACHA_REAL_TD_HISTORY_REGISTRATION", "U_G8_REFERENCE", "U_G6_MARGIN", "U_GEOMETRY_PRODUCER", "U_R1_NULL", "U_G2_POLICY"],
+      "artifacts": [
+        {
+          "artifact_id": "MACHA_PR314_CORRECTED_REPLAY",
+          "artifact_path": "PR #314 / docs/agent/TD_CORRECTED_REPLAY_OUTCOME_7819aabd_20261012/TD_CORRECTED_REPLAY_OUTCOME.md",
+          "source_commit": "c6899a2910244a0352c0c57e7aea6e3026191da1",
+          "artifact_digest": null,
+          "exact_identity_available": false,
+          "migration_class": "HISTORICAL_BIOLOGICAL_EVIDENCE",
+          "current_authority": "FROZEN_SPENT_HISTORICAL_EVIDENCE__OLD_EXECUTION_LAW_ONLY",
+          "scientific_role": "single authorized corrected TD56→TD57B→TD57C→TD59 replay; frozen Pattern-A evidence",
+          "historical_evidence_retained": true,
+          "requires_requalification": true,
+          "requalification_reason": "cannot confer current unified authority; any current decision must run under prospectively qualified unified law",
+          "destination_in_unified_architecture": "registry historical-evidence attachment and challenge/prerequisite rationale",
+          "authority_basis": "EXACT_PR_HEAD_AND_FROZEN_REPLAY_RECEIPTS__ARTIFACT_DIGEST_NOT_REASSERTED",
+          "continue_stop_or_redirect": "KEEP_FROZEN_NO_RERUN"
+        },
+        {
+          "artifact_id": "MACHA_PR316_FINE_RARE_SUCCESSOR",
+          "artifact_path": "PR #316",
+          "source_commit": "2397ab83d8ae9d0c762a8fd5f3919edc350d137f",
+          "artifact_digest": null,
+          "exact_identity_available": false,
+          "migration_class": "PRODUCTION_INTERFACE_DEPENDENCY",
+          "current_authority": "PROSPECTIVE_DESIGN_HISTORY_ONLY",
+          "scientific_role": "prospective fine/rare relational successor design and known-truth qualification interface history",
+          "historical_evidence_retained": true,
+          "requires_requalification": true,
+          "requalification_reason": "later repaired unified interfaces control execution",
+          "destination_in_unified_architecture": "TD registry design provenance and challenge/gate-registration review context",
+          "authority_basis": "EXACT_PR_HEAD__NO_CURRENT_EXECUTION_AUTHORITY",
+          "continue_stop_or_redirect": "REDIRECT_TO_UNIFIED_REGISTRY"
+        },
+        {
+          "artifact_id": "MACHA_REAL_DATA_AUDIT",
+          "artifact_path": "audit/td-real-data-qualification-macha-20261014",
+          "source_commit": "ccc3a08939694f5d35b3048c94ec44f44618eef4",
+          "artifact_digest": null,
+          "exact_identity_available": false,
+          "migration_class": "REUSABLE_SHARED_INFRASTRUCTURE",
+          "current_authority": "AUDIT_CUSTODY_AND_CALIBRATION_AUTHORITY_ONLY",
+          "scientific_role": "authenticated support geometry and hostile human-gate blocker audit",
+          "historical_evidence_retained": true,
+          "requires_requalification": false,
+          "requalification_reason": "",
+          "destination_in_unified_architecture": "real-support calibration inputs plus registry prerequisite graph and hostile regression requirements",
+          "authority_basis": "EXACT_AUDIT_HEAD_AND_AUTHENTICATED_RECEIPTS",
+          "continue_stop_or_redirect": "CONTINUE_AS_AUDIT_CUSTODY"
+        },
+        {
+          "artifact_id": "MACHA_REPAIR_LINEAGE_364_369",
+          "artifact_path": "PRs #364-#369 controlling post-Macha repair lineage",
+          "source_commit": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+          "artifact_digest": null,
+          "exact_identity_available": false,
+          "migration_class": "PRODUCTION_INTERFACE_DEPENDENCY",
+          "current_authority": "MECHANICS_REPAIRED__PRODUCER_REFERENCE_DEPENDENCIES_OPEN",
+          "scientific_role": "controlling repaired gate/firewall lineage after hostile real-data audit",
+          "historical_evidence_retained": true,
+          "requires_requalification": true,
+          "requalification_reason": "complete producer→artifact→executor chains and A7 path equivalence remain required",
+          "destination_in_unified_architecture": "TD qualification registry bootstrap at actually demonstrated authority stages",
+          "authority_basis": "EXACT_REPAIR_HEADS_AND_REPAIR_RECEIPTS",
+          "continue_stop_or_redirect": "CONTINUE_IN_MERGED_LANE"
+        }
+      ]
+    },
+    {
+      "stream_id": "MACHA_V79_BAYESIAN_KNOWN_TRUTH",
+      "historical_scientific_custodian": "Macha",
+      "scientific_scope": "V79 structural support correction, Bayesian geometry/contracts, Q00-Q11 world realization/custody, terminal qualification, V80 benchmark, and later production-synthetic design chain",
+      "unified_destination": "CaseBundle/TruthBundle substrate, sealed qualification infrastructure, negative priors, observation/population realism and challenge assets",
+      "review_obligations": [
+        "Task 4/CaseBundle review must check V79 world/custody semantics and observation/population realism lessons",
+        "Task 5/known-truth execution review must check Q00-Q11 truth/custody separation and terminal-failure semantics",
+        "Task 9/challenge-world review must check both V79 failures and real-TD hostile failure modes"
+      ],
+      "unresolved_item_ids": ["U_MACHA_V79_HISTORY_REGISTRATION", "U_KNOWN_TRUTH_SUBSTRATE", "U_SEALED_EXAM_INFRA", "U_V79_V80_SUCCESSOR_CONFLICT"],
+      "artifacts": [
+        {
+          "artifact_id": "MACHA_PR261_V79_BAYESIAN_HANDOFF",
+          "artifact_path": "PR #261",
+          "source_commit": "f68c56b78b7a7f6d9590b922f94249b9f2f7f18f",
+          "artifact_digest": null,
+          "exact_identity_available": false,
+          "migration_class": "REUSABLE_SHARED_INFRASTRUCTURE",
+          "current_authority": "HISTORICAL_CUSTODY_INDEX_ONLY",
+          "scientific_role": "canonical takeover handoff for V79 Bayesian dataset-geometry lane and its qualification boundaries",
+          "historical_evidence_retained": true,
+          "requires_requalification": true,
+          "requalification_reason": "branch-specific world-generation authority is historical; unified architecture controls new execution",
+          "destination_in_unified_architecture": "known-truth provenance root and Task 4/5 review context",
+          "authority_basis": "EXACT_PR_HEAD__HISTORICAL_CUSTODY_ONLY",
+          "continue_stop_or_redirect": "REDIRECT_TO_KNOWN_TRUTH_INFRA"
+        },
+        {
+          "artifact_id": "MACHA_V79_Q00_Q11_REALIZATION_CUSTODY",
+          "artifact_path": "canonical V79 audit wrapper for Q00-Q11 realization/custody lineage",
+          "source_commit": "bfeb2b868aa84cb94594869ef5cb196af286db90",
+          "artifact_digest": null,
+          "exact_identity_available": false,
+          "migration_class": "KNOWN_TRUTH_CHALLENGE_ASSET",
+          "current_authority": "HISTORICAL_KNOWN_TRUTH_ASSET_ONLY",
+          "scientific_role": "Q00-Q11 world-generation, truth/support/manifests, blinding/custody and realization lineage where preserved by canonical audit",
+          "historical_evidence_retained": true,
+          "requires_requalification": true,
+          "requalification_reason": "reuse only through unified CaseBundle/TruthBundle and sealed-exam laws; no inherited qualification",
+          "destination_in_unified_architecture": "known-truth challenge assets, sealed custody regression tests and observation/population realism",
+          "authority_basis": "CANONICAL_SYNTHETIC_AUDIT_WRAPPER_ONLY__NO_NEW_DIGEST_INVENTED",
+          "continue_stop_or_redirect": "MIGRATE_AS_CHALLENGE_ASSET"
+        },
+        {
+          "artifact_id": "MACHA_V79_TERMINAL_NOT_QUALIFIED",
+          "artifact_path": "canonical synthetic audit: V79 terminal qualification",
+          "source_commit": "bfeb2b868aa84cb94594869ef5cb196af286db90",
+          "artifact_digest": null,
+          "exact_identity_available": false,
+          "migration_class": "CLOSED_FAILED_EXPERIMENT",
+          "current_authority": "NONE__NOT_QUALIFIED_IMMUTABLE",
+          "scientific_role": "permanent V79 NOT_QUALIFIED terminal result and failure priors",
+          "historical_evidence_retained": true,
+          "requires_requalification": true,
+          "requalification_reason": "V79 cannot be rescued; any successor estimator requires new prospective identity",
+          "destination_in_unified_architecture": "negative priors, challenge requirements and no-repeat triggers",
+          "authority_basis": "CANONICAL_SYNTHETIC_AUDIT_WRAPPER_ONLY",
+          "continue_stop_or_redirect": "STOP_AND_FREEZE"
+        },
+        {
+          "artifact_id": "MACHA_V80_BENCHMARK_PACKAGE",
+          "artifact_path": "PR #348 V80",
+          "source_commit": "9ad04d43ffe7bd387da8d2315f63b5758df4f9f8",
+          "artifact_digest": "16a08b29c7e083377f4dde6e16ac6d55a3358ed45475c74161fbaba29a4afc38",
+          "exact_identity_available": true,
+          "migration_class": "REUSABLE_SHARED_INFRASTRUCTURE",
+          "current_authority": "BENCHMARK_PACKAGE_QUALIFIED__SUCCESSOR_ESTIMATOR_UNQUALIFIED",
+          "scientific_role": "estimator-independent benchmark/custody/adjudication package only",
+          "historical_evidence_retained": true,
+          "requires_requalification": false,
+          "requalification_reason": "",
+          "destination_in_unified_architecture": "benchmark custody/adjudication patterns and successor-conflict ledger",
+          "authority_basis": "EXACT_COMMIT_AND_PACKAGE_DIGEST",
+          "continue_stop_or_redirect": "CONTINUE_AS_BENCHMARK_ONLY"
+        }
+      ]
+    }
+  ]
+}
