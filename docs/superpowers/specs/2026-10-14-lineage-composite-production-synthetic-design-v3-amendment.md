@@ -7,6 +7,7 @@ Base design: `docs/superpowers/specs/2026-10-13-lineage-composite-production-syn
 Review delta: `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V2_REVIEW_DELTA_20261014.md`
 Round-1 audit: `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3_SELF_AUDIT_R1_20261014.md`
 Round-2 audit: `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3_SELF_AUDIT_R2_20261014.md`
+Round-3 audit: `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3_SELF_AUDIT_R3_20261014.md`
 Implementation base remains PR #328 exact head `25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec`.
 
 This amendment does not rewrite V2 history. V2 remains preserved evidence. V3 adds and tightens requirements identified by the 2026-10-14 synthetic-lane review. Where V3 conflicts with V2, V3 controls. Otherwise V2 remains binding.
@@ -136,6 +137,22 @@ If a calibration statistic mixes biology and measurement, the simulator must eit
 The production ecosystem may contain prospectively declared stress worlds beyond the empirical envelope, including ultra-sparse or thinned-support regimes. These must be labeled synthetic stress and scored separately from empirical-distribution fidelity. They cannot be represented as observed human prevalence.
 
 No world parameter may be changed after downstream outcomes are inspected merely to obtain a PASS.
+
+### 3.5 V72-V75 anonymous-feature boundary
+
+Historical V73-V75 measurement qualification is narrow: it qualified a 100K measurement architecture using **96 anonymous synthetic features**, not canonical biological address identity. The production runtime uses the current 41,238-address registry. Therefore V72-V75 may contribute only their qualified measurement/population mechanics within scope, including allocation, sharding, empirical QC/depth/support envelopes, fragment/multiplicity mechanics and scaling methodology.
+
+The following are **not** inherited address or biology authority from V72-V75:
+
+- the 96-feature count;
+- anonymous synthetic feature identities;
+- any feature-to-address assignment;
+- planted feature biology;
+- anonymous-feature covariance/topology as canonical biology.
+
+Arbitrarily assigning historical anonymous features to canonical 41,238 addresses is prohibited.
+
+If an observation calibration is address-agnostic, it may be transferred as an address-agnostic distributional envelope. If address-specific behavior is required, it must be derived from authenticated current-address evidence or be implemented prospectively as new synthetic mechanics. Any new crosswalk cannot claim V75 inheritance merely because its measurement family resembles V75.
 
 ## 4. Evidence-response versus depth-response contract
 
@@ -273,16 +290,18 @@ Add to V2's mandatory hostile suite:
 1. V79/V80 frozen-identity contamination of production world generation;
 2. outcome-driven sparse-positive parameter retuning;
 3. empirical prevalence/effect-size promotion into biological truth;
-4. evidence-level and depth-level label swapping;
-5. apparent evidence gain caused only by additional sequencing depth;
-6. evidence-level transition that secretly regenerates a modality/operator realization;
-7. apparent biological novelty caused only by held-out technology/source;
-8. technology/source shortcut into latent biology;
-9. silent 41,238 -> 4,096 namespace fallback;
-10. `NUMERICAL_FAILURE` represented as controller truth;
-11. false-abstention/false-certainty semantics weakened by aggregation;
-12. mixed biology/measurement calibration statistic used to set latent prevalence;
-13. unsupported measurement-domain axis omitted from transfer testing without an explicit single-level justification.
+4. V75 anonymous-feature identity or feature-count promotion into canonical-address semantics;
+5. fabricated V75-to-41,238 feature/address crosswalk presented as inherited authority;
+6. evidence-level and depth-level label swapping;
+7. apparent evidence gain caused only by additional sequencing depth;
+8. evidence-level transition that secretly regenerates a modality/operator realization;
+9. apparent biological novelty caused only by held-out technology/source;
+10. technology/source shortcut into latent biology;
+11. silent 41,238 -> 4,096 namespace fallback;
+12. `NUMERICAL_FAILURE` represented as controller truth;
+13. false-abstention/false-certainty semantics weakened by aggregation;
+14. mixed biology/measurement calibration statistic used to set latent prevalence;
+15. unsupported measurement-domain axis omitted from transfer testing without an explicit single-level justification.
 
 Each discovered defect must become a preserved failing regression before repair.
 
@@ -290,8 +309,9 @@ Each discovered defect must become a preserved failing regression before repair.
 
 V2 implementation units are retained with these additions:
 
-- Unit 1 lineage/custody registry must include frozen V79/V80 non-authority bindings and empirical calibration provenance.
+- Unit 1 lineage/custody registry must include frozen V79/V80 non-authority bindings, empirical calibration provenance and the V75 anonymous-feature non-authority boundary.
 - Unit 3 acquisition/scaling must materialize authenticated empirical observation envelopes plus separately labeled stress extensions.
+- Unit 4 address/support must source canonical identity only from the current 41,238 registry/reader, never from V72-V75 anonymous feature identities.
 - Unit 5 observation/modalities must expose fixed-bundle evidence-response and separate depth-response intervention families.
 - Unit 6 hostile challenge families must include V80-style estimable/non-estimable sparse-positive cases without copying V80 realized worlds.
 - Unit 7 packaging must preserve controller-only estimability truth and biological-novelty/measurement-domain labels.
@@ -306,6 +326,8 @@ In addition to V2 stop conditions, stop if:
 - real-distribution calibration provenance is missing or stale/superseded without justification;
 - empirical observation statistics are being treated as causal biological truth;
 - a mixed biology/measurement statistic is used to set latent prevalence without separate authority;
+- V75 anonymous features are mapped into canonical production addresses as inherited authority;
+- an address-specific calibration is required but only anonymous historical feature evidence exists;
 - evidence and measurement-depth interventions cannot be separated;
 - an evidence-level change requires regeneration under a different observation operator;
 - biological novelty is encoded by source/technology identity;
