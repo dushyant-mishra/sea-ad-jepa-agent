@@ -16,7 +16,7 @@ Task 0 implementation branch:
 
 `audit/task0-premerger-migration-custody-20261014`
 
-This audit does **not** authorize Task 1. Task 1 remains blocked until the exact Task 0 implementation head receives a fresh independent review and that reviewed head is frozen.
+This audit does **not** authorize Task 1. Task 1 remains blocked until the exact repaired Task 0 implementation head receives a fresh independent review and that reviewed head is frozen.
 
 Binding authority remains:
 
@@ -55,9 +55,12 @@ This avoids unnecessary replay while still preserving exact branch/head navigati
 Task 0 produces:
 
 - `results/target_discovery/unified_qualification_v1/PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1.json`
+- `results/target_discovery/unified_qualification_v1/PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json`
 - `results/target_discovery/unified_qualification_v1/PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json`
 
 The migration matrix contains the classified significant synthetic, TD and downstream inventory, exact identities where already available, historical defects, retained components, superseded components, destination under the unified architecture, requalification requirements, and unresolved-work references.
+
+The mixed-artifact decomposition registry is mandatory whenever the matrix marks an artifact as `mixed_historical_object`. It gives every separable child role its own machine-classified migration class, authority state, destination, requalification rule and exact-identity attestation. A prose `decomposition_note` is not sufficient for validation.
 
 The unresolved-work ledger distinguishes work that is genuinely incomplete from work that is intentionally obsolete or closed.
 
@@ -79,6 +82,21 @@ The following survive as reusable infrastructure or requirements, subject to the
 - V80 estimator-independent benchmark custody/adjudication package, without promoting any successor estimator.
 
 The former synthetic Tasks 1–3 were never completed as production implementation. Their requirements survive, but implementation is redirected to the accepted unified plan after Task 0 rather than being resumed on PR #356.
+
+### Machine decomposition of mixed historical objects
+
+The F1 repair makes the split machine-visible rather than prose-only:
+
+- `V79_QUALIFICATION` → reusable observation/blinding mechanics **plus** a separate permanently failed estimator-qualification child;
+- `PR328_MECHANICS_FIXTURE` → reusable mechanics/hostile-fixture child **plus** a separate superseded production-biology-assumptions child;
+- `PR344_V3_1_V3_1_1` → surviving known-truth substrate/custody/challenge requirements **plus** a separate superseded independent gate/controller-authority child;
+- `PR356_SYNTH_PLAN` → reusable Tasks 1–3 infrastructure requirements **plus** a separate stopped/frozen Tasks 4–12 parallel-plan child.
+
+Consumers must not collapse these child records back into the parent migration class.
+
+### Exact-identity fail-closed rule
+
+The F2 repair makes `exact_identity_available` mandatory on every top-level artifact and every decomposition child. If it is `true`, both the source commit and required artifact digest must be present. If exact artifact bytes genuinely were not frozen, it is `false` and custody rests on the recorded canonical wrapper/receipt basis; missing historical digests are never invented.
 
 ### Known-truth substrate/challenge material retained
 
@@ -119,13 +137,13 @@ These migrate into schema laws, producer contracts, challenge families, regressi
 
 V78 remains a falsified signed-field/marginal-repair experiment.
 
-V79 remains permanently `NOT_QUALIFIED`; its failed estimator qualification is not rescued by the unified architecture. Reusable observation/blinding mechanics are separated from the failed authority claim.
+V79 remains permanently `NOT_QUALIFIED`; its failed estimator qualification is not rescued by the unified architecture. Reusable observation/blinding mechanics are separated from the failed authority claim in the machine decomposition registry.
 
 Historical PROD41K/T1 checkpoints remain forensic only and do not regain representation authority.
 
 ### Parallel implementations stopped/frozen
 
-PR #356's independent interpretation of synthetic Tasks 4–12 is superseded. Only the Tasks 1–3 infrastructure requirements migrate forward.
+PR #356's independent interpretation of synthetic Tasks 4–12 is superseded. Only the Tasks 1–3 infrastructure requirements migrate forward, represented as a distinct child record.
 
 Concurrent duplicate gate-repair PRs #370–#378 remain historical evidence only. The controlling repair set remains the exact surfaces identified in the current takeover checkpoint.
 
@@ -209,27 +227,29 @@ This prevents “unfinished” from being confused with “superseded.”
 
 ## RED/GREEN protocol
 
-Task 0 first froze a hostile validator and focused workflow without the validator implementation or outputs. The RED head is:
+Initial Task 0 RED head:
 
 `b47a71c6d3502d3e3e80fbae36fd293a080ff599`
 
-Focused RED workflow:
+Focused RED workflow/job:
 
-`38614044619`
+`38614044619` / `116024422726`
 
-Focused RED job:
+The hostile-validator step failed before the initial implementation existed.
 
-`116024422726`
+The prior pre-review implementation head `ce4eacc263b02b1fa15505951d5377ae710e3330` then had focused GREEN workflow/job `38615085846` / `116028001027` (`13 passed in 0.14s`) and inherited integration workflow/job `38615085515` / `116027999675` GREEN. Those runs are historical evidence only because controller pre-review comment `6175540043` found blocking F1/F2 defects on that exact head.
 
-The hostile-validator step failed, as required, before implementation existed.
+A second regression-only RED head `42aac927b3929d0f3f6798446382cce9da665d96` was then frozen. Focused workflow/job `38616574261` / `116033071246` failed at the hostile Task 0 test step, demonstrating the new decomposition and exact-identity bypass tests fail against the old implementation.
 
-The final GREEN head and workflow evidence must be filled by exact CI after all Task 0 artifacts are committed. This document must not be interpreted as an independent review verdict.
+The repaired head must receive fresh exact-head GREEN CI and then a fresh independent review. This document is not an independent review verdict.
 
 ## Closure self-audit status
 
-Controller-side audit result before independent review:
+Controller-side audit requirements after F1/F2 repair:
 
 - caller can gain authority by writing a PR/branch name: **NO by schema/validator contract**
+- deleting `exact_identity_available` is accepted: **NO; fail-closed required-field check**
+- a prose-only mixed-object decomposition is accepted: **NO; machine decomposition registry required**
 - a missing migration class is accepted: **NO**
 - a failed experiment can silently become active: **NO**
 - a superseded parallel implementation can remain ambiguously authoritative: **NO**
@@ -237,7 +257,7 @@ Controller-side audit result before independent review:
 - candidate/protected outcomes were opened for classification: **NO**
 - global authority changed: **NO**
 
-The remaining required check is a **fresh independent Task 0 implementation review**. This controller-side self-audit is not a substitute for that review.
+The remaining required check after repaired exact-head GREEN CI is a **fresh independent Task 0 implementation review**. This controller-side self-audit is not a substitute for that review.
 
 ## What Task 0 does not authorize
 
@@ -253,4 +273,4 @@ Task 0 does not authorize:
 - Stage4;
 - training eligibility or training authorization.
 
-The next lawful action after exact-head GREEN evidence is to request a fresh independent Task 0 review and stop.
+The next lawful action after repaired exact-head GREEN evidence is to request a fresh independent Task 0 review and stop.
