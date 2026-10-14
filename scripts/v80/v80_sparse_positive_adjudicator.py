@@ -138,8 +138,11 @@ def _controller_metrics(
     donor_id = np.asarray(fit_world["donor_id"], dtype=int)
     split = np.asarray(fit_world["split"], dtype=str)
     support = np.asarray(fit_world["support"], dtype=bool)[:, gene]
-    detected = np.asarray(fit_world["detected"], dtype=bool)[:, gene]
-    positive_value = np.asarray(fit_world["positive_value"], dtype=float)[:, gene]
+    outcome_observed = np.asarray(fit_world["outcome_observed"], dtype=bool)[:, gene]
+    fit_detected = np.asarray(fit_world["detected"], dtype=bool)[:, gene]
+    fit_positive = np.asarray(fit_world["positive_value"], dtype=float)[:, gene]
+    observed_detected = np.asarray(truth["observed_detected"], dtype=bool)
+    observed_positive = np.asarray(truth["observed_positive_value"], dtype=float)
 
     n_cells = len(donor_id)
     n_donors = int(donor_id.max()) + 1
@@ -150,6 +153,8 @@ def _controller_metrics(
         raise ValueError("COMPLETE donor-effect vectors have wrong length")
     if p.shape != (n_cells,) or positive_mu.shape != (n_cells,):
         raise ValueError("COMPLETE prediction vectors have wrong length")
+    if observed_detected.shape != (n_cells,) or observed_positive.shape != (n_cells,):
+        raise ValueError("controller evaluation outcomes have wrong length")
     if any(not np.all(np.isfinite(x)) for x in arrays):
         raise ValueError("COMPLETE estimates/predictions must be finite")
     if not (np.all(p >= 0.0) and np.all(p <= 1.0)):
@@ -159,21 +164,21 @@ def _controller_metrics(
     if outcome.positive_sigma is None or not np.isfinite(outcome.positive_sigma) or outcome.positive_sigma <= 0:
         raise ValueError("positive_sigma must be finite and positive")
 
-    train = (split == "train") & support
+    train = (split == "train") & support & outcome_observed
     test = (split == "test") & support
     if not train.any() or not test.any():
         raise ValueError("estimable fit lacks train/test measured support")
-    y_train = detected[train]
-    y_test = detected[test]
+    y_train = fit_detected[train]
+    y_test = observed_detected[test]
     baseline_p = float(np.clip(y_train.mean(), 1e-8, 1.0 - 1e-8))
     detection_delta = _binary_logloss(y_test, p[test]) - _binary_logloss(y_test, np.full(y_test.shape, baseline_p))
 
-    train_pos = train & detected
-    test_pos = test & detected
+    train_pos = train & fit_detected
+    test_pos = test & observed_detected
     if not train_pos.any() or not test_pos.any():
         raise ValueError("estimable positive component lacks train/test positive observations")
-    log_train = np.log(positive_value[train_pos])
-    log_test = np.log(positive_value[test_pos])
+    log_train = np.log(fit_positive[train_pos])
+    log_test = np.log(observed_positive[test_pos])
     baseline_mu = float(log_train.mean())
     baseline_sigma = max(float(log_train.std(ddof=0)), 1e-6)
     baseline_ld = float(_normal_logpdf(log_test, baseline_mu, baseline_sigma).mean())
@@ -266,4 +271,5 @@ def adjudicate_sparse_positive(
         "failures": failures,
         "aggregate_rescue_authorized": False,
         "metrics_computed_by_controller": True,
+        "heldout_outcomes_opened_controller_side_only": True,
     }
