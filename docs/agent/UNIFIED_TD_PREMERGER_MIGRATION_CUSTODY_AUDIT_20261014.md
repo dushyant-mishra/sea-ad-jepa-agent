@@ -272,11 +272,13 @@ The hostile-validator step failed before the initial implementation existed.
 
 The prior pre-review implementation head `ce4eacc263b02b1fa15505951d5377ae710e3330` then had focused GREEN workflow/job `38615085846` / `116028001027` (`13 passed in 0.14s`) and inherited integration workflow/job `38615085515` / `116027999675` GREEN. Those runs are historical evidence only because controller pre-review comment `6175540043` found blocking F1/F2 defects on that exact head.
 
-A second regression-only RED head `42aac927b3929d0f3f6798446382cce9da665d96` was then frozen. Focused workflow/job `38616574261` / `116033071246` failed at the hostile Task 0 test step, demonstrating the decomposition and exact-identity bypass tests fail against the old implementation.
+A second regression-only RED head `42aac927b3929d0f3f6798446382cce9da665d96` was frozen. Focused workflow/job `38616574261` / `116033071246` failed at the hostile Task 0 test step, demonstrating the decomposition and exact-identity bypass tests fail against the old implementation.
 
 The F1/F2 implementation reached `4d7a99c4a07ef4ef314b39163ec561c117d7bac2` and received focused Task 0 workflow/job `38616934876` / `116034306973` GREEN (`15 passed in 0.06s`) plus inherited integration workflow/job `38616934888` / `116034309851` GREEN.
 
-A subsequent Task 0 custody review found that the two Macha historical scientific streams were not yet separately traceable. Regression tests for that omission were added before the dual-stream registry/ledger implementation. Final exact-head CI after this document commit is required before independent review.
+A subsequent Task 0 custody review found that the two Macha historical scientific streams were not yet separately traceable. Regression-only head `a64350a25805ba0436b5f5deebe4d7cca3199ebc` added those requirements; focused workflow `38617488658` failed, preserving the expected RED before dual-stream implementation.
+
+The dual-stream implementation was completed and then documented. Exact-head GREEN must bind the final documentation head before independent review; the currently frozen final head will be recorded in the PR review request after CI completes.
 
 This document is not an independent review verdict.
 
