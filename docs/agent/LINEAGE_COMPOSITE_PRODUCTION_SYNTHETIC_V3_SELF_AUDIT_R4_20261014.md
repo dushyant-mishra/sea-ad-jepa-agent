@@ -2,14 +2,15 @@
 
 Date: 2026-10-14
 Reviewed object: `docs/superpowers/specs/2026-10-14-lineage-composite-production-synthetic-design-v3-amendment.md`
-Reviewed branch head: `823556cc5cf663c7452b3a74919dfc90c0712362` plus the subsequent V3 review commits through the current branch state.
+Reviewed V3 spec blob: `9792acfb9b2fab8ad2a20717566c95ac5ed506d1`
+Reviewed PR #344 branch head immediately before this audit-record update: `823556cc5cf663c7452b3a74919dfc90c0712362`
 
 Verdict: `PASS_DESIGN_SCOPE_AND_INTERNAL_CONSISTENCY__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF`
 
 ## Verification basis
 
 Fresh read of the current V3 amendment plus historical cross-checks against:
-- PR #324 cold-start checklist and next-action queue;
+- PR #324 cold-start operator checklist and next-action queue;
 - PR #325 successor guardrails;
 - V2 design authority map;
 - frozen V80 design law;
