@@ -111,7 +111,8 @@ def _make_world(config: SparsePositiveConfig, seed_root: int, family_index: int,
     support = np.ones((n_cells, n_genes), dtype=bool)
     if family == "SP04_SUPPORT_THINNED_ESTIMABLE":
         support = rng.random((n_cells, n_genes)) < 0.55
-        # Prospectively guarantee each gene has support in both train and test donors.
+        # Structural support is fixed prospectively and independently of realized
+        # detection outcomes. Keep lawful support in both train/test donor blocks.
         for g in range(n_genes):
             support[: config.cells_per_donor, g] = True
             support[config.cells_per_donor : 2 * config.cells_per_donor, g] = True
@@ -136,29 +137,7 @@ def _make_world(config: SparsePositiveConfig, seed_root: int, family_index: int,
             + donor_effect[donor_id, None]
         )
         prob = _sigmoid(eta)
-        detected = rng.random((n_cells, n_genes)) < prob
-        detected &= support
-
-        # Guard against finite-sample zero-positive accidents in worlds that are
-        # prospectively declared estimable. This is a generator invariant, not
-        # post-outcome seed selection: it deterministically fills the first lawful
-        # supported cell in missing donor/gene strata before serialization.
-        if family not in {
-            "SP05_NO_POSITIVE_SUPPORT_NOT_ESTIMABLE",
-            "SP06_RANK_DEFICIENT_NOT_ESTIMABLE",
-        }:
-            for g in range(n_genes):
-                donors_with_pos = set(donor_id[detected[:, g]].tolist())
-                if len(donors_with_pos) < 4:
-                    for donor in range(config.n_donors):
-                        if donor in donors_with_pos:
-                            continue
-                        ix = np.flatnonzero((donor_id == donor) & support[:, g])
-                        if len(ix):
-                            detected[int(ix[0]), g] = True
-                            donors_with_pos.add(donor)
-                        if len(donors_with_pos) >= 4:
-                            break
+        detected = (rng.random((n_cells, n_genes)) < prob) & support
 
     positive_value = np.zeros((n_cells, n_genes), dtype=np.float64)
     if detected.any():
