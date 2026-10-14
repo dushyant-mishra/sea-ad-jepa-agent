@@ -10,7 +10,8 @@ def _row(donor, rid, qx, qy, *, source="SEA_AD", operator="opA", support="S", el
     return {
         "donor_id": donor,
         "relation_id": rid,
-        "source": source,
+        "source_x": source,
+        "source_y": source,
         "operator_x": operator,
         "operator_y": operator,
         "support_stratum_x": support,
@@ -31,35 +32,31 @@ def test_scale_free_relation_is_invariant_to_strictly_increasing_distance_transf
 
 
 def test_donor_primary_summary_cannot_be_swamped_by_large_donor():
-    rows = []
-    # D_BIG has 100 agreeing relations; D_SMALL has one disagreeing relation.
-    for i in range(100):
-        rows.append(_row("D_BIG", f"R{i}", 1, 1, weight=1000))
+    rows = [_row("D_BIG", f"R{i}", 1, 1, weight=1000) for i in range(100)]
     rows.append(_row("D_SMALL", "R100", 1, -1, weight=1))
     out = S.summarize_recurrence(rows, minimum_informative_relations_per_donor=1)
-    assert out["donor_agreement"]["D_BIG"] == 1.0
-    assert out["donor_agreement"]["D_SMALL"] == 0.0
+    assert out["donor_agreement"] == {"D_BIG": 1.0, "D_SMALL": 0.0}
     assert out["donor_mean_agreement"] == 0.5
     assert out["cell_weighted_agreement_has_authority"] is False
 
 
-def test_operator_or_support_cross_stratum_pairing_is_rejected():
-    bad = _row("D1", "R1", 1, 1)
-    bad["operator_y"] = "opB"
+def test_source_operator_or_support_cross_stratum_pairing_is_rejected():
+    bad = _row("D1", "R1", 1, 1); bad["source_y"] = "HVS"
+    with pytest.raises(S.R1StressError, match="source"):
+        S.summarize_recurrence([bad], minimum_informative_relations_per_donor=1)
+    bad = _row("D1", "R1", 1, 1); bad["operator_y"] = "opB"
     with pytest.raises(S.R1StressError, match="operator"):
         S.summarize_recurrence([bad], minimum_informative_relations_per_donor=1)
-    bad = _row("D1", "R1", 1, 1)
-    bad["support_stratum_y"] = "OTHER"
+    bad = _row("D1", "R1", 1, 1); bad["support_stratum_y"] = "OTHER"
     with pytest.raises(S.R1StressError, match="support"):
         S.summarize_recurrence([bad], minimum_informative_relations_per_donor=1)
 
 
 def test_sparse_or_unresolved_support_abstains_instead_of_becoming_failure():
-    rows = [
-        _row("D1", "R1", 1, 1, eligible=False),
-        _row("D2", "R2", 1, -1, eligible=False),
-    ]
-    out = S.summarize_recurrence(rows, minimum_informative_relations_per_donor=1)
+    out = S.summarize_recurrence(
+        [_row("D1", "R1", 1, 1, eligible=False), _row("D2", "R2", 1, -1, eligible=False)],
+        minimum_informative_relations_per_donor=1,
+    )
     assert out["status"] == "NOT_ESTIMABLE_SUPPORT"
     assert out["donor_mean_agreement"] is None
     assert out["failed_biology"] is False
@@ -71,8 +68,7 @@ def test_relation_ties_are_preserved_as_relation_ties_not_imputed_direction():
         [_row("D1", "R1", 0, 0), _row("D2", "R2", 0, 1)],
         minimum_informative_relations_per_donor=1,
     )
-    assert out["donor_agreement"]["D1"] == 1.0
-    assert out["donor_agreement"]["D2"] == 0.0
+    assert out["donor_agreement"] == {"D1": 1.0, "D2": 0.0}
 
 
 def test_td57b_semantic_fixture_matches_anchored_cell_triplet_not_address_triplet():
@@ -86,12 +82,9 @@ def test_td57b_semantic_fixture_matches_anchored_cell_triplet_not_address_triple
 
 def test_distribution_stress_profile_preserves_real_etl_extremes_without_claiming_biology():
     p = S.foundation_distribution_stress_profile()
-    assert p["donor_cells_min"] == 81
-    assert p["donor_cells_max"] == 174111
-    assert p["operator_cells_min"] == 179
-    assert p["operator_cells_max"] == 732360
-    assert p["address_operator_support_min"] == 0
-    assert p["address_operator_support_max"] == 42
+    assert (p["donor_cells_min"], p["donor_cells_max"]) == (81, 174111)
+    assert (p["operator_cells_min"], p["operator_cells_max"]) == (179, 732360)
+    assert (p["address_operator_support_min"], p["address_operator_support_max"]) == (0, 42)
     assert p["HVS_measured_scalar_fraction"] < p["NPH52_measured_scalar_fraction"] < p["SEA_AD_measured_scalar_fraction"]
     assert p["biological_threshold_authority"] is False
 
