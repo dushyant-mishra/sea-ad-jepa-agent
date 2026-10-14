@@ -1,0 +1,92 @@
+{
+  "schema": "SYNTHETIC_DATASET_LANE_CURRENT_STATE_V2",
+  "date": "2026-10-13",
+  "lane": "synthetic_dataset",
+  "global_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "ownership": {
+    "owns": ["synthetic_biology_generation","synthetic_population_and_observation","synthetic_multimodal_context_perturbation_views","synthetic_support_semantics","sealed_synthetic_fit_controller_packaging","synthetic_generator_custody_and_hostile_tests","synthetic_successor_qualification_worlds"],
+    "does_not_own": ["real_td_execution_or_adjudication","real_biological_gate_design","v79_scoring_execution","successor_estimator_implementation_unless_reassigned","target_selection","representation_selection","td60","stage4","training_authority"]
+  },
+  "pr328": {
+    "pr": 328,
+    "head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+    "status": "QUALIFIED_MECHANICS_INTERFACE_FIXTURE_ONLY",
+    "receipt_v2_sha256": "0cc1bc599dd0e77ec46f603d8a7edbb7da58762020a68d703b403dc7bf0a4dad",
+    "world_sha256": "dedd53c3b93eecdf28b73f229574a0cda4971371a3a6282f4b9e12fa44d09e66",
+    "fit_view_sha256": "fc5fa5c071903460da8c0d4644a3b18022f45b178f2c60a727710cadc2fb350a",
+    "controller_truth_sha256": "120c4e47bb7d667360c0786bb6004f02166d0f189c4a2b33b478545c7296c05f",
+    "manifest_sha256": "9b74681f57601225aa26037fa1eac439be067143bfb900cdcd5f73af0dbc8d3b",
+    "package_sha256": "9f2f3b7a53d5862a2a08bbd23c1d42f990f0f055616fbce7a1491493cda3fb41",
+    "external_audit_pr": 339,
+    "external_audit_repairs_complete": true
+  },
+  "pr344": {
+    "pr": 344,
+    "head": "f10d4f62b59a35cc443302ab8863c33d51b2b1de",
+    "controlling_spec": "docs/superpowers/specs/2026-10-13-lineage-composite-production-synthetic-design-v2.md",
+    "status": "PASS_DESIGN_SCOPE_AND_AUTHORITY__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF",
+    "design_v1": "FAILED_SELF_AUDIT__PRESERVED_HISTORY",
+    "production_implementation_authorized": false
+  },
+  "v79": {
+    "historical_result": "NOT_QUALIFIED",
+    "immutable": true,
+    "scorer_orchestrator_head": "ac1e73d79489438634aaeeca035d229875f3186a",
+    "contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+    "world_set_digest": "40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286",
+    "realization_ledger_sha256": "4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65",
+    "realization_audit_receipt_sha256": "6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3",
+    "final_scoring_receipt_sha256": "ef10852e534fe8a83c3aebd832ad3a531d755d06185464441494712818e8abfd",
+    "gates_pass": 291,
+    "gates_total": 292,
+    "only_failure": "Q08_SPARSE_DETECTION_POSITIVE__CONVERGENCE_ALL_FITS_DIAGNOSED__3_OF_44_NOT_DIAGNOSED",
+    "rescue_authorized": false,
+    "rerun_authorized": false
+  },
+  "v80": {
+    "pr": 348,
+    "branch": "science/v80-sparse-positive-successor-qualification-20261013",
+    "active_branch": true,
+    "last_observed_head": "b840067e4c9439e4cb4aa9e8c649ef2f6064a142",
+    "instruction": "ALWAYS_QUERY_PR348_CURRENT_HEAD_BEFORE_RESUMING__DO_NOT_ASSUME_LAST_OBSERVED_HEAD_IS_FINAL",
+    "base_pr328_head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+    "purpose": "PROSPECTIVE_SYNTHETIC_SPARSE_POSITIVE_SUCCESSOR_QUALIFICATION_PACKAGE_ONLY",
+    "successor_estimator_implemented": false,
+    "contract": "results/v80/sparse_positive/V80_SPARSE_POSITIVE_QUALIFICATION_CONTRACT_V1.json",
+    "nonregression_binding": "results/v80/sparse_positive/V80_V79_NONREGRESSION_BINDING_V1.json",
+    "design": "docs/superpowers/specs/2026-10-13-v80-sparse-positive-successor-qualification-design.md",
+    "plan": "docs/superpowers/plans/2026-10-13-v80-sparse-positive-successor-qualification.md",
+    "seed_root": 41000000,
+    "n_genes_per_world": 24,
+    "n_donors": 24,
+    "cells_per_donor": 80,
+    "challenge_families": ["SP00_BALANCED_ESTIMABLE","SP01_ULTRASPARSE_ESTIMABLE","SP02_DONOR_IMBALANCED_ESTIMABLE","SP03_SOURCE_SHIFT_ESTIMABLE","SP04_SUPPORT_THINNED_ESTIMABLE","SP05_NO_POSITIVE_SUPPORT_NOT_ESTIMABLE","SP06_RANK_DEFICIENT_NOT_ESTIMABLE","SP07_NEW_DONOR_ESTIMABLE"],
+    "fit_statuses": ["COMPLETE","NOT_ESTIMABLE","NUMERICAL_FAILURE"],
+    "red_evidence": {
+      "head": "e3a4cef88581171a76427e97e119e3223c14133d",
+      "workflow_run": 38502749914,
+      "job": 115653252417,
+      "result": "20_FAILED_1_PASSED",
+      "interpretation": "EXPECTED_TDD_RED__SCRIPTS_V80_ABSENT__NOT_SCIENTIFIC_FAILURE"
+    },
+    "implementation_files_present_last_observed": ["scripts/v80/__init__.py","scripts/v80/v80_sparse_positive_benchmark.py","scripts/v80/v80_sparse_positive_adjudicator.py","scripts/v80/finalize_v80_sparse_positive_package.py","tests/v80/test_v80_sparse_positive_benchmark.py","tests/v80/test_v80_sparse_positive_hostile.py","tests/v80/test_v80_sparse_positive_custody.py",".github/workflows/v80-sparse-positive-benchmark.yml"],
+    "last_observed_ci": {
+      "v80_run": 38504094639,
+      "v80_status": "IN_PROGRESS",
+      "pr328_regression_run": 38504094661,
+      "pr328_regression_status": "SUCCESS"
+    },
+    "authority": {
+      "successor_estimator_qualified": false,
+      "real_data_authorized": false,
+      "target_selection_authorized": false,
+      "representation_selection_authorized": false,
+      "td60_authorized": false,
+      "stage4_authorized": false,
+      "synthetic_training_authorized": false,
+      "real_training_authorized": false
+    }
+  },
+  "next_action": "QUERY_PR348_LIVE_HEAD_AND_LATEST_CI__AUDIT_ONLY_NEW_DELTAS__COMPLETE_V80_PACKAGE_WITHOUT_CHANGING_FROZEN_CONTRACT__THEN_RETURN_TO_PR344_V2_REVIEW",
+  "no_repeat_trigger_required": true
+}

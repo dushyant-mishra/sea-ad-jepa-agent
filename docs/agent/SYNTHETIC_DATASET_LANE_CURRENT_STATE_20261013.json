@@ -1,0 +1,7 @@
+{
+  "schema": "SYNTHETIC_DATASET_LANE_CURRENT_STATE_V1",
+  "status": "SUPERSEDED_FOR_PRESENT_TENSE_BY_SYNTHETIC_DATASET_LANE_CURRENT_STATE_V2_20261013_JSON",
+  "reason": "V80_SPARSE_POSITIVE_SUCCESSOR_PACKAGE_ADDED_AFTER_THIS_SNAPSHOT",
+  "replacement": "docs/agent/SYNTHETIC_DATASET_LANE_CURRENT_STATE_V2_20261013.json",
+  "historical_note": "Preserved only to document the pre-V80 state. Do not use as the current restart point."
+}
