@@ -5,6 +5,7 @@ Status: **PROSPECTIVE DESIGN AMENDMENT — USER REVIEW REQUIRED — IMPLEMENTATI
 
 Base design: `docs/superpowers/specs/2026-10-13-lineage-composite-production-synthetic-design-v2.md`
 Review delta: `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V2_REVIEW_DELTA_20261014.md`
+Round-1 audit: `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3_SELF_AUDIT_R1_20261014.md`
 Implementation base remains PR #328 exact head `25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec`.
 
 This amendment does not rewrite V2 history. V2 remains preserved evidence. V3 adds and tightens requirements identified by the 2026-10-14 synthetic-lane review. Where V3 conflicts with V2, V3 controls. Otherwise V2 remains binding.
@@ -124,9 +125,10 @@ Empirical observation summaries may not be silently promoted into:
 - human regulatory truth;
 - disease/pathology truth;
 - production candidate identities;
-- V79/V80 frozen benchmark thresholds.
+- V79/V80 frozen benchmark thresholds;
+- latent program prevalence or latent biological state frequencies when the empirical statistic contains unresolved biological composition.
 
-If a calibration statistic mixes biology and measurement, the simulator must either decompose it with independent authority or label its use as a bounded phenomenological observation fit rather than biological truth.
+If a calibration statistic mixes biology and measurement, the simulator must either decompose it with independent authority or label its use as a bounded phenomenological observation fit rather than biological truth. A mixed statistic may shape what the observer emits, but it may not define latent biological prevalence unless a separately qualified biological authority explicitly permits that use.
 
 ### 3.4 Stress outside empirical ranges
 
@@ -145,9 +147,16 @@ For selected cells/query cases, hold fixed:
 - hidden biological state;
 - donor identity;
 - observation-operator family;
-- underlying realized full observation from which lawful evidence subsets are derived.
+- measurement-quality regime for evidence that remains visible;
+- teacher/reference identity where the downstream contract requires a fixed teacher target.
 
 Vary the amount of **biologically relevant information available to the student**, prospectively at multiple evidence levels such as 20/40/60/80/100% where the interface supports it.
+
+Evidence levels must change the *scope or set of lawful biological evidence*, not merely sequencing depth. Lawful examples include prospectively nested subsets of measured genes/features, additional measured modalities, additional context channels, or other biologically informative observed channels that preserve measurement quality for retained evidence as closely as the interface permits.
+
+Count thinning, lower library size, reduced capture efficiency or noisier repeated measurement are **not** biological-evidence interventions; they belong exclusively to the measurement-depth/quality family below.
+
+If a downstream interface cannot vary biological evidence independently of measurement quality, that case is ineligible for a biological-evidence response curve rather than being silently treated as one.
 
 Controller outputs must support at least:
 
@@ -159,12 +168,14 @@ The exact metric/threshold for any downstream gate must be frozen before sealed 
 
 ### 4.2 Measurement-depth response
 
-For the same hidden biology, vary measurement quality while keeping the biological evidence class fixed. Examples include:
+For the same hidden biology and the same biological evidence class, vary only measurement quality. Examples include:
 
 - sequencing depth thinning;
 - repeated observation realizations;
 - capture efficiency variation;
 - count-split noise where lawful.
+
+The set of biological channels/features/modalities made available must remain fixed for a measurement-depth curve unless the acquisition operator itself lawfully changes support; any such support change must be recorded as measurement-domain behavior rather than biological evidence gain.
 
 Controller truth must support convergence toward the fixed-biology reference as observation quality improves.
 
@@ -180,7 +191,7 @@ Hostile tests must swap or collapse these labels and require detection.
 
 The sealed production ecosystem must include explicit combinations of biology novelty and measurement-domain familiarity.
 
-At minimum support the following controller classes where feasible:
+For every measurement-domain axis actually represented in the final sealed package, qualification must include a held-out-domain transfer condition unless the axis has only one lawful level. At minimum, the overall package must contain the following controller classes:
 
 1. familiar biology + familiar measurement domain;
 2. familiar biology + held-out source/dataset/operator domain;
@@ -261,7 +272,9 @@ Add to V2's mandatory hostile suite:
 7. technology/source shortcut into latent biology;
 8. silent 41,238 -> 4,096 namespace fallback;
 9. `NUMERICAL_FAILURE` represented as controller truth;
-10. false-abstention/false-certainty semantics weakened by aggregation.
+10. false-abstention/false-certainty semantics weakened by aggregation;
+11. mixed biology/measurement calibration statistic used to set latent prevalence;
+12. unsupported measurement-domain axis omitted from transfer testing without an explicit single-level justification.
 
 Each discovered defect must become a preserved failing regression before repair.
 
@@ -284,9 +297,11 @@ In addition to V2 stop conditions, stop if:
 - production sparse-positive parameters are selected using frozen V79/V80 outcomes;
 - real-distribution calibration provenance is missing or stale/superseded without justification;
 - empirical observation statistics are being treated as causal biological truth;
+- a mixed biology/measurement statistic is used to set latent prevalence without separate authority;
 - evidence and measurement-depth interventions cannot be separated;
 - biological novelty is encoded by source/technology identity;
 - a held-out technology shift alters latent truth directly;
+- a represented measurement-domain axis cannot be held out or justified as single-level;
 - an older 4,096 namespace is substituted for current production address semantics;
 - estimator numerical failure is encoded as non-estimability truth;
 - hard false-abstention/false-certainty failures are converted into aggregate soft penalties.
