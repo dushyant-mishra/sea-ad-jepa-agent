@@ -121,17 +121,18 @@ def emit(root, class_tag, budget):
     return rows
 
 
-def commit_withheld(freeze, qnonce, ledger, tree):
+def commit_withheld(freeze, qnonce, ledger, tree, change=None):
     scans = [CU.require_secret_absence(tree, qnonce)]
     CU.record_withheld_commitment(freeze, ledger, withheld_class_tag=WTAG, nonce_commitment=CU.nonce_commitment(qnonce),
-                                  secret_absence_attestations=scans, code_path_attestation=code_path_attestation())
+                                  secret_absence_attestations=scans, code_path_attestation=code_path_attestation(),
+                                  withheld_family_change=change)
 
 
-def commit_and_attest(freeze, qnonce, ledger, tree, attest=True):
+def commit_and_attest(freeze, qnonce, ledger, tree, attest=True, change=None):
     nonces = {DEBUG: dummy_nonce(), QUAL: qnonce}
     for tag in (DEBUG, QUAL):
         CU.record_nonce_commitment(freeze, ledger, class_tag=tag, nonce_commitment=CU.nonce_commitment(nonces[tag]))
-    commit_withheld(freeze, qnonce, ledger, tree)
+    commit_withheld(freeze, qnonce, ledger, tree, change)
     out = {}
     for tag in (DEBUG, QUAL):
         budget = freeze.realization_budget(tag)
@@ -692,7 +693,10 @@ def test_laundering_through_an_unexposed_harder_intermediate_is_refused(exposed_
     p2_easier, _ = make_world(set_snr(0.9))  # easier than exposed p0
     with pytest.raises(CustodyError):
         successor(p1, p2_easier, led)
-    p2_rollback, _ = make_world(set_snr(0.5))  # rolling back only never-exposed hardening is lawful
+    p2_exact_rollback, _ = make_world(set_snr(0.5))  # identical to exposed p0: a reroll of p0 (W2)
+    with pytest.raises(CustodyError, match="reroll"):
+        successor(p1, p2_exact_rollback, led)
+    p2_rollback, _ = make_world(set_snr(0.4))  # rolling back part of never-exposed hardening is lawful
     disp = successor(p1, p2_rollback, led)
     assert disp.disposition == "SUCCESSOR_NOT_EASIER"
     assert disp.floor_generator_semantic_hash == p0.generator_semantic_hash
@@ -706,8 +710,11 @@ def test_post_exposure_version_is_a_floor_for_further_relaxation(exposed_parent)
     p2, _ = make_world(set_snr(0.9))
     with pytest.raises(CustodyError):
         successor(p1, p2, led)
-    p2_same, _ = make_world(set_snr(0.7))
-    disp = successor(p1, p2_same, led)
+    p2_same, _ = make_world(set_snr(0.7))  # identical to its parent: a reroll (W2)
+    with pytest.raises(CustodyError, match="reroll"):
+        successor(p1, p2_same, led)
+    p2_harder, _ = make_world(set_snr(0.6))
+    disp = successor(p1, p2_harder, led)
     assert disp.disposition == "SUCCESSOR_NOT_EASIER"
     assert disp.floor_generator_semantic_hash == p1.generator_semantic_hash
 
@@ -825,6 +832,203 @@ def test_second_successor_of_the_same_parent_is_refused():
         successor(v1, v3, led)
 
 
+# --------------------------------- W2: a no-change successor is a reroll
+
+def test_w2_no_change_successors_are_refused_as_rerolls(exposed_parent):
+    p0, led = exposed_parent
+    n_before = len(led)
+    for _ in range(3):  # three consecutive attempts at fresh sealed draws of the same generator
+        child, _ = make_world()
+        with pytest.raises(CustodyError, match="reroll"):
+            successor(p0, child, led)
+    assert len(led) == n_before
+    child, _ = make_world()
+    with pytest.raises(CustodyError, match="reroll"):  # a defect record naming an unchanged component
+        successor(p0, child, led, defect(p0, child, components=["mechanism_mixture"]))
+
+
+def test_w2_reroll_of_an_exposed_ancestor_or_the_parent_is_refused(exposed_parent):
+    p0, led = exposed_parent
+    p1, _ = make_world(set_snr(0.3))
+    successor(p0, p1, led)
+    CU.record_generator_freeze(p1, led)
+    for level in (0.3, 0.5):  # identical to the parent p1; identical to the exposed ancestor p0
+        again, _ = make_world(set_snr(level))
+        with pytest.raises(CustodyError, match="reroll"):
+            successor(p1, again, led)
+    assert successor(p1, make_world(set_snr(0.4))[0], led).disposition == "SUCCESSOR_NOT_EASIER"
+
+
+def test_w2_identical_revision_before_any_exposure_is_not_a_reroll():
+    v1, _ = make_world()
+    led = CU.CustodyLedger()
+    CU.record_generator_freeze(v1, led)
+    v2, _ = make_world()
+    assert successor(v1, v2, led).disposition == "PRE_EXPOSURE_REVISION"
+
+
+# ------------------------------ W1: the withheld family is frozen per lineage
+
+EASIER_WITHHELD_SPEC = dict(DUMMY_WITHHELD_SPEC, DUMMY_family={"composition": "DUMMY_single_program", "weight": 0.5})
+
+
+def qualify_and_reveal(freeze, qnonce, ledger, withheld=DUMMY_WITHHELD_SPEC, exposure_id="exp-q"):
+    expose(freeze, ledger, QUAL, exposure_id)
+    CU.record_fit_output_frozen(freeze, ledger, class_tag=QUAL, fit_output_sha256=_h("fit " + exposure_id))
+    CU.reveal_withheld_family(freeze, ledger, withheld_spec=withheld, nonce=qnonce, withheld_class_tag=WTAG)
+
+
+def _qualified_parent_and_child(tmp_path, child_withheld, reveal_parent=True, change="UNCHANGED", defect_components=()):
+    p0, q0 = make_world()
+    led = CU.CustodyLedger()
+    prepare(p0, q0, led, make_tree(tmp_path))
+    if reveal_parent:
+        qualify_and_reveal(p0, q0, led, exposure_id="exp-p0")
+    else:
+        expose(p0, led, QUAL, "exp-p0")  # parent's sealed run left open and unrevealed
+    child, q1 = make_world(set_snr(0.3), withheld=child_withheld)
+    rec = defect(p0, child, ["difficulty_grid/signal_to_noise"], defect_components) if defect_components else None
+    successor(p0, child, led, rec)
+    CU.record_generator_freeze(child, led)
+    commit_and_attest(child, q1, led, make_tree(tmp_path, "tree_child"), change=change)
+    if defect_components:
+        CU.record_requalification_prerequisites(child, led, realism_rerun_receipt_sha256=_h("realism"),
+                                                withheld_check_plan_sha256=_h("plan"))
+    expose(child, led, QUAL, "exp-child")
+    CU.record_fit_output_frozen(child, led, class_tag=QUAL, fit_output_sha256=_h("child fit"))
+    return p0, q0, child, q1, led
+
+
+def test_w1_unchanged_successor_with_an_easier_withheld_family_fails_at_reveal(tmp_path):
+    p0, q0, child, q1, led = _qualified_parent_and_child(tmp_path, EASIER_WITHHELD_SPEC)
+    with pytest.raises(CustodyError, match="hard custody failure"):
+        CU.reveal_withheld_family(child, led, withheld_spec=EASIER_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
+
+
+def test_w1_unchanged_successor_with_the_same_withheld_family_reveals(tmp_path):
+    p0, q0, child, q1, led = _qualified_parent_and_child(tmp_path, DUMMY_WITHHELD_SPEC)
+    CU.reveal_withheld_family(child, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
+    CU.CustodyLedger.from_bytes(led.to_bytes(), expected_head=led.head)
+
+
+def test_w1b_successor_reveal_waits_for_the_parent_reveal_then_fails_on_mismatch(tmp_path):
+    p0, q0, child, q1, led = _qualified_parent_and_child(tmp_path, EASIER_WITHHELD_SPEC, reveal_parent=False)
+    with pytest.raises(CustodyError, match="revealed first"):
+        CU.reveal_withheld_family(child, led, withheld_spec=EASIER_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
+    with pytest.raises(CustodyError):  # the parent's own sealed run is still open: no early reveal
+        CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
+    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, fit_output_sha256=_h("parent fit"))  # superseded: allowed
+    CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
+    with pytest.raises(CustodyError, match="hard custody failure"):
+        CU.reveal_withheld_family(child, led, withheld_spec=EASIER_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
+
+
+def test_w1_reference_is_the_nearest_ancestor_that_committed_a_withheld_family(tmp_path):
+    p0, q0 = make_world()
+    led = CU.CustodyLedger()
+    prepare(p0, q0, led, make_tree(tmp_path))
+    qualify_and_reveal(p0, q0, led, exposure_id="exp-p0")
+    p1, _ = make_world(set_snr(0.3))  # frozen but never committed: carries no withheld family of its own
+    successor(p0, p1, led)
+    CU.record_generator_freeze(p1, led)
+    p2, q2 = make_world(set_snr(0.2), withheld=EASIER_WITHHELD_SPEC)
+    successor(p1, p2, led)
+    CU.record_generator_freeze(p2, led)
+    commit_and_attest(p2, q2, led, make_tree(tmp_path, "tree_p2"), change="UNCHANGED")
+    expose(p2, led, QUAL, "exp-p2")
+    CU.record_fit_output_frozen(p2, led, class_tag=QUAL, fit_output_sha256=_h("p2 fit"))
+    with pytest.raises(CustodyError, match="hard custody failure"):  # compared with p0's family, two levels up
+        CU.reveal_withheld_family(p2, led, withheld_spec=EASIER_WITHHELD_SPEC, nonce=q2, withheld_class_tag=WTAG)
+
+
+def test_withheld_change_declaration_must_match_the_successor_record(exposed_parent, tmp_path):
+    p0, led = exposed_parent
+    child, q1 = make_world(set_snr(0.3), withheld=EASIER_WITHHELD_SPEC)
+    successor(p0, child, led)  # no defect record: the withheld family must stay unchanged
+    CU.record_generator_freeze(child, led)
+    CU.record_nonce_commitment(child, led, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(q1))
+    tree = make_tree(tmp_path, "tree_child")
+    for bad in (None, "CHANGED", "CHANGED_BY_DEFECT", True):
+        with pytest.raises(CustodyError):
+            commit_withheld(child, q1, led, tree, change=bad)
+    commit_withheld(child, q1, led, tree, change="UNCHANGED")
+
+
+def test_withheld_family_changed_by_defect_is_a_post_exposure_version(exposed_parent, tmp_path):
+    p0, led = exposed_parent
+    child, q1 = make_world(withheld=EASIER_WITHHELD_SPEC)  # public spec unchanged; only the withheld family changes
+    disp = successor(p0, child, led, defect(p0, child, components=["withheld_family"]))
+    assert disp.disposition == "POST_EXPOSURE_VERSION" and disp.inherits_qualification is False
+    CU.record_generator_freeze(child, led)
+    CU.record_nonce_commitment(child, led, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(q1))
+    tree = make_tree(tmp_path, "tree_child")
+    with pytest.raises(CustodyError):
+        commit_withheld(child, q1, led, tree, change="UNCHANGED")  # contradicts the defect record
+    commit_withheld(child, q1, led, tree, change="CHANGED_BY_DEFECT")
+
+
+def test_lineage_root_declares_no_withheld_change(tmp_path):
+    fr, q = make_world()
+    led = CU.CustodyLedger()
+    CU.record_generator_freeze(fr, led)
+    CU.record_nonce_commitment(fr, led, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(q))
+    with pytest.raises(CustodyError):
+        commit_withheld(fr, q, led, make_tree(tmp_path), change="UNCHANGED")
+
+
+def test_declared_withheld_change_that_is_not_a_change_fails_at_reveal(tmp_path):
+    p0, q0, child, q1, led = _qualified_parent_and_child(
+        tmp_path, DUMMY_WITHHELD_SPEC, change="CHANGED_BY_DEFECT", defect_components=["withheld_family"])
+    with pytest.raises(CustodyError, match="not a change"):
+        CU.reveal_withheld_family(child, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
+
+
+def test_withheld_family_changed_by_defect_reveals_a_different_family(tmp_path):
+    p0, q0, child, q1, led = _qualified_parent_and_child(
+        tmp_path, EASIER_WITHHELD_SPEC, change="CHANGED_BY_DEFECT", defect_components=["withheld_family"])
+    CU.reveal_withheld_family(child, led, withheld_spec=EASIER_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
+
+
+def test_superseded_reference_without_a_sealed_run_is_revealed_after_a_descendant_fit(tmp_path):
+    p0, q0 = make_world()
+    led = CU.CustodyLedger()
+    prepare(p0, q0, led, make_tree(tmp_path))
+    expose(p0, led, DEBUG)  # development exposure only: p0 can never freeze a qualification fit
+    child, q1 = make_world(set_snr(0.3))
+    successor(p0, child, led)
+    CU.record_generator_freeze(child, led)
+    commit_and_attest(child, q1, led, make_tree(tmp_path, "tree_child"), change="UNCHANGED")
+    with pytest.raises(CustodyError):  # the child's sealed run has not even started: no early disclosure
+        CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
+    expose(child, led, QUAL, "exp-child")
+    with pytest.raises(CustodyError):  # no descendant qualification fit is frozen yet
+        CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
+    CU.record_fit_output_frozen(child, led, class_tag=QUAL, fit_output_sha256=_h("child fit"))
+    with pytest.raises(CustodyError, match="revealed first"):
+        CU.reveal_withheld_family(child, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
+    CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
+    CU.reveal_withheld_family(child, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
+    CU.CustodyLedger.from_bytes(led.to_bytes(), expected_head=led.head)
+
+
+def test_no_withheld_reveal_while_a_lineage_sealed_run_is_open(tmp_path):
+    p0, q0 = make_world()
+    led = CU.CustodyLedger()
+    prepare(p0, q0, led, make_tree(tmp_path))
+    expose(p0, led, QUAL, "exp-p0")
+    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, fit_output_sha256=_h("p0 fit"))
+    child, q1 = make_world(set_snr(0.3))  # shares p0's withheld family
+    successor(p0, child, led)
+    CU.record_generator_freeze(child, led)
+    commit_and_attest(child, q1, led, make_tree(tmp_path, "tree_child"), change="UNCHANGED")
+    expose(child, led, QUAL, "exp-child")  # the child's sealed run is open
+    with pytest.raises(CustodyError, match="open"):
+        CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
+    CU.record_fit_output_frozen(child, led, class_tag=QUAL, fit_output_sha256=_h("child fit"))
+    CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
+    CU.reveal_withheld_family(child, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
+
+
 # ------------------------------------- N-c: requalification prerequisites
 
 @pytest.mark.parametrize("incomparable", [False, True])
@@ -835,7 +1039,7 @@ def test_defect_corrected_version_needs_requalification_prerequisites_before_exp
     disp = successor(p0, p1, led, defect(p0, p1, ["difficulty_grid/signal_to_noise"], incomparable=incomparable))
     assert disp.disposition == ("NEW_SCIENTIFIC_TESTBED" if incomparable else "POST_EXPOSURE_VERSION")
     CU.record_generator_freeze(p1, led)
-    commit_and_attest(p1, q1, led, make_tree(tmp_path, "tree_p1"))
+    commit_and_attest(p1, q1, led, make_tree(tmp_path, "tree_p1"), change="UNCHANGED")
     with pytest.raises(CustodyError):
         expose(p1, led)
     for bad in ("not-hex", _h("x").upper(), None):

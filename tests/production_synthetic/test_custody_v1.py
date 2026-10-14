@@ -13,6 +13,7 @@ import base64
 import hashlib
 import importlib.util
 import itertools
+import json
 import random
 import secrets
 import sys
@@ -724,6 +725,9 @@ def _wrapped_encodings(secret):
         "hex_0x_c_array": c_array,
         "hex_0x_prefixed_run": b"0x" + hexs,
         "python_bytes_repr": repr(secret).encode("ascii"),
+        "json_byte_list": json.dumps(list(secret)).encode("ascii"),
+        "json_byte_list_compact": json.dumps(list(secret), separators=(",", ":")).encode("ascii"),
+        "json_byte_list_wrapped": json.dumps(list(secret), indent=2).encode("ascii"),
         "decimal_big_endian": str(int.from_bytes(secret, "big")).encode("ascii"),
     }
 
@@ -771,7 +775,6 @@ def test_scan_detects_wrapped_separated_and_numeric_encodings(tmp_path, encoding
 
 
 def test_scan_detects_pretty_printed_canonical_json(tmp_path):
-    import json
     tree = make_tree(tmp_path)
     preimage = C.canonical_json_bytes(DUMMY_WITHHELD_SPEC)
     pretty = json.dumps(DUMMY_WITHHELD_SPEC, indent=2, sort_keys=True).encode("utf-8")

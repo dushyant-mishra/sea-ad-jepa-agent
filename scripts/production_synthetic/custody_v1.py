@@ -213,8 +213,9 @@ DECISIONS (each is the single authority for its quantity)
    hash, child_generator_semantic_hash (both exact), defect_description
    (non-empty), affected_dimensions (unique list, a superset of the easier
    dimensions), affected_components (unique list of E1_FROZEN_COMPONENTS
-   names, a superset of the changed components; the two lists are not both
-   empty), generator_side_evidence_sha256 (64-hex), justification_source (must
+   names plus "withheld_family", a superset of the changed components; the two
+   lists are not both empty), generator_side_evidence_sha256 (64-hex),
+   justification_source (must
    equal "GENERATOR_DEFECT_AGAINST_FROZEN_SPEC"; anything else, including any
    downstream/method-performance justification, is refused because E1 forbids
    deleting a regime merely because a method failed on it), incomparable
@@ -227,6 +228,37 @@ DECISIONS (each is the single authority for its quantity)
    ``record_requalification_prerequisites`` binds a realism-rerun receipt hash
    and a withheld-check-plan hash (64-hex each) for it. Appends
    SUCCESSOR_RECORDED.
+   REROLLS (W2). Once the lineage is exposed (a floor exists), a successor
+   whose E1 profile equals that of its parent or of any exposed ancestor, and
+   whose defect record (if any) does not list "withheld_family", is a reroll:
+   it would only redraw the sealed realizations of a generator that methods
+   have already seen, so it is refused ("reroll/seed-shopping prohibited").
+   Comparing with exposed ancestors as well as the parent closes the detour
+   through an unexposed intermediate (harden, then roll back exactly). Before
+   any exposure an identical revision stays a PRE_EXPOSURE_REVISION. Fresh
+   sealed draws for a new downstream method need a separately named
+   qualification class whose budget was declared in the original freeze;
+   classes cannot be added afterwards because realization_budgets is a frozen
+   component.
+   WITHHELD FAMILY FROZEN PER LINEAGE (W1). withheld_family_commitment is
+   excluded from the E1 profile (it changes in every version), so the family
+   itself is governed separately. Every successor's WITHHELD_COMMITTED declares
+   withheld_family_change "UNCHANGED" or "CHANGED_BY_DEFECT" (the lineage root
+   declares none). CHANGED_BY_DEFECT requires the successor's defect record to
+   list "withheld_family" in affected_components (so after exposure it is a
+   POST_EXPOSURE_VERSION or NEW_SCIENTIFIC_TESTBED); UNCHANGED is refused when
+   the defect record lists it. The rule applies before exposure too. Nothing
+   about the withheld spec is published before reveal (the declaration is a
+   flag; no unsalted hash). The declaration is checked at the successor's
+   withheld reveal against its REFERENCE, the nearest ancestor that committed a
+   withheld family: the reference's family must already be revealed; UNCHANGED
+   requires the same withheld-spec semantic hash and CHANGED_BY_DEFECT a
+   different one (otherwise it is a disguised reroll); any mismatch is a hard
+   custody failure that voids the version's qualification. OPEN ISSUE for the
+   controller: a successor declaring UNCHANGED after its reference has been
+   revealed carries a withheld family that is already public, so its withheld
+   check cannot be secret in the E2 sense; this module records and checks it
+   but cannot make it secret.
 
 7. REALIZATION SET (``attest_realization_set(root, class_tag, budget, emitted,
    ledger, *, freeze) -> RealizationAttestation``; ``freeze`` is an added
@@ -262,12 +294,27 @@ DECISIONS (each is the single authority for its quantity)
    qualification nonce, and both are refused before the qualification fit
    output is frozen. Each reveal happens once; any mismatch, early reveal or
    alternative withheld draw is a hard custody failure (E2).
+   Two enabling rules keep W1 satisfiable without weakening E2. (a) A
+   superseded version that never had a SYNTH_QUALIFICATION exposure can never
+   freeze a qualification fit, so as a reference it could never be revealed and
+   would deadlock its descendants; its withheld family may therefore be
+   revealed once a descendant's qualification fit is frozen (it has no sealed
+   run of its own to protect). (b) No withheld reveal is allowed while any
+   SYNTH_QUALIFICATION run in the ledger is open (exposed, fit not frozen),
+   because a shared (UNCHANGED) withheld family would be disclosed before that
+   run's fit is frozen. Then the W1 reference checks of decision 6 run.
 
 8. SECRET SCAN (``scan_secret_absence(repo_tree, secret_bytes) -> dict``).
    repo_tree is a directory; every regular file and symlink under it is
    scanned, and every relative path name too; any ``.git`` entry is skipped.
-   secret_bytes is ``bytes`` of >= 16 bytes. Each file is streamed in 1 MiB
-   chunks with overlap through three views:
+   secret_bytes is ``bytes`` of >= 16 bytes (PROSPECTIVE_CONVENTION
+   MIN_SCAN_SECRET_BYTES = 16, i.e. 128 bits: below this a secret is too short
+   to be a meaningful secret (brute-forceable) and its needles are short enough
+   to match unrelated bytes by coincidence, so an absence attestation would
+   prove little and a presence finding would be unreliable; at 128 bits the
+   chance that one fixed needle occurs by accident in a file of L bytes is about
+   L / 2**128). Each file is streamed in 1 MiB chunks with overlap through
+   three views:
      raw view       the bytes as stored: the secret itself, and the inner text
                     of Python ``repr(secret)`` (bytes-literal form);
      compact view   the bytes with ASCII whitespace removed (so MIME 76-column,
@@ -277,8 +324,10 @@ DECISIONS (each is the single authority for its quantity)
                     and embedded encodings all match), the big-endian decimal
                     integer of the secret (only when it has >= 20 digits, so a
                     secret with many leading zero bytes cannot match every
-                    number), and the secret with its own whitespace removed
-                    (catches pretty-printed copies of canonical JSON);
+                    number), the comma-joined decimal byte values (a JSON or
+                    Python list of the secret's bytes, with or without spaces
+                    or line wrapping), and the secret with its own whitespace
+                    removed (catches pretty-printed copies of canonical JSON);
      hex view       the compact view lowercased with ':' and ',' separators and
                     '0x' prefixes removed: lowercase hex of the secret (covers
                     upper/mixed case, colon-separated, C-array and 0x forms).
@@ -292,8 +341,12 @@ DECISIONS (each is the single authority for its quantity)
    secret is present. RESIDUAL LIMITATIONS (not detected): a secret split
    across files or across non-adjacent places in one file; partial copies;
    arbitrary custom encodings (compressed, encrypted, XOR-ed, reversed,
-   UTF-16, other separators or escapes); JSON re-serialized with a different
-   key order or number format; anything under ``.git`` (history must be
+   UTF-16, other separators or escapes); fully ``\x``-escaped strings (C, JS
+   or a Python str of escapes; only the bytes-literal repr form is covered);
+   the little-endian decimal integer of the secret; a withheld spec
+   re-serialized differently from its canonical bytes (another key order,
+   number format, string escaping or whitespace inside strings, or a subset of
+   its fields); anything under ``.git`` (history must be
    covered by scanning an export of every published commit's tree);
    symlink targets (links are not followed, only the link text is scanned);
    anything outside the given tree. The controller must scan a full export of
@@ -326,7 +379,8 @@ GENERATOR_FROZEN -> NONCE_COMMITTED (SYNTH_QUALIFICATION; SYNTH_DEBUG when
 used; no nonce commitment after the version's first exposure; a nonce
 commitment is never reused anywhere in the ledger) -> WITHHELD_COMMITTED
 (carries H(qualification nonce) and must equal the SYNTH_QUALIFICATION
-NONCE_COMMITTED entry) -> REALIZATION_SET_ATTESTED ->
+NONCE_COMMITTED entry; a successor declares withheld_family_change) ->
+REALIZATION_SET_ATTESTED ->
 [REQUALIFICATION_PREREQUISITES_RECORDED for POST_EXPOSURE_VERSION /
 NEW_SCIENTIFIC_TESTBED] -> EXPOSURE_RECORDED -> FIT_OUTPUT_FROZEN -> REVEALED.
 SUCCESSOR_RECORDED precedes the child's GENERATOR_FROZEN and supersedes the
@@ -395,7 +449,7 @@ REALIZATION_CLASS_TAGS = (SYNTH_DEBUG, SYNTH_QUALIFICATION)
 
 MIN_NONCE_BYTES = 32
 ROOT_BYTES = 32
-MIN_SCAN_SECRET_BYTES = 16
+MIN_SCAN_SECRET_BYTES = 16  # PROSPECTIVE_CONVENTION, decision 8 (128 bits)
 MIN_DISTINCT_SECRET_BYTES = 16  # PROSPECTIVE_CONVENTION tripwire, decision 4
 MIN_DECIMAL_NEEDLE_DIGITS = 20  # PROSPECTIVE_CONVENTION, decision 8 (about 66 bits)
 _SCAN_CHUNK = 1 << 20
@@ -471,6 +525,12 @@ _WITHHELD_PLAINTEXT_MARKERS = (
     "nonce",
     "preimage",
 )
+
+WITHHELD_FAMILY_COMPONENT = "withheld_family"  # affected_components entry for a withheld-family change
+_AFFECTABLE_COMPONENTS = E1_FROZEN_COMPONENTS + (WITHHELD_FAMILY_COMPONENT,)
+WITHHELD_UNCHANGED = "UNCHANGED"
+WITHHELD_CHANGED_BY_DEFECT = "CHANGED_BY_DEFECT"
+_WITHHELD_CHANGE_VALUES = (WITHHELD_UNCHANGED, WITHHELD_CHANGED_BY_DEFECT)
 
 PRE_EXPOSURE_REVISION = "PRE_EXPOSURE_REVISION"
 SUCCESSOR_NOT_EASIER = "SUCCESSOR_NOT_EASIER"
@@ -1068,6 +1128,43 @@ def _needs_requalification(led: CustodyLedger, gsh: str) -> bool:
     return rec is not None and rec["disposition"] in _FLOOR_DISPOSITIONS
 
 
+def _superseded(led: CustodyLedger, gsh: str) -> bool:
+    return bool(_payloads(led, "SUCCESSOR_RECORDED", parent_generator_semantic_hash=gsh))
+
+
+def _lineage_chain(led: CustodyLedger, gsh: str) -> list:
+    """``gsh`` followed by its ancestors back to the lineage root (the lineage is linear)."""
+    succ = _successor_records(led)
+    out = []
+    g = gsh
+    while g is not None:
+        out.append(g)
+        rec = succ.get(g)
+        g = rec["parent_generator_semantic_hash"] if rec is not None else None
+    return out
+
+
+def _descendants(led: CustodyLedger, gsh: str) -> list:
+    frozen = [f["generator_semantic_hash"] for f in _payloads(led, "GENERATOR_FROZEN")]
+    return frozen[frozen.index(gsh) + 1:] if gsh in frozen else []
+
+
+def _withheld_reference(led: CustodyLedger, gsh: str):
+    """Nearest ancestor that committed a withheld family: the lineage's frozen family for ``gsh``."""
+    for g in _lineage_chain(led, gsh)[1:]:
+        if _payloads(led, "WITHHELD_COMMITTED", generator_semantic_hash=g):
+            return g
+    return None
+
+
+def _open_qualification_runs(led: CustodyLedger) -> set:
+    exposed = {p["generator_semantic_hash"] for p in _payloads(led, "EXPOSURE_RECORDED",
+                                                               realization_class=SYNTH_QUALIFICATION)}
+    frozen = {p["generator_semantic_hash"] for p in _payloads(led, "FIT_OUTPUT_FROZEN",
+                                                              class_tag=SYNTH_QUALIFICATION)}
+    return exposed - frozen
+
+
 # ---------------------------------------------------------- E1 comparison
 
 def _validate_e1_profile(profile: Any) -> None:
@@ -1118,8 +1215,8 @@ def _validate_defect_record(rec: Any, parent: str, child: str) -> dict:
     _hex64(rec["generator_side_evidence_sha256"], "defect_record.generator_side_evidence_sha256")
     dims = _unique_str_list(rec["affected_dimensions"], "defect_record.affected_dimensions")
     comps = _unique_str_list(rec["affected_components"], "defect_record.affected_components")
-    if any(c not in E1_FROZEN_COMPONENTS for c in comps):
-        raise CustodyError(f"defect_record.affected_components may name only {E1_FROZEN_COMPONENTS}")
+    if any(c not in _AFFECTABLE_COMPONENTS for c in comps):
+        raise CustodyError(f"defect_record.affected_components may name only {_AFFECTABLE_COMPONENTS}")
     if not dims and not comps:
         raise CustodyError("defect_record must name at least one affected dimension or component")
     if not isinstance(rec["incomparable"], bool):
@@ -1132,14 +1229,24 @@ def _compute_disposition(led, parent, child, child_profile, defect_record):
     if defect_record is not None:
         _validate_defect_record(defect_record, parent, child)
     succ = _successor_records(led)
+    chain = _lineage_chain(led, parent)
     floor = None
-    g = parent
-    while g is not None:
+    for g in chain:
         rec = succ.get(g)
         if _exposed(led, g) or (rec is not None and rec["disposition"] in _FLOOR_DISPOSITIONS):
             floor = g
             break
-        g = rec["parent_generator_semantic_hash"] if rec is not None else None
+    if floor is not None:
+        withheld_changes = (defect_record is not None
+                            and WITHHELD_FAMILY_COMPONENT in defect_record["affected_components"])
+        if not withheld_changes:
+            references = [parent] + [g for g in chain if _exposed(led, g)]
+            if any(_frozen_freeze(led, g).e1_profile() == child_profile for g in references):
+                raise CustodyError(
+                    "W2: reroll/seed-shopping prohibited: after exposure, a successor identical in every public "
+                    "component to its parent or to an exposed ancestor, with the same withheld family, would only "
+                    "redraw the sealed realizations"
+                )
     reference = _frozen_freeze(led, floor if floor is not None else parent).e1_profile()
     easier = _easier(reference, child_profile)
     changed = _changed_components(reference, child_profile)
@@ -1215,11 +1322,29 @@ def _v_nonce_committed(led: CustodyLedger, p: dict) -> None:
 
 def _v_withheld_committed(led: CustodyLedger, p: dict) -> None:
     _exact_keys(p, ("generator_semantic_hash", "withheld_class_tag", "withheld_family_commitment",
-                    "nonce_commitment", "secret_absence", "code_path_attestation"), "WITHHELD_COMMITTED payload")
+                    "nonce_commitment", "withheld_family_change", "secret_absence", "code_path_attestation"),
+                "WITHHELD_COMMITTED payload")
     fr = _frozen_freeze(led, p["generator_semantic_hash"])
     gsh = fr.generator_semantic_hash
     _require_live_version(led, gsh)
     _class_tag(p["withheld_class_tag"], "withheld class tag")
+    change = p["withheld_family_change"]
+    rec = _successor_records(led).get(gsh)
+    if rec is None:
+        if change is not None:
+            raise CustodyError("the lineage root declares no withheld_family_change")
+    else:
+        if not isinstance(change, str) or change not in _WITHHELD_CHANGE_VALUES:
+            raise CustodyError(f"a successor must declare withheld_family_change as one of {_WITHHELD_CHANGE_VALUES}")
+        listed = (rec["defect_record"] is not None
+                  and WITHHELD_FAMILY_COMPONENT in rec["defect_record"]["affected_components"])
+        if change == WITHHELD_CHANGED_BY_DEFECT and not listed:
+            raise CustodyError(
+                "W1: CHANGED_BY_DEFECT requires the successor's defect record to list withheld_family in "
+                "affected_components; the withheld family is otherwise frozen for the lineage"
+            )
+        if change == WITHHELD_UNCHANGED and listed:
+            raise CustodyError("W1: the successor's defect record declares a withheld-family change, not UNCHANGED")
     if p["withheld_family_commitment"] != fr.withheld_family_commitment:
         raise CustodyError("WITHHELD_COMMITTED does not match the commitment bound by the frozen generator")
     _hex64(p["nonce_commitment"], "nonce_commitment")
@@ -1364,7 +1489,18 @@ def _v_revealed(led: CustodyLedger, p: dict) -> None:
         gsh = fr.generator_semantic_hash
         nonce = _nonce_from_hex(p["nonce_hex"])
         if not _payloads(led, "FIT_OUTPUT_FROZEN", generator_semantic_hash=gsh, class_tag=SYNTH_QUALIFICATION):
-            raise CustodyError("E2: the withheld family is revealed only after the sealed fit output is frozen")
+            early_reference_reveal = (
+                _superseded(led, gsh)
+                and not _payloads(led, "EXPOSURE_RECORDED", generator_semantic_hash=gsh,
+                                  realization_class=SYNTH_QUALIFICATION)
+                and any(_payloads(led, "FIT_OUTPUT_FROZEN", generator_semantic_hash=d, class_tag=SYNTH_QUALIFICATION)
+                        for d in _descendants(led, gsh))
+            )
+            if not early_reference_reveal:
+                raise CustodyError(
+                    "E2: the withheld family is revealed only after the sealed fit output is frozen (a superseded "
+                    "version with no sealed run of its own: only after a descendant's qualification fit is frozen)"
+                )
         if _payloads(led, "REVEALED", reveal_type=rt, generator_semantic_hash=gsh):
             raise CustodyError("the withheld family is already revealed")
         committed = _payloads(led, "WITHHELD_COMMITTED", generator_semantic_hash=gsh)[0]
@@ -1376,6 +1512,31 @@ def _v_revealed(led: CustodyLedger, p: dict) -> None:
             )
         verify_withheld_reveal(fr.withheld_family_commitment, nonce, p["withheld_spec"],
                                fr.precommitment_semantic_hash, p["withheld_class_tag"])
+        reference = _withheld_reference(led, gsh)
+        prior = None
+        if reference is not None:
+            prior = _payloads(led, "REVEALED", reveal_type=rt, generator_semantic_hash=reference)
+            if not prior:
+                raise CustodyError("W1: the lineage's earlier withheld family must be revealed first")
+        if _open_qualification_runs(led):  # includes this version's own run
+            raise CustodyError(
+                "no withheld reveal while a sealed qualification run in the lineage is still open (a shared "
+                "withheld family would be disclosed before that fit is frozen)"
+            )
+        if reference is not None:
+            same = _semantic(p["withheld_spec"], "withheld_spec") == _semantic(prior[0]["withheld_spec"],
+                                                                               "withheld_spec")
+            change = committed["withheld_family_change"]
+            if change == WITHHELD_UNCHANGED and not same:
+                raise CustodyError(
+                    "W1: the revealed withheld family differs from the lineage's frozen withheld family although "
+                    "declared UNCHANGED: hard custody failure; the qualification of this version is void"
+                )
+            if change == WITHHELD_CHANGED_BY_DEFECT and same:
+                raise CustodyError(
+                    "W1: the declared withheld-family change is not a change (a disguised reroll): hard custody "
+                    "failure"
+                )
     else:
         raise CustodyError("unknown reveal_type")
 
@@ -1486,8 +1647,12 @@ def record_nonce_commitment(freeze: GeneratorFreeze, ledger: CustodyLedger, *, c
 
 def record_withheld_commitment(freeze: GeneratorFreeze, ledger: CustodyLedger, *, withheld_class_tag: str,
                                nonce_commitment: str, secret_absence_attestations: Iterable[Mapping],
-                               code_path_attestation: Mapping) -> str:
-    """Append WITHHELD_COMMITTED, bound to the committed qualification nonce, once the private scans pass."""
+                               code_path_attestation: Mapping, withheld_family_change: str | None = None) -> str:
+    """Append WITHHELD_COMMITTED, bound to the committed qualification nonce, once the private scans pass.
+
+    ``withheld_family_change`` is None for the lineage root and "UNCHANGED" or "CHANGED_BY_DEFECT" for every
+    successor (decision 6, W1).
+    """
     fr = _require_freeze_obj(freeze)
     if isinstance(secret_absence_attestations, (str, bytes, Mapping)):
         raise CustodyError("secret_absence_attestations must be a list of scan attestations")
@@ -1507,6 +1672,7 @@ def record_withheld_commitment(freeze: GeneratorFreeze, ledger: CustodyLedger, *
         "withheld_class_tag": withheld_class_tag,
         "withheld_family_commitment": fr.withheld_family_commitment,
         "nonce_commitment": nonce_commitment,
+        "withheld_family_change": withheld_family_change,
         "secret_absence": {"tree_identity": scans[0]["tree_identity"], "secrets_scanned": len(scans),
                            "files_scanned": scans[0]["files_scanned"]},
         "code_path_attestation": dict(code_path_attestation),
@@ -1702,6 +1868,7 @@ def _scan_needles(secret: bytes):
     squeezed = secret.translate(None, _WHITESPACE)
     if len(squeezed) >= MIN_SCAN_SECRET_BYTES:
         compact.add(squeezed)
+    compact.add(",".join(str(b) for b in secret).encode("ascii"))  # JSON/Python list of byte values
     hexes = {secret.hex().encode("ascii")}
     return tuple(sorted(raw)), tuple(sorted(compact)), tuple(sorted(hexes))
 
