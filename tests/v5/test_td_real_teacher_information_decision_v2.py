@@ -26,6 +26,14 @@ def _qualification():
     }
 
 
+def _decision_qualification(ok=True):
+    return {
+        "schema": D.DECISION_QUAL_SCHEMA,
+        "status": D.DECISION_QUAL_PASS if ok else "FAIL_KNOWN_TRUTH_G6_MARGIN_DECISION",
+        "known_truth_power_qualified": bool(ok),
+    }
+
+
 def _reference(margins, *, binding="a" * 64):
     return {
         "schema": "JEPA_TD_REAL_G6_REFERENCE_MARGIN_V1",
@@ -43,99 +51,75 @@ def _reference(margins, *, binding="a" * 64):
     }
 
 
+def _decide(*, probe, ref, probe_qual=None, decision_qual=None, alpha=0.01):
+    return D.adjudicate_g6_human_decision(
+        probe_result=probe,
+        probe_qualification=_qualification() if probe_qual is None else probe_qual,
+        decision_qualification=_decision_qualification() if decision_qual is None else decision_qual,
+        reference_artifact=ref,
+        alpha=alpha,
+    )
+
+
 def test_raw_positive_probe_is_not_enough_without_reference_margin():
     with pytest.raises(D.TeacherInformationDecisionError, match="reference"):
-        D.adjudicate_g6_human_decision(
-            probe_result=_probe([1.0] * 8),
-            probe_qualification=_qualification(),
-            reference_artifact=None,
-            alpha=0.01,
-        )
+        _decide(probe=_probe([1.0] * 8), ref=None)
 
 
 def test_probe_qualification_is_required_before_fail_semantics():
     q = _qualification()
     q["human_fail_semantics_qualified"] = False
-    out = D.adjudicate_g6_human_decision(
-        probe_result=_probe([-1.0] * 8, status="FAIL"),
-        probe_qualification=q,
-        reference_artifact=_reference([0.1] * 8),
-        alpha=0.01,
-    )
+    out = _decide(probe=_probe([-1.0] * 8, status="FAIL"), ref=_reference([0.1] * 8), probe_qual=q)
     assert out["status"] == "NOT_ESTIMABLE"
     assert out["reason"] == "PROBE_REJECTION_POWER_NOT_QUALIFIED"
+
+
+def test_margin_decision_known_truth_qualification_is_required_before_fail_or_pass():
+    out = _decide(
+        probe=_probe([1.0] * 8),
+        ref=_reference([0.1] * 8),
+        decision_qual=_decision_qualification(False),
+    )
+    assert out["status"] == "NOT_ESTIMABLE"
+    assert out["reason"] == "MARGIN_DECISION_KNOWN_TRUTH_NOT_QUALIFIED"
 
 
 def test_reference_metric_and_orientation_must_match_g6_delta():
     ref = _reference([0.1] * 8)
     ref["metric"] = "COSINE_DISTANCE"
     with pytest.raises(D.TeacherInformationDecisionError, match="metric"):
-        D.adjudicate_g6_human_decision(
-            probe_result=_probe([1.0] * 8),
-            probe_qualification=_qualification(),
-            reference_artifact=ref,
-            alpha=0.01,
-        )
+        _decide(probe=_probe([1.0] * 8), ref=ref)
 
 
 def test_reference_must_be_frozen_qualified_and_deciding_disjoint():
-    for key, value in (
-        ("frozen", False),
-        ("qualified", False),
-        ("deciding_namespace_disjoint", False),
-    ):
+    for key, value in (("frozen", False), ("qualified", False), ("deciding_namespace_disjoint", False)):
         ref = _reference([0.1] * 8)
         ref[key] = value
         with pytest.raises(D.TeacherInformationDecisionError):
-            D.adjudicate_g6_human_decision(
-                probe_result=_probe([1.0] * 8),
-                probe_qualification=_qualification(),
-                reference_artifact=ref,
-                alpha=0.01,
-            )
+            _decide(probe=_probe([1.0] * 8), ref=ref)
 
 
 def test_reference_donor_roster_must_match_probe_exactly():
     ref = _reference([0.1] * 8)
     ref["donor_margins"].pop("D07")
     with pytest.raises(D.TeacherInformationDecisionError, match="donor"):
-        D.adjudicate_g6_human_decision(
-            probe_result=_probe([1.0] * 8),
-            probe_qualification=_qualification(),
-            reference_artifact=ref,
-            alpha=0.01,
-        )
+        _decide(probe=_probe([1.0] * 8), ref=ref)
 
 
 def test_reference_input_binding_must_match_probe_exactly():
     with pytest.raises(D.TeacherInformationDecisionError, match="binding"):
-        D.adjudicate_g6_human_decision(
-            probe_result=_probe([1.0] * 8, binding="a" * 64),
-            probe_qualification=_qualification(),
-            reference_artifact=_reference([0.25] * 8, binding="c" * 64),
-            alpha=0.01,
-        )
+        _decide(probe=_probe([1.0] * 8, binding="a" * 64), ref=_reference([0.25] * 8, binding="c" * 64))
 
 
 def test_positive_raw_deltas_below_margin_cannot_pass():
-    out = D.adjudicate_g6_human_decision(
-        probe_result=_probe([0.5] * 8),
-        probe_qualification=_qualification(),
-        reference_artifact=_reference([0.75] * 8),
-        alpha=0.01,
-    )
+    out = _decide(probe=_probe([0.5] * 8), ref=_reference([0.75] * 8))
     assert out["status"] == "FAIL"
     assert all(row["raw_delta"] > 0 for row in out["donor_contrasts"])
     assert all(row["margin_adjusted_delta"] < 0 for row in out["donor_contrasts"])
 
 
 def test_teacher_advantage_beyond_margin_can_pass():
-    out = D.adjudicate_g6_human_decision(
-        probe_result=_probe([1.0] * 8),
-        probe_qualification=_qualification(),
-        reference_artifact=_reference([0.25] * 8),
-        alpha=0.01,
-    )
+    out = _decide(probe=_probe([1.0] * 8), ref=_reference([0.25] * 8))
     assert out["status"] == "PASS"
     assert out["sign_test"]["pass"] is True
     assert out["input_binding_sha256"] == "a" * 64
@@ -143,31 +127,28 @@ def test_teacher_advantage_beyond_margin_can_pass():
 
 
 def test_underpowered_margin_adjusted_positive_result_is_not_estimable():
-    out = D.adjudicate_g6_human_decision(
-        probe_result=_probe([1.0] * 7),
-        probe_qualification=_qualification(),
-        reference_artifact=_reference([0.25] * 7),
-        alpha=0.01,
-    )
+    out = _decide(probe=_probe([1.0] * 7), ref=_reference([0.25] * 7))
     assert out["status"] == "NOT_ESTIMABLE"
 
 
 def test_nonestimable_probe_stays_nonestimable_without_false_failure():
-    out = D.adjudicate_g6_human_decision(
-        probe_result=_probe([], status="NOT_ESTIMABLE"),
-        probe_qualification=_qualification(),
-        reference_artifact=_reference([]),
-        alpha=0.01,
-    )
+    out = _decide(probe=_probe([], status="NOT_ESTIMABLE"), ref=_reference([]))
     assert out["status"] == "NOT_ESTIMABLE"
     assert out["reason"] == "PROBE_NOT_ESTIMABLE"
 
 
+def test_known_truth_margin_decision_qualification_covers_positive_negative_margin_and_underpower():
+    q = D.qualify_known_truth_g6_margin_decision()
+    assert q["status"] == D.DECISION_QUAL_PASS
+    assert q["worlds"] == {
+        "ADVANTAGE_BEYOND_MARGIN": "PASS",
+        "RAW_POSITIVE_BELOW_MARGIN": "FAIL",
+        "NO_ADVANTAGE": "FAIL",
+        "UNDERPOWERED_POSITIVE": "NOT_ESTIMABLE",
+    }
+    assert all(value is False for value in q["authority"].values())
+
+
 def test_authority_remains_off():
-    out = D.adjudicate_g6_human_decision(
-        probe_result=_probe([1.0] * 8),
-        probe_qualification=_qualification(),
-        reference_artifact=_reference([0.25] * 8),
-        alpha=0.01,
-    )
+    out = _decide(probe=_probe([1.0] * 8), ref=_reference([0.25] * 8))
     assert all(value is False for value in out["authority"].values())
