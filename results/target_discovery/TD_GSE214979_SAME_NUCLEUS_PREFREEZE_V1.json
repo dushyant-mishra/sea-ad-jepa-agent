@@ -1,0 +1,18 @@
+{
+  "schema": "TD_GSE214979_SAME_NUCLEUS_PREFREEZE_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_EXPERIMENT_DESIGN__NO_RESULT_OPENED__NO_TARGET_SELECTION_AUTHORITY",
+  "purpose": "Use authenticated same-nucleus RNA+ATAC to measure regulatory/chromatin support and RNA recoverability for an already frozen RNA target.",
+  "authenticated_surface": {"pairing": "VERIFIED_SAME_NUCLEUS", "overall_nuclei": 105332, "overall_donors": 15, "microglia_total_prior_audit": 3179, "development_surface_cells": 2534, "development_surface_donors": 12, "genes": 36601, "peaks": 150614, "matrix_sha256": "8f4315b59c252c8e907dbc7cd9a46b3acfe4878b7fff7e65309027d281581bb2", "metadata_sha256": "8ce4e0c78747cfa6fb2a556468893df0d378e3f53085e52955f3ecdcc944394b", "all_microglia_npz_sha256": "2ef3bf52186d005610a3aba26ce9a5b432c980d398032910c2521f95c3bf13bb", "development_npz_sha256": "edb90d4a3266637cf79c3afeeae7c49175a1b56992af96b5592a92762f95fe34"},
+  "known_identity_defects": {"affected_labels": ["HCT17HEX", "HCTZZT"], "issue": "demographic/region identity conflict consistent with possible pooled-lane label swap", "donor_assignment": "genotype-demultiplexed/inferred", "rule": "Handle prospectively; never repair after outcome inspection."},
+  "primary_analysis": "Exclude the two conflicted donor labels from deciding qualification unless an independently authenticated correction predates outcome opening.",
+  "sensitivity": "Retain conflicted genotype-defined donors only with conflicted demographic/region fields unavailable; sensitivity cannot rescue primary failure.",
+  "foundation_freeze_prerequisite": "Target candidate, target geometry, rare-program definitions, query definition and selection rule must be frozen before deciding multimodal outcomes are opened.",
+  "units_and_splits": {"biological_replication_unit": "donor", "observation_unit": "nucleus nested within donor", "split_order": "DONOR_FIRST", "nucleus_level_random_split_for_deciding_result": false},
+  "teacher_views": {"T_RNA": "frozen lawful RNA", "T_RNA_ATAC": "same RNA plus qualified same-nucleus ATAC/regulatory features", "student": "partial lawful RNA only"},
+  "primary_quantities": ["frozen state regulatory coherence", "Delta_privileged between RNA+ATAC and RNA teacher states", "donor-held-out RNA recoverability", "teacher-private fraction", "rare-state sharpening/splitting/falsification"],
+  "controls": ["RNA_ONLY_TEACHER", "DEPTH_LIBRARY_SIZE", "DETECTION_RATE", "DONOR", "SOURCE_LIBRARY_OPERATOR", "FEATURE_SUPPORT_MASK", "QUERY_ABUNDANCE_FOR_C3_C6", "MATCHED_OR_RANDOM_REGULATORY_FEATURE_CONTROL"],
+  "decision_states": {"R2_PASS": "donor-recurrent regulatory coherence beyond controls", "R2_FAIL": "sufficient support but no reproducible increment or shortcut-explained", "R2_NOT_ESTIMABLE": "support/identity/donor evidence insufficient", "RNA_RECOVERABLE": "privileged increment reproducibly predictable from RNA", "PREDICTABLE_BUT_STOCHASTIC": "distributional signal only", "TEACHER_PRIVATE": "not reproducibly recoverable from RNA"},
+  "nonrescue": ["Regulatory pass does not select foundation target.", "Regulatory fail does not retrospectively redefine target.", "Relational failure cannot be rescued.", "Pathology cannot choose regulatory features."],
+  "non_authority_statement": "No analysis executed and no target/TD60/Stage4/training authority granted."
+}

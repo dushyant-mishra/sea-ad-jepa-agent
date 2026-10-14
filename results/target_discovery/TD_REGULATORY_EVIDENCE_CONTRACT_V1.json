@@ -1,0 +1,25 @@
+{
+  "schema": "TD_REGULATORY_EVIDENCE_CONTRACT_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_SCIENCE_CONTRACT__NO_TARGET_SELECTION_OR_TRAINING_AUTHORITY",
+  "claim_ladder": {"R1": "RNA_REPRESENTATION -> TRANSFERABLE_BIOLOGICAL_STATE", "R2": "TRANSFERABLE_BIOLOGICAL_STATE -> REGULATORY_SUPPORT", "R3": "REGULATORY_SUPPORT -> CAUSAL_PERTURBATIONAL_PREDICTION"},
+  "evidence_classes": {
+    "SAME_NUCLEUS_RNA_ATAC": {"primary_asset": "GSE214979", "allowed": "within-nucleus regulatory support and RNA-identifiability", "forbidden": "causality or donor replication from nucleus count"},
+    "SEPARATE_NUCLEUS_DONOR_LEVEL_RNA_ATAC": {"primary_asset": "GSE174367_MORABITO", "allowed": "donor-level recurrence after target freeze", "forbidden": "same-cell claims or target selection"},
+    "MOTIF_CISTARGET_SUPPORT": {"historical_stage75F": {"tier_A": ["STAT1", "ELF1", "SPI1"], "tier_B": ["IRF8", "BACH1", "CEBPA", "RELA"], "tier_C": ["MITF", "NRF1", "STAT3"], "tf_target_rows": 96}, "allowed": "enhancer-informed candidate support", "forbidden": "validated eRegulon/GRN/causality"},
+    "GRAPH_TOPOLOGY_SUPPORT": {"historical_result": "NOT_ESTABLISHED", "basis": "Stage73R context graph did not beat STRING or repaired target-shuffled control", "rule": "program activity support and topology support are distinct"},
+    "SPATIAL_LOCALIZATION": {"allowed": "localization of frozen measurable program components", "forbidden": "full-state validation when panel lacks coverage"},
+    "PERTURBATIONAL_SUPPORT": {"allowed": "R3 direction support after per-screen qualification", "forbidden": "benchmark truth or automatic causal promotion"}
+  },
+  "candidate_rules": {
+    "C1": "Regulatory coherence supports interpretation only; negative regulatory evidence does not automatically eliminate C1.",
+    "C2": "Regulatory evidence cannot rescue relational failure.",
+    "C3": "Test query-specific regulatory context beyond shared state, query abundance, depth and detection.",
+    "C6": "Test whether the C3 increment over C1 aligns with gene-specific regulatory context.",
+    "C4": "If active, compare C4 vs C6 to isolate relational regulatory increment.",
+    "C5": "Specialist regulatory target/teacher block; needs its own donor-held-out qualification; never foundation rescue."
+  },
+  "graph_use_policy": {"default": "PROGRAM_FEATURE_OR_PRIOR_NOT_MANDATORY_MESSAGE_PASSING_TOPOLOGY", "upgrade_condition": "future frozen test must show real graph > no-graph and > strict shuffled/permuted topology", "not_permitted": ["hard-wire Stage72B/Stage75 graph as foundation truth", "use graph agreement to retrospectively select C1/C3/C6", "claim validated causal GRN"]},
+  "source_rules": {"donor_primary": true, "source_operator_is_not_biology": true, "same_nucleus_and_separate_nucleus_not_equivalent": true, "small_donor_n_not_rescued_by_cell_n": true, "missing_evidence": "MISSING_NOT_ZERO", "not_estimable": "PRESERVE"},
+  "non_authority_statement": "Defines lawful downstream regulatory evidence use only; no target, representation, TD60, Stage4 or training authority."
+}

@@ -1,0 +1,154 @@
+{
+  "schema": "JEPA_PROJECT_CONTEXT_INDEX_V1",
+  "date": "2026-10-12",
+  "status": "DURABLE_CONTEXT_INDEX__NON_AUTHORIZING",
+  "start_here": "docs/agent/JEPA_PROJECT_START_HERE_AUDIT_COMPENDIUM_20261012.md",
+  "hard_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "canonical_prs": {
+    "target_discovery_scaffold": 275,
+    "corrected_replay": 310,
+    "rare_realbiology_provenance": 311,
+    "cross_lane_science_integration": 312,
+    "real_target_tournament_executor": 313
+  },
+  "candidate_lattice": {
+    "foundation": [
+      "C1_SHARED_EMERGENT",
+      "C2_RELATIONAL_SHARED",
+      "C3_QUERY_MEASURED",
+      "C6_SHARED_QUERY_COMPOSITE",
+      "C4_STRUCTURED_COMPOSITE"
+    ],
+    "specialist": ["C5_REGULATORY_SPECIALIST"],
+    "dependencies": {
+      "C6_SHARED_QUERY_COMPOSITE": ["C1_SHARED_EMERGENT", "C3_QUERY_MEASURED"],
+      "C4_STRUCTURED_COMPOSITE": ["C2_RELATIONAL_SHARED", "C3_QUERY_MEASURED"]
+    },
+    "relationally_independent": ["C1_SHARED_EMERGENT", "C3_QUERY_MEASURED", "C6_SHARED_QUERY_COMPOSITE"]
+  },
+  "historical_relational_evidence": {
+    "TD57B": {
+      "historical_status": "PASS",
+      "cases": "24/24",
+      "weakest_obs_minus_null_p95": 0.0375178074843
+    },
+    "TD57C": {
+      "historical_status": "FAIL",
+      "terminal": "NO_THREE_VIEW_FINE_LOCAL_RELATIONAL_RECURRENCE__TD57C_FAIL"
+    },
+    "TD59": {
+      "historical_status": "PASS",
+      "cases": "24/24",
+      "weakest_obs_minus_null_p95": 0.0011566307718604563,
+      "original_executor_sha256": "3268486b3ccd002fe83d05fea25b16ff88cde85a0511255852ae6fc7dc12d9f0",
+      "replay_closure_successor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085"
+    },
+    "TD60": {
+      "status": "PROSPECTIVELY_FROZEN__NEVER_QUALIFYINGLY_EXECUTED__NO_CURRENT_AUTHORITY"
+    }
+  },
+  "corrected_replay": {
+    "pr": 310,
+    "implementation": "7819aabd9a4c7adbd494445bb989c44e9b7cfa11",
+    "authority": "69240132383d92911ddb360660c810b585813f1f",
+    "evidence_head": "7cd77cd231e7a1cc879b61c06a676ab4d2d3ba14",
+    "contract_sha256": "720809582fc36ac9138ca69b6c1fc79d373a6ff38952a8f51af1db680f4c2096",
+    "code_identity_sha256": "dd7ee4bb4a7e3fe471eb30569535ff3252ec60e3bb7703b341f0ef22ab177a5f",
+    "equivalence_receipt_sha256": "9b02c126244aec00b4dcfed13f4c35ce19cec20fde04835537ec1b207175ef16",
+    "qualify_receipt_sha256": "f7c881143f9b3891b257db71133bc36d4773dc04fe1ab78e471ecbc1c52bf5ed",
+    "superseded_heads": ["f5673f9b", "23b81f11", "cf4cba90"]
+  },
+  "dataset_registry": {
+    "FULL104": {
+      "cells": 4553407,
+      "donors_current_discovery_surface": 104,
+      "canonical_addresses": 41238,
+      "address_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+    },
+    "GSE214979": {
+      "role": "same_nucleus_RNA_ATAC_identifiability_lab",
+      "nuclei": 105332,
+      "donors": 15,
+      "microglia": 3179,
+      "matrix_sha256": "8f4315b59c252c8e907dbc7cd9a46b3acfe4878b7fff7e65309027d281581bb2",
+      "metadata_sha256": "8ce4e0c78747cfa6fb2a556468893df0d378e3f53085e52955f3ecdcc944394b",
+      "all_microglia_npz_sha256": "2ef3bf52186d005610a3aba26ce9a5b432c980d398032910c2521f95c3bf13bb",
+      "dev_npz_sha256": "edb90d4a3266637cf79c3afeeae7c49175a1b56992af96b5592a92762f95fe34",
+      "primary_exclusions": ["HCT17HEX", "HCTZZT"]
+    },
+    "GSE174367_Morabito": {
+      "role": "donor_level_separate_nucleus_RNA_ATAC_replication",
+      "shared_donors": 18,
+      "full104_crosswalk_eligible_addresses": 37966,
+      "crosswalk_sha256": "4afff98d219450bef8d9ffff156c2190275254d1660657ab2d732ae6b48cf8ac"
+    },
+    "SEA_AD_multiome": {
+      "role": "corroboration_not_pristine_independent_validation",
+      "paired_nuclei": 66288,
+      "candidate_myeloid_approx": 1594,
+      "donors": 15
+    },
+    "GSE272082": {
+      "role": "potential_multiome_requires_authentication",
+      "donors": 9,
+      "region_libraries": 21,
+      "qc_nuclei_reported": 76173
+    }
+  },
+  "regulatory_history": {
+    "stage75f": {
+      "tier_A_direct_motif": ["STAT1", "ELF1", "SPI1"],
+      "tier_B_extended_only": ["IRF8", "BACH1", "CEBPA", "RELA"],
+      "tier_C_negative_motif": ["MITF", "NRF1", "STAT3"],
+      "validated_regulation": false,
+      "validated_grn": false,
+      "causal_validation": false
+    },
+    "stage73r_graph_controls": {
+      "context_graph": 0.323611,
+      "target_shuffled": 0.33229,
+      "STRING": 0.331809,
+      "no_graph": 0.311254,
+      "gene_label_permuted": 0.313402,
+      "interpretation": "negative_prior_against_hard_wired_topology"
+    }
+  },
+  "rare_program_history": {
+    "rare1_rare5": "same_molecular_direction_different_frequency_thresholds",
+    "upper5_counts": {"NPH52": 1889, "HVS": 347, "SEA_AD": 264},
+    "upper1_counts": {"NPH52": 499, "HVS": 1, "SEA_AD": 0},
+    "current_prioritized_lead": "STAT1",
+    "control_interpretation": "rare1_rare5_source_shifted_confounded_control_not_universal_biology_truth"
+  },
+  "bayesian_history": {
+    "failed_pr": 249,
+    "terminal": "SAMPLER_NOT_ESTIMABLE__STOP_THIS_BAYESIAN_FORMULATION__DO_NOT_TUNE_TO_HISTORICAL_OUTCOMES",
+    "rule": "future_bayesian_work_requires_new_prospective_estimand_and_synthetic_recalibration"
+  },
+  "v79": {
+    "benchmark_repair_head": "559a1c104c8f1f56d2c05509eecf6b9dc05846a5",
+    "benchmark_evidence": "586e5ea5",
+    "mean_fit_seconds": 3.82,
+    "projected_1056_fit_hours": 1.52,
+    "runtime_ceiling_hours": 72,
+    "stop_required": false,
+    "target_selection_authority": false
+  },
+  "large_artifact_hashes": {
+    "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+    "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+    "checkpoints.zip": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+    "expression.zip": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+    "t1_checkpoint_u0200.zip": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c"
+  },
+  "new_agent_required_reads": [
+    "docs/agent/JEPA_PROJECT_START_HERE_AUDIT_COMPENDIUM_20261012.md",
+    "PR #275 current TD state + multitarget prefreeze V2",
+    "PR #310 corrected replay package or final replay evidence",
+    "PR #312 unified integration contracts",
+    "PR #311 STAT1/rare-program provenance",
+    "PR #313 real tournament executor framework if working on downstream execution"
+  ],
+  "anti_rewrite_rule": "Preserve historical evidence and explicit supersession. Never silently replace historical FAIL/PASS/NOT_ESTIMABLE with successor interpretation."
+}

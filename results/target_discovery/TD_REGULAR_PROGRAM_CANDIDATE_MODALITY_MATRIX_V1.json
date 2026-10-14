@@ -1,0 +1,72 @@
+{
+  "schema": "TD_REGULAR_PROGRAM_CANDIDATE_MODALITY_MATRIX_V1",
+  "date": "2026-10-12",
+  "status": "PROSPECTIVE_CANDIDATE_BY_MODALITY_MATRIX__NO_OUTCOME_OPENED",
+  "purpose": "Prevent generic multimodal evidence from being applied indiscriminately by freezing the exact biological question each downstream modality may ask of each regular TD candidate.",
+  "rows": {
+    "C1_SHARED_EMERGENT": {
+      "RNA_object": "shared emergent state/subspace",
+      "GSE214979_same_nucleus": "test chromatin/regulatory coherence along frozen shared-state coordinates; quantify RNA+ATAC increment and RNA recoverability",
+      "Morabito": "donor-level transport/recurrence of the shared state with donor ATAC summaries",
+      "SCENIC_Stage75": "interpret TF/regulatory programs associated with frozen state; no target redefinition",
+      "SEAAD_multiome": "internal same-nucleus corroboration",
+      "spatial": "localize shared state where measurable",
+      "perturbation": "late regulator-direction support",
+      "failure_pivot": "retain qualified RNA biology if no privileged increment; teacher-private if coherent ATAC increment is RNA-unrecoverable"
+    },
+    "C2_RELATIONAL_SHARED_IF_ACTIVE": {
+      "RNA_object": "relational/local geometry among cells/states",
+      "prerequisite": "corrected replay must keep C2 active",
+      "GSE214979_same_nucleus": "test whether frozen relational neighbors/edges correspond to regulatory similarity beyond shared-state proximity and technical/operator matching",
+      "Morabito": "donor-level recurrence of relational summaries only; no false cross-nucleus cell pairing",
+      "SCENIC_Stage75": "interpret regulatory structure associated with frozen relational geometry",
+      "SEAAD_multiome": "internal corroboration",
+      "spatial": "test tissue localization of relational states where measurable",
+      "perturbation": "late support only",
+      "failure_pivot": "if relational component fails replay, stop; downstream modalities cannot rescue it"
+    },
+    "C3_QUERY_MEASURED": {
+      "RNA_object": "query-conditioned measured target state",
+      "GSE214979_same_nucleus": "test query-conditioned ATAC/regulatory increment beyond shared state, query abundance, depth/detection and feature support",
+      "Morabito": "donor-level query-program recurrence with separate RNA/ATAC nuclei",
+      "SCENIC_Stage75": "regulatory interpretation of frozen query-conditioned program",
+      "SEAAD_multiome": "internal same-nucleus corroboration",
+      "spatial": "query-program localization if panel support exists",
+      "perturbation": "late query-regulator direction support",
+      "failure_pivot": "if increment is only query abundance/measurement, fail the multimodal interpretation; do not alter q-safety or query definition post hoc"
+    },
+    "C6_SHARED_QUERY_COMPOSITE": {
+      "RNA_object": "shared + query composite",
+      "prerequisite": "C1 and C3 qualify and C6 shows its own increment",
+      "GSE214979_same_nucleus": "test whether C6 explains regulatory/chromatin variation beyond the stronger constituent C1 or C3",
+      "Morabito": "donor-level incremental transport beyond constituent summaries",
+      "SCENIC_Stage75": "interpret incremental regulatory programs, not merely union constituent annotations",
+      "SEAAD_multiome": "internal incremental corroboration",
+      "spatial": "localize composite state if measurable",
+      "perturbation": "late support",
+      "failure_pivot": "if multimodal signal is entirely explained by C1/C3, no privileged C6-specific increment; this does not by itself undo RNA C6 qualification"
+    },
+    "C4_STRUCTURED_COMPOSITE_IF_ACTIVE": {
+      "RNA_object": "shared + query + relational composite",
+      "prerequisite": "C6 qualifies and corrected replay keeps C2/C4 active",
+      "GSE214979_same_nucleus": "test regulatory/chromatin increment of relational structure beyond C6",
+      "Morabito": "donor-level incremental recurrence; no same-cell claims",
+      "SCENIC_Stage75": "interpret C4-specific regulatory structure",
+      "SEAAD_multiome": "internal corroboration",
+      "spatial": "localization if measurable",
+      "perturbation": "late support",
+      "failure_pivot": "if no increment beyond C6, multimodal evidence does not support a C4-specific privileged block; relational replay authority remains separate"
+    }
+  },
+  "cross_candidate_rules": [
+    "All programs/states/contrasts are frozen from lawful RNA evidence before multimodal outcomes are opened.",
+    "Use donor-first splits and donor-level replication; nuclei/cells improve precision but do not multiply biological replication.",
+    "Same-nucleus claims are permitted only on authenticated same-nucleus surfaces such as GSE214979/qualified SEA-AD multiome.",
+    "Morabito remains separate-nucleus donor-level evidence.",
+    "SCENIC+/Stage75 is an interpretation/prior layer, not validated truth.",
+    "Missing modality support is missing evidence, never biological zero.",
+    "A coherent but RNA-unrecoverable increment is teacher-private rather than forced into student point prediction.",
+    "No downstream modality may rescue a foundation candidate that failed a mandatory upstream gate."
+  ],
+  "non_authority_statement": "Design-only. No target or representation winner and no training authority."
+}

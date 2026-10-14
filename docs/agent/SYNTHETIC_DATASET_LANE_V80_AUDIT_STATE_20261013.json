@@ -1,0 +1,84 @@
+{
+  "schema": "SYNTHETIC_DATASET_LANE_V80_AUDIT_STATE_V1",
+  "date": "2026-10-13",
+  "terminal": "V79_NOT_QUALIFIED_IMMUTABLE__V80_PACKAGE_IN_PROGRESS__NO_SUCCESSOR_ESTIMATOR_AUTHORITY__TRAINING_OFF",
+  "v79": {
+    "result": "NOT_QUALIFIED",
+    "immutable": true,
+    "contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+    "world_set_digest": "40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286",
+    "realization_ledger_sha256": "4e65f213d2eeb2d66b8bd7a9031eeb47eadee5801a9bd0880bd3c78dae88cd65",
+    "realization_audit_receipt_sha256": "6bd05349516a969ac7e83fc991d03d6274335b22068f8c6577f5a9de11b3f9b3",
+    "scorer_orchestrator_head": "ac1e73d79489438634aaeeca035d229875f3186a",
+    "final_scoring_receipt_sha256": "ef10852e534fe8a83c3aebd832ad3a531d755d06185464441494712818e8abfd",
+    "passed_gates": 291,
+    "total_gates": 292,
+    "only_failure": "Q08_SPARSE_DETECTION_POSITIVE__CONVERGENCE_ALL_FITS_DIAGNOSED",
+    "failed_fit_count": 3,
+    "rerun_authorized": false,
+    "rescue_authorized": false
+  },
+  "v80": {
+    "pr": 348,
+    "branch": "science/v80-sparse-positive-successor-qualification-20261013",
+    "active_branch": true,
+    "last_observed_head": "b840067e4c9439e4cb4aa9e8c649ef2f6064a142",
+    "instruction": "QUERY_PR348_CURRENT_HEAD_BEFORE_RESUMING__AUDIT_ONLY_NEWER_DELTAS",
+    "base_head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+    "scope": "SYNTHETIC_BENCHMARK_PACKAGE_ONLY__NO_SUCCESSOR_ESTIMATOR",
+    "seed_root": 41000000,
+    "n_genes_per_world": 24,
+    "n_donors": 24,
+    "cells_per_donor": 80,
+    "families": [
+      {"name":"SP00_BALANCED_ESTIMABLE","truth":"ESTIMABLE"},
+      {"name":"SP01_ULTRASPARSE_ESTIMABLE","truth":"ESTIMABLE"},
+      {"name":"SP02_DONOR_IMBALANCED_ESTIMABLE","truth":"ESTIMABLE"},
+      {"name":"SP03_SOURCE_SHIFT_ESTIMABLE","truth":"ESTIMABLE"},
+      {"name":"SP04_SUPPORT_THINNED_ESTIMABLE","truth":"ESTIMABLE"},
+      {"name":"SP05_NO_POSITIVE_SUPPORT_NOT_ESTIMABLE","truth":"NOT_ESTIMABLE_BY_CONSTRUCTION","reason":"NO_MEASURED_POSITIVE_OBSERVATIONS_FOR_POSITIVE_COMPONENT"},
+      {"name":"SP06_RANK_DEFICIENT_NOT_ESTIMABLE","truth":"NOT_ESTIMABLE_BY_CONSTRUCTION","reason":"DETECTION_DESIGN_EXACT_RANK_DEFICIENCY_CELL_CLASS_EQUALS_SOURCE"},
+      {"name":"SP07_NEW_DONOR_ESTIMABLE","truth":"ESTIMABLE"}
+    ],
+    "fit_statuses": ["COMPLETE","NOT_ESTIMABLE","NUMERICAL_FAILURE"],
+    "numerical_failure_is_hard_fail": true,
+    "false_abstention_is_hard_fail": true,
+    "false_certainty_is_hard_fail": true,
+    "aggregate_rescue_authorized": false,
+    "v79_nonregression_required": true,
+    "red_evidence": {
+      "head": "e3a4cef88581171a76427e97e119e3223c14133d",
+      "run": 38502749914,
+      "job": 115653252417,
+      "summary": "20_FAILED_1_PASSED",
+      "cause": "EXPECTED_MISSING_SCRIPTS_V80_IMPLEMENTATION",
+      "scientific_failure": false
+    },
+    "implementation_surfaces_last_observed": [
+      "scripts/v80/v80_sparse_positive_benchmark.py",
+      "scripts/v80/v80_sparse_positive_adjudicator.py",
+      "scripts/v80/finalize_v80_sparse_positive_package.py",
+      "tests/v80/test_v80_sparse_positive_benchmark.py",
+      "tests/v80/test_v80_sparse_positive_hostile.py",
+      "tests/v80/test_v80_sparse_positive_custody.py",
+      ".github/workflows/v80-sparse-positive-benchmark.yml"
+    ],
+    "last_observed_ci": {
+      "v80_run": 38504094639,
+      "v80_status": "IN_PROGRESS",
+      "pr328_regression_run": 38504094661,
+      "pr328_regression_status": "SUCCESS"
+    }
+  },
+  "authority": {
+    "successor_estimator_qualified": false,
+    "human_biology_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "synthetic_training_authorized": false,
+    "real_training_authorized": false
+  },
+  "next_audit_action": "QUERY_PR348_LIVE_HEAD_AND_CI__AUDIT_ONLY_DELTAS_NEWER_THAN_LAST_OBSERVED_HEAD__DO_NOT_RERUN_V79_OR_HISTORICAL_RED"
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "JEPA_TD_SYNTHETIC_CURRENT_LANE_GIT_OBJECT_INDEX_V1",
+  "date": "2026-10-13",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "takeover": {
+    "historical_takeover_branch": "handoff/target-discovery-complete-takeover-20261012-v2",
+    "historical_takeover_commit": "c2daa4e3912a430886e4588eb793f497be08cf8d",
+    "successor_handoff_branch": "handoff/td-synthetic-crosscert-takeover-20261013",
+    "successor_audit_branch": "audit/td-synthetic-historical-custody-20261013"
+  },
+  "key_historical_refs": [
+    {"role":"target_discovery_takeover_audit","ref":"audit/target-discovery-takeover-20261011-v2","commit":"73a2820bf6057d28937ad337d401b7ee51b5c5ab"},
+    {"role":"v79_synthetic_history","ref":"audit/v79-synthetic-lane-history-20261012","commit":"414cac96a6491855f06e3382c59fefbd63a9a547"},
+    {"role":"v79_synthetic_takeover","ref":"handoff/v79-synthetic-lane-takeover-v2-20261012","commit":"93ca7ffc689c86fb7fcd4f77e44a668af41b39c8"},
+    {"role":"rare_biology_components_pr311","ref":"integration/rare-biology-v79-realdata-20261012","commit":"2b6d3439105e087acdab53a318c57bbb468eae26"},
+    {"role":"real_tournament_executor_pr313","ref":"science/td-real-target-tournament-executor-20261012","commit":"206167a1eb86f1dec5f8285db56accbcd469bce9"},
+    {"role":"unified_synthetic_design_pr315","ref":"science/unified-synthetic-td-rehearsal-20261012","commit":"af03ef67d52651463944a6de3a08e101ad00e0ea"},
+    {"role":"relational_successor_prefreeze_pr316","ref":"science/td-fine-rare-relational-successor-prefreeze-20261012","commit":"2397ab83d8ae9d0c762a8fd5f3919edc350d137f"},
+    {"role":"relational_custody_repair_pr320","ref":"audit/td-relational-blind-custody-v3-20261013","commit":"1f474a44a6baabc667dbfda726e0755426c732e7"},
+    {"role":"synthetic_v2_1_pr321","ref":"synthetic/td-relational-test-package-v2-1-20261013","commit":"15f519c00137d581e25232c16be52c2b9badd83e"},
+    {"role":"stage81a3_biological_synthetic_precedent","ref":"commit","commit":"f5a8ebeddbcd52a94274a7f72ecda1f71b82d777"}
+  ],
+  "current_td_core_sha256": {
+    "scripts/v5/td_test_qualification_package_v2.py": "aeedae32ae4c6cde8741ea9bbeee5459915fac6b8e33ab4e2d9531675c2e130d",
+    "scripts/v5/td_relational_successor_synthetic_adapter_v2.py": "c76aff20dedc5768cf1a59af5dd96187a9e71e318f7abe5a201811b6a34e3e8e",
+    "scripts/v5/td_relational_successor_disk_runner_v4.py": "ae3f9a580ddb10173e5af349355d5affe8ac06fb91985fb0f4f21691b28c6903",
+    "scripts/v5/td_relational_successor_qualification_runner_v3.py": "b0cf3985ab03c4f7d5bc3bc1e58e2bc0bccbd8c45430342733c08c2e0cb59f08"
+  },
+  "current_synthetic_git_blob_sha1": {
+    "scripts/v79/build_td_relational_synthetic_package_v2_1.py": "690fb2e96553eb37bceb9a86460f91ccd22ed20c",
+    "scripts/v79/finalize_td_relational_synthetic_package_v2_1.py": "e9b1fcd823eec6e00ab6bfcef66af426369e288e",
+    "scripts/v79/finalize_td_relational_synthetic_package_v2_1_1.py": "668ef432d27001e50cb4c615aadf57653ed8c433",
+    ".github/workflows/td-relational-synthetic-v2-1-cross-cert.yml": "ac2d3a900e18d087967c8cf9f749e91370902429"
+  },
+  "final_crosscert": {
+    "schema": "JEPA_TD_RELATIONAL_SYNTHETIC_V2_1_CROSS_CERTIFICATION_V2",
+    "package_sha256": "0977c30f6551df72e244423e1b37733cafa9178099bd0b9ab796beb8a52d2115",
+    "binding_sha256": "ab29bacd07fc6697eff8dfe48461ec5f1cc1ec7d378724b10def93910f98ac44",
+    "prefit_archive_sha256": "ba0fa56a49ffa009a0225606fb48d8fb30c3bd410a6a264ef905db5d4bb18803",
+    "controller_archive_sha256": "f554e2a95315bb39cc8f7e366620bca5cb2126a4896b3790ed2c632e5cc6a328",
+    "controller_manifest_raw_file_sha256": "87219ad5f2bc1c514c6771c52dbf0e2529645a7221aaafd0774a8d3e186d03f9",
+    "controller_semantic_commitment_sha256": "a3d8ea34339aa06d995d498c2651d4dfd4e1058eec3640a7cd7ea1128efce293",
+    "controller_realization_receipt_sha256": "531966f132f7d1127d7aff586eba5452d6650e115b840193082fef8db2feb255",
+    "compatibility_receipt_sha256": "fbcf2d589ec05ff67914a890f465d39cdc8f9f53363129d98b4b7f0a00213ee9",
+    "terminal": "READY_TO_EXECUTE_BLIND_FIT",
+    "biological_execution_performed": false,
+    "controller_truth_opened": false
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "TD_WORKFLOW_CLOSEOUT_LEDGER_V1",
+  "date": "2026-10-12",
+  "status": "DESIGN_LANE_CLOSEOUT__EXECUTION_GATES_REMAIN",
+  "purpose": "Record which unified target-discovery/downstream design tasks are complete and which remaining actions are blocked on future evidence or explicit authority, preventing repeated redesign, artificial rare-vs-regular separation and duplicate ETL.",
+  "hard_boundary": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "cross_lane_provenance": {
+    "PR311": "Analysis/provenance lane for real-TRAIN rare-biology integration and Stage75 detection-residual regulatory-tail findings.",
+    "PR312": "Active unified target-discovery integration/adjudication surface consuming PR311 plus all common/rare multimodal reconciliation contracts.",
+    "rule": "PR311 -> PR312 is one evidence lineage; rare and regular biology are one TD project, not separate target-discovery programs."
+  },
+  "completed_design_work": {
+    "unified_target_portfolio": "Target discovery now ends in an explicit qualified target-portfolio decision, not a mandatory single winner. C1 shared/global, C3 query/contextual, C2 relational if active, and qualified specialists may coexist when non-redundant; C6/C4 are possible fused implementations subject to block accountability.",
+    "multi_teacher_student_architecture": "Multiple evidence-specialized teachers and student heads/experts are allowed under a shared biological core. Separate full students must be earned by stable negative transfer, incompatible evidence interfaces or incompatible support/abstention geometry; half-capacity dual-student default and architecture zoo remain rejected.",
+    "candidate_architecture": "C1/C2/C3/C6/C4 foundation architecture with C5 specialist retained; dependencies and non-rescue rules preserved.",
+    "corrected_replay_integration": "Macha PR310 remains canonical replay package; this lane consumes its eventual audited outcome and does not duplicate execution machinery.",
+    "regular_and_rare_unification": "Common, continuous, intermediate-frequency and rare biology are assessed within the same active target blocks and same downstream multimodal chain; rarity is a cross-cutting biological regime, not a separate TD lane.",
+    "regular_program_multimodal_reconciliation": "GSE214979 same-nucleus RNA+ATAC, Morabito donor-level recurrence, SCENIC/Stage75 interpretation, internal SEA-AD corroboration, spatial/perturbation follow-up and RNA-recoverable vs stochastic vs teacher-private decomposition are frozen for ordinary/continuous biology.",
+    "rare_program_multimodal_reconciliation": "The same pathway applies to rare biology, with additional source/operator/prevalence and measurement-shortcut challenges where rarity makes confounding especially likely.",
+    "rare1_rare5_reconciliation": "Historical rare1/rare5 are one strongly source-shifted diagnostic direction requiring source/operator-aware reassessment before use.",
+    "stage75_rare_lead_handoff": "PR311 Stage75 detection-residual result is folded into PR312; STAT1 is the priority prospective rare-program probe, not a separate target project and not target authority.",
+    "bayesian_reuse": "Useful PR249 dependency-ledger/calibration principles retained; failed pooled stage-mean recurrence estimand and sampler rejected.",
+    "multimodal_evidence_ledger": "Existing FULL104, Stage81A3, GSE214979, Morabito, SEA-AD multiome, regulatory, spatial and perturbation assets assigned roles with reuse/no-reacquisition rules.",
+    "rich_teacher_partial_student": "Target blocks share recoverable/stochastic/teacher-private decomposition, uncertainty and support semantics.",
+    "authority_ladder": "Replay -> block qualification -> complementarity/redundancy/interference adjudication -> protected confirmation -> explicit target-portfolio decision -> post-freeze multimodal decomposition -> representation/teacher-student topology decision -> later authorities.",
+    "contingency_pivot_law": "Major PASS/FAIL/NOT_ESTIMABLE/divergence/artifact outcomes have predeclared pivots and non-rescue rules."
+  },
+  "remaining_execution_actions": [
+    {"order": 1, "action": "CORRECTED_REPLAY_EXECUTION_AND_AUDIT", "owner": "MACHA_EXECUTION__THIS_LANE_AUDIT", "blocked_on": "exact PR310 owner ratification/launch acceptance and one authorized execution", "changes_candidate_set": true, "notes": "Determines C2/C4 status only; C1/C3/C6 continue independently."},
+    {"order": 2, "action": "UNIFIED_SOURCE_OPERATOR_AND_PROGRAM_REASSESSMENT", "owner": "TARGET_DISCOVERY", "blocked_on": "separate explicit execution authority and authenticated TRAIN/cached surfaces", "changes_candidate_set": false, "notes": "Assess common and rare biological programs together; prioritize PR311 STAT1/SPI1 rare probes while retaining ordinary/continuous program controls and historical rare1/rare5 as confounded diagnostics."},
+    {"order": 3, "action": "APPLY_FULL_BIOLOGY_FITNESS_TO_EACH_ACTIVE_TARGET_BLOCK", "owner": "TARGET_DISCOVERY", "blocked_on": "candidate readouts plus common/rare reassessment evidence", "changes_candidate_set": true, "notes": "Each active block must preserve relevant common and rare biology and pass shortcut/transfer/support gates."},
+    {"order": 4, "action": "BLOCK_COMPLEMENTARITY_REDUNDANCY_AND_INTERFERENCE_ADJUDICATION", "owner": "TARGET_DISCOVERY", "blocked_on": "completion of mandatory block-level gates", "changes_candidate_set": true, "notes": "Determine whether qualified blocks should remain separate, be fused by C6/C4, or drop as redundant. Multiple qualified blocks do not force a single winner."},
+    {"order": 5, "action": "PROTECTED_CONFIRMATION_AND_EXPLICIT_TARGET_PORTFOLIO_DECISION", "owner": "OWNER_AUTHORITY", "blocked_on": "audited block and joint evidence", "changes_candidate_set": true, "notes": "Owner may authorize one block, multiple complementary blocks, or an accountable fused implementation. No automatic promotion from survivor count."},
+    {"order": 6, "action": "POST_FREEZE_GSE214979_SAME_NUCLEUS_RECONCILIATION_FOR_EACH_PORTFOLIO_BLOCK", "owner": "DOWNSTREAM_MULTIMODAL", "blocked_on": "target portfolio freeze and separate execution authority", "changes_candidate_set": false, "notes": "Partition each privileged increment into RNA-recoverable, stochastic or teacher-private components."},
+    {"order": 7, "action": "DONOR_LEVEL_MORABITO_AND_INTERNAL_SEAAD_MULTIMODAL_REPLICATION", "owner": "DOWNSTREAM_MULTIMODAL", "blocked_on": "frozen portfolio blocks/programs", "changes_candidate_set": false, "notes": "Morabito separate-nucleus donor-level only; SEA-AD internal corroboration not pristine validation."},
+    {"order": 8, "action": "SCENIC_REGULATORY_SPATIAL_PERTURBATIONAL_INTERPRETATION", "owner": "DOWNSTREAM_INTERPRETATION", "blocked_on": "frozen blocks/programs and modality-specific qualification", "changes_candidate_set": false, "notes": "Interpretation/localization/causal-direction support only; specialist blocks must earn their own claim level."},
+    {"order": 9, "action": "EXPLICIT_REPRESENTATION_AND_TEACHER_STUDENT_TOPOLOGY_DECISION", "owner": "OWNER_AUTHORITY", "blocked_on": "post-freeze multimodal/recoverability plus joint-interference evidence", "changes_candidate_set": false, "notes": "Choose shared backbone + specialist heads by default; authorize separate full students/teachers only when prospectively justified."},
+    {"order": 10, "action": "LATER_TD60_STAGE4_TRAINING_AUTHORITIES", "owner": "OWNER_AUTHORITY", "blocked_on": "scientific and runtime gates", "changes_candidate_set": false, "notes": "No automatic authority propagation."}
+  ],
+  "controlling_portfolio_contract": "results/target_discovery/TD_UNIFIED_TARGET_PORTFOLIO_MULTI_TEACHER_STUDENT_ARCHITECTURE_V1.json",
+  "work_that_must_not_be_repeated": [
+    "artificially split rare biology into a separate TD project",
+    "force one target winner solely because multiple target blocks are inconvenient",
+    "create multiple whole students/teachers without demonstrated non-redundancy or negative transfer",
+    "Morabito physical authentication/full crosswalk unless byte contradiction is discovered",
+    "GSE214979 basic pairing/authentication and known donor-identity defect discovery",
+    "Stage81A3 rare-state census/caches solely to create new filenames",
+    "PR249 failed Bayesian historical fit formulation",
+    "Macha corrected replay launcher/controller implementation",
+    "G6/G7 reruns",
+    "historical Stage73/73R graph topology claims as validated GRN",
+    "pathology-guided target discovery",
+    "PR311 Stage75 handoff as if independent replication after import into PR312"
+  ],
+  "definition_of_design_lane_done": "Unified TD now has target-block, target-portfolio, common/rare biology, multi-teacher/student, multimodal reconciliation, recoverability and authority semantics frozen prospectively. Remaining work is execution/audit unless a frozen contingency explicitly triggers redesign.",
+  "non_authority_statement": "Closeout does not authorize any blocked execution action."
+}
