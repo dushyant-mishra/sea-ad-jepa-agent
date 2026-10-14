@@ -14,6 +14,9 @@ import scripts.v5.td_real_tournament_contract_v1 as C
 import scripts.v5.td_real_gate_rule_registry_v1 as R
 
 
+FROZEN_RECEIPT = Path("results/target_discovery/real_tournament/TD_REAL_DIRECTIONAL_GATES_V2_QUALIFICATION_RECEIPT.json")
+
+
 def _sha(path) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
@@ -53,6 +56,12 @@ def _write_receipt(tmp_path, receipt=None):
 
 def _positive(n=10):
     return [{"donor_id": f"D{i:03d}", "delta": 1.0} for i in range(n)]
+
+
+def test_frozen_receipt_authenticates_exact_current_executor_bundle():
+    receipt = json.loads(FROZEN_RECEIPT.read_text(encoding="utf-8"))
+    assert receipt == _receipt()
+    assert D.authenticate_qualification_receipt(receipt) == receipt["executor_bundle_sha256"]
 
 
 def test_authenticated_executor_emits_bridge_identity_and_no_authority():
