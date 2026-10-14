@@ -1044,6 +1044,8 @@ def test_unchanged_family_committed_before_the_reference_reveal_is_eligible(tmp_
     CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
     assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is True  # revealed after its fit froze
     assert CU.withheld_check_eligible(led, p0.generator_semantic_hash) is True  # lineage root
+    CU.reveal_withheld_family(child, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
+    assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is True  # equal to its own group: expected
 
 
 def test_unchanged_family_committed_after_the_reference_reveal_is_ineligible(tmp_path):
@@ -1114,6 +1116,151 @@ def test_forged_withheld_check_secret_flag_is_refused_on_replay(tmp_path):
     raw, head = _forge(entries)
     with pytest.raises(CustodyError):
         CU.CustodyLedger.from_bytes(raw, expected_head=head)
+
+
+# ------------- Q1: a qualification class nonce also opens the shared withheld family
+
+def _three_unchanged_versions(tmp_path, expose_v3=True):
+    """V1 -> V2 -> V3, all UNCHANGED (one family); V1 and V2 qualification fits frozen, nothing revealed."""
+    v1, q1 = make_world()
+    led = CU.CustodyLedger()
+    prepare(v1, q1, led, make_tree(tmp_path, "t1"))
+    expose(v1, led, QUAL, "e1")
+    CU.record_fit_output_frozen(v1, led, class_tag=QUAL, fit_output_sha256=_h("v1 fit"))
+    v2, q2 = make_world(set_snr(0.4))
+    successor(v1, v2, led)
+    CU.record_generator_freeze(v2, led)
+    commit_and_attest(v2, q2, led, make_tree(tmp_path, "t2"), change="UNCHANGED")
+    expose(v2, led, QUAL, "e2")
+    CU.record_fit_output_frozen(v2, led, class_tag=QUAL, fit_output_sha256=_h("v2 fit"))
+    v3, q3 = make_world(set_snr(0.3))
+    successor(v2, v3, led)
+    CU.record_generator_freeze(v3, led)
+    commit_and_attest(v3, q3, led, make_tree(tmp_path, "t3"), change="UNCHANGED")
+    if expose_v3:
+        expose(v3, led, QUAL, "e3")  # V3's sealed qualification run is open
+    return v1, q1, v2, q2, v3, q3, led
+
+
+def test_q1_class_nonce_of_a_sharing_version_is_refused_while_a_run_is_open(tmp_path):
+    v1, q1, v2, q2, v3, q3, led = _three_unchanged_versions(tmp_path)
+    with pytest.raises(CustodyError, match="open"):
+        CU.reveal_class_nonce(v2, led, class_tag=QUAL, nonce=q2)  # would open V2's commitment to the shared family
+    assert CU.withheld_check_eligible(led, v3.generator_semantic_hash) is True
+    CU.record_fit_output_frozen(v3, led, class_tag=QUAL, fit_output_sha256=_h("v3 fit"))
+    CU.reveal_class_nonce(v2, led, class_tag=QUAL, nonce=q2)  # after V3's fit froze: lawful
+    assert CU.withheld_check_eligible(led, v3.generator_semantic_hash) is True
+
+
+def test_q1b_ancestor_class_nonce_is_refused_while_a_descendant_run_is_open(tmp_path):
+    v1, q1, v2, q2, v3, q3, led = _three_unchanged_versions(tmp_path)
+    with pytest.raises(CustodyError, match="open"):
+        CU.reveal_class_nonce(v1, led, class_tag=QUAL, nonce=q1)
+
+
+def test_q1_class_nonce_reveal_before_a_sharing_fit_makes_it_ineligible(tmp_path):
+    v1, q1, v2, q2, v3, q3, led = _three_unchanged_versions(tmp_path, expose_v3=False)
+    CU.reveal_class_nonce(v1, led, class_tag=QUAL, nonce=q1)  # no run open anywhere: allowed
+    assert CU.withheld_check_eligible(led, v3.generator_semantic_hash) is False  # family public before V3's fit
+    assert CU.withheld_check_eligible(led, v2.generator_semantic_hash) is True  # V2's fit froze first
+    v4, q4 = make_world(set_snr(0.2))
+    successor(v3, v4, led)
+    CU.record_generator_freeze(v4, led)
+    commit_and_attest(v4, q4, led, make_tree(tmp_path, "t4"), change="UNCHANGED")
+    assert _withheld_entry(led, v4)["withheld_check_secret"] is False  # committed after the disclosure
+
+
+def test_q1_unrelated_family_class_nonce_is_not_blocked(tmp_path):
+    v1, q1 = make_world()
+    led = CU.CustodyLedger()
+    prepare(v1, q1, led, make_tree(tmp_path, "t1"))
+    expose(v1, led, QUAL, "e1")
+    CU.record_fit_output_frozen(v1, led, class_tag=QUAL, fit_output_sha256=_h("v1 fit"))
+    v2, q2 = make_world(set_snr(0.4), withheld=EASIER_WITHHELD_SPEC)
+    successor(v1, v2, led, defect(v1, v2, ["difficulty_grid/signal_to_noise"], ["withheld_family"]))
+    CU.record_generator_freeze(v2, led)
+    commit_and_attest(v2, q2, led, make_tree(tmp_path, "t2"), change="CHANGED_BY_DEFECT")
+    CU.record_requalification_prerequisites(v2, led, realism_rerun_receipt_sha256=_h("r"),
+                                            withheld_check_plan_sha256=_h("p"))
+    expose(v2, led, QUAL, "e2")  # open run, but on a different withheld family
+    CU.reveal_class_nonce(v1, led, class_tag=QUAL, nonce=q1)
+    assert CU.withheld_check_eligible(led, v2.generator_semantic_hash) is True
+
+
+# ---------------------- Q3: a "changed" family may not be one that is already public
+
+def test_q3_change_back_to_an_already_public_family_is_ineligible(tmp_path):
+    v1, q1 = make_world()
+    led = CU.CustodyLedger()
+    prepare(v1, q1, led, make_tree(tmp_path, "t1"))
+    qualify_and_reveal(v1, q1, led, DUMMY_WITHHELD_SPEC, "e1")  # family W_A public
+    versions = [v1]
+    for k, (level, family) in enumerate(((0.4, EASIER_WITHHELD_SPEC), (0.3, DUMMY_WITHHELD_SPEC)), start=2):
+        v, q = make_world(set_snr(level), withheld=family)
+        parent = versions[-1]
+        successor(parent, v, led, defect(parent, v, ["difficulty_grid/signal_to_noise"], ["withheld_family"]))
+        CU.record_generator_freeze(v, led)
+        commit_and_attest(v, q, led, make_tree(tmp_path, f"t{k}"), change="CHANGED_BY_DEFECT")
+        assert _withheld_entry(led, v)["withheld_check_secret"] is True  # its spec is unknown at commit time
+        CU.record_requalification_prerequisites(v, led, realism_rerun_receipt_sha256=_h(f"r{k}"),
+                                                withheld_check_plan_sha256=_h(f"p{k}"))
+        qualify_and_reveal(v, q, led, family, f"e{k}")
+        versions.append(v)
+    v2, v3 = versions[1], versions[2]
+    assert CU.withheld_check_eligible(led, v2.generator_semantic_hash) is True  # W_B was new
+    assert CU.withheld_check_eligible(led, v3.generator_semantic_hash) is False  # back to the public W_A
+    reveal3 = [e["payload"] for e in led.entries() if e["kind"] == "REVEALED"
+               and e["payload"]["generator_semantic_hash"] == v3.generator_semantic_hash][0]
+    assert reveal3["family_previously_public"] is True
+    CU.CustodyLedger.from_bytes(led.to_bytes(), expected_head=led.head)
+    entries = [(e["kind"], e["payload"]) for e in led.entries()]
+    idx = [i for i, (k, p) in enumerate(entries) if k == "REVEALED"
+           and p["generator_semantic_hash"] == v3.generator_semantic_hash][0]
+    entries[idx][1]["family_previously_public"] = False
+    raw, head = _forge(entries)
+    with pytest.raises(CustodyError):
+        CU.CustodyLedger.from_bytes(raw, expected_head=head)
+
+
+# ------------------------------- Q2: qualification draws are counted per method
+
+def test_q2_qualification_draws_are_counted_per_method_across_versions(tmp_path):
+    v, q = make_world()
+    led = CU.CustodyLedger()
+    prepare(v, q, led, make_tree(tmp_path, "t0"))
+
+    def expose_as(fr, method, class_tag, eid):
+        CU.record_exposure(fr, {"exposure_id": eid, "method_id": method, "realization_class": class_tag}, led)
+
+    expose_as(v, "method-A", QUAL, "a0")
+    expose_as(v, "method-B", QUAL, "b0")
+    expose_as(v, "method-A", DEBUG, "a0-debug")  # development draws are not qualification draws
+    versions = [v]
+    for k, level in enumerate((0.4999, 0.4998, 0.4997), start=1):  # negligibly harder successors
+        child, qc = make_world(set_snr(level))
+        successor(versions[-1], child, led)
+        CU.record_generator_freeze(child, led)
+        commit_and_attest(child, qc, led, make_tree(tmp_path, f"t{k}"), change="UNCHANGED")
+        expose_as(child, "method-A", QUAL, f"a{k}")
+        versions.append(child)
+    draws = CU.qualification_draws_for_method(led, "method-A")
+    assert [d["generator_semantic_hash"] for d in draws] == [x.generator_semantic_hash for x in versions]
+    assert [d["exposure_id"] for d in draws] == ["a0", "a1", "a2", "a3"]
+    assert all(d["class_tag"] == QUAL for d in draws)
+    positions = [d["ledger_index"] for d in draws]
+    assert positions == sorted(positions) and len(set(positions)) == 4
+    entries = led.entries()
+    for d in draws:
+        assert entries[d["ledger_index"]]["entry_hash"] == d["exposure_entry_hash"]
+        att = [e for e in entries if e["kind"] == "REALIZATION_SET_ATTESTED"
+               and e["payload"]["generator_semantic_hash"] == d["generator_semantic_hash"]
+               and e["payload"]["class_tag"] == QUAL][0]
+        assert d["realization_set"]["attestation_entry_hash"] == att["entry_hash"]
+        assert d["realization_set"]["emitted_set_sha256"] == att["payload"]["emitted_set_sha256"]
+    assert [d["exposure_id"] for d in CU.qualification_draws_for_method(led, "method-B")] == ["b0"]
+    assert CU.qualification_draws_for_method(led, "method-C") == []
+    with pytest.raises(CustodyError):
+        CU.qualification_draws_for_method(led, "")
 
 
 # ------------------------------------- N-c: requalification prerequisites
