@@ -6,6 +6,7 @@ Status: **PROSPECTIVE DESIGN AMENDMENT — USER REVIEW REQUIRED — IMPLEMENTATI
 Base design: `docs/superpowers/specs/2026-10-13-lineage-composite-production-synthetic-design-v2.md`
 Review delta: `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V2_REVIEW_DELTA_20261014.md`
 Round-1 audit: `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3_SELF_AUDIT_R1_20261014.md`
+Round-2 audit: `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3_SELF_AUDIT_R2_20261014.md`
 Implementation base remains PR #328 exact head `25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec`.
 
 This amendment does not rewrite V2 history. V2 remains preserved evidence. V3 adds and tightens requirements identified by the 2026-10-14 synthetic-lane review. Where V3 conflicts with V2, V3 controls. Otherwise V2 remains binding.
@@ -140,23 +141,29 @@ No world parameter may be changed after downstream outcomes are inspected merely
 
 V2's biological-versus-measurement uncertainty distinction is upgraded into explicit intervention families.
 
+Historical anchor: TD58S prospectively reduced student evidence with a fixed address/gene mask while retaining the full teacher relation and explicitly excluded count-depth/measurement uncertainty from that test. V3 generalizes that separation; it does not promote TD58S into target authority.
+
 ### 4.1 Biological-evidence response
 
-For selected cells/query cases, hold fixed:
+For each selected case, first generate one frozen full observation bundle from one controller world. The bundle may contain multiple measured features/modalities/context channels, each generated once under its already-bound observation operator realization.
+
+Across evidence levels, hold fixed:
 
 - hidden biological state;
 - donor identity;
-- observation-operator family;
-- measurement-quality regime for evidence that remains visible;
+- all generated measurement realizations;
+- measurement-quality regime for any evidence that remains visible;
 - teacher/reference identity where the downstream contract requires a fixed teacher target.
 
-Vary the amount of **biologically relevant information available to the student**, prospectively at multiple evidence levels such as 20/40/60/80/100% where the interface supports it.
+Vary only the **lawful subset of already-generated biologically relevant evidence revealed to the student**, prospectively at multiple evidence levels such as 20/40/60/80/100% where the interface supports it.
 
-Evidence levels must change the *scope or set of lawful biological evidence*, not merely sequencing depth. Lawful examples include prospectively nested subsets of measured genes/features, additional measured modalities, additional context channels, or other biologically informative observed channels that preserve measurement quality for retained evidence as closely as the interface permits.
+Evidence levels must change the *scope or set of visible lawful biological evidence*, not regenerate the measurement process. Lawful examples include prospectively nested fixed masks over measured genes/features, revealing an already-generated additional modality, revealing an already-generated context channel, or other nested subsets of the same frozen observation bundle.
+
+A modality may count as additional biological evidence only if it was already generated for that same case before evidence-level masking. Moving from one evidence level to another must never regenerate the cell under a new acquisition operator.
 
 Count thinning, lower library size, reduced capture efficiency or noisier repeated measurement are **not** biological-evidence interventions; they belong exclusively to the measurement-depth/quality family below.
 
-If a downstream interface cannot vary biological evidence independently of measurement quality, that case is ineligible for a biological-evidence response curve rather than being silently treated as one.
+If a downstream interface cannot vary visible biological evidence independently of measurement quality, that case is ineligible for a biological-evidence response curve rather than being silently treated as one.
 
 Controller outputs must support at least:
 
@@ -168,14 +175,14 @@ The exact metric/threshold for any downstream gate must be frozen before sealed 
 
 ### 4.2 Measurement-depth response
 
-For the same hidden biology and the same biological evidence class, vary only measurement quality. Examples include:
+For the same hidden biology and the same visible biological evidence class, vary only measurement quality. Examples include:
 
 - sequencing depth thinning;
 - repeated observation realizations;
 - capture efficiency variation;
 - count-split noise where lawful.
 
-The set of biological channels/features/modalities made available must remain fixed for a measurement-depth curve unless the acquisition operator itself lawfully changes support; any such support change must be recorded as measurement-domain behavior rather than biological evidence gain.
+The intended biological channels/features/modalities made available to the student must remain fixed for a measurement-depth curve. If the acquisition operator lawfully changes realized support as depth changes, that support change is measurement-domain behavior and must not be relabeled as biological evidence gain.
 
 Controller truth must support convergence toward the fixed-biology reference as observation quality improves.
 
@@ -268,13 +275,14 @@ Add to V2's mandatory hostile suite:
 3. empirical prevalence/effect-size promotion into biological truth;
 4. evidence-level and depth-level label swapping;
 5. apparent evidence gain caused only by additional sequencing depth;
-6. apparent biological novelty caused only by held-out technology/source;
-7. technology/source shortcut into latent biology;
-8. silent 41,238 -> 4,096 namespace fallback;
-9. `NUMERICAL_FAILURE` represented as controller truth;
-10. false-abstention/false-certainty semantics weakened by aggregation;
-11. mixed biology/measurement calibration statistic used to set latent prevalence;
-12. unsupported measurement-domain axis omitted from transfer testing without an explicit single-level justification.
+6. evidence-level transition that secretly regenerates a modality/operator realization;
+7. apparent biological novelty caused only by held-out technology/source;
+8. technology/source shortcut into latent biology;
+9. silent 41,238 -> 4,096 namespace fallback;
+10. `NUMERICAL_FAILURE` represented as controller truth;
+11. false-abstention/false-certainty semantics weakened by aggregation;
+12. mixed biology/measurement calibration statistic used to set latent prevalence;
+13. unsupported measurement-domain axis omitted from transfer testing without an explicit single-level justification.
 
 Each discovered defect must become a preserved failing regression before repair.
 
@@ -284,7 +292,7 @@ V2 implementation units are retained with these additions:
 
 - Unit 1 lineage/custody registry must include frozen V79/V80 non-authority bindings and empirical calibration provenance.
 - Unit 3 acquisition/scaling must materialize authenticated empirical observation envelopes plus separately labeled stress extensions.
-- Unit 5 observation/modalities must expose evidence-response and depth-response intervention families.
+- Unit 5 observation/modalities must expose fixed-bundle evidence-response and separate depth-response intervention families.
 - Unit 6 hostile challenge families must include V80-style estimable/non-estimable sparse-positive cases without copying V80 realized worlds.
 - Unit 7 packaging must preserve controller-only estimability truth and biological-novelty/measurement-domain labels.
 - Unit 8 rehearsal must report biological novelty and measurement-domain support separately.
@@ -299,6 +307,7 @@ In addition to V2 stop conditions, stop if:
 - empirical observation statistics are being treated as causal biological truth;
 - a mixed biology/measurement statistic is used to set latent prevalence without separate authority;
 - evidence and measurement-depth interventions cannot be separated;
+- an evidence-level change requires regeneration under a different observation operator;
 - biological novelty is encoded by source/technology identity;
 - a held-out technology shift alters latent truth directly;
 - a represented measurement-domain axis cannot be held out or justified as single-level;
