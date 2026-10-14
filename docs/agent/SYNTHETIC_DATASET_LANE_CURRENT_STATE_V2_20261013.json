@@ -4,26 +4,8 @@
   "lane": "synthetic_dataset",
   "global_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
   "ownership": {
-    "owns": [
-      "synthetic_biology_generation",
-      "synthetic_population_and_observation",
-      "synthetic_multimodal_context_perturbation_views",
-      "synthetic_support_semantics",
-      "sealed_synthetic_fit_controller_packaging",
-      "synthetic_generator_custody_and_hostile_tests",
-      "synthetic_successor_qualification_worlds"
-    ],
-    "does_not_own": [
-      "real_td_execution_or_adjudication",
-      "real_biological_gate_design",
-      "v79_scoring_execution",
-      "successor_estimator_implementation_unless_reassigned",
-      "target_selection",
-      "representation_selection",
-      "td60",
-      "stage4",
-      "training_authority"
-    ]
+    "owns": ["synthetic_biology_generation","synthetic_population_and_observation","synthetic_multimodal_context_perturbation_views","synthetic_support_semantics","sealed_synthetic_fit_controller_packaging","synthetic_generator_custody_and_hostile_tests","synthetic_successor_qualification_worlds"],
+    "does_not_own": ["real_td_execution_or_adjudication","real_biological_gate_design","v79_scoring_execution","successor_estimator_implementation_unless_reassigned","target_selection","representation_selection","td60","stage4","training_authority"]
   },
   "pr328": {
     "pr": 328,
@@ -64,7 +46,7 @@
   "v80": {
     "pr": 348,
     "branch": "science/v80-sparse-positive-successor-qualification-20261013",
-    "snapshot_head": "a7074090591255fb48c92f7313400e0f3ad54424",
+    "snapshot_head": "060d79dab23c2e262b546e86122029727fe8fa6a",
     "base_pr328_head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
     "purpose": "PROSPECTIVE_SYNTHETIC_SPARSE_POSITIVE_SUCCESSOR_QUALIFICATION_PACKAGE_ONLY",
     "successor_estimator_implemented": false,
@@ -76,17 +58,8 @@
     "n_genes_per_world": 24,
     "n_donors": 24,
     "cells_per_donor": 80,
-    "challenge_families": [
-      "SP00_BALANCED_ESTIMABLE",
-      "SP01_ULTRASPARSE_ESTIMABLE",
-      "SP02_DONOR_IMBALANCED_ESTIMABLE",
-      "SP03_SOURCE_SHIFT_ESTIMABLE",
-      "SP04_SUPPORT_THINNED_ESTIMABLE",
-      "SP05_NO_POSITIVE_SUPPORT_NOT_ESTIMABLE",
-      "SP06_RANK_DEFICIENT_NOT_ESTIMABLE",
-      "SP07_NEW_DONOR_ESTIMABLE"
-    ],
-    "fit_statuses": ["COMPLETE", "NOT_ESTIMABLE", "NUMERICAL_FAILURE"],
+    "challenge_families": ["SP00_BALANCED_ESTIMABLE","SP01_ULTRASPARSE_ESTIMABLE","SP02_DONOR_IMBALANCED_ESTIMABLE","SP03_SOURCE_SHIFT_ESTIMABLE","SP04_SUPPORT_THINNED_ESTIMABLE","SP05_NO_POSITIVE_SUPPORT_NOT_ESTIMABLE","SP06_RANK_DEFICIENT_NOT_ESTIMABLE","SP07_NEW_DONOR_ESTIMABLE"],
+    "fit_statuses": ["COMPLETE","NOT_ESTIMABLE","NUMERICAL_FAILURE"],
     "red_evidence": {
       "head": "e3a4cef88581171a76427e97e119e3223c14133d",
       "workflow_run": 38502749914,
@@ -94,19 +67,11 @@
       "result": "20_FAILED_1_PASSED",
       "interpretation": "EXPECTED_TDD_RED__SCRIPTS_V80_ABSENT__NOT_SCIENTIFIC_FAILURE"
     },
-    "implementation_files_present_at_snapshot": [
-      "scripts/v80/__init__.py",
-      "scripts/v80/v80_sparse_positive_benchmark.py",
-      "scripts/v80/v80_sparse_positive_adjudicator.py",
-      "scripts/v80/finalize_v80_sparse_positive_package.py",
-      "tests/v80/test_v80_sparse_positive_benchmark.py",
-      "tests/v80/test_v80_sparse_positive_hostile.py",
-      ".github/workflows/v80-sparse-positive-benchmark.yml"
-    ],
+    "implementation_files_present": ["scripts/v80/__init__.py","scripts/v80/v80_sparse_positive_benchmark.py","scripts/v80/v80_sparse_positive_adjudicator.py","scripts/v80/finalize_v80_sparse_positive_package.py","tests/v80/test_v80_sparse_positive_benchmark.py","tests/v80/test_v80_sparse_positive_hostile.py",".github/workflows/v80-sparse-positive-benchmark.yml"],
     "snapshot_ci": {
-      "v80_run": 38503728605,
-      "pr328_regression_run": 38503728563,
-      "status_at_snapshot": "IN_PROGRESS__RECHECK_PR348_EXACT_HEAD_BEFORE_CLAIMING_GREEN"
+      "v80_run": 38504021101,
+      "pr328_regression_run": 38504021126,
+      "status_at_snapshot": "QUEUED__RECHECK_PR348_EXACT_HEAD_BEFORE_CLAIMING_GREEN"
     },
     "authority": {
       "successor_estimator_qualified": false,
