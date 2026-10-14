@@ -30,8 +30,19 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install pytest==9.1.1
-      - name: Run full TD qualification integration suite
-        run: python -m pytest -q tests/v5/test_td_qualification_registry_v1.py tests/v5/test_td_execution_manifest_v1.py tests/v5/test_td_case_bundle_v1.py tests/v5/test_td_target_qualification_bundle_v1.py tests/v5/test_td_downstream_certification_v1.py tests/v5/test_td_qualification_integration_v1.py
+      - name: Run TD qualification integration plus inherited tournament regressions
+        run: |
+          python -m pytest -q \
+            tests/v5/test_td_qualification_registry_v1.py \
+            tests/v5/test_td_execution_manifest_v1.py \
+            tests/v5/test_td_case_bundle_v1.py \
+            tests/v5/test_td_target_qualification_bundle_v1.py \
+            tests/v5/test_td_downstream_certification_v1.py \
+            tests/v5/test_td_qualification_integration_v1.py \
+            tests/v5/test_td_real_tournament_contract_v1.py \
+            tests/v5/test_td_real_tournament_gates_v1.py \
+            tests/v5/test_td_real_tournament_bundle_v1.py \
+            tests/v5/test_td_target_tournament_routing_v4_c6.py
       - name: Authority guard
         run: |
           FILES="scripts/v5/td_qualification_registry_v1.py scripts/v5/td_execution_manifest_v1.py scripts/v5/td_case_bundle_v1.py scripts/v5/td_target_qualification_bundle_v1.py scripts/v5/td_downstream_certification_v1.py scripts/v5/td_qualification_integration_v1.py"
