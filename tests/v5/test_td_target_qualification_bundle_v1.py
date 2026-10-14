@@ -64,8 +64,8 @@ def _policies():
     }
 
 
-def _build(tournament=None, manifest=None, addresses=None):
-    T = _load()
+def _build(tournament=None, manifest=None, addresses=None, module=None):
+    T = module or _load()
     tournament = tournament or _tournament()
     manifest = manifest or _manifest()
     if addresses is None:
@@ -105,7 +105,7 @@ def test_selection_and_tournament_terminal_must_be_semantically_coherent():
     )
     for tournament, addresses in invalid:
         try:
-            _build(tournament=tournament, addresses=addresses)
+            _build(tournament=tournament, addresses=addresses, module=T)
         except T.TargetBundleError as exc:
             assert "terminal" in str(exc).lower() or "selection" in str(exc).lower()
         else:
@@ -114,11 +114,11 @@ def test_selection_and_tournament_terminal_must_be_semantically_coherent():
 
 def test_selected_candidate_requires_nonempty_identity_and_canonical_addresses():
     T = _load()
-    good = _build(tournament=_tournament("SELECTED", "C1"))
+    good = _build(tournament=_tournament("SELECTED", "C1"), module=T)
     assert good["selected_candidate"] == "C1"
     for bad_candidate, bad_addresses in ((None, ["A"]), ("C1", [])):
         try:
-            _build(tournament=_tournament("SELECTED", bad_candidate), addresses=bad_addresses)
+            _build(tournament=_tournament("SELECTED", bad_candidate), addresses=bad_addresses, module=T)
         except T.TargetBundleError:
             pass
         else:
@@ -144,7 +144,7 @@ def test_target_bundle_rejects_tampered_execution_manifest_even_if_other_fields_
     manifest = _manifest()
     manifest["gates"]["G2"]["executor"]["commit_sha"] = "0" * 40
     try:
-        _build(manifest=manifest)
+        _build(manifest=manifest, module=T)
     except T.TargetBundleError as exc:
         assert "manifest" in str(exc).lower() or "digest" in str(exc).lower()
     else:
@@ -166,7 +166,7 @@ def test_known_limitations_are_mandatory_and_cannot_be_silently_dropped():
 
 def test_bundle_digest_changes_on_scientific_field_mutation_and_validation_detects_tamper():
     T = _load()
-    bundle = _build()
+    bundle = _build(module=T)
     tampered = copy.deepcopy(bundle)
     tampered["known_limitations"][0] = "different"
     assert T.compute_bundle_sha256(tampered) != bundle["bundle_sha256"]
@@ -180,7 +180,7 @@ def test_bundle_digest_changes_on_scientific_field_mutation_and_validation_detec
 
 def test_tournament_terminal_is_digest_bound():
     T = _load()
-    bundle = _build()
+    bundle = _build(module=T)
     tampered = copy.deepcopy(bundle)
     tampered["tournament_terminal"] = "FOUNDATION_CANDIDATE_UNRESOLVED__CONTINUE_TESTABLE_ROUTES__NO_TARGET_AUTHORITY"
     assert T.compute_bundle_sha256(tampered) != bundle["bundle_sha256"]
