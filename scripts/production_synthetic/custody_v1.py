@@ -182,7 +182,7 @@ DECISIONS (each is the single authority for its quantity)
    the only sanctioned roots are ``sealed_root`` outputs whose commitment is
    verified at reveal (decision 7).
 
-5. EXPOSURE (``record_exposure(freeze, exposure, ledger, *,
+5. EXPOSURE (``record_exposure(freeze, ledger, exposure, *,
    expected_ledger_head=None) -> ExposureState``). exposure = exactly
    {"exposure_id", "method_id", "realization_class"}. Refused unless the
    version is the live lineage head (decision 6) and the ledger already holds,
@@ -330,11 +330,12 @@ DECISIONS (each is the single authority for its quantity)
    deciding lane and is NOT implemented here: CHANGED_BY_DEFECT remains the
    only change path.
 
-7. REALIZATION SET (``attest_realization_set(root, class_tag, budget, emitted,
-   ledger, *, freeze) -> RealizationAttestation``; ``freeze`` is an added
-   required keyword binding the generator version). The version must be the
-   live head, budget must equal the frozen budget for the class and the class
-   nonce must already be committed. Authorized ids: realization_id(i) = hex
+7. REALIZATION SET (``attest_realization_set(freeze, ledger, *, root,
+   class_tag, emitted, budget=None) -> RealizationAttestation``). The version
+   must be the live head; the budget is the frozen budget for the class (a
+   passed ``budget`` must equal it exactly) and the class nonce must already be
+   committed. Custody functions take ``(freeze, ledger, ...)`` with
+   keyword-only extras. Authorized ids: realization_id(i) = hex
    H(REALIZATION; root, class_tag, i) for i in range(budget)
    (``authorized_realization_ids``). ``emitted`` is a list of exactly
    {"realization_id", "content_sha256"}; the emitted id set must equal the
@@ -493,7 +494,17 @@ __all__ = [
     "CustodyError",
     "SYNTH_DEBUG",
     "SYNTH_QUALIFICATION",
+    "REALIZATION_CLASS_TAGS",
     "E1_FROZEN_COMPONENTS",
+    "WITHHELD_FAMILY_COMPONENT",
+    "WITHHELD_UNCHANGED",
+    "WITHHELD_CHANGED_BY_DEFECT",
+    "PRE_EXPOSURE_REVISION",
+    "SUCCESSOR_NOT_EASIER",
+    "POST_EXPOSURE_VERSION",
+    "NEW_SCIENTIFIC_TESTBED",
+    "DEFECT_JUSTIFICATION",
+    "LEDGER_KINDS",
     "GeneratorFreeze",
     "ExposureState",
     "VersionDisposition",
@@ -1987,15 +1998,21 @@ def qualification_draws_in_lineage(ledger: CustodyLedger, generator_semantic_has
             if e["payload"]["generator_semantic_hash"] in lineage]
 
 
-def attest_realization_set(root: bytes, class_tag: str, budget: int, emitted: Iterable[Mapping],
-                           ledger: CustodyLedger, *, freeze: GeneratorFreeze) -> RealizationAttestation:
-    """Attest that exactly the authorized realizations were emitted (decision 7)."""
+def attest_realization_set(freeze: GeneratorFreeze, ledger: CustodyLedger, *, root: bytes, class_tag: str,
+                           emitted: Iterable[Mapping], budget: int | None = None) -> RealizationAttestation:
+    """Attest that exactly the authorized realizations were emitted (decision 7).
+
+    The budget is the frozen budget of the class; ``budget``, when passed, must equal it exactly.
+    """
     fr = _require_freeze_obj(freeze)
     led = _require_ledger(ledger)
     _root(root)
     _class_tag(class_tag)
+    frozen_budget = fr.realization_budget(class_tag)
+    if budget is None:
+        budget = frozen_budget
     _u64(budget, "budget", 1)
-    if budget != fr.realization_budget(class_tag):
+    if budget != frozen_budget:
         raise CustodyError("budget must equal the frozen realization budget for this class exactly")
     if isinstance(emitted, (str, bytes, Mapping)) or not isinstance(emitted, (list, tuple)):
         raise CustodyError("emitted must be a list of {realization_id, content_sha256} rows")
@@ -2054,7 +2071,7 @@ def exposure_state(freeze: GeneratorFreeze, ledger: CustodyLedger) -> ExposureSt
                          ledger_head=led.head)
 
 
-def record_exposure(freeze: GeneratorFreeze, exposure: Mapping, ledger: CustodyLedger, *,
+def record_exposure(freeze: GeneratorFreeze, ledger: CustodyLedger, exposure: Mapping, *,
                     expected_ledger_head: str | None = None) -> ExposureState:
     """Record a downstream exposure; refused unless every commitment precedes it (decision 5)."""
     fr = _require_freeze_obj(freeze)

@@ -25,10 +25,6 @@ import scripts.production_synthetic.canonical_v1 as C
 import scripts.production_synthetic.custody_v1 as CU
 from scripts.production_synthetic.custody_v1 import CustodyError
 
-QUAL = "SYNTH_QUALIFICATION"
-DEBUG = "SYNTH_DEBUG"
-WTAG = "SYNTH_QUALIFICATION_WITHHELD"
-
 COMMIT_DOMAIN = b"JEPA-PRODUCTION-SYNTHETIC-CUSTODY-COMMIT-V1\x00"
 NONCE_DOMAIN = b"JEPA-PRODUCTION-SYNTHETIC-CUSTODY-NONCE-COMMIT-V1\x00"
 ROOT_DOMAIN = b"JEPA-PRODUCTION-SYNTHETIC-CUSTODY-SEALED-ROOT-V1\x00"
@@ -36,138 +32,14 @@ ROOT_COMMIT_DOMAIN = b"JEPA-PRODUCTION-SYNTHETIC-CUSTODY-ROOT-COMMIT-V1\x00"
 RID_DOMAIN = b"JEPA-PRODUCTION-SYNTHETIC-CUSTODY-REALIZATION-ID-V1\x00"
 STREAM_DOMAIN = b"JEPA-PRODUCTION-SYNTHETIC-CUSTODY-STREAM-V1\x00"
 
-# DUMMY withheld-family specification: a stand-in so commit/reveal mechanics can
-# be exercised. It is not, and does not resemble, the controller-held secret.
-DUMMY_WITHHELD_SPEC = {
-    "DUMMY_family": {"composition": "DUMMY_pair_of_shared_programs", "weight": 0.125},
-    "DUMMY_scoring_rule": "DUMMY",
-    "DUMMY_budget": 2,
-}
-
-
-def _h(text):
-    return hashlib.sha256(text.encode("utf-8")).hexdigest()
-
-
-# DUMMY method identity: the content digest of a fixture method's frozen code + configuration
-METHOD = _h("DUMMY fixture method: code + configuration")
+from tests.production_synthetic.custody_fixtures_v1 import (
+    DEBUG, DUMMY_WITHHELD_SPEC, METHOD, QUAL, WTAG, _h, base_spec, code_path_attestation, commit_and_attest,
+    commit_withheld, dummy_nonce, emit, expose, full_spec, make_tree, make_world, prepare,
+)
 
 
 def _frame(b):
     return len(b).to_bytes(8, "big") + b
-
-
-def dummy_nonce():
-    """DUMMY 256-bit nonce, freshly generated per call; never a production secret."""
-    return secrets.token_bytes(32)
-
-
-def base_spec():
-    """A complete public generator spec WITHOUT the withheld-family commitment."""
-    return {
-        "generator_source": {"scripts/production_synthetic/fixture_generator.py": _h("fixture-src")},
-        "transitive_dependencies": {"numpy==2.4.6": _h("numpy-wheel")},
-        "parameter_distributions": {"library_size": {"law": "lognormal", "mu": 8.0, "sigma": 0.5}},
-        "mechanism_mixture": {"weights": {"program_a": 0.5, "program_b": 0.5}},
-        "observation_calibration_distributions": {"dropout": {"law": "beta", "a": 2.0, "b": 5.0}},
-        "difficulty_grid": {
-            "signal_to_noise": {"level": 0.5, "harder_direction": "decreasing"},
-            "rare_state_fraction": {"level": 0.01, "harder_direction": "decreasing"},
-            "confounding_strength": {"level": 2, "harder_direction": "increasing"},
-        },
-        "stress_regimes": {"depth_collapse": {"depth_scale": 0.25}, "batch_shift": {"shift": 1.5}},
-        "challenge_families": {
-            "adverse_regimes": ["depth_collapse", "batch_shift"],
-            "control_families": ["label_permutation", "matched_null"],
-            "support_challenges": ["structural_unmeasured_block"],
-            "population_imbalance_challenges": ["rare_state_1pct"],
-            "novelty_regimes": ["out_of_basis_program"],
-            "measurement_challenges": ["collision_unresolved"],
-        },
-        "applicability_control_matrix": {"matched_null": ["all_targets"]},
-        "registries": {"address_registry": _h("addr"), "modality_namespace_registry": _h("mod")},
-        "serialization_contract": {"canonical_module": "canonical_v1", "format_version": 1},
-        "realization_budgets": {DEBUG: 3, QUAL: 4},
-    }
-
-
-def make_world(edit=None, withheld=DUMMY_WITHHELD_SPEC):
-    """Freeze a fixture generator whose E2 commitment uses its SYNTH_QUALIFICATION nonce (returned)."""
-    spec = base_spec()
-    if edit is not None:
-        edit(spec)
-    qnonce = dummy_nonce()
-    pre = CU.generator_precommitment_semantic_hash(spec)
-    spec["withheld_family_commitment"] = CU.withheld_family_commitment(qnonce, withheld, pre, WTAG)
-    return CU.freeze_generator_version(spec), qnonce
-
-
-def full_spec():
-    spec = base_spec()
-    spec["withheld_family_commitment"] = _h("DUMMY-commitment-placeholder")
-    return spec
-
-
-def make_tree(tmp_path, name="tree"):
-    tree = tmp_path / name
-    (tree / "scripts").mkdir(parents=True)
-    (tree / "scripts" / "public_mechanism.py").write_bytes(b"def shared_kernel(x):\n    return x\n")
-    (tree / "README.md").write_bytes(b"public fixture tree\n")
-    return tree
-
-
-def code_path_attestation():
-    return CU.attest_no_unique_withheld_code_path(
-        withheld_exercised_paths={"m.py::shared_kernel"},
-        development_exercised_paths={"m.py::shared_kernel", "m.py::dev_only"},
-        public_code_paths={"m.py::shared_kernel", "m.py::dev_only"},
-    )
-
-
-def emit(root, class_tag, budget):
-    rows = []
-    for rid in CU.authorized_realization_ids(root, class_tag, budget):
-        rng = CU.derive_stream(root, ("world_id", rid), ("purpose_tag", "fixture_content"))
-        rows.append({"realization_id": rid, "content_sha256": C.raw_sha256(rng.bytes(32))})
-    return rows
-
-
-def commit_withheld(freeze, qnonce, ledger, tree):
-    scans = [
-        CU.require_nonce_absence(tree, qnonce),
-        CU.require_secret_absence(tree, C.canonical_json_bytes(DUMMY_WITHHELD_SPEC)),
-    ]
-    CU.record_withheld_commitment(
-        freeze, ledger, withheld_class_tag=WTAG, nonce_commitment=CU.nonce_commitment(qnonce),
-        secret_absence_attestations=scans, code_path_attestation=code_path_attestation(),
-    )
-
-
-def commit_and_attest(freeze, qnonce, ledger, tree, attest=True):
-    """Nonce commitments -> withheld commitment -> attestations; return {class_tag: (nonce, root)}."""
-    nonces = {DEBUG: dummy_nonce(), QUAL: qnonce}
-    for tag in (DEBUG, QUAL):
-        CU.record_nonce_commitment(freeze, ledger, class_tag=tag, nonce_commitment=CU.nonce_commitment(nonces[tag]))
-    commit_withheld(freeze, qnonce, ledger, tree)
-    out = {}
-    for tag in (DEBUG, QUAL):
-        budget = freeze.realization_budget(tag)
-        root = CU.sealed_root(nonces[tag], freeze.generator_semantic_hash, tag, budget)
-        out[tag] = (nonces[tag], root)
-        if attest:
-            CU.attest_realization_set(root, tag, budget, emit(root, tag, budget), ledger, freeze=freeze)
-    return out
-
-
-def prepare(freeze, qnonce, ledger, tree, attest=True):
-    CU.record_generator_freeze(freeze, ledger)
-    return commit_and_attest(freeze, qnonce, ledger, tree, attest)
-
-
-def expose(freeze, ledger, class_tag=DEBUG, exposure_id="exp-1"):
-    return CU.record_exposure(
-        freeze, {"exposure_id": exposure_id, "method_id": METHOD, "realization_class": class_tag}, ledger
-    )
 
 
 # ---------------------------------------------------------------- commitments
@@ -568,7 +440,7 @@ def test_thousand_entry_ledger_with_a_large_spec_builds_and_replays_within_bound
     prepare(fr, qnonce, led, make_tree(tmp_path))
     i = 0
     while len(led) < 1000:
-        CU.record_exposure(fr, {"exposure_id": f"debug-{i}", "method_id": METHOD, "realization_class": DEBUG}, led)
+        CU.record_exposure(fr, led, {"exposure_id": f"debug-{i}", "method_id": METHOD, "realization_class": DEBUG})
         i += 1
         if time.perf_counter() - t0 > PERF_BOUND_SECONDS:
             pytest.fail(f"building stopped at {len(led)} entries after {PERF_BOUND_SECONDS} s")
@@ -596,7 +468,7 @@ def test_record_exposure_requires_commitments_and_attestation_first(tmp_path):
     with pytest.raises(CustodyError):
         expose(fr, led)  # realization set not attested (and no withheld commitment)
     root = CU.sealed_root(nonces[DEBUG], fr.generator_semantic_hash, DEBUG, 3)
-    CU.attest_realization_set(root, DEBUG, 3, emit(root, DEBUG, 3), led, freeze=fr)
+    CU.attest_realization_set(fr, led, root=root, class_tag=DEBUG, emitted=emit(root, DEBUG, 3), budget=3)
     with pytest.raises(CustodyError, match="withheld"):
         expose(fr, led)  # everything except the withheld commitment
     assert CU.exposure_state(fr, led).exposed is False
@@ -627,10 +499,10 @@ def test_exposure_record_shape_is_strict(tmp_path):
         dict(good, nonce_hex="00"),
     ):
         with pytest.raises(CustodyError):
-            CU.record_exposure(fr, bad, led)
-    CU.record_exposure(fr, good, led)
+            CU.record_exposure(fr, led, bad)
+    CU.record_exposure(fr, led, good)
     with pytest.raises(CustodyError):
-        CU.record_exposure(fr, good, led)  # duplicate exposure id
+        CU.record_exposure(fr, led, good)  # duplicate exposure id
 
 
 def test_attest_realization_set_binds_exact_emitted_set(tmp_path):
@@ -639,7 +511,7 @@ def test_attest_realization_set_binds_exact_emitted_set(tmp_path):
     roots_a = prepare(fr, qnonce, led_a, make_tree(tmp_path), attest=False)
     root = roots_a[QUAL][1]
     rows = emit(root, QUAL, 4)
-    att = CU.attest_realization_set(root, QUAL, 4, rows, led_a, freeze=fr)
+    att = CU.attest_realization_set(fr, led_a, root=root, class_tag=QUAL, emitted=rows, budget=4)
     assert att.n_emitted == 4 and att.budget == 4 and att.class_tag == QUAL
     assert att.emitted_set_sha256 == C.semantic_row_set_sha256(rows, ["realization_id"])
     assert att.root_commitment == CU.root_commitment(root)
@@ -648,7 +520,7 @@ def test_attest_realization_set_binds_exact_emitted_set(tmp_path):
     CU.record_generator_freeze(fr, led_b)
     CU.record_nonce_commitment(fr, led_b, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(qnonce))
     commit_withheld(fr, qnonce, led_b, make_tree(tmp_path, "tree_b"))
-    att_b = CU.attest_realization_set(root, QUAL, 4, list(reversed(rows)), led_b, freeze=fr)
+    att_b = CU.attest_realization_set(fr, led_b, root=root, class_tag=QUAL, emitted=list(reversed(rows)), budget=4)
     assert att_b.emitted_set_sha256 == att.emitted_set_sha256
 
 

@@ -11,7 +11,6 @@ withheld plaintext in public config, unique withheld-only public code paths
 All secrets are DUMMY values generated in-test; nothing here is a production
 secret. Files are written only under pytest ``tmp_path``.
 """
-import hashlib
 import secrets
 
 import numpy as np
@@ -21,172 +20,13 @@ import scripts.production_synthetic.canonical_v1 as C
 import scripts.production_synthetic.custody_v1 as CU
 from scripts.production_synthetic.custody_v1 import CustodyError
 
-QUAL = "SYNTH_QUALIFICATION"
-DEBUG = "SYNTH_DEBUG"
-WTAG = "SYNTH_QUALIFICATION_WITHHELD"
-ENTRY_FORMAT = "JEPA-PRODUCTION-SYNTHETIC-CUSTODY-LEDGER-ENTRY-V1"
-LEDGER_FORMAT = "JEPA-PRODUCTION-SYNTHETIC-CUSTODY-LEDGER-V1"
-E1_COMPONENTS = [
-    "generator_source", "transitive_dependencies", "parameter_distributions", "mechanism_mixture",
-    "observation_calibration_distributions", "stress_regimes", "applicability_control_matrix", "registries",
-    "serialization_contract", "realization_budgets",
-]
-
-DUMMY_WITHHELD_SPEC = {
-    "DUMMY_family": {"composition": "DUMMY_pair_of_shared_programs", "weight": 0.125},
-    "DUMMY_scoring_rule": "DUMMY",
-    "DUMMY_budget": 2,
-}
-
-
-def _h(text):
-    return hashlib.sha256(text.encode("utf-8")).hexdigest()
-
-
-# DUMMY method identities: content digests of fixture methods' frozen code + configuration
-METHOD = _h("DUMMY fixture method: code + configuration")
-METHOD_A = _h("DUMMY method A: code + configuration")
-METHOD_A_RENAMED = _h("DUMMY method A, relabelled v2: code + configuration")
-METHOD_B = _h("DUMMY method B: code + configuration")
-
-
-def dummy_nonce():
-    """DUMMY 256-bit nonce, freshly generated per call; never a production secret."""
-    return secrets.token_bytes(32)
-
-
-def _chain_text(exc):
-    """Every message a traceback of ``exc`` would display (cause/context chain included)."""
-    out = []
-    e = exc
-    while e is not None:
-        out.append(f"{type(e).__name__}: {e}")
-        e = e.__cause__ if e.__cause__ is not None else (None if e.__suppress_context__ else e.__context__)
-    return "\n".join(out)
-
-
-def base_spec():
-    return {
-        "generator_source": {"scripts/production_synthetic/fixture_generator.py": _h("fixture-src")},
-        "transitive_dependencies": {"numpy==2.4.6": _h("numpy-wheel")},
-        "parameter_distributions": {"library_size": {"law": "lognormal", "mu": 8.0, "sigma": 0.5}},
-        "mechanism_mixture": {"weights": {"program_a": 0.4, "program_b": 0.4, "novelty_program": 0.2}},
-        "observation_calibration_distributions": {"dropout": {"law": "beta", "a": 2.0, "b": 5.0}},
-        "difficulty_grid": {
-            "signal_to_noise": {"level": 0.5, "harder_direction": "decreasing"},
-            "rare_state_fraction": {"level": 0.01, "harder_direction": "decreasing"},
-            "confounding_strength": {"level": 2, "harder_direction": "increasing"},
-        },
-        "stress_regimes": {"depth_collapse": {"depth_scale": 0.25}, "batch_shift": {"shift": 1.5}},
-        "challenge_families": {
-            "adverse_regimes": ["depth_collapse", "batch_shift"],
-            "control_families": ["label_permutation", "matched_null"],
-            "support_challenges": ["structural_unmeasured_block"],
-            "population_imbalance_challenges": ["rare_state_1pct"],
-            "novelty_regimes": ["out_of_basis_program"],
-            "measurement_challenges": ["collision_unresolved"],
-        },
-        "applicability_control_matrix": {"matched_null": ["all_targets", "rare_targets"]},
-        "registries": {"address_registry": _h("addr"), "modality_namespace_registry": _h("mod")},
-        "serialization_contract": {"canonical_module": "canonical_v1", "format_version": 1},
-        "realization_budgets": {DEBUG: 3, QUAL: 4},
-    }
-
-
-def make_world(edit=None, withheld=DUMMY_WITHHELD_SPEC, commitment_nonce=None):
-    """Freeze a fixture generator; the E2 commitment uses the returned SYNTH_QUALIFICATION nonce."""
-    spec = base_spec()
-    if edit is not None:
-        edit(spec)
-    qnonce = dummy_nonce()
-    pre = CU.generator_precommitment_semantic_hash(spec)
-    spec["withheld_family_commitment"] = CU.withheld_family_commitment(
-        commitment_nonce if commitment_nonce is not None else qnonce, withheld, pre, WTAG)
-    return CU.freeze_generator_version(spec), qnonce
-
-
-def make_tree(tmp_path, name="tree"):
-    tree = tmp_path / name
-    (tree / "scripts").mkdir(parents=True)
-    (tree / "scripts" / "public_mechanism.py").write_bytes(b"def shared_kernel(x):\n    return x\n")
-    return tree
-
-
-def code_path_attestation():
-    return CU.attest_no_unique_withheld_code_path(
-        withheld_exercised_paths={"m.py::shared_kernel"},
-        development_exercised_paths={"m.py::shared_kernel", "m.py::dev_only"},
-        public_code_paths={"m.py::shared_kernel", "m.py::dev_only"},
-    )
-
-
-def emit(root, class_tag, budget):
-    rows = []
-    for rid in CU.authorized_realization_ids(root, class_tag, budget):
-        rng = CU.derive_stream(root, ("world_id", rid), ("purpose_tag", "fixture_content"))
-        rows.append({"realization_id": rid, "content_sha256": C.raw_sha256(rng.bytes(32))})
-    return rows
-
-
-def commit_withheld(freeze, qnonce, ledger, tree, change=None):
-    scans = [CU.require_nonce_absence(tree, qnonce)]
-    CU.record_withheld_commitment(freeze, ledger, withheld_class_tag=WTAG, nonce_commitment=CU.nonce_commitment(qnonce),
-                                  secret_absence_attestations=scans, code_path_attestation=code_path_attestation(),
-                                  withheld_family_change=change)
-
-
-def commit_and_attest(freeze, qnonce, ledger, tree, attest=True, change=None):
-    nonces = {DEBUG: dummy_nonce(), QUAL: qnonce}
-    for tag in (DEBUG, QUAL):
-        CU.record_nonce_commitment(freeze, ledger, class_tag=tag, nonce_commitment=CU.nonce_commitment(nonces[tag]))
-    commit_withheld(freeze, qnonce, ledger, tree, change)
-    out = {}
-    for tag in (DEBUG, QUAL):
-        budget = freeze.realization_budget(tag)
-        root = CU.sealed_root(nonces[tag], freeze.generator_semantic_hash, tag, budget)
-        out[tag] = (nonces[tag], root)
-        if attest:
-            CU.attest_realization_set(root, tag, budget, emit(root, tag, budget), ledger, freeze=freeze)
-    return out
-
-
-def prepare(freeze, qnonce, ledger, tree, attest=True):
-    CU.record_generator_freeze(freeze, ledger)
-    return commit_and_attest(freeze, qnonce, ledger, tree, attest)
-
-
-def expose(freeze, ledger, class_tag=DEBUG, exposure_id="exp-1"):
-    return CU.record_exposure(
-        freeze, {"exposure_id": exposure_id, "method_id": METHOD, "realization_class": class_tag}, ledger
-    )
-
-
-def successor(parent, child, ledger, defect_record=None):
-    return CU.validate_successor_version(
-        parent, child, parent_exposure_state=CU.exposure_state(parent, ledger), ledger=ledger,
-        defect_record=defect_record,
-    )
-
-
-def defect(parent, child, affected=(), components=(), **over):
-    rec = {
-        "parent_generator_semantic_hash": parent.generator_semantic_hash,
-        "child_generator_semantic_hash": child.generator_semantic_hash,
-        "defect_description": "DUMMY: fixture generator violated its frozen design contract",
-        "affected_dimensions": list(affected),
-        "affected_components": list(components),
-        "generator_side_evidence_sha256": _h("DUMMY generator-side evidence"),
-        "justification_source": "GENERATOR_DEFECT_AGAINST_FROZEN_SPEC",
-        "incomparable": False,
-    }
-    rec.update(over)
-    return rec
-
-
-def set_snr(level):
-    def edit(spec):
-        spec["difficulty_grid"]["signal_to_noise"]["level"] = level  # decreasing is harder
-    return edit
+from tests.production_synthetic.custody_fixtures_v1 import (
+    DEBUG, DUMMY_WITHHELD_SPEC, E1_COMPONENTS, EASIER_WITHHELD_SPEC, METHOD, METHOD_A, METHOD_A_RENAMED, METHOD_B,
+    QUAL, WTAG, _chain_text, _h, base_spec, code_path_attestation, commit_and_attest, commit_withheld, defect,
+    dummy_nonce, emit, expose, make_tree, make_world, prepare, qualify_and_reveal, set_snr, successor,
+)
+from tests.production_synthetic.custody_fixtures_v1 import forge_ledger as _forge
+from tests.production_synthetic.custody_fixtures_v1 import withheld_entry as _withheld_entry
 
 
 @pytest.fixture
@@ -310,7 +150,7 @@ def test_nonce_commitment_after_exposure_is_refused(tmp_path):
     CU.record_nonce_commitment(fr, led, class_tag=QUAL, nonce_commitment=CU.nonce_commitment(qnonce))
     commit_withheld(fr, qnonce, led, make_tree(tmp_path))
     rq = CU.sealed_root(qnonce, fr.generator_semantic_hash, QUAL, 4)
-    CU.attest_realization_set(rq, QUAL, 4, emit(rq, QUAL, 4), led, freeze=fr)
+    CU.attest_realization_set(fr, led, root=rq, class_tag=QUAL, emitted=emit(rq, QUAL, 4), budget=4)
     expose(fr, led, QUAL)
     with pytest.raises(CustodyError):
         CU.record_nonce_commitment(fr, led, class_tag=DEBUG, nonce_commitment=CU.nonce_commitment(dummy_nonce()))
@@ -322,7 +162,7 @@ def test_discarded_realization_is_refused(committed):
     fr, led, roots, _ = committed
     root = roots[QUAL][1]
     with pytest.raises(CustodyError, match="discard"):
-        CU.attest_realization_set(root, QUAL, 4, emit(root, QUAL, 4)[:-1], led, freeze=fr)
+        CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=emit(root, QUAL, 4)[:-1], budget=4)
 
 
 def test_seed_shopped_extra_or_replaced_realization_is_refused(committed):
@@ -331,10 +171,10 @@ def test_seed_shopped_extra_or_replaced_realization_is_refused(committed):
     rows = emit(root, QUAL, 4)
     extra = emit(root, QUAL, 5)[4]
     with pytest.raises(CustodyError, match="seed shopping"):
-        CU.attest_realization_set(root, QUAL, 4, rows + [extra], led, freeze=fr)
+        CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=rows + [extra], budget=4)
     shopped = emit(secrets.token_bytes(32), QUAL, 1)[0]
     with pytest.raises(CustodyError):
-        CU.attest_realization_set(root, QUAL, 4, rows[:-1] + [shopped], led, freeze=fr)
+        CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=rows[:-1] + [shopped], budget=4)
 
 
 def test_duplicate_realization_id_or_copied_content_is_refused(committed):
@@ -342,11 +182,11 @@ def test_duplicate_realization_id_or_copied_content_is_refused(committed):
     root = roots[QUAL][1]
     rows = emit(root, QUAL, 4)
     with pytest.raises(CustodyError):
-        CU.attest_realization_set(root, QUAL, 4, rows + [rows[0]], led, freeze=fr)
+        CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=rows + [rows[0]], budget=4)
     copied = [dict(r) for r in rows]
     copied[3]["content_sha256"] = copied[2]["content_sha256"]  # failed world replaced by a copy
     with pytest.raises(CustodyError):
-        CU.attest_realization_set(root, QUAL, 4, copied, led, freeze=fr)
+        CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=copied, budget=4)
 
 
 @pytest.mark.parametrize("budget", [3, 5])
@@ -354,30 +194,30 @@ def test_budget_must_equal_the_frozen_budget(committed, budget):
     fr, led, roots, _ = committed
     root = roots[QUAL][1]
     with pytest.raises(CustodyError):
-        CU.attest_realization_set(root, QUAL, budget, emit(root, QUAL, budget), led, freeze=fr)
+        CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=emit(root, QUAL, budget), budget=budget)
 
 
 def test_re_emission_after_attestation_is_refused(committed):
     fr, led, roots, _ = committed
     root = roots[QUAL][1]
     rows = emit(root, QUAL, 4)
-    CU.attest_realization_set(root, QUAL, 4, rows, led, freeze=fr)
+    CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=rows, budget=4)
     with pytest.raises(CustodyError):
-        CU.attest_realization_set(root, QUAL, 4, rows, led, freeze=fr)
+        CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=rows, budget=4)
     replacement = [dict(r, content_sha256=_h("re-drawn " + r["realization_id"])) for r in rows]
     with pytest.raises(CustodyError):
-        CU.attest_realization_set(root, QUAL, 4, replacement, led, freeze=fr)
+        CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=replacement, budget=4)
     other_root = CU.sealed_root(dummy_nonce(), fr.generator_semantic_hash, QUAL, 4)
     with pytest.raises(CustodyError, match="re-emission"):
-        CU.attest_realization_set(other_root, QUAL, 4, emit(other_root, QUAL, 4), led, freeze=fr)
+        CU.attest_realization_set(fr, led, root=other_root, class_tag=QUAL, emitted=emit(other_root, QUAL, 4), budget=4)
 
 
 def test_one_root_cannot_back_two_classes(committed):
     fr, led, roots, _ = committed
     root = roots[DEBUG][1]
-    CU.attest_realization_set(root, DEBUG, 3, emit(root, DEBUG, 3), led, freeze=fr)
+    CU.attest_realization_set(fr, led, root=root, class_tag=DEBUG, emitted=emit(root, DEBUG, 3), budget=3)
     with pytest.raises(CustodyError):
-        CU.attest_realization_set(root, QUAL, 4, emit(root, QUAL, 4), led, freeze=fr)
+        CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=emit(root, QUAL, 4), budget=4)
 
 
 def test_attestation_requires_committed_nonce():
@@ -386,7 +226,7 @@ def test_attestation_requires_committed_nonce():
     CU.record_generator_freeze(fr, led)
     root = CU.sealed_root(dummy_nonce(), fr.generator_semantic_hash, QUAL, 4)
     with pytest.raises(CustodyError):
-        CU.attest_realization_set(root, QUAL, 4, emit(root, QUAL, 4), led, freeze=fr)
+        CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=emit(root, QUAL, 4), budget=4)
 
 
 @pytest.mark.parametrize("mutate", [
@@ -401,7 +241,7 @@ def test_emitted_row_shape_is_strict(committed, mutate):
     rows = emit(root, QUAL, 4)
     mutate(rows[1])
     with pytest.raises(CustodyError):
-        CU.attest_realization_set(root, QUAL, 4, rows, led, freeze=fr)
+        CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=rows, budget=4)
 
 
 def test_seed_shopping_with_an_uncommitted_nonce_is_caught_at_reveal(committed):
@@ -409,7 +249,7 @@ def test_seed_shopping_with_an_uncommitted_nonce_is_caught_at_reveal(committed):
     committed_nonce = roots[QUAL][0]
     shopped_nonce = dummy_nonce()
     shopped_root = CU.sealed_root(shopped_nonce, fr.generator_semantic_hash, QUAL, 4)
-    CU.attest_realization_set(shopped_root, QUAL, 4, emit(shopped_root, QUAL, 4), led, freeze=fr)
+    CU.attest_realization_set(fr, led, root=shopped_root, class_tag=QUAL, emitted=emit(shopped_root, QUAL, 4), budget=4)
     expose(fr, led, QUAL)
     CU.record_fit_output_frozen(fr, led, class_tag=QUAL, exposure_id="exp-1", fit_output_sha256=_h("fit"))
     with pytest.raises(CustodyError):
@@ -431,7 +271,7 @@ def test_reveal_before_fit_output_frozen_is_refused(exposed_qual):
 def test_fit_output_cannot_be_frozen_before_exposure(committed):
     fr, led, roots, _ = committed
     root = roots[QUAL][1]
-    CU.attest_realization_set(root, QUAL, 4, emit(root, QUAL, 4), led, freeze=fr)
+    CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=emit(root, QUAL, 4), budget=4)
     with pytest.raises(CustodyError):
         CU.record_fit_output_frozen(fr, led, class_tag=QUAL, exposure_id="exp-1", fit_output_sha256=_h("fit"))
 
@@ -516,7 +356,7 @@ def test_withheld_commitment_built_with_the_debug_nonce_is_rejected(tmp_path):
     for tag, n in ((DEBUG, debug_nonce), (QUAL, qnonce)):
         budget = fr.realization_budget(tag)
         root = CU.sealed_root(n, fr.generator_semantic_hash, tag, budget)
-        CU.attest_realization_set(root, tag, budget, emit(root, tag, budget), led, freeze=fr)
+        CU.attest_realization_set(fr, led, root=root, class_tag=tag, emitted=emit(root, tag, budget), budget=budget)
         expose(fr, led, tag, "exp-" + tag)
         CU.record_fit_output_frozen(fr, led, class_tag=tag, exposure_id="exp-" + tag, fit_output_sha256=_h("fit " + tag))
     CU.reveal_class_nonce(fr, led, class_tag=DEBUG, nonce=debug_nonce)  # a debug reveal opens nothing withheld
@@ -769,8 +609,8 @@ def test_record_exposure_checks_the_expected_ledger_head(tmp_path):
     prepare(fr, qnonce, led, make_tree(tmp_path))
     good = {"exposure_id": "e", "method_id": METHOD, "realization_class": DEBUG}
     with pytest.raises(CustodyError):
-        CU.record_exposure(fr, good, led, expected_ledger_head=_h("some other head"))
-    CU.record_exposure(fr, good, led, expected_ledger_head=led.head)
+        CU.record_exposure(fr, led, good, expected_ledger_head=_h("some other head"))
+    CU.record_exposure(fr, led, good, expected_ledger_head=led.head)
 
 
 def test_new_version_cannot_skip_successor_validation(exposed_parent):
@@ -818,12 +658,12 @@ def test_superseded_version_cannot_be_attested_or_exposed(tmp_path):
     led = CU.CustodyLedger()
     roots = prepare(v1, q1, led, make_tree(tmp_path), attest=False)
     rd = roots[DEBUG][1]
-    CU.attest_realization_set(rd, DEBUG, 3, emit(rd, DEBUG, 3), led, freeze=v1)
+    CU.attest_realization_set(v1, led, root=rd, class_tag=DEBUG, emitted=emit(rd, DEBUG, 3), budget=3)
     v2, _ = make_world(set_snr(0.9))
     assert successor(v1, v2, led).disposition == "PRE_EXPOSURE_REVISION"
     rq = roots[QUAL][1]
     with pytest.raises(CustodyError):
-        CU.attest_realization_set(rq, QUAL, 4, emit(rq, QUAL, 4), led, freeze=v1)
+        CU.attest_realization_set(v1, led, root=rq, class_tag=QUAL, emitted=emit(rq, QUAL, 4), budget=4)
     with pytest.raises(CustodyError):
         expose(v1, led, DEBUG)  # P2: the easier pre-exposure successor cannot be bypassed by exposing V1
 
@@ -875,15 +715,6 @@ def test_w2_identical_revision_before_any_exposure_is_not_a_reroll():
 
 
 # ------------------------------ W1: the withheld family is frozen per lineage
-
-EASIER_WITHHELD_SPEC = dict(DUMMY_WITHHELD_SPEC, DUMMY_family={"composition": "DUMMY_single_program", "weight": 0.5})
-
-
-def qualify_and_reveal(freeze, qnonce, ledger, withheld=DUMMY_WITHHELD_SPEC, exposure_id="exp-q"):
-    expose(freeze, ledger, QUAL, exposure_id)
-    CU.record_fit_output_frozen(freeze, ledger, class_tag=QUAL, exposure_id=exposure_id, fit_output_sha256=_h("fit " + exposure_id))
-    CU.reveal_withheld_family(freeze, ledger, withheld_spec=withheld, nonce=qnonce, withheld_class_tag=WTAG)
-
 
 def _qualified_parent_and_child(tmp_path, child_withheld, reveal_parent=True, change="UNCHANGED", defect_components=()):
     p0, q0 = make_world()
@@ -1037,11 +868,6 @@ def test_no_withheld_reveal_while_a_lineage_sealed_run_is_open(tmp_path):
 
 
 # --------------------- withheld-check eligibility: a reused family must still be secret
-
-def _withheld_entry(led, freeze):
-    return [e["payload"] for e in led.entries()
-            if e["kind"] == "WITHHELD_COMMITTED" and e["payload"]["generator_semantic_hash"] == freeze.generator_semantic_hash][0]
-
 
 def test_unchanged_family_committed_before_the_reference_reveal_is_eligible(tmp_path):
     p0, q0, child, q1, led = _qualified_parent_and_child(tmp_path, DUMMY_WITHHELD_SPEC, reveal_parent=False)
@@ -1245,7 +1071,7 @@ def test_q2_qualification_draws_are_counted_per_method_across_versions(tmp_path)
     prepare(v, q, led, make_tree(tmp_path, "t0"))
 
     def expose_as(fr, method, class_tag, eid):
-        CU.record_exposure(fr, {"exposure_id": eid, "method_id": method, "realization_class": class_tag}, led)
+        CU.record_exposure(fr, led, {"exposure_id": eid, "method_id": method, "realization_class": class_tag})
 
     expose_as(v, METHOD_A, QUAL, "a0")
     expose_as(v, METHOD_B, QUAL, "b0")
@@ -1283,13 +1109,13 @@ def test_q2_renaming_the_method_digest_does_not_reset_the_lineage_count(tmp_path
     v, q = make_world()
     led = CU.CustodyLedger()
     prepare(v, q, led, make_tree(tmp_path, "t0"))
-    CU.record_exposure(v, {"exposure_id": "a0", "method_id": METHOD_A, "realization_class": QUAL}, led)
+    CU.record_exposure(v, led, {"exposure_id": "a0", "method_id": METHOD_A, "realization_class": QUAL})
     near_copy, qc = make_world(set_snr(0.4999))
     successor(v, near_copy, led)
     CU.record_generator_freeze(near_copy, led)
     commit_and_attest(near_copy, qc, led, make_tree(tmp_path, "t1"), change="UNCHANGED")
-    CU.record_exposure(near_copy, {"exposure_id": "a1", "method_id": METHOD_A_RENAMED,
-                                   "realization_class": QUAL}, led)
+    CU.record_exposure(near_copy, led, {"exposure_id": "a1", "method_id": METHOD_A_RENAMED,
+                                   "realization_class": QUAL})
     # the per-method view alone is fooled: (1, 1) ...
     assert len(CU.qualification_draws_for_method(led, METHOD_A)) == 1
     assert len(CU.qualification_draws_for_method(led, METHOD_A_RENAMED)) == 1
@@ -1304,15 +1130,15 @@ def test_q2_lineage_draws_span_ancestors_and_descendants_and_exclude_debug_and_o
     v0, q0 = make_world()
     led = CU.CustodyLedger()
     prepare(v0, q0, led, make_tree(tmp_path, "t0"))
-    CU.record_exposure(v0, {"exposure_id": "q0", "method_id": METHOD_A, "realization_class": QUAL}, led)
-    CU.record_exposure(v0, {"exposure_id": "d0", "method_id": METHOD_A, "realization_class": DEBUG}, led)
+    CU.record_exposure(v0, led, {"exposure_id": "q0", "method_id": METHOD_A, "realization_class": QUAL})
+    CU.record_exposure(v0, led, {"exposure_id": "d0", "method_id": METHOD_A, "realization_class": DEBUG})
     versions = [v0]
     for k, (level, method) in enumerate(((0.4, METHOD_B), (0.3, METHOD_A)), start=1):
         child, qc = make_world(set_snr(level))
         successor(versions[-1], child, led)
         CU.record_generator_freeze(child, led)
         commit_and_attest(child, qc, led, make_tree(tmp_path, f"t{k}"), change="UNCHANGED")
-        CU.record_exposure(child, {"exposure_id": f"q{k}", "method_id": method, "realization_class": QUAL}, led)
+        CU.record_exposure(child, led, {"exposure_id": f"q{k}", "method_id": method, "realization_class": QUAL})
         versions.append(child)
     middle = versions[1].generator_semantic_hash
     draws = CU.qualification_draws_in_lineage(led, middle)
@@ -1325,7 +1151,7 @@ def test_q2_lineage_draws_span_ancestors_and_descendants_and_exclude_debug_and_o
     other_world, other_q = make_world()
     other = CU.CustodyLedger()
     prepare(other_world, other_q, other, make_tree(tmp_path, "t_other"))
-    CU.record_exposure(other_world, {"exposure_id": "x0", "method_id": METHOD_A, "realization_class": QUAL}, other)
+    CU.record_exposure(other_world, other, {"exposure_id": "x0", "method_id": METHOD_A, "realization_class": QUAL})
     assert [d["exposure_id"] for d in CU.qualification_draws_in_lineage(other, other_world.generator_semantic_hash)] \
         == ["x0"]
     with pytest.raises(CustodyError):  # a version from another lineage's ledger is not in this lineage
@@ -1623,7 +1449,7 @@ def test_unknown_keys_are_reported_by_count_not_name(exposed_parent):
         successor(p0, child, led, rec)
     assert hidden not in _chain_text(exc.value)
     with pytest.raises(CustodyError) as exc:
-        CU.record_exposure(p0, {"exposure_id": "e9", "method_id": METHOD, "realization_class": DEBUG, hidden: 1}, led)
+        CU.record_exposure(p0, led, {"exposure_id": "e9", "method_id": METHOD, "realization_class": DEBUG, hidden: 1})
     assert hidden not in _chain_text(exc.value)
 
 
@@ -1642,17 +1468,6 @@ def test_withheld_spec_key_collision_is_not_echoed(exposed_qual):
 
 
 # ----------------------------------------------------------- forged ledgers
-
-def _forge(entries):
-    """Hand-build a hash-chain-valid ledger (chain validity alone is public knowledge)."""
-    out, prev = [], "0" * 64
-    for i, (kind, payload) in enumerate(entries):
-        body = {"format": ENTRY_FORMAT, "index": i, "kind": kind, "payload": payload, "prev_entry_hash": prev}
-        h = C.semantic_sha256(body)
-        out.append({"index": i, "kind": kind, "payload": payload, "prev_entry_hash": prev, "entry_hash": h})
-        prev = h
-    return C.canonical_json_bytes({"format": LEDGER_FORMAT, "entries": out}), prev
-
 
 def test_chain_valid_ledger_with_out_of_order_custody_is_refused_on_replay():
     fr, _ = make_world()
@@ -1688,7 +1503,7 @@ def test_chain_recomputed_after_deleting_an_entry_is_caught_by_the_anchor(expose
 def test_forged_attestation_with_wrong_counts_is_refused_on_replay(committed, override):
     fr, led, roots, _ = committed
     root = roots[QUAL][1]
-    CU.attest_realization_set(root, QUAL, 4, emit(root, QUAL, 4), led, freeze=fr)
+    CU.attest_realization_set(fr, led, root=root, class_tag=QUAL, emitted=emit(root, QUAL, 4), budget=4)
     entries = [(e["kind"], e["payload"]) for e in led.entries()]
     entries[-1][1].update(override)
     raw, head = _forge(entries)
