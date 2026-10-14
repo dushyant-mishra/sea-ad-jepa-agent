@@ -1,0 +1,10 @@
+{
+  "schema": "JEPA_TD_REAL_G2_CONTENT_DECISION_V1_RED_AUDIT",
+  "status": "RED_PENDING_IMPLEMENTATION",
+  "human_candidate_outcomes_opened": false,
+  "real_tournament_authorized": false,
+  "target_selection_authorized": false,
+  "representation_selection_authorized": false,
+  "stage4_authorized": false,
+  "training_authorized": false
+}

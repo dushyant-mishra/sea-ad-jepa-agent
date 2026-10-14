@@ -1,0 +1,30 @@
+name: TD real G2 content decision V1
+
+on:
+  push:
+    branches:
+      - implementation/td-real-g2-nontrivial-content-v1-20261014
+  pull_request:
+    paths:
+      - 'scripts/v5/td_real_g2_content_decision_v1.py'
+      - 'tests/v5/test_td_real_g2_content_decision_v1.py'
+      - '.github/workflows/td-real-g2-content-decision-v1.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.17'
+      - run: python -m pip install pytest==9.1.1 numpy
+      - name: Run G2 known-truth tests
+        run: python -m pytest -q tests/v5/test_td_real_g2_content_decision_v1.py
+      - name: Authority guard
+        run: |
+          echo HUMAN_CANDIDATE_OUTCOMES_OPENED=false
+          echo REAL_TOURNAMENT_EXECUTED=false
+          echo AUTHORITY_ALL_FALSE=true
