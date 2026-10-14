@@ -107,10 +107,14 @@ def test_old_pr356_tasks_1_4_are_not_flattened_into_superseded_tasks_4_12():
     group = next(g for g in payload["custody_groups"] if g["group_id"] == "ACTIVE_PR356_TASKS_1_4")
     by_id = {obj["object_id"]: obj for obj in group["objects"]}
     assert {"PR356_TASK1", "PR356_TASK2", "PR356_TASK3", "PR356_TASK4", "PR356_TASKS5_12"}.issubset(by_id)
-    assert by_id["PR356_TASK1"]["state"] in {"ACTIVE_PREMERGER_IMPLEMENTATION", "AWAITING_EXACT_REVIEWED_HEAD"}
-    assert by_id["PR356_TASK2"]["state"] in {"ACTIVE_PREMERGER_IMPLEMENTATION", "PENDING_SEQUENTIAL_PREMERGER_IMPLEMENTATION", "AWAITING_EXACT_REVIEWED_HEAD"}
-    assert by_id["PR356_TASK3"]["state"] in {"ACTIVE_PREMERGER_IMPLEMENTATION", "PENDING_SEQUENTIAL_PREMERGER_IMPLEMENTATION", "AWAITING_EXACT_REVIEWED_HEAD"}
-    assert by_id["PR356_TASK4"]["state"] == "BLOCKED_ON_TASKS1_3_REVIEWS"
+    expected_verified = "CONTROLLER_VERIFIED_REUSE_SUBSTRATE__INDEPENDENT_REVIEW_PENDING"
+    expected_stopped = "STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY"
+    assert by_id["PR356_TASK1"]["state"] == expected_verified
+    assert by_id["PR356_TASK2"]["state"] == expected_verified
+    assert by_id["PR356_TASK3"]["state"] == expected_stopped
+    assert by_id["PR356_TASK4"]["state"] == expected_stopped
+    assert by_id["PR356_TASK3"]["continue_in_old_lane"] is False
+    assert by_id["PR356_TASK4"]["continue_in_old_lane"] is False
     assert by_id["PR356_TASKS5_12"]["state"] == "SUPERSEDED_INDEPENDENT_EXECUTION"
     assert by_id["PR356_TASKS5_12"]["continue_independently"] is False
 
