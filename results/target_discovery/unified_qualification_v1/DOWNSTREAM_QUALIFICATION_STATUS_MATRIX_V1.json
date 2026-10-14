@@ -1,0 +1,52 @@
+{
+  "schema": "DOWNSTREAM_QUALIFICATION_STATUS_MATRIX_V1",
+  "date": "2026-10-14",
+  "authority": "ANALYSIS_ONLY__NO_DOWNSTREAM_OR_TRAINING_AUTHORITY",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "status_vocabulary": [
+    "HISTORICAL_MECHANICS_STRONG__CURRENT_IDENTITY_NOT_QUALIFIED",
+    "HISTORICAL_SCIENTIFIC_DESIGN_STRONG__CURRENT_INPUT_CHANGED",
+    "HISTORICAL_NEGATIVE_OR_LIMITATION_FROZEN",
+    "OPEN_AUTHORITY",
+    "BLOCKED_BY_TQB",
+    "BLOCKED_BY_CURRENT_RUNTIME_FREEZE",
+    "NEW_AUTHORITY_OBJECT_NOT_IMPLEMENTED"
+  ],
+  "packages": [
+    {"id":"A","status":"BLOCKED_BY_TQB","historical_strength":"HISTORICAL_SCIENTIFIC_DESIGN_STRONG__CURRENT_INPUT_CHANGED","current_reason":"Exact verified TARGET_QUALIFICATION_BUNDLE_V1 does not yet exist."},
+    {"id":"B","status":"BLOCKED_BY_TQB","historical_strength":"HISTORICAL_MECHANICS_STRONG__CURRENT_IDENTITY_NOT_QUALIFIED","current_reason":"Teacher mechanics exist, but exact TQB evidence/target-construction contract is not qualified."},
+    {"id":"C","status":"BLOCKED_BY_TQB","historical_strength":"HISTORICAL_SCIENTIFIC_DESIGN_STRONG__CURRENT_INPUT_CHANGED","current_reason":"Student evidence restriction/recoverability must bind exact TQB support and estimability."},
+    {"id":"D","status":"OPEN_AUTHORITY","historical_strength":"HISTORICAL_NEGATIVE_OR_LIMITATION_FROZEN","current_reason":"Target-address identity shortcut path already discovered; closure/qualification remains open."},
+    {"id":"E","status":"OPEN_AUTHORITY","historical_strength":"HISTORICAL_NEGATIVE_OR_LIMITATION_FROZEN","current_reason":"Masking shortcut review exists; final dependency-aware masking authority remains open."},
+    {"id":"F","status":"BLOCKED_BY_TQB","historical_strength":"HISTORICAL_SCIENTIFIC_DESIGN_STRONG__CURRENT_INPUT_CHANGED","current_reason":"Donor-primary p and proposal doctrine exist; current q/exposure schedule must bind final target/population/horizon."},
+    {"id":"G","status":"OPEN_AUTHORITY","historical_strength":"HISTORICAL_NEGATIVE_OR_LIMITATION_FROZEN","current_reason":"SUBSPACE_ONLY ceiling and non-qualified technology invariance are current; stronger transfer/axis claims remain unqualified."},
+    {"id":"H","status":"BLOCKED_BY_TQB","historical_strength":"HISTORICAL_SCIENTIFIC_DESIGN_STRONG__CURRENT_INPUT_CHANGED","current_reason":"FULL104 information-channel laws exist; exact downstream library/support contract must bind final target/runtime."},
+    {"id":"I","status":"BLOCKED_BY_TQB","historical_strength":"HISTORICAL_NEGATIVE_OR_LIMITATION_FROZEN","current_reason":"Multimodal provenance limitations are known; exact teacher/downstream evidence receipts are not implemented."},
+    {"id":"J","status":"BLOCKED_BY_CURRENT_RUNTIME_FREEZE","historical_strength":"HISTORICAL_MECHANICS_STRONG__CURRENT_IDENTITY_NOT_QUALIFIED","current_reason":"Gradient/Adam/EMA mechanics are strongly audited historically, but the current joined update path/config is not frozen or qualified."},
+    {"id":"K","status":"OPEN_AUTHORITY","historical_strength":"HISTORICAL_NEGATIVE_OR_LIMITATION_FROZEN","current_reason":"EMA mechanic is settled; numeric presentation unit and half-life H remain prospectively unfrozen."},
+    {"id":"L","status":"BLOCKED_BY_CURRENT_RUNTIME_FREEZE","historical_strength":"HISTORICAL_MECHANICS_STRONG__CURRENT_IDENTITY_NOT_QUALIFIED","current_reason":"Checkpoint/resume/source mechanics exist; current TQB/downstream/runtime-bound checkpoint identity does not."},
+    {"id":"M","status":"OPEN_AUTHORITY","historical_strength":"HISTORICAL_NEGATIVE_OR_LIMITATION_FROZEN","current_reason":"Current-registry derivation pattern exists; final model depth/width/heads and protected registry remain unfrozen."},
+    {"id":"N","status":"BLOCKED_BY_CURRENT_RUNTIME_FREEZE","historical_strength":"HISTORICAL_MECHANICS_STRONG__CURRENT_IDENTITY_NOT_QUALIFIED","current_reason":"Packing/RNG reference tests exist; final GPU kernel/hardware/current-config equivalence is not qualified."},
+    {"id":"O","status":"BLOCKED_BY_CURRENT_RUNTIME_FREEZE","historical_strength":"HISTORICAL_MECHANICS_STRONG__CURRENT_IDENTITY_NOT_QUALIFIED","current_reason":"Exact decay-only and relational mechanics exist; current collapse/stability thresholds and model identity are not frozen."},
+    {"id":"P","status":"BLOCKED_BY_TQB","historical_strength":"HISTORICAL_MECHANICS_STRONG__CURRENT_IDENTITY_NOT_QUALIFIED","current_reason":"Historical falsifiers exist; they must be re-exercised on the exact TQB/current runtime and supplemented by D/E/F7/F9 attacks."},
+    {"id":"Q","status":"NEW_AUTHORITY_OBJECT_NOT_IMPLEMENTED","historical_strength":"HISTORICAL_NEGATIVE_OR_LIMITATION_FROZEN","current_reason":"DOWNSTREAM_CERTIFICATION_RECEIPT does not yet exist."},
+    {"id":"R","status":"NEW_AUTHORITY_OBJECT_NOT_IMPLEMENTED","historical_strength":"HISTORICAL_NEGATIVE_OR_LIMITATION_FROZEN","current_reason":"RUNTIME_ELIGIBILITY_RECEIPT does not yet exist."},
+    {"id":"S","status":"NEW_AUTHORITY_OBJECT_NOT_IMPLEMENTED","historical_strength":"HISTORICAL_NEGATIVE_OR_LIMITATION_FROZEN","current_reason":"Independent project-scope TRAINING_ELIGIBLE review has not occurred."},
+    {"id":"T","status":"NEW_AUTHORITY_OBJECT_NOT_IMPLEMENTED","historical_strength":"HISTORICAL_NEGATIVE_OR_LIMITATION_FROZEN","current_reason":"Explicit owner TRAINING_AUTHORIZED action is absent and must remain separate."}
+  ],
+  "architecture_summary": {
+    "teacher_student_architecture_exists": true,
+    "ema_mechanics_historically_strong": true,
+    "checkpoint_resume_mechanics_historically_strong": true,
+    "v5_scientific_target_design_historically_strong_for_its_scope": true,
+    "current_exact_tqb_bound_teacher_qualified": false,
+    "current_exact_tqb_bound_student_qualified": false,
+    "current_joined_teacher_student_ema_runtime_qualified": false,
+    "current_ema_timescale_qualified": false,
+    "downstream_certified": false,
+    "runtime_eligible": false,
+    "training_eligible": false,
+    "training_authorized": false
+  },
+  "next_legal_dependency": "TASK0_INDEPENDENT_ACCEPTANCE_THEN_UNIFIED_TASKS_1_TO_7_BEFORE_TQB_DEPENDENT_PACKAGES_CAN_EXECUTE"
+}
