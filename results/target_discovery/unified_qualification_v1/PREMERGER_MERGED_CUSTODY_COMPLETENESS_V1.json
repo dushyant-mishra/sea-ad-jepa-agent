@@ -17,46 +17,69 @@
       "source": {
         "pr": 356,
         "plan_head": "2c2723a1a731e7a848196aef3f7c4ab965e9ff6a",
-        "role": "pre-merger production-synthetic Tasks 1-4 under original sequential execution law"
+        "implementation_branch": "implementation/production-synthetic-v3-1-1-20261014",
+        "role": "pre-merger production-synthetic Tasks 1-4 historical execution lane, now stopped after completed/located Tasks 1-2 for merged consolidation"
       },
-      "unified_destination": "shared identity/custody/calibration infrastructure and KNOWN_TRUTH_CASEBUNDLE_V1 biology substrate; never an independent synthetic authority system",
+      "unified_destination": "shared identity/custody infrastructure and migrated requirements; never an independent synthetic authority system",
       "review_obligations": [
-        "preserve the original Task1→review→Task2→review→Task3→review→checkpoint→Task4 execution law for already-assigned Macha work",
-        "absorb exact reviewed outputs into unified interfaces rather than duplicating implementation",
+        "preserve exact old Tasks1-2 implementation head and controller verification evidence without promoting unified authority",
+        "require fresh independent review before final Task0 acceptance or unified Task1 start",
+        "migrate old Task3 calibration/provenance requirements into unified design without starting old Task3",
+        "migrate old Task4 candidate-neutral biology requirements into known-truth design without starting old Task4",
         "do not continue old Tasks5-12 independently after merger"
       ],
       "objects": [
         {
           "object_id": "PR356_TASK1",
           "name": "Canonical identity and serialization contract",
-          "state": "AWAITING_EXACT_REVIEWED_HEAD",
+          "state": "CONTROLLER_VERIFIED_REUSE_SUBSTRATE__INDEPENDENT_REVIEW_PENDING",
+          "exact_head_sha": "ff597faf2182522a320ec5322f8db9b67c9c6094",
+          "controller_review_pr": 382,
+          "controller_focused_run": 38644641042,
+          "controller_focused_job": 116128364543,
+          "controller_pytest_result": "332 passed in 8.94s",
+          "inherited_integration_run": 38644640881,
+          "independent_review_status": "PENDING",
+          "migration_classification": "ADAPT_AND_WRAP__DIRECT_REUSE_CANDIDATE_FOR_CANONICAL_PRIMITIVES",
           "expected_output": "scripts/production_synthetic/canonical_v1.py and reviewed receipts/tests",
-          "unified_destination": "shared canonical identity infrastructure used by TD_EXECUTION_MANIFEST_V1 and all authenticated artifacts",
-          "authority": "PREMERGER_COMPONENT_CANDIDATE_ONLY__NO_UNIFIED_PROMOTION_UNTIL_MIGRATED"
+          "unified_destination": "shared canonical byte/identity substrate feeding unified Task1; unified receipt recursion/authority model remains new work",
+          "authority": "CONTROLLER_VERIFIED_REUSE_SUBSTRATE_ONLY__NO_UNIFIED_PROMOTION"
         },
         {
           "object_id": "PR356_TASK2",
           "name": "Freeze-before-use custody, withheld commitments, identity-keyed RNG",
-          "state": "AWAITING_EXACT_REVIEWED_HEAD",
+          "state": "CONTROLLER_VERIFIED_REUSE_SUBSTRATE__INDEPENDENT_REVIEW_PENDING",
+          "exact_head_sha": "ff597faf2182522a320ec5322f8db9b67c9c6094",
+          "controller_review_pr": 382,
+          "controller_focused_run": 38644641042,
+          "controller_focused_job": 116128364543,
+          "controller_pytest_result": "332 passed in 8.94s",
+          "inherited_integration_run": 38644640881,
+          "independent_review_status": "PENDING",
+          "migration_classification": "ADAPT_AND_WRAP__SEALED_CUSTODY_RNG_SUBSTRATE",
           "expected_output": "freeze/exposure state, commit-reveal, identity-keyed RNG, budget attestation, secret scanner, successor law",
-          "unified_destination": "shared custody/RNG/sealed-challenge infrastructure",
-          "authority": "PREMERGER_COMPONENT_CANDIDATE_ONLY__NO_UNIFIED_PROMOTION_UNTIL_MIGRATED"
+          "unified_destination": "shared custody/RNG mechanics primarily for unified sealed-challenge/finalizer obligations; does not satisfy unified Task2 manifest/access law",
+          "authority": "CONTROLLER_VERIFIED_REUSE_SUBSTRATE_ONLY__NO_UNIFIED_PROMOTION"
         },
         {
           "object_id": "PR356_TASK3",
           "name": "Calibration firewall, number provenance and realism contract",
-          "state": "AWAITING_EXACT_REVIEWED_HEAD",
-          "expected_output": "observation-side calibration/provenance/realism contracts and first-joint-pass stopping law",
-          "unified_destination": "shared calibration/provenance/realism infrastructure",
-          "authority": "PREMERGER_COMPONENT_CANDIDATE_ONLY__NO_UNIFIED_PROMOTION_UNTIL_MIGRATED"
+          "state": "STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY",
+          "continue_in_old_lane": false,
+          "implementation_head_required": false,
+          "expected_output": "historical Task3 requirements only: observation-side calibration/provenance/realism contracts and first-joint-pass stopping law",
+          "unified_destination": "migrated calibration/provenance/realism requirements inside unified architecture after Task0 acceptance",
+          "authority": "REQUIREMENTS_ONLY__NO_OLD_LANE_IMPLEMENTATION_AUTHORITY"
         },
         {
           "object_id": "PR356_TASK4",
           "name": "Candidate-neutral hidden biology",
-          "state": "BLOCKED_ON_TASKS1_3_REVIEWS",
-          "expected_output": "candidate-neutral biology_v1 known-truth world substrate only after original checkpoint clears",
-          "unified_destination": "KNOWN_TRUTH_CASEBUNDLE_V1 / TRUTH_BUNDLE_V1 substrate generation",
-          "authority": "KNOWN_TRUTH_SUBSTRATE_ONLY__NO_GATE_OR_HUMAN_AUTHORITY"
+          "state": "STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY",
+          "continue_in_old_lane": false,
+          "implementation_head_required": false,
+          "expected_output": "historical Task4 requirements only: candidate-neutral known-truth biology substrate",
+          "unified_destination": "KNOWN_TRUTH_CASEBUNDLE_V1 / TRUTH_BUNDLE_V1 substrate requirements after prior unified tasks",
+          "authority": "REQUIREMENTS_ONLY__NO_OLD_LANE_IMPLEMENTATION_AUTHORITY"
         },
         {
           "object_id": "PR356_TASKS5_12",
