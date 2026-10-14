@@ -11,6 +11,8 @@ Binding authority remains:
 ## Current synthetic design object
 
 - PR #344 branch: `science/lineage-composite-production-synthetic-20261013`
+- Corrected design-content head after external-review amendments and integrated R5 audit: `70503fe3dae3afe4cebeb8e2e0fdc71d1598c54f`.
+- Commits after `70503fe3...` are readiness/custody/navigation-only unless a later audit explicitly records otherwise.
 - Current controlling design chain:
   - V2 historical base: `docs/superpowers/specs/2026-10-13-lineage-composite-production-synthetic-design-v2.md`
   - V3 amendment: `docs/superpowers/specs/2026-10-14-lineage-composite-production-synthetic-design-v3-amendment.md`
@@ -24,7 +26,7 @@ Binding authority remains:
 | Dependency | Exact live identity | Status for production-synthetic planning | Constraint |
 |---|---|---|---|
 | PR #328 unified fixture | `25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec` | qualified fixture ancestor | mechanics/interface only; not production simulator |
-| PR #348 V80 package | PR head `9ad04d43ffe7bd387da8d2315f63b5758df4f9f8`; executable source `b840067e4c9439e4cb4aa9e8c649ef2f6064a142` | frozen benchmark dependency | do not modify/re-tune; successor estimator remains unqualified |
+| PR #348 V80 package | qualified executable source `b840067e4c9439e4cb4aa9e8c649ef2f6064a142`; in-repo receipt custody repaired at branch commit `e99d1f214e76a5e3911eea438c32a1e60f70754f` | frozen benchmark dependency | do not modify/re-tune; successor estimator remains unqualified |
 | PR #349 G11/G12 registry repair | `1ab453e5cb60efb209a8eee2aecb61c5ea0fbfc7` | current real-lane compatibility target | preserve reader partition binding and `SUPPORTED / UNSUPPORTED_STRUCTURAL / BLOCKED_EVIDENCE_CONTRACT` |
 | PR #343 G8 mechanics | `82d17bfb1650d97a95d5424160126791f09d7494` | current rehearsal target unless explicitly superseded | 25/50/75 depth, displacement/support endpoints, alpha 0.01/6, n>=599 or NOT_ESTIMABLE |
 | PR #345 G6 probe | `f16ba70f7066db2928e31f31b7785831a8fc10f2` | mechanics ancestor only | full known-truth rehearsal must include substantive reference margin; synthetic margin cannot become human threshold |
@@ -45,7 +47,13 @@ Frozen package identity remains:
 - controller `24120a8c3426c02b9747a57b3197b81df40aeae44a727988a2c43235f046f2e7`
 - V79 non-regression binding `b83d7e0becbe5480353db657b553b7bb65251d3b88136be1d6c3cdda365c4819`
 
+Custody repair on 2026-10-14: the previously committed in-repo receipt was missing its final closing brace and was invalid JSON. The exact CI-produced artifact `11867366245` was recovered while still live, independently verified as 1,922 bytes / valid JSON / SHA-256 `346407af...`, and committed byte-for-byte to the V80 branch at `e99d1f214e76a5e3911eea438c32a1e60f70754f`. This is a custody-only repair; benchmark worlds, thresholds, identities and executable qualification source are unchanged.
+
 V79 remains permanently `NOT_QUALIFIED`; V80 benchmark/package remains qualified; no successor estimator is qualified.
+
+## Real-distribution stress geometry that implementation planning must preserve
+
+Authenticated reader-fit geometry is strongly non-balanced across donor sizes, operator sizes, donor×operator occupancy and address support. Production qualification therefore cannot consist only of a balanced toy world. Planning must include empirically informed highly imbalanced donor/operator worlds, source-asymmetric support, sparse-support regimes and held-out/source-shift worlds, plus separately declared beyond-envelope stress worlds. These observation/population envelopes must not be promoted into latent human biological prevalence or causal effect-size authority.
 
 ## External blockers versus internal work
 
