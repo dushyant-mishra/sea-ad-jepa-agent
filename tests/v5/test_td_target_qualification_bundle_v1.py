@@ -64,16 +64,24 @@ def _policies():
     }
 
 
-def test_none_is_valid_first_class_target_bundle_outcome():
+def _build(tournament=None, manifest=None, addresses=None):
     T = _load()
-    bundle = T.build_target_qualification_bundle(
-        tournament_output=_tournament(),
-        execution_manifest=_manifest(),
+    tournament = tournament or _tournament()
+    manifest = manifest or _manifest()
+    if addresses is None:
+        addresses = ["ENSG000001::RNA"] if tournament["selection"] == "SELECTED" else []
+    return T.build_target_qualification_bundle(
+        tournament_output=tournament,
+        execution_manifest=manifest,
         gate_receipts=_gate_receipts(),
         policy_identities=_policies(),
-        canonical_addresses=[],
-        known_limitations=["R1 remained NOT_ESTIMABLE in this rehearsal"],
+        canonical_addresses=addresses,
+        known_limitations=["synthetic rehearsal only"],
     )
+
+
+def test_none_is_valid_first_class_target_bundle_outcome():
+    bundle = _build()
     assert bundle["schema"] == "JEPA_TD_TARGET_QUALIFICATION_BUNDLE_V1"
     assert bundle["selected_candidate"] is None
     assert bundle["selection"] == "NONE"
@@ -83,37 +91,34 @@ def test_none_is_valid_first_class_target_bundle_outcome():
 
 
 def test_none_preserves_unresolved_terminal_instead_of_collapsing_to_clean_no_winner():
-    T = _load()
     terminal = "FOUNDATION_CANDIDATE_UNRESOLVED__CONTINUE_TESTABLE_ROUTES__NO_TARGET_AUTHORITY"
-    bundle = T.build_target_qualification_bundle(
-        tournament_output=_tournament("NONE", None, terminal),
-        execution_manifest=_manifest(), gate_receipts=_gate_receipts(),
-        policy_identities=_policies(), canonical_addresses=[],
-        known_limitations=["one or more candidates remained unresolved"],
-    )
+    bundle = _build(tournament=_tournament("NONE", None, terminal))
     assert bundle["selection"] == "NONE"
     assert bundle["tournament_terminal"] == terminal
 
 
+def test_selection_and_tournament_terminal_must_be_semantically_coherent():
+    T = _load()
+    invalid = (
+        (_tournament("SELECTED", "C1", "NO_TARGET_WINNER__REDESIGN_BEFORE_PROTECTED_CONFIRMATION"), ["ENSG000001::RNA"]),
+        (_tournament("NONE", None, "SINGLE_CANDIDATE_ELIGIBLE_FOR_PROTECTED_CONFIRMATION__NO_TARGET_AUTHORITY"), []),
+    )
+    for tournament, addresses in invalid:
+        try:
+            _build(tournament=tournament, addresses=addresses)
+        except T.TargetBundleError as exc:
+            assert "terminal" in str(exc).lower() or "selection" in str(exc).lower()
+        else:
+            raise AssertionError("semantically incoherent tournament selection/terminal accepted")
+
+
 def test_selected_candidate_requires_nonempty_identity_and_canonical_addresses():
     T = _load()
-    good = T.build_target_qualification_bundle(
-        tournament_output=_tournament("SELECTED", "C1"),
-        execution_manifest=_manifest(),
-        gate_receipts=_gate_receipts(),
-        policy_identities=_policies(),
-        canonical_addresses=["ENSG000001::RNA"],
-        known_limitations=["synthetic rehearsal only"],
-    )
+    good = _build(tournament=_tournament("SELECTED", "C1"))
     assert good["selected_candidate"] == "C1"
     for bad_candidate, bad_addresses in ((None, ["A"]), ("C1", [])):
         try:
-            T.build_target_qualification_bundle(
-                tournament_output=_tournament("SELECTED", bad_candidate),
-                execution_manifest=_manifest(), gate_receipts=_gate_receipts(),
-                policy_identities=_policies(), canonical_addresses=bad_addresses,
-                known_limitations=["x"],
-            )
+            _build(tournament=_tournament("SELECTED", bad_candidate), addresses=bad_addresses)
         except T.TargetBundleError:
             pass
         else:
@@ -134,6 +139,18 @@ def test_gate_receipts_must_exactly_match_execution_manifest_gate_set():
         raise AssertionError("target bundle accepted incomplete gate receipts")
 
 
+def test_target_bundle_rejects_tampered_execution_manifest_even_if_other_fields_are_valid():
+    T = _load()
+    manifest = _manifest()
+    manifest["gates"]["G2"]["executor"]["commit_sha"] = "0" * 40
+    try:
+        _build(manifest=manifest)
+    except T.TargetBundleError as exc:
+        assert "manifest" in str(exc).lower() or "digest" in str(exc).lower()
+    else:
+        raise AssertionError("target bundle accepted a tampered execution manifest")
+
+
 def test_known_limitations_are_mandatory_and_cannot_be_silently_dropped():
     T = _load()
     try:
@@ -149,10 +166,7 @@ def test_known_limitations_are_mandatory_and_cannot_be_silently_dropped():
 
 def test_bundle_digest_changes_on_scientific_field_mutation_and_validation_detects_tamper():
     T = _load()
-    bundle = T.build_target_qualification_bundle(
-        tournament_output=_tournament(), execution_manifest=_manifest(), gate_receipts=_gate_receipts(),
-        policy_identities=_policies(), canonical_addresses=[], known_limitations=["x"],
-    )
+    bundle = _build()
     tampered = copy.deepcopy(bundle)
     tampered["known_limitations"][0] = "different"
     assert T.compute_bundle_sha256(tampered) != bundle["bundle_sha256"]
@@ -166,10 +180,7 @@ def test_bundle_digest_changes_on_scientific_field_mutation_and_validation_detec
 
 def test_tournament_terminal_is_digest_bound():
     T = _load()
-    bundle = T.build_target_qualification_bundle(
-        tournament_output=_tournament(), execution_manifest=_manifest(), gate_receipts=_gate_receipts(),
-        policy_identities=_policies(), canonical_addresses=[], known_limitations=["x"],
-    )
+    bundle = _build()
     tampered = copy.deepcopy(bundle)
     tampered["tournament_terminal"] = "FOUNDATION_CANDIDATE_UNRESOLVED__CONTINUE_TESTABLE_ROUTES__NO_TARGET_AUTHORITY"
     assert T.compute_bundle_sha256(tampered) != bundle["bundle_sha256"]
@@ -190,11 +201,7 @@ def test_policy_identity_set_is_exact_and_hash_bound():
 
 
 def test_target_bundle_never_grants_training_or_stage4_authority():
-    T = _load()
-    bundle = T.build_target_qualification_bundle(
-        tournament_output=_tournament(), execution_manifest=_manifest(), gate_receipts=_gate_receipts(),
-        policy_identities=_policies(), canonical_addresses=[], known_limitations=["x"],
-    )
+    bundle = _build()
     assert all(v is False for v in bundle["authority"].values())
     assert bundle["execution_mode"] == "SYNTHETIC_REHEARSAL"
     assert bundle["downstream_human_eligible"] is False
