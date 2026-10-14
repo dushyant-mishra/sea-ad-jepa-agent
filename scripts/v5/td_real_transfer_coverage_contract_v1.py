@@ -36,20 +36,10 @@ _DIMENSION_FIELDS = {
     "STUDY_FAMILY": "study_family",
     "TECHNOLOGY": "technology",
 }
-_ALLOWED_TOP = {
-    "schema",
-    "frozen",
-    "candidate_transfer_claims",
-    "strata",
-}
+_ALLOWED_TOP = {"schema", "frozen", "candidate_transfer_claims", "strata"}
 _ALLOWED_STRATUM = {
-    "stratum_id",
-    "donor_id",
-    "source",
-    "operator_matrix",
-    "study_family",
-    "technology",
-    "candidate_support",
+    "stratum_id", "donor_id", "source", "operator_matrix", "study_family",
+    "technology", "candidate_support",
 }
 NO_AUTHORITY = {
     "value_read_authorized": False,
@@ -79,6 +69,8 @@ def _validate_claims(value) -> dict[str, tuple[str, ...]]:
         if not isinstance(dims, Sequence) or isinstance(dims, (str, bytes)):
             raise StaticContractError(f"transfer claims for {candidate} must be a sequence")
         dims = tuple(dims)
+        if any(not isinstance(dim, str) or not dim for dim in dims):
+            raise StaticContractError(f"transfer claims for {candidate} must be nonempty strings")
         if len(set(dims)) != len(dims):
             raise StaticContractError(f"duplicate transfer claim for {candidate}")
         unknown = set(dims) - set(DIMENSIONS)
@@ -149,11 +141,15 @@ def derive_static_contract(registry: Mapping) -> dict:
     strata = _validate_strata(registry["strata"])
 
     envelopes: dict[str, list[str]] = {}
+    envelope_status: dict[str, str] = {}
     applicability: dict[str, dict[str, str]] = {}
 
     for candidate in CANDIDATES:
         supported = [row for row in strata if row["candidate_support"][candidate] is True]
         envelopes[candidate] = [row["stratum_id"] for row in supported]
+        envelope_status[candidate] = (
+            "SUPPORTED_ENVELOPE_FROZEN" if supported else "NO_SUPPORTED_STRATA__NOT_ESTIMABLE"
+        )
         applicability[candidate] = {}
         for dimension in DIMENSIONS:
             if dimension not in claims[candidate]:
@@ -170,6 +166,7 @@ def derive_static_contract(registry: Mapping) -> dict:
         "status": "STATIC_CONTRACT_DERIVED__NO_BIOLOGICAL_OUTCOME_AUTHORITY",
         "transfer_applicability": applicability,
         "mandatory_claim_envelopes": envelopes,
+        "claim_envelope_status": envelope_status,
         "foundation_candidates": sorted(FOUNDATION),
         "specialist_candidate": SPECIALIST,
         "specialist_foundation_rescue_authorized": False,
