@@ -15,6 +15,19 @@ def _load(name: str):
     return module
 
 
+def _baseline_family(**updates):
+    out = {
+        "schema": "JEPA_TD_REAL_G2_BASELINE_FAMILY_V2",
+        "candidate_id": "C1",
+        "baseline_ids": list(BASELINES),
+        "receipt_sha256": "d" * 64,
+        "producer_code_sha256": "e" * 64,
+        "frozen_before_values": True,
+    }
+    out.update(updates)
+    return out
+
+
 def _contract(**updates):
     out = {
         "schema": "JEPA_TD_REAL_G2_DECISION_CONTRACT_V2",
@@ -24,6 +37,7 @@ def _contract(**updates):
         "metric_manifest_sha256": "1" * 64,
         "input_binding_sha256": "a" * 64,
         "baseline_ids": list(BASELINES),
+        "baseline_family_receipt_sha256": "d" * 64,
         "required_strata": [[s, e] for s, e in STRATA],
         "comparator_rule": "ALL_FROZEN_BASELINES_SEPARATELY_NONCOMPENSATING",
         "family_alpha": 0.01,
@@ -73,6 +87,7 @@ def _reference(donors=None, margin=0.10):
         "metric_manifest_sha256": "1" * 64,
         "input_binding_sha256": "a" * 64,
         "decision_contract_receipt_sha256": "3" * 64,
+        "baseline_family_receipt_sha256": "d" * 64,
         "support_envelope_receipt_sha256": "2" * 64,
         "reference_receipt_sha256": "7" * 64,
         "producer_code_sha256": "8" * 64,
@@ -89,12 +104,8 @@ def _rows(deltas_by_baseline=None, donors=None, extra_stratum=False, nonfinite=F
         deltas_by_baseline = {b: [0.5] * len(donors) for b in BASELINES}
     rows = []
     for i, donor in enumerate(donors):
-        baseline_scores = {b: 0.20 for b in BASELINES}
-        # Candidate score is shared. Tests that need distinct baseline deltas use
-        # baseline-specific baseline scores below.
         candidate = 0.20 + max(deltas_by_baseline[b][i] for b in BASELINES)
-        for b in BASELINES:
-            baseline_scores[b] = candidate - deltas_by_baseline[b][i]
+        baseline_scores = {b: candidate - deltas_by_baseline[b][i] for b in BASELINES}
         if nonfinite and i == 0:
             candidate = float("nan")
         rows.append({
@@ -112,66 +123,67 @@ def _rows(deltas_by_baseline=None, donors=None, extra_stratum=False, nonfinite=F
     return rows
 
 
-def test_baseline_family_is_frozen_in_contract_and_subset_cannot_rescue():
+def _run(*, rows=None, contract=None, baseline_family=None, support=None, reference=None, qual=None):
     G = _load("scripts.v5.td_real_g2_content_decision_v2")
-    bad = _contract(baseline_ids=[BASELINES[0]])
-    out = G.adjudicate_g2_v2(rows=_rows(), decision_contract=bad, support_envelope=_support(), reference_artifact=_reference(), decision_qualification_receipt=_qual())
+    return G.adjudicate_g2_v2(
+        rows=_rows() if rows is None else rows,
+        decision_contract=_contract() if contract is None else contract,
+        baseline_family_manifest=_baseline_family() if baseline_family is None else baseline_family,
+        support_envelope=_support() if support is None else support,
+        reference_artifact=_reference() if reference is None else reference,
+        decision_qualification_receipt=_qual() if qual is None else qual,
+    )
+
+
+def test_baseline_family_is_frozen_in_separate_authority_and_subset_cannot_rescue():
+    bad_contract = _contract(baseline_ids=[BASELINES[0]])
+    out = _run(contract=bad_contract)
     assert out["status"] == "NOT_ESTIMABLE"
     assert out["reason"] == "DECISION_CONTRACT_NOT_AUTHENTICATED"
 
 
 def test_missing_or_extra_required_stratum_cannot_shrink_or_expand_scope():
-    G = _load("scripts.v5.td_real_g2_content_decision_v2")
-    out = G.adjudicate_g2_v2(rows=_rows(extra_stratum=True), decision_contract=_contract(), support_envelope=_support(), reference_artifact=_reference(), decision_qualification_receipt=_qual())
+    out = _run(rows=_rows(extra_stratum=True))
     assert out["status"] == "NOT_ESTIMABLE"
     assert out["reason"] == "UNDECLARED_STRATUM_ROWS_PRESENT"
     empty_support = _support(); empty_support["source_endpoint_donor_status"] = {}
-    out2 = G.adjudicate_g2_v2(rows=[], decision_contract=_contract(), support_envelope=empty_support, reference_artifact=_reference(), decision_qualification_receipt=_qual())
+    out2 = _run(rows=[], support=empty_support)
     assert out2["status"] == "NOT_ESTIMABLE"
 
 
 def test_support_envelope_is_authority_not_caller_row_label():
-    G = _load("scripts.v5.td_real_g2_content_decision_v2")
     support = _support(); support["receipt_sha256"] = "c" * 64
-    out = G.adjudicate_g2_v2(rows=_rows(), decision_contract=_contract(), support_envelope=support, reference_artifact=_reference(), decision_qualification_receipt=_qual())
+    out = _run(support=support)
     assert out["status"] == "NOT_ESTIMABLE"
     assert out["reason"] == "SUPPORT_ENVELOPE_NOT_AUTHENTICATED"
 
 
 def test_zero_only_margin_cannot_reduce_g2_to_direction_only():
-    G = _load("scripts.v5.td_real_g2_content_decision_v2")
-    out = G.adjudicate_g2_v2(rows=_rows(), decision_contract=_contract(), support_envelope=_support(), reference_artifact=_reference(margin=0.0), decision_qualification_receipt=_qual())
+    out = _run(reference=_reference(margin=0.0))
     assert out["status"] == "NOT_ESTIMABLE"
     assert out["reason"] == "NON_DEGENERATE_SUBSTANTIVE_MARGIN_REQUIRED"
 
 
 def test_nine_of_ten_positive_but_not_significant_is_inconclusive_not_biological_fail():
-    G = _load("scripts.v5.td_real_g2_content_decision_v2")
     deltas = [0.5] * 9 + [-0.5]
-    rows = _rows({b: deltas for b in BASELINES})
-    out = G.adjudicate_g2_v2(rows=rows, decision_contract=_contract(), support_envelope=_support(), reference_artifact=_reference(margin=0.0 + 0.1), decision_qualification_receipt=_qual())
+    out = _run(rows=_rows({b: deltas for b in BASELINES}), reference=_reference(margin=0.1))
     assert out["status"] == "NOT_ESTIMABLE"
     assert out["reason"] == "INCONCLUSIVE_DONOR_RECURRENCE_AT_FROZEN_ALPHA"
 
 
 def test_candidate_equal_or_worse_than_all_baselines_is_estimable_fail_not_ne():
-    G = _load("scripts.v5.td_real_g2_content_decision_v2")
-    rows = _rows({b: [0.0] * 10 for b in BASELINES})
-    out = G.adjudicate_g2_v2(rows=rows, decision_contract=_contract(), support_envelope=_support(), reference_artifact=_reference(margin=0.1), decision_qualification_receipt=_qual())
+    out = _run(rows=_rows({b: [0.0] * 10 for b in BASELINES}), reference=_reference(margin=0.1))
     assert out["status"] == "FAIL"
 
 
 def test_every_frozen_baseline_is_noncompensating():
-    G = _load("scripts.v5.td_real_g2_content_decision_v2")
-    rows = _rows({BASELINES[0]: [0.5] * 10, BASELINES[1]: [-0.5] * 10})
-    out = G.adjudicate_g2_v2(rows=rows, decision_contract=_contract(), support_envelope=_support(), reference_artifact=_reference(margin=0.1), decision_qualification_receipt=_qual())
+    out = _run(rows=_rows({BASELINES[0]: [0.5] * 10, BASELINES[1]: [-0.5] * 10}), reference=_reference(margin=0.1))
     assert out["status"] == "FAIL"
     assert out["component_status"]["HVS::PRIMARY::technical_operator_only"] == "FAIL"
 
 
 def test_nonfinite_input_returns_numerical_failure_not_exception_or_biological_fail():
-    G = _load("scripts.v5.td_real_g2_content_decision_v2")
-    out = G.adjudicate_g2_v2(rows=_rows(nonfinite=True), decision_contract=_contract(), support_envelope=_support(), reference_artifact=_reference(), decision_qualification_receipt=_qual())
+    out = _run(rows=_rows(nonfinite=True))
     assert out["status"] == "NUMERICAL_FAILURE"
 
 
@@ -179,7 +191,7 @@ def test_alpha_is_frozen_and_not_caller_tunable():
     G = _load("scripts.v5.td_real_g2_content_decision_v2")
     assert G.FAMILY_ALPHA == 0.01
     try:
-        G.adjudicate_g2_v2(rows=_rows(), decision_contract=_contract(), support_envelope=_support(), reference_artifact=_reference(), decision_qualification_receipt=_qual(), alpha=0.05)
+        G.adjudicate_g2_v2(rows=_rows(), decision_contract=_contract(), baseline_family_manifest=_baseline_family(), support_envelope=_support(), reference_artifact=_reference(), decision_qualification_receipt=_qual(), alpha=0.05)
     except TypeError:
         pass
     else:
@@ -187,14 +199,12 @@ def test_alpha_is_frozen_and_not_caller_tunable():
 
 
 def test_typed_qualification_token_without_hash_custody_is_not_sufficient():
-    G = _load("scripts.v5.td_real_g2_content_decision_v2")
     fake = {"schema": "JEPA_TD_REAL_G2_DECISION_QUALIFICATION_RECEIPT_V2", "status": "PASS_KNOWN_TRUTH_G2_DECISION_V2", "human_semantics_qualified": True}
-    out = G.adjudicate_g2_v2(rows=_rows(), decision_contract=_contract(), support_envelope=_support(), reference_artifact=_reference(), decision_qualification_receipt=fake)
+    out = _run(qual=fake)
     assert out["status"] == "NOT_ESTIMABLE"
     assert out["reason"] == "DECISION_QUALIFICATION_RECEIPT_NOT_AUTHENTICATED"
 
 
 def test_authority_remains_closed():
-    G = _load("scripts.v5.td_real_g2_content_decision_v2")
-    out = G.adjudicate_g2_v2(rows=_rows(), decision_contract=_contract(), support_envelope=_support(), reference_artifact=_reference(), decision_qualification_receipt=_qual())
+    out = _run()
     assert all(v is False for v in out["authority"].values())
