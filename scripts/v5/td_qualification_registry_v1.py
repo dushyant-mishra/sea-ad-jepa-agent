@@ -155,13 +155,13 @@ def validate_registry(registry: Mapping[str, object]) -> dict:
             raise RegistryError(f"gate authority must remain closed: {gate_id}")
 
         readiness = human_readiness(gate)
+        if state == "HUMAN_EXECUTABLE" and not readiness["ready"]:
+            raise RegistryError(f"human executable lifecycle has unresolved blockers: {gate_id}: {readiness['blockers']}")
         state_index = LIFECYCLE.index(state)
         if state_index >= LIFECYCLE.index("REAL_REFERENCE_READY"):
             unresolved_refs = [a for a in artifacts if a.get("status") != "QUALIFIED"]
             if unresolved_refs:
                 raise RegistryError(f"real-reference-ready lifecycle has missing references: {gate_id}")
-        if state == "HUMAN_EXECUTABLE" and not readiness["ready"]:
-            raise RegistryError(f"human executable lifecycle has unresolved blockers: {gate_id}: {readiness['blockers']}")
 
     return copy.deepcopy(dict(registry))
 
