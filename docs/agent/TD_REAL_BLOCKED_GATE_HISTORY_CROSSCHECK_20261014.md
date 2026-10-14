@@ -45,6 +45,44 @@ Consequence for the new G6 solution:
 5. a negative result under a finite ridge probe is operational, not an information-theoretic proof of no teacher-private signal;
 6. known-truth rejection-power qualification is mandatory before human FAIL semantics.
 
+## G7 EVIDENCE_CONVERGENCE
+
+Classification: `OPEN_DECISION_RULE__PERTURBATION_SEMANTICS_ALREADY_ESTABLISHED`.
+
+Relevant history:
+
+- `JEPA_EVIDENCE_VS_DEPTH_CONVERGENCE_PROTOCOL_20261006.md` already established the core separation: biological-evidence convergence must restrict feature/program/context/modality support, while count thinning belongs exclusively to measurement depth.
+- historical evidence fractions such as 20/40/60/80/100 were explicitly placeholders, not authority.
+- the later Scientific Amendment V2 withdrew strict adjacent monotonicity as a required pass rule.
+- common-core support is comparability, not biological truth; therefore an evidence ladder cannot simply mean progressively adding common-core genes and call that biology.
+
+Consequence for the new G7 solution:
+
+1. the evidence ladder must be generated from each frozen candidate's declared nested evidence-rights blocks, not a generic fraction grid;
+2. at least three lawful nested evidence levels are required or G7 is `NOT_ESTIMABLE`;
+3. count thinning is forbidden in G7 and remains G8-only;
+4. the deciding endpoint is terminal stabilization against the independently calibrated technical/refit floor; earlier steps are descriptive and need not be strictly monotone;
+5. candidate evidence levels must preserve the same biological unit and target semantics while only lawful evidence rights change.
+
+## G9 / S1 / S2 RECURRENCE AND SUBSPACE STABILITY
+
+Classification: `CHANGED_INPUT_REQUIRES_REQUALIFICATION__HISTORICAL_MECHANICS_REUSABLE__HISTORICAL_THRESHOLDS_NOT_AUTHORITY`.
+
+Relevant history:
+
+- Stage81A3R already used independently refit preprocessing/bases on disjoint donor subsets and reported donor-refit canonical-correlation/projector-similarity mechanics.
+- historical Stage81 synthetic configuration used fixed canonical-correlation/Spearman thresholds such as `0.50`; those thresholds belonged to the historical synthetic/microqualification contract and are not current human biological authority.
+- Stage81A3R real-TRAIN remained explicitly `NOT FROZEN`; historical input restrictions and later molecular-address/gene-identity repairs prevent promotion of its biological conclusions into the current target lane.
+- the historical readout itself distinguished recurrent eigenspace alignment from production-dimension authority and refused to promote unsupported residual bands.
+
+Consequence for the new G9/S1/S2 solution:
+
+1. reuse only semantics-free mechanics: independent donor-balanced refits, frozen invariant alignment, held-donor evaluation and donor-preserving null construction;
+2. do not inherit the old `0.50` canonical-correlation or Spearman cutoffs;
+3. use prospectively generated adverse null bounds plus separately qualified refit/measurement variability in the same metric;
+4. alignment metric must be frozen per target geometry before values are opened; orthogonal Procrustes/canonical-correlation mechanics are allowed only when mathematically appropriate to that target;
+5. recurrence/stability is not biological identity and cannot itself select a target.
+
 ## G11 TRANSFER / G12 COVERAGE
 
 Classification: `OPEN_STATIC_CONTRACT__HISTORICAL_POPULATION_WARNINGS_CONSTRAIN_SCOPE`.
@@ -66,7 +104,7 @@ Consequence:
 
 ## Standing process rule for remaining gates
 
-Before implementing G2, G7, G9, S1, S2, R1, R4, C6 increment or C4 increment, perform the same four-way historical classification:
+Before implementing G2, R1, R4, C6 increment or C4 increment, perform the same four-way historical classification:
 
 `ALREADY_AUDITED | SUPERSEDED | OPEN | CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
 
