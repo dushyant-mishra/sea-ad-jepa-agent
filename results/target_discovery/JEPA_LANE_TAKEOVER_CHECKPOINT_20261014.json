@@ -1,0 +1,49 @@
+{
+  "schema": "JEPA_LANE_TAKEOVER_CHECKPOINT_V1",
+  "date": "2026-10-14",
+  "canonical_audit_branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
+  "canonical_handoff_branch": "handoff/jepa-lane-takeover-20261013",
+  "authority_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "synthetic_td_phase2": {
+    "status": "QUALIFIED",
+    "receipt_sha256": "5382034332f24b0e37954b4f8e2cefe958f21ff644e6fd1ffec150d2478aa61b",
+    "independent_audit": "PASS_PHASE2_EXECUTION_AND_CUSTODY",
+    "scope": "TEST_QUALIFICATION_ONLY",
+    "rerun_allowed": false
+  },
+  "real_gate_readiness": {
+    "matrix_rows": 198,
+    "required_roles": 117,
+    "mechanically_qualified_required_roles": 66,
+    "required_roles_outside_current_qualified_surface": 51,
+    "not_applicable_roles": 81,
+    "biological_outcomes_opened": false,
+    "real_td_authorized": false
+  },
+  "current_gate_prs": {
+    "directional_structural": {"pr": 340, "head": "42c3af6ba6d82737a465620f801e896239849184", "run": 38488323508},
+    "g11_g12": {"pr": 342, "head": "f7e90c41bab10c7ff4abb3e69446975634483656", "run": 38488917170},
+    "g8": {"pr": 343, "head": "82d17bfb1650d97a95d5424160126791f09d7494", "run": 38489523630},
+    "g6": {"pr": 345, "head": "f16ba70f7066db2928e31f31b7785831a8fc10f2", "run": 38489595232},
+    "g7": {"pr": 346, "head": "5a314bdeda9078d5f65e995e49d2ebf5274751f6", "run": 38490004001},
+    "r1": {"pr": 347, "head": "877242a6c8206ea35a73ebf111cb6b52bbe79109", "run": 38490456813}
+  },
+  "v80": {
+    "pr": 348,
+    "head": "9ad04d43ffe7bd387da8d2315f63b5758df4f9f8",
+    "qualified_source_head": "b840067e4c9439e4cb4aa9e8c649ef2f6064a142",
+    "run": 38504094639,
+    "benchmark_package": "QUALIFIED",
+    "successor_estimator": "NOT_YET_QUALIFIED",
+    "receipt_sha256": "346407af801a7fabc5dbd27136dcf5c9abe61e87d438018b98da192333eb9c32",
+    "v79_history": "NOT_QUALIFIED"
+  },
+  "read_first": [
+    "docs/agent/JEPA_LANE_SUCCESSOR_HANDOFF_V4_20261014.md",
+    "PR322:docs/agent/JEPA_LANE_MASTER_AUDIT_INDEX_20261014.md",
+    "PR322:docs/agent/JEPA_LANE_NEXT_ACTIONS_AND_TAKEOVER_CHECKLIST_20261014.md",
+    "PR322:docs/agent/JEPA_LANE_NO_REPEAT_MATRIX_20261014.csv",
+    "PR322:docs/agent/JEPA_LANE_CUSTODY_FILE_INDEX_20261014.csv",
+    "PR322:docs/agent/JEPA_EXTERNAL_ARTIFACT_CUSTODY_MANIFEST_20261013.csv"
+  ]
+}
