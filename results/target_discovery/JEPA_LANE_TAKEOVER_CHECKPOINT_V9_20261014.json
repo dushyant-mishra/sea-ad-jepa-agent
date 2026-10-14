@@ -1,0 +1,145 @@
+{
+  "schema": "JEPA_LANE_TAKEOVER_CHECKPOINT_V9_20261014",
+  "status": "REAL_DATA_SUPPORT_AUTHENTICATED__MACHA_HOSTILE_REPAIRS_SYSTEM_REQUALIFIED__HUMAN_GATE_EXECUTION_BLOCKED__REAL_TD_OFF",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "candidate_outcomes_opened": false,
+  "real_tournament_authorized": false,
+  "real_data_audit": {
+    "branch": "audit/td-real-data-qualification-macha-20261014",
+    "commit": "ccc3a08939694f5d35b3048c94ec44f44618eef4",
+    "support_replay_authenticated": true,
+    "reader_fit_raw_counts_verified": true,
+    "reader_fit_cells": 4553407,
+    "level4_blocks_verified": 8915,
+    "validation_oracle_rna_opened": false,
+    "candidate_outcomes_inspected": false,
+    "cached_input_identities": {
+      "foundation_calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "discovery_41k_archive_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+      "discovery_part001_sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+      "discovery_part002_sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+      "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+      "reader_split_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511"
+    }
+  },
+  "heldout_law": {
+    "current_td_population": "READER_FIT",
+    "transfer_law": "DETERMINISTIC_CROSSFIT_WITHIN_104_READER_FIT_DONORS",
+    "reader_fit_donors": 104,
+    "nph52_reader_fit_donors": 17,
+    "nph52_reader_validation_donors": 0,
+    "nph52_reader_oracle_donors": 2,
+    "reader_validation_oracle_remain_protected": true,
+    "protected_partitions_may_be_opened_to_make_td_estimable": false
+  },
+  "surfaces": {
+    "population_support_registry": {
+      "pr": 349,
+      "head": "1ab453e5cb60efb209a8eee2aecb61c5ea0fbfc7",
+      "status": "POPULATION_SUPPORT_REGISTRY_FROZEN"
+    },
+    "c4_requires_c6": {
+      "pr": 351,
+      "head": "2abcb9fe156eac340ff12adff9426ed38d929e3e",
+      "status": "QUALIFIED"
+    },
+    "increment_mechanics": {
+      "pr": 358,
+      "head": "b7c317c640aa231a7d5ec1fa12271a39bfee86e6",
+      "status": "COMMON_NOISE_RELATIVE_INCREMENT_MECHANICS_QUALIFIED"
+    },
+    "g12_claim_envelope_guard": {
+      "pr": 360,
+      "head": "01ebdb9384b42d5cfae3de03c2adf5b6b327ee81",
+      "status": "NO_POSTHOC_SCOPE_SHRINKAGE_RUNTIME_GUARD_QUALIFIED"
+    },
+    "g7_v3": {
+      "pr": 362,
+      "head": "5a711f9a4ea0328445a05dadc1e011efb16a3c13",
+      "status": "SOURCE_AWARE_REQUIRED_SOURCE_NONCOMPENSATION_QUALIFIED"
+    },
+    "g8_v3_repair": {
+      "pr": 364,
+      "head": "ce1b43464ae1d79894b7738c6dc025559dffbf36",
+      "red_run": 38517833746,
+      "focused_green_run": 38517982781,
+      "broad_green_run": 38518100272,
+      "status": "OBSERVATION_OPERATOR_REPAIRED__CONFORMAL_ARITHMETIC_BOUNDARY_REPAIRED__G8_STATISTICAL_ESTIMAND_BLOCKED__NO_REFERENCE_GENERATION_AUTHORITY"
+    },
+    "g6_v3_repair": {
+      "pr": 365,
+      "head": "4110d4478c3353d86740dd135d62460ff7a7611f",
+      "red_run": 38518316110,
+      "intermediate_repair_run": 38518412103,
+      "focused_green_run": 38518516909,
+      "broad_green_run": 38518581039,
+      "status": "PROBE_DIAGNOSTIC_PRESERVED__ZERO_MARGIN_HUMAN_AUTHORITY_REVOKED__PRODUCED_QUALIFICATION_AND_SCALE_CONTRACT_REQUIRED__NO_HUMAN_G6_EXECUTION"
+    },
+    "geometry_v2_repair": {
+      "pr": 366,
+      "head": "8d6b23a18051f64463ee9b2649f4fe5fc7123f0d",
+      "red_run": 38518714174,
+      "focused_green_run": 38518812129,
+      "broad_green_run": 38518882317,
+      "status": "GEOMETRY_MECHANICS_REPAIRED__CALLER_SUPPLIED_HUMAN_AUTHORITY_REVOKED__PRODUCER_PIPELINE_REQUIRED__NO_HUMAN_G9_S1_S2_EXECUTION"
+    },
+    "r1_v3_repair": {
+      "pr": 367,
+      "head": "949d76ff03cb57c5a88fef9efdb79fced9154024",
+      "red_run": 38519328744,
+      "focused_green_run": 38519451164,
+      "broad_green_run": 38519505771,
+      "status": "R1_RULER_AND_DEPTH_DETECTION_NULL_MECHANICS_REPAIRED__KNOWN_TRUTH_DIAGNOSTIC_QUALIFIED__CELL_IDENTITY_NULL_PRODUCER_REQUIRED__NO_HUMAN_R1_EXECUTION"
+    },
+    "g2_v2_repair": {
+      "pr": 368,
+      "head": "42df903d6190b7aa1b8eb65d810ab813cd327445",
+      "red_run": 38519844081,
+      "focused_green_run": 38520042162,
+      "broad_green_run": 38520111039,
+      "status": "G2_STATUS_SEMANTICS_REPAIRED__ONE_SIDED_ALPHA_FROZEN__ZERO_MARGIN_AND_CALLER_POLICY_HUMAN_AUTHORITY_REVOKED__STATIC_G2_POLICY_REQUIRED__NO_HUMAN_G2_EXECUTION"
+    },
+    "sealed_cross_gate_v2_historical": {
+      "pr": 363,
+      "head": "fcb47d052b7c7b5c1600949b5829e0c296b49e79",
+      "status": "HISTORICAL__SUPERSEDED_BY_MACHA_REPAIR_DEPENDENCY_SET"
+    },
+    "sealed_cross_gate_v3": {
+      "pr": 369,
+      "head": "03f44ea81fe4bb3f9f450d11bc8a9a46be9374ee",
+      "red_run": 38520281669,
+      "green_run": 38520451709,
+      "status": "CURRENT_SYSTEM_MECHANICS_AND_FIREWALL_REQUALIFICATION_GREEN__SYNTHETIC_TEST_OF_TEST_ONLY"
+    }
+  },
+  "standing_semantics": {
+    "not_estimable_is_not_fail": true,
+    "numerical_failure_is_not_biological_fail": true,
+    "measured_zero_is_measurement": true,
+    "unsupported_or_unresolved_is_not_zero": true,
+    "required_sources_noncompensating": true,
+    "candidate_outcomes_cannot_set_thresholds": true,
+    "synthetic_worlds_are_test_of_test_only": true,
+    "technical_draws_do_not_increase_biological_n": true,
+    "caller_typed_qualification_tokens_have_no_human_authority": true,
+    "v79_status": "NOT_QUALIFIED_PERMANENT",
+    "v80_scope": "BENCHMARK_PACKAGE_QUALIFICATION_ONLY"
+  },
+  "open_dependencies": [
+    "G8_PROSPECTIVE_STATISTICAL_ESTIMAND_AND_EXCHANGEABILITY_LAW",
+    "G6_NONDEGENERATE_MEASUREMENT_MARGIN_PRODUCED_QUALIFICATION_RECEIPT_AND_SCALE_CONTRACT",
+    "GEOMETRY_PRODUCER_OWNED_DISPLACEMENT_SUPPORT_ALIGNMENT_NULL_PIPELINE_AND_EIGENGAP_LAW",
+    "R1_QUALIFIED_Y_CELL_IDENTITY_REASSIGNMENT_NULL_PRODUCER_WITH_NULL_SPECIFIC_MEASURABILITY",
+    "G2_CANDIDATE_SPECIFIC_STATIC_APPLICABLE_BASELINE_AND_REQUIRED_STRATA_POLICY",
+    "CANDIDATE_SPECIFIC_EVIDENCE_ADDRESS_QUERY_SUPPORT_OVERLAYS",
+    "REAL_REFERENCE_ARTIFACTS_ONLY_AFTER_OWNING_CONTRACTS_ARE_FROZEN",
+    "REGENERATE_198_ROW_117_REQUIRED_READINESS_MATRIX_AFTER_REFERENCE_AND_SUPPORT_ARTIFACT_AUDIT"
+  ],
+  "macha_next_use": {
+    "repeat_population_inventory": false,
+    "repeat_cache_hashing": false,
+    "repeat_raw_count_authentication": false,
+    "repeat_generic_support_census": false,
+    "next_long_running_work": "EXECUTE_REAL_REFERENCE_AND_CALIBRATION_WORKLOADS_ONLY_AFTER_EXACT_REPAIRED_PRODUCER_STATISTICAL_AND_STATIC_POLICY_INTERFACES_ARE_FROZEN"
+  }
+}
