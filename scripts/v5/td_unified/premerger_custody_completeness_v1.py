@@ -26,12 +26,56 @@ REQUIRED_UNRESOLVED = {
     "U_FULL104_INFORMATION_CHANNEL_CUSTODY",
 }
 
+EXPECTED_OLD_SYNTH_HEAD = "ff597faf2182522a320ec5322f8db9b67c9c6094"
+EXPECTED_CONTROLLER_REVIEW_PR = 382
+EXPECTED_FOCUSED_RUN = 38644641042
+EXPECTED_FOCUSED_JOB = 116128364543
+EXPECTED_INHERITED_RUN = 38644640881
+EXPECTED_CONTROLLER_STATE = "CONTROLLER_VERIFIED_REUSE_SUBSTRATE__INDEPENDENT_REVIEW_PENDING"
+EXPECTED_STOPPED_STATE = "STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY"
+
 
 def _load(path: Path) -> dict[str, Any]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         raise ValueError(f"expected JSON object: {path}")
     return payload
+
+
+def _validate_pr356_current_state(synth_by_id: dict[str, dict[str, Any]]) -> None:
+    expected_classifications = {
+        "PR356_TASK1": "ADAPT_AND_WRAP__DIRECT_REUSE_CANDIDATE_FOR_CANONICAL_PRIMITIVES",
+        "PR356_TASK2": "ADAPT_AND_WRAP__SEALED_CUSTODY_RNG_SUBSTRATE",
+    }
+    for object_id in ("PR356_TASK1", "PR356_TASK2"):
+        obj = synth_by_id[object_id]
+        if obj.get("state") != EXPECTED_CONTROLLER_STATE:
+            raise ValueError(f"{object_id} controller-verified state missing")
+        if obj.get("exact_head_sha") != EXPECTED_OLD_SYNTH_HEAD:
+            raise ValueError(f"{object_id} exact implementation head missing or moved")
+        if obj.get("controller_review_pr") != EXPECTED_CONTROLLER_REVIEW_PR:
+            raise ValueError(f"{object_id} controller review PR missing")
+        if obj.get("controller_focused_run") != EXPECTED_FOCUSED_RUN:
+            raise ValueError(f"{object_id} focused review run missing")
+        if obj.get("controller_focused_job") != EXPECTED_FOCUSED_JOB:
+            raise ValueError(f"{object_id} focused review job missing")
+        if obj.get("controller_pytest_result") != "332 passed in 8.94s":
+            raise ValueError(f"{object_id} focused pytest result missing")
+        if obj.get("inherited_integration_run") != EXPECTED_INHERITED_RUN:
+            raise ValueError(f"{object_id} inherited integration run missing")
+        if obj.get("independent_review_status") != "PENDING":
+            raise ValueError(f"{object_id} must not claim independent acceptance")
+        if obj.get("migration_classification") != expected_classifications[object_id]:
+            raise ValueError(f"{object_id} migration classification changed")
+
+    for object_id in ("PR356_TASK3", "PR356_TASK4"):
+        obj = synth_by_id[object_id]
+        if obj.get("state") != EXPECTED_STOPPED_STATE:
+            raise ValueError(f"{object_id} old-lane stop state missing")
+        if obj.get("continue_in_old_lane") is not False:
+            raise ValueError(f"{object_id} can still restart in old lane")
+        if obj.get("implementation_head_required") is not False:
+            raise ValueError(f"{object_id} still demands an old-lane implementation head")
 
 
 def validate_completeness(completeness_path: Path, unresolved_path: Path) -> dict[str, Any]:
@@ -65,8 +109,7 @@ def validate_completeness(completeness_path: Path, unresolved_path: Path) -> dic
     required_synth = {"PR356_TASK1", "PR356_TASK2", "PR356_TASK3", "PR356_TASK4", "PR356_TASKS5_12"}
     if not required_synth.issubset(synth_by_id):
         raise ValueError("PR356 Tasks 1-4/5-12 custody split incomplete")
-    if synth_by_id["PR356_TASK4"].get("state") != "BLOCKED_ON_TASKS1_3_REVIEWS":
-        raise ValueError("old Task4 sequencing law lost")
+    _validate_pr356_current_state(synth_by_id)
     if synth_by_id["PR356_TASKS5_12"].get("continue_independently") is not False:
         raise ValueError("old Tasks5-12 independent execution not stopped")
 
