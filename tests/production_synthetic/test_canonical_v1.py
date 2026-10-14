@@ -292,3 +292,28 @@ def test_row_set_missing_identity_key_and_none_identity_rejected():
     bad[1]["address_id"] = None
     with pytest.raises(C.CanonicalError):
         C.semantic_row_set_sha256(bad, ["address_id"])
+
+
+def test_loader_rejects_underflow_to_zero_but_accepts_true_zero():
+    for bad in (b"1e-400", b"2.4e-324", b"-1e-400", b"[0.000001e-999]"):
+        with pytest.raises(C.CanonicalError):
+            C.load_canonical_json(bad)
+    for ok in (b"0e-400", b"0.0", b"-0.0", b"0", b"0.000e5"):
+        assert C.load_canonical_json(ok) == 0
+    v = C.load_canonical_json(b"5e-324")
+    assert v == 5e-324 and v != 0.0
+    assert C.load_canonical_json(b"0.10000000000000000001") == 0.1  # documented float64 rounding
+
+
+def test_loader_rejects_lone_surrogates():
+    for bad in (rb'"\ud800"', rb'["\udfff"]', rb'{"k":"x\ud800y"}', rb'{"\ud800":1}'):
+        with pytest.raises(C.CanonicalError):
+            C.load_canonical_json(bad)
+    assert C.load_canonical_json(rb'"\ud83d\ude00"') == "\U0001F600"
+
+
+def test_loader_rejects_keys_colliding_after_eol_normalization():
+    with pytest.raises(C.CanonicalError):
+        C.load_canonical_json(rb'{"a\r\n":1,"a\n":2}')
+    with pytest.raises(C.CanonicalError):
+        C.load_canonical_json(rb'{"x":{"a\r":1,"a\n":2}}')

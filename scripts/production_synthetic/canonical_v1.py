@@ -45,7 +45,13 @@ redefine it):
 5. ``load_canonical_json(data)``: strict loader for JSON file artifacts. Parses
    UTF-8 bytes (one leading BOM stripped), rejects duplicate object keys,
    NaN/Infinity/-Infinity, overflowing floats (1e999), trailing garbage and
-   non-bytes input. A JSON file artifact's semantic identity is
+   non-bytes input, lone-surrogate strings, object keys that collide after
+   CRLF/CR->LF normalization, and nonzero float literals that underflow to
+   0.0 (a nonzero value must never become a measured zero; a literal whose
+   mantissa is all zeros, e.g. 0e-400 or -0.0, is a true zero and is accepted).
+   Nonzero literals are otherwise parsed as float64, so excess digits or
+   subnormal rounding (0.10000000000000000001 -> 0.1) are accepted as ordinary
+   float64 rounding, never to zero. A JSON file artifact's semantic identity is
    ``semantic_sha256(load_canonical_json(raw_bytes))`` while its raw identity is
    ``raw_sha256(raw_bytes)``; whitespace/line-ending/key-order variants share
    the former.
@@ -282,11 +288,32 @@ def semantic_row_set_sha256(rows: Iterable[Mapping], identity_keys: Sequence[str
 
 def _no_dupes(pairs):
     d = {}
+    seen = set()
     for k, v in pairs:
-        if k in d:
-            raise CanonicalError(f"duplicate JSON object key: {k!r}")
+        nk = _norm_eol(k)
+        if nk in seen:
+            raise CanonicalError(f"duplicate JSON object key (after line-ending normalization): {k!r}")
+        seen.add(nk)
         d[k] = v
     return d
+
+
+def _check_strings(obj):
+    """Reject lone surrogates anywhere in a parsed JSON tree (iterative)."""
+    stack = [obj]
+    while stack:
+        o = stack.pop()
+        if isinstance(o, str):
+            try:
+                o.encode("utf-8")
+            except UnicodeEncodeError as exc:
+                raise CanonicalError("JSON string contains a lone surrogate") from exc
+        elif isinstance(o, dict):
+            for k, v in o.items():
+                stack.append(k)
+                stack.append(v)
+        elif isinstance(o, list):
+            stack.extend(o)
 
 
 def _bad_constant(name):
@@ -297,6 +324,8 @@ def _parse_float(text):
     x = float(text)
     if math.isinf(x):
         raise CanonicalError(f"float overflows to Inf: {text}")
+    if x == 0.0 and any(c in "123456789" for c in text.lower().split("e")[0]):
+        raise CanonicalError(f"nonzero float literal underflows to zero: {text}")
     return x
 
 
@@ -311,12 +340,14 @@ def load_canonical_json(data: bytes) -> Any:
     if text.startswith(_BOM):
         text = text[len(_BOM):]
     try:
-        return json.loads(
+        obj = json.loads(
             text,
             object_pairs_hook=_no_dupes,
             parse_constant=_bad_constant,
             parse_float=_parse_float,
         )
+        _check_strings(obj)
+        return obj
     except CanonicalError:
         raise
     except (ValueError, RecursionError) as exc:
