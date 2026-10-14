@@ -36,12 +36,12 @@ def test_clean_negative_does_not_defeat_null():
     assert clean["donors_defeating_null"] == 0
 
 
-def test_null_blocks_on_prospectively_frozen_depth_detection_strata():
+def test_null_blocks_on_prospectively_frozen_depth_strata_without_promoting_unqualified_detection_matching():
     R = _load()
     contract = R.null_contract()
-    assert contract["null_semantics"] == "WITHIN_DONOR_DEPTH_DETECTION_BLOCK_PERMUTATION"
+    assert contract["null_semantics"] == "WITHIN_DONOR_DEPTH_BLOCK_PERMUTATION"
     assert contract["depth_block_rule"] == "FROZEN_QUANTILE_BINS"
-    assert contract["detection_block_rule"] == "FROZEN_DETECTED_ADDRESS_BIN"
+    assert contract["detection_block_rule"] == "DESCRIPTIVE_ONLY__NOT_YET_QUALIFIED_FOR_NULL_MATCHING"
     assert contract["source_operator_support_preserved"] is True
     assert contract["view_rule_digest_required"] is True
     assert contract["eligibility_rule_digest_required"] is True
