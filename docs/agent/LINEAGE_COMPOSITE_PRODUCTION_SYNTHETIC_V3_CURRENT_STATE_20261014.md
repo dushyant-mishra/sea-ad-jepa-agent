@@ -2,7 +2,7 @@
 
 Date: 2026-10-14
 
-Status: `EXTERNAL_REQUIRED_AMENDMENTS_INCORPORATED__R5_SELF_AUDIT_PASS__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF`
+Status: `EXTERNAL_REQUIRED_AMENDMENTS_INCORPORATED__R5_SELF_AUDIT_PASS__MACHA_REVIEW_PENDING__IMPLEMENTATION_OFF`
 
 Historical base design:
 `docs/superpowers/specs/2026-10-13-lineage-composite-production-synthetic-design-v2.md`
@@ -18,6 +18,10 @@ Controlling external-audit corrections:
 
 Fresh combined self-audit:
 `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3_SELF_AUDIT_R5_EXTERNAL_CORRECTIONS_20261014.md`
+
+Preimplementation readiness completed while Macha review is pending:
+- `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_PREIMPLEMENTATION_READINESS_20261014.md`
+- `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_COMPONENT_RECOVERY_LEDGER_20261014.md`
 
 Preserved prior audit chain:
 - `docs/agent/LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V2_REVIEW_DELTA_20261014.md`
@@ -52,15 +56,16 @@ Preserved prior audit chain:
 - composite/non-compensation rules;
 - all human target/representation/TD60/Stage4/training authority remains off.
 
-## Explicit remaining external blockers
+## Explicit remaining blockers
 
+- Macha must return the independent design verdict before implementation planning begins;
 - downstream TargetPortfolio C4/C6 prerequisite repair must be hash-bound before full portfolio rehearsal can qualify;
 - real G11/G12/G6/G8/R1 contracts may advance; implementation must pin exact current successor heads;
 - human technical calibration and human teacher-target/evidence-right freezes remain real-lane responsibilities.
 
 ## Next lawful action
 
-If the owner accepts the amended design state, the maximum next authorization is:
+Only if Macha approves the corrected design state, the maximum next authorization is:
 
 `WRITE_IMPLEMENTATION_PLAN_ONLY`
 
@@ -70,4 +75,4 @@ Binding authority remains:
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
 Terminal:
-`LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3__EXTERNAL_AMENDMENTS_INCORPORATED__R5_SELF_AUDIT_PASS__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF__TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+`LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_V3__EXTERNAL_AMENDMENTS_INCORPORATED__R5_SELF_AUDIT_PASS__MACHA_REVIEW_PENDING__PREIMPLEMENTATION_READINESS_COMPLETE__IMPLEMENTATION_OFF__TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
