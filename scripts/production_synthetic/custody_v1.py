@@ -166,16 +166,30 @@ DECISIONS (each is the single authority for its quantity)
    before the append (a stale controller view is refused). Appends
    EXPOSURE_RECORDED; the returned ``ExposureState`` (derived from the ledger by
    ``exposure_state``) is then exposed.
+   METHOD IDENTITY. ``method_id`` must be a 64-hex content digest of the frozen
+   method identity (its code plus configuration); free-text labels are refused,
+   because a label can be renamed while the method stays the same. The digest
+   binds what was exposed; it does not prove that two digests are different
+   methods (a trivial edit yields a new digest), which is why draws are also
+   counted per lineage below.
    DRAW ACCOUNTING (Q2), A BINDING OBLIGATION. ``qualification_draws_for_method(
    ledger, method_id)`` returns, in ledger order, every SYNTH_QUALIFICATION
-   exposure of that method across all versions of the lineage (generator hash,
-   class tag, attested realization-set binding, exposure entry hash, ledger
-   index). Every qualification claim (Tasks 11 and 12) MUST report the complete
-   list this helper returns for the method and MUST account for multiplicity
-   across draws. Reroll refusal (W2) blocks only exact copies; near-copies
-   (negligibly harder moves, boilerplate defect records) are not refused but are
-   made visible by this count, which is how repeated sealed draws for one
-   method are prevented from being reported as a single clean qualification.
+   exposure of that method digest across all versions of the lineage
+   (generator hash, class tag, method_id, attested realization-set binding,
+   exposure entry hash, ledger index). ``qualification_draws_in_lineage(ledger,
+   generator_semantic_hash)`` returns the same fields for every
+   SYNTH_QUALIFICATION exposure of ANY method across the version's whole
+   lineage (all ancestors and descendants; debug exposures excluded). Every
+   qualification claim (Tasks 11 and 12) MUST report BOTH lists and MUST
+   account for multiplicity across ALL lineage draws regardless of method
+   label: a changed method digest does not reset the count. Reroll refusal
+   (W2) blocks only exact copies; near-copies (negligibly harder moves,
+   boilerplate defect records, relabelled methods) are not refused but are
+   made visible by these counts, which is how repeated sealed draws are
+   prevented from being reported as a single clean qualification. A ledger
+   holds exactly one lineage; draws recorded in any OTHER ledger the
+   controller keeps for the same testbed are invisible here, so the
+   qualification task must also account for every such ledger.
 
 6. SUCCESSORS (``validate_successor_version(parent, child, *,
    parent_exposure_state, ledger, defect_record=None) -> VersionDisposition``;
@@ -477,6 +491,7 @@ __all__ = [
     "attest_no_unique_withheld_code_path",
     "withheld_check_eligible",
     "qualification_draws_for_method",
+    "qualification_draws_in_lineage",
 ]
 
 SYNTH_DEBUG = "SYNTH_DEBUG"
@@ -1495,7 +1510,7 @@ def _v_exposure(led: CustodyLedger, p: dict) -> None:
     gsh, tag = fr.generator_semantic_hash, p["realization_class"]
     _require_live_version(led, gsh)
     _nonempty_str(p["exposure_id"], "exposure_id")
-    _nonempty_str(p["method_id"], "method_id")
+    _hex64(p["method_id"], "method_id (content digest of the frozen method code + configuration)")
     _class_tag(tag, "realization_class")
     fr.realization_budget(tag)
     if not _payloads(led, "NONCE_COMMITTED", generator_semantic_hash=gsh, class_tag=SYNTH_QUALIFICATION):
@@ -1804,38 +1819,54 @@ def withheld_check_eligible(ledger: CustodyLedger, generator_semantic_hash: str)
     return True
 
 
+def _qualification_draw(led: CustodyLedger, index: int, entry: dict) -> dict:
+    p = entry["payload"]
+    att = [a for a in led._entries if a["kind"] == "REALIZATION_SET_ATTESTED"
+           and a["payload"]["generator_semantic_hash"] == p["generator_semantic_hash"]
+           and a["payload"]["class_tag"] == SYNTH_QUALIFICATION][0]
+    return {
+        "ledger_index": index,
+        "exposure_entry_hash": entry["entry_hash"],
+        "exposure_id": p["exposure_id"],
+        "method_id": p["method_id"],
+        "generator_semantic_hash": p["generator_semantic_hash"],
+        "class_tag": SYNTH_QUALIFICATION,
+        "realization_set": {
+            "attestation_entry_hash": att["entry_hash"],
+            "emitted_set_sha256": att["payload"]["emitted_set_sha256"],
+            "root_commitment": att["payload"]["root_commitment"],
+            "authorized_ids_digest": att["payload"]["authorized_ids_digest"],
+            "budget": att["payload"]["budget"],
+        },
+    }
+
+
+def _qualification_exposures(led: CustodyLedger):
+    for i, e in enumerate(led._entries):
+        if e["kind"] == "EXPOSURE_RECORDED" and e["payload"]["realization_class"] == SYNTH_QUALIFICATION:
+            yield i, e
+
+
 def qualification_draws_for_method(ledger: CustodyLedger, method_id: str) -> list:
     """Every SYNTH_QUALIFICATION exposure of ``method_id`` in the ledger, across all versions, in ledger order.
 
-    BINDING OBLIGATION (decision 5): every qualification claim must report this complete list and account for
-    multiplicity across draws.
+    BINDING OBLIGATION (decision 5): every qualification claim must report this complete list together with
+    ``qualification_draws_in_lineage`` and account for multiplicity across draws.
     """
     led = _require_ledger(ledger)
-    _nonempty_str(method_id, "method_id")
-    draws = []
-    for i, e in enumerate(led._entries):
-        p = e["payload"]
-        if (e["kind"] != "EXPOSURE_RECORDED" or p["method_id"] != method_id
-                or p["realization_class"] != SYNTH_QUALIFICATION):
-            continue
-        att = [a for a in led._entries if a["kind"] == "REALIZATION_SET_ATTESTED"
-               and a["payload"]["generator_semantic_hash"] == p["generator_semantic_hash"]
-               and a["payload"]["class_tag"] == SYNTH_QUALIFICATION][0]
-        draws.append({
-            "ledger_index": i,
-            "exposure_entry_hash": e["entry_hash"],
-            "exposure_id": p["exposure_id"],
-            "generator_semantic_hash": p["generator_semantic_hash"],
-            "class_tag": SYNTH_QUALIFICATION,
-            "realization_set": {
-                "attestation_entry_hash": att["entry_hash"],
-                "emitted_set_sha256": att["payload"]["emitted_set_sha256"],
-                "root_commitment": att["payload"]["root_commitment"],
-                "authorized_ids_digest": att["payload"]["authorized_ids_digest"],
-                "budget": att["payload"]["budget"],
-            },
-        })
-    return draws
+    _hex64(method_id, "method_id (content digest of the frozen method code + configuration)")
+    return [_qualification_draw(led, i, e) for i, e in _qualification_exposures(led)
+            if e["payload"]["method_id"] == method_id]
+
+
+def qualification_draws_in_lineage(ledger: CustodyLedger, generator_semantic_hash: str) -> list:
+    """Every SYNTH_QUALIFICATION exposure of ANY method across the version's whole lineage (all ancestors and
+    descendants), in ledger order; a changed method digest does not reset this count (decision 5)."""
+    led = _require_ledger(ledger)
+    _frozen_freeze(led, generator_semantic_hash)  # a version outside this ledger's lineage is refused
+    lineage = set(_lineage_chain(led, generator_semantic_hash)) | set(_descendants(led, generator_semantic_hash))
+    return [_qualification_draw(led, i, e) for i, e in _qualification_exposures(led)
+            if e["payload"]["generator_semantic_hash"] in lineage]
 
 
 def attest_realization_set(root: bytes, class_tag: str, budget: int, emitted: Iterable[Mapping],

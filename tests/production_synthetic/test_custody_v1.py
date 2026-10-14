@@ -49,6 +49,10 @@ def _h(text):
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+# DUMMY method identity: the content digest of a fixture method's frozen code + configuration
+METHOD = _h("DUMMY fixture method: code + configuration")
+
+
 def _frame(b):
     return len(b).to_bytes(8, "big") + b
 
@@ -162,7 +166,7 @@ def prepare(freeze, qnonce, ledger, tree, attest=True):
 
 def expose(freeze, ledger, class_tag=DEBUG, exposure_id="exp-1"):
     return CU.record_exposure(
-        freeze, {"exposure_id": exposure_id, "method_id": "fixture_method", "realization_class": class_tag}, ledger
+        freeze, {"exposure_id": exposure_id, "method_id": METHOD, "realization_class": class_tag}, ledger
     )
 
 
@@ -579,12 +583,16 @@ def test_exposure_record_shape_is_strict(tmp_path):
     fr, qnonce = make_world()
     led = CU.CustodyLedger()
     prepare(fr, qnonce, led, make_tree(tmp_path))
-    good = {"exposure_id": "e", "method_id": "m", "realization_class": DEBUG}
+    good = {"exposure_id": "e", "method_id": METHOD, "realization_class": DEBUG}
     for bad in (
         {k: v for k, v in good.items() if k != "method_id"},
         dict(good, realization_class="DEV"),
         dict(good, realization_class="SYNTH_OTHER"),
         dict(good, method_id=""),
+        dict(good, method_id="fixture_method"),  # a free-text label can be renamed to reset draw counts
+        dict(good, method_id=METHOD[:63]),
+        dict(good, method_id=METHOD.upper()),
+        dict(good, method_id=METHOD + "0"),
         dict(good, nonce_hex="00"),
     ):
         with pytest.raises(CustodyError):

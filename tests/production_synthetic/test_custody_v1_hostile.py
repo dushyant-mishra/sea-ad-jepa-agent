@@ -43,6 +43,13 @@ def _h(text):
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+# DUMMY method identities: content digests of fixture methods' frozen code + configuration
+METHOD = _h("DUMMY fixture method: code + configuration")
+METHOD_A = _h("DUMMY method A: code + configuration")
+METHOD_A_RENAMED = _h("DUMMY method A, relabelled v2: code + configuration")
+METHOD_B = _h("DUMMY method B: code + configuration")
+
+
 def dummy_nonce():
     """DUMMY 256-bit nonce, freshly generated per call; never a production secret."""
     return secrets.token_bytes(32)
@@ -150,7 +157,7 @@ def prepare(freeze, qnonce, ledger, tree, attest=True):
 
 def expose(freeze, ledger, class_tag=DEBUG, exposure_id="exp-1"):
     return CU.record_exposure(
-        freeze, {"exposure_id": exposure_id, "method_id": "fixture_method", "realization_class": class_tag}, ledger
+        freeze, {"exposure_id": exposure_id, "method_id": METHOD, "realization_class": class_tag}, ledger
     )
 
 
@@ -760,7 +767,7 @@ def test_record_exposure_checks_the_expected_ledger_head(tmp_path):
     fr, qnonce = make_world()
     led = CU.CustodyLedger()
     prepare(fr, qnonce, led, make_tree(tmp_path))
-    good = {"exposure_id": "e", "method_id": "m", "realization_class": DEBUG}
+    good = {"exposure_id": "e", "method_id": METHOD, "realization_class": DEBUG}
     with pytest.raises(CustodyError):
         CU.record_exposure(fr, good, led, expected_ledger_head=_h("some other head"))
     CU.record_exposure(fr, good, led, expected_ledger_head=led.head)
@@ -1232,18 +1239,18 @@ def test_q2_qualification_draws_are_counted_per_method_across_versions(tmp_path)
     def expose_as(fr, method, class_tag, eid):
         CU.record_exposure(fr, {"exposure_id": eid, "method_id": method, "realization_class": class_tag}, led)
 
-    expose_as(v, "method-A", QUAL, "a0")
-    expose_as(v, "method-B", QUAL, "b0")
-    expose_as(v, "method-A", DEBUG, "a0-debug")  # development draws are not qualification draws
+    expose_as(v, METHOD_A, QUAL, "a0")
+    expose_as(v, METHOD_B, QUAL, "b0")
+    expose_as(v, METHOD_A, DEBUG, "a0-debug")  # development draws are not qualification draws
     versions = [v]
     for k, level in enumerate((0.4999, 0.4998, 0.4997), start=1):  # negligibly harder successors
         child, qc = make_world(set_snr(level))
         successor(versions[-1], child, led)
         CU.record_generator_freeze(child, led)
         commit_and_attest(child, qc, led, make_tree(tmp_path, f"t{k}"), change="UNCHANGED")
-        expose_as(child, "method-A", QUAL, f"a{k}")
+        expose_as(child, METHOD_A, QUAL, f"a{k}")
         versions.append(child)
-    draws = CU.qualification_draws_for_method(led, "method-A")
+    draws = CU.qualification_draws_for_method(led, METHOD_A)
     assert [d["generator_semantic_hash"] for d in draws] == [x.generator_semantic_hash for x in versions]
     assert [d["exposure_id"] for d in draws] == ["a0", "a1", "a2", "a3"]
     assert all(d["class_tag"] == QUAL for d in draws)
@@ -1257,10 +1264,64 @@ def test_q2_qualification_draws_are_counted_per_method_across_versions(tmp_path)
                and e["payload"]["class_tag"] == QUAL][0]
         assert d["realization_set"]["attestation_entry_hash"] == att["entry_hash"]
         assert d["realization_set"]["emitted_set_sha256"] == att["payload"]["emitted_set_sha256"]
-    assert [d["exposure_id"] for d in CU.qualification_draws_for_method(led, "method-B")] == ["b0"]
-    assert CU.qualification_draws_for_method(led, "method-C") == []
-    with pytest.raises(CustodyError):
-        CU.qualification_draws_for_method(led, "")
+    assert [d["exposure_id"] for d in CU.qualification_draws_for_method(led, METHOD_B)] == ["b0"]
+    assert CU.qualification_draws_for_method(led, _h("DUMMY method C")) == []
+    for bad in ("", "method-A", METHOD_A[:63], METHOD_A.upper()):
+        with pytest.raises(CustodyError):
+            CU.qualification_draws_for_method(led, bad)
+
+
+def test_q2_renaming_the_method_digest_does_not_reset_the_lineage_count(tmp_path):
+    v, q = make_world()
+    led = CU.CustodyLedger()
+    prepare(v, q, led, make_tree(tmp_path, "t0"))
+    CU.record_exposure(v, {"exposure_id": "a0", "method_id": METHOD_A, "realization_class": QUAL}, led)
+    near_copy, qc = make_world(set_snr(0.4999))
+    successor(v, near_copy, led)
+    CU.record_generator_freeze(near_copy, led)
+    commit_and_attest(near_copy, qc, led, make_tree(tmp_path, "t1"), change="UNCHANGED")
+    CU.record_exposure(near_copy, {"exposure_id": "a1", "method_id": METHOD_A_RENAMED,
+                                   "realization_class": QUAL}, led)
+    # the per-method view alone is fooled: (1, 1) ...
+    assert len(CU.qualification_draws_for_method(led, METHOD_A)) == 1
+    assert len(CU.qualification_draws_for_method(led, METHOD_A_RENAMED)) == 1
+    # ... the lineage view counts both draws, whatever the label
+    for version in (v, near_copy):
+        draws = CU.qualification_draws_in_lineage(led, version.generator_semantic_hash)
+        assert [d["exposure_id"] for d in draws] == ["a0", "a1"]
+        assert [d["method_id"] for d in draws] == [METHOD_A, METHOD_A_RENAMED]
+
+
+def test_q2_lineage_draws_span_ancestors_and_descendants_and_exclude_debug_and_other_ledgers(tmp_path):
+    v0, q0 = make_world()
+    led = CU.CustodyLedger()
+    prepare(v0, q0, led, make_tree(tmp_path, "t0"))
+    CU.record_exposure(v0, {"exposure_id": "q0", "method_id": METHOD_A, "realization_class": QUAL}, led)
+    CU.record_exposure(v0, {"exposure_id": "d0", "method_id": METHOD_A, "realization_class": DEBUG}, led)
+    versions = [v0]
+    for k, (level, method) in enumerate(((0.4, METHOD_B), (0.3, METHOD_A)), start=1):
+        child, qc = make_world(set_snr(level))
+        successor(versions[-1], child, led)
+        CU.record_generator_freeze(child, led)
+        commit_and_attest(child, qc, led, make_tree(tmp_path, f"t{k}"), change="UNCHANGED")
+        CU.record_exposure(child, {"exposure_id": f"q{k}", "method_id": method, "realization_class": QUAL}, led)
+        versions.append(child)
+    middle = versions[1].generator_semantic_hash
+    draws = CU.qualification_draws_in_lineage(led, middle)
+    assert [d["exposure_id"] for d in draws] == ["q0", "q1", "q2"]  # ancestor, itself, descendant; no debug
+    assert [d["generator_semantic_hash"] for d in draws] == [x.generator_semantic_hash for x in versions]
+    assert all(d["class_tag"] == QUAL for d in draws)
+    for d in draws:
+        per_method = CU.qualification_draws_for_method(led, d["method_id"])
+        assert any(m["exposure_entry_hash"] == d["exposure_entry_hash"] for m in per_method)
+    other_world, other_q = make_world()
+    other = CU.CustodyLedger()
+    prepare(other_world, other_q, other, make_tree(tmp_path, "t_other"))
+    CU.record_exposure(other_world, {"exposure_id": "x0", "method_id": METHOD_A, "realization_class": QUAL}, other)
+    assert [d["exposure_id"] for d in CU.qualification_draws_in_lineage(other, other_world.generator_semantic_hash)] \
+        == ["x0"]
+    with pytest.raises(CustodyError):  # a version from another lineage's ledger is not in this lineage
+        CU.qualification_draws_in_lineage(led, other_world.generator_semantic_hash)
 
 
 # ------------------------------------- N-c: requalification prerequisites
@@ -1436,7 +1497,7 @@ def test_unknown_keys_are_reported_by_count_not_name(exposed_parent):
         successor(p0, child, led, rec)
     assert hidden not in _chain_text(exc.value)
     with pytest.raises(CustodyError) as exc:
-        CU.record_exposure(p0, {"exposure_id": "e9", "method_id": "m", "realization_class": DEBUG, hidden: 1}, led)
+        CU.record_exposure(p0, {"exposure_id": "e9", "method_id": METHOD, "realization_class": DEBUG, hidden: 1}, led)
     assert hidden not in _chain_text(exc.value)
 
 
@@ -1471,7 +1532,7 @@ def test_chain_valid_ledger_with_out_of_order_custody_is_refused_on_replay():
     fr, _ = make_world()
     gf = ("GENERATOR_FROZEN", {"generator_semantic_hash": fr.generator_semantic_hash, "spec": fr.spec()})
     exposure = ("EXPOSURE_RECORDED", {"generator_semantic_hash": fr.generator_semantic_hash, "exposure_id": "e",
-                                      "method_id": "m", "realization_class": DEBUG})
+                                      "method_id": METHOD, "realization_class": DEBUG})
     reveal = ("REVEALED", {"reveal_type": "CLASS_NONCE", "generator_semantic_hash": fr.generator_semantic_hash,
                            "class_tag": QUAL, "nonce_hex": dummy_nonce().hex()})
     ok_raw, ok_head = _forge([gf])
