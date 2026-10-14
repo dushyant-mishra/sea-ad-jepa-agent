@@ -1,0 +1,28 @@
+name: TD real G6 qualified margin V3
+
+on:
+  push:
+    branches:
+      - fix/td-real-g6-qualified-margin-v3-20261014
+  pull_request:
+    paths:
+      - 'scripts/v5/td_real_teacher_information_decision_v2.py'
+      - 'scripts/v5/td_real_teacher_information_decision_v3.py'
+      - 'tests/v5/test_td_real_teacher_information_decision_v2.py'
+      - 'tests/v5/test_td_real_teacher_information_decision_v3.py'
+      - '.github/workflows/td-real-g6-qualified-margin-v3.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1 numpy==2.4.6 scipy==1.15.3
+      - name: Run G6 V3 hostile repair tests
+        run: python -m pytest -q tests/v5/test_td_real_teacher_information_decision_v3.py
+      - name: Authority guard
+        run: |
+          ! grep -R "TARGET_WINNER_\|REAL_TRAINING_ON\|STAGE4_AUTHORIZED" scripts/v5/td_real_teacher_information_decision_v3.py 2>/dev/null
