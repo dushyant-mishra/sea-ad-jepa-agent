@@ -80,21 +80,22 @@ def validate_reference_for_future_human_use(reference_artifact: Mapping[str, obj
     _hex(reference_artifact["reference_receipt_sha256"], "reference receipt")
     _hex(reference_artifact["producer_code_sha256"], "producer code")
 
+    if reference_artifact["measurement_component_present"] is not True or reference_artifact["measurement_component_non_degenerate"] is not True:
+        return {
+            "schema": SCHEMA,
+            "status": "NOT_ESTIMABLE_SUBSTANTIVE_MARGIN",
+            "reason": "DEGENERATE_OR_ABSENT_MEASUREMENT_MARGIN",
+            "human_use_authorized": False,
+            "metric_scale_status": METRIC_SCALE_STATUS,
+            "authority": dict(_NO_AUTHORITY),
+        }
+
     kind = reference_artifact["reference_kind"]
     if kind not in _ALLOWED_REFERENCE_KINDS:
         return {
             "schema": SCHEMA,
             "status": "NOT_ESTIMABLE_SUBSTANTIVE_MARGIN",
             "reason": "MEASUREMENT_COMPONENT_REQUIRED",
-            "human_use_authorized": False,
-            "metric_scale_status": METRIC_SCALE_STATUS,
-            "authority": dict(_NO_AUTHORITY),
-        }
-    if reference_artifact["measurement_component_present"] is not True or reference_artifact["measurement_component_non_degenerate"] is not True:
-        return {
-            "schema": SCHEMA,
-            "status": "NOT_ESTIMABLE_SUBSTANTIVE_MARGIN",
-            "reason": "DEGENERATE_OR_ABSENT_MEASUREMENT_MARGIN",
             "human_use_authorized": False,
             "metric_scale_status": METRIC_SCALE_STATUS,
             "authority": dict(_NO_AUTHORITY),
