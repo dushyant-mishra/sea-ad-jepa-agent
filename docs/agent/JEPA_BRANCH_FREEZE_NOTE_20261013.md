@@ -1,0 +1,1 @@
+Canonical successor audit/handoff should be based on post-TD implementation head 97dd73f49e1554053bbfab6c5369377a23a72ceb, which descends from the phase-1-audited handoff lineage.
