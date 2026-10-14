@@ -27,6 +27,7 @@ def test_required_task0_outputs_validate():
     assert report["status"] == "PASS_TASK0_PREMERGER_MIGRATION_CUSTODY_VALIDATION"
     assert report["global_authority"] == GLOBAL_AUTHORITY
     assert report["artifact_count"] >= 30
+    assert report["decomposition_child_count"] >= 8
     assert report["unresolved_count"] >= 8
 
 
@@ -112,6 +113,17 @@ def test_conflicting_classes_require_explicit_decomposition():
             children = by_parent[artifact["artifact_id"]]["children"]
             assert len(children) >= 2
             assert len({child["migration_class"] for child in children}) >= 2
+
+
+def test_validator_rejects_prose_only_mixed_decomposition(tmp_path: Path):
+    matrix = _load(MATRIX)
+    unresolved = _load(UNRESOLVED)
+    bad_matrix = tmp_path / "PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1.json"
+    ledger = tmp_path / "PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json"
+    bad_matrix.write_text(json.dumps(matrix), encoding="utf-8")
+    ledger.write_text(json.dumps(unresolved), encoding="utf-8")
+    with pytest.raises(ValueError, match="mixed artifact decomposition registry missing"):
+        validate_migration_outputs(bad_matrix, ledger)
 
 
 def test_navigation_metadata_never_confers_authority():
