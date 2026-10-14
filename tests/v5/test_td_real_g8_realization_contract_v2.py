@@ -55,7 +55,7 @@ def test_support_fraction_uses_frozen_prethinning_denominator_and_keeps_measured
         "A": "RESOLVED_NONZERO",
         "B": "RESOLVED_MEASURED_ZERO",
         "C": "MEASUREMENT_UNRESOLVED",
-        "D": "UNSUPPORTED_STRUCTURAL",
+        "D": "MEASUREMENT_UNRESOLVED",
     }
     out = G.support_fraction(eligible_atoms=eligible, atom_states=state)
     assert out["denominator"] == 4
@@ -63,6 +63,15 @@ def test_support_fraction_uses_frozen_prethinning_denominator_and_keeps_measured
     assert out["support_fraction"] == 0.5
     assert out["measured_zero_count"] == 1
     assert out["abstained_count"] == 2
+
+
+def test_structural_or_contract_blocked_atoms_are_upstream_blockers_not_g8_thinning_outcomes():
+    for blocked_state in ("UNSUPPORTED_STRUCTURAL", "BLOCKED_EVIDENCE_CONTRACT"):
+        with pytest.raises(G.G8ContractError, match="upstream"):
+            G.support_fraction(
+                eligible_atoms=["A", "B"],
+                atom_states={"A": "RESOLVED_NONZERO", "B": blocked_state},
+            )
 
 
 def test_support_denominator_cannot_shrink_after_thinning():
