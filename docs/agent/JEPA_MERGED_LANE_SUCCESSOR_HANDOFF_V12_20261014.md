@@ -1,7 +1,7 @@
 # JEPA merged lane successor handoff V12 — 2026-10-14
 
 Status:
-`TASK0_CONTROLLER_REPAIRED_AND_EXACT_HEAD_GREEN__MACHA_FINAL_INDEPENDENT_ACCEPTANCE_PENDING__OLD_TASK1_2_CONTROLLER_VERIFIED__OLD_TASK3_4_STOPPED__UNIFIED_TASK1_BLOCKED`
+`TASK0_CONTROLLER_REPAIRED_AND_EXACT_HEAD_GREEN__MACHA_FINAL_INDEPENDENT_ACCEPTANCE_PENDING__OLD_TASK1_2_CONTROLLER_VERIFIED__OLD_TASK3_4_STOPPED__DOWNSTREAM_REUSE_FIRST_DELTA_MAPPED__UNIFIED_TASK1_BLOCKED`
 
 Binding authority:
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
@@ -12,11 +12,20 @@ Canonical audit surface PR #322:
 
 1. `docs/agent/JEPA_MERGED_LANE_MASTER_AUDIT_INDEX_V1_20261014.md`
 2. `results/target_discovery/JEPA_MERGED_LANE_AUDIT_STATE_V2_20261014.json`
-3. `docs/agent/MACHA_TASK0_FINAL_INDEPENDENT_REVIEW_PACKET_V1_20261014.md`
-4. `docs/agent/UNIFIED_TASK1_4_PR356_CONSOLIDATION_ADAPTER_CONTRACT_V1_20261014.md`
-5. `docs/agent/UNIFIED_TASK2_MANIFEST_ACCESS_SCHEMA_CONTRACT_V1_20261014.md`
-6. `results/target_discovery/unified_qualification_v1/INITIAL_TD_PREREQUISITE_GRAPH_BLUEPRINT_V1.json`
-7. `docs/agent/UNIFIED_TASK12_INDEPENDENT_HOSTILE_WHOLE_PIPELINE_AUDIT_CONTRACT_V1_20261014.md`
+3. `docs/agent/DOWNSTREAM_QUALIFICATION_DELTA_FROM_HISTORICAL_AUDITS_V1_20261014.md`
+4. `results/target_discovery/unified_qualification_v1/DOWNSTREAM_QUALIFICATION_DELTA_V1.json`
+5. `docs/agent/MACHA_TASK0_FINAL_INDEPENDENT_REVIEW_PACKET_V1_20261014.md`
+6. `docs/agent/UNIFIED_TASK1_4_PR356_CONSOLIDATION_ADAPTER_CONTRACT_V1_20261014.md`
+7. `docs/agent/UNIFIED_TASK2_MANIFEST_ACCESS_SCHEMA_CONTRACT_V1_20261014.md`
+8. `results/target_discovery/unified_qualification_v1/INITIAL_TD_PREREQUISITE_GRAPH_BLUEPRINT_V1.json`
+9. `docs/agent/UNIFIED_TASK12_INDEPENDENT_HOSTILE_WHOLE_PIPELINE_AUDIT_CONTRACT_V1_20261014.md`
+
+Historical downstream audit sources that must be read before repeating work:
+- `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`
+- `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md`
+- `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R4.md`
+- V4 teacher/student canonical runtime/status/review-package files
+- V5 data-first target/proposal/status files.
 
 Current exact architecture/plan:
 
@@ -79,6 +88,53 @@ Current merged-lane law is:
 Do not wait for an old Task 3 or Task 4 implementation head. Do not restart them.
 
 Their surviving scientific/engineering requirements are already preserved in the unified analysis contracts.
+
+## Downstream qualification — reuse first, do not restart historical audits
+
+The September 15 historical audit index already establishes substantial teacher/student/EMA/downstream evidence. Before any new downstream audit, classify it as:
+
+`ALREADY_AUDITED | SUPERSEDED | OPEN | CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
+
+Already-audited mechanics include:
+- T1/C2 zero-gradient causal failure and repaired update chain;
+- EMA only after a proved optimizer step;
+- exact-copy/no-grad teacher mechanics;
+- F1-B optimizer/receipt guard pattern;
+- checkpoint/RNG/schedule/EMA-counter binding;
+- protected-population firewall;
+- current protected-registry derivation pattern;
+- observation-state gradient firewall;
+- donor-primary target/proposal separation;
+- FULL104 support/population geometry;
+- teacher/student/EMA architecture recovery itself.
+
+Historical negative/superseded items include:
+- equal operator-group relational weighting;
+- historical fixed `160/4 heads/6 blocks/128x8/4 views/.40 mask/16 blocks/.996 EMA` as production authority;
+- hard-coded six-block/48-tensor/128x8 preexecution vocabulary;
+- matched-null-as-wrong-query QID semantics;
+- defective x4-within estimator;
+- common core as biological truth;
+- native support as automatically private biology.
+
+Genuinely open or changed-input work is now concentrated in the downstream delta program:
+- exact TQB-bound teacher target/evidence construction;
+- student restriction/recoverability/uncertainty;
+- target-address identity shortcut;
+- masking/dependency shortcut;
+- current scientific weights/proposal/exposure schedule;
+- representation/subspace/transfer scope;
+- F7 multimodal/regulatory provenance;
+- F9 normalization/library/support information channels;
+- current model/protected-registry geometry;
+- joined optimizer/EMA/checkpoint mechanical qualification;
+- prospective EMA half-life/timescale;
+- historical leakage attacks rebound to the exact new target/runtime;
+- downstream certification receipt;
+- separate runtime-eligibility receipt;
+- later training-eligibility review and explicit owner training authorization.
+
+This is approximately 20 reviewable work packages, not hundreds of fresh historical audits. Atomic tests may number in the hundreds, but existing tests should be ported/rebound whenever equivalent.
 
 ## Analysis layer now frozen for unified Tasks 1–12
 
