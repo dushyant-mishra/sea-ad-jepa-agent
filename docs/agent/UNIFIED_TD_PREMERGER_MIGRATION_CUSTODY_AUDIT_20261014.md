@@ -47,6 +47,7 @@ Primary sources were:
 3. accepted unified architecture PR #379 at `3064ca545f0c94859ea989cd49a04fcbd5b9a303`.
 4. accepted Task-0 plan PR #380 at `9328f1c00faee8a0ebf1910d412ea129bab566be`.
 5. exact repaired TD unit heads #364–#369 and current supporting surfaces where already frozen in the takeover checkpoint.
+6. the two historically separate Macha custody streams, preserved through `PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json` and the human-readable dual-stream addendum.
 
 This avoids unnecessary replay while still preserving exact branch/head navigation and active authority boundaries.
 
@@ -56,11 +57,14 @@ Task 0 produces:
 
 - `results/target_discovery/unified_qualification_v1/PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1.json`
 - `results/target_discovery/unified_qualification_v1/PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json`
+- `results/target_discovery/unified_qualification_v1/PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json`
 - `results/target_discovery/unified_qualification_v1/PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json`
 
 The migration matrix contains the classified significant synthetic, TD and downstream inventory, exact identities where already available, historical defects, retained components, superseded components, destination under the unified architecture, requalification requirements, and unresolved-work references.
 
 The mixed-artifact decomposition registry is mandatory whenever the matrix marks an artifact as `mixed_historical_object`. It gives every separable child role its own machine-classified migration class, authority state, destination, requalification rule and exact-identity attestation. A prose `decomposition_note` is not sufficient for validation.
+
+The Macha dual-stream custody registry is a normative machine-enforced extension of the migration matrix. It separately preserves (1) real-TD/corrected-replay/hostile-qualification history and (2) V79/Bayesian/known-truth history, each with exact historical anchors, destinations, unresolved registration obligations, and future reviewer obligations. This prevents either stream from being flattened into generic review context.
 
 The unresolved-work ledger distinguishes work that is genuinely incomplete from work that is intentionally obsolete or closed.
 
@@ -97,6 +101,33 @@ Consumers must not collapse these child records back into the parent migration c
 ### Exact-identity fail-closed rule
 
 The F2 repair makes `exact_identity_available` mandatory on every top-level artifact and every decomposition child. If it is `true`, both the source commit and required artifact digest must be present. If exact artifact bytes genuinely were not frozen, it is `false` and custody rests on the recorded canonical wrapper/receipt basis; missing historical digests are never invented.
+
+### Two Macha scientific-custody streams
+
+The merger does not reduce Macha to a generic external reviewer. Task 0 preserves two distinct inherited bodies of scientific context.
+
+**Real-TD / corrected-replay / hostile-qualification stream**
+
+- PR #314 at `c6899a2910244a0352c0c57e7aea6e3026191da1` is the one spent corrected TD56→TD57B→TD57C→TD59 replay and remains frozen historical biological evidence under that old execution law; it is not current unified authority and is not rerun for migration.
+- PR #316 at `2397ab83d8ae9d0c762a8fd5f3919edc350d137f` is prospective fine/rare successor design/history.
+- Macha real-data hostile audit at `ccc3a08939694f5d35b3048c94ec44f44618eef4` supplies authenticated support/calibration facts and current repair requirements.
+- #364–#369 are the controlling post-Macha repair lineage, preserved only at their demonstrated mechanics/interface authority.
+
+Destination: registry historical-evidence layer, prerequisite graph, real-support calibration and gate/challenge requirements.
+
+**V79 / Bayesian geometry / known-truth stream**
+
+- PR #261 at `f68c56b78b7a7f6d9590b922f94249b9f2f7f18f` is the historical V79 Bayesian-geometry custody index.
+- Q00–Q11 realization/custody history is retained through the canonical synthetic audit wrapper as known-truth challenge/custody evidence; it must be re-expressed through CaseBundle/TruthBundle and sealed-exam laws.
+- V79 remains permanently `NOT_QUALIFIED`; its failures remain negative priors/challenge/no-repeat material.
+- V80 remains benchmark/package qualified only, with no inherited successor-estimator authority.
+- later #344/#356 work is separately decomposed into surviving substrate/custody requirements versus superseded parallel authority.
+
+Destination: known-truth substrate, CaseBundle/TruthBundle, sealed qualification infrastructure, negative priors, observation/population realism and challenge assets.
+
+Macha remains independent reviewer **plus historical scientific custodian**. Review briefs must invoke the relevant inherited stream: Task 4/5 reviews use V79/Bayesian/Q00–Q11 history; Task 6/7 reviews use corrected-replay/real-TD history; Task 9 uses both.
+
+The unresolved ledger now explicitly carries `U_MACHA_REAL_TD_HISTORY_REGISTRATION` and `U_MACHA_V79_HISTORY_REGISTRATION` so later unified implementation cannot silently drop either stream after Task 0.
 
 ### Known-truth substrate/challenge material retained
 
@@ -221,9 +252,11 @@ The unresolved ledger includes, at minimum:
 - sealed final-qualification infrastructure;
 - Tasks 1–3 unified foundation implementation;
 - exact downstream certification;
-- the historical V79/V80 successor-estimator conflict if that estimator work is ever resumed.
+- historical V79/V80 successor-estimator conflict if that estimator work is ever resumed;
+- explicit unified registration of Macha's frozen real-TD/corrected-replay evidence stream;
+- explicit unified registration of Macha's V79/Bayesian/Q00–Q11 known-truth history.
 
-This prevents “unfinished” from being confused with “superseded.”
+This prevents “unfinished” from being confused with “superseded” and prevents historical-custodian context from disappearing after the lane merger.
 
 ## RED/GREEN protocol
 
@@ -239,22 +272,25 @@ The hostile-validator step failed before the initial implementation existed.
 
 The prior pre-review implementation head `ce4eacc263b02b1fa15505951d5377ae710e3330` then had focused GREEN workflow/job `38615085846` / `116028001027` (`13 passed in 0.14s`) and inherited integration workflow/job `38615085515` / `116027999675` GREEN. Those runs are historical evidence only because controller pre-review comment `6175540043` found blocking F1/F2 defects on that exact head.
 
-A second regression-only RED head `42aac927b3929d0f3f6798446382cce9da665d96` was then frozen. Focused workflow/job `38616574261` / `116033071246` failed at the hostile Task 0 test step, demonstrating the new decomposition and exact-identity bypass tests fail against the old implementation.
+A second regression-only RED head `42aac927b3929d0f3f6798446382cce9da665d96` was then frozen. Focused workflow/job `38616574261` / `116033071246` failed at the hostile Task 0 test step, demonstrating the decomposition and exact-identity bypass tests fail against the old implementation.
 
-Repaired implementation head `4d7a99c4a07ef4ef314b39163ec561c117d7bac2` received exact-head GREEN evidence before this documentation freeze:
+The F1/F2 implementation reached `4d7a99c4a07ef4ef314b39163ec561c117d7bac2` and received focused Task 0 workflow/job `38616934876` / `116034306973` GREEN (`15 passed in 0.06s`) plus inherited integration workflow/job `38616934888` / `116034309851` GREEN.
 
-- focused Task 0 workflow/job `38616934876` / `116034306973`: **SUCCESS**, `15 passed in 0.06s`;
-- inherited unified synthetic integration workflow/job `38616934888` / `116034309851`: **SUCCESS**.
+A subsequent Task 0 custody review found that the two Macha historical scientific streams were not yet separately traceable. Regression tests for that omission were added before the dual-stream registry/ledger implementation. Final exact-head CI after this document commit is required before independent review.
 
-Because this documentation commit itself advances the branch head, fresh exact-head CI on the final documentation head is still required before independent review. This document is not an independent review verdict.
+This document is not an independent review verdict.
 
 ## Closure self-audit status
 
-Controller-side audit requirements after F1/F2 repair:
+Controller-side audit requirements after the current repairs:
 
 - caller can gain authority by writing a PR/branch name: **NO by schema/validator contract**
 - deleting `exact_identity_available` is accepted: **NO; fail-closed required-field check**
 - a prose-only mixed-object decomposition is accepted: **NO; machine decomposition registry required**
+- Macha's real-TD and V79 histories can be flattened into one generic reviewer context: **NO; two machine-enforced custody streams required**
+- PR #314 can be silently promoted to current unified authority: **NO; frozen old-execution-law evidence only**
+- V79 can be rescued by migration: **NO; permanently NOT_QUALIFIED**
+- V80 can imply successor-estimator qualification: **NO; benchmark/package only**
 - a missing migration class is accepted: **NO**
 - a failed experiment can silently become active: **NO**
 - a superseded parallel implementation can remain ambiguously authoritative: **NO**
