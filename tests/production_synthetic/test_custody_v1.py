@@ -134,7 +134,7 @@ def emit(root, class_tag, budget):
 
 def commit_withheld(freeze, qnonce, ledger, tree):
     scans = [
-        CU.require_secret_absence(tree, qnonce),
+        CU.require_nonce_absence(tree, qnonce),
         CU.require_secret_absence(tree, C.canonical_json_bytes(DUMMY_WITHHELD_SPEC)),
     ]
     CU.record_withheld_commitment(
@@ -548,6 +548,37 @@ def test_internal_mutation_is_detected_by_verify():
         led.verify()
 
 
+# PROSPECTIVE_CONVENTION: a generous wall-clock ceiling set by the code-quality review before measuring; it
+# guards against quadratic re-validation, not against machine speed.
+PERF_BOUND_SECONDS = 10.0
+
+
+def _large_spec(spec):
+    spec["parameter_distributions"] = {
+        "p%05d" % i: {"law": "normal", "mu": float(i), "sigma": 1.0, "unit": "log_counts"} for i in range(2500)
+    }
+
+
+def test_thousand_entry_ledger_with_a_large_spec_builds_and_replays_within_bound(tmp_path):
+    import time
+    fr, qnonce = make_world(_large_spec)
+    assert len(fr.canonical_spec) > 150_000
+    led = CU.CustodyLedger()
+    t0 = time.perf_counter()
+    prepare(fr, qnonce, led, make_tree(tmp_path))
+    i = 0
+    while len(led) < 1000:
+        CU.record_exposure(fr, {"exposure_id": f"debug-{i}", "method_id": METHOD, "realization_class": DEBUG}, led)
+        i += 1
+        if time.perf_counter() - t0 > PERF_BOUND_SECONDS:
+            pytest.fail(f"building stopped at {len(led)} entries after {PERF_BOUND_SECONDS} s")
+    t1 = time.perf_counter()
+    replay = CU.CustodyLedger.from_bytes(led.to_bytes(), expected_head=led.head)
+    t2 = time.perf_counter()
+    assert len(replay) == 1000
+    assert t2 - t0 < PERF_BOUND_SECONDS, f"build {t1 - t0:.2f} s + replay {t2 - t1:.2f} s"
+
+
 # --------------------------------------------------- ordering and exposure law
 
 def test_record_exposure_requires_commitments_and_attestation_first(tmp_path):
@@ -684,7 +715,7 @@ def test_full_custody_lifecycle_and_reveal(tmp_path):
     assert roots[QUAL][0] == qnonce
     expose(fr, led, DEBUG, "exp-debug")
     expose(fr, led, QUAL, "exp-qual")
-    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("fit-output"))
+    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, exposure_id="exp-qual", fit_output_sha256=_h("fit-output"))
     CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=qnonce)
     CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=qnonce, withheld_class_tag=WTAG)
     replay = CU.CustodyLedger.from_bytes(led.to_bytes(), expected_head=led.head)
@@ -736,7 +767,6 @@ def _wrapped_encodings(secret):
         "json_byte_list": json.dumps(list(secret)).encode("ascii"),
         "json_byte_list_compact": json.dumps(list(secret), separators=(",", ":")).encode("ascii"),
         "json_byte_list_wrapped": json.dumps(list(secret), indent=2).encode("ascii"),
-        "decimal_big_endian": str(int.from_bytes(secret, "big")).encode("ascii"),
     }
 
 
@@ -818,6 +848,19 @@ def test_scan_flushes_a_trailing_hex_zero_at_end_of_file(tmp_path):
     tree = make_tree(tmp_path)
     (tree / "seed.hex").write_bytes(secret.hex().encode())  # no trailing newline
     assert CU.scan_secret_absence(tree, secret)["secret_absent"] is False
+
+
+def test_scan_handles_large_secrets_and_the_decimal_needle_boundary(tmp_path):
+    tree = make_tree(tmp_path)
+    big = secrets.token_bytes(4096)  # DUMMY: realistic withheld specs are kilobytes long
+    assert CU.scan_secret_absence(tree, big)["secret_absent"] is True  # no int->str digit-limit crash
+    (tree / "leak.b64").write_bytes(base64.encodebytes(big))
+    assert CU.scan_secret_absence(tree, big)["secret_absent"] is False
+    for size, expect_detected in ((64, True), (65, False)):  # decimal needle only for secrets <= 64 bytes
+        secret = secrets.token_bytes(size)  # DUMMY
+        t = make_tree(tmp_path, f"decimal_{size}")
+        (t / "number.txt").write_bytes(str(int.from_bytes(secret, "big")).encode("ascii"))
+        assert CU.scan_secret_absence(t, secret)["secret_absent"] is (not expect_detected)
 
 
 def test_scan_detects_secret_in_a_path_name(tmp_path):

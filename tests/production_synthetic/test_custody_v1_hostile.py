@@ -129,7 +129,7 @@ def emit(root, class_tag, budget):
 
 
 def commit_withheld(freeze, qnonce, ledger, tree, change=None):
-    scans = [CU.require_secret_absence(tree, qnonce)]
+    scans = [CU.require_nonce_absence(tree, qnonce)]
     CU.record_withheld_commitment(freeze, ledger, withheld_class_tag=WTAG, nonce_commitment=CU.nonce_commitment(qnonce),
                                   secret_absence_attestations=scans, code_path_attestation=code_path_attestation(),
                                   withheld_family_change=change)
@@ -411,7 +411,7 @@ def test_seed_shopping_with_an_uncommitted_nonce_is_caught_at_reveal(committed):
     shopped_root = CU.sealed_root(shopped_nonce, fr.generator_semantic_hash, QUAL, 4)
     CU.attest_realization_set(shopped_root, QUAL, 4, emit(shopped_root, QUAL, 4), led, freeze=fr)
     expose(fr, led, QUAL)
-    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("fit"))
+    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, exposure_id="exp-1", fit_output_sha256=_h("fit"))
     with pytest.raises(CustodyError):
         CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=committed_nonce)
     with pytest.raises(CustodyError):
@@ -433,19 +433,19 @@ def test_fit_output_cannot_be_frozen_before_exposure(committed):
     root = roots[QUAL][1]
     CU.attest_realization_set(root, QUAL, 4, emit(root, QUAL, 4), led, freeze=fr)
     with pytest.raises(CustodyError):
-        CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("fit"))
+        CU.record_fit_output_frozen(fr, led, class_tag=QUAL, exposure_id="exp-1", fit_output_sha256=_h("fit"))
 
 
 def test_fit_output_is_frozen_once(exposed_qual):
     fr, led, _, _ = exposed_qual
-    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("fit"))
+    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, exposure_id="exp-1", fit_output_sha256=_h("fit"))
     with pytest.raises(CustodyError):
-        CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("refit"))
+        CU.record_fit_output_frozen(fr, led, class_tag=QUAL, exposure_id="exp-1", fit_output_sha256=_h("refit"))
 
 
 def test_reveal_mismatch_and_alternative_withheld_draw_are_hard_failures(exposed_qual):
     fr, led, roots, qnonce = exposed_qual
-    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("fit"))
+    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, exposure_id="exp-1", fit_output_sha256=_h("fit"))
     with pytest.raises(CustodyError):
         CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=dummy_nonce())
     alternative = dict(DUMMY_WITHHELD_SPEC, DUMMY_budget=3)
@@ -468,14 +468,14 @@ def test_reveal_mismatch_and_alternative_withheld_draw_are_hard_failures(exposed
 def test_withheld_reveal_requires_the_qualification_fit_to_be_frozen(exposed_qual):
     fr, led, roots, qnonce = exposed_qual
     expose(fr, led, DEBUG, "exp-debug")
-    CU.record_fit_output_frozen(fr, led, class_tag=DEBUG, fit_output_sha256=_h("debug fit"))
+    CU.record_fit_output_frozen(fr, led, class_tag=DEBUG, exposure_id="exp-debug", fit_output_sha256=_h("debug fit"))
     with pytest.raises(CustodyError):
         CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=qnonce, withheld_class_tag=WTAG)
 
 
 def test_no_qualification_exposure_after_reveal(exposed_qual):
     fr, led, roots, qnonce = exposed_qual
-    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("fit"))
+    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, exposure_id="exp-1", fit_output_sha256=_h("fit"))
     CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=qnonce)
     with pytest.raises(CustodyError):
         expose(fr, led, QUAL, "exp-after-reveal")
@@ -518,7 +518,7 @@ def test_withheld_commitment_built_with_the_debug_nonce_is_rejected(tmp_path):
         root = CU.sealed_root(n, fr.generator_semantic_hash, tag, budget)
         CU.attest_realization_set(root, tag, budget, emit(root, tag, budget), led, freeze=fr)
         expose(fr, led, tag, "exp-" + tag)
-        CU.record_fit_output_frozen(fr, led, class_tag=tag, fit_output_sha256=_h("fit " + tag))
+        CU.record_fit_output_frozen(fr, led, class_tag=tag, exposure_id="exp-" + tag, fit_output_sha256=_h("fit " + tag))
     CU.reveal_class_nonce(fr, led, class_tag=DEBUG, nonce=debug_nonce)  # a debug reveal opens nothing withheld
     with pytest.raises(CustodyError):
         CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=debug_nonce,
@@ -530,7 +530,7 @@ def test_withheld_commitment_built_with_the_debug_nonce_is_rejected(tmp_path):
 def test_qualification_nonce_cannot_leak_through_another_reveal_path(exposed_qual):
     fr, led, roots, qnonce = exposed_qual
     expose(fr, led, DEBUG, "exp-debug")
-    CU.record_fit_output_frozen(fr, led, class_tag=DEBUG, fit_output_sha256=_h("debug fit"))
+    CU.record_fit_output_frozen(fr, led, class_tag=DEBUG, exposure_id="exp-debug", fit_output_sha256=_h("debug fit"))
     with pytest.raises(CustodyError):
         CU.reveal_class_nonce(fr, led, class_tag=DEBUG, nonce=qnonce)
     with pytest.raises(CustodyError):
@@ -756,7 +756,7 @@ def test_stale_exposure_state_is_refused(exposed_parent):
     p0, led = exposed_parent
     stale = CU.exposure_state(p0, led)
     # advance the ledger without changing the exposure count: only the head check can catch this
-    CU.record_fit_output_frozen(p0, led, class_tag=DEBUG, fit_output_sha256=_h("debug fit"))
+    CU.record_fit_output_frozen(p0, led, class_tag=DEBUG, exposure_id="exp-1", fit_output_sha256=_h("debug fit"))
     child, _ = make_world(set_snr(0.3))
     with pytest.raises(CustodyError):
         CU.validate_successor_version(p0, child, parent_exposure_state=stale, ledger=led)
@@ -881,7 +881,7 @@ EASIER_WITHHELD_SPEC = dict(DUMMY_WITHHELD_SPEC, DUMMY_family={"composition": "D
 
 def qualify_and_reveal(freeze, qnonce, ledger, withheld=DUMMY_WITHHELD_SPEC, exposure_id="exp-q"):
     expose(freeze, ledger, QUAL, exposure_id)
-    CU.record_fit_output_frozen(freeze, ledger, class_tag=QUAL, fit_output_sha256=_h("fit " + exposure_id))
+    CU.record_fit_output_frozen(freeze, ledger, class_tag=QUAL, exposure_id=exposure_id, fit_output_sha256=_h("fit " + exposure_id))
     CU.reveal_withheld_family(freeze, ledger, withheld_spec=withheld, nonce=qnonce, withheld_class_tag=WTAG)
 
 
@@ -902,7 +902,7 @@ def _qualified_parent_and_child(tmp_path, child_withheld, reveal_parent=True, ch
         CU.record_requalification_prerequisites(child, led, realism_rerun_receipt_sha256=_h("realism"),
                                                 withheld_check_plan_sha256=_h("plan"))
     expose(child, led, QUAL, "exp-child")
-    CU.record_fit_output_frozen(child, led, class_tag=QUAL, fit_output_sha256=_h("child fit"))
+    CU.record_fit_output_frozen(child, led, class_tag=QUAL, exposure_id="exp-child", fit_output_sha256=_h("child fit"))
     return p0, q0, child, q1, led
 
 
@@ -924,7 +924,7 @@ def test_w1b_successor_reveal_waits_for_the_parent_reveal_then_fails_on_mismatch
         CU.reveal_withheld_family(child, led, withheld_spec=EASIER_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
     with pytest.raises(CustodyError):  # the parent's own sealed run is still open: no early reveal
         CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
-    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, fit_output_sha256=_h("parent fit"))  # superseded: allowed
+    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, exposure_id="exp-p0", fit_output_sha256=_h("parent fit"))  # superseded: allowed
     CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
     with pytest.raises(CustodyError, match="hard custody failure"):
         CU.reveal_withheld_family(child, led, withheld_spec=EASIER_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
@@ -943,7 +943,7 @@ def test_w1_reference_is_the_nearest_ancestor_that_committed_a_withheld_family(t
     CU.record_generator_freeze(p2, led)
     commit_and_attest(p2, q2, led, make_tree(tmp_path, "tree_p2"), change="UNCHANGED")
     expose(p2, led, QUAL, "exp-p2")
-    CU.record_fit_output_frozen(p2, led, class_tag=QUAL, fit_output_sha256=_h("p2 fit"))
+    CU.record_fit_output_frozen(p2, led, class_tag=QUAL, exposure_id="exp-p2", fit_output_sha256=_h("p2 fit"))
     with pytest.raises(CustodyError, match="hard custody failure"):  # compared with p0's family, two levels up
         CU.reveal_withheld_family(p2, led, withheld_spec=EASIER_WITHHELD_SPEC, nonce=q2, withheld_class_tag=WTAG)
 
@@ -1010,7 +1010,7 @@ def test_superseded_reference_without_a_sealed_run_is_revealed_after_a_descendan
     expose(child, led, QUAL, "exp-child")
     with pytest.raises(CustodyError):  # no descendant qualification fit is frozen yet
         CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
-    CU.record_fit_output_frozen(child, led, class_tag=QUAL, fit_output_sha256=_h("child fit"))
+    CU.record_fit_output_frozen(child, led, class_tag=QUAL, exposure_id="exp-child", fit_output_sha256=_h("child fit"))
     with pytest.raises(CustodyError, match="revealed first"):
         CU.reveal_withheld_family(child, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
     CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
@@ -1023,7 +1023,7 @@ def test_no_withheld_reveal_while_a_lineage_sealed_run_is_open(tmp_path):
     led = CU.CustodyLedger()
     prepare(p0, q0, led, make_tree(tmp_path))
     expose(p0, led, QUAL, "exp-p0")
-    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, fit_output_sha256=_h("p0 fit"))
+    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, exposure_id="exp-p0", fit_output_sha256=_h("p0 fit"))
     child, q1 = make_world(set_snr(0.3))  # shares p0's withheld family
     successor(p0, child, led)
     CU.record_generator_freeze(child, led)
@@ -1031,7 +1031,7 @@ def test_no_withheld_reveal_while_a_lineage_sealed_run_is_open(tmp_path):
     expose(child, led, QUAL, "exp-child")  # the child's sealed run is open
     with pytest.raises(CustodyError, match="open"):
         CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
-    CU.record_fit_output_frozen(child, led, class_tag=QUAL, fit_output_sha256=_h("child fit"))
+    CU.record_fit_output_frozen(child, led, class_tag=QUAL, exposure_id="exp-child", fit_output_sha256=_h("child fit"))
     CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
     CU.reveal_withheld_family(child, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
 
@@ -1046,10 +1046,11 @@ def _withheld_entry(led, freeze):
 def test_unchanged_family_committed_before_the_reference_reveal_is_eligible(tmp_path):
     p0, q0, child, q1, led = _qualified_parent_and_child(tmp_path, DUMMY_WITHHELD_SPEC, reveal_parent=False)
     assert _withheld_entry(led, child)["withheld_check_secret"] is True
-    assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is True
-    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, fit_output_sha256=_h("parent fit"))
+    assert CU.withheld_family_still_secret(led, child.generator_semantic_hash) is True
+    assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is False  # final only after its reveal
+    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, exposure_id="exp-p0", fit_output_sha256=_h("parent fit"))
     CU.reveal_withheld_family(p0, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q0, withheld_class_tag=WTAG)
-    assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is True  # revealed after its fit froze
+    assert CU.withheld_family_still_secret(led, child.generator_semantic_hash) is True  # revealed after its fit
     assert CU.withheld_check_eligible(led, p0.generator_semantic_hash) is True  # lineage root
     CU.reveal_withheld_family(child, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
     assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is True  # equal to its own group: expected
@@ -1058,6 +1059,7 @@ def test_unchanged_family_committed_before_the_reference_reveal_is_eligible(tmp_
 def test_unchanged_family_committed_after_the_reference_reveal_is_ineligible(tmp_path):
     p0, q0, child, q1, led = _qualified_parent_and_child(tmp_path, DUMMY_WITHHELD_SPEC, reveal_parent=True)
     assert _withheld_entry(led, child)["withheld_check_secret"] is False
+    assert CU.withheld_family_still_secret(led, child.generator_semantic_hash) is False
     assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is False
     CU.reveal_withheld_family(child, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
     assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is False  # reveal does not repair it
@@ -1069,7 +1071,7 @@ def test_reused_family_disclosed_before_the_successor_fit_is_ineligible(tmp_path
     led = CU.CustodyLedger()
     prepare(p0, q0, led, make_tree(tmp_path))
     expose(p0, led, QUAL, "exp-p0")
-    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, fit_output_sha256=_h("p0 fit"))
+    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, exposure_id="exp-p0", fit_output_sha256=_h("p0 fit"))
     child, q1 = make_world(set_snr(0.3))
     successor(p0, child, led)
     CU.record_generator_freeze(child, led)
@@ -1084,7 +1086,7 @@ def test_family_shared_through_an_unrevealed_parent_is_public_once_the_grandpare
     led = CU.CustodyLedger()
     prepare(p0, q0, led, make_tree(tmp_path))
     expose(p0, led, QUAL, "exp-p0")
-    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, fit_output_sha256=_h("p0 fit"))
+    CU.record_fit_output_frozen(p0, led, class_tag=QUAL, exposure_id="exp-p0", fit_output_sha256=_h("p0 fit"))
     p1, q1 = make_world(set_snr(0.3))
     successor(p0, p1, led)
     CU.record_generator_freeze(p1, led)
@@ -1102,6 +1104,9 @@ def test_changed_by_defect_family_is_secret_and_eligible(tmp_path):
     p0, q0, child, q1, led = _qualified_parent_and_child(
         tmp_path, EASIER_WITHHELD_SPEC, change="CHANGED_BY_DEFECT", defect_components=["withheld_family"])
     assert _withheld_entry(led, child)["withheld_check_secret"] is True
+    assert CU.withheld_family_still_secret(led, child.generator_semantic_hash) is True
+    assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is False  # not yet revealed
+    CU.reveal_withheld_family(child, led, withheld_spec=EASIER_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
     assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is True
 
 
@@ -1111,7 +1116,9 @@ def test_version_without_a_withheld_commitment_is_ineligible(exposed_parent):
     successor(p0, child, led)
     CU.record_generator_freeze(child, led)
     assert CU.withheld_check_eligible(led, child.generator_semantic_hash) is False
+    assert CU.withheld_family_still_secret(led, child.generator_semantic_hash) is False
     assert CU.withheld_check_eligible(led, _h("never frozen")) is False
+    assert CU.withheld_family_still_secret(led, _h("never frozen")) is False
 
 
 def test_forged_withheld_check_secret_flag_is_refused_on_replay(tmp_path):
@@ -1133,13 +1140,13 @@ def _three_unchanged_versions(tmp_path, expose_v3=True):
     led = CU.CustodyLedger()
     prepare(v1, q1, led, make_tree(tmp_path, "t1"))
     expose(v1, led, QUAL, "e1")
-    CU.record_fit_output_frozen(v1, led, class_tag=QUAL, fit_output_sha256=_h("v1 fit"))
+    CU.record_fit_output_frozen(v1, led, class_tag=QUAL, exposure_id="e1", fit_output_sha256=_h("v1 fit"))
     v2, q2 = make_world(set_snr(0.4))
     successor(v1, v2, led)
     CU.record_generator_freeze(v2, led)
     commit_and_attest(v2, q2, led, make_tree(tmp_path, "t2"), change="UNCHANGED")
     expose(v2, led, QUAL, "e2")
-    CU.record_fit_output_frozen(v2, led, class_tag=QUAL, fit_output_sha256=_h("v2 fit"))
+    CU.record_fit_output_frozen(v2, led, class_tag=QUAL, exposure_id="e2", fit_output_sha256=_h("v2 fit"))
     v3, q3 = make_world(set_snr(0.3))
     successor(v2, v3, led)
     CU.record_generator_freeze(v3, led)
@@ -1153,10 +1160,10 @@ def test_q1_class_nonce_of_a_sharing_version_is_refused_while_a_run_is_open(tmp_
     v1, q1, v2, q2, v3, q3, led = _three_unchanged_versions(tmp_path)
     with pytest.raises(CustodyError, match="open"):
         CU.reveal_class_nonce(v2, led, class_tag=QUAL, nonce=q2)  # would open V2's commitment to the shared family
-    assert CU.withheld_check_eligible(led, v3.generator_semantic_hash) is True
-    CU.record_fit_output_frozen(v3, led, class_tag=QUAL, fit_output_sha256=_h("v3 fit"))
+    assert CU.withheld_family_still_secret(led, v3.generator_semantic_hash) is True
+    CU.record_fit_output_frozen(v3, led, class_tag=QUAL, exposure_id="e3", fit_output_sha256=_h("v3 fit"))
     CU.reveal_class_nonce(v2, led, class_tag=QUAL, nonce=q2)  # after V3's fit froze: lawful
-    assert CU.withheld_check_eligible(led, v3.generator_semantic_hash) is True
+    assert CU.withheld_family_still_secret(led, v3.generator_semantic_hash) is True
 
 
 def test_q1b_ancestor_class_nonce_is_refused_while_a_descendant_run_is_open(tmp_path):
@@ -1168,8 +1175,9 @@ def test_q1b_ancestor_class_nonce_is_refused_while_a_descendant_run_is_open(tmp_
 def test_q1_class_nonce_reveal_before_a_sharing_fit_makes_it_ineligible(tmp_path):
     v1, q1, v2, q2, v3, q3, led = _three_unchanged_versions(tmp_path, expose_v3=False)
     CU.reveal_class_nonce(v1, led, class_tag=QUAL, nonce=q1)  # no run open anywhere: allowed
-    assert CU.withheld_check_eligible(led, v3.generator_semantic_hash) is False  # family public before V3's fit
-    assert CU.withheld_check_eligible(led, v2.generator_semantic_hash) is True  # V2's fit froze first
+    assert CU.withheld_family_still_secret(led, v3.generator_semantic_hash) is False  # public before V3's fit
+    assert CU.withheld_check_eligible(led, v3.generator_semantic_hash) is False
+    assert CU.withheld_family_still_secret(led, v2.generator_semantic_hash) is True  # V2's fit froze first
     v4, q4 = make_world(set_snr(0.2))
     successor(v3, v4, led)
     CU.record_generator_freeze(v4, led)
@@ -1182,7 +1190,7 @@ def test_q1_unrelated_family_class_nonce_is_not_blocked(tmp_path):
     led = CU.CustodyLedger()
     prepare(v1, q1, led, make_tree(tmp_path, "t1"))
     expose(v1, led, QUAL, "e1")
-    CU.record_fit_output_frozen(v1, led, class_tag=QUAL, fit_output_sha256=_h("v1 fit"))
+    CU.record_fit_output_frozen(v1, led, class_tag=QUAL, exposure_id="e1", fit_output_sha256=_h("v1 fit"))
     v2, q2 = make_world(set_snr(0.4), withheld=EASIER_WITHHELD_SPEC)
     successor(v1, v2, led, defect(v1, v2, ["difficulty_grid/signal_to_noise"], ["withheld_family"]))
     CU.record_generator_freeze(v2, led)
@@ -1191,7 +1199,7 @@ def test_q1_unrelated_family_class_nonce_is_not_blocked(tmp_path):
                                             withheld_check_plan_sha256=_h("p"))
     expose(v2, led, QUAL, "e2")  # open run, but on a different withheld family
     CU.reveal_class_nonce(v1, led, class_tag=QUAL, nonce=q1)
-    assert CU.withheld_check_eligible(led, v2.generator_semantic_hash) is True
+    assert CU.withheld_family_still_secret(led, v2.generator_semantic_hash) is True
 
 
 # ---------------------- Q3: a "changed" family may not be one that is already public
@@ -1324,6 +1332,124 @@ def test_q2_lineage_draws_span_ancestors_and_descendants_and_exclude_debug_and_o
         CU.qualification_draws_in_lineage(led, other_world.generator_semantic_hash)
 
 
+# ------------------- fit output frozen per exposure; no late qualification exposures
+
+def test_late_exposure_after_a_fit_freeze_is_refused(exposed_qual):
+    fr, led, roots, qnonce = exposed_qual  # SYNTH_QUALIFICATION exposure "exp-1"
+    CU.record_fit_output_frozen(fr, led, exposure_id="exp-1", fit_output_sha256=_h("fit"))
+    with pytest.raises(CustodyError, match="late"):  # its output could never be frozen before the reveal
+        expose(fr, led, QUAL, "exp-late")
+    CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=qnonce)
+    assert [e["payload"]["exposure_id"] for e in led.entries() if e["kind"] == "EXPOSURE_RECORDED"] == ["exp-1"]
+
+
+def test_reveal_requires_every_exposure_of_the_class_to_be_frozen(exposed_qual):
+    fr, led, roots, qnonce = exposed_qual
+    expose(fr, led, QUAL, "exp-2")  # a second method on the same sealed set, before any fit freeze
+    CU.record_fit_output_frozen(fr, led, exposure_id="exp-1", fit_output_sha256=_h("fit 1"))
+    with pytest.raises(CustodyError):
+        CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=qnonce)
+    with pytest.raises(CustodyError):
+        CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=qnonce, withheld_class_tag=WTAG)
+    CU.record_fit_output_frozen(fr, led, exposure_id="exp-2", fit_output_sha256=_h("fit 2"))
+    CU.reveal_class_nonce(fr, led, class_tag=QUAL, nonce=qnonce)
+    CU.reveal_withheld_family(fr, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=qnonce, withheld_class_tag=WTAG)
+    # the same rule for a class without a withheld family (no other guard can mask it)
+    dnonce = roots[DEBUG][0]
+    expose(fr, led, DEBUG, "d1")
+    expose(fr, led, DEBUG, "d2")
+    CU.record_fit_output_frozen(fr, led, exposure_id="d1", fit_output_sha256=_h("debug fit 1"))
+    with pytest.raises(CustodyError):
+        CU.reveal_class_nonce(fr, led, class_tag=DEBUG, nonce=dnonce)
+    CU.record_fit_output_frozen(fr, led, exposure_id="d2", fit_output_sha256=_h("debug fit 2"))
+    CU.reveal_class_nonce(fr, led, class_tag=DEBUG, nonce=dnonce)
+    CU.CustodyLedger.from_bytes(led.to_bytes(), expected_head=led.head)
+
+
+def test_fit_freeze_is_bound_to_one_recorded_exposure(exposed_qual):
+    fr, led, roots, qnonce = exposed_qual
+    with pytest.raises(CustodyError):
+        CU.record_fit_output_frozen(fr, led, exposure_id="no-such-exposure", fit_output_sha256=_h("fit"))
+    with pytest.raises(CustodyError):  # the exposure is a qualification exposure, not a debug one
+        CU.record_fit_output_frozen(fr, led, class_tag=DEBUG, exposure_id="exp-1", fit_output_sha256=_h("fit"))
+    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, exposure_id="exp-1", fit_output_sha256=_h("fit"))
+    with pytest.raises(CustodyError):
+        CU.record_fit_output_frozen(fr, led, exposure_id="exp-1", fit_output_sha256=_h("refit"))
+
+
+# ------------------------- unexpected failures surface only as non-echoing CustodyErrors
+
+def test_reveal_of_a_superseded_version_that_never_committed_is_a_custody_error(tmp_path):
+    v1, q1 = make_world()
+    led = CU.CustodyLedger()
+    CU.record_generator_freeze(v1, led)  # v1 never commits a withheld family
+    v2, q2 = make_world(set_snr(0.3))
+    successor(v1, v2, led)
+    CU.record_generator_freeze(v2, led)
+    commit_and_attest(v2, q2, led, make_tree(tmp_path), change="UNCHANGED")
+    expose(v2, led, QUAL, "e2")
+    CU.record_fit_output_frozen(v2, led, exposure_id="e2", fit_output_sha256=_h("v2 fit"))
+    with pytest.raises(CustodyError):
+        CU.reveal_withheld_family(v1, led, withheld_spec=DUMMY_WITHHELD_SPEC, nonce=q1, withheld_class_tag=WTAG)
+    entries = [(e["kind"], e["payload"]) for e in led.entries()]
+    entries.append(("REVEALED", {"reveal_type": "WITHHELD_FAMILY", "generator_semantic_hash": v1.generator_semantic_hash,
+                                 "withheld_class_tag": WTAG, "nonce_hex": q1.hex(),
+                                 "withheld_spec": DUMMY_WITHHELD_SPEC, "family_previously_public": False}))
+    raw, head = _forge(entries)
+    with pytest.raises(CustodyError):
+        CU.CustodyLedger.from_bytes(raw, expected_head=head)
+
+
+def test_unexpected_validator_failure_becomes_a_non_echoing_custody_error(monkeypatch):
+    fr, _ = make_world()
+    led = CU.CustodyLedger()
+    CU.record_generator_freeze(fr, led)
+    raw = led.to_bytes()
+    hidden = "DUMMY_hidden_" + "detail"
+
+    def broken(ledger, payload):
+        raise KeyError(hidden)
+
+    monkeypatch.setitem(CU._VALIDATORS, "GENERATOR_FROZEN", broken)
+    with pytest.raises(CustodyError) as exc:
+        CU.CustodyLedger.from_bytes(raw)
+    assert hidden not in _chain_text(exc.value)
+    with pytest.raises(CustodyError) as exc:
+        CU.record_generator_freeze(fr, CU.CustodyLedger())
+    assert hidden not in _chain_text(exc.value)
+
+
+# ------------------- the qualification-nonce scan is bound to the nonce it scanned
+
+def test_withheld_commitment_requires_a_scan_bound_to_the_qualification_nonce(tmp_path):
+    fr, qnonce = make_world()
+    led = CU.CustodyLedger()
+    CU.record_generator_freeze(fr, led)
+    nc = CU.nonce_commitment(qnonce)
+    CU.record_nonce_commitment(fr, led, class_tag=QUAL, nonce_commitment=nc)
+    tree = make_tree(tmp_path)
+    nonce_scan = CU.scan_nonce_absence(tree, qnonce)
+    assert set(nonce_scan) == {"secret_absent", "tree_identity", "files_scanned", "nonce_commitment"}
+    assert nonce_scan["nonce_commitment"] == nc and qnonce.hex() not in repr(nonce_scan)
+    spec_scan = CU.require_secret_absence(tree, C.canonical_json_bytes(DUMMY_WITHHELD_SPEC))
+    other_nonce_scan = CU.scan_nonce_absence(tree, dummy_nonce())
+    cpa = code_path_attestation()
+    for scans in ([spec_scan], [other_nonce_scan, spec_scan]):
+        with pytest.raises(CustodyError):
+            CU.record_withheld_commitment(fr, led, withheld_class_tag=WTAG, nonce_commitment=nc,
+                                          secret_absence_attestations=scans, code_path_attestation=cpa)
+    with pytest.raises(CustodyError):
+        CU.scan_nonce_absence(tree, b"too short to be a nonce")
+    CU.record_withheld_commitment(fr, led, withheld_class_tag=WTAG, nonce_commitment=nc,
+                                  secret_absence_attestations=[nonce_scan, spec_scan], code_path_attestation=cpa)
+    entries = [(e["kind"], e["payload"]) for e in led.entries()]
+    assert entries[-1][1]["secret_absence"]["scanned_nonce_commitment"] == nc
+    entries[-1][1]["secret_absence"]["scanned_nonce_commitment"] = CU.nonce_commitment(dummy_nonce())
+    raw, head = _forge(entries)
+    with pytest.raises(CustodyError):
+        CU.CustodyLedger.from_bytes(raw, expected_head=head)
+
+
 # ------------------------------------- N-c: requalification prerequisites
 
 @pytest.mark.parametrize("incomparable", [False, True])
@@ -1409,10 +1535,10 @@ def test_withheld_commitment_requires_clean_scan_and_code_path_attestations(tmp_
     (leaky / "scripts" / "config.json").write_bytes(C.canonical_json_bytes(DUMMY_WITHHELD_SPEC))
     leak_scan = CU.scan_secret_absence(leaky, C.canonical_json_bytes(DUMMY_WITHHELD_SPEC))
     assert leak_scan["secret_absent"] is False
-    good_scan = CU.scan_secret_absence(clean, qnonce)
+    good_scan = CU.scan_nonce_absence(clean, qnonce)
     other = make_tree(tmp_path, "other")  # same file count, different content
     (other / "scripts" / "public_mechanism.py").write_bytes(b"def shared_kernel(x):\n    return 2 * x\n")
-    other_tree_scan = CU.scan_secret_absence(other, qnonce)
+    other_tree_scan = CU.scan_nonce_absence(other, qnonce)
     assert other_tree_scan["files_scanned"] == good_scan["files_scanned"]
     assert other_tree_scan["tree_identity"] != good_scan["tree_identity"]
     cpa = code_path_attestation()
@@ -1509,7 +1635,7 @@ def test_withheld_spec_key_collision_is_not_echoed(exposed_qual):
         CU.withheld_family_commitment(dummy_nonce(), colliding, pre, WTAG)
     assert hidden not in _chain_text(exc.value)
     fr, led, roots, qnonce = exposed_qual
-    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("fit"))
+    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, exposure_id="exp-1", fit_output_sha256=_h("fit"))
     with pytest.raises(CustodyError) as exc:
         CU.reveal_withheld_family(fr, led, withheld_spec=colliding, nonce=qnonce, withheld_class_tag=WTAG)
     assert hidden not in _chain_text(exc.value)
@@ -1573,7 +1699,7 @@ def test_forged_attestation_with_wrong_counts_is_refused_on_replay(committed, ov
 @pytest.mark.parametrize("field", ["root_commitment", "authorized_ids_digest"])
 def test_forged_attestation_digest_is_caught_at_reveal(exposed_qual, field):
     fr, led, roots, qnonce = exposed_qual
-    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, fit_output_sha256=_h("fit"))
+    CU.record_fit_output_frozen(fr, led, class_tag=QUAL, exposure_id="exp-1", fit_output_sha256=_h("fit"))
     entries = [(e["kind"], e["payload"]) for e in led.entries()]
     idx = [i for i, (k, p) in enumerate(entries) if k == "REALIZATION_SET_ATTESTED" and p["class_tag"] == QUAL][0]
     entries[idx][1][field] = _h("forged " + field)
