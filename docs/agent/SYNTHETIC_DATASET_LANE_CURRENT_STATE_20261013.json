@@ -36,7 +36,7 @@
     "fit_view_sha256": "fc5fa5c071903460da8c0d4644a3b18022f45b178f2c60a727710cadc2fb350a",
     "controller_truth_sha256": "120c4e47bb7d667360c0786bb6004f02166d0f189c4a2b33b478545c7296c05f",
     "manifest_sha256": "9b74681f57601225aa26037fa1eac439be067143bfb900cdcd5f73af0dbc8d3b",
-    "synthetic_package_sha256": "9f2f3b7a53d5862a2a08bbd23c1d42f990f0f055616fbce67a1491493cda3fb41",
+    "synthetic_package_sha256": "9f2f3b7a53d5862a2a08bbd23c1d42f990f0f055616fbce7a1491493cda3fb41",
     "runtime": {
       "python": "3.11.9",
       "numpy": "2.3.5",
