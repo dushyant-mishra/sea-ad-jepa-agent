@@ -72,13 +72,17 @@ def _relation_unit(raw: Mapping, index: int) -> dict:
     if not isinstance(raw, Mapping) or set(raw) != _ALLOWED_RELATION:
         raise RelationalManifestError(f"relation_units[{index}] fields differ from frozen schema")
     relation_id = _token(raw["relation_id"], f"relation_units[{index}].relation_id")
-    members = _token_list(
-        raw["member_address_ids"],
-        f"relation_units[{index}].member_address_ids",
-        minimum=3,
-    )
-    if len(members) != 3 or len(set(members)) != 3:
+    raw_members = raw["member_address_ids"]
+    if isinstance(raw_members, (str, bytes)) or not isinstance(raw_members, Sequence) or len(raw_members) != 3:
         raise RelationalManifestError("each scale-free triplet must bind exactly three unique member addresses")
+    members_list = []
+    for item in raw_members:
+        if not isinstance(item, str) or not item or item != item.strip() or "\0" in item:
+            raise RelationalManifestError("member_address_ids values must be nonempty strings")
+        members_list.append(item)
+    if len(set(members_list)) != 3:
+        raise RelationalManifestError("each scale-free triplet must bind exactly three unique member addresses")
+    members = tuple(members_list)
     binding = _token(raw["address_binding_state"], f"relation_units[{index}].address_binding_state")
     if binding != ADDRESS_BINDING_STATE:
         raise RelationalManifestError(
@@ -117,9 +121,10 @@ def derive_relational_contract(manifest: Mapping) -> dict:
     if sources != REQUIRED_SOURCES:
         raise RelationalManifestError("required_sources must be exactly HVS, NPH52, SEA_AD and noncompensating")
 
-    views = _token_list(manifest["lawful_view_ids"], "lawful_view_ids", minimum=2)
-    if len(views) < 2:
+    raw_views = manifest["lawful_view_ids"]
+    if isinstance(raw_views, (str, bytes)) or not isinstance(raw_views, Sequence) or len(raw_views) < 2:
         raise RelationalManifestError("at least two lawful views are required")
+    views = _token_list(raw_views, "lawful_view_ids", minimum=2)
 
     null_unit = _token(manifest["null_permutation_unit"], "null_permutation_unit")
     if null_unit != NULL_PERMUTATION_UNIT:
