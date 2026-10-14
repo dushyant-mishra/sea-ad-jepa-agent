@@ -39,7 +39,7 @@ _COMPOSITE_EXPANSION = {
 
 _COMPOSITE_REQUIRED_PASSES = {
     "C6": ("C1", "C3", "C6"),
-    "C4": ("C1", "C2", "C3", "C4"),
+    "C4": ("C1", "C2", "C3", "C6", "C4"),
 }
 
 _RUNTIME_FILES = (
