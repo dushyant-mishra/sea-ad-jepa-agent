@@ -1,0 +1,38 @@
+name: TD real population support registry V2
+
+on:
+  push:
+    branches:
+      - implementation/td-real-population-support-registry-v2-20261014
+  pull_request:
+    paths:
+      - 'scripts/v5/td_real_transfer_coverage_contract_v2.py'
+      - 'scripts/v5/freeze_td_real_population_support_registry_v2.py'
+      - 'tests/v5/test_td_real_transfer_coverage_contract_v2.py'
+      - 'tests/v5/test_freeze_td_real_population_support_registry_v2.py'
+      - 'results/target_discovery/real_tournament/TD_REAL_POPULATION_SUPPORT_REGISTRY_FREEZE_RECEIPT_V2.json'
+      - 'results/target_discovery/real_tournament/TD_REAL_TRANSFER_COVERAGE_STATIC_CONTRACT_V2.json'
+      - '.github/workflows/td-real-population-support-registry-v2.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.17'
+      - run: python -m pip install pytest==9.1.1
+      - name: Run V2 static contract and freeze-producer tests
+        run: >-
+          python -m pytest -q
+          tests/v5/test_td_real_transfer_coverage_contract_v2.py
+          tests/v5/test_freeze_td_real_population_support_registry_v2.py
+      - name: Authority guard
+        run: |
+          echo BIOLOGICAL_OUTCOME_INPUTS_DOWNLOADED=false
+          echo REAL_TOURNAMENT_EXECUTED=false
+          echo FOUNDATION_SUPPORT_PROMOTED=false
+          echo AUTHORITY_ALL_FALSE=true
