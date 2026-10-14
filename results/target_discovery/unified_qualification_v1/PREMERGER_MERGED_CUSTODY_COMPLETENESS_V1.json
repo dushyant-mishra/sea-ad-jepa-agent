@@ -1,0 +1,165 @@
+{
+  "schema": "PREMERGER_MERGED_CUSTODY_COMPLETENESS_V1",
+  "date": "2026-10-14",
+  "purpose": "Task 0 re-audit extension preserving active pre-merger work and historically important scientific/runtime constraints that were under-resolved in the first custody freeze.",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "task1_blocked": true,
+  "audit_boundaries": {
+    "candidate_outcomes_opened": false,
+    "reader_validation_opened": false,
+    "reader_oracle_opened": false,
+    "real_data_recomputed": false,
+    "historical_replays_rerun": false
+  },
+  "custody_groups": [
+    {
+      "group_id": "ACTIVE_PR356_TASKS_1_4",
+      "source": {
+        "pr": 356,
+        "plan_head": "2c2723a1a731e7a848196aef3f7c4ab965e9ff6a",
+        "role": "pre-merger production-synthetic Tasks 1-4 under original sequential execution law"
+      },
+      "unified_destination": "shared identity/custody/calibration infrastructure and KNOWN_TRUTH_CASEBUNDLE_V1 biology substrate; never an independent synthetic authority system",
+      "review_obligations": [
+        "preserve the original Task1→review→Task2→review→Task3→review→checkpoint→Task4 execution law for already-assigned Macha work",
+        "absorb exact reviewed outputs into unified interfaces rather than duplicating implementation",
+        "do not continue old Tasks5-12 independently after merger"
+      ],
+      "objects": [
+        {
+          "object_id": "PR356_TASK1",
+          "name": "Canonical identity and serialization contract",
+          "state": "AWAITING_EXACT_REVIEWED_HEAD",
+          "expected_output": "scripts/production_synthetic/canonical_v1.py and reviewed receipts/tests",
+          "unified_destination": "shared canonical identity infrastructure used by TD_EXECUTION_MANIFEST_V1 and all authenticated artifacts",
+          "authority": "PREMERGER_COMPONENT_CANDIDATE_ONLY__NO_UNIFIED_PROMOTION_UNTIL_MIGRATED"
+        },
+        {
+          "object_id": "PR356_TASK2",
+          "name": "Freeze-before-use custody, withheld commitments, identity-keyed RNG",
+          "state": "AWAITING_EXACT_REVIEWED_HEAD",
+          "expected_output": "freeze/exposure state, commit-reveal, identity-keyed RNG, budget attestation, secret scanner, successor law",
+          "unified_destination": "shared custody/RNG/sealed-challenge infrastructure",
+          "authority": "PREMERGER_COMPONENT_CANDIDATE_ONLY__NO_UNIFIED_PROMOTION_UNTIL_MIGRATED"
+        },
+        {
+          "object_id": "PR356_TASK3",
+          "name": "Calibration firewall, number provenance and realism contract",
+          "state": "AWAITING_EXACT_REVIEWED_HEAD",
+          "expected_output": "observation-side calibration/provenance/realism contracts and first-joint-pass stopping law",
+          "unified_destination": "shared calibration/provenance/realism infrastructure",
+          "authority": "PREMERGER_COMPONENT_CANDIDATE_ONLY__NO_UNIFIED_PROMOTION_UNTIL_MIGRATED"
+        },
+        {
+          "object_id": "PR356_TASK4",
+          "name": "Candidate-neutral hidden biology",
+          "state": "BLOCKED_ON_TASKS1_3_REVIEWS",
+          "expected_output": "candidate-neutral biology_v1 known-truth world substrate only after original checkpoint clears",
+          "unified_destination": "KNOWN_TRUTH_CASEBUNDLE_V1 / TRUTH_BUNDLE_V1 substrate generation",
+          "authority": "KNOWN_TRUTH_SUBSTRATE_ONLY__NO_GATE_OR_HUMAN_AUTHORITY"
+        },
+        {
+          "object_id": "PR356_TASKS5_12",
+          "name": "Former independent synthetic Tasks 5-12",
+          "state": "SUPERSEDED_INDEPENDENT_EXECUTION",
+          "continue_independently": false,
+          "unified_destination": "requirements/challenge lessons only where explicitly migrated into unified Tasks 1-12",
+          "authority": "SUPERSEDED_PARALLEL_IMPLEMENTATION__NO_AUTHORITY"
+        }
+      ]
+    },
+    {
+      "group_id": "FOUNDATION_REPRESENTATION_CURRENT_STATE",
+      "source": {
+        "pr": 276,
+        "head": "083f640bbf6ca438cbf2e38d1ef4c7ffbba49bb7",
+        "role": "current non-promoting Foundation representation residual-gate evidence"
+      },
+      "unified_destination": "TARGET_QUALIFICATION_BUNDLE_V1 representation limitations and DOWNSTREAM_CERTIFICATION_CONTRACT_V1 transfer/invariance obligations",
+      "review_obligations": [
+        "do not treat current learned T1 coordinates as technology-invariant biological coordinates",
+        "preserve SUBSPACE_ONLY interpretation where coordinate axes are not qualified",
+        "report matrix-identifiable coverage rather than claiming universal transfer",
+        "do not label source/acquisition signal as purely technical because biology/donor/acquisition remain partly aliased"
+      ],
+      "objects": [
+        {"object_id":"FOUNDATION_SUBSPACE_POLICY","state":"SUBSPACE_ONLY","authority":"CURRENT_LIMITATION__NON_PROMOTING"},
+        {"object_id":"FOUNDATION_TECH_INVARIANCE","state":"TECHNOLOGY_INVARIANCE_NOT_QUALIFIED","authority":"CURRENT_LIMITATION__NON_PROMOTING"},
+        {"object_id":"FOUNDATION_MATRIX_IDENTIFIABILITY","state":"CANONICAL_BROAD_ENDPOINT_34_OF_42","details":"34 AVAILABLE / 8 UNAVAILABLE; all 7 NPH52 unavailable; SEA-AD caudate unavailable for this endpoint","authority":"AUTHENTICATED_COVERAGE_CONSTRAINT"},
+        {"object_id":"FOUNDATION_SOURCE_SIGNAL","state":"SOURCE_ACQUISITION_SIGNAL_REMAINS_STRONG","details":"held-out and fit-pop diagnostics show strong residual source/acquisition predictability","authority":"NON_PROMOTING_DIAGNOSTIC_EVIDENCE"},
+        {"object_id":"FOUNDATION_SUCCESSOR_CONTRACT","state":"PROSPECTIVE_ONLY__EXCLUDES_U0000_U0205","authority":"FUTURE_CANDIDATE_ACCEPTANCE_CONTRACT_ONLY"}
+      ]
+    },
+    {
+      "group_id": "MULTIMODAL_SCENIC_ATAC_CUSTODY",
+      "sources": [
+        {"pr":164,"head":"0e36cede000c6c0eee66ab2b11ed43d41f7b9580","role":"GSE174367 RNA/ATAC benchmark-readiness and Stage75F recovery"},
+        {"pr":179,"head":"5e3d1197749c6d2ac0b4015edea5c042b681af91","role":"SCENIC+ recovery/expansion INCOMPLETE_STOPPED"},
+        {"pr":312,"head":"2ca8a91a960c823cc327d3885d008d3695837e83","role":"rare-program and multimodal integration contracts including GSE214979 same-nucleus RNA+ATAC prefreeze"}
+      ],
+      "unified_destination": "multimodal evidence contracts, known-truth observation worlds, Target Qualification Bundle evidence provenance, downstream cross-modal certification",
+      "review_obligations": [
+        "STAGE75F is hypothesis-generating and not a validated SCENIC+ eRegulon network or causal answer key",
+        "independent ATAC measurement must remain distinct from RNA-derived candidate-edge circularity",
+        "SAME_NUCLEUS and SEPARATE_NUCLEUS evidence are different observation operators and must not be conflated",
+        "nearest-gene/proximity evidence cannot be promoted to validated regulatory target identity",
+        "structural graph controls require actual structural distinctness; historical identical-control bug remains a regression obligation",
+        "PR179 remains INCOMPLETE_STOPPED and its numbers are non-citable until separately completed/reviewed"
+      ],
+      "objects": [
+        {"object_id":"STAGE75F_REGULATORY_PACKAGE","state":"HYPOTHESIS_GENERATING_ONLY__NOT_VALIDATED_SCENIC_NETWORK"},
+        {"object_id":"GSE174367_ATAC","state":"AUTHENTICATED_CONDITIONALLY_INDEPENDENT_ATAC_MEASUREMENT"},
+        {"object_id":"GSE174367_PAIRING","state":"SEPARATE_NUCLEUS__NO_CELL_LEVEL_RNA_ATAC_PAIRING"},
+        {"object_id":"GSE214979_PREFREEZE","state":"SAME_NUCLEUS_RNA_ATAC_PREFREEZE_CONTRACT"},
+        {"object_id":"SCENIC_PLUS_RECOVERY_PR179","state":"INCOMPLETE_STOPPED__NO_RESULT_AUTHORITY"},
+        {"object_id":"REGULATORY_GRAPH_NEGATIVE_PRIOR","state":"TARGET_SHUFFLED_CONTROL_OUTPERFORMED_REAL_GRAPH__NEGATIVE_PRIOR"}
+      ]
+    },
+    {
+      "group_id": "RUNTIME_TRAINING_SAFETY_HANDOFF",
+      "sources": [
+        {"pr":223,"head":"71bf55dda89fa2099933160eeee734ab2167324d","role":"shared qualification interface V1"},
+        {"pr":224,"head":"9d00684e08ba34ef8d7b04e478b9c380cd36d537","role":"canonical V5 runtime safety successor"}
+      ],
+      "unified_destination": "post-downstream-certification runtime/training eligibility prerequisites; no scientific target authority",
+      "review_obligations": [
+        "OPTIMIZER_COMPLETION_BEFORE_EMA",
+        "rejected/incomplete update cannot advance EMA teacher",
+        "typed physical checkpoint/receipt and runtime-source provenance must be authenticated before continuation",
+        "COORDINATE_VALUE_COUPLING across global/local rows, logical identity, payload bytes and consumed values is a standing invariant",
+        "Q_SAFETY remains unproven until the joined adapter/interface/runtime path executes every required channel",
+        "runtime mechanics cannot substitute for target identifiability, representation validity or teacher/student scientific semantics"
+      ],
+      "objects": [
+        {"object_id":"RUNTIME_GUARDED_MUTATION","state":"MECHANICS_QUALIFIED__TRAINING_OFF"},
+        {"object_id":"RUNTIME_PRESENTATION_EMA","state":"EMA_MECHANICS_AUTHENTICATED__PRODUCTION_TIMESCALE_NOT_SELECTED"},
+        {"object_id":"RUNTIME_Q_SAFETY","state":"Q_SAFETY_NOT_YET_EXECUTED_ON_FINAL_JOIN"},
+        {"object_id":"RUNTIME_COORDINATE_VALUE_COUPLING","state":"COORDINATE_VALUE_COUPLING_REQUIRED"},
+        {"object_id":"RUNTIME_AUTHORITY_BOUNDARY","state":"RUNTIME_PROOF_NE_SCIENTIFIC_TARGET_AUTHORITY"}
+      ]
+    },
+    {
+      "group_id": "FULL104_INFORMATION_CHANNEL_INVARIANTS",
+      "source": {
+        "pr": 33,
+        "head": "ae5dc5c624fff341b8ef30c5359c55528383920a",
+        "role": "FULL104 information-channel red-team"
+      },
+      "unified_destination": "producer/observation contracts, nuisance-baseline requirements, challenge worlds and downstream leakage certification",
+      "review_obligations": [
+        "normalization denominator/source-library channels must be treated as possible source shortcuts",
+        "equal address burden cannot be assumed to equal evidence burden",
+        "per-source estimability must be explicit and noncompensating",
+        "silent/constant targets cannot be zero-filled into artificially favorable scores",
+        "metrics that are mathematically invariant to donor/source-level transformations cannot certify absence of those channels"
+      ],
+      "objects": [
+        {"object_id":"FULL104_A","state":"NORMALIZATION_DENOMINATOR_SOURCE_CHANNEL","details":"source_library denominator was sufficient for perfect source classification in the audited setting"},
+        {"object_id":"FULL104_B","state":"ADDRESS_PARITY_NE_EVIDENCE_PARITY","details":"equal address counts can remove unequal detected-token/UMI evidence mass"},
+        {"object_id":"FULL104_C","state":"ZERO_FILL_CAN_CREATE_FALSE_EASE","details":"nonvarying/silent targets scored as zero can become artificially favorable rather than non-estimable"},
+        {"object_id":"FULL104_D","state":"WITHIN_DONOR_METRIC_BLINDNESS","details":"within-donor centered score can be blind to donor/source-level affine channels"},
+        {"object_id":"FULL104_G","state":"WITHDRAWN_FINDING__NO_ISSUE_FOUND","details":"historical calibration-cache distortion claim was withdrawn and must not be resurrected"}
+      ]
+    }
+  ]
+}
