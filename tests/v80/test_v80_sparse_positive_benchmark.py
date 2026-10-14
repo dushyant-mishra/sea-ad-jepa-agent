@@ -151,15 +151,19 @@ def test_donor_splits_disjoint_and_unsupported_poison_invariant():
 def test_controller_computes_metrics_and_rejects_estimator_self_scoring():
     B = _benchmark(); A = _adjudicator()
     worlds, fit, controller = _payloads(B)
-    truth = next(x for x in controller["fits"] if x["estimability_truth"] == B.ESTIMABLE)
-    world = next(w for w in worlds if w.opaque_id == truth["opaque_world_id"])
-    record = _oracle_record(world, int(truth["gene_index"]), truth["opaque_fit_id"])
-    out = A.adjudicate_sparse_positive({"fits": [truth]}, fit, [record])
-    assert out["status"] == "PASS"
+    world_by_id = {w.opaque_id: w for w in worlds}
+    truths = [x for x in controller["fits"] if x["estimability_truth"] == B.ESTIMABLE]
+    records = [
+        _oracle_record(world_by_id[t["opaque_world_id"]], int(t["gene_index"]), t["opaque_fit_id"])
+        for t in truths
+    ]
+    out = A.adjudicate_sparse_positive({"fits": truths}, fit, records)
+    assert out["status"] == "PASS", out["failures"]
     assert out["metrics_computed_by_controller"] is True
-    bad = dict(record); bad["detection_intercept_abs_error"] = 0.0
+    assert out["heldout_outcomes_opened_controller_side_only"] is True
+    bad = dict(records[0]); bad["detection_intercept_abs_error"] = 0.0
     with pytest.raises(ValueError, match="self-report"):
-        A.adjudicate_sparse_positive({"fits": [truth]}, fit, [bad])
+        A.adjudicate_sparse_positive({"fits": [truths[0]]}, fit, [bad])
 
 
 def test_status_semantics_false_abstention_false_certainty_and_numerical_failure():
