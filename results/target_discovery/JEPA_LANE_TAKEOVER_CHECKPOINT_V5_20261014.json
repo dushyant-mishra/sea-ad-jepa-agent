@@ -1,0 +1,84 @@
+{
+  "schema": "JEPA_LANE_TAKEOVER_CHECKPOINT_V5_20261014",
+  "status": "OUTCOME_BLIND_MECHANICS_ADVANCED__REAL_DATA_CALIBRATION_EXTERNALIZED",
+  "authority": {
+    "target_winner": null,
+    "representation_winner": null,
+    "real_td_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "real_training_authorized": false
+  },
+  "current_surfaces": {
+    "population_g11_g12": {
+      "pr": 349,
+      "head": "1ab453e5cb60efb209a8eee2aecb61c5ea0fbfc7",
+      "state": "MECHANICS_QUALIFIED__CANDIDATE_EVIDENCE_SUPPORT_STILL_BLOCKED"
+    },
+    "r1_semantics": {
+      "pr": 350,
+      "head": "9b9078c102fa346644d6eb2bda4ff7b4bdfe854a",
+      "state": "MECHANICS_QUALIFIED__ANCHORED_CELL_TRIPLET_OBJECT"
+    },
+    "post_td_c4_requires_c6": {
+      "pr": 351,
+      "head": "2abcb9fe156eac340ff12adff9426ed38d929e3e",
+      "focused_run": 38511967467,
+      "full_harness_run": 38511967480,
+      "state": "FULL_HARNESS_GREEN"
+    },
+    "g6_margin_decision": {
+      "pr": 352,
+      "head": "bb1e35d33deb52236829012be452e4c4d8b362fc",
+      "state": "DECISION_MECHANICS_QUALIFIED__REAL_REFERENCE_AND_EVIDENCE_RIGHTS_REQUIRED"
+    },
+    "g7_terminal_convergence": {
+      "pr": 354,
+      "head": "d90047308d633e259195a54501a230373b36d043",
+      "state": "DECISION_MECHANICS_QUALIFIED__REAL_REFERENCE_AND_SUPPORT_REQUIRED"
+    },
+    "g9_s1_s2_geometry": {
+      "pr": 355,
+      "head": "6e5182e2dc4e8e263e8cbd309aed6494b5ea7a55",
+      "state": "KNOWN_TRUTH_MECHANICS_QUALIFIED__ADVERSE_TAIL_NULL__REAL_PRODUCERS_REQUIRED"
+    },
+    "g2_nontrivial_content": {
+      "pr": 357,
+      "head": "c174d05215f14bda5292c07559b10445bc17d86c",
+      "red_run": 38512093799,
+      "green_run": 38512253360,
+      "state": "DECISION_MECHANICS_QUALIFIED__REAL_REFERENCE_SUPPORT_AND_ENDPOINT_BINDING_REQUIRED"
+    },
+    "g8_measurement_reference": {
+      "pr": 343,
+      "head": "82d17bfb1650d97a95d5424160126791f09d7494",
+      "protected_endpoints": 6,
+      "family_alpha": 0.01,
+      "alpha_eff": 0.0016666666666666668,
+      "minimum_calibration_n_per_required_unit": 599,
+      "state": "MECHANICS_QUALIFIED__HUMAN_CALIBRATION_REQUIRED"
+    }
+  },
+  "external_real_data_lane": {
+    "agent": "Macha",
+    "authorized": true,
+    "scope": [
+      "OUTCOME_BLIND_G8_HUMAN_TECHNICAL_CALIBRATION",
+      "POPULATION_EVIDENCE_SUPPORT_RECONSTRUCTION",
+      "REAL_DATA_ESTIMABILITY_AUDIT",
+      "SAME_METRIC_REFERENCE_ARTIFACT_GENERATION_WHERE_CONTRACT_FROZEN",
+      "G6_G9_S1_S2_R1_FEASIBILITY_QUALIFICATION",
+      "HOSTILE_EXTERNAL_REVIEW"
+    ],
+    "candidate_outcomes_may_be_opened": false,
+    "target_selection_authorized": false,
+    "training_authorized": false
+  },
+  "historical_constraints": {
+    "v79": "PERMANENTLY_NOT_QUALIFIED",
+    "v80_successor_estimator": "NOT_QUALIFIED_BY_BENCHMARK_PACKAGE",
+    "not_estimable_is_not_fail": true,
+    "td57c_fine_locality": "CLOSED",
+    "td59_nearest_half": "NOT_A_PRODUCTION_CONSTANT"
+  }
+}
