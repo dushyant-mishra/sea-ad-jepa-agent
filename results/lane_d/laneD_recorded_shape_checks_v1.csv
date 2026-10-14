@@ -1,0 +1,13 @@
+quantity,recorded,observed,match
+snrna_features,58721.0,58721,True
+snrna_barcodes,61770.0,61770,True
+snatac_peaks,219070.0,219070,True
+snatac_barcodes,143401.0,143401,True
+rna_microglia_cells,4126.0,4126,True
+rna_microglia_samples,18.0,18,True
+atac_microglia_cells,12232.0,12232,True
+atac_microglia_samples,20.0,20,True
+rna_metadata_rows,61472.0,61472,True
+atac_metadata_rows,130418.0,130418,True
+snrna_barcodes_without_metadata,,298,
+snatac_barcodes_without_metadata,,12983,

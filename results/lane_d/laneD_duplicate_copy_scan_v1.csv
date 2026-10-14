@@ -1,0 +1,11 @@
+basename,path,size_bytes,is_canonical_path
+GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5,D:/Jepa project/data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5,273975534,True
+GSE174367_snRNA-seq_cell_meta.csv.gz,D:/Jepa project/data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz,435170,True
+GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5,D:/Jepa project/data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5,360317403,True
+GSE174367_snATAC-seq_cell_meta.csv.gz,D:/Jepa project/data/external/gse174367/GSE174367_snATAC-seq_cell_meta.csv.gz,1066930,True
+GSE174367_series_matrix.txt.gz,D:/Jepa project/data/external/public_schema_audit/GSE174367/GSE174367_series_matrix.txt.gz,13280,True
+gencode.v44.annotation.gtf.gz,D:/Jepa project/data/external_resources/stage75b/gencode.v44.annotation.gtf.gz,49721965,True
+hg38.chrom.sizes,D:/Jepa project/data/external_resources/stage75b/hg38.chrom.sizes,11672,True
+hg38_screen_v10_clust.regions_vs_motifs.rankings.feather,D:/Jepa project/data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather,35192958114,True
+hg38_screen_v10_clust.regions_vs_motifs.scores.feather,D:/Jepa project/data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.scores.feather,13882267682,True
+motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl,D:/Jepa project/data/external_resources/stage75b/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl,98718421,True
