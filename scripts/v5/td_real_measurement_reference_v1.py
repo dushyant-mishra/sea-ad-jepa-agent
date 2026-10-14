@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import math
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 
 import numpy as np
 
@@ -18,6 +18,7 @@ class MeasurementReferenceError(ValueError):
 
 
 DEPTHS = ("0.25", "0.50", "0.75")
+PROTECTED_ENDPOINTS = ("displacement", "support_fraction")
 NO_AUTHORITY = {
     "value_read_authorized": False,
     "real_tournament_authorized": False,
@@ -39,17 +40,15 @@ def _validate_alpha(alpha: float) -> float:
 
 
 def minimum_calibration_size(alpha: float) -> int:
-    """Minimum n such that ceil((n+1)(1-alpha)) is an observed calibration rank."""
+    """Minimum n such that a one-sided conformal order statistic is observed."""
     alpha = _validate_alpha(alpha)
-    # Algebraically n >= (1-alpha)/alpha = 1/alpha - 1.  A tiny tolerance only
-    # protects exact decimal inputs such as 0.01/3 from binary roundoff.
     return max(1, int(math.ceil((1.0 / alpha) - 1.0 - 1e-12)))
 
 
-def _validate_scores(scores: Sequence[float]) -> list[float]:
+def _validate_displacements(scores: Sequence[float]) -> list[float]:
     if isinstance(scores, (str, bytes)) or not isinstance(scores, Sequence):
         raise MeasurementReferenceError("calibration scores must be a sequence")
-    values = []
+    values: list[float] = []
     for score in scores:
         if isinstance(score, bool) or not isinstance(score, (int, float)):
             raise MeasurementReferenceError("calibration displacements must be numeric")
@@ -60,10 +59,24 @@ def _validate_scores(scores: Sequence[float]) -> list[float]:
     return values
 
 
+def _validate_support_fractions(scores: Sequence[float]) -> list[float]:
+    if isinstance(scores, (str, bytes)) or not isinstance(scores, Sequence):
+        raise MeasurementReferenceError("support fractions must be a sequence")
+    values: list[float] = []
+    for score in scores:
+        if isinstance(score, bool) or not isinstance(score, (int, float)):
+            raise MeasurementReferenceError("support fractions must be numeric")
+        value = float(score)
+        if not math.isfinite(value) or not (0.0 <= value <= 1.0):
+            raise MeasurementReferenceError("support fractions must be finite and lie in [0,1]")
+        values.append(value)
+    return values
+
+
 def upper_prediction_bound(scores: Sequence[float], *, alpha: float) -> dict:
     """Distribution-free one-sided split-conformal upper prediction bound."""
     alpha = _validate_alpha(alpha)
-    values = _validate_scores(scores)
+    values = _validate_displacements(scores)
     required_n = minimum_calibration_size(alpha)
     n = len(values)
     if n < required_n:
@@ -88,6 +101,38 @@ def upper_prediction_bound(scores: Sequence[float], *, alpha: float) -> dict:
         "required_n": required_n,
         "rank_1_based": rank,
         "upper_bound": ordered[rank - 1],
+        "alpha": alpha,
+    }
+
+
+def lower_prediction_bound(scores: Sequence[float], *, alpha: float) -> dict:
+    """Distribution-free one-sided lower prediction bound for support fractions."""
+    alpha = _validate_alpha(alpha)
+    values = _validate_support_fractions(scores)
+    required_n = minimum_calibration_size(alpha)
+    n = len(values)
+    if n < required_n:
+        return {
+            "status": "NOT_ESTIMABLE_CALIBRATION_RESOLUTION",
+            "n_calibration": n,
+            "required_n": required_n,
+            "alpha": alpha,
+        }
+    rank = int(math.floor((n + 1) * alpha + 1e-12))
+    if rank < 1 or rank > n:
+        return {
+            "status": "NOT_ESTIMABLE_CALIBRATION_RESOLUTION",
+            "n_calibration": n,
+            "required_n": required_n,
+            "alpha": alpha,
+        }
+    ordered = sorted(values)
+    return {
+        "status": "PASS_REFERENCE_CALIBRATED",
+        "n_calibration": n,
+        "required_n": required_n,
+        "rank_1_based": rank,
+        "lower_bound": ordered[rank - 1],
         "alpha": alpha,
     }
 
@@ -138,30 +183,59 @@ def validate_seed_namespaces(*, calibration_namespaces: Sequence[str], deciding_
         raise MeasurementReferenceError("calibration, deciding, and null seed namespaces must be disjoint")
 
 
-def build_depth_reference(calibration: dict[str, Sequence[float]], *, family_alpha: float = 0.01) -> dict:
+def _validate_depth_payload(payload, depth: str) -> tuple[list[float], list[float]]:
+    if not isinstance(payload, Mapping) or set(payload) != {"displacements", "support_fractions"}:
+        raise MeasurementReferenceError(
+            f"depth {depth} must contain exactly displacements and support_fractions"
+        )
+    displacements = _validate_displacements(payload["displacements"])
+    support = _validate_support_fractions(payload["support_fractions"])
+    if len(displacements) != len(support):
+        raise MeasurementReferenceError(
+            "displacements and support fractions must come from the same calibration realizations"
+        )
+    return displacements, support
+
+
+def build_depth_reference(calibration: dict[str, Mapping[str, Sequence[float]]], *, family_alpha: float = 0.01) -> dict:
     family_alpha = _validate_alpha(family_alpha)
     if not isinstance(calibration, dict) or set(calibration) != set(DEPTHS):
         raise MeasurementReferenceError(f"calibration must contain exact depth keys {list(DEPTHS)}")
-    alpha_eff = family_alpha / len(DEPTHS)
+
+    protected_tests = len(DEPTHS) * len(PROTECTED_ENDPOINTS)
+    alpha_eff = family_alpha / protected_tests
     required_n = minimum_calibration_size(alpha_eff)
-    depth_results = {
-        depth: upper_prediction_bound(calibration[depth], alpha=alpha_eff)
-        for depth in DEPTHS
-    }
-    statuses = {result["status"] for result in depth_results.values()}
+    depth_results: dict[str, dict] = {}
+    statuses: list[str] = []
+
+    for depth in DEPTHS:
+        displacements, support = _validate_depth_payload(calibration[depth], depth)
+        displacement_result = upper_prediction_bound(displacements, alpha=alpha_eff)
+        support_result = lower_prediction_bound(support, alpha=alpha_eff)
+        depth_results[depth] = {
+            "displacement": displacement_result,
+            "support_fraction": support_result,
+        }
+        statuses.extend([displacement_result["status"], support_result["status"]])
+
     status = (
         "PASS_MEASUREMENT_REFERENCE_CALIBRATED"
-        if statuses == {"PASS_REFERENCE_CALIBRATED"}
+        if all(value == "PASS_REFERENCE_CALIBRATED" for value in statuses)
         else "NOT_ESTIMABLE_MEASUREMENT_REFERENCE"
     )
     return {
         "schema": "JEPA_TD_REAL_MEASUREMENT_REFERENCE_V1",
         "status": status,
         "depths": list(DEPTHS),
+        "protected_endpoints_per_depth": list(PROTECTED_ENDPOINTS),
         "family_alpha": family_alpha,
         "alpha_eff": alpha_eff,
         "required_n_per_depth": required_n,
         "depth_results": depth_results,
+        "support_semantics": (
+            "MEASUREMENT_UNRESOLVED_OR_STRUCTURALLY_UNSUPPORTED_IS_ABSTENTION__"
+            "MEASURED_ZERO_REMAINS_MEASUREMENT__NO_SILENT_SUPPORT_LOSS"
+        ),
         "claim_boundary": "TECHNICAL_MEASUREMENT_REFERENCE_ONLY__NO_BIOLOGICAL_TARGET_AUTHORITY",
         "authority": dict(NO_AUTHORITY),
     }
