@@ -217,8 +217,10 @@ def serialize_fit_transport(worlds: Iterable[SparsePositiveWorld]) -> dict[str, 
     payload_worlds = []
     for world in worlds:
         support = np.asarray(world.support, dtype=bool)
-        detected = np.asarray(world.detected, dtype=bool) & support
-        positive = np.where(support & detected, np.asarray(world.positive_value, dtype=float), 0.0)
+        train_rows = np.asarray(world.split) == "train"
+        outcome_observed = support & train_rows[:, None]
+        detected = np.where(outcome_observed, np.asarray(world.detected, dtype=bool), False)
+        positive = np.where(outcome_observed & detected, np.asarray(world.positive_value, dtype=float), 0.0)
         payload_worlds.append({
             "opaque_world_id": world.opaque_id,
             "opaque_fit_ids": [_fit_id(world, g) for g in range(support.shape[1])],
@@ -229,6 +231,7 @@ def serialize_fit_transport(worlds: Iterable[SparsePositiveWorld]) -> dict[str, 
             "split": _array_list(world.split),
             "design_matrix": _array_list(world.design_matrix),
             "support": _array_list(support),
+            "outcome_observed": _array_list(outcome_observed),
             "detected": _array_list(detected),
             "positive_value": _array_list(positive),
         })
@@ -269,6 +272,8 @@ def serialize_controller_transport(worlds: Iterable[SparsePositiveWorld]) -> dic
                 "latent_detection_probability": _array_list(world.latent_detection_probability[:, g]),
                 "latent_positive_mu": _array_list(world.latent_positive_mu[:, g]),
                 "positive_sigma": float(world.positive_sigma),
+                "observed_detected": _array_list(world.detected[:, g]),
+                "observed_positive_value": _array_list(world.positive_value[:, g]),
             })
     return {
         "schema": "V80_SPARSE_POSITIVE_CONTROLLER_TRANSPORT_V1",
@@ -295,7 +300,7 @@ def validate_fit_transport(payload: dict[str, object]) -> None:
         "estimability_truth", "nonestimability_reason", "latent_detection_fixed_effects",
         "latent_positive_location", "latent_detection_donor_effect", "latent_positive_donor_effect",
         "latent_detection_probability", "latent_positive_mu", "positive_sigma", "challenge_family",
-        "controller_truth",
+        "observed_detected", "observed_positive_value", "controller_truth",
     }
     leaked = forbidden.intersection(set(_walk_keys(payload)))
     if leaked:
@@ -304,6 +309,14 @@ def validate_fit_transport(payload: dict[str, object]) -> None:
     for family in FAMILIES:
         if family in raw:
             raise ValueError("challenge identity leaked into fit transport")
+    for world in payload.get("worlds", []):
+        split = np.asarray(world["split"], dtype=str)
+        observed = np.asarray(world["outcome_observed"], dtype=bool)
+        detected = np.asarray(world["detected"], dtype=bool)
+        positive = np.asarray(world["positive_value"], dtype=float)
+        test = split == "test"
+        if observed[test].any() or detected[test].any() or np.any(positive[test] != 0.0):
+            raise ValueError("heldout outcomes leaked into fit transport")
 
 
 def benchmark_identity(worlds: Iterable[SparsePositiveWorld]) -> str:
