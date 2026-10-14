@@ -35,6 +35,40 @@ def _manifest(**updates):
     return manifest
 
 
+def _metric(**updates):
+    contract = {
+        "schema": G.METRIC_SCHEMA,
+        "metric_id": "C1_STATE_DISTANCE_V1",
+        "candidate_id": "C1",
+        "metric_manifest_sha256": METRIC_SHA,
+        "orientation": "SMALLER_IS_MORE_STABLE",
+        "same_metric_reference_and_decision": True,
+        "frozen_before_values": True,
+        "outcome_adaptive_parameters": False,
+        "invariance_class": "CANDIDATE_DECLARED_REPRESENTATION_INVARIANCE",
+    }
+    contract.update(updates)
+    return contract
+
+
+def _support(**updates):
+    contract = {
+        "schema": G.SUPPORT_SCHEMA,
+        "candidate_id": "C1",
+        "source": "SEA_AD",
+        "donor_id": "D001",
+        "endpoint_id": "PRIMARY_STATE",
+        "input_binding_sha256": BINDING,
+        "support_universe_sha256": SUPPORT_SHA,
+        "frozen_before_values": True,
+        "full_count_anchor_required": True,
+        "structural_blockers_excluded": True,
+        "measured_zero_retained": True,
+    }
+    contract.update(updates)
+    return contract
+
+
 def test_realization_is_technical_not_biological_replication():
     out = G.validate_unit_manifest(_manifest())
     assert out["biological_replication_unit"] == "DONOR"
@@ -109,42 +143,65 @@ def test_calibration_deciding_and_null_namespaces_must_be_disjoint():
 
 
 def test_candidate_specific_metric_is_allowed_only_when_frozen_and_same_metric_serves_reference_and_decision():
-    out = G.validate_metric_contract({
-        "schema": G.METRIC_SCHEMA,
-        "metric_id": "C1_STATE_DISTANCE_V1",
-        "candidate_id": "C1",
-        "metric_manifest_sha256": METRIC_SHA,
-        "orientation": "SMALLER_IS_MORE_STABLE",
-        "same_metric_reference_and_decision": True,
-        "frozen_before_values": True,
-        "outcome_adaptive_parameters": False,
-        "invariance_class": "CANDIDATE_DECLARED_REPRESENTATION_INVARIANCE",
-    })
+    out = G.validate_metric_contract(_metric())
     assert out["same_metric_reference_and_decision"] is True
     with pytest.raises(G.G8ContractError, match="same metric"):
-        G.validate_metric_contract({**out, "same_metric_reference_and_decision": False})
+        G.validate_metric_contract(_metric(same_metric_reference_and_decision=False))
 
 
-def test_human_g8_is_not_executable_without_both_metric_and_support_bindings():
+def test_support_contract_keeps_structural_support_upstream_and_measured_zero_in_measurement():
+    out = G.validate_support_contract(_support())
+    assert out["structural_blockers_excluded"] is True
+    assert out["measured_zero_retained"] is True
+    with pytest.raises(G.G8ContractError, match="structural"):
+        G.validate_support_contract(_support(structural_blockers_excluded=False))
+
+
+def test_reference_generation_readiness_requires_exact_metric_and_support_contract_identity():
     ready = G.execution_readiness(
         unit_manifest=_manifest(),
-        metric_contract_qualified=True,
-        support_universe_qualified=True,
+        metric_contract=_metric(),
+        support_contract=_support(),
     )
     assert ready["status"] == "READY_FOR_OUTCOME_BLIND_G8_REFERENCE_GENERATION_ONLY"
-    blocked = G.execution_readiness(
-        unit_manifest=_manifest(),
-        metric_contract_qualified=False,
-        support_universe_qualified=True,
-    )
-    assert blocked["status"] == "BLOCKED_G8_CONTRACT_DEPENDENCY"
-    assert blocked["human_g8_adjudication_authorized"] is False
+    assert ready["human_g8_adjudication_authorized"] is False
+
+    with pytest.raises(G.G8ContractError, match="metric binding"):
+        G.execution_readiness(
+            unit_manifest=_manifest(),
+            metric_contract=_metric(metric_manifest_sha256="d" * 64),
+            support_contract=_support(),
+        )
+    with pytest.raises(G.G8ContractError, match="support binding"):
+        G.execution_readiness(
+            unit_manifest=_manifest(),
+            metric_contract=_metric(),
+            support_contract=_support(donor_id="D999"),
+        )
+
+
+def test_support_contract_is_bound_to_exact_input_candidate_source_donor_endpoint_and_universe():
+    mismatches = [
+        {"input_binding_sha256": "d" * 64},
+        {"candidate_id": "C2"},
+        {"source": "NPH52"},
+        {"donor_id": "D002"},
+        {"endpoint_id": "OTHER"},
+        {"support_universe_sha256": "e" * 64},
+    ]
+    for update in mismatches:
+        with pytest.raises(G.G8ContractError, match="support binding"):
+            G.execution_readiness(
+                unit_manifest=_manifest(),
+                metric_contract=_metric(),
+                support_contract=_support(**update),
+            )
 
 
 def test_all_authority_remains_false():
     out = G.execution_readiness(
         unit_manifest=_manifest(),
-        metric_contract_qualified=True,
-        support_universe_qualified=True,
+        metric_contract=_metric(),
+        support_contract=_support(),
     )
     assert all(value is False for value in out["authority"].values())
