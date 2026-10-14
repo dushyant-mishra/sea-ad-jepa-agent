@@ -1,0 +1,43 @@
+{
+ "GA_forged_qualification_dict_accepted": "PASS",
+ "GB_baseline_family_caller_supplied": {
+  "full_C1_family": "FAIL",
+  "caller_passes_only_constant_train_mean": "PASS"
+ },
+ "GC_zero_margin_reference_accepted_tiny_advantage": "PASS",
+ "GD_candidate_equal_to_baseline_zero_margin": {
+  "status": "NOT_ESTIMABLE",
+  "n_tied": 10
+ },
+ "GD2_advantage_exactly_equal_margin": "FAIL",
+ "GE_value_dependent_support_relabel": {
+  "honest_10_donors_7pos_3neg": "FAIL",
+  "losers_relabelled_unsupported_7": "NOT_ESTIMABLE",
+  "honest_11_donors_8pos_3neg": "FAIL",
+  "losers_relabelled_unsupported_8": "PASS"
+ },
+ "GF_required_strata_caller_supplied": {
+  "both_required": "FAIL",
+  "HVS_omitted": "PASS"
+ },
+ "GG_alpha_0.5_two_donors": "PASS",
+ "GH_9of10_donors_beat_margin": {
+  "status": "FAIL",
+  "p_two_sided": 0.021484375
+ },
+ "GH2_7of7_positive_two_sided_vs_one_sided": "NOT_ESTIMABLE",
+ "GI_unsupported_row_with_null_score": "REFUSED: candidate_score must be finite numeric",
+ "GJ_nan_one_donor": "RAISES: candidate_score must be finite numeric",
+ "GK_generic_metric_reference_accepted_other_endpoint": "PASS",
+ "GK_reference_fields": [
+  "frozen",
+  "input_binding_sha256",
+  "margins",
+  "metric",
+  "orientation",
+  "qualified",
+  "reference_namespace_disjoint",
+  "reference_receipt_sha256",
+  "schema"
+ ]
+}

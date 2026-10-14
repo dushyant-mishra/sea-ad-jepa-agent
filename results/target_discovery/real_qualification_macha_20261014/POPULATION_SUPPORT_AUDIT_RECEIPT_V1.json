@@ -1,0 +1,189 @@
+{
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "candidate_outcomes_opened": false,
+  "crossing": {
+    "donor_operator_count_histogram": {
+      "1": 1,
+      "2": 3,
+      "3": 28,
+      "5": 2,
+      "7": 17,
+      "9": 4,
+      "10": 4,
+      "11": 28,
+      "18": 1,
+      "21": 6,
+      "22": 11,
+      "23": 18,
+      "24": 26
+    },
+    "donors_spanning_multiple_partitions": 0,
+    "donors_spanning_multiple_sources": 0,
+    "donors_with_single_operator": 1,
+    "operators_donor_count_histogram": {
+      "16": 2,
+      "18": 4,
+      "19": 1,
+      "29": 1,
+      "35": 2,
+      "37": 5,
+      "45": 1,
+      "46": 2,
+      "55": 1,
+      "57": 1,
+      "61": 3,
+      "62": 16,
+      "64": 1,
+      "65": 1,
+      "68": 1
+    },
+    "operators_single_partition": 0,
+    "operators_spanning_multiple_partitions": 42,
+    "operators_with_single_donor": 0
+  },
+  "dev_sealed_opened": false,
+  "expression_values_opened": false,
+  "identity_checks": {
+    "donor_operator_strata": true,
+    "donors": true,
+    "operators": true,
+    "partitions": true,
+    "rows": true,
+    "sources": true
+  },
+  "inferential_resolution": {
+    "family_alpha": 0.01,
+    "min_donors_by_bonferroni_family_size": {
+      "1": 7,
+      "10": 10,
+      "12": 11,
+      "15": 11,
+      "2": 8,
+      "20": 11,
+      "3": 9,
+      "30": 12,
+      "4": 9,
+      "5": 9,
+      "6": 10,
+      "8": 10
+    },
+    "note": "gate-specific family sizes are not all frozen; this table is the resolution function, not a gate decision",
+    "test": "exact one-sided donor sign test; minimum n with 0.5**n <= alpha/m"
+  },
+  "inputs": {
+    "metadata_sqlite": {
+      "bytes": 2709786624,
+      "path": "metadata/foundation_metadata_rows.sqlite",
+      "sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
+    },
+    "operator_address_state": {
+      "bytes": 227532,
+      "path": "support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz",
+      "sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+    },
+    "reader_split": {
+      "bytes": 3589,
+      "path": "splits/reader_donor_split.csv",
+      "sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511"
+    }
+  },
+  "partition_donor_counts": {
+    "reader_fit": 104,
+    "reader_oracle": 23,
+    "reader_validation": 22
+  },
+  "pathology_opened": false,
+  "schema": "JEPA_TD_REAL_POPULATION_SUPPORT_AUDIT_V1",
+  "scope": "OUTCOME_BLIND_SUPPORT_MAPPING__METADATA_ONLY",
+  "structural_support": {
+    "addresses_scalar_in_exactly_k_sources": {
+      "0": 289,
+      "1": 10334,
+      "2": 13269,
+      "3": 17346
+    },
+    "addresses_scalar_in_reader_fit_but_never_in_reader_oracle": 0,
+    "addresses_scalar_in_reader_fit_but_never_in_reader_validation": 4894,
+    "addresses_scalar_in_reader_oracle_but_never_in_reader_fit": 0,
+    "addresses_scalar_in_reader_validation_but_never_in_reader_fit": 0,
+    "addresses_scalar_only_in_source=HVS": 730,
+    "addresses_scalar_only_in_source=NPH52": 4894,
+    "addresses_scalar_only_in_source=SEA_AD": 4710,
+    "all_operators": {
+      "addresses_never_scalar": 289,
+      "addresses_scalar_in_all": 17186,
+      "addresses_scalar_in_any": 40949,
+      "n_operators": 42
+    },
+    "operators_measuring_address_histogram": {
+      "0": 289,
+      "1": 602,
+      "11": 4710,
+      "12": 325,
+      "13": 342,
+      "14": 348,
+      "15": 438,
+      "16": 574,
+      "17": 868,
+      "18": 9714,
+      "2": 473,
+      "24": 730,
+      "25": 14,
+      "26": 5,
+      "27": 9,
+      "28": 4,
+      "29": 4,
+      "3": 455,
+      "30": 7,
+      "31": 206,
+      "35": 411,
+      "36": 9,
+      "37": 8,
+      "38": 15,
+      "39": 27,
+      "4": 401,
+      "40": 38,
+      "41": 63,
+      "42": 17186,
+      "5": 422,
+      "6": 511,
+      "7": 2030
+    },
+    "partition=reader_fit": {
+      "addresses_never_scalar": 289,
+      "addresses_scalar_in_all": 17186,
+      "addresses_scalar_in_any": 40949,
+      "n_operators": 42
+    },
+    "partition=reader_oracle": {
+      "addresses_never_scalar": 289,
+      "addresses_scalar_in_all": 17186,
+      "addresses_scalar_in_any": 40949,
+      "n_operators": 42
+    },
+    "partition=reader_validation": {
+      "addresses_never_scalar": 5183,
+      "addresses_scalar_in_all": 17757,
+      "addresses_scalar_in_any": 36055,
+      "n_operators": 35
+    },
+    "source=HVS": {
+      "addresses_never_scalar": 22502,
+      "addresses_scalar_in_all": 18736,
+      "addresses_scalar_in_any": 18736,
+      "n_operators": 24
+    },
+    "source=NPH52": {
+      "addresses_never_scalar": 6140,
+      "addresses_scalar_in_all": 29136,
+      "addresses_scalar_in_any": 35098,
+      "n_operators": 7
+    },
+    "source=SEA_AD": {
+      "addresses_never_scalar": 6162,
+      "addresses_scalar_in_all": 35076,
+      "addresses_scalar_in_any": 35076,
+      "n_operators": 11
+    }
+  }
+}

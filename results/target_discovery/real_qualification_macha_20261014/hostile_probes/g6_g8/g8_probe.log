@@ -1,0 +1,166 @@
+{
+ "module": "D:\\jepa_rq_g8_20261014\\scripts\\v5\\td_real_measurement_reference_v1.py",
+ "numpy": "2.4.6",
+ "1_nmin_0.01/3": 299,
+ "1_nmin_0.01/6": 599,
+ "1_K299_status_under_code": "NOT_ESTIMABLE_MEASUREMENT_REFERENCE",
+ "1_code_alpha_eff": 0.0016666666666666668,
+ "1_code_required_n": 599,
+ "1_ranks_n599": {
+  "upper": 599,
+  "upper_exact": 599,
+  "lower": 1,
+  "lower_exact": 1
+ },
+ "1_ranks_n600": {
+  "upper": 600,
+  "upper_exact": 600,
+  "lower": 1,
+  "lower_exact": 1
+ },
+ "1_ranks_n1000": {
+  "upper": 1000,
+  "upper_exact": 1000,
+  "lower": 1,
+  "lower_exact": 1
+ },
+ "1_rational_sweep_mismatches_vs_intended_rational": [],
+ "1_rational_sweep_mismatch_count": 0,
+ "1_adversarial_alpha": {
+  "alpha": 0.00999999999999995,
+  "code_nmin": 99,
+  "exact_nmin_of_float": 100,
+  "code_status_at_code_nmin": "PASS_REFERENCE_CALIBRATED",
+  "code_rank": 99,
+  "exact_rank": 100
+ },
+ "2_same_cellA_two_row_orders": {
+  "order1": [
+   14,
+   0,
+   5,
+   62
+  ],
+  "order2": [
+   23,
+   0,
+   3,
+   61
+  ],
+  "identical": false
+ },
+ "2_cellA_alone_vs_after_prepended_row": {
+  "alone": [
+   14,
+   0,
+   5,
+   62
+  ],
+  "after": [
+   19,
+   0,
+   3,
+   48
+  ],
+  "identical": false
+ },
+ "2_two_different_cells_in_two_blocks_same_seed_identical_draws": true,
+ "2_address_subset_changes_other_addresses": {
+  "full_tail": [
+   0,
+   5,
+   62
+  ],
+  "subset": [
+   0,
+   1,
+   69
+  ],
+  "identical": false
+ },
+ "2_thin_signature": [
+  "counts",
+  "fraction",
+  "seed_namespace",
+  "seed"
+ ],
+ "3_count_validation": {
+  "float_2.0": "REJECTED(MRE): raw counts must be exact nonnegative integers",
+  "np_float64_2.0": "REJECTED(MRE): raw counts must be exact nonnegative integers",
+  "bool_True": "REJECTED(MRE): raw counts must be exact nonnegative integers",
+  "np_bool_True": "REJECTED(MRE): raw counts must be exact nonnegative integers",
+  "negative": "REJECTED(MRE): raw counts must be exact nonnegative integers",
+  "nan": "REJECTED(MRE): raw counts must be exact nonnegative integers",
+  "None": "REJECTED(MRE): raw counts must be exact nonnegative integers",
+  "np_int64_ok": "ACCEPTED -> [[2]]",
+  "np_uint64_2**63": "RAISED OverflowError: int too big to convert",
+  "py_int_2**63": "RAISED OverflowError: int too big to convert",
+  "string_'3'": "REJECTED(MRE): raw counts must be exact nonnegative integers",
+  "ragged": "REJECTED(MRE): raw counts must be a two-dimensional matrix",
+  "1d": "REJECTED(MRE): raw counts must be a two-dimensional matrix",
+  "empty_cols": "ACCEPTED -> [[]]",
+  "int_ndarray": "ACCEPTED -> [[2, 0]]",
+  "float_ndarray_integral": "REJECTED(MRE): raw counts must be exact nonnegative integers"
+ },
+ "3_fraction_validation": {
+  "np_float64_0.5": "ACCEPTED",
+  "np_float32_0.5": "MeasurementReferenceError",
+  "int_0": "MeasurementReferenceError",
+  "Fraction_1/2": "MeasurementReferenceError"
+ },
+ "3_np_int64_seed": "MeasurementReferenceError",
+ "4_masked_unmeasured_entry": "ACCEPTED; masked entry thinned as measured -> [[24, 11]]",
+ "4_mask_or_support_parameter_present": false,
+ "4_unmeasured_encoded_as_0_and_measured_0_indistinguishable_output": [
+  [
+   0,
+   0
+  ]
+ ],
+ "5_library": {
+  "thin_api_returns_library": false,
+  "orig_norm": [
+   [
+    5.761,
+    0.0,
+    4.85,
+    3.985
+   ]
+  ],
+  "thinned_with_unthinned_full_library": [
+   [
+    4.448,
+    0.0,
+    3.985,
+    3.096
+   ]
+  ],
+  "thinned_with_thinned_library": [
+   [
+    5.74,
+    0.0,
+    5.272,
+    4.363
+   ]
+  ]
+ },
+ "6_thin_accepts_deciding_equal_calibration_namespace": true,
+ "6_build_depth_reference_takes_namespaces": false,
+ "6_validator_has_refit_slot": false,
+ "6_near_duplicate_names_accepted": true,
+ "6_reference_output_keys": [
+  "alpha_eff",
+  "authority",
+  "claim_boundary",
+  "depth_results",
+  "depths",
+  "family_alpha",
+  "protected_endpoints_per_depth",
+  "required_n_per_depth",
+  "schema",
+  "status",
+  "support_semantics"
+ ],
+ "6_reference_records_rng_or_namespace_or_input_binding": false,
+ "7_599_copies_of_one_realization_status": "PASS_MEASUREMENT_REFERENCE_CALIBRATED"
+}

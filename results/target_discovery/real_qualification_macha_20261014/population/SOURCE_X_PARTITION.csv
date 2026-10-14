@@ -1,0 +1,10 @@
+source,reader_partition,n_donors,n_cells,n_operators,cells_per_donor_min,cells_per_donor_q10,cells_per_donor_median,cells_per_donor_max,max_bonferroni_family_resolvable_at_alpha_0.01_exact_sign_test
+HVS,reader_fit,41,198718,24,1625,2863.0,4292.0,12509,21990232555
+HVS,reader_validation,10,53933,24,1947,1960.5,5444.5,8852,10
+HVS,reader_oracle,11,55848,24,2114,2817.0,4568.0,9458,20
+NPH52,reader_fit,17,236476,7,81,5975.6,14874.0,23972,1310
+NPH52,reader_validation,0,0,0,,,,,0
+NPH52,reader_oracle,2,28925,7,13238,13482.9,14462.5,15687,0
+SEA_AD,reader_fit,46,4118213,11,9127,33782.5,91242.5,174111,703687441776
+SEA_AD,reader_validation,12,893098,11,28901,40727.3,51542.0,157795,40
+SEA_AD,reader_oracle,10,766542,11,7074,22014.9,61078.0,153418,10

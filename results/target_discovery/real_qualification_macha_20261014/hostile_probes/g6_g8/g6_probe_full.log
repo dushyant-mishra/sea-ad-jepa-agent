@@ -1,0 +1,132 @@
+C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\Lib\site-packages\numpy\_core\_methods.py:190: RuntimeWarning: overflow encountered in square
+  x = um.square(x, out=x)
+D:\jepa_rq_g6d_20261014\scripts\v5\td_real_teacher_information_probe_v1.py:127: RuntimeWarning: invalid value encountered in multiply
+  return pred_std * y_scale + y_mean
+{
+ "probe_module": "D:\\jepa_rq_g6d_20261014\\scripts\\v5\\td_real_teacher_information_probe_v1.py",
+ "decision_module": "D:\\jepa_rq_g6d_20261014\\scripts\\v5\\td_real_teacher_information_decision_v2.py",
+ "1_refit_spread_two_identical_refits": 0.0,
+ "1_compare_signature_has_seed": false,
+ "1_probe_output_keys": [
+  "arms",
+  "authority",
+  "claim_boundary",
+  "donor_deltas",
+  "sign_test",
+  "status"
+ ],
+ "2_student_selected_lambdas_on_exact_tie": [
+  4096.0
+ ],
+ "2_teacher_selected_lambdas": [
+  0.000244140625
+ ],
+ "3_heldout_D03_lambda_unchanged": true,
+ "4_constant_0.1000_n30_scale": 2.7755575615628914e-17,
+ "4_constant_0.1000_n30_standardized_unique": [
+  -1.0
+ ],
+ "4_constant_0.1000_n240_scale": 1.3877787807814457e-17,
+ "4_constant_0.1000_n240_standardized_unique": [
+  -1.0
+ ],
+ "4_constant_0.3333_n240_scale": 5.551115123125783e-17,
+ "4_constant_0.3333_n240_standardized_unique": [
+  1.0
+ ],
+ "4_constant_0.7000_n240_scale": 1.1102230246251565e-16,
+ "4_constant_0.7000_n240_standardized_unique": [
+  1.0
+ ],
+ "4_probe_constant0_vs_constant07_max_abs_mse_diff": 0.0,
+ "4_probe_constant0_vs_constant07_lambda_sets": [
+  [
+   4096.0
+  ],
+  [
+   4096.0
+  ]
+ ],
+ "5_zero_var_component_one_fold_status": "NOT_ESTIMABLE_INNER_SELECTION",
+ "5_zero_var_outer_results_kept": 0,
+ "6_y1e160": {
+  "exception": "TeacherInformationProbeError",
+  "msg": "y_pred must contain finite numeric values"
+ },
+ "6_y1e300": {
+  "exception": "TeacherInformationProbeError",
+  "msg": "y_pred must contain finite numeric values"
+ },
+ "7_unit_rescale_verdicts": {
+  "(1.0, 1.0)": {
+   "status": "FAIL",
+   "n_pos": 6,
+   "n_neg": 2
+  },
+  "(1000.0, 1.0)": {
+   "status": "FAIL",
+   "n_pos": 2,
+   "n_neg": 6
+  }
+ },
+ "8_builtin_qualification": {
+  "TEACHER_PRIVATE_SIGNAL_PRESENT": "PASS",
+  "NO_TEACHER_PRIVATE_SIGNAL": "NOT_ESTIMABLE",
+  "UNDERPOWERED_TEACHER_PRIVATE_SIGNAL": "NOT_ESTIMABLE"
+ },
+ "8_positive_world_status_counts_24_seeds_8_donors": {
+  "0.2": {
+   "PASS": 0,
+   "FAIL": 24,
+   "NOT_ESTIMABLE": 0
+  },
+  "0.35": {
+   "PASS": 5,
+   "FAIL": 19,
+   "NOT_ESTIMABLE": 0
+  },
+  "0.5": {
+   "PASS": 11,
+   "FAIL": 13,
+   "NOT_ESTIMABLE": 0
+  },
+  "0.8": {
+   "PASS": 20,
+   "FAIL": 4,
+   "NOT_ESTIMABLE": 0
+  }
+ },
+ "9a_raw_probe_output_consumable": "TeacherInformationDecisionError: probe input_binding_sha256 must be lowercase 64-hex",
+ "9b_zero_U_refit_margin_accepted_status": "PASS",
+ "9b_margins_used": [
+  0.0
+ ],
+ "9b_raw_vs_margin_status_same": true,
+ "9c_epsilon_deltas_zero_margin_status": "PASS",
+ "9d_arbitrary_margin_1e9_status": "FAIL",
+ "9e_positive_world_human_status": {
+  "seed": 1000,
+  "b": 0.2,
+  "status": "FAIL",
+  "reason": "TEACHER_ADVANTAGE_NOT_ESTABLISHED_BEYOND_QUALIFIED_MARGIN",
+  "deltas_sign": [
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   -1,
+   1
+  ]
+ },
+ "9f_decision_qual_self_literal": true,
+ "9g_builtin_decision_qualification": {
+  "ADVANTAGE_BEYOND_MARGIN": "PASS",
+  "RAW_POSITIVE_BELOW_MARGIN": "FAIL",
+  "NO_ADVANTAGE": "FAIL",
+  "UNDERPOWERED_POSITIVE": "NOT_ESTIMABLE"
+ },
+ "9h_three_donors_alpha_0.3_status": "PASS",
+ "9i_raw_ties_with_positive_margin_status": "PROBE_NOT_ESTIMABLE"
+}

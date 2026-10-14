@@ -1,0 +1,67 @@
+{
+ "three_cell_donors_refit_0.01": {
+  "status": "FAIL",
+  "null_defeat": "FAIL",
+  "distinct_null_values": [
+   6
+  ],
+  "adverse_bound_equals_observed": true
+ },
+ "float_rank_scan": {
+  "0.01": {
+   "n_mismatches_up_to_20000": 0,
+   "first": []
+  },
+  "0.005": {
+   "n_mismatches_up_to_20000": 0,
+   "first": []
+  },
+  "0.0033333333333333335": {
+   "n_mismatches_up_to_20000": 15,
+   "first": [
+    2100,
+    4200,
+    4500,
+    8400,
+    8700,
+    9000,
+    9300,
+    16800
+   ]
+  },
+  "0.0025": {
+   "n_mismatches_up_to_20000": 0,
+   "first": []
+  },
+  "0.05": {
+   "n_mismatches_up_to_20000": 0,
+   "first": []
+  },
+  "0.07": {
+   "n_mismatches_up_to_20000": 153,
+   "first": [
+    100,
+    200,
+    300,
+    400,
+    600,
+    700,
+    800,
+    900
+   ]
+  }
+ },
+ "min_draws": {
+  "0.01": 100,
+  "0.0033333333333333335": 300,
+  "0.005": 200,
+  "0.07": 15
+ },
+ "projector_identical_subspace_floor": {
+  "min": 0.0,
+  "median": 1.2904784139758924e-08,
+  "max": 2.2351741790771484e-08,
+  "fraction_above_1e-10": 0.9
+ },
+ "projector_true_angle_1e-9": 0.0
+}

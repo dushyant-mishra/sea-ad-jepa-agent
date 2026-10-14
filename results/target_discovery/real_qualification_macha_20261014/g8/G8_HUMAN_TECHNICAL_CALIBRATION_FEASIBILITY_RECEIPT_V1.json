@@ -1,0 +1,115 @@
+{
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "candidate_metric_dependency": {
+    "C1_SHARED_EMERGENT": "learned shared state; needs the candidate's frozen representation-invariant state metric",
+    "C2_RELATIONAL_SHARED": "relational statistic over anchored cell triplets; needs the frozen R1 metric/ruler/tie law",
+    "C3_QUERY_MEASURED": "query-conditioned scalar target; needs the frozen query set and per-query error metric, and a rule for queries whose detection changes under thinning",
+    "C4_STRUCTURED_COMPOSITE": "shared + query + relational blocks; needs three block metrics plus a frozen composition rule",
+    "C5_REGULATORY_SPECIALIST": "G8 not a required gate for C5 in the tournament contract",
+    "C6_SHARED_QUERY_COMPOSITE": "shared + query blocks; needs both block metrics plus a frozen composition rule"
+  },
+  "candidate_outcomes_opened": false,
+  "candidate_representation_computed": false,
+  "depth_detection_retention_reader_fit": {
+    "0.25": {
+      "donor_max": 0.512133,
+      "donor_median": 0.463857,
+      "donor_min": 0.336908,
+      "expected_cells_all_zero_total_reader_fit": 1.524
+    },
+    "0.50": {
+      "donor_max": 0.739417,
+      "donor_median": 0.700214,
+      "donor_min": 0.595538,
+      "expected_cells_all_zero_total_reader_fit": 0.185
+    },
+    "0.75": {
+      "donor_max": 0.889282,
+      "donor_median": 0.869223,
+      "donor_min": 0.812107,
+      "expected_cells_all_zero_total_reader_fit": 0.016
+    }
+  },
+  "envelopes_emitted": false,
+  "executor_under_audit": {
+    "alpha_eff": 0.0016666666666666668,
+    "alpha_family": 0.01,
+    "depths": [
+      "0.25",
+      "0.50",
+      "0.75"
+    ],
+    "head": "82d17bfb1650d97a95d5424160126791f09d7494",
+    "pr": 343,
+    "protected_endpoints": [
+      "displacement",
+      "support_fraction"
+    ],
+    "required_calibration_count": 599
+  },
+  "g8_status": "CONFORMAL_BOUND_MECHANICS_QUALIFIED__CALIBRATION_REALIZATION_AND_ENDPOINT_SEMANTICS_OPEN__HUMAN_G8_NOT_EXECUTABLE",
+  "inputs": {
+    "census": {
+      "path": "support/RAWCOUNT_DONOR_X_OPERATOR_DEPTH_SUPPORT.csv",
+      "sha256": "4aca4f089c83148a99a4be22b348ceb35f3c14d711f9abab384bd922d5eda243"
+    },
+    "census_receipt": {
+      "path": "RAWCOUNT_DEPTH_SUPPORT_CENSUS_RECEIPT_V1.json",
+      "sha256": "f57e1aa38094eb7b87adb37107a6af95dd5cee696bb3610e0c4671ba2747b653"
+    },
+    "donor": {
+      "path": "population/DONOR.csv",
+      "sha256": "75b730f0170765612aff04f59486f89e92384a2b2d92b8cd6caf25f981a722a7"
+    },
+    "donor_x_operator": {
+      "path": "population/DONOR_X_OPERATOR.csv",
+      "sha256": "39d34f93b6527fb5d10738b92205d4484dd07557b58dc1300fce23f6649e0171"
+    },
+    "population_receipt": {
+      "path": "POPULATION_SUPPORT_AUDIT_RECEIPT_V1.json",
+      "sha256": "cc051ccdae78e6501a59cb4459cfdafdcae902103136e85a588e11eba67eb894"
+    }
+  },
+  "namespaces_consumed": [],
+  "per_unit_status_fit": "CONTRACT_GAP__CALIBRATION_REALIZATION_AND_ENDPOINT_SEMANTICS_OPEN",
+  "per_unit_status_heldout": "BLOCKED__HELDOUT_RAW_COUNTS_NOT_MATERIALIZED_AND_HELDOUT_RNA_ACCESS_NOT_AUTHORIZED",
+  "pooled_scopes": {
+    "DEPTH_ENDPOINT__READER_FIT": {
+      "available_CELL": 4553407,
+      "available_DONOR": 104,
+      "available_DONOR_X_OPERATOR": 1400,
+      "meets_DONOR": false,
+      "note": "DONOR_X_OPERATOR and CELL observations are clustered within 104 donors; counts above 599 are not independent biological replicates",
+      "units": 6
+    },
+    "DONOR_X_OPERATOR_DEPTH_ENDPOINT__READER_FIT": {
+      "strata_total": 1400,
+      "strata_with_cells_ge_required": 492,
+      "units": 8400
+    },
+    "SOURCE_DEPTH_ENDPOINT__READER_FIT": {
+      "HVS": {
+        "available_CELL": 198718,
+        "available_DONOR": 41,
+        "available_DONOR_X_OPERATOR": 948
+      },
+      "NPH52": {
+        "available_CELL": 236476,
+        "available_DONOR": 17,
+        "available_DONOR_X_OPERATOR": 109
+      },
+      "SEA_AD": {
+        "available_CELL": 4118213,
+        "available_DONOR": 46,
+        "available_DONOR_X_OPERATOR": 343
+      }
+    },
+    "WHOLE_COHORT_DONORS_ALL_PARTITIONS": 149
+  },
+  "rng_draws": 0,
+  "rng_thinning_pseudo_replication": "every RNG thinning of a fixed raw-count matrix reuses the same nuclei and molecules; K thinnings are conditionally exchangeable given the observed counts but are one biological sampling unit, not K calibration units",
+  "schema": "JEPA_TD_REAL_G8_HUMAN_TECHNICAL_CALIBRATION_FEASIBILITY_V1",
+  "scientific_question": "Can the real human dataset supply 599 exchangeable calibration observations per required G8 reference unit under the exact observation operator, without pseudo-replication?",
+  "structural_support_under_thinning": "unchanged by construction: thinning acts only on MEASURED_SCALAR entries; census found 0 entries outside MEASURED_SCALAR, 0 negative entries",
+  "table_sha256": "66e5d20ce958e2bf1a283b5773ee4132f63ea43d5f8ae4cc29709316701a431f"
+}

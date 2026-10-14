@@ -1,0 +1,44 @@
+{
+ "P2d_TECHNICAL_ONLY_vs_DEPTH_BLOCK_NULL": {
+  "donors_defeating_depthblock_null_q99": "0/8",
+  "mean_delta": -0.0296,
+  "per_donor_delta": {
+   "D0": -0.0217,
+   "D1": -0.0117,
+   "D2": -0.0183,
+   "D3": -0.0383,
+   "D4": -0.0283,
+   "D5": -0.035,
+   "D6": -0.0433,
+   "D7": -0.04
+  }
+ },
+ "P2e_CLEAN_NEGATIVE_vs_DEPTH_BLOCK_NULL": {
+  "donors_defeating_depthblock_null_q99": "0/8",
+  "mean_delta": -0.0429,
+  "per_donor_delta": {
+   "D0": -0.065,
+   "D1": -0.0617,
+   "D2": -0.0283,
+   "D3": -0.0317,
+   "D4": -0.0733,
+   "D5": -0.0417,
+   "D6": -0.02,
+   "D7": -0.0217
+  }
+ },
+ "P2f_PLANTED_BIOLOGY_vs_DEPTH_BLOCK_NULL": {
+  "donors_defeating_depthblock_null_q99": "7/8",
+  "mean_delta": 0.0494,
+  "per_donor_delta": {
+   "D0": 0.06,
+   "D1": 0.0567,
+   "D2": 0.065,
+   "D3": -0.0117,
+   "D4": 0.0533,
+   "D5": 0.0433,
+   "D6": 0.08,
+   "D7": 0.0483
+  }
+ }
+}

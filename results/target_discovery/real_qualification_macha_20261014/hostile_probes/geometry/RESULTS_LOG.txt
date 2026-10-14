@@ -1,0 +1,36 @@
+PR #355 hostile probe log — head 6e5182e2 — 2026-10-14 — read-only, synthetic only, no human data
+
+PR tests (local execution, env sea-ad-jepa-v3): 18 passed (13 main + 5 hostile). CI: 2x "qualify" pass (GitHub).
+Worktree D:/jepa_rq_geom_20261014 left unmodified (git status clean).
+
+Probes: probe_geometry_engine.py -> probe_results.jsonl ; probe_followup.py -> probe_followup_results.json
+Run: PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="D:/jepa_rq_geom_20261014;D:/jepa_rq_geom_20261014_scratch" python -B <script>
+
+OK (matches law)
+ P1 train-only Procrustes + aligned RMS invariant to random orthogonal / permutation / swap / sign flip of one view (diff <1e-15)
+ P1 projector metric invariant to within-subspace basis rotation/permutation/sign/scale (up to ~1.5e-8 numeric floor)
+ P2c repeated full-rank singular values: polar factor unique, OK
+ P2f NaN / zero basis raise; P2g constant-state world never PASS
+ P3c source with 1 donor -> NOT_ESTIMABLE; P4e empty required stratum -> NOT_ESTIMABLE
+ P7b U_refit subtracted (line 357); P7c noncompensation across sources -> FAIL
+ adverse lower bound q_alpha used (lines 165-172, 354) — SA2 s3 compliant; plan doc item 4 still says median (stale)
+
+DEFECTS
+ P5a V1 s6 violation: estimable stability FAIL (obs .60 vs margin .20, 10 donors) masked to NOT_ESTIMABLE because ONE donor has 99 null draws (lines 331-338 short-circuit)
+ P4a PR hostile test hostile.py:23,46-64 passes for wrong reason (3 null draws -> ADVERSE_NULL_RESOLUTION_INSUFFICIENT); abstention->underpower path untested
+ P4b selective abstention: 8 stable + 8 unstable -> FAIL; relabel the 8 unstable NOT_ESTIMABLE_STRUCTURAL_SUPPORT ("any free text") -> PASS
+ P4c rows from source not in required_sources silently dropped: SEA_AD stable + ROSMAP unstable, required=[SEA_AD] -> PASS, ROSMAP absent
+ P6a alignment fit on each held-out donor's own cells, relabelled FAKE ids -> accepted; no-recurrence world: clean FAIL vs leaky PASS
+ P6b non-orthogonal lstsq "rotation" (orth err .89) accepted by aligned_rms_displacement (lines 142-155)
+ P7d deciding binding == null receipt == reference receipt (all "e"*64) -> PASS; namespace disjointness = boolean only (line 268)
+ P7e hand-made qualification dict accepted (lines 175-181); qualify_known_truth (466-507) never runs alignment/null/views
+ P7a stability margin .20 < refit margin .30 accepted although m_d = max(U_meas,U_refit)
+ P3a/b 3-cell donors (6 distinct perms, 100 draws) and 1-cell donors -> FAIL: identity perm in null makes q_alpha == observed; resolution counted in draws not distinct permutations
+ P2a constant training states -> silent identity rotation; exact held-out rotation scored 1.36
+ P2b rank-deficient training -> displacement 1.15 at eps=0, ~1e-9 under 1e-9 perturbation (discontinuous, no guard)
+ P2d eigen-tie top-1 subspace, identical distributions: displacement median .70 (range .07-.995); no subspace estimator / eigengap guard
+ P2e near-collinear basis (1e-9) accepted -> .707
+ P5b float rank: ceil(alpha*n) anti-conservative by one rank for alpha=0.01/3 at n=2100,4200,... and alpha=.07 at n=100,...
+ numeric: projector floor ~1.3e-8 for identical generic subspaces (90% > 1e-10); module known-truth tolerance 1e-10 passes only on canonical axes
+
+Real inputs: no frozen per-learned-target alignment metric, no U_refit/U_measurement reference, no null producer, no support registry exist in tracked repo.
