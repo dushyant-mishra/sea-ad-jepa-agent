@@ -70,6 +70,7 @@ def test_foundation_claim_envelope_is_all_physically_supported_strata():
     expected = {"HVS_OP1_RNA", "SEA_OP2_RNA", "SEA_OP3_MULTIOME"}
     for candidate in FOUNDATION:
         assert set(out["mandatory_claim_envelopes"][candidate]) == expected
+        assert out["claim_envelope_status"][candidate] == "SUPPORTED_ENVELOPE_FROZEN"
 
 
 def test_specialist_claim_envelope_is_support_limited_and_cannot_rescue_foundation():
@@ -78,6 +79,7 @@ def test_specialist_claim_envelope_is_support_limited_and_cannot_rescue_foundati
         "HVS_OP1_RNA",
         "SEA_OP3_MULTIOME",
     }
+    assert out["claim_envelope_status"]["C5_REGULATORY_SPECIALIST"] == "SUPPORTED_ENVELOPE_FROZEN"
     assert out["specialist_foundation_rescue_authorized"] is False
 
 
@@ -104,6 +106,23 @@ def test_claimed_dimension_with_insufficient_levels_is_blocked_dependency():
 def test_unclaimed_dimension_is_structurally_not_applicable():
     out = T.derive_static_contract(_registry())
     assert out["transfer_applicability"]["C5_REGULATORY_SPECIALIST"]["STUDY_FAMILY"] == "NOT_APPLICABLE_STRUCTURAL"
+
+
+def test_transfer_claim_dimension_must_be_literal_known_string():
+    registry = _registry()
+    registry["candidate_transfer_claims"]["C1_SHARED_EMERGENT"] = ["DONOR", 1]
+    with pytest.raises(T.StaticContractError, match="nonempty strings"):
+        T.derive_static_contract(registry)
+
+
+def test_foundation_with_zero_supported_strata_is_explicitly_unresolved():
+    registry = _registry()
+    for row in registry["strata"]:
+        row["candidate_support"]["C1_SHARED_EMERGENT"] = False
+    out = T.derive_static_contract(registry)
+    assert out["mandatory_claim_envelopes"]["C1_SHARED_EMERGENT"] == []
+    assert out["claim_envelope_status"]["C1_SHARED_EMERGENT"] == "NO_SUPPORTED_STRATA__NOT_ESTIMABLE"
+    assert set(out["transfer_applicability"]["C1_SHARED_EMERGENT"].values()) == {"BLOCKED_DEPENDENCY"}
 
 
 def test_outcome_fields_are_forbidden_from_static_registry():
