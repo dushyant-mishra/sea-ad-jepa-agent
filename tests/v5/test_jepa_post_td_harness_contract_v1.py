@@ -43,7 +43,7 @@ class PostTDHarnessContractTests(unittest.TestCase):
 
     def test_c4_cannot_rescue_failed_constituent(self):
         for failed in ("C1", "C2", "C3"):
-            qualifications = {"C1": "PASS", "C2": "PASS", "C3": "PASS", "C4": "PASS"}
+            qualifications = {"C1": "PASS", "C2": "PASS", "C3": "PASS", "C6": "PASS", "C4": "PASS"}
             qualifications[failed] = "FAIL"
             with self.assertRaisesRegex(M.PostTDContractError, failed):
                 M.build_target_portfolio(selected_candidate="C4", qualifications=qualifications)
@@ -82,10 +82,10 @@ class PostTDHarnessContractTests(unittest.TestCase):
         self.assertEqual(p["fused_candidate"], "C6")
         self.assertFalse(p["authority"]["training_authorized"])
 
-    def test_c4_expands_to_shared_query_relational(self):
+    def test_c4_expands_to_shared_query_relational_after_c6_passes(self):
         p = M.build_target_portfolio(
             selected_candidate="C4",
-            qualifications={"C1": "PASS", "C2": "PASS", "C3": "PASS", "C4": "PASS"},
+            qualifications={"C1": "PASS", "C2": "PASS", "C3": "PASS", "C6": "PASS", "C4": "PASS"},
         )
         self.assertEqual([b["block_type"] for b in p["blocks"]], ["SHARED", "QUERY", "RELATIONAL"])
         self.assertEqual(p["fused_candidate"], "C4")
