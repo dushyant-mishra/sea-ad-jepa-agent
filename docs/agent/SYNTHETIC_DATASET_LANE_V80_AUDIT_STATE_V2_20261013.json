@@ -1,0 +1,55 @@
+{
+  "schema": "SYNTHETIC_DATASET_LANE_V80_AUDIT_STATE_V2",
+  "date": "2026-10-13/14",
+  "terminal": "V79_NOT_QUALIFIED_IMMUTABLE__V80_BENCHMARK_PACKAGE_QUALIFIED__SUCCESSOR_ESTIMATOR_NOT_YET_QUALIFIED__TRAINING_OFF",
+  "v79": {
+    "result": "NOT_QUALIFIED",
+    "immutable": true,
+    "contract_sha256": "57e19295be824dbbb023b60a57c5039dac1f9d74e66fefe1008fc27d30fdaf26",
+    "world_set_digest": "40458efea66e62f3f39cb773641d29c24b80505529baa65bdab31d3975a2a286",
+    "final_receipt_sha256": "ef10852e534fe8a83c3aebd832ad3a531d755d06185464441494712818e8abfd",
+    "gates_pass": 291,
+    "gates_total": 292,
+    "rescue_authorized": false,
+    "rerun_authorized": false
+  },
+  "v80": {
+    "pr": 348,
+    "qualified_source_head": "b840067e4c9439e4cb4aa9e8c649ef2f6064a142",
+    "workflow_run": 38504094639,
+    "status": "BENCHMARK_PACKAGE_QUALIFIED__NO_ESTIMATOR_RUN",
+    "tests": {"v80":18,"v80_pass":18,"inherited_pr328":73,"inherited_pr328_pass":73},
+    "producer": "PASS",
+    "fit_validation": "PASS",
+    "controller_validation": "PASS",
+    "receipt_sha256": "346407af801a7fabc5dbd27136dcf5c9abe61e87d438018b98da192333eb9c32",
+    "benchmark_identity_sha256": "16a08b29c7e083377f4dde6e16ac6d55a3358ed45475c74161fbaba29a4afc38",
+    "fit_transport_sha256": "77f89e8336ec2a2d0184abbd81bfd7d6ff04f2dc57aa80891b6d8021869737b3",
+    "controller_transport_sha256": "24120a8c3426c02b9747a57b3197b81df40aeae44a727988a2c43235f046f2e7",
+    "contract_sha256": "7124da87c9cd21e315474720b1fa2de899462484bfeddfe586c77058f1d2c519",
+    "nonregression_binding_sha256": "b83d7e0becbe5480353db657b553b7bb65251d3b88136be1d6c3cdda365c4819",
+    "n_worlds": 8,
+    "n_fits": 192,
+    "self_audit_fixes": [
+      "REMOVED_POSTHOC_POSITIVE_INJECTION",
+      "TIGHTENED_ESTIMABILITY_TO_PER_GENE",
+      "REMOVED_ESTIMATOR_SELF_SCORING",
+      "SEALED_HELDOUT_OUTCOMES_CONTROLLER_SIDE",
+      "BOUND_EXECUTABLE_AND_RUNTIME_CUSTODY",
+      "CORRECTED_HOSTILE_TEST_PATH_WITHOUT_WEAKENING_FIREWALL",
+      "CORRECTED_MEDIAN_GATE_TEST_SCOPE_WITHOUT_THRESHOLD_OR_WORLD_CHANGE"
+    ],
+    "successor_estimator_qualified": false
+  },
+  "replay_rule": "DO_NOT_REPEAT_V79_OR_V80_BENCHMARK_ARCHAEOLOGY_UNLESS_BYTES_OR_SCIENTIFIC_QUESTION_CHANGE",
+  "next_audit_action": "AUDIT_ONLY_A_FROZEN_SUCCESSOR_ESTIMATOR_AND_ITS_ONE_SHOT_V79_PLUS_V80_QUALIFICATION",
+  "authority": {
+    "human_biology_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "synthetic_training_authorized": false,
+    "real_training_authorized": false
+  }
+}
