@@ -1,0 +1,417 @@
+# JEPA merged TD → downstream master audit / no-repeat index V1 — 2026-10-14
+
+## Purpose
+
+This file is the durable **audit-side read-first surface** for the merged JEPA Target Discovery → known-truth certification → downstream teacher/student lane.
+
+It exists so a successor agent does **not** restart historical audits, recompute already-authenticated data, reopen spent experiments, revive superseded gate implementations, or mistake navigation metadata for scientific authority.
+
+The audit branch is historical/custody authority only. It creates no candidate result, target/representation winner, TD60, Stage4, or training authority.
+
+Binding project authority remains:
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
+## 1. Current merged architecture and execution authority
+
+### Controlling architecture
+
+- PR #379 — `Design: unify TD qualification, known-truth certification, and downstream custody`
+- exact head: `3064ca545f0c94859ea989cd49a04fcbd5b9a303`
+- role: accepted V1 + V1.1 architecture
+- core invariant: `producer → authenticated artifact → executor → verdict`
+- known-truth and human-sealed modes use one production path; hidden truth stays external.
+
+### Controlling implementation plan
+
+- PR #380 — `Plan: implement unified TD qualification and downstream custody V1`
+- current exact head: `5b6bf07e7d8b69b286ea430b09765a5ee4743325`
+- includes prospective Task-0 migration-taxonomy amendment.
+- Task 1 remains blocked until Task 0 is independently accepted.
+
+### Task 0 custody transfer
+
+- PR #381 — `Task 0: audit pre-merger migration and custody`
+- actual current exact head from PR metadata: `0b07550eaff5d327225693f10e7fc9cbce4dc515`
+- state: open, draft, mergeable.
+- independent review pending.
+- do not use older body/head strings as authority.
+
+Required Task 0 machine surfaces:
+- `results/target_discovery/unified_qualification_v1/PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1.json`
+- `results/target_discovery/unified_qualification_v1/PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json`
+- `results/target_discovery/unified_qualification_v1/PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json`
+- `results/target_discovery/unified_qualification_v1/PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json`
+- `results/target_discovery/unified_qualification_v1/TASK0_MIGRATION_TAXONOMY_V1.json`
+- `scripts/v5/td_unified/premerger_migration_task0.py`
+- `tests/v5/td_unified/test_premerger_migration_task0.py`
+- human audit + Macha dual-stream addendum on PR #381.
+
+Task 0 final verification:
+- focused workflow `38627293366`, job `116069567542`: SUCCESS, 19 tests
+- inherited integration workflow `38627293677`, job `116069568522`: SUCCESS
+- F4 prospective taxonomy amendment head: `5b6bf07e7d8b69b286ea430b09765a5ee4743325`
+
+Do not start unified Task 1 until independent review accepts and freezes the exact Task 0 head.
+
+---
+
+## 2. Macha dual historical custody — both streams are relevant
+
+Macha is both an independent reviewer and historical scientific custodian.
+
+### Stream A — real-TD / corrected replay / hostile qualification
+
+Preserve separately:
+- PR #314 exact head `c6899a2910244a0352c0c57e7aea6e3026191da1`
+  - one spent corrected replay
+  - historical biological evidence under its original execution law
+  - never current unified authority; never rerun merely for migration.
+- PR #316 exact head `2397ab83d8ae9d0c762a8fd5f3919edc350d137f`
+  - prospective fine/rare design/history only.
+- Macha hostile real-data audit exact head:
+  `ccc3a08939694f5d35b3048c94ec44f44618eef4`
+- controlling repair set #364–#369 below.
+
+### Stream B — V79 / Bayesian geometry / known truth
+
+Preserve separately:
+- PR #261 exact head `f68c56b78b7a7f6d9590b922f94249b9f2f7f18f`
+  - historical Bayesian/V79 custody index.
+- Q00–Q11 realization/custody history
+  - known-truth challenge/custody material only.
+- V79 remains permanently `NOT_QUALIFIED`.
+- V80 is benchmark/package qualification only; no successor estimator authority and no human biological authority.
+- PR #344/#356 mixed substrate/custody work must be decomposed; reusable infrastructure survives, parallel synthetic authority is superseded.
+
+### Current instruction while Task 0 review is pending
+
+Macha may finish **old synthetic Task 1 and old synthetic Task 2 only**, then STOP.
+
+Old synthetic Task 1:
+- canonical identity / serialization contract.
+
+Old synthetic Task 2:
+- freeze-before-use custody, commit/reveal, identity-keyed RNG.
+
+After Task 2:
+1. freeze exact heads/tests/receipts/artifacts;
+2. audit Tasks 1–2 against PR #356 and unified V1.1;
+3. split reusable/shared infrastructure from obsolete parallel authority;
+4. consolidate into the merged lane;
+5. only then continue the unified plan.
+
+Macha must not proceed independently into old synthetic Tasks 3–12 before consolidation.
+
+---
+
+## 3. Controlling real-TD repaired implementation lineage
+
+These are the controlling repair surfaces. Later duplicate PRs #375–#378 are explicitly superseded historical evidence and must not regain authority.
+
+- **G8** — PR #364
+  - exact head `95dd474a02ce571722df9e8f08b42e81af2e8736`
+  - observation operator/thinning repaired; conformal boundary repaired
+  - technical draws do not create biological donor N
+  - real statistical estimand/exchangeability and reference generation remain blocked.
+
+- **G6** — PR #365
+  - exact head `4110d4478c3353d86740dd135d62460ff7a7611f`
+  - zero-margin human authority revoked
+  - produced nondegenerate measurement/substantive margin + produced qualification + metric-scale contract still required.
+
+- **G9/S1/S2 geometry** — PR #366
+  - exact head `8d6b23a18051f64463ee9b2649f4fe5fc7123f0d`
+  - caller-supplied human authority revoked
+  - extra sources rejected, orthogonality validated, failure ordering repaired
+  - producer pipeline + eigengap law still required.
+
+- **R1** — PR #367
+  - exact head `949d76ff03cb57c5a88fef9efdb79fced9154024`
+  - historical depth/detection-matched null mechanics restored
+  - exact relational ruler + address-disjoint view contracts
+  - human path still requires qualified Y-cell identity-reassignment null producer.
+
+- **G2** — PR #368
+  - exact head `42df903d6190b7aa1b8eb65d810ab813cd327445`
+  - one-sided alpha .01, strongest prospectively applicable comparator, positive substantive margin
+  - unresolved positive evidence is NOT_ESTIMABLE, not FAIL
+  - candidate-specific static G2 policy + real reference still required.
+
+- **G7** — PR #362
+  - exact head `5a711f9a4ea0328445a05dadc1e011efb16a3c13`
+  - source-explicit, required-source noncompensation
+  - mechanics only; real support/reference producer still required.
+
+- **R4/C6/C4 increment mechanics** — PR #358
+  - exact head `b7c317c640aa231a7d5ec1fa12271a39bfee86e6`
+  - C6 must beat C1 and C3 separately
+  - C4 only against independently qualified C6
+  - human producer/support/reference inputs remain unresolved.
+
+- **C4 → C6 portfolio firewall** — PR #351
+  - exact head `2abcb9fe156eac340ff12adff9426ed38d929e3e`
+  - composite failure/NE cannot delete independently qualified foundation blocks.
+
+- **G12 scope guard** — PR #360
+  - exact head `01ebdb9384b42d5cfae3de03c2adf5b6b327ee81`
+  - mechanics only; no human outcome authority.
+
+- **system test-of-test battery** — PR #369
+  - exact head `651d7a5a1d4f4047d5ac875cc603f9151c2fed36`
+  - exact-head GREEN `38577104444`
+  - scope: mechanics/firewall requalification only.
+  - cannot promote constituent units or authorize human execution.
+
+Superseded duplicates:
+- #375 superseded by #365
+- #376 superseded by #366
+- #377 superseded by #367
+- #378 superseded by #368.
+
+---
+
+## 4. Population/support custody and real-data no-repeat rules
+
+Canonical population/support registry:
+- PR #349 exact head `1ab453e5cb60efb209a8eee2aecb61c5ea0fbfc7`
+- canonical generated registry payload SHA-256:
+  `50b29d7e1137c5a457fd0b528580030dedfbeff1b809e2b426f8f640ae38486d`
+- 6,351,753 rows
+- 149 donors
+- 42 operators
+- 3 sources
+- 2,028 donor×operator strata
+- partitions: 104 reader_fit / 22 reader_validation / 23 reader_oracle.
+
+Support states:
+`SUPPORTED | UNSUPPORTED_STRUCTURAL | BLOCKED_EVIDENCE_CONTRACT`
+
+Do not:
+- redownload the authenticated real datasets;
+- rerun transport hashing absent a concrete custody defect;
+- repeat generic support census;
+- open validation/oracle to rescue estimability;
+- manufacture candidate evidence support from generic RNA presence;
+- treat measured zero as unsupported;
+- treat unsupported as unresolved;
+- treat numerical failure as biological FAIL.
+
+Current TD held-out policy:
+- deterministic cross-fitting within `reader_fit`;
+- `reader_validation` and `reader_oracle` remain protected.
+
+---
+
+## 5. Downstream / TargetPortfolio historical custody and merged destination
+
+Historical reusable surfaces:
+
+### TargetPortfolio
+
+PR #332 exact head:
+`902054ad62eede84086fc2e0a90ceb27e2191da7`
+
+Law:
+- C1/C2/C3 may coexist independently;
+- C6/C4 are optional composite/fused implementations;
+- C5 is specialist-only;
+- composite PASS cannot rescue failed constituents;
+- composite FAIL/NOT_ESTIMABLE cannot delete independently qualified constituents;
+- every retained block carries its own qualification receipt.
+
+### Post-TD teacher/student/EMA harness
+
+Source head:
+`97dd73f49e1554053bbfab6c5369377a23a72ceb`
+
+Historical GREEN:
+- workflow `38448458550`
+- job `115472916925`.
+
+This is implementation readiness only, not target/representation/training authority.
+
+Recoverability law:
+- point-identifiable → point state or conditional mean;
+- stochastic-identifiable → state+uncertainty or conditional distribution;
+- teacher-private → critic-only;
+- NOT_ESTIMABLE → abstain;
+- aggregate scores cannot rescue failed required block gates.
+
+### Historical teacher/student runtime
+
+PR #2 merge head:
+`76bf7912cc621756fdbbd82218025d8e4c00a057`
+
+Reuse mechanics/custody only. Do not inherit training authority.
+
+### Rich-teacher / partial-RNA contract
+
+PR #312 exact head:
+`2ca8a91a960c823cc327d3885d008d3695837e83`
+
+Non-authorizing science/design evidence:
+- recoverable vs teacher-private biology
+- regulatory evidence contract
+- source/operator-aware rare-program treatment
+- same-nucleus RNA+ATAC integration prefreeze.
+
+### One lawful merged downstream chain
+
+`TD_EXECUTION_MANIFEST_V1`
+→ `TD_QUALIFICATION_REGISTRY_V1`
+→ exact qualified TD execution/controller
+→ `TARGET_QUALIFICATION_BUNDLE_V1`
+→ `DOWNSTREAM_CERTIFICATION_CONTRACT_V1`
+→ teacher/student runtime
+→ later separate training eligibility/authorization gates.
+
+`TARGET_QUALIFICATION_BUNDLE_V1` is the only lawful TD→downstream handoff.
+
+Permanent downstream hostile obligations:
+- normalization leakage
+- query leakage
+- hidden-total leakage
+- support leakage
+- wrong-cell pairing
+- donor/source leakage
+- fake rich teacher
+- teacher/student oracle confusion
+- evidence starvation
+- target-semantics drift
+- stable-subspace vs unstable-axis interpretation
+- unlawful support widening.
+
+Macha old Tasks 1–2 may contribute canonicalization/custody primitives only. They may not create an alternate downstream identity chain.
+
+---
+
+## 6. Historical negative priors / spent evidence that must not be rediscovered
+
+Preserve as closed or scoped evidence:
+- PR #314 corrected replay: spent old-law biological evidence
+- TD57C universal nearest-third fine-local recurrence: closed
+- T0/T1/TCTX production targets: closed
+- hidden-gene/CELL anchor and ANCHOR_ONLY: closed
+- V6R5B residual rescue: closed
+- graph-topology/rare-auxiliary production authority: closed
+- defective historical PROD41K/T1 checkpoints: forensic only
+- historical fixed `.996` EMA: not current authority
+- historical fixed `0.50` alignment thresholds: not human authority
+- pre-repair cross-source/gene-semantic results without repaired molecular-address binding: not current authority
+- V79: immutable `NOT_QUALIFIED`
+- V80: benchmark/custody/adjudication package only.
+
+Reopen only for changed bytes, changed scientific question, a concrete contradiction, a previously unresolved exact issue, prospective authority-boundary change, or runtime/dependency drift.
+
+Never reopen because a threshold was narrowly missed, a world was difficult, a deadline exists, or a favorable aggregate average is desired.
+
+---
+
+## 7. External / private / heavy artifact custody
+
+Large/private binaries remain outside ordinary public Git. Use exact hashes; do not upload merely for convenience.
+
+Current local/project custody reverified on 2026-10-14:
+
+- `FOUNDATION_CALIBRATION_BUNDLE_20260824.zip`
+  - SHA-256 `07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444`
+  - ~392 MiB
+  - authenticated calibration bundle.
+
+- `FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip`
+  - combined SHA-256 `63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7`
+  - bytes 607,959,761.
+  - available locally as two parts:
+    - part001 `b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e`
+    - part002 `5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875`
+
+- `66e64913-959f-4a7c-bbfe-6ff906fb281d.npz`
+  - SHA-256 `001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70`
+  - program NPZ.
+
+- `checkpoints.zip`
+  - SHA-256 `ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c`
+  - forensic only.
+
+- `t1_checkpoint_u0200.zip`
+  - SHA-256 `0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c`
+  - forensic only.
+
+- `expression.zip`
+  - SHA-256 `1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4`
+  - historical expression archive.
+
+Do not reconstruct identities because a binary is not in Git. Use the existing custody/hash record.
+
+---
+
+## 8. Chat/project-exclusive historical context preserved on this audit branch
+
+The following files are preserved as **historical context only**, not current scientific authority:
+
+- `docs/agent/external_context/ARCHITECTURAL_INTEGRATION_NOTES_20261014.md`
+- `docs/agent/external_context/UNIFIED_PIPELINE_ARCHITECTURE_NOTES_20261014.txt`
+- `docs/agent/external_context/HISTORICAL_STATUS_AND_REPAIR_PLAN_20260912.txt`
+- `docs/agent/external_context/HISTORICAL_OBSERVATION_OPERATOR_NOTES.txt`
+- `docs/agent/external_context/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv`
+
+These exist to preserve reasoning/history that otherwise lived only in the project/chat environment.
+
+---
+
+## 9. Unresolved work — do not let it disappear
+
+Use Task 0 machine ledger:
+`results/target_discovery/unified_qualification_v1/PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json`
+
+It currently carries the remaining dependencies including:
+- G8 reference/statistical estimand
+- G6 produced substantive margin / scale contract
+- geometry producer/eigengap
+- R1 Y-cell identity null producer
+- G2 candidate-specific static policy
+- candidate support overlays
+- G7 evidence producer
+- R4/C6/C4 producer/reference inputs
+- G12 human support/outcome objects
+- mode equivalence
+- controller exact binding
+- TargetPortfolio unified binding
+- real reference artifacts
+- readiness-matrix regeneration
+- CaseBundle/TruthBundle
+- sealed challenge infrastructure
+- Tasks 1–3 foundation
+- downstream certification
+- V79/V80 successor conflict
+- both Macha historical-stream registrations.
+
+Future agents must resolve items explicitly; no unresolved dependency may disappear by omission.
+
+---
+
+## 10. Required operating protocol for successors
+
+Before changing science:
+1. read this file;
+2. read PR #381 machine migration matrix, mixed decomposition, dual-Macha custody and unresolved ledger;
+3. verify current PR heads from GitHub metadata;
+4. use exact commits/digests, not branch names;
+5. distinguish mechanics evidence from biological evidence;
+6. preserve RED → minimal GREEN → hostile regression → exact-head verification;
+7. preserve source noncompensation and support/estimability semantics;
+8. never tune thresholds/references from candidate outcomes;
+9. never open protected partitions as a rescue;
+10. never promote historical PASS/GREEN/QUALIFIED strings into current unified authority.
+
+Current next event:
+- Macha finishes old synthetic Tasks 1–2 and stops;
+- Task 0 independent review returns;
+- then audit/consolidate Macha Tasks 1–2 into the merged lane;
+- freeze accepted Task 0 custody transfer;
+- begin unified Task 1 under PR #380.
+
+No other historical reconstruction should be necessary unless a concrete contradiction is found.
