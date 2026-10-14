@@ -16,6 +16,7 @@ MIGRATION_CLASSES = frozenset(
         "KNOWN_TRUTH_CHALLENGE_ASSET",
         "DEVELOPMENT_FIXTURE",
         "HISTORICAL_NEGATIVE_CONTROL",
+        "HISTORICAL_BIOLOGICAL_EVIDENCE",
         "PRODUCTION_INTERFACE_DEPENDENCY",
         "SUPERSEDED_PARALLEL_IMPLEMENTATION",
         "CLOSED_FAILED_EXPERIMENT",
@@ -67,6 +68,23 @@ _REQUIRED_DECOMPOSITION_CHILD_FIELDS = {
     "authority_basis",
 }
 
+_REQUIRED_MACHA_ARTIFACT_FIELDS = {
+    "artifact_id",
+    "artifact_path",
+    "source_commit",
+    "artifact_digest",
+    "exact_identity_available",
+    "migration_class",
+    "current_authority",
+    "scientific_role",
+    "historical_evidence_retained",
+    "requires_requalification",
+    "requalification_reason",
+    "destination_in_unified_architecture",
+    "authority_basis",
+    "continue_stop_or_redirect",
+}
+
 _REQUIRED_UNRESOLVED_FIELDS = {
     "item_id",
     "missing_dependency",
@@ -89,6 +107,21 @@ _EXPECTED_BOUNDARIES = {
 }
 
 _DECOMPOSITION_FILENAME = "PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json"
+_MACHA_STREAMS_FILENAME = "PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json"
+_REQUIRED_MACHA_STREAMS = {
+    "MACHA_REAL_TD_CORRECTED_REPLAY": {
+        "MACHA_PR314_CORRECTED_REPLAY",
+        "MACHA_PR316_FINE_RARE_SUCCESSOR",
+        "MACHA_REAL_DATA_AUDIT",
+        "MACHA_REPAIR_LINEAGE_364_369",
+    },
+    "MACHA_V79_BAYESIAN_KNOWN_TRUTH": {
+        "MACHA_PR261_V79_BAYESIAN_HANDOFF",
+        "MACHA_V79_Q00_Q11_REALIZATION_CUSTODY",
+        "MACHA_V79_TERMINAL_NOT_QUALIFIED",
+        "MACHA_V80_BENCHMARK_PACKAGE",
+    },
+}
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -193,6 +226,77 @@ def _validate_decompositions(matrix_path: Path, artifacts: list[dict[str, Any]])
     return len(child_ids)
 
 
+def _validate_macha_streams(matrix_path: Path, unresolved_ids: set[str]) -> int:
+    streams_path = matrix_path.with_name(_MACHA_STREAMS_FILENAME)
+    try:
+        payload = _load(streams_path)
+    except ValueError as exc:
+        raise ValueError("Macha dual-stream custody registry missing") from exc
+    _require_global_authority(payload, "Macha dual-stream custody registry")
+
+    streams = payload.get("streams")
+    if not isinstance(streams, list) or len(streams) != 2:
+        raise ValueError("Macha dual-stream custody registry must contain exactly two streams")
+    by_id: dict[str, dict[str, Any]] = {}
+    artifact_ids: set[str] = set()
+    for idx, stream in enumerate(streams):
+        if not isinstance(stream, dict):
+            raise ValueError(f"Macha stream {idx} is not an object")
+        stream_id = stream.get("stream_id")
+        if not stream_id or stream_id in by_id:
+            raise ValueError(f"invalid or duplicate Macha stream id: {stream_id}")
+        if stream.get("historical_scientific_custodian") != "Macha":
+            raise ValueError(f"Macha historical-custodian role missing for {stream_id}")
+        if not stream.get("unified_destination") or not stream.get("review_obligations"):
+            raise ValueError(f"Macha stream destination/review obligations missing for {stream_id}")
+        missing_unresolved = sorted(set(stream.get("unresolved_item_ids", [])) - unresolved_ids)
+        if missing_unresolved:
+            raise ValueError(
+                f"Macha stream unresolved work disappeared for {stream_id}: {', '.join(missing_unresolved)}"
+            )
+        artifacts = stream.get("artifacts")
+        if not isinstance(artifacts, list) or not artifacts:
+            raise ValueError(f"Macha stream artifacts missing for {stream_id}")
+        for artifact_idx, artifact in enumerate(artifacts):
+            if not isinstance(artifact, dict):
+                raise ValueError(f"Macha stream artifact {stream_id}[{artifact_idx}] is not an object")
+            missing = sorted(_REQUIRED_MACHA_ARTIFACT_FIELDS - artifact.keys())
+            if missing:
+                raise ValueError(
+                    f"Macha stream artifact {stream_id}[{artifact_idx}] missing fields: {', '.join(missing)}"
+                )
+            artifact_id = artifact["artifact_id"]
+            if artifact_id in artifact_ids:
+                raise ValueError(f"duplicate Macha stream artifact id: {artifact_id}")
+            artifact_ids.add(artifact_id)
+            if artifact["migration_class"] not in MIGRATION_CLASSES:
+                raise ValueError(f"invalid Macha migration_class for {artifact_id}")
+            if not artifact["destination_in_unified_architecture"]:
+                raise ValueError(f"Macha artifact destination missing for {artifact_id}")
+            if artifact["historical_evidence_retained"] is not True:
+                raise ValueError(f"Macha historical evidence dropped for {artifact_id}")
+            if artifact["current_authority"] == "CURRENT_UNIFIED_SCIENTIFIC_AUTHORITY":
+                raise ValueError(f"Macha historical artifact silently promoted: {artifact_id}")
+            _validate_exact_identity(artifact, f"Macha stream artifact {artifact_id}")
+            if artifact.get("authority_basis") == "PR_OR_BRANCH_NAME":
+                raise ValueError(f"navigation metadata used as Macha artifact authority: {artifact_id}")
+            if artifact["migration_class"] == "CLOSED_FAILED_EXPERIMENT":
+                if not str(artifact["current_authority"]).startswith("NONE"):
+                    raise ValueError(f"Macha failed experiment promoted: {artifact_id}")
+                if artifact["requires_requalification"] is not True:
+                    raise ValueError(f"Macha failed experiment missing requalification: {artifact_id}")
+        by_id[stream_id] = stream
+
+    if set(by_id) != set(_REQUIRED_MACHA_STREAMS):
+        raise ValueError("Macha custody streams are incomplete or renamed")
+    for stream_id, required_ids in _REQUIRED_MACHA_STREAMS.items():
+        observed = {a["artifact_id"] for a in by_id[stream_id]["artifacts"]}
+        missing = sorted(required_ids - observed)
+        if missing:
+            raise ValueError(f"Macha stream {stream_id} missing required artifacts: {', '.join(missing)}")
+    return len(artifact_ids)
+
+
 def validate_migration_outputs(matrix_path: Path, unresolved_path: Path) -> dict[str, Any]:
     matrix = _load(matrix_path)
     unresolved = _load(unresolved_path)
@@ -247,6 +351,7 @@ def validate_migration_outputs(matrix_path: Path, unresolved_path: Path) -> dict
             "KNOWN_TRUTH_SUBSTRATE",
             "KNOWN_TRUTH_CHALLENGE_ASSET",
             "HISTORICAL_NEGATIVE_CONTROL",
+            "HISTORICAL_BIOLOGICAL_EVIDENCE",
         }:
             if not artifact["destination_in_unified_architecture"]:
                 raise ValueError(f"reusable work discarded without destination: {artifact_id}")
@@ -276,6 +381,8 @@ def validate_migration_outputs(matrix_path: Path, unresolved_path: Path) -> dict
                 f"unresolved work disappeared for {artifact['artifact_id']}: {', '.join(missing_ids)}"
             )
 
+    macha_stream_artifact_count = _validate_macha_streams(matrix_path, unresolved_ids)
+
     required_lessons = set(matrix.get("required_scientific_lessons", []))
     expected_lessons = {
         "MEASURED_ZERO_NE_UNSUPPORTED",
@@ -300,6 +407,7 @@ def validate_migration_outputs(matrix_path: Path, unresolved_path: Path) -> dict
         "status": "PASS_TASK0_PREMERGER_MIGRATION_CUSTODY_VALIDATION",
         "artifact_count": len(artifacts),
         "decomposition_child_count": decomposition_child_count,
+        "macha_stream_artifact_count": macha_stream_artifact_count,
         "unresolved_count": len(items),
         "global_authority": GLOBAL_AUTHORITY,
     }
