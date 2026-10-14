@@ -1,9 +1,9 @@
 """Outcome-blind G8 realization/metric/support semantics.
 
 This module closes the semantic gap left by the conformal-bound mechanics in
-``td_real_measurement_reference_v1``.  It defines what a calibration draw is,
+``td_real_measurement_reference_v1``. It defines what a calibration draw is,
 how support fractions are denominated, and what must be frozen before a real
-G8 reference can be generated.  It does not evaluate candidate biology.
+G8 reference can be generated. It does not evaluate candidate biology.
 """
 from __future__ import annotations
 
@@ -30,6 +30,7 @@ _ALLOWED_ATOM_STATES = {
     "UNSUPPORTED_STRUCTURAL",
     "BLOCKED_EVIDENCE_CONTRACT",
 }
+_UPSTREAM_BLOCKED_STATES = {"UNSUPPORTED_STRUCTURAL", "BLOCKED_EVIDENCE_CONTRACT"}
 _RESOLVED_STATES = {"RESOLVED_NONZERO", "RESOLVED_MEASURED_ZERO"}
 _NO_AUTHORITY = {
     "value_read_authorized": False,
@@ -129,6 +130,15 @@ def support_fraction(*, eligible_atoms: Sequence[str], atom_states: Mapping[str,
     bad = {value for value in atom_states.values() if value not in _ALLOWED_ATOM_STATES}
     if bad:
         raise G8ContractError(f"unknown atom support states: {sorted(bad)}")
+    upstream_blocked = {
+        atom: atom_states[atom]
+        for atom in atoms
+        if atom_states[atom] in _UPSTREAM_BLOCKED_STATES
+    }
+    if upstream_blocked:
+        raise G8ContractError(
+            "upstream structural/evidence blockers may not enter the G8 thinning denominator"
+        )
     resolved = sum(atom_states[atom] in _RESOLVED_STATES for atom in atoms)
     measured_zero = sum(atom_states[atom] == "RESOLVED_MEASURED_ZERO" for atom in atoms)
     denominator = len(atoms)
