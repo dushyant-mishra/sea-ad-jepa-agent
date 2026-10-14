@@ -1,0 +1,24 @@
+name: Post-TD C4 requires C6
+
+on:
+  push:
+    branches:
+      - fix/post-td-c4-requires-c6-20261014
+  pull_request:
+    paths:
+      - 'scripts/v5/jepa_post_td_harness_contract_v1.py'
+      - 'tests/v5/test_jepa_post_td_c4_requires_c6_v1.py'
+      - '.github/workflows/post-td-c4-requires-c6.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: scripts/v5:.
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.17'
+      - name: Run C4 dependency regression
+        run: python -m unittest -v tests.v5.test_jepa_post_td_c4_requires_c6_v1
