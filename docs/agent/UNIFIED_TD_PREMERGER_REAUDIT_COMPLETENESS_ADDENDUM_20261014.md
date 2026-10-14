@@ -14,19 +14,34 @@ Normative machine companion:
 
 Where the earlier Task 0 migration matrix is stale about the five re-audit findings F5–F9, this addendum and its machine companion supply the current custody interpretation. They do not silently promote any historical evidence.
 
-## F5 — active PR #356 Tasks 1–4
+## F5 — PR #356 Task 1–4 custody after merger
 
-The earlier Task 0 snapshot flattened old PR #356 into “Tasks 1–3 requirements preserved” plus “Tasks 4–12 superseded.” That is no longer an adequate custody representation because Macha is still completing the previously assigned old synthetic Tasks 1–3 under their original execution law, with Task 4 eligible only after all three reviews and the post-Task-3 checkpoint.
+The earlier Task 0 snapshot flattened old PR #356 into “Tasks 1–3 requirements preserved” plus “Tasks 4–12 superseded.” A later re-audit temporarily represented old Tasks 1–3 as in-flight and Task 4 as blocked on their reviews. That representation is now superseded by the controller’s explicit post-merger stop law and the exact Task 1–2 evidence that was subsequently located.
 
-The correct merger interpretation is:
+Current exact old implementation branch:
 
-- old Task 1 canonical identity/serialization → candidate shared canonical identity infrastructure;
-- old Task 2 freeze-before-use custody/commit-reveal/identity-keyed RNG → candidate shared custody/sealed-challenge infrastructure;
-- old Task 3 calibration/provenance/realism → candidate shared calibration/provenance infrastructure;
-- old Task 4 candidate-neutral hidden biology → candidate `KNOWN_TRUTH_CASEBUNDLE_V1` / `TRUTH_BUNDLE_V1` substrate only after the original checkpoint law is satisfied;
+`implementation/production-synthetic-v3-1-1-20261014`
+
+Current exact Task 1–2 head:
+
+`ff597faf2182522a320ec5322f8db9b67c9c6094`
+
+Controller verification without authority promotion:
+
+- review PR #382;
+- focused run `38644641042`, job `116128364543`;
+- `332 passed in 8.94s` across old Task 1 canonicalization plus Task 2 custody/hostile suites;
+- inherited `unified synthetic integration v1` run `38644640881`: success.
+
+The correct merger interpretation is now:
+
+- old Task 1 canonical identity/serialization → controller-verified reusable substrate, proposed `ADAPT_AND_WRAP__DIRECT_REUSE_CANDIDATE_FOR_CANONICAL_PRIMITIVES`; it does **not** complete unified Task 1;
+- old Task 2 freeze-before-use custody/commit-reveal/identity-keyed RNG → controller-verified reusable substrate, proposed `ADAPT_AND_WRAP__SEALED_CUSTODY_RNG_SUBSTRATE`; it maps primarily to unified sealed-challenge/finalizer custody and does **not** complete unified Task 2;
+- old Task 3 calibration/provenance/realism → `STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY`; no old-lane implementation head is required or authorized;
+- old Task 4 candidate-neutral hidden biology → `STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY`; only its candidate-neutral known-truth substrate requirements migrate into later unified CaseBundle/TruthBundle work;
 - old Tasks 5–12 → must not continue as an independent synthetic authority program.
 
-No exact reviewed implementation head is invented here. Each old Task 1–4 output remains `AWAITING_EXACT_REVIEWED_HEAD` or blocked until Macha returns the actual reviewed custody evidence.
+The exact Task 1–2 head and controller review evidence are custody evidence only. They do not substitute for the architecture-required fresh independent review. Unified Task 1 remains blocked until Task 0 is independently accepted.
 
 ## F6 — current Foundation representation constraints
 
@@ -87,20 +102,24 @@ The withdrawn calibration-cache distortion finding remains withdrawn (`Audit G =
 
 ## Machine-visible unresolved work
 
-The unresolved ledger now separately carries:
+The unresolved ledger continues to carry the historical item IDs for stable traceability, but their current resolution states now distinguish verified substrate from stopped old-lane work:
 
-- `U_MACHA_SYNTH_TASK1_CANONICAL_IDENTITY_ACTIVE`
-- `U_MACHA_SYNTH_TASK2_CUSTODY_RNG_ACTIVE_OR_PENDING`
-- `U_MACHA_SYNTH_TASK3_CALIBRATION_PROVENANCE_ACTIVE_OR_PENDING`
-- `U_MACHA_SYNTH_TASK4_BIOLOGY_BLOCKED_ON_1_3_REVIEWS`
-- `U_OLD_SYNTH_TASKS5_12_NO_INDEPENDENT_CONTINUATION`
-- `U_FOUNDATION_REPRESENTATION_CUSTODY`
-- `U_MULTIMODAL_REGULATORY_CUSTODY`
-- `U_RUNTIME_TRAINING_SAFETY_CUSTODY`
-- `U_FULL104_INFORMATION_CHANNEL_CUSTODY`
+- `U_MACHA_SYNTH_TASK1_CANONICAL_IDENTITY_ACTIVE` → controller-verified exact substrate; independent migration review pending;
+- `U_MACHA_SYNTH_TASK2_CUSTODY_RNG_ACTIVE_OR_PENDING` → controller-verified exact substrate; independent migration review pending;
+- `U_MACHA_SYNTH_TASK3_CALIBRATION_PROVENANCE_ACTIVE_OR_PENDING` → stopped after merger; requirements migrate only;
+- `U_MACHA_SYNTH_TASK4_BIOLOGY_BLOCKED_ON_1_3_REVIEWS` → stopped after merger; requirements migrate only;
+- `U_OLD_SYNTH_TASKS5_12_NO_INDEPENDENT_CONTINUATION` → standing negative governance invariant;
+- `U_FOUNDATION_REPRESENTATION_CUSTODY`;
+- `U_MULTIMODAL_REGULATORY_CUSTODY`;
+- `U_RUNTIME_TRAINING_SAFETY_CUSTODY`;
+- `U_FULL104_INFORMATION_CHANNEL_CUSTODY`.
+
+Historical item names are identifiers, not current executable-state claims.
 
 ## Review gate
 
-Task 0 must still receive fresh independent review after these additions and after any exact reviewed Macha old-Task-1–4 heads that finish before custody acceptance are incorporated or explicitly recorded as still in flight.
+Task 0 must receive fresh independent review of its **current exact consolidated head**, including the exact old Task 1–2 substrate and the stop/migration-only disposition of old Tasks 3–4.
 
-Unified Task 1 remains blocked.
+No further old PR #356 Task 3/4 implementation is required for Task 0 closure. Their requirements are already in custody and migrate into the unified architecture.
+
+Unified Task 1 remains blocked until the independent Task 0 verdict accepts and freezes the exact reviewed head.
