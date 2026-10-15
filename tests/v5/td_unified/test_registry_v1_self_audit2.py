@@ -7,6 +7,7 @@ import pytest
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
 from scripts.v5.td_unified import registry_v1 as r
+from scripts.v5.td_unified import registry_v1_legacy as legacy
 from tests.v5.td_unified.registry_v1_dependency_fixtures import (
     bind_actor_registry,
     direct_fixture_actor_objects,
@@ -72,7 +73,7 @@ def test_evidence_receipt_must_resolve_to_exact_role_tagged_object():
     assert r.derive_real_reference_ready("G8", reg2, authority_object_resolver=lambda sha: good if sha == good_sha else None, dependency_verifier=deps.get).ready
 
 
-def test_controller_and_reviewer_are_resolved_objects_not_digest_strings():
+def test_controller_and_reviewer_are_resolved_objects_before_real_authority_gate():
     dep, target, deps = verified_pair(r); esha, eobj = evidence(); p = verified_prereq(r, dep, target, requirement_class="EXTERNAL_CONTROL", evidence_receipt_sha=esha)
     reg = registry(dep, target, p)
     csha, cobj = actor("QUALIFICATION_CONTROLLER", "C1")
@@ -84,10 +85,16 @@ def test_controller_and_reviewer_are_resolved_objects_not_digest_strings():
     with pytest.raises(r.RegistryError, match="resolver|controller.*object|authority object|actor registry"):
         r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
                        controller_identity=csha, reviewer_identity=rsha)
-    promoted = r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
-                              controller_identity=csha, reviewer_identity=rsha,
-                              authority_object_resolver=objects.get, dependency_verifier=deps.get)
-    assert promoted.units_by_id()["G8"].qualification_stage is QualificationStage.REAL_REFERENCE_READY
+    mechanics = legacy.promote_unit(
+        reg, "G8", QualificationStage.REAL_REFERENCE_READY,
+        controller_identity=csha, reviewer_identity=rsha,
+        authority_object_resolver=objects.get, dependency_verifier=deps.get,
+    )
+    assert mechanics.units_by_id()["G8"].qualification_stage is QualificationStage.REAL_REFERENCE_READY
+    with pytest.raises(r.RegistryError, match="Task 2|manifest|population|reader-split"):
+        r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
+                       controller_identity=csha, reviewer_identity=rsha,
+                       authority_object_resolver=objects.get, dependency_verifier=deps.get)
 
 
 def test_wrong_role_controller_object_is_refused_even_with_matching_digest():
@@ -107,7 +114,7 @@ def test_wrong_role_controller_object_is_refused_even_with_matching_digest():
                        authority_object_resolver=objects.get, dependency_verifier=objects.get)
 
 
-def test_promotion_receipt_explicitly_binds_prerequisite_record_identities():
+def test_mechanics_promotion_receipt_explicitly_binds_prerequisite_record_identities_without_claiming_real_rrr_authority():
     dep, target, deps = verified_pair(r); esha, eobj = evidence(); p = verified_prereq(r, dep, target, requirement_class="EXTERNAL_CONTROL", evidence_receipt_sha=esha)
     reg = registry(dep, target, p)
     csha, cobj = actor("QUALIFICATION_CONTROLLER", "C1"); rsha, robj = actor("INDEPENDENT_REVIEWER", "R1")
@@ -115,12 +122,17 @@ def test_promotion_receipt_explicitly_binds_prerequisite_record_identities():
         r, reg, deps, trusted_actor_objects=(cobj, robj)
     )
     objects[esha] = eobj
-    promoted = r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
-                              controller_identity=csha, reviewer_identity=rsha,
-                              authority_object_resolver=objects.get,
-                              dependency_verifier=deps.get)
+    promoted = legacy.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
+                                   controller_identity=csha, reviewer_identity=rsha,
+                                   authority_object_resolver=objects.get,
+                                   dependency_verifier=deps.get)
     receipt = promoted.promotions[0]
     assert receipt.prerequisite_shas == (p.canonical_sha256(),)
+    with pytest.raises(r.RegistryError, match="Task 2|manifest|population|reader-split"):
+        r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
+                       controller_identity=csha, reviewer_identity=rsha,
+                       authority_object_resolver=objects.get,
+                       dependency_verifier=deps.get)
 
 
 def test_supersession_binds_existing_exact_successor_and_pre_registry_identity():

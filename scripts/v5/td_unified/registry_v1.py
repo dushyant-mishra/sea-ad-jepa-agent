@@ -1,8 +1,8 @@
 """Unified Task 3 registry with external history custody.
 
 The pre-B5 implementation is preserved byte-for-byte in ``registry_v1_legacy``.
-This facade adds the missing T3-B5 trust boundary while retaining the repaired
-B1-B4/B6 behavior. It grants no new scientific or training authority.
+This facade adds Task 3 trust boundaries while retaining the repaired B1/B4/B6
+behavior. It grants no scientific, protected-value, or training authority.
 """
 from __future__ import annotations
 
@@ -11,11 +11,21 @@ import hmac
 import json
 from typing import Mapping
 
+from . import manifest_v1 as _task2
 from . import registry_v1_legacy as _legacy
+from .actor_registry_v1 import ActorRegistryError
+from .task3_trust_roots_v1 import require_frozen_privileged_actor_policy
 
 for _name, _value in vars(_legacy).items():
     if not _name.startswith("__"):
         globals()[_name] = _value
+
+# Process-wide revocation memory closes the exact B5-F fresh-custody reset attack:
+# every custody instance in the qualification process consults one shared anchor.
+# This is deliberately NOT represented as cross-process persistence or R4 closure;
+# real HUMAN_EXECUTABLE authority still requires separately qualified external
+# ledger/key custody and Task 4 remains blocked.
+_PROCESS_REVOCATION_ANCHOR: set[str] = set()
 
 
 def _canonical_event_bytes(payload: Mapping[str, object]) -> bytes:
@@ -33,6 +43,136 @@ def _unit_payloads(registry):
     return {unit.unit_id: unit.to_payload() for unit in registry.units}
 
 
+def _combined_resolver(authority_object_resolver, dependency_verifier):
+    def resolve(sha):
+        if authority_object_resolver is not None:
+            obj = authority_object_resolver(sha)
+            if obj is not None:
+                return obj
+        if dependency_verifier is not None:
+            return dependency_verifier(sha)
+        return None
+    return resolve
+
+
+def _require_frozen_actor_policy(registry, authority_object_resolver, dependency_verifier) -> None:
+    try:
+        require_frozen_privileged_actor_policy(
+            registry.actor_registry_sha,
+            _combined_resolver(authority_object_resolver, dependency_verifier),
+        )
+    except ActorRegistryError as exc:
+        raise RegistryError(str(exc)) from exc
+
+
+def _registered_unit_actor_ids(registry, unit, authority_object_resolver, dependency_verifier):
+    producer = _legacy._registered_actor(
+        registry,
+        unit.producer_actor_identity,
+        expected_role="SCIENTIFIC_PRODUCER",
+        label="scientific producer actor",
+        authority_object_resolver=authority_object_resolver,
+        dependency_verifier=dependency_verifier,
+    )
+    executor = _legacy._registered_actor(
+        registry,
+        unit.executor_actor_identity,
+        expected_role="SCIENTIFIC_EXECUTOR",
+        label="scientific executor actor",
+        authority_object_resolver=authority_object_resolver,
+        dependency_verifier=dependency_verifier,
+    )
+    return producer, executor
+
+
+def _require_registered_prerequisite_actors(
+    registry,
+    unit_id,
+    *,
+    gate,
+    authority_object_resolver,
+    dependency_verifier,
+) -> None:
+    """Bind content validators/evidence issuers to the closed actor registry."""
+    resolver = _combined_resolver(authority_object_resolver, dependency_verifier)
+    unit = registry.units_by_id()[unit_id]
+    producer, executor = _registered_unit_actor_ids(
+        registry, unit, authority_object_resolver, dependency_verifier
+    )
+    for prerequisite in registry.prerequisites:
+        if prerequisite.dependent_unit_id != unit_id or prerequisite.gate != gate:
+            continue
+        if prerequisite.content_required:
+            receipt = _legacy._resolve_object(
+                prerequisite.content_validation_receipt_sha or "",
+                resolver,
+                expected_role="CONTENT_VALIDATION_RECEIPT",
+                label=prerequisite.prerequisite_id + " content",
+            )
+            validator_sha = receipt.get("validator_identity_sha")
+            validator = _legacy._registered_actor(
+                registry,
+                validator_sha if type(validator_sha) is str else "",
+                expected_role="CONTENT_VALIDATOR",
+                label=prerequisite.prerequisite_id + " content validator",
+                authority_object_resolver=authority_object_resolver,
+                dependency_verifier=dependency_verifier,
+            )
+            if validator in {producer, executor}:
+                raise RegistryError(
+                    f"{prerequisite.prerequisite_id} content validator must be independent of producer/executor"
+                )
+        if prerequisite.requirement_class in {"PROCESS_ISOLATION", "CROSS_PROCESS_LEDGER_CUSTODY"}:
+            evidence = _legacy._resolve_object(
+                prerequisite.evidence_receipt_sha,
+                resolver,
+                expected_role="PREREQUISITE_EVIDENCE",
+                label=prerequisite.prerequisite_id + " evidence",
+            )
+            issuer_sha = evidence.get("issuer_identity_sha")
+            if type(issuer_sha) is not str:
+                raise RegistryError(
+                    f"{prerequisite.prerequisite_id} evidence requires registered issuer_identity_sha"
+                )
+            issuer = _legacy._registered_actor(
+                registry,
+                issuer_sha,
+                expected_role="PREREQUISITE_EVIDENCE_ISSUER",
+                label=prerequisite.prerequisite_id + " evidence issuer",
+                authority_object_resolver=authority_object_resolver,
+                dependency_verifier=dependency_verifier,
+            )
+            if issuer in {producer, executor}:
+                raise RegistryError(
+                    f"{prerequisite.prerequisite_id} evidence issuer must be independent of producer/executor"
+                )
+
+
+def _require_frozen_task2_binding(
+    registry,
+    unit_id,
+    *,
+    authority_object_resolver,
+    dependency_verifier,
+    raw_resolver,
+) -> None:
+    """Re-run frozen Task 2 validators at the Task 3 authority boundary."""
+    unit = registry.units_by_id()[unit_id]
+    resolver = _combined_resolver(authority_object_resolver, dependency_verifier)
+    manifest = resolver(unit.manifest_sha)
+    if not isinstance(manifest, Mapping):
+        raise RegistryError("Task 2 manifest object unavailable at Task 3 authority boundary")
+    try:
+        validated = _task2.validate_manifest(dict(manifest), resolver, raw_resolver=raw_resolver)
+    except _task2.ManifestError as exc:
+        raise RegistryError(f"Task 2 manifest/population authority validation failed: {exc}") from exc
+    if raw_resolver is None:
+        raise RegistryError("Task 2 frozen reader-split raw resolver required for real-reference authority")
+    payload = validated.to_payload()
+    if payload.get("access_policy_sha") != unit.access_policy_sha:
+        raise RegistryError("Task 2 validated manifest/access-policy binding does not match registry unit")
+
+
 class RegistryHistoryCustody:
     """Harness-owned append-only Task 3 history anchor."""
 
@@ -41,12 +181,19 @@ class RegistryHistoryCustody:
             raise RegistryError("history custody attestation_key must be non-empty bytes")
         if genesis_registry.promotions or genesis_registry.revocations:
             raise RegistryError("history custody genesis must be history-free")
+        for unit in genesis_registry.units:
+            if unit.canonical_sha256() in _PROCESS_REVOCATION_ANCHOR:
+                raise RegistryError(
+                    "history custody genesis refuses unit identity already present in anchored revocation ledger"
+                )
         if any(
             _legacy._STAGE_INDEX[unit.qualification_stage]
-            > _legacy._STAGE_INDEX[QualificationStage.KNOWN_TRUTH_QUALIFIED]
+            > _legacy._STAGE_INDEX[QualificationStage.SAME_CODE_PATH]
             for unit in genesis_registry.units
         ):
-            raise RegistryError("history custody genesis cannot start from an advanced stage")
+            raise RegistryError(
+                "history custody genesis cannot declare KNOWN_TRUTH_QUALIFIED or later; sealed challenge evidence must occur in anchored history"
+            )
         self._key = bytes(attestation_key)
         self._actor_registry_sha = genesis_registry.actor_registry_sha
         self._unit_state = _unit_payloads(genesis_registry)
@@ -112,6 +259,11 @@ class RegistryHistoryCustody:
         self._events.append(event)
         self._unit_state = _unit_payloads(after)
         self._promotions, self._revocations = after_promotions, after_revocations
+        if kind == "REVOCATION":
+            affected = receipt.get("affected_unit_sha")
+            if type(affected) is not str:
+                raise RegistryError("revocation event missing affected unit identity for anchor")
+            _PROCESS_REVOCATION_ANCHOR.add(affected)
 
 
 def _require_history_custody(registry, history_custody, *, context: str) -> RegistryHistoryCustody:
@@ -130,6 +282,7 @@ def derive_real_reference_ready(
     history_custody=None,
     verification_cache=None,
 ):
+    """Diagnostic readiness only; promotion applies frozen Task 2 authority validation."""
     if registry.promotions or registry.revocations:
         _require_history_custody(
             registry,
@@ -178,22 +331,42 @@ def promote_unit(
     reviewer_identity,
     authority_object_resolver=None,
     dependency_verifier=None,
+    raw_resolver=None,
     verification_cache=None,
     history_custody=None,
 ):
     if unit_id not in registry.units_by_id():
         raise RegistryError(f"unknown unit_id: {unit_id}")
-    custody = None
-    if destination_stage is QualificationStage.HUMAN_EXECUTABLE and history_custody is None:
-        _legacy_promotion_preflight(
+
+    repaired = _legacy_promotion_preflight(
+        registry,
+        unit_id,
+        destination_stage,
+        controller_identity=controller_identity,
+        reviewer_identity=reviewer_identity,
+        authority_object_resolver=authority_object_resolver,
+        dependency_verifier=dependency_verifier,
+    )
+
+    if destination_stage in {QualificationStage.REAL_REFERENCE_READY, QualificationStage.HUMAN_EXECUTABLE}:
+        _require_frozen_actor_policy(registry, authority_object_resolver, dependency_verifier)
+        _require_registered_prerequisite_actors(
             registry,
             unit_id,
-            destination_stage,
-            controller_identity=controller_identity,
-            reviewer_identity=reviewer_identity,
+            gate=destination_stage.value,
             authority_object_resolver=authority_object_resolver,
             dependency_verifier=dependency_verifier,
         )
+        _require_frozen_task2_binding(
+            registry,
+            unit_id,
+            authority_object_resolver=authority_object_resolver,
+            dependency_verifier=dependency_verifier,
+            raw_resolver=raw_resolver,
+        )
+
+    custody = None
+    if destination_stage is QualificationStage.HUMAN_EXECUTABLE and history_custody is None:
         raise RegistryError("HUMAN_EXECUTABLE promotion requires external history custody anchor")
     if destination_stage is QualificationStage.HUMAN_EXECUTABLE:
         custody = _require_history_custody(registry, history_custody, context="HUMAN_EXECUTABLE promotion")
@@ -202,17 +375,6 @@ def promote_unit(
     elif registry.promotions or registry.revocations:
         raise RegistryError("promotion from a registry carrying history requires external history custody anchor")
 
-    repaired = _legacy.promote_unit(
-        registry,
-        unit_id,
-        destination_stage,
-        controller_identity=controller_identity,
-        reviewer_identity=reviewer_identity,
-        prerequisite_evidence_verifier=None,
-        authority_object_resolver=authority_object_resolver,
-        dependency_verifier=dependency_verifier,
-        verification_cache=None,
-    )
     if custody is not None:
         custody._record_transition(registry, repaired, kind="PROMOTION")
     return repaired

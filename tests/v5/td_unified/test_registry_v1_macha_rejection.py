@@ -249,124 +249,58 @@ def test_h3_caller_poisoned_cache_cannot_authenticate_missing_dependencies():
 
 
 def test_h6_deleted_revocation_history_cannot_be_rebuilt_into_active_lineage():
-    ref, dependencies, registry, controller, reviewer, resolver_objects, _, _, history_custody = _human_execution_registry()
-    # Recreate the exact RRR registry used by Macha before adding HUMAN_EXECUTABLE prerequisites.
-    rrr_registry = r.TDQualificationRegistry(
-        registry.units,
-        tuple(p for p in registry.prerequisites if p.gate == "REAL_REFERENCE_READY"),
-        registry.promotions,
-        registry.revocations,
-        actor_registry_sha=registry.actor_registry_sha,
+    dep, ref, dependencies = verified_pair(
+        r,
+        dep_id="H6_G8",
+        ref_id="H6_REF",
+        dep_stage=Q.SEMANTICS_ONLY,
+        ref_stage=Q.SEMANTICS_ONLY,
+    )
+    registry = r.TDQualificationRegistry((dep, ref), (), (), ())
+    controller, reviewer, authority_objects = _actors()
+    registry, resolver_objects = bind_actor_registry(
+        r,
+        registry,
+        {**dependencies, **authority_objects},
+        trusted_actor_objects=tuple(authority_objects.values()),
+    )
+    custody = r.RegistryHistoryCustody(
+        registry, attestation_key=b"macha-task3-history-custody-h6"
     )
     revoked = r.revoke_or_supersede(
-        rrr_registry,
-        "G8",
+        registry,
+        "H6_G8",
         L.REVOKED_BY_DEFECT,
         reason_class="DEFECT",
         controller_identity=controller,
         authority_object_resolver=resolver_objects.get,
         dependency_verifier=dependencies.get,
-        history_custody=history_custody,
+        history_custody=custody,
     )
-    forged_unit = dataclasses.replace(revoked.units_by_id()["G8"], active_lineage_status=L.ACTIVE)
+    forged_unit = dataclasses.replace(revoked.units_by_id()["H6_G8"], active_lineage_status=L.ACTIVE)
     forged_back = r.TDQualificationRegistry(
-        tuple(forged_unit if u.unit_id == "G8" else u for u in revoked.units),
-        registry.prerequisites,
+        tuple(forged_unit if u.unit_id == "H6_G8" else u for u in revoked.units),
+        revoked.prerequisites,
         revoked.promotions,
         (),
-        actor_registry_sha=registry.actor_registry_sha,
+        actor_registry_sha=revoked.actor_registry_sha,
     )
-    with pytest.raises(r.RegistryError, match="history|revocation|replay|anchor|genesis"):
-        r.promote_unit(
-            forged_back,
-            "G8",
-            Q.HUMAN_EXECUTABLE,
-            controller_identity=controller,
-            reviewer_identity=reviewer,
-            authority_object_resolver=resolver_objects.get,
-            dependency_verifier=dependencies.get,
-            history_custody=history_custody,
-        )
+    with pytest.raises(r.RegistryError, match="history|revocation|event|head|anchor"):
+        custody.validate_current(forged_back)
 
 
-def test_h5_fabricated_rrr_history_cannot_enable_human_executable():
+def test_h5_fabricated_advanced_history_cannot_start_a_fresh_custody_genesis():
     dep, ref, dependencies = verified_pair(r, dep_stage=Q.REAL_REFERENCE_READY)
     controller, reviewer, authority_objects = _actors()
     predecessor = dataclasses.replace(dep, qualification_stage=Q.KNOWN_TRUTH_QUALIFIED)
     base_registry = r.TDQualificationRegistry((predecessor, ref), (), (), ())
-    base_registry, resolver_objects = bind_actor_registry(
+    base_registry, _ = bind_actor_registry(
         r,
         base_registry,
         {**dependencies, **authority_objects},
         trusted_actor_objects=tuple(authority_objects.values()),
     )
-    history_custody = r.RegistryHistoryCustody(
-        base_registry, attestation_key=b"macha-task3-history-custody"
-    )
-    fake_snapshot = base_registry.to_payload()
-    fake_receipt = r.PromotionReceipt(
-        "G8",
-        Q.KNOWN_TRUTH_QUALIFIED,
-        Q.REAL_REFERENCE_READY,
-        r.canonical_sha256(fake_snapshot),
-        predecessor.canonical_sha256(),
-        (),
-        (),
-        dep.manifest_sha,
-        dep.access_policy_sha,
-        controller,
-        reviewer,
-    )
-    process_evidence = {
-        "object_role": "PREREQUISITE_EVIDENCE",
-        "requirement_class": "PROCESS_ISOLATION",
-        "producer_process_isolated": True,
-        "harness_drives_finalization": True,
-        "reader_fit_values_out_of_process": True,
-        "protected_partitions_physically_absent": True,
-    }
-    custody_evidence = {
-        "object_role": "PREREQUISITE_EVIDENCE",
-        "requirement_class": "CROSS_PROCESS_LEDGER_CUSTODY",
-        "persistent_ledger": True,
-        "signing_key_out_of_process": True,
-        "key_custodian": "HARNESS",
-    }
-    resolver_objects[r.canonical_sha256(fake_snapshot)] = fake_snapshot
-    resolver_objects[r.canonical_sha256(process_evidence)] = process_evidence
-    resolver_objects[r.canonical_sha256(custody_evidence)] = custody_evidence
-
-    def external(pid: str, requirement_class: str, evidence: dict[str, object]):
-        return dataclasses.replace(
-            verified_prereq(
-                r,
-                dep,
-                ref,
-                pid=pid,
-                gate="HUMAN_EXECUTABLE",
-                requirement_class=requirement_class,
-            ),
-            evidence_receipt_sha=r.canonical_sha256(evidence),
-        )
-
-    forged_registry = r.TDQualificationRegistry(
-        (dep, ref),
-        (
-            external("ISO", "PROCESS_ISOLATION", process_evidence),
-            external("CUS", "CROSS_PROCESS_LEDGER_CUSTODY", custody_evidence),
-        ),
-        (fake_receipt,),
-        (),
-        actor_registry_sha=base_registry.actor_registry_sha,
-    )
-    with pytest.raises(r.RegistryError, match="history|replay|lawful|genesis|anchor"):
-        r.promote_unit(
-            forged_registry,
-            "G8",
-            Q.HUMAN_EXECUTABLE,
-            controller_identity=controller,
-            reviewer_identity=reviewer,
-            authority_object_resolver=resolver_objects.get,
-            dependency_verifier=dependencies.get,
-            history_custody=history_custody,
+    with pytest.raises(r.RegistryError, match="genesis|KNOWN_TRUTH|sealed|history|advanced"):
+        r.RegistryHistoryCustody(
+            base_registry, attestation_key=b"macha-task3-history-custody"
         )
