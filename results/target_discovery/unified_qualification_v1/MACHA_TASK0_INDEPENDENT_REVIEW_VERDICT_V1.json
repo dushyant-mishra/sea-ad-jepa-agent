@@ -1,0 +1,140 @@
+{
+  "blocking_findings": [
+    {
+      "class": "NEW_BLOCKING_DEFECT",
+      "defect": "matrix/decomposition bind only plan-head requirements (implementation not started) and send Task4 requirements to none, contradicting completeness sidecar (ff597faf implemented; Task4 requirements migrate)",
+      "f_item": "F5",
+      "id": "B1",
+      "loci": [
+        "PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1.json:active_or_partial_work",
+        "PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1.json:artifacts[PR356_SYNTH_PLAN]",
+        "PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json:PR356_SYNTH_PLAN"
+      ],
+      "scope": "PR356_CUSTODY_SUBCOMPONENT",
+      "severity": "IMPORTANT"
+    },
+    {
+      "class": "NEW_BLOCKING_DEFECT",
+      "defect": "exact_identity_available=false for artifacts whose exact identity exists, including authority-bearing calibration inputs; truncated commit f5a8eb accepted",
+      "f_item": "F2",
+      "id": "B2",
+      "identities": {
+        "MACHA_REAL_DATA_AUDIT": {
+          "commit": "ccc3a08939694f5d35b3048c94ec44f44618eef4",
+          "receipt_index_sha256": "2af2acc3bf29c51aa885626ddd4567e5b8d9b885b747c335031d1b932c0ba86c"
+        },
+        "MACHA_V79_TERMINAL_NOT_QUALIFIED": {
+          "authorization_sha256": "4793d8f9024891a6572337246c76dea871b65ebde476d8f3983c483498b80337",
+          "bytes_location": "LOCAL_ONLY:D:/jepa_v79_scoring_run_ac1e73d7_20261013/scoring_output/",
+          "receipt_sha256": "ef10852e534fe8a83c3aebd832ad3a531d755d06185464441494712818e8abfd",
+          "scorer_code_sha": "ac1e73d79489438634aaeeca035d229875f3186a"
+        },
+        "REAL_GEOMETRY_PROFILE": {
+          "blob": "1b50ceb4d28ea2b2e4ad0c88a3c34c816a908fd4",
+          "commit": "f5a8ebeddbcd52a94274a7f72ecda1f71b82d777",
+          "sha256": "1ddf37827d548c84f533add702722e3015ea4abaedf258bf03a9c13e65d36f3a"
+        },
+        "REAL_SUPPORT_PROFILE": {
+          "blob": "e816483b75116c06979b9fd1507e3e0ebfb281df",
+          "commit": "f5a8ebeddbcd52a94274a7f72ecda1f71b82d777",
+          "sha256": "b78e65af8290245519bac7781f61793150592da9f542593dc0100df5cbdd395a"
+        }
+      },
+      "scope": "IDENTITY_FIELDS_PLUS_VALIDATOR_RULE",
+      "severity": "IMPORTANT"
+    },
+    {
+      "class": "NEW_BLOCKING_DEFECT",
+      "defect": "protected-partition facts routed to calibration inputs; MACHA_REAL_DATA_AUDIT carries two different authority strings across files",
+      "f_item": "FIREWALL",
+      "id": "B3",
+      "scope": "ONE_ARTIFACT_PLUS_VALIDATOR_RULE",
+      "severity": "IMPORTANT"
+    },
+    {
+      "author_checkpoint": {
+        "commit": "f53c13e6eed329651b1088775782fea399ba1bf6",
+        "path": "docs/agent/PRODUCTION_SYNTHETIC_TASKS_1_2_CHECKPOINT_MACHA_20261014.md",
+        "sha256": "412473ac5075f03bcfc1390b93a0db1694d2b595165f74b9fc7c9c61598a94a6"
+      },
+      "class": "NEW_BLOCKING_DEFECT",
+      "defect": "old Task2 external obligations O1-O8, deferred D1 and three deciding-lane questions not carried; author checkpoint not bound",
+      "f_item": "F5/E",
+      "id": "B4",
+      "scope": "PR356_CUSTODY_SUBCOMPONENT",
+      "severity": "IMPORTANT"
+    },
+    {
+      "class": "NEW_BLOCKING_DEFECT",
+      "defect": "validator enum extended at f98f0041 (14:44:53) before plan amendment 5b6bf07e (15:43:21); amendment not in Task0 ancestry; test binds by string only",
+      "f_item": "F4",
+      "id": "B5",
+      "scope": "TAXONOMY_SUBCOMPONENT",
+      "severity": "IMPORTANT"
+    }
+  ],
+  "date": "2026-10-14",
+  "f_item_verdicts": {
+    "F1": "MECHANICS_ACCEPTED__CONTENT_B1",
+    "F2": "MECHANICS_ACCEPTED__CONTENT_B2",
+    "F3": "STRUCTURE_ACCEPTED__IDENTITY_B2__AUTHORITY_B3",
+    "F4": "NOT_SATISFIED_B5",
+    "F5": "STOP_LAW_CONFIRMED__SUBSTRATE_B1__OBLIGATIONS_B4",
+    "F6": "ACCEPTED",
+    "F7": "ACCEPTED",
+    "F8": "ACCEPTED",
+    "F9": "ACCEPTED"
+  },
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "gpu_runtime_detected": {
+    "compute_capability": "8.6",
+    "compute_run": false,
+    "cpu": "Intel i9-11980HK, 16 logical",
+    "cuda_umd": "13.3",
+    "cudnn": 90701,
+    "driver": "610.74",
+    "full104_assets_present": true,
+    "gpu": "NVIDIA GeForce RTX 3080 Laptop GPU",
+    "os": "Windows 11 10.0.26200 + WSL2 Ubuntu",
+    "python": "3.11.15 (sea-ad-jepa-v3)",
+    "ram_gib": 31.8,
+    "torch": "2.7.0+cu128",
+    "torch_cuda": "12.8",
+    "vram_mib": 16384
+  },
+  "invalidates_task0_globally": false,
+  "migration_treatment_opinion": {
+    "PR356_TASK1": "ADAPT_AND_WRAP__AGREED",
+    "PR356_TASK2": "ADAPT_AND_WRAP__AGREED_CONDITIONAL_ON_B4"
+  },
+  "minor_findings": [
+    "M1 token-presence enforcement for F6-F9",
+    "M2 current_authority free text outside Macha streams",
+    "M3 mixed flag self-declared",
+    "M4 harmless probe commits in history",
+    "M5 TASK0 head placeholder must bind at freeze"
+  ],
+  "no_repeat": {
+    "candidate_outcomes_opened": false,
+    "data_recomputed_or_redownloaded": false,
+    "old_tasks_3_12_started": false,
+    "protected_partitions_opened": false,
+    "settled_audits_reopened": false,
+    "unified_task1_started": false
+  },
+  "old_task1_2_head": "ff597faf2182522a320ec5322f8db9b67c9c6094",
+  "old_task1_2_independent_verdict": "NOT_ISSUED__AUTHOR_CANNOT_SELF_QUALIFY__PR382_IS_INDEPENDENT_VERIFICATION",
+  "reviewer_role": {
+    "old_task1_2": "AUTHOR_IMPLEMENTER__PROVENANCE_ONLY",
+    "task0": "INDEPENDENT_HOSTILE_REVIEWER_OF_CONTROLLER_WORK"
+  },
+  "schema": "MACHA_TASK0_INDEPENDENT_REVIEW_VERDICT_V1",
+  "stop_law": {
+    "old_task3": "STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY__CONFIRMED",
+    "old_task4": "STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY__CONFIRMED",
+    "old_tasks5_12": "NO_INDEPENDENT_CONTINUATION__CONFIRMED",
+    "unified_task1": "NOT_STARTED__MAY_NOT_BEGIN_UNTIL_B1_B5_REPAIRED_AND_REACCEPTED"
+  },
+  "task0_head": "c80d7398b41f10208ec1622bc52599383b940be6",
+  "task0_verdict": "REJECT_WITH_BLOCKING_FINDINGS"
+}
