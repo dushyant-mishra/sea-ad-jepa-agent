@@ -217,6 +217,22 @@ Task 0, Task 1 and Task 2 rejection→repair→independent-acceptance histories 
 
 Technology is an observation operator `O_t`, not a donor/dataset identity. Preserve legitimate donor biology; separate measurement OOD from biological novelty; audit subspace/axis stability; distinguish biological-evidence convergence from measurement-depth convergence; use held donor/matrix/dataset/technology transfer and hierarchical dataset→donor→cell sampling before real training.
 
+### Motif-program accessibility is now an explicit evidence layer
+
+Read:
+
+`docs/agent/TD_MOTIF_PROGRAM_EVIDENCE_LAYER_CHROMVAR_LIMMA_V1_20261015.md`
+
+Future target integration must treat donor-pseudobulk chromVAR + replicate-level limma as a distinct `MOTIF_PROGRAM_ACCESSIBILITY` channel, with default claim class `TF_FAMILY_ASSOCIATED_CHROMATIN_ACCESSIBILITY` unless additional evidence resolves a specific TF.
+
+It is not generic extra ATAC weight. Peak-level differential accessibility, footprinting and chromVAR may provide complementary views of one ATAC assay, but they remain correlated evidence from the same source. Do not count them as independent dataset replications. SCENIC+ independence must likewise be discounted where it reuses the same ATAC input.
+
+Required claim limit: chromVAR measures motif-associated accessibility, not direct TF binding, causal TF activity, TF protein abundance or target causality. Stronger claims require convergence with resolving evidence such as footprinting, SCENIC+/regulon structure, expression/protein evidence, perturbation and/or independent datasets.
+
+For donor-level qualification, donors remain the statistical replicate; per-cell chromVAR testing cannot establish donor-level evidence. Retain per-donor scores, motif-family collapse where appropriate, seed/background robustness, exact motif database/version, exact peak representation and full analysis provenance.
+
+This addition changes the scientific evidence framework only. It grants no Task 3 acceptance, Task 4 start, target winner or training authority.
+
 ## 9. Local/private artifact custody
 
 Large/private artifacts available in the current project environment are **not** copied into Git. Their exact sizes/SHA-256 and notable contents are recorded in:
