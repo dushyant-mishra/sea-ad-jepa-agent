@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "AUTHORITY_RECORD_V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["unit_id", "qualification_stage", "active_lineage_status", "authority_scope"],
+  "properties": {
+    "unit_id": {"type": "string", "minLength": 1},
+    "qualification_stage": {
+      "enum": [
+        "SEMANTICS_ONLY",
+        "FIXTURE_SAME_INTERFACE",
+        "SAME_CODE_PATH",
+        "KNOWN_TRUTH_QUALIFIED",
+        "REAL_REFERENCE_READY",
+        "HUMAN_EXECUTABLE",
+        "HUMAN_EXECUTED",
+        "DOWNSTREAM_CERTIFIED",
+        "TRAINING_ELIGIBLE",
+        "TRAINING_AUTHORIZED"
+      ]
+    },
+    "active_lineage_status": {
+      "enum": ["ACTIVE", "SUPERSEDED", "REVOKED_BY_DEFECT", "REQUIRES_REQUALIFICATION"]
+    },
+    "authority_scope": {"type": "string", "minLength": 1}
+  }
+}
