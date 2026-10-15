@@ -1,0 +1,34 @@
+{
+  "schema": "UNIFIED_TASK1_REUSE_SUBSTRATE_V1",
+  "date": "2026-10-15",
+  "task0_freeze": "e37a22b8059c0a4a93a789a8ca916fb7acde9fe3",
+  "classification": "ADAPT_AND_WRAP__NOT_COMPLETED_UNIFIED_TASK",
+  "old_task1": {
+    "source_commit": "ff597faf2182522a320ec5322f8db9b67c9c6094",
+    "implementation_path": "scripts/production_synthetic/canonical_v1.py",
+    "implementation_blob": "b8a34d8d47f618e7dcde1b3e5c53584701294561",
+    "test_path": "tests/production_synthetic/test_canonical_v1.py",
+    "test_blob": "0bce5cbdde37112f316ffc1386342b34c0ed4d41",
+    "reused_claims": [
+      "canonical JSON byte semantics for JSON-compatible scientific values",
+      "None is the only missing value",
+      "measured zero remains distinct from missing",
+      "bool/int/float distinctions are preserved",
+      "mapping order does not alter canonical bytes",
+      "line endings are normalized without Unicode normalization"
+    ],
+    "not_inherited_as_authority": [
+      "unified scientific receipt verification",
+      "recursive parent-chain verification",
+      "unified authority-stage semantics",
+      "current manifest/registry/access-policy binding"
+    ]
+  },
+  "macha_nonblocking_carry_forward": [
+    "N1_REFUSE_IDENTITY_UNAVAILABLE_RECORDS_UNTIL_BOUND",
+    "N2_BIND_OLD_TASKS1_2_TEST_BLOBS",
+    "N3_MIXED_PARENT_EFFECTIVE_CLASSIFICATION",
+    "N4_MARK_ONE_SHOT_TASK0_REPAIR_SCRIPTS_HISTORICAL"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
