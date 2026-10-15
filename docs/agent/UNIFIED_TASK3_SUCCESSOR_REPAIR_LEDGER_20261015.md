@@ -12,6 +12,7 @@ This ledger records successor custody after the independent Macha rejection of U
 - rejected historical Task 3 candidate: `851544e8dc2a3881193a4d5bbcf07933e1d61149`
 - Macha rejection review: `869ca777a498181c519ccfc04b8bf5db0f2888c7`
 - repaired Task 3 code candidate: `68df31584d17f91da2635cdf8e03bbe93695f9d1`
+- review-package head before this pinning-only ledger commit: `5f8d2854ac157cf961748c211058da26b9f046de`
 - global authority remains: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
 ## Preserved RED baseline
