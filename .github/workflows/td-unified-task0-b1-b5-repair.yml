@@ -49,7 +49,8 @@ jobs:
           git add \
             scripts/v5/td_unified/premerger_migration_task0.py \
             tests/v5/td_unified/test_premerger_migration_task0.py \
-            tests/v5/td_unified/test_task0_b1_b5_regressions.py \
+            tests/v5/td_unified/test_task0_b1_b5_regressions.py
+          git add -f \
             results/target_discovery/unified_qualification_v1/PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1.json \
             results/target_discovery/unified_qualification_v1/PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json \
             results/target_discovery/unified_qualification_v1/PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json \
