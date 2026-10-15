@@ -67,6 +67,16 @@ def test_authority_scope_is_required_and_unit_stage_cannot_imply_project_trainin
         )
 
 
+def test_negative_training_scope_is_not_misread_as_positive_training_authority():
+    record = AuthorityRecord(
+        unit_id="G8_UNIT",
+        qualification_stage=QualificationStage.KNOWN_TRUTH_QUALIFIED,
+        active_lineage_status=ActiveLineageStatus.ACTIVE,
+        authority_scope="UNIT:G8__NO_TRAINING_AUTHORITY",
+    )
+    assert validate_authority_record(record) is record
+
+
 def test_bare_pass_green_or_mechanics_qualified_is_not_a_stage():
     for bad in ("PASS", "GREEN", "QUALIFIED", "MECHANICS_QUALIFIED"):
         with pytest.raises(ValueError):
