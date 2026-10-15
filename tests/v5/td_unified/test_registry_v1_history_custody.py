@@ -64,8 +64,18 @@ def test_b5_history_custody_rejects_known_truth_or_advanced_or_prepopulated_gene
 def test_b5_history_custody_records_lawful_prequalification_promotion_and_allows_prerequisite_only_change():
     _, ref, dependencies, registry, controller, reviewer, objects = _genesis_below_known_truth()
     custody = r.RegistryHistoryCustody(registry, attestation_key=KEY)
-    promoted = r.promote_unit(
+    fixture = r.promote_unit(
         registry,
+        "G8",
+        Q.FIXTURE_SAME_INTERFACE,
+        controller_identity=controller,
+        reviewer_identity=reviewer,
+        authority_object_resolver=objects.get,
+        dependency_verifier=dependencies.get,
+        history_custody=custody,
+    )
+    promoted = r.promote_unit(
+        fixture,
         "G8",
         Q.SAME_CODE_PATH,
         controller_identity=controller,
@@ -97,11 +107,11 @@ def test_b5_history_custody_records_lawful_prequalification_promotion_and_allows
 def test_b5_history_custody_rejects_unrecorded_fabricated_promotion():
     dep, ref, dependencies, genesis, controller, reviewer, objects = _genesis_below_known_truth()
     custody = r.RegistryHistoryCustody(genesis, attestation_key=KEY)
-    promoted_unit = dataclasses.replace(dep, qualification_stage=Q.SAME_CODE_PATH)
+    promoted_unit = dataclasses.replace(dep, qualification_stage=Q.FIXTURE_SAME_INTERFACE)
     receipt = r.PromotionReceipt(
         unit_id="G8",
         source_stage=Q.SEMANTICS_ONLY,
-        destination_stage=Q.SAME_CODE_PATH,
+        destination_stage=Q.FIXTURE_SAME_INTERFACE,
         pre_registry_sha=genesis.canonical_sha256(),
         unit_identity_sha=dep.canonical_sha256(),
         prerequisite_ids=tuple(p.prerequisite_id for p in genesis.prerequisites),
@@ -125,18 +135,8 @@ def test_b5_history_custody_rejects_unrecorded_fabricated_promotion():
 def test_b5_history_custody_rejects_deleted_recorded_revocation_below_known_truth():
     _, _, dependencies, genesis, controller, reviewer, objects = _genesis_below_known_truth()
     custody = r.RegistryHistoryCustody(genesis, attestation_key=KEY)
-    promoted = r.promote_unit(
-        genesis,
-        "G8",
-        Q.SAME_CODE_PATH,
-        controller_identity=controller,
-        reviewer_identity=reviewer,
-        authority_object_resolver=objects.get,
-        dependency_verifier=dependencies.get,
-        history_custody=custody,
-    )
     revoked = r.revoke_or_supersede(
-        promoted,
+        genesis,
         "G8",
         L.REVOKED_BY_DEFECT,
         reason_class="DEFECT",
