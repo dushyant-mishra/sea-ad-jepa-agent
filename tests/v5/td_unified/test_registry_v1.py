@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib
+import inspect
 
 import pytest
 
@@ -111,9 +112,10 @@ def test_human_executable_requires_independent_reviewer():
         r.promote_unit(reg,"G8",QualificationStage.HUMAN_EXECUTABLE,controller_identity=c,reviewer_identity=None,authority_object_resolver=res)
 
 
-def test_ready_boolean_cannot_override_missing_prerequisite():
-    r=_r(); result=r.derive_real_reference_ready("G8",_registry(r,[_unit(r)]),asserted_ready=True)
-    assert not result.ready and result.blockers
+def test_dead_authority_inputs_are_not_public_api():
+    r=_r()
+    assert "asserted_ready" not in inspect.signature(r.derive_real_reference_ready).parameters
+    assert "prerequisite_evidence_verifier" not in inspect.signature(r.promote_unit).parameters
 
 
 def test_one_requalification_required_prerequisite_blocks_readiness():
