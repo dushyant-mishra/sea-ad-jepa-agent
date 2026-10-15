@@ -1,0 +1,42 @@
+{
+  "b5_evidence": {
+    "amendment_blob_at_head": "7f20050c2a8d0f80f0c6418c007bc12f7fc1083f",
+    "deletions_vs_plan_base": [],
+    "merge_tree_contains_amendment": true,
+    "mutations_caught": [
+      "byte_append",
+      "worktree_delete",
+      "committed_delete"
+    ]
+  },
+  "controller_ci_recorded_not_relied_upon": [
+    38667792825,
+    38667792777,
+    38667792863
+  ],
+  "date": "2026-10-15",
+  "freeze": "TASK0_MAY_BE_FROZEN__UNIFIED_TASK1_MAY_BEGIN_PROSPECTIVELY",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "hostile_tests_local": {
+    "evidence_class": "LOCAL_NOT_CI",
+    "result": "37 passed"
+  },
+  "items": {
+    "B1": "CLOSED_AT_db92f80d_UNCHANGED",
+    "B2": "CLOSED_AT_db92f80d_UNCHANGED",
+    "B3": "CLOSED_AT_db92f80d_UNCHANGED",
+    "B4": "CLOSED_AT_db92f80d_UNCHANGED",
+    "B5": "CLOSED"
+  },
+  "non_blocking": [
+    "N1",
+    "N2",
+    "N3",
+    "N4"
+  ],
+  "pr": 384,
+  "reviewed_head": "e37a22b8059c0a4a93a789a8ca916fb7acde9fe3",
+  "schema": "MACHA_TASK0_B5_RECHECK_VERDICT_V1",
+  "training_or_scientific_authority_changed": false,
+  "verdict": "ACCEPT_TASK0_B1_B5_REPAIR"
+}
