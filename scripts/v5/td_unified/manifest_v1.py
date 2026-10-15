@@ -18,9 +18,11 @@ __all__ = [
     "ManifestError",
     "CrossFitFold",
     "PopulationAccessPolicy",
+    "ObservedAccess",
     "ProducerAccessReceipt",
     "TDExecutionManifest",
     "build_current_td_access_policy",
+    "validate_population_access_policy_payload",
     "validate_producer_access",
     "verify_manifest_dependency",
     "verify_raw_file_sha256",
@@ -41,7 +43,8 @@ _ALLOWED_ACCESS_CLASSES = {
     "BIOLOGICAL_VALUES",
     "CALIBRATION_STATISTICS",
 }
-_PROTECTED_ALLOWED = {"METADATA", "PARTITION_IDENTITY"}
+_PROTECTED_ALLOWED = {"PARTITION_IDENTITY"}
+_FIT_PHASES = {"TRAIN", "EVAL"}
 _HEX = set("0123456789abcdef")
 
 _MANIFEST_ROLE_BY_FIELD = {
@@ -82,6 +85,7 @@ class CrossFitFold:
 class PopulationAccessPolicy:
     object_role: str
     policy_schema: str
+    assignment_basis: dict[str, object]
     assignment_basis_sha: str
     fold_count: int
     crossfit_folds: tuple[CrossFitFold, ...]
@@ -92,6 +96,7 @@ class PopulationAccessPolicy:
         return {
             "object_role": self.object_role,
             "policy_schema": self.policy_schema,
+            "assignment_basis": self.assignment_basis,
             "assignment_basis_sha": self.assignment_basis_sha,
             "fold_count": self.fold_count,
             "crossfit_folds": [fold.to_payload() for fold in self.crossfit_folds],
@@ -100,15 +105,47 @@ class PopulationAccessPolicy:
         }
 
     def canonical_sha256(self) -> str:
-        return canonical_object_sha256(self.to_payload())
+        payload = self.to_payload()
+        validate_population_access_policy_payload(payload)
+        return canonical_object_sha256(payload)
+
+
+@dataclass(frozen=True)
+class ObservedAccess:
+    partition: str
+    access_class: str
+    fold_index: int | None
+    phase: str
+    donor_ids: tuple[str, ...]
+
+    def to_payload(self) -> dict[str, object]:
+        return {
+            "partition": self.partition,
+            "access_class": self.access_class,
+            "fold_index": self.fold_index,
+            "phase": self.phase,
+            "donor_ids": list(self.donor_ids),
+        }
 
 
 @dataclass(frozen=True)
 class ProducerAccessReceipt:
     producer_id: str
     access_policy_sha: str
-    observed_access: tuple[tuple[str, str], ...]
+    observed_access: tuple[ObservedAccess, ...]
     numeric_result_digest: str | None = None
+    receipt_schema: str = "PRODUCER_ACCESS_RECEIPT_V1"
+
+    def to_payload(self) -> dict[str, object]:
+        payload: dict[str, object] = {
+            "receipt_schema": self.receipt_schema,
+            "producer_id": self.producer_id,
+            "access_policy_sha": self.access_policy_sha,
+            "observed_access": [event.to_payload() for event in self.observed_access],
+        }
+        if self.numeric_result_digest is not None:
+            payload["numeric_result_digest"] = self.numeric_result_digest
+        return payload
 
 
 @dataclass(frozen=True)
@@ -153,7 +190,8 @@ def build_current_td_access_policy(
     if any(type(s) is not str or not s for s in donor_source.values()):
         raise ManifestError("source identity must be a non-empty string")
 
-    assignment_basis_sha = canonical_object_sha256(_assignment_basis_payload(fit_donors, donor_source))
+    assignment_basis = _assignment_basis_payload(fit_donors, donor_source)
+    assignment_basis_sha = canonical_object_sha256(assignment_basis)
     fold_count = 5
     held: list[list[str]] = [[] for _ in range(fold_count)]
     by_source: dict[str, list[str]] = {}
@@ -178,26 +216,101 @@ def build_current_td_access_policy(
             raise ManifestError("donor leakage across train/held-out fold")
         folds.append(CrossFitFold(fold_index, train, held_out))
 
-    flattened = [d for fold in folds for d in fold.held_out_donors]
-    if sorted(flattened) != sorted(fit_donors) or len(flattened) != len(set(flattened)):
-        raise ManifestError("every fit donor must appear in exactly one held-out fold")
-
-    return PopulationAccessPolicy(
+    policy = PopulationAccessPolicy(
         object_role="ACCESS_POLICY",
         policy_schema="POPULATION_ACCESS_POLICY_V1",
+        assignment_basis=assignment_basis,
         assignment_basis_sha=assignment_basis_sha,
         fold_count=fold_count,
         crossfit_folds=tuple(folds),
         allowed_outcome_partitions=("reader_fit",),
         protected_partitions=("reader_validation", "reader_oracle"),
     )
+    validate_population_access_policy_payload(policy.to_payload())
+    return policy
+
+
+def validate_population_access_policy_payload(payload: dict[str, object]) -> None:
+    if type(payload) is not dict:
+        raise ManifestError("population access policy must be a dict")
+    required = {
+        "object_role",
+        "policy_schema",
+        "assignment_basis",
+        "assignment_basis_sha",
+        "fold_count",
+        "crossfit_folds",
+        "allowed_outcome_partitions",
+        "protected_partitions",
+    }
+    if set(payload) != required:
+        raise ManifestError("population access policy fields do not match POPULATION_ACCESS_POLICY_V1")
+    if payload["object_role"] != "ACCESS_POLICY" or payload["policy_schema"] != "POPULATION_ACCESS_POLICY_V1":
+        raise ManifestError("population access policy role/schema mismatch")
+    if payload["fold_count"] != 5:
+        raise ManifestError("population access policy fold_count must be 5")
+    basis = payload["assignment_basis"]
+    if type(basis) is not dict or set(basis) != {"fit_donors", "donor_source", "fold_count", "assignment_law"}:
+        raise ManifestError("assignment basis fields are invalid")
+    if basis["fold_count"] != 5 or basis["assignment_law"] != "SOURCE_STRATIFIED_HASH_ORDER_ROUND_ROBIN_V1":
+        raise ManifestError("assignment basis law is invalid")
+    fit_donors = basis["fit_donors"]
+    donor_source = basis["donor_source"]
+    if type(fit_donors) is not list or len(fit_donors) < 5 or any(type(d) is not str or not d for d in fit_donors):
+        raise ManifestError("assignment basis fit donors are invalid")
+    if len(fit_donors) != len(set(fit_donors)) or fit_donors != sorted(fit_donors):
+        raise ManifestError("assignment basis fit donors must be unique and sorted")
+    if type(donor_source) is not dict or set(donor_source) != set(fit_donors):
+        raise ManifestError("assignment basis donor_source must bind exactly fit donors")
+    if any(type(v) is not str or not v for v in donor_source.values()):
+        raise ManifestError("assignment basis source identity is invalid")
+    if not _is_lower_hex(payload["assignment_basis_sha"], 64):
+        raise ManifestError("assignment basis SHA must be lowercase 64-hex")
+    if canonical_object_sha256(basis) != payload["assignment_basis_sha"]:
+        raise ManifestError("assignment basis digest mismatch")
+    if payload["allowed_outcome_partitions"] != ["reader_fit"]:
+        raise ManifestError("only reader_fit may carry current-TD outcomes")
+    if payload["protected_partitions"] != ["reader_validation", "reader_oracle"]:
+        raise ManifestError("protected partition set mismatch")
+
+    folds = payload["crossfit_folds"]
+    if type(folds) is not list or len(folds) != 5:
+        raise ManifestError("exactly five cross-fit folds are required")
+    seen_indices: set[int] = set()
+    seen_held: list[str] = []
+    fit_set = set(fit_donors)
+    for fold in folds:
+        if type(fold) is not dict or set(fold) != {"fold_index", "train_donors", "held_out_donors"}:
+            raise ManifestError("cross-fit fold fields are invalid")
+        index = fold["fold_index"]
+        train = fold["train_donors"]
+        held = fold["held_out_donors"]
+        if type(index) is not int or index not in range(5) or index in seen_indices:
+            raise ManifestError("cross-fit fold indices must be unique 0..4")
+        seen_indices.add(index)
+        if type(train) is not list or type(held) is not list or not held:
+            raise ManifestError("cross-fit donor lists are invalid")
+        if len(train) != len(set(train)) or len(held) != len(set(held)):
+            raise ManifestError("cross-fit donor lists contain duplicates")
+        if set(train) & set(held):
+            raise ManifestError("cross-fit train/held donor leakage")
+        if set(train) | set(held) != fit_set:
+            raise ManifestError("every fold must partition the complete fit-donor set")
+        seen_held.extend(held)
+    if set(seen_indices) != set(range(5)):
+        raise ManifestError("cross-fit fold index coverage is incomplete")
+    if sorted(seen_held) != sorted(fit_donors) or len(seen_held) != len(set(seen_held)):
+        raise ManifestError("every fit donor must be held out exactly once")
 
 
 def validate_producer_access(policy: PopulationAccessPolicy, receipt: ProducerAccessReceipt) -> None:
     if not isinstance(policy, PopulationAccessPolicy):
         raise ManifestError("policy must be PopulationAccessPolicy")
+    validate_population_access_policy_payload(policy.to_payload())
     if not isinstance(receipt, ProducerAccessReceipt):
         raise ManifestError("receipt must be ProducerAccessReceipt")
+    if receipt.receipt_schema != "PRODUCER_ACCESS_RECEIPT_V1":
+        raise ManifestError("unknown producer access receipt schema")
     if type(receipt.producer_id) is not str or not receipt.producer_id:
         raise ManifestError("producer_id is required")
     if not _is_lower_hex(receipt.access_policy_sha, 64):
@@ -209,18 +322,39 @@ def validate_producer_access(policy: PopulationAccessPolicy, receipt: ProducerAc
     if receipt.numeric_result_digest is not None and not _is_lower_hex(receipt.numeric_result_digest, 64):
         raise ManifestError("numeric result digest must be lowercase 64-hex")
 
-    for item in receipt.observed_access:
-        if type(item) is not tuple or len(item) != 2:
-            raise ManifestError("observed access entries must be (partition, access_class)")
-        partition, access_class = item
+    for event in receipt.observed_access:
+        if not isinstance(event, ObservedAccess):
+            raise ManifestError("observed access must use structured ObservedAccess events")
+        partition = event.partition
+        access_class = event.access_class
         if type(partition) is not str or partition not in _ALLOWED_PARTITIONS:
             raise ManifestError(f"unknown or forbidden partition: {partition}")
         if type(access_class) is not str or access_class not in _ALLOWED_ACCESS_CLASSES:
             raise ManifestError(f"unknown or forbidden access class: {access_class}")
-        if partition == "reader_fit":
+        if type(event.donor_ids) is not tuple or len(event.donor_ids) != len(set(event.donor_ids)):
+            raise ManifestError("observed donor_ids must be a unique tuple")
+        if any(type(d) is not str or not d for d in event.donor_ids):
+            raise ManifestError("observed donor identity is invalid")
+
+        if partition != "reader_fit":
+            if access_class not in _PROTECTED_ALLOWED:
+                raise ManifestError(f"forbidden protected {partition} access class: {access_class}")
+            if event.fold_index is not None or event.phase != "CUSTODY" or event.donor_ids:
+                raise ManifestError("protected partition identity access must be custody-only and donor-free")
             continue
-        if access_class not in _PROTECTED_ALLOWED:
-            raise ManifestError(f"forbidden {partition} access class: {access_class}")
+
+        if type(event.fold_index) is not int or event.fold_index not in range(policy.fold_count):
+            raise ManifestError("reader_fit access must bind a valid fold_index")
+        if event.phase not in _FIT_PHASES:
+            raise ManifestError("reader_fit access phase must be TRAIN or EVAL")
+        if not event.donor_ids:
+            raise ManifestError("reader_fit access must enumerate donor_ids")
+        fold = policy.crossfit_folds[event.fold_index]
+        permitted = set(fold.train_donors if event.phase == "TRAIN" else fold.held_out_donors)
+        if not set(event.donor_ids) <= permitted:
+            if event.phase == "TRAIN":
+                raise ManifestError("held-out donor leakage into TRAIN access")
+            raise ManifestError("train donor leakage into EVAL held-out access")
 
 
 def verify_manifest_dependency(claimed_sha: str, resolved: object, *, expected_role: str) -> None:
@@ -286,6 +420,8 @@ def validate_manifest(payload: dict[str, object], resolver: Callable[[str], obje
         if resolved is None:
             raise ManifestError(f"manifest dependency unavailable: {field}")
         verify_manifest_dependency(claimed, resolved, expected_role=role)
+        if field == "access_policy_sha":
+            validate_population_access_policy_payload(resolved)
         dependencies.append((field, claimed))
     if len(semantic_shas) != len(set(semantic_shas)):
         raise ManifestError("one semantic identity cannot fill multiple manifest roles")
