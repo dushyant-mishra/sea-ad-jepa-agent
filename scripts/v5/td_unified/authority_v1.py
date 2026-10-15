@@ -46,6 +46,13 @@ class AuthorityRecord:
 
 
 _STAGE_ORDER = {stage: index for index, stage in enumerate(QualificationStage)}
+_POSITIVE_TRAINING_SCOPES = {
+    "TRAINING",
+    "TRAINING_AUTHORITY",
+    "PROJECT_TRAINING",
+    "GLOBAL_TRAINING",
+}
+_POSITIVE_PROJECT_SCOPES = {"PROJECT", "GLOBAL", "PROJECT_TRAINING", "GLOBAL_TRAINING"}
 
 
 def validate_authority_record(record: AuthorityRecord) -> AuthorityRecord:
@@ -62,8 +69,8 @@ def validate_authority_record(record: AuthorityRecord) -> AuthorityRecord:
         raise AuthorityError("authority scope is required")
 
     upper = scope.upper()
-    if "TRAINING" in upper and _STAGE_ORDER[record.qualification_stage] < _STAGE_ORDER[QualificationStage.TRAINING_ELIGIBLE]:
+    if upper in _POSITIVE_TRAINING_SCOPES and _STAGE_ORDER[record.qualification_stage] < _STAGE_ORDER[QualificationStage.TRAINING_ELIGIBLE]:
         raise AuthorityError("training authority cannot be implied below TRAINING_ELIGIBLE")
-    if ("PROJECT" in upper or "GLOBAL" in upper) and record.qualification_stage is not QualificationStage.TRAINING_AUTHORIZED:
+    if upper in _POSITIVE_PROJECT_SCOPES and record.qualification_stage is not QualificationStage.TRAINING_AUTHORIZED:
         raise AuthorityError("project/global authority cannot be implied by a unit-level stage")
     return record
