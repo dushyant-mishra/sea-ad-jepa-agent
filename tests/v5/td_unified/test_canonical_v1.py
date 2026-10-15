@@ -27,7 +27,7 @@ def _leaf(payload=None):
     return make_scientific_receipt(
         payload=payload or {"measured_zero": 0, "missing": None},
         producer_code_sha=HEX40_A,
-        input_shas=[HEX64_A],
+        input_shas=[],
         parent_receipt_shas=[],
         output_sha=HEX64_B,
         manifest_sha=HEX64_C,
@@ -67,7 +67,7 @@ def test_valid_child_with_missing_or_invalid_parent_fails_closed():
     child = make_scientific_receipt(
         payload={"child": 1},
         producer_code_sha=HEX40_A,
-        input_shas=[HEX64_A],
+        input_shas=[],
         parent_receipt_shas=[parent["receipt_sha256"]],
         output_sha=HEX64_B,
         manifest_sha=HEX64_C,
@@ -110,7 +110,7 @@ def test_duplicate_or_conflicting_parent_identity_is_rejected():
         make_scientific_receipt(
             payload={"child": 1},
             producer_code_sha=HEX40_A,
-            input_shas=[HEX64_A],
+            input_shas=[],
             parent_receipt_shas=[parent["receipt_sha256"], parent["receipt_sha256"]],
             output_sha=HEX64_B,
             manifest_sha=HEX64_C,
@@ -153,3 +153,27 @@ def test_input_digest_string_never_authenticates_missing_or_mutated_input_object
         verify_scientific_receipt(receipt, lambda _sha: None)
     with pytest.raises(CanonicalError, match="input"):
         verify_scientific_receipt(receipt, lambda sha: {"source": "mutated"} if sha == input_sha else None)
+
+
+def test_input_receipt_must_resolve_to_the_exact_requested_receipt_identity():
+    input_receipt = _leaf({"input_receipt": 1})
+    consumer = make_scientific_receipt(
+        payload={"consumer": 1},
+        producer_code_sha=HEX40_A,
+        input_shas=[input_receipt["receipt_sha256"]],
+        parent_receipt_shas=[],
+        output_sha=HEX64_B,
+        manifest_sha=HEX64_C,
+        registry_sha=HEX64_D,
+        access_policy_sha=HEX64_A,
+    )
+    assert verify_scientific_receipt(
+        consumer,
+        lambda sha: input_receipt if sha == input_receipt["receipt_sha256"] else None,
+    )
+    other = _leaf({"different": 1})
+    with pytest.raises(CanonicalError, match="input"):
+        verify_scientific_receipt(
+            consumer,
+            lambda sha: other if sha == input_receipt["receipt_sha256"] else None,
+        )
