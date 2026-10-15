@@ -26,15 +26,24 @@ jobs:
       - name: Apply deterministic cycle4 hardening
         run: python scripts/v5/td_unified/apply_task3_cycle4_hardening.py
       - name: Verify Task 3 focused and all hostile cycles
-        run: >-
-          python -m pytest -q
-          tests/v5/td_unified/test_registry_v1.py
-          tests/v5/td_unified/test_registry_v1_self_audit1.py
-          tests/v5/td_unified/test_registry_v1_self_audit2.py
-          tests/v5/td_unified/test_registry_v1_hostile_cycle1.py
-          tests/v5/td_unified/test_registry_v1_hostile_cycle2.py
-          tests/v5/td_unified/test_registry_v1_hostile_cycle3.py
-          tests/v5/td_unified/test_registry_v1_hostile_cycle4.py
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m pytest -q \
+            tests/v5/td_unified/test_registry_v1.py \
+            tests/v5/td_unified/test_registry_v1_self_audit1.py \
+            tests/v5/td_unified/test_registry_v1_self_audit2.py \
+            tests/v5/td_unified/test_registry_v1_hostile_cycle1.py \
+            tests/v5/td_unified/test_registry_v1_hostile_cycle2.py \
+            tests/v5/td_unified/test_registry_v1_hostile_cycle3.py \
+            tests/v5/td_unified/test_registry_v1_hostile_cycle4.py \
+            2>&1 | tee task3-cycle4-focused.log
+      - name: Upload focused log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: task3-cycle4-focused-log
+          path: task3-cycle4-focused.log
       - name: Verify complete unified regression
         run: python -m pytest -q tests/v5/td_unified
       - name: Commit cycle4 repaired source and fixtures
