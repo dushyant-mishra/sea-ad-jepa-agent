@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "POPULATION_ACCESS_POLICY_V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_role",
+    "policy_schema",
+    "fold_count",
+    "crossfit_folds",
+    "allowed_outcome_partitions",
+    "protected_partitions"
+  ],
+  "properties": {
+    "object_role": {"const": "ACCESS_POLICY"},
+    "policy_schema": {"const": "POPULATION_ACCESS_POLICY_V1"},
+    "fold_count": {"const": 5},
+    "crossfit_folds": {"type": "array", "minItems": 5, "maxItems": 5},
+    "allowed_outcome_partitions": {
+      "type": "array",
+      "const": ["reader_fit"]
+    },
+    "protected_partitions": {
+      "type": "array",
+      "const": ["reader_validation", "reader_oracle"]
+    }
+  }
+}
