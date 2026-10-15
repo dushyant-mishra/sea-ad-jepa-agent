@@ -1,12 +1,43 @@
 """Canonical scientific identity primitives for Unified TD Task 1.
 
-For JSON-compatible values, canonical byte rules intentionally preserve the
-reviewed production-synthetic Task 1 behavior: sorted string keys, compact UTF-8,
-None as the only missing value, bool distinct from int, float distinct from int,
--0.0 normalized to 0.0, CRLF/CR normalized to LF in strings, and NaN/Inf rejected.
+FINGERPRINT FORMAT V1
+=====================
+Scientific JSON values are serialized to UTF-8 with no BOM, no insignificant
+whitespace and no trailing newline. Mapping keys are exact built-in ``str``
+values, line endings are normalized CRLF -> LF then CR -> LF, keys are sorted
+in Unicode code-point order, and values are emitted recursively. ``None`` is
+the only missing value. Built-in ``bool``, ``int``, ``float`` and ``str`` are
+accepted only at their exact Python types; subclasses are rejected so a value
+cannot override ``repr``, ``str`` or ``replace`` and choose its own canonical
+bytes. Exact built-in ``dict``, ``list`` and ``tuple`` are the container types.
 
-Unified receipt identities use a new explicit domain and are not aliases for old
-production-synthetic semantic identities.
+The frozen NumPy scalar policy matches the reviewed old Task 1 contract:
+``np.bool_`` maps to bool; exact NumPy integer scalar types map through Python
+``int``; exact NumPy floating scalar types of width <= 8 bytes widen to Python
+float64 and then use the built-in float encoder; wider NumPy floats are
+rejected. NumPy datetime/timedelta, strings, arrays and other NumPy objects are
+rejected. ``-0.0`` is normalized to ``0.0`` and NaN/Inf are rejected.
+
+``canonical_sha256(payload)`` is lowercase SHA-256 of the literal domain
+``b"JEPA-TD-UNIFIED-CANONICAL-V1\\x00"`` concatenated with the canonical bytes.
+Known answer: ``{"a":1,"b":[true,null,1.0]}`` hashes to
+``8b441603e35b6bb16384a91a82453ad13144a79cc9b5b15750a4dc00d09030e9``.
+
+A scientific receipt carries a 40-hex ``producer_code_sha`` which is the Git
+blob SHA-1 of the exact producer bytes: SHA1(b"blob " + decimal_length + b"\\0"
++ raw_bytes). Verification resolves those exact bytes and recomputes the Git
+blob identity. Authority-bearing dependency objects are canonical objects with
+an ``object_role`` tag. OUTPUT, MANIFEST, REGISTRY and ACCESS_POLICY roles are
+separate and may not share one identity; ordinary INPUT objects carry INPUT.
+Receipt-shaped inputs/parents are recursively verified under receipt semantics.
+
+Receipt identity is ``canonical_sha256`` over the full receipt body excluding
+``receipt_sha256``. Declared digests are comparisons only; payload, producer
+code, inputs, parents, output, manifest, registry and access-policy identities
+are independently resolved/recomputed during verification.
+
+Unified receipt identities use this explicit V1 domain and are not aliases for
+old production-synthetic semantic identities.
 """
 from __future__ import annotations
 
@@ -15,6 +46,8 @@ import math
 from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any, Callable
+
+import numpy as np
 
 __all__ = [
     "CanonicalError",
@@ -28,6 +61,13 @@ __all__ = [
 _RECEIPT_SCHEMA = "SCIENTIFIC_RECEIPT_V1"
 _CANONICAL_DOMAIN = b"JEPA-TD-UNIFIED-CANONICAL-V1\x00"
 _HEX = set("0123456789abcdef")
+_ROLE_BY_LABEL = {
+    "input": "INPUT",
+    "output": "OUTPUT",
+    "manifest": "MANIFEST",
+    "registry": "REGISTRY",
+    "access": "ACCESS_POLICY",
+}
 
 
 class CanonicalError(ValueError):
@@ -42,7 +82,7 @@ class VerifiedReceipt:
 
 
 def _norm_eol(value: str) -> str:
-    return value.replace("\r\n", "\n").replace("\r", "\n")
+    return str.replace(str.replace(value, "\r\n", "\n"), "\r", "\n")
 
 
 def _encode_string(value: str) -> str:
@@ -71,27 +111,52 @@ def _encode_string(value: str) -> str:
     return "".join(out)
 
 
+def _encode_float(value: float) -> str:
+    if math.isnan(value) or math.isinf(value):
+        raise CanonicalError("NaN/Inf are forbidden; None is the only missing value")
+    return "0.0" if value == 0.0 else float.__repr__(value)
+
+
+def _is_exact_numpy_scalar(value: object) -> bool:
+    return isinstance(value, np.generic) and type(value) is value.dtype.type
+
+
 def _encode(value: Any, out: list[str]) -> None:
+    value_type = type(value)
     if value is None:
         out.append("null")
-    elif isinstance(value, bool):
+    elif value_type is bool:
         out.append("true" if value else "false")
-    elif isinstance(value, int):
+    elif value_type is int:
         try:
-            out.append(str(value))
+            out.append(int.__str__(value))
         except ValueError as exc:
             raise CanonicalError("integer too large to serialize exactly") from exc
-    elif isinstance(value, float):
-        if math.isnan(value) or math.isinf(value):
-            raise CanonicalError("NaN/Inf are forbidden; None is the only missing value")
-        out.append("0.0" if value == 0.0 else repr(value))
-    elif isinstance(value, str):
+    elif value_type is float:
+        out.append(_encode_float(value))
+    elif value_type is str:
         out.append(_encode_string(value))
-    elif isinstance(value, Mapping):
+    elif _is_exact_numpy_scalar(value):
+        if isinstance(value, np.bool_):
+            out.append("true" if bool(value) else "false")
+        elif isinstance(value, (np.datetime64, np.timedelta64)):
+            raise CanonicalError(f"unsupported canonical type: {value_type.__name__}")
+        elif isinstance(value, np.integer):
+            try:
+                out.append(str(int(value)))
+            except ValueError as exc:
+                raise CanonicalError("integer too large to serialize exactly") from exc
+        elif isinstance(value, np.floating):
+            if value.dtype.itemsize > 8:
+                raise CanonicalError(f"numpy floating type wider than float64 is unsupported: {value.dtype}")
+            out.append(_encode_float(float(value)))
+        else:
+            raise CanonicalError(f"unsupported canonical type: {value_type.__name__}")
+    elif value_type is dict:
         normalized: dict[str, Any] = {}
-        for key, item in value.items():
-            if not isinstance(key, str):
-                raise CanonicalError("canonical mapping keys must be strings")
+        for key, item in dict.items(value):
+            if type(key) is not str:
+                raise CanonicalError("canonical mapping keys must be exact built-in strings")
             key_n = _norm_eol(key)
             if key_n in normalized:
                 raise CanonicalError("mapping keys collide after line-ending normalization")
@@ -104,7 +169,7 @@ def _encode(value: Any, out: list[str]) -> None:
             out.append(":")
             _encode(normalized[key], out)
         out.append("}")
-    elif isinstance(value, (list, tuple)):
+    elif value_type in (list, tuple):
         out.append("[")
         for index, item in enumerate(value):
             if index:
@@ -112,7 +177,7 @@ def _encode(value: Any, out: list[str]) -> None:
             _encode(item, out)
         out.append("]")
     else:
-        raise CanonicalError(f"unsupported canonical type: {type(value).__name__}")
+        raise CanonicalError(f"unsupported canonical type or subclass: {value_type.__name__}")
 
 
 def canonical_bytes(payload: Mapping[str, object] | object) -> bytes:
@@ -128,8 +193,14 @@ def canonical_sha256(payload: Mapping[str, object] | object) -> str:
     return hashlib.sha256(_CANONICAL_DOMAIN + canonical_bytes(payload)).hexdigest()
 
 
+def _git_blob_sha1(raw: bytes) -> str:
+    if type(raw) is not bytes:
+        raise CanonicalError("producer code must resolve to exact bytes")
+    return hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()
+
+
 def _is_hex(value: object, length: int) -> bool:
-    return isinstance(value, str) and len(value) == length and set(value) <= _HEX
+    return type(value) is str and len(value) == length and set(value) <= _HEX
 
 
 def _require_hex(name: str, value: object, length: int) -> None:
@@ -138,7 +209,7 @@ def _require_hex(name: str, value: object, length: int) -> None:
 
 
 def _normalize_hash_list(name: str, values: object) -> list[str]:
-    if not isinstance(values, list):
+    if type(values) is not list:
         raise CanonicalError(f"{name} must be a list")
     for value in values:
         _require_hex(name, value, 64)
@@ -162,8 +233,8 @@ def make_scientific_receipt(
     registry_sha: str,
     access_policy_sha: str,
 ) -> dict[str, object]:
-    if not isinstance(payload, Mapping):
-        raise CanonicalError("payload must be a mapping")
+    if type(payload) is not dict:
+        raise CanonicalError("payload must be an exact built-in mapping")
     _require_hex("producer_code_sha", producer_code_sha, 40)
     inputs = _normalize_hash_list("input_shas", input_shas)
     parents = _normalize_hash_list("parent_receipt_shas", parent_receipt_shas)
@@ -201,10 +272,17 @@ def _verify_dependency(
     if resolved is None:
         raise CanonicalError(f"{label} object unavailable: {expected_sha}")
     if isinstance(resolved, Mapping) and resolved.get("receipt_schema") == _RECEIPT_SCHEMA:
+        if label != "input" and label != "parent":
+            raise CanonicalError(f"{label} role cannot be filled by a scientific receipt")
         verified = verify_scientific_receipt(resolved, object_resolver, _stack=stack)
         if verified.receipt_sha256 != expected_sha:
             raise CanonicalError(f"{label} receipt identity mismatch")
         return
+    if type(resolved) is not dict:
+        raise CanonicalError(f"{label} object must be an exact built-in mapping")
+    expected_role = _ROLE_BY_LABEL.get(label)
+    if expected_role is not None and resolved.get("object_role") != expected_role:
+        raise CanonicalError(f"{label} object role mismatch: expected {expected_role}")
     try:
         actual = canonical_sha256(resolved)
     except CanonicalError as exc:
@@ -213,14 +291,34 @@ def _verify_dependency(
         raise CanonicalError(f"{label} object digest mismatch")
 
 
+def _reject_cross_role_identity_reuse(receipt: Mapping[str, object], inputs: list[str], parents: list[str]) -> None:
+    roles: list[tuple[str, str]] = []
+    roles.extend(("input", sha) for sha in inputs)
+    roles.extend(("parent", sha) for sha in parents)
+    roles.extend(
+        (
+            ("output", str(receipt["output_sha"])),
+            ("manifest", str(receipt["manifest_sha"])),
+            ("registry", str(receipt["registry_sha"])),
+            ("access", str(receipt["access_policy_sha"])),
+        )
+    )
+    seen: dict[str, str] = {}
+    for role, sha in roles:
+        prior = seen.get(sha)
+        if prior is not None and prior != role:
+            raise CanonicalError(f"one identity cannot fill distinct receipt roles: {prior} and {role}")
+        seen[sha] = role
+
+
 def verify_scientific_receipt(
     receipt: Mapping[str, object],
     object_resolver: Callable[[str], object | None],
     *,
     _stack: frozenset[str] | None = None,
 ) -> VerifiedReceipt:
-    if not isinstance(receipt, Mapping):
-        raise CanonicalError("receipt must be a mapping")
+    if type(receipt) is not dict:
+        raise CanonicalError("receipt must be an exact built-in mapping")
     required = {
         "receipt_schema",
         "producer_code_sha",
@@ -243,14 +341,23 @@ def verify_scientific_receipt(
     parents = _normalize_hash_list("parent_receipt_shas", receipt["parent_receipt_shas"])
     for name in ("output_sha", "manifest_sha", "registry_sha", "access_policy_sha", "payload_sha256", "receipt_sha256"):
         _require_hex(name, receipt[name], 64)
-    if not isinstance(receipt["payload"], Mapping):
-        raise CanonicalError("payload must be a mapping")
+    if type(receipt["payload"]) is not dict:
+        raise CanonicalError("payload must be an exact built-in mapping")
     actual_payload = canonical_sha256(receipt["payload"])
     if actual_payload != receipt["payload_sha256"]:
         raise CanonicalError("payload digest mismatch")
     actual_receipt = canonical_sha256(_receipt_body(receipt))
     if actual_receipt != receipt["receipt_sha256"]:
         raise CanonicalError("receipt digest mismatch")
+
+    producer_sha = str(receipt["producer_code_sha"])
+    producer_bytes = object_resolver(producer_sha)
+    if producer_bytes is None:
+        raise CanonicalError("producer code object unavailable")
+    if _git_blob_sha1(producer_bytes) != producer_sha:
+        raise CanonicalError("producer code identity mismatch")
+
+    _reject_cross_role_identity_reuse(receipt, inputs, parents)
 
     receipt_sha = str(receipt["receipt_sha256"])
     stack = _stack or frozenset()
@@ -275,8 +382,8 @@ def verify_scientific_receipt(
         parent = object_resolver(parent_sha)
         if parent is None:
             raise CanonicalError(f"parent receipt unavailable: {parent_sha}")
-        if not isinstance(parent, Mapping):
-            raise CanonicalError("parent receipt must resolve to a mapping")
+        if type(parent) is not dict:
+            raise CanonicalError("parent receipt must resolve to an exact built-in mapping")
         verified = verify_scientific_receipt(parent, object_resolver, _stack=next_stack)
         if verified.receipt_sha256 != parent_sha:
             raise CanonicalError("parent receipt identity mismatch")

@@ -3,7 +3,13 @@
   "$id": "AUTHORITY_RECORD_V1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["unit_id", "qualification_stage", "active_lineage_status", "authority_scope"],
+  "required": [
+    "unit_id",
+    "qualification_stage",
+    "active_lineage_status",
+    "authority_scope",
+    "authority_restrictions"
+  ],
   "properties": {
     "unit_id": {"type": "string", "minLength": 1},
     "qualification_stage": {
@@ -23,6 +29,17 @@
     "active_lineage_status": {
       "enum": ["ACTIVE", "SUPERSEDED", "REVOKED_BY_DEFECT", "REQUIRES_REQUALIFICATION"]
     },
-    "authority_scope": {"type": "string", "minLength": 1}
+    "authority_scope": {
+      "type": "string",
+      "pattern": "^(?:UNIT:[A-Za-z0-9_.-]+|PIPELINE:[A-Za-z0-9_.-]+|PROJECT)$"
+    },
+    "authority_restrictions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z0-9_.:-]+$"
+      }
+    }
   }
 }

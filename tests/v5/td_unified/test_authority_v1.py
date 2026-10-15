@@ -54,27 +54,32 @@ def test_authority_scope_is_required_and_unit_stage_cannot_imply_project_trainin
                 qualification_stage=QualificationStage.SAME_CODE_PATH,
                 active_lineage_status=ActiveLineageStatus.ACTIVE,
                 authority_scope="",
+                authority_restrictions=(),
             )
         )
-    with pytest.raises(AuthorityError, match="training"):
+    with pytest.raises(AuthorityError, match="scope|stage"):
         validate_authority_record(
             AuthorityRecord(
                 unit_id="G8_UNIT",
                 qualification_stage=QualificationStage.KNOWN_TRUTH_QUALIFIED,
                 active_lineage_status=ActiveLineageStatus.ACTIVE,
                 authority_scope="PROJECT_TRAINING",
+                authority_restrictions=(),
             )
         )
 
 
-def test_negative_training_scope_is_not_misread_as_positive_training_authority():
+def test_negative_training_restriction_is_separate_from_authority_scope():
     record = AuthorityRecord(
-        unit_id="G8_UNIT",
+        unit_id="G8",
         qualification_stage=QualificationStage.KNOWN_TRUTH_QUALIFIED,
         active_lineage_status=ActiveLineageStatus.ACTIVE,
-        authority_scope="UNIT:G8__NO_TRAINING_AUTHORITY",
+        authority_scope="UNIT:G8",
+        authority_restrictions=("NO_TRAINING_AUTHORITY",),
     )
     assert validate_authority_record(record) is record
+    assert record.authority_scope == "UNIT:G8"
+    assert record.authority_restrictions == ("NO_TRAINING_AUTHORITY",)
 
 
 def test_bare_pass_green_or_mechanics_qualified_is_not_a_stage():
@@ -88,15 +93,22 @@ def test_authority_schema_enum_sets_match_code_exactly():
     assert schema["additionalProperties"] is False
     assert schema["properties"]["qualification_stage"]["enum"] == [x.value for x in QualificationStage]
     assert set(schema["properties"]["active_lineage_status"]["enum"]) == {x.value for x in ActiveLineageStatus}
-    assert set(schema["required"]) == {"unit_id", "qualification_stage", "active_lineage_status", "authority_scope"}
+    assert set(schema["required"]) == {
+        "unit_id",
+        "qualification_stage",
+        "active_lineage_status",
+        "authority_scope",
+        "authority_restrictions",
+    }
 
 
 def test_revoked_or_requalification_state_is_preserved_not_promoted_by_validation():
     for status in (ActiveLineageStatus.REVOKED_BY_DEFECT, ActiveLineageStatus.REQUIRES_REQUALIFICATION):
         record = AuthorityRecord(
-            unit_id="G8_UNIT",
+            unit_id="G8",
             qualification_stage=QualificationStage.KNOWN_TRUTH_QUALIFIED,
             active_lineage_status=status,
             authority_scope="UNIT:G8",
+            authority_restrictions=(),
         )
         assert validate_authority_record(record).active_lineage_status is status
