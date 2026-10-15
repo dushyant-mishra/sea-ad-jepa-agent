@@ -115,3 +115,11 @@ def test_reviewer_actor_cannot_alias_scientific_producer_actor():
             authority_object_resolver=resolver_objects.get,
             dependency_verifier=resolver_objects.get,
         )
+
+
+def test_actor_identity_change_resets_stage_and_requires_requalification():
+    dep, _, _ = verified_pair(r)
+    replacement_sha, _ = actor("SCIENTIFIC_PRODUCER", "replacement-producer")
+    changed = r.reidentify_unit(dep, producer_actor_identity=replacement_sha)
+    assert changed.qualification_stage is QualificationStage.SEMANTICS_ONLY
+    assert changed.active_lineage_status is ActiveLineageStatus.REQUIRES_REQUALIFICATION
