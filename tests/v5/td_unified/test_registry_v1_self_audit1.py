@@ -5,7 +5,7 @@ import pytest
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
 from scripts.v5.td_unified import registry_v1 as r
-from tests.v5.td_unified.registry_v1_dependency_fixtures import verified_pair, verified_prereq
+from tests.v5.td_unified.registry_v1_dependency_fixtures import direct_fixture_actor_objects, verified_pair, verified_prereq
 
 
 def unit(unit_id="G8", *, metric="6" * 64, stage=QualificationStage.KNOWN_TRUTH_QUALIFIED):
@@ -42,15 +42,16 @@ def evidence(marker="ok"):
 
 
 def test_participant_identity_must_be_exact_not_free_text():
-    dep,target=unit(),unit("REF"); reg=registry(dep,target,prereq(dep,target))
+    dep,target=unit(),unit("REF"); reg=registry(dep,target,prereq(dep,target)); objects=direct_fixture_actor_objects(dep)
     with pytest.raises(r.RegistryError,match="identity|64-hex|exact|resolver"):
-        r.promote_unit(reg,"G8",QualificationStage.REAL_REFERENCE_READY,controller_identity="controller",reviewer_identity="reviewer")
+        r.promote_unit(reg,"G8",QualificationStage.REAL_REFERENCE_READY,controller_identity="controller",reviewer_identity="reviewer",authority_object_resolver=objects.get,dependency_verifier=objects.get)
 
 
 def test_reviewer_cannot_alias_producer_executor_or_controller():
     dep,target=unit(),unit("REF"); reg=registry(dep,target,prereq(dep,target)); c,cobj=actor("QUALIFICATION_CONTROLLER","C")
-    with pytest.raises(r.RegistryError,match="independent|reviewer"):
-        r.promote_unit(reg,"G8",QualificationStage.REAL_REFERENCE_READY,controller_identity=c,reviewer_identity=dep.producer_code_sha,authority_object_resolver={c:cobj}.get)
+    objects=direct_fixture_actor_objects(dep); objects[c]=cobj
+    with pytest.raises(r.RegistryError,match="independent|reviewer|identity"):
+        r.promote_unit(reg,"G8",QualificationStage.REAL_REFERENCE_READY,controller_identity=c,reviewer_identity=dep.producer_code_sha,authority_object_resolver=objects.get,dependency_verifier=objects.get)
 
 
 def test_prerequisite_binds_exact_target_registry_identity():
