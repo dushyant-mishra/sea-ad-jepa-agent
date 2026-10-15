@@ -103,25 +103,9 @@ def _human_execution_registry():
 
 
 def test_h1_unit_scope_cannot_promote_beyond_human_executed():
-    _, dependencies, registry, controller, reviewer, resolver_objects, _, _ = _human_execution_registry()
-    registry = r.promote_unit(
-        registry,
-        "G8",
-        Q.HUMAN_EXECUTABLE,
-        controller_identity=controller,
-        reviewer_identity=reviewer,
-        authority_object_resolver=resolver_objects.get,
-        dependency_verifier=dependencies.get,
-    )
-    registry = r.promote_unit(
-        registry,
-        "G8",
-        Q.HUMAN_EXECUTED,
-        controller_identity=controller,
-        reviewer_identity=reviewer,
-        authority_object_resolver=resolver_objects.get,
-        dependency_verifier=dependencies.get,
-    )
+    dep, ref, dependencies = verified_pair(r, dep_stage=Q.HUMAN_EXECUTED)
+    registry = r.TDQualificationRegistry((dep, ref), (), (), ())
+    controller, reviewer, authority_objects = _actors()
     with pytest.raises(r.RegistryError, match="UNIT|scope|NO_TRAINING_AUTHORITY|HUMAN_EXECUTED"):
         r.promote_unit(
             registry,
@@ -129,7 +113,7 @@ def test_h1_unit_scope_cannot_promote_beyond_human_executed():
             Q.DOWNSTREAM_CERTIFIED,
             controller_identity=controller,
             reviewer_identity=reviewer,
-            authority_object_resolver=resolver_objects.get,
+            authority_object_resolver=authority_objects.get,
             dependency_verifier=dependencies.get,
         )
 
