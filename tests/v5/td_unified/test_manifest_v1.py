@@ -29,11 +29,42 @@ def _small_policy(m):
     )
 
 
+def _events(m, policy, observed_access):
+    result = []
+    for item in observed_access:
+        if isinstance(item, m.ObservedAccess):
+            result.append(item)
+            continue
+        partition, access_class = item
+        if partition == "reader_fit":
+            fold = policy.crossfit_folds[0]
+            result.append(
+                m.ObservedAccess(
+                    partition=partition,
+                    access_class=access_class,
+                    fold_index=0,
+                    phase="TRAIN",
+                    donor_ids=(fold.train_donors[0],),
+                )
+            )
+        else:
+            result.append(
+                m.ObservedAccess(
+                    partition=partition,
+                    access_class=access_class,
+                    fold_index=None,
+                    phase="CUSTODY",
+                    donor_ids=(),
+                )
+            )
+    return tuple(result)
+
+
 def _access_receipt(m, policy, *, producer_id="G8", observed_access, numeric_result_digest=None):
     return m.ProducerAccessReceipt(
         producer_id=producer_id,
         access_policy_sha=policy.canonical_sha256(),
-        observed_access=observed_access,
+        observed_access=_events(m, policy, observed_access),
         numeric_result_digest=numeric_result_digest,
     )
 
@@ -67,41 +98,25 @@ def test_crossfit_assignment_is_deterministic_and_outcome_blind():
 def test_reader_validation_access_cannot_rescue_estimability():
     m = _manifest_module()
     policy = _small_policy(m)
-    receipt = _access_receipt(
-        m,
-        policy,
-        observed_access=(("reader_validation", "BIOLOGICAL_VALUES"),),
-    )
-    with pytest.raises(m.ManifestError, match="validation|forbidden|access"):
+    receipt = _access_receipt(m, policy, observed_access=(("reader_validation", "BIOLOGICAL_VALUES"),))
+    with pytest.raises(m.ManifestError, match="validation|forbidden|access|protected"):
         m.validate_producer_access(policy, receipt)
 
 
 def test_reader_oracle_access_is_protected_until_later_authority_transition():
     m = _manifest_module()
     policy = _small_policy(m)
-    receipt = _access_receipt(
-        m,
-        policy,
-        observed_access=(("reader_oracle", "CALIBRATION_STATISTICS"),),
-    )
-    with pytest.raises(m.ManifestError, match="oracle|forbidden|access"):
+    receipt = _access_receipt(m, policy, observed_access=(("reader_oracle", "CALIBRATION_STATISTICS"),))
+    with pytest.raises(m.ManifestError, match="oracle|forbidden|access|protected"):
         m.validate_producer_access(policy, receipt)
 
 
 def test_producer_receipt_must_enumerate_actual_partitions_and_access_classes():
     m = _manifest_module()
     policy = _small_policy(m)
-    lawful = _access_receipt(
-        m,
-        policy,
-        observed_access=(("reader_fit", "BIOLOGICAL_VALUES"),),
-    )
+    lawful = _access_receipt(m, policy, observed_access=(("reader_fit", "BIOLOGICAL_VALUES"),))
     assert m.validate_producer_access(policy, lawful) is None
-    forged = _access_receipt(
-        m,
-        policy,
-        observed_access=(("reader_fit", "UNKNOWN_CLASS"),),
-    )
+    forged = _access_receipt(m, policy, observed_access=(("reader_fit", "UNKNOWN_CLASS"),))
     with pytest.raises(m.ManifestError):
         m.validate_producer_access(policy, forged)
 
@@ -127,11 +142,7 @@ def test_manifest_binds_exact_objects_not_branch_or_pr_labels():
     }
     with pytest.raises(m.ManifestError):
         m.validate_manifest(
-            {
-                "schema": "TD_EXECUTION_MANIFEST_V1",
-                "registry_sha": "PR #349",
-                "access_policy_sha": "b" * 64,
-            },
+            {"schema": "TD_EXECUTION_MANIFEST_V1", "registry_sha": "PR #349", "access_policy_sha": "b" * 64},
             resolver_map.get,
         )
 
@@ -161,11 +172,7 @@ def test_raw_file_sha256_is_recomputed_from_actual_bytes():
 def test_unknown_partition_fails_closed():
     m = _manifest_module()
     policy = _small_policy(m)
-    receipt = _access_receipt(
-        m,
-        policy,
-        observed_access=(("mystery_partition", "METADATA"),),
-    )
+    receipt = _access_receipt(m, policy, observed_access=(("mystery_partition", "METADATA"),))
     with pytest.raises(m.ManifestError):
         m.validate_producer_access(policy, receipt)
 
@@ -178,17 +185,10 @@ def test_access_receipt_binds_exact_access_policy_identity():
     assert "access_policy_sha" in params
     policy = _small_policy(m)
     policy_sha = policy.canonical_sha256()
-    lawful = m.ProducerAccessReceipt(
-        producer_id="G8",
-        access_policy_sha=policy_sha,
-        observed_access=(("reader_fit", "BIOLOGICAL_VALUES"),),
-    )
+    event = _events(m, policy, (("reader_fit", "BIOLOGICAL_VALUES"),))
+    lawful = m.ProducerAccessReceipt(producer_id="G8", access_policy_sha=policy_sha, observed_access=event)
     assert m.validate_producer_access(policy, lawful) is None
-    wrong = m.ProducerAccessReceipt(
-        producer_id="G8",
-        access_policy_sha="0" * 64,
-        observed_access=(("reader_fit", "BIOLOGICAL_VALUES"),),
-    )
+    wrong = m.ProducerAccessReceipt(producer_id="G8", access_policy_sha="0" * 64, observed_access=event)
     with pytest.raises(m.ManifestError, match="policy|identity|digest"):
         m.validate_producer_access(policy, wrong)
 
@@ -207,22 +207,11 @@ def test_crossfit_policy_binds_the_exact_assignment_inputs():
 def test_manifest_schema_requires_the_full_task2_dependency_surface():
     schema = json.loads(MANIFEST_SCHEMA.read_text(encoding="utf-8"))
     required_dependencies = {
-        "registry_sha",
-        "observation_contract_sha",
-        "support_contract_sha",
-        "controller_code_sha",
-        "controller_policy_sha",
-        "candidate_registry_sha",
-        "endpoint_registry_sha",
-        "source_registry_sha",
-        "qualification_registry_sha",
-        "population_split_registry_sha",
-        "access_policy_sha",
-        "reader_fit_policy_sha",
-        "reader_validation_policy_sha",
-        "reader_oracle_policy_sha",
-        "crossfit_policy_sha",
-        "protected_partition_policy_sha",
+        "registry_sha", "observation_contract_sha", "support_contract_sha", "controller_code_sha",
+        "controller_policy_sha", "candidate_registry_sha", "endpoint_registry_sha", "source_registry_sha",
+        "qualification_registry_sha", "population_split_registry_sha", "access_policy_sha",
+        "reader_fit_policy_sha", "reader_validation_policy_sha", "reader_oracle_policy_sha",
+        "crossfit_policy_sha", "protected_partition_policy_sha",
     }
     assert required_dependencies <= set(schema["required"])
     assert required_dependencies <= set(schema["properties"])
@@ -253,11 +242,7 @@ def test_policy_inlines_assignment_basis_so_its_digest_is_not_a_trusted_string()
 def test_protected_partitions_allow_partition_identity_only_not_generic_metadata():
     m = _manifest_module()
     policy = _small_policy(m)
-    receipt = _access_receipt(
-        m,
-        policy,
-        observed_access=(("reader_validation", "METADATA"),),
-    )
+    receipt = _access_receipt(m, policy, observed_access=(("reader_validation", "METADATA"),))
     with pytest.raises(m.ManifestError, match="validation|protected|forbidden"):
         m.validate_producer_access(policy, receipt)
 
@@ -271,29 +256,13 @@ def test_observed_access_binds_fold_phase_and_donor_ids_to_block_fit_leakage():
     lawful = m.ProducerAccessReceipt(
         producer_id="G8",
         access_policy_sha=policy.canonical_sha256(),
-        observed_access=(
-            m.ObservedAccess(
-                partition="reader_fit",
-                access_class="BIOLOGICAL_VALUES",
-                fold_index=0,
-                phase="TRAIN",
-                donor_ids=(fold.train_donors[0],),
-            ),
-        ),
+        observed_access=(m.ObservedAccess("reader_fit", "BIOLOGICAL_VALUES", 0, "TRAIN", (fold.train_donors[0],)),),
     )
     assert m.validate_producer_access(policy, lawful) is None
     leaked = m.ProducerAccessReceipt(
         producer_id="G8",
         access_policy_sha=policy.canonical_sha256(),
-        observed_access=(
-            m.ObservedAccess(
-                partition="reader_fit",
-                access_class="BIOLOGICAL_VALUES",
-                fold_index=0,
-                phase="TRAIN",
-                donor_ids=(held_out,),
-            ),
-        ),
+        observed_access=(m.ObservedAccess("reader_fit", "BIOLOGICAL_VALUES", 0, "TRAIN", (held_out,)),),
     )
     with pytest.raises(m.ManifestError, match="held|leak|train|donor"):
         m.validate_producer_access(policy, leaked)
