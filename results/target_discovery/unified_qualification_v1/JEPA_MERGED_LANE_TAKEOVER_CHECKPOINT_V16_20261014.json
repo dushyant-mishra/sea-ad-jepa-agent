@@ -6,13 +6,16 @@
   "audit_surface": {
     "pr": 322,
     "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
-    "exact_head_at_checkpoint": "0730ccc5a50d6eceb914ed64ba1ea86600f891c1",
-    "complete_manifest": "docs/agent/JEPA_COMPLETE_TAKEOVER_AUDIT_MANIFEST_V1_20261014.md"
+    "exact_head_at_checkpoint": "9cbc16ec61f7d068bfea7bab883c5c6fe3cd7e33",
+    "complete_manifest": "docs/agent/JEPA_COMPLETE_TAKEOVER_AUDIT_MANIFEST_V1_20261014.md",
+    "new_agent_manifest": "docs/agent/JEPA_NEW_AGENT_TAKEOVER_MANIFEST_V1_20261014.md",
+    "no_repeat_table": "results/target_discovery/unified_qualification_v1/JEPA_NO_REPEAT_DECISION_TABLE_V1.json"
   },
   "handoff_surface": {
     "pr": 323,
     "branch": "handoff/jepa-lane-takeover-20261013",
-    "handoff": "docs/agent/JEPA_MERGED_LANE_SUCCESSOR_HANDOFF_V16_20261014.md"
+    "handoff": "docs/agent/JEPA_MERGED_LANE_SUCCESSOR_HANDOFF_V16_20261014.md",
+    "first_24_hours": "docs/agent/JEPA_SUCCESSOR_FIRST_24_HOURS_CHECKLIST_V1_20261014.md"
   },
   "architecture": {
     "pr": 379,
