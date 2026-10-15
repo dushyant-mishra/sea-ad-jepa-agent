@@ -46,6 +46,9 @@ def _setup(*, dep_stage=Q.KNOWN_TRUTH_QUALIFIED):
 
 def _human_execution_registry():
     dep, ref, dependencies, _, registry, controller, reviewer, authority_objects = _setup()
+    history_custody = r.RegistryHistoryCustody(
+        registry, attestation_key=b"macha-task3-history-custody"
+    )
     ready_registry = r.promote_unit(
         registry,
         "G8",
@@ -54,6 +57,7 @@ def _human_execution_registry():
         reviewer_identity=reviewer,
         authority_object_resolver=authority_objects.get,
         dependency_verifier=dependencies.get,
+        history_custody=history_custody,
     )
     g8 = ready_registry.units_by_id()["G8"]
     process_evidence = {
@@ -110,6 +114,7 @@ def _human_execution_registry():
         resolver_objects,
         process_evidence,
         custody_evidence,
+        history_custody,
     )
 
 
@@ -244,7 +249,7 @@ def test_h3_caller_poisoned_cache_cannot_authenticate_missing_dependencies():
 
 
 def test_h6_deleted_revocation_history_cannot_be_rebuilt_into_active_lineage():
-    ref, dependencies, registry, controller, reviewer, resolver_objects, _, _ = _human_execution_registry()
+    ref, dependencies, registry, controller, reviewer, resolver_objects, _, _, history_custody = _human_execution_registry()
     # Recreate the exact RRR registry used by Macha before adding HUMAN_EXECUTABLE prerequisites.
     rrr_registry = r.TDQualificationRegistry(
         registry.units,
@@ -261,6 +266,7 @@ def test_h6_deleted_revocation_history_cannot_be_rebuilt_into_active_lineage():
         controller_identity=controller,
         authority_object_resolver=resolver_objects.get,
         dependency_verifier=dependencies.get,
+        history_custody=history_custody,
     )
     forged_unit = dataclasses.replace(revoked.units_by_id()["G8"], active_lineage_status=L.ACTIVE)
     forged_back = r.TDQualificationRegistry(
@@ -279,28 +285,25 @@ def test_h6_deleted_revocation_history_cannot_be_rebuilt_into_active_lineage():
             reviewer_identity=reviewer,
             authority_object_resolver=resolver_objects.get,
             dependency_verifier=dependencies.get,
+            history_custody=history_custody,
         )
 
 
 def test_h5_fabricated_rrr_history_cannot_enable_human_executable():
     dep, ref, dependencies = verified_pair(r, dep_stage=Q.REAL_REFERENCE_READY)
     controller, reviewer, authority_objects = _actors()
-    base_registry = r.TDQualificationRegistry((dep, ref), (), (), ())
+    predecessor = dataclasses.replace(dep, qualification_stage=Q.KNOWN_TRUTH_QUALIFIED)
+    base_registry = r.TDQualificationRegistry((predecessor, ref), (), (), ())
     base_registry, resolver_objects = bind_actor_registry(
         r,
         base_registry,
         {**dependencies, **authority_objects},
         trusted_actor_objects=tuple(authority_objects.values()),
     )
-    predecessor = dataclasses.replace(dep, qualification_stage=Q.KNOWN_TRUTH_QUALIFIED)
-    fake_snapshot = {
-        "schema": "TD_QUALIFICATION_REGISTRY_V1",
-        "actor_registry_sha": base_registry.actor_registry_sha,
-        "units": [predecessor.to_payload(), ref.to_payload()],
-        "prerequisites": [],
-        "promotions": [],
-        "revocations": [],
-    }
+    history_custody = r.RegistryHistoryCustody(
+        base_registry, attestation_key=b"macha-task3-history-custody"
+    )
+    fake_snapshot = base_registry.to_payload()
     fake_receipt = r.PromotionReceipt(
         "G8",
         Q.KNOWN_TRUTH_QUALIFIED,
@@ -365,4 +368,5 @@ def test_h5_fabricated_rrr_history_cannot_enable_human_executable():
             reviewer_identity=reviewer,
             authority_object_resolver=resolver_objects.get,
             dependency_verifier=dependencies.get,
+            history_custody=history_custody,
         )
