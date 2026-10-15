@@ -8,6 +8,8 @@ on:
       - 'schemas/target_discovery/unified_v1/**'
       - 'tests/v5/td_unified/test_canonical_v1.py'
       - 'tests/v5/td_unified/test_authority_v1.py'
+      - 'docs/agent/UNIFIED_TASK1_EXECUTION_LEDGER_20261015.md'
+      - 'results/target_discovery/unified_qualification_v1/UNIFIED_TASK1_REUSE_SUBSTRATE_V1.json'
       - '.github/workflows/td-unified-task1-a1-a9.yml'
 
 jobs:
