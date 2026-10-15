@@ -1,6 +1,6 @@
 # Unified Task 3 rejected-lineage custody hazards — 2026-10-15
 
-Status: `NON_AUTHORIZING_AUDIT__B6_CONTAINED__BOT_LINEAGE_ENUMERATED__POLICY_REGRESSION_PENDING`
+Status: `NON_AUTHORIZING_AUDIT__B6_CLOSED__BOT_LINEAGE_ENUMERATED__READ_ONLY_POLICY_GREEN`
 
 This file exists so a successor does not accidentally destroy RED evidence or mistake bot-mutated history for independently authored repair evidence.
 
@@ -12,7 +12,7 @@ This file exists so a successor does not accidentally destroy RED evidence or mi
 - verdict: `REJECT_UNIFIED_TASK3`
 - gate: `TASK3_REMAINS_OPEN__UNIFIED_TASK4_REMAINS_BLOCKED`
 
-Macha's six blockers T3-B1 through T3-B6 are controlling. T3-B6 is an infrastructure/custody blocker and must be contained before substantive B1-B5 production repair.
+Macha's six blockers T3-B1 through T3-B6 remain the controlling review findings. This record closes **T3-B6 only** at the successor/controller level. It does not accept Task 3 and does not alter the independent-review gate.
 
 ## T3-B6: self-mutating workflow hazard
 
@@ -69,7 +69,7 @@ The previously recorded SHA `9052e3ce32f7f8b84d7445e3ec81826c79b6960d` does **no
 
 The previously recorded parent `3bf1a2a60d92912f648c1d6c8df4bb48431778cf` was likewise not the parent of the live lineage commit; the immediate parent is `f1a742b4b8f769c244fcc3fbb8682ec4429c6ae9`.
 
-## Successor containment already executed
+## Successor containment and policy closure
 
 The successor repaired infrastructure custody before adding new Task 3 hostile evidence:
 
@@ -77,19 +77,32 @@ The successor repaired infrastructure custody before adding new Task 3 hostile e
 2. deleted `.github/workflows/apply-task3-cycle4-hardening.yml` next at successor commit `6d6a0a315575ba61320b3fb7cac767d467219a49`;
 3. verified both paths absent at the successor branch head;
 4. preserved Macha H1-H6 plus alias/self-mint attacks as `tests/v5/td_unified/test_registry_v1_macha_rejection.py` at `51cdd4bea030be17242de7f81e9880dec802c6a7`;
-5. forced read-only CI proof: `Unified Task 3 registry` run `38792404844`, job `116620027363`, with `GITHUB_TOKEN Contents: read`, produced `11 failed, 53 passed` exactly on B1, B2, five B3 actor attacks, H3/H4 cache attacks and H5/H6 history attacks.
+5. forced read-only CI proof: `Unified Task 3 registry` run `38792404844`, job `116620027363`, with `GITHUB_TOKEN Contents: read`, produced `11 failed, 53 passed` exactly on B1, B2, five B3 actor attacks, H3/H4 cache attacks and H5/H6 history attacks;
+6. added `tests/v5/td_unified/test_registry_v1_workflow_policy.py` and a dedicated read-only CI workflow; the first attempted policy run was invalid because pytest was absent and is not counted as RED evidence;
+7. valid B6 RED: run `38798612344`, job `116641472764`, `Contents: read`, `5 failed`, each because `scripts/v5/td_unified/workflow_policy_v1.py` did not yet exist;
+8. minimal policy implementation: `scripts/v5/td_unified/workflow_policy_v1.py` at repair commit `0fada97d6524d32a928c55a91da97c4e97d25f26`; it classifies Task 3 qualification workflows and rejects `contents: write`, `permissions: write-all`, Task 3 patch/migration scripts, `git commit`, and `git push`;
+9. B6 GREEN: run `38798830296`, job `116642223925`, exact head `0fada97d...`, `Contents: read`, `5 passed in 0.06s`.
 
-This contains the live self-rewriting hazard and completes the bot-lineage enumeration. It does **not** by itself close B6 because the required regression/policy guard against future write-capable qualification workflows is still pending.
+The policy suite also asserts that the two deleted write hazards remain absent and audits the current cycle1-cycle3/unified Task 3 workflows as read-only/non-mutating.
 
-## Required B6 closure order
+### Ordering deviation recorded
 
-Before B1-B5 production fixes:
+Parallel successor work landed B1/B2/B4 production repairs and a partial B3 actor-registry repair before the final B6 policy regression was green. This violated the preferred checklist ordering. It did **not** re-expose RED evidence to the original mutation mechanism because both still-armed write workflows had already been deleted and verified absent before those repair commits. The deviation is recorded rather than silently normalized; the B1-B4/B3 work must be evaluated on its own exact-head evidence.
 
-1. preserve exact rejected candidate `851544e8...` and Macha evidence unchanged;
-2. keep all Task 3 qualification CI read-only with no auto-commit/push repair step;
-3. add an automated regression/policy check that rejects Task 3 qualification workflows with repository write permission or commit/push mutation behavior;
-4. run that guard together with the preserved hostile RED suite;
-5. only then mark B6 closed and proceed to minimal B1-B5 production repair.
+## B6 closure decision
+
+`T3-B6_CONTROLLER_CLOSED__INDEPENDENT_RECHECK_STILL_REQUIRED_FOR_TASK3_ACCEPTANCE`
+
+Closure basis:
+
+- rejected candidate and Macha evidence preserved;
+- both live self-mutating workflows removed before successor RED work;
+- all six bot-authored Task 3 commits enumerated and bound to workflow/script provenance;
+- exact Macha attack suite preserved;
+- dedicated future-regression guard proven RED→GREEN under `Contents: read`;
+- guard fails on write permissions, mutator scripts and commit/push behavior, including renamed Task 3 qualification workflows.
+
+This is controller-level closure only. Macha's final focused B1-B6 recheck remains mandatory before Task 3 can be accepted or frozen.
 
 ## RED evidence rule
 
@@ -99,7 +112,7 @@ One-shot historical repair scripts may remain in Git as provenance, but must be 
 
 ## Authority effect
 
-None. B6 containment, enumeration and custody correction do not accept Task 3 and grant no authority.
+None. B6 closure does not accept Task 3 and grants no target, representation, protected-value, Stage 4 or training authority.
 
 Global stop state remains:
 
