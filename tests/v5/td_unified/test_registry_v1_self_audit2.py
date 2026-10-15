@@ -57,9 +57,8 @@ def registry(dep, target, p):
 def test_boolean_true_callback_is_not_evidence_authority():
     dep, target = unit(), unit("REF"); p = prereq(dep, target)
     reg = registry(dep, target, p)
-    result = r.derive_real_reference_ready("G8", reg, prerequisite_evidence_verifier=lambda _: True)
-    assert not result.ready
-    assert any("object" in b.lower() or "resolver" in b.lower() for b in result.blockers)
+    with pytest.raises(TypeError, match="prerequisite_evidence_verifier"):
+        r.derive_real_reference_ready("G8", reg, prerequisite_evidence_verifier=lambda _: True)
 
 
 def test_evidence_receipt_must_resolve_to_exact_role_tagged_object():
@@ -84,8 +83,7 @@ def test_controller_and_reviewer_are_resolved_objects_not_digest_strings():
     objects[esha] = eobj
     with pytest.raises(r.RegistryError, match="resolver|controller.*object|authority object|actor registry"):
         r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
-                       controller_identity=csha, reviewer_identity=rsha,
-                       prerequisite_evidence_verifier=lambda _: True)
+                       controller_identity=csha, reviewer_identity=rsha)
     promoted = r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
                               controller_identity=csha, reviewer_identity=rsha,
                               authority_object_resolver=objects.get, dependency_verifier=deps.get)
