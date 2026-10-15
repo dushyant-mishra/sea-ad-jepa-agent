@@ -1,4 +1,4 @@
-name: TD unified Task 0 B1-B5 repair
+name: TD unified Task 0 B1-B5 repair verification
 
 on:
   pull_request:
@@ -13,49 +13,19 @@ on:
       - 'results/target_discovery/unified_qualification_v1/**'
       - '.github/workflows/td-unified-task0-b1-b5-repair.yml'
 
-permissions:
-  contents: write
-
 jobs:
-  repair-and-verify:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Install pytest
         run: python -m pip install 'pytest>=9,<10'
-      - name: Apply bounded B1-B5 repair
-        run: python scripts/v5/td_unified/apply_task0_b1_b5_repairs_v4.py
       - name: Verify B1-B5 and inherited Task 0 tests
         run: >-
           python -m pytest -q
           tests/v5/td_unified/test_task0_b1_b5_regressions.py
           tests/v5/td_unified/test_premerger_migration_task0.py
           tests/v5/td_unified/test_premerger_custody_completeness_v1.py
-      - name: Commit deterministic repaired artifacts when needed
-        shell: bash
-        run: |
-          if git diff --quiet; then
-            echo 'No repair delta remains.'
-            exit 0
-          fi
-          git config user.name 'jepa-task0-controller'
-          git config user.email 'actions@users.noreply.github.com'
-          git add \
-            scripts/v5/td_unified/premerger_migration_task0.py \
-            tests/v5/td_unified/test_premerger_migration_task0.py \
-            tests/v5/td_unified/test_task0_b1_b5_regressions.py
-          git add -f \
-            results/target_discovery/unified_qualification_v1/PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1.json \
-            results/target_discovery/unified_qualification_v1/PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json \
-            results/target_discovery/unified_qualification_v1/PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json \
-            results/target_discovery/unified_qualification_v1/PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json \
-            results/target_discovery/unified_qualification_v1/PREMERGER_MERGED_CUSTODY_COMPLETENESS_V1.json \
-            results/target_discovery/unified_qualification_v1/TASK0_MIGRATION_TAXONOMY_V1.json
-          git commit -m 'repair: close Task 0 independent-review B1-B5'
-          git push origin HEAD:${{ github.head_ref }}
