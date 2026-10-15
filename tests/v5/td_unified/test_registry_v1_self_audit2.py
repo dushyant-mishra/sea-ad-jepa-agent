@@ -49,10 +49,12 @@ def registry(dep, target, p):
     return r.TDQualificationRegistry((dep, target), (p,), (), ())
 
 
-def test_boolean_true_callback_is_not_evidence_authority():
+def test_removed_boolean_callback_cannot_look_like_evidence_authority():
     dep, target = unit(), unit("REF"); p = prereq(dep, target)
     reg = registry(dep, target, p)
-    result = r.derive_real_reference_ready("G8", reg, prerequisite_evidence_verifier=lambda _: True)
+    with pytest.raises(TypeError):
+        r.derive_real_reference_ready("G8", reg, prerequisite_evidence_verifier=lambda _: True)
+    result = r.derive_real_reference_ready("G8", reg)
     assert not result.ready
     assert any("object" in b.lower() or "resolver" in b.lower() for b in result.blockers)
 
@@ -75,8 +77,7 @@ def test_controller_and_reviewer_are_resolved_objects_not_digest_strings():
     rsha, robj = actor("INDEPENDENT_REVIEWER", "R1")
     with pytest.raises(r.RegistryError, match="resolver|controller.*object|authority object"):
         r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
-                       controller_identity=csha, reviewer_identity=rsha,
-                       prerequisite_evidence_verifier=lambda _: True)
+                       controller_identity=csha, reviewer_identity=rsha)
     resolver = {csha:cobj, rsha:robj, esha:eobj}.get
     promoted = r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
                               controller_identity=csha, reviewer_identity=rsha,
@@ -109,7 +110,7 @@ def test_promotion_receipt_explicitly_binds_prerequisite_record_identities():
     assert receipt.prerequisite_shas == (p.canonical_sha256(),)
 
 
-def test_supersession_binds_existing_exact_successor_and_pre_registry_identity():
+def test_supersession_binds_successor_and_stale_pre_state_cannot_be_reused():
     old, successor = unit(), unit("G8_V2")
     reg = r.TDQualificationRegistry((old, successor), (), (), ())
     csha, cobj = actor("QUALIFICATION_CONTROLLER", "C1")
@@ -122,7 +123,7 @@ def test_supersession_binds_existing_exact_successor_and_pre_registry_identity()
     receipt = changed.revocations[0]
     assert receipt.pre_registry_sha == reg.canonical_sha256()
     assert receipt.successor_unit_sha == successor.canonical_sha256()
-    with pytest.raises(r.RegistryError, match="successor.*identity"):
+    with pytest.raises(r.RegistryError, match="rollback|latest|history"):
         r.revoke_or_supersede(reg, "G8", ActiveLineageStatus.SUPERSEDED,
             reason_class="POLICY_CHANGE", controller_identity=csha,
             successor_unit_id="G8_V2", successor_unit_sha="f"*64,
