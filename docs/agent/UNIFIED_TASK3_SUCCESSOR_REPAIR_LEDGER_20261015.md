@@ -1,33 +1,50 @@
 # Unified Task 3 successor repair ledger — 2026-10-15
 
-Status: `TASK3_REJECTED_OPEN_REPAIR_REQUIRED`
+Status: `TASK3_CANDIDATE_GREEN__INDEPENDENT_RECHECK_REQUIRED`
 
-This ledger records successor custody after the independent Macha rejection of Unified Task 3. It is not an acceptance, freeze, training authorization, target decision, representation decision, or Task 4 authorization.
+This ledger records successor custody after the independent Macha rejection of Unified Task 3. It is not yet an acceptance, freeze, training authorization, target decision, representation decision, or Task 4 authorization.
 
 ## Controlling authority
 
 - frozen Task 0: `e37a22b8059c0a4a93a789a8ca916fb7acde9fe3`
 - frozen Task 1: `799d2e235901dfad9ce3b305c767a1c989e362f6`
 - frozen Task 2: `c7dfff1cee608e4a101855d42cf0af08491c2aaf`
-- rejected Task 3 candidate: `851544e8dc2a3881193a4d5bbcf07933e1d61149`
-- Macha review: `869ca777a498181c519ccfc04b8bf5db0f2888c7`
-- global authority: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+- rejected historical Task 3 candidate: `851544e8dc2a3881193a4d5bbcf07933e1d61149`
+- Macha rejection review: `869ca777a498181c519ccfc04b8bf5db0f2888c7`
+- repaired Task 3 GREEN candidate: `68df31584d17f91da2635cdf8e03bbe93695f9d1`
+- global authority remains: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
 ## Preserved RED baseline
 
-Read-only CI reproduced Macha B1-B5/B6-related attacks before production repair: `11 failed, 53 passed`. The failures were B1, B2, five B3 identity attacks, two B4 cache attacks, and B5 H5/H6 history attacks.
+Read-only CI reproduced the independent findings before repair: `11 failed, 53 passed`. Failures were B1, B2, five B3 identity attacks, two B4 cache attacks, and B5 H5/H6 history attacks.
 
 ## Repair status
 
-- B6: self-rewriting RED6 and cycle4 workflows deleted before production repair; read-only B6 workflow policy now passes.
-- B1: frozen Task 1 authority validation enforced at every promotion boundary; training stages remain forbidden for `NO_TRAINING_AUTHORITY` units.
-- B2: closed stage-evidence policy; unavailable sealed-challenge and human-execution evidence fails closed rather than being fabricated.
-- B3: frozen identity-bound actor registry with strict registered actor/role checks; alias and self-minted identities are rejected.
-- B4: caller-supplied verification cache is non-authoritative; each readiness call owns a fresh internal cache.
-- B5: RED custody tests added first. Candidate implementation preserves the pre-B5 registry byte-for-byte in `registry_v1_legacy.py` and places an external `RegistryHistoryCustody` facade in `registry_v1.py`. Genesis must be history-free and no later than `KNOWN_TRUTH_QUALIFIED`; lawful promotion/revocation events are append-only and HMAC-attested; actor-registry, exact event history and current unit state are validated; prerequisite-only additions are permitted; `HUMAN_EXECUTABLE` and advanced revocation require matching external custody.
+- B1: frozen Task 1 authority validation enforced at every promotion boundary; `NO_TRAINING_AUTHORITY` units cannot enter training stages.
+- B2: closed stage-evidence policy; unavailable sealed-challenge/human-execution evidence fails closed.
+- B3: frozen identity-bound actor registry; aliases, lookalikes, unknown and self-minted actors are rejected.
+- B4: caller-controlled verification cache is non-authoritative; readiness uses fresh internal verification state.
+- B5: external append-only `RegistryHistoryCustody` anchored at a history-free genesis; lawful promotion/revocation events are HMAC-attested and exact history/current unit state are checked.
+- B6: self-rewriting RED6/cycle4 workflows were removed before repair; read-only workflow policy passes. Historical bot-authored mutations remain custody evidence, not authority.
+- Dead public authority-like inputs `asserted_ready` and `prerequisite_evidence_verifier` were removed from the public Task 3 API.
 
-B5 candidate commits:
-- `5c5aa6608fb3e5767fde5b87358612c68c834a20` — preserve pre-custody implementation as legacy evidence.
-- `4d3552a62f85657debe4505a28c20e8cfb1762e5` — external append-only history custody facade.
+## Exact-head verification
 
-Task 3 remains rejected until exact-head focused/full regression and focused independent Macha B1-B6 recheck succeed.
+Candidate: `68df31584d17f91da2635cdf8e03bbe93695f9d1`
+
+All required read-only CI is GREEN on this exact candidate:
+
+- Unified Task 3 registry — run `38806385403`, job `116668232197`: focused Task 3 `74 passed`; full `tests/v5/td_unified` `177 passed`; token permission `Contents: read`.
+- Unified Task 3 B6 workflow policy — run `38806385464`: PASS.
+- Frozen Task 0 regression — run `38806385387`: PASS.
+- Frozen Task 1 regression — run `38806385399`: PASS.
+- Frozen Task 2 regression — run `38806385406`: PASS.
+- Unified synthetic integration — run `38806385364`: PASS.
+
+Diff audit from frozen Task 2 `c7dfff1c...` to candidate `68df3158...` shows Task 3/workflow/docs/schema/test additions only; frozen Task 0-2 production files are not modified.
+
+## Remaining acceptance gate
+
+Request a focused independent Macha recheck of B1-B6 only against exact candidate `68df31584d17f91da2635cdf8e03bbe93695f9d1`. Do not restart the historical audit.
+
+Task 3 remains non-authoritative until that independent review accepts this exact candidate. Task 4 remains blocked until then.
