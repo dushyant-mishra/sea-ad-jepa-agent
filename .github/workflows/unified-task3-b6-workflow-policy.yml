@@ -1,0 +1,29 @@
+name: Unified Task 3 B6 workflow policy
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/td_unified/workflow_policy_v1.py'
+      - 'tests/v5/td_unified/test_registry_v1_workflow_policy.py'
+      - '.github/workflows/*.yml'
+  push:
+    branches:
+      - 'work/unified-task3-registry-impl-20261015'
+    paths:
+      - 'scripts/v5/td_unified/workflow_policy_v1.py'
+      - 'tests/v5/td_unified/test_registry_v1_workflow_policy.py'
+      - '.github/workflows/*.yml'
+
+jobs:
+  workflow-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify Task 3 qualification workflows cannot mutate RED/code
+        run: python -m pytest -q tests/v5/td_unified/test_registry_v1_workflow_policy.py
