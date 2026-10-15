@@ -128,8 +128,6 @@ def derive_real_reference_ready(
     dependency_verifier=None,
     authority_object_resolver=None,
     history_custody=None,
-    asserted_ready=None,
-    prerequisite_evidence_verifier=None,
     verification_cache=None,
 ):
     if registry.promotions or registry.revocations:
@@ -154,7 +152,6 @@ def _legacy_promotion_preflight(
     *,
     controller_identity,
     reviewer_identity,
-    prerequisite_evidence_verifier,
     authority_object_resolver,
     dependency_verifier,
 ):
@@ -165,7 +162,7 @@ def _legacy_promotion_preflight(
         destination_stage,
         controller_identity=controller_identity,
         reviewer_identity=reviewer_identity,
-        prerequisite_evidence_verifier=prerequisite_evidence_verifier,
+        prerequisite_evidence_verifier=None,
         authority_object_resolver=authority_object_resolver,
         dependency_verifier=dependency_verifier,
         verification_cache=None,
@@ -179,7 +176,6 @@ def promote_unit(
     *,
     controller_identity,
     reviewer_identity,
-    prerequisite_evidence_verifier=None,
     authority_object_resolver=None,
     dependency_verifier=None,
     verification_cache=None,
@@ -189,16 +185,12 @@ def promote_unit(
         raise RegistryError(f"unknown unit_id: {unit_id}")
     custody = None
     if destination_stage is QualificationStage.HUMAN_EXECUTABLE and history_custody is None:
-        # Preserve inherited reviewer/actor/R1/R4/provenance diagnostics without
-        # allowing the transition. If all legacy checks would pass, custody remains
-        # the final mandatory gate and the candidate is discarded.
         _legacy_promotion_preflight(
             registry,
             unit_id,
             destination_stage,
             controller_identity=controller_identity,
             reviewer_identity=reviewer_identity,
-            prerequisite_evidence_verifier=prerequisite_evidence_verifier,
             authority_object_resolver=authority_object_resolver,
             dependency_verifier=dependency_verifier,
         )
@@ -216,7 +208,7 @@ def promote_unit(
         destination_stage,
         controller_identity=controller_identity,
         reviewer_identity=reviewer_identity,
-        prerequisite_evidence_verifier=prerequisite_evidence_verifier,
+        prerequisite_evidence_verifier=None,
         authority_object_resolver=authority_object_resolver,
         dependency_verifier=dependency_verifier,
         verification_cache=None,
