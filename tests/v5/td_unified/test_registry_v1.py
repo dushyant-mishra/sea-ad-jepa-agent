@@ -46,10 +46,14 @@ def _prereq(r, *, pid="P1", dependent="G8", target="REF", gate="REAL_REFERENCE_R
             required_stage=QualificationStage.KNOWN_TRUTH_QUALIFIED, manifest="1" * 64,
             access="2" * 64, content_required=False, content_validated=True,
             requirement_class="UNIT", external_state="SATISFIED"):
+    dep_obj = _unit(r, dependent, manifest=manifest, access=access)
+    target_obj = _unit(r, target, manifest=manifest, access=access)
     return r.PrerequisiteRecord(
         prerequisite_id=pid,
         dependent_unit_id=dependent,
+        dependent_unit_sha=dep_obj.canonical_sha256(),
         prerequisite_unit_id=target,
+        prerequisite_unit_sha=target_obj.canonical_sha256(),
         required_stage=required_stage,
         required_lineage_status=ActiveLineageStatus.ACTIVE,
         manifest_sha=manifest,
@@ -57,8 +61,10 @@ def _prereq(r, *, pid="P1", dependent="G8", target="REF", gate="REAL_REFERENCE_R
         gate=gate,
         content_required=content_required,
         content_validated=content_validated,
+        content_validation_receipt_sha=None,
         requirement_class=requirement_class,
         external_state=external_state,
+        evidence_receipt_sha="9" * 64,
     )
 
 
@@ -66,10 +72,10 @@ def test_historical_promotion_receipt_remains_immutable_after_revocation():
     r = _r(); u = _unit(r); ref = _unit(r, "REF")
     reg = _registry(r, [u, ref], [_prereq(r)])
     promoted = r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
-                              controller_identity="controller", reviewer_identity="reviewer")
+                              controller_identity="c" * 64, reviewer_identity="d" * 64)
     old = promoted.promotions[0]
     revoked = r.revoke_or_supersede(promoted, "G8", ActiveLineageStatus.REVOKED_BY_DEFECT,
-                                    reason_class="DEFECT", controller_identity="controller")
+                                    reason_class="DEFECT", controller_identity="c" * 64)
     assert revoked.promotions[0] == old
     assert revoked.units_by_id()["G8"].active_lineage_status is ActiveLineageStatus.REVOKED_BY_DEFECT
 
@@ -86,7 +92,7 @@ def test_superseded_unit_cannot_promote():
     r = _r(); reg = _registry(r, [_unit(r, status=ActiveLineageStatus.SUPERSEDED)])
     with pytest.raises(r.RegistryError, match="ACTIVE|superseded"):
         r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
-                       controller_identity="controller", reviewer_identity="reviewer")
+                       controller_identity="c" * 64, reviewer_identity="d" * 64)
 
 
 def test_code_or_policy_change_requires_new_identity_without_stage_inheritance():
@@ -100,7 +106,7 @@ def test_producer_cannot_self_qualify():
     r = _r(); reg = _registry(r, [_unit(r)])
     with pytest.raises(r.RegistryError, match="independent|self|controller"):
         r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
-                       controller_identity="a" * 40, reviewer_identity="reviewer")
+                       controller_identity="a" * 40, reviewer_identity="d" * 64)
 
 
 def test_human_executable_requires_independent_reviewer():
@@ -108,7 +114,7 @@ def test_human_executable_requires_independent_reviewer():
     reg = _registry(r, [u])
     with pytest.raises(r.RegistryError, match="reviewer|independent"):
         r.promote_unit(reg, "G8", QualificationStage.HUMAN_EXECUTABLE,
-                       controller_identity="controller", reviewer_identity=None)
+                       controller_identity="c" * 64, reviewer_identity=None)
 
 
 def test_ready_boolean_cannot_override_missing_prerequisite():
@@ -158,7 +164,7 @@ def test_human_executable_blocked_without_external_process_isolation_prerequisit
     reg = _registry(r, [u])
     with pytest.raises(r.RegistryError, match="process isolation|PROCESS_ISOLATION"):
         r.promote_unit(reg, "G8", QualificationStage.HUMAN_EXECUTABLE,
-                       controller_identity="controller", reviewer_identity="reviewer")
+                       controller_identity="c" * 64, reviewer_identity="d" * 64)
 
 
 def test_vacuous_metric_identity_cannot_satisfy_content_qualified_prerequisite():
@@ -172,11 +178,12 @@ def test_vacuous_metric_identity_cannot_satisfy_content_qualified_prerequisite()
 def test_cross_process_receipt_dependency_requires_persistence_and_key_custody():
     r = _r(); u = _unit(r, stage=QualificationStage.REAL_REFERENCE_READY)
     reg = _registry(r, [u], [
-        _prereq(r, pid="R4", target="R4", gate="HUMAN_EXECUTABLE", requirement_class="CROSS_PROCESS_LEDGER_CUSTODY", external_state="UNRESOLVED")
+        _prereq(r, pid="R4", target="R4", gate="HUMAN_EXECUTABLE",
+                requirement_class="CROSS_PROCESS_LEDGER_CUSTODY", external_state="UNRESOLVED")
     ])
     with pytest.raises(r.RegistryError, match="custody|persistence|R4"):
         r.promote_unit(reg, "G8", QualificationStage.HUMAN_EXECUTABLE,
-                       controller_identity="controller", reviewer_identity="reviewer")
+                       controller_identity="c" * 64, reviewer_identity="d" * 64)
 
 
 def test_pooled_crossfit_scope_cannot_promote_per_fold_source_stratified_claim():
