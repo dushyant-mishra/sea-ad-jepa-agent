@@ -27,9 +27,13 @@ def _actors():
     return r.canonical_sha256(controller), r.canonical_sha256(reviewer), objects
 
 
-def _genesis_with_rrr_prereq():
-    dep, ref, dependencies = verified_pair(r)
-    prerequisite = verified_prereq(r, dep, ref)
+def _genesis_below_known_truth():
+    dep, ref, dependencies = verified_pair(
+        r, dep_stage=Q.SEMANTICS_ONLY, ref_stage=Q.SEMANTICS_ONLY
+    )
+    prerequisite = verified_prereq(
+        r, dep, ref, required_stage=Q.SEMANTICS_ONLY
+    )
     registry = r.TDQualificationRegistry((dep, ref), (prerequisite,), (), ())
     controller, reviewer, actors = _actors()
     registry, objects = bind_actor_registry(
@@ -41,8 +45,10 @@ def _genesis_with_rrr_prereq():
     return dep, ref, dependencies, registry, controller, reviewer, objects
 
 
-def test_b5_history_custody_rejects_advanced_or_prepopulated_genesis():
-    dep, ref, dependencies = verified_pair(r, dep_stage=Q.REAL_REFERENCE_READY)
+def test_b5_history_custody_rejects_known_truth_or_advanced_or_prepopulated_genesis():
+    dep, ref, dependencies = verified_pair(
+        r, dep_stage=Q.KNOWN_TRUTH_QUALIFIED, ref_stage=Q.SAME_CODE_PATH
+    )
     controller, reviewer, actors = _actors()
     registry = r.TDQualificationRegistry((dep, ref), (), (), ())
     registry, _ = bind_actor_registry(
@@ -51,50 +57,51 @@ def test_b5_history_custody_rejects_advanced_or_prepopulated_genesis():
         {**dependencies, **actors},
         trusted_actor_objects=tuple(actors.values()),
     )
-    with pytest.raises(r.RegistryError, match="genesis|history|advanced|KNOWN_TRUTH"):
+    with pytest.raises(r.RegistryError, match="genesis|history|KNOWN_TRUTH|sealed"):
         r.RegistryHistoryCustody(registry, attestation_key=KEY)
 
 
-def test_b5_history_custody_records_lawful_rrr_and_allows_prerequisite_only_change():
-    _, ref, dependencies, registry, controller, reviewer, objects = _genesis_with_rrr_prereq()
+def test_b5_history_custody_records_lawful_prequalification_promotion_and_allows_prerequisite_only_change():
+    _, ref, dependencies, registry, controller, reviewer, objects = _genesis_below_known_truth()
     custody = r.RegistryHistoryCustody(registry, attestation_key=KEY)
-    ready = r.promote_unit(
+    promoted = r.promote_unit(
         registry,
         "G8",
-        Q.REAL_REFERENCE_READY,
+        Q.SAME_CODE_PATH,
         controller_identity=controller,
         reviewer_identity=reviewer,
         authority_object_resolver=objects.get,
         dependency_verifier=dependencies.get,
         history_custody=custody,
     )
-    g8 = ready.units_by_id()["G8"]
+    g8 = promoted.units_by_id()["G8"]
     extra = verified_prereq(
         r,
         g8,
         ref,
         pid="EXTRA",
-        gate="HUMAN_EXECUTABLE",
+        gate="REAL_REFERENCE_READY",
+        required_stage=Q.SEMANTICS_ONLY,
         requirement_class="UNIT",
     )
     changed_prereqs = r.TDQualificationRegistry(
-        ready.units,
-        ready.prerequisites + (extra,),
-        ready.promotions,
-        ready.revocations,
-        actor_registry_sha=ready.actor_registry_sha,
+        promoted.units,
+        promoted.prerequisites + (extra,),
+        promoted.promotions,
+        promoted.revocations,
+        actor_registry_sha=promoted.actor_registry_sha,
     )
     custody.validate_current(changed_prereqs)
 
 
 def test_b5_history_custody_rejects_unrecorded_fabricated_promotion():
-    dep, ref, dependencies, genesis, controller, reviewer, objects = _genesis_with_rrr_prereq()
+    dep, ref, dependencies, genesis, controller, reviewer, objects = _genesis_below_known_truth()
     custody = r.RegistryHistoryCustody(genesis, attestation_key=KEY)
-    promoted_unit = dataclasses.replace(dep, qualification_stage=Q.REAL_REFERENCE_READY)
+    promoted_unit = dataclasses.replace(dep, qualification_stage=Q.SAME_CODE_PATH)
     receipt = r.PromotionReceipt(
         unit_id="G8",
-        source_stage=Q.KNOWN_TRUTH_QUALIFIED,
-        destination_stage=Q.REAL_REFERENCE_READY,
+        source_stage=Q.SEMANTICS_ONLY,
+        destination_stage=Q.SAME_CODE_PATH,
         pre_registry_sha=genesis.canonical_sha256(),
         unit_identity_sha=dep.canonical_sha256(),
         prerequisite_ids=tuple(p.prerequisite_id for p in genesis.prerequisites),
@@ -115,13 +122,13 @@ def test_b5_history_custody_rejects_unrecorded_fabricated_promotion():
         custody.validate_current(forged)
 
 
-def test_b5_history_custody_rejects_deleted_recorded_revocation():
-    _, _, dependencies, genesis, controller, reviewer, objects = _genesis_with_rrr_prereq()
+def test_b5_history_custody_rejects_deleted_recorded_revocation_below_known_truth():
+    _, _, dependencies, genesis, controller, reviewer, objects = _genesis_below_known_truth()
     custody = r.RegistryHistoryCustody(genesis, attestation_key=KEY)
-    ready = r.promote_unit(
+    promoted = r.promote_unit(
         genesis,
         "G8",
-        Q.REAL_REFERENCE_READY,
+        Q.SAME_CODE_PATH,
         controller_identity=controller,
         reviewer_identity=reviewer,
         authority_object_resolver=objects.get,
@@ -129,7 +136,7 @@ def test_b5_history_custody_rejects_deleted_recorded_revocation():
         history_custody=custody,
     )
     revoked = r.revoke_or_supersede(
-        ready,
+        promoted,
         "G8",
         L.REVOKED_BY_DEFECT,
         reason_class="DEFECT",
