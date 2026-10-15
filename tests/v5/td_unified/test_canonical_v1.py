@@ -133,3 +133,23 @@ def test_unexpected_receipt_field_fails_closed_even_if_attacker_rehashes():
     receipt["receipt_sha256"] = canonical_sha256({k: v for k, v in receipt.items() if k != "receipt_sha256"})
     with pytest.raises(CanonicalError, match="fields"):
         verify_scientific_receipt(receipt, lambda _sha: None)
+
+
+def test_input_digest_string_never_authenticates_missing_or_mutated_input_object():
+    input_object = {"source": "fixture", "measured_zero": 0}
+    input_sha = canonical_sha256(input_object)
+    receipt = make_scientific_receipt(
+        payload={"x": 1},
+        producer_code_sha=HEX40_A,
+        input_shas=[input_sha],
+        parent_receipt_shas=[],
+        output_sha=HEX64_B,
+        manifest_sha=HEX64_C,
+        registry_sha=HEX64_D,
+        access_policy_sha=HEX64_A,
+    )
+    assert verify_scientific_receipt(receipt, lambda sha: input_object if sha == input_sha else None)
+    with pytest.raises(CanonicalError, match="input"):
+        verify_scientific_receipt(receipt, lambda _sha: None)
+    with pytest.raises(CanonicalError, match="input"):
+        verify_scientific_receipt(receipt, lambda sha: {"source": "mutated"} if sha == input_sha else None)
