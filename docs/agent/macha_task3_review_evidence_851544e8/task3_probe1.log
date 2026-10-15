@@ -1,0 +1,27 @@
+OK  baseline: KNOWN_TRUTH -> REAL_REFERENCE_READY promotes -> REAL_REFERENCE_READY
+== H1: climb beyond HUMAN_EXECUTED with a UNIT-scoped record (frozen Task 1: UNIT max HUMAN_EXECUTED)
+    reached stage: TRAINING_AUTHORIZED; scope=UNIT:G8; restrictions=('NO_TRAINING_AUTHORITY',)
+BAD H1 UNIT-scoped unit must not reach beyond HUMAN_EXECUTED -> RAISES AssertionError: reached TRAINING_AUTHORIZED
+== H2: KNOWN_TRUTH_QUALIFIED with no sealed-challenge evidence and no reviewer
+BAD H2 SAME_CODE_PATH -> KNOWN_TRUTH_QUALIFIED with controller only must be refused -> KNOWN_TRUTH_QUALIFIED
+== T3-B actor aliasing
+OK  T3-B controller actor_id 'producer:G8' vs producer 'producer:G8' must be refused -> RAISES RegistryError: qualification controller actor must differ from producer/executor actors; self-qualification forbidden
+BAD T3-B controller actor_id 'producer:G8 ' vs producer 'producer:G8' must be refused -> PROMOTED
+BAD T3-B controller actor_id ' producer:G8' vs producer 'producer:G8' must be refused -> PROMOTED
+BAD T3-B controller actor_id 'PRODUCER:G8' vs producer 'producer:G8' must be refused -> PROMOTED
+BAD T3-B controller actor_id 'producer\uff1aG8' vs producer 'producer:G8' must be refused -> PROMOTED
+OK  T3-B reviewer actor == controller actor (different role objects) refused -> RAISES RegistryError: independent reviewer actor must differ from qualification controller/producer/executor actors
+OK  T3-B reviewer actor == producer actor refused -> RAISES RegistryError: independent reviewer actor must differ from qualification controller/producer/executor actors
+OK  NOTE self-minted controller actor (any new string) is accepted -> no actor registry -> PROMOTED
+== H3/H4: verification cache poisoning and resolver change
+BAD H4 cached positive must not survive a resolver that lacks the objects -> RAISES AssertionError: ready with empty resolver
+BAD H3 caller-poisoned cache must not authenticate unresolvable dependencies -> RAISES AssertionError: ready via poisoned cache
+== H5/H6: provenance and history
+BAD H6 revocation receipt deleted + unit set ACTIVE must be detected (revoked unit re-promoted) -> RE-PROMOTED AFTER REVOCATION
+BAD H5 fabricated RRR history (no lawful readiness) must not enable HUMAN_EXECUTABLE -> PROMOTED ON FABRICATED HISTORY
+== packet T3-C spot checks
+OK  T3-C missing dependency resolver blocks readiness -> authenticated dependency object/byte resolver required; digest strings are not authority
+OK  T3-C boolean True resolver blocks readiness -> dependency object/byte verification failed: manifest_sha: dependency manifest_sha requires actual canonical ob
+OK  T3-C asserted_ready=True ignored when prerequisite missing -> ('P1',)
+
+SUMMARY: 8/18 expected; BAD=10
