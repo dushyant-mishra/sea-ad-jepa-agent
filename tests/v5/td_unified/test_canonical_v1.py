@@ -15,12 +15,27 @@ from scripts.v5.td_unified.canonical_v1 import (
 )
 
 HEX40_A = "a" * 40
-HEX64_A = "a" * 64
 HEX64_B = "b" * 64
-HEX64_C = "c" * 64
-HEX64_D = "d" * 64
 ROOT = Path(__file__).resolve().parents[3]
 SCHEMA = ROOT / "schemas" / "target_discovery" / "unified_v1" / "scientific_receipt_v1.json"
+
+DEFAULT_OBJECTS = {
+    "output": {"artifact": "output", "version": 1},
+    "manifest": {"artifact": "manifest", "version": 1},
+    "registry": {"artifact": "registry", "version": 1},
+    "access": {"artifact": "access", "version": 1},
+}
+DEFAULT_SHAS = {name: canonical_sha256(obj) for name, obj in DEFAULT_OBJECTS.items()}
+DEFAULT_BY_SHA = {DEFAULT_SHAS[name]: obj for name, obj in DEFAULT_OBJECTS.items()}
+
+
+def _resolver(extra=None, omit=None):
+    mapping = dict(DEFAULT_BY_SHA)
+    if extra:
+        mapping.update(extra)
+    if omit:
+        mapping.pop(omit, None)
+    return mapping.get
 
 
 def _leaf(payload=None):
@@ -29,10 +44,10 @@ def _leaf(payload=None):
         producer_code_sha=HEX40_A,
         input_shas=[],
         parent_receipt_shas=[],
-        output_sha=HEX64_B,
-        manifest_sha=HEX64_C,
-        registry_sha=HEX64_D,
-        access_policy_sha=HEX64_A,
+        output_sha=DEFAULT_SHAS["output"],
+        manifest_sha=DEFAULT_SHAS["manifest"],
+        registry_sha=DEFAULT_SHAS["registry"],
+        access_policy_sha=DEFAULT_SHAS["access"],
     )
 
 
@@ -59,7 +74,7 @@ def test_declared_digest_never_authenticates_mutated_payload():
     tampered = copy.deepcopy(receipt)
     tampered["payload"] = {"x": 2}
     with pytest.raises(CanonicalError, match="payload"):
-        verify_scientific_receipt(tampered, lambda _sha: None)
+        verify_scientific_receipt(tampered, _resolver())
 
 
 def test_valid_child_with_missing_or_invalid_parent_fails_closed():
@@ -69,18 +84,18 @@ def test_valid_child_with_missing_or_invalid_parent_fails_closed():
         producer_code_sha=HEX40_A,
         input_shas=[],
         parent_receipt_shas=[parent["receipt_sha256"]],
-        output_sha=HEX64_B,
-        manifest_sha=HEX64_C,
-        registry_sha=HEX64_D,
-        access_policy_sha=HEX64_A,
+        output_sha=DEFAULT_SHAS["output"],
+        manifest_sha=DEFAULT_SHAS["manifest"],
+        registry_sha=DEFAULT_SHAS["registry"],
+        access_policy_sha=DEFAULT_SHAS["access"],
     )
     with pytest.raises(CanonicalError, match="parent"):
-        verify_scientific_receipt(child, lambda _sha: None)
+        verify_scientific_receipt(child, _resolver())
 
     bad_parent = copy.deepcopy(parent)
     bad_parent["payload"] = {"parent": 999}
     with pytest.raises(CanonicalError):
-        verify_scientific_receipt(child, lambda sha: bad_parent if sha == parent["receipt_sha256"] else None)
+        verify_scientific_receipt(child, _resolver({parent["receipt_sha256"]: bad_parent}))
 
 
 def test_receipt_binds_schema_producer_inputs_parents_output_manifest_registry_and_access():
@@ -101,7 +116,7 @@ def test_receipt_binds_schema_producer_inputs_parents_output_manifest_registry_a
         else:
             tampered[field] = "f" * len(tampered[field])
         with pytest.raises(CanonicalError):
-            verify_scientific_receipt(tampered, lambda _sha: None)
+            verify_scientific_receipt(tampered, _resolver())
 
 
 def test_duplicate_or_conflicting_parent_identity_is_rejected():
@@ -112,10 +127,10 @@ def test_duplicate_or_conflicting_parent_identity_is_rejected():
             producer_code_sha=HEX40_A,
             input_shas=[],
             parent_receipt_shas=[parent["receipt_sha256"], parent["receipt_sha256"]],
-            output_sha=HEX64_B,
-            manifest_sha=HEX64_C,
-            registry_sha=HEX64_D,
-            access_policy_sha=HEX64_A,
+            output_sha=DEFAULT_SHAS["output"],
+            manifest_sha=DEFAULT_SHAS["manifest"],
+            registry_sha=DEFAULT_SHAS["registry"],
+            access_policy_sha=DEFAULT_SHAS["access"],
         )
 
 
@@ -132,7 +147,7 @@ def test_unexpected_receipt_field_fails_closed_even_if_attacker_rehashes():
     receipt["extra_scientific_knob"] = "hidden"
     receipt["receipt_sha256"] = canonical_sha256({k: v for k, v in receipt.items() if k != "receipt_sha256"})
     with pytest.raises(CanonicalError, match="fields"):
-        verify_scientific_receipt(receipt, lambda _sha: None)
+        verify_scientific_receipt(receipt, _resolver())
 
 
 def test_input_digest_string_never_authenticates_missing_or_mutated_input_object():
@@ -143,16 +158,16 @@ def test_input_digest_string_never_authenticates_missing_or_mutated_input_object
         producer_code_sha=HEX40_A,
         input_shas=[input_sha],
         parent_receipt_shas=[],
-        output_sha=HEX64_B,
-        manifest_sha=HEX64_C,
-        registry_sha=HEX64_D,
-        access_policy_sha=HEX64_A,
+        output_sha=DEFAULT_SHAS["output"],
+        manifest_sha=DEFAULT_SHAS["manifest"],
+        registry_sha=DEFAULT_SHAS["registry"],
+        access_policy_sha=DEFAULT_SHAS["access"],
     )
-    assert verify_scientific_receipt(receipt, lambda sha: input_object if sha == input_sha else None)
+    assert verify_scientific_receipt(receipt, _resolver({input_sha: input_object}))
     with pytest.raises(CanonicalError, match="input"):
-        verify_scientific_receipt(receipt, lambda _sha: None)
+        verify_scientific_receipt(receipt, _resolver())
     with pytest.raises(CanonicalError, match="input"):
-        verify_scientific_receipt(receipt, lambda sha: {"source": "mutated"} if sha == input_sha else None)
+        verify_scientific_receipt(receipt, _resolver({input_sha: {"source": "mutated"}}))
 
 
 def test_input_receipt_must_resolve_to_the_exact_requested_receipt_identity():
@@ -162,29 +177,29 @@ def test_input_receipt_must_resolve_to_the_exact_requested_receipt_identity():
         producer_code_sha=HEX40_A,
         input_shas=[input_receipt["receipt_sha256"]],
         parent_receipt_shas=[],
-        output_sha=HEX64_B,
-        manifest_sha=HEX64_C,
-        registry_sha=HEX64_D,
-        access_policy_sha=HEX64_A,
+        output_sha=DEFAULT_SHAS["output"],
+        manifest_sha=DEFAULT_SHAS["manifest"],
+        registry_sha=DEFAULT_SHAS["registry"],
+        access_policy_sha=DEFAULT_SHAS["access"],
     )
     assert verify_scientific_receipt(
         consumer,
-        lambda sha: input_receipt if sha == input_receipt["receipt_sha256"] else None,
+        _resolver({input_receipt["receipt_sha256"]: input_receipt}),
     )
     other = _leaf({"different": 1})
     with pytest.raises(CanonicalError, match="input"):
         verify_scientific_receipt(
             consumer,
-            lambda sha: other if sha == input_receipt["receipt_sha256"] else None,
+            _resolver({input_receipt["receipt_sha256"]: other}),
         )
 
 
 def test_authority_bearing_output_manifest_registry_and_access_hashes_require_actual_objects():
     objects = {
-        "output": {"artifact": "output", "v": 1},
-        "manifest": {"artifact": "manifest", "v": 1},
-        "registry": {"artifact": "registry", "v": 1},
-        "access": {"artifact": "access", "v": 1},
+        "output": {"artifact": "output-special", "v": 1},
+        "manifest": {"artifact": "manifest-special", "v": 1},
+        "registry": {"artifact": "registry-special", "v": 1},
+        "access": {"artifact": "access-special", "v": 1},
     }
     shas = {name: canonical_sha256(obj) for name, obj in objects.items()}
     receipt = make_scientific_receipt(
