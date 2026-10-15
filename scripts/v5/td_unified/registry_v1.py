@@ -27,8 +27,9 @@ for _name, _value in vars(_legacy).items():
         globals()[_name] = _value
 
 
-# B3: code-frozen authority actors. Synthetic fixture actors are explicit entries;
-# arbitrary newly invented controller/reviewer identities remain forbidden.
+# B3: code-frozen controller/reviewer registry. Unit producer/executor actors are
+# separately bound by each authenticated RegistryUnit. Arbitrary newly minted
+# controller/reviewer identities are not accepted.
 _REGISTERED_AUTHORITY_ACTORS_V1: dict[str, frozenset[str]] = {
     "C1": frozenset({"QUALIFICATION_CONTROLLER", "REVOCATION_CONTROLLER"}),
     "R1": frozenset({"INDEPENDENT_REVIEWER"}),
@@ -98,6 +99,10 @@ def _register_genesis_if_needed(registry):
         return existing
     if registry.promotions or registry.revocations:
         raise RegistryError("advanced registry promotion history/provenance is not anchored from a fixed genesis")
+    # Task 3 owns the transition out of KNOWN_TRUTH_QUALIFIED. A hand-built unit
+    # claiming any later stage cannot establish its own genesis authority.
+    if any(_STAGE_INDEX[u.qualification_stage] > _STAGE_INDEX[QualificationStage.KNOWN_TRUTH_QUALIFIED] for u in registry.units):
+        raise RegistryError("advanced registry promotion history/provenance is missing from the fixed Task 3 starting point")
     sha = registry.canonical_sha256()
     session = _RegistryHistorySession(sha, object_id, sha, {sha: registry.to_payload()}, [])
     _HISTORY_SESSION_BY_OBJECT_ID[object_id] = session
@@ -210,13 +215,30 @@ def derive_real_reference_ready(unit_id, registry, *, dependency_verifier=None, 
         verification_cache=local_cache, stack=(), require_prerequisite_graph=True)
 
 
-def _evaluate_existing_human_prerequisites(unit_id, registry, dependency_verifier, authority_object_resolver):
-    local_cache = {}
-    return _legacy._evaluate_unit(
-        unit_id, registry, gate="HUMAN_EXECUTABLE",
-        dependency_verifier=dependency_verifier,
-        authority_object_resolver=authority_object_resolver,
-        verification_cache=local_cache, stack=(), require_prerequisite_graph=False)
+def _validate_existing_human_external_evidence(unit_id, registry, authority_object_resolver):
+    required = {
+        "PROCESS_ISOLATION": "process isolation",
+        "CROSS_PROCESS_LEDGER_CUSTODY": "cross-process custody/persistence",
+    }
+    for requirement_class, friendly in required.items():
+        records = [
+            p for p in registry.prerequisites
+            if p.dependent_unit_id == unit_id
+            and p.gate == "HUMAN_EXECUTABLE"
+            and p.requirement_class == requirement_class
+        ]
+        if len(records) != 1:
+            raise RegistryError(f"HUMAN_EXECUTABLE requires exactly one {friendly} prerequisite")
+        p = records[0]
+        if p.external_state != "SATISFIED":
+            raise RegistryError(f"HUMAN_EXECUTABLE {friendly} prerequisite is not satisfied")
+        evidence = _legacy._resolve_object(
+            p.evidence_receipt_sha,
+            authority_object_resolver,
+            expected_role="PREREQUISITE_EVIDENCE",
+            label=p.prerequisite_id + " evidence",
+        )
+        _legacy._validate_requirement_evidence(requirement_class, evidence, label=p.prerequisite_id)
 
 
 def promote_unit(
@@ -232,7 +254,7 @@ def promote_unit(
     if _STAGE_INDEX[destination_stage] != _STAGE_INDEX[unit.qualification_stage] + 1:
         raise RegistryError("promotion must advance exactly one canonical stage")
 
-    # B1 first: impossible scope/stage expansions are refused even on a forged history.
+    # B1 first: impossible scope/stage expansions are refused even on forged history.
     candidate = _legacy.replace(unit, qualification_stage=destination_stage)
     _validate_candidate_authority(candidate)
 
@@ -246,7 +268,6 @@ def promote_unit(
     } and reviewer_identity is None:
         raise RegistryError(f"{destination_stage.value} requires an independent reviewer/evidence authority")
 
-    session = _require_current_history(registry)
     producer_actor, executor_actor = _validate_unit_actor_registration(
         unit, authority_object_resolver, dependency_verifier)
     controller_obj = _resolve_registered_authority_actor(
@@ -263,6 +284,27 @@ def promote_unit(
         if reviewer_actor in {controller_actor, producer_actor, executor_actor}:
             raise RegistryError("reviewer actor must differ from controller/producer/executor actors")
 
+    # Future stages with no accepted evidence object fail closed before any attempt
+    # to accept a hand-built advanced history. HUMAN_EXECUTABLE is special: its
+    # already-defined R1/R4 evidence is substantively checked first, then history.
+    if destination_stage in {
+        QualificationStage.KNOWN_TRUTH_QUALIFIED,
+        QualificationStage.HUMAN_EXECUTED,
+        QualificationStage.DOWNSTREAM_CERTIFIED,
+        QualificationStage.TRAINING_ELIGIBLE,
+        QualificationStage.TRAINING_AUTHORIZED,
+    }:
+        _enforce_stage_evidence_gate(destination_stage)
+
+    if destination_stage is QualificationStage.HUMAN_EXECUTABLE:
+        _validate_existing_human_external_evidence(unit_id, registry, authority_object_resolver)
+        _require_current_history(registry)
+        _enforce_stage_evidence_gate(destination_stage)
+
+    session = None
+    if destination_stage is not QualificationStage.HUMAN_EXECUTABLE:
+        session = _require_current_history(registry)
+
     if destination_stage is QualificationStage.REAL_REFERENCE_READY:
         readiness = derive_real_reference_ready(
             unit_id, registry, dependency_verifier=dependency_verifier,
@@ -270,20 +312,14 @@ def promote_unit(
         if not readiness.ready:
             raise RegistryError("REAL_REFERENCE_READY prerequisites unresolved: " + "; ".join(readiness.blockers))
 
-    if destination_stage is QualificationStage.HUMAN_EXECUTABLE:
-        existing = _evaluate_existing_human_prerequisites(
-            unit_id, registry, dependency_verifier, authority_object_resolver)
-        if not existing.ready:
-            raise RegistryError("HUMAN_EXECUTABLE prerequisite evidence unresolved: " + "; ".join(existing.blockers))
-
-    _enforce_stage_evidence_gate(destination_stage)
-
     repaired = _legacy.promote_unit(
         registry, unit_id, destination_stage,
         controller_identity=controller_identity, reviewer_identity=reviewer_identity,
         authority_object_resolver=authority_object_resolver,
         dependency_verifier=dependency_verifier, verification_cache={})
     _validate_candidate_authority(repaired.units_by_id()[unit_id])
+    if session is None:
+        session = _require_current_history(registry)
     _advance_history(session, registry, repaired, "PROMOTION")
     return repaired
 
