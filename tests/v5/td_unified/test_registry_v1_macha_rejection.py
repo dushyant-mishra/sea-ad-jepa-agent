@@ -250,7 +250,11 @@ def test_h3_caller_poisoned_cache_cannot_authenticate_missing_dependencies():
 
 def test_h6_deleted_revocation_history_cannot_be_rebuilt_into_active_lineage():
     dep, ref, dependencies = verified_pair(
-        r, dep_stage=Q.SEMANTICS_ONLY, ref_stage=Q.SEMANTICS_ONLY
+        r,
+        dep_id="H6_G8",
+        ref_id="H6_REF",
+        dep_stage=Q.SEMANTICS_ONLY,
+        ref_stage=Q.SEMANTICS_ONLY,
     )
     registry = r.TDQualificationRegistry((dep, ref), (), (), ())
     controller, reviewer, authority_objects = _actors()
@@ -265,7 +269,7 @@ def test_h6_deleted_revocation_history_cannot_be_rebuilt_into_active_lineage():
     )
     revoked = r.revoke_or_supersede(
         registry,
-        "G8",
+        "H6_G8",
         L.REVOKED_BY_DEFECT,
         reason_class="DEFECT",
         controller_identity=controller,
@@ -273,9 +277,9 @@ def test_h6_deleted_revocation_history_cannot_be_rebuilt_into_active_lineage():
         dependency_verifier=dependencies.get,
         history_custody=custody,
     )
-    forged_unit = dataclasses.replace(revoked.units_by_id()["G8"], active_lineage_status=L.ACTIVE)
+    forged_unit = dataclasses.replace(revoked.units_by_id()["H6_G8"], active_lineage_status=L.ACTIVE)
     forged_back = r.TDQualificationRegistry(
-        tuple(forged_unit if u.unit_id == "G8" else u for u in revoked.units),
+        tuple(forged_unit if u.unit_id == "H6_G8" else u for u in revoked.units),
         revoked.prerequisites,
         revoked.promotions,
         (),
