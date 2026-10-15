@@ -1,0 +1,107 @@
+from __future__ import annotations
+
+import copy
+
+import pytest
+
+from scripts.v5.td_unified.canonical_v1 import (
+    CanonicalError,
+    canonical_bytes,
+    canonical_sha256,
+    make_scientific_receipt,
+    verify_scientific_receipt,
+)
+
+HEX40_A = "a" * 40
+HEX64_A = "a" * 64
+HEX64_B = "b" * 64
+HEX64_C = "c" * 64
+HEX64_D = "d" * 64
+
+
+def _leaf(payload=None):
+    return make_scientific_receipt(
+        payload=payload or {"measured_zero": 0, "missing": None},
+        producer_code_sha=HEX40_A,
+        input_shas=[HEX64_A],
+        parent_receipt_shas=[],
+        output_sha=HEX64_B,
+        manifest_sha=HEX64_C,
+        registry_sha=HEX64_D,
+        access_policy_sha=HEX64_A,
+    )
+
+
+def test_canonical_bytes_are_mapping_order_invariant_and_semantically_strict():
+    assert canonical_bytes({"b": [1, 0.0], "a": None}) == canonical_bytes({"a": None, "b": [1, 0.0]})
+    assert canonical_sha256(None) != canonical_sha256(0)
+    assert canonical_sha256(0) != canonical_sha256(0.0)
+    with pytest.raises(CanonicalError):
+        canonical_bytes(float("nan"))
+    with pytest.raises(CanonicalError):
+        canonical_bytes(b"raw")
+
+
+def test_declared_digest_never_authenticates_mutated_payload():
+    receipt = _leaf({"x": 1})
+    tampered = copy.deepcopy(receipt)
+    tampered["payload"] = {"x": 2}
+    with pytest.raises(CanonicalError, match="payload"):
+        verify_scientific_receipt(tampered, lambda _sha: None)
+
+
+def test_valid_child_with_missing_or_invalid_parent_fails_closed():
+    parent = _leaf({"parent": 1})
+    child = make_scientific_receipt(
+        payload={"child": 1},
+        producer_code_sha=HEX40_A,
+        input_shas=[HEX64_A],
+        parent_receipt_shas=[parent["receipt_sha256"]],
+        output_sha=HEX64_B,
+        manifest_sha=HEX64_C,
+        registry_sha=HEX64_D,
+        access_policy_sha=HEX64_A,
+    )
+    with pytest.raises(CanonicalError, match="parent"):
+        verify_scientific_receipt(child, lambda _sha: None)
+
+    bad_parent = copy.deepcopy(parent)
+    bad_parent["payload"] = {"parent": 999}
+    with pytest.raises(CanonicalError):
+        verify_scientific_receipt(child, lambda sha: bad_parent if sha == parent["receipt_sha256"] else None)
+
+
+def test_receipt_binds_schema_producer_inputs_parents_output_manifest_registry_and_access():
+    receipt = _leaf({"x": 1})
+    for field in (
+        "receipt_schema",
+        "producer_code_sha",
+        "input_shas",
+        "parent_receipt_shas",
+        "output_sha",
+        "manifest_sha",
+        "registry_sha",
+        "access_policy_sha",
+    ):
+        tampered = copy.deepcopy(receipt)
+        if isinstance(tampered[field], list):
+            tampered[field] = list(tampered[field]) + [HEX64_B]
+        else:
+            tampered[field] = "f" * len(tampered[field])
+        with pytest.raises(CanonicalError):
+            verify_scientific_receipt(tampered, lambda _sha: None)
+
+
+def test_duplicate_or_conflicting_parent_identity_is_rejected():
+    parent = _leaf({"p": 1})
+    with pytest.raises(CanonicalError, match="duplicate"):
+        make_scientific_receipt(
+            payload={"child": 1},
+            producer_code_sha=HEX40_A,
+            input_shas=[HEX64_A],
+            parent_receipt_shas=[parent["receipt_sha256"], parent["receipt_sha256"]],
+            output_sha=HEX64_B,
+            manifest_sha=HEX64_C,
+            registry_sha=HEX64_D,
+            access_policy_sha=HEX64_A,
+        )
