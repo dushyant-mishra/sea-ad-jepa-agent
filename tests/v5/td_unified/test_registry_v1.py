@@ -63,8 +63,8 @@ def _prereq(r, *, pid="P1", dependent="G8", target="REF", gate="REAL_REFERENCE_R
 
 
 def test_historical_promotion_receipt_remains_immutable_after_revocation():
-    r = _r(); u = _unit(r)
-    reg = _registry(r, [u])
+    r = _r(); u = _unit(r); ref = _unit(r, "REF")
+    reg = _registry(r, [u, ref], [_prereq(r)])
     promoted = r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
                               controller_identity="controller", reviewer_identity="reviewer")
     old = promoted.promotions[0]
