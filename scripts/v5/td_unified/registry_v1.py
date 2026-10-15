@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Callable, Mapping
+from typing import Mapping
 
 from . import registry_v1_legacy as _legacy
 from scripts.v5.td_unified.authority_v1 import (
@@ -75,8 +75,9 @@ def _validate_unit_actor_registration(unit, authority_object_resolver, dependenc
     return producer_id, executor_id
 
 
-# B5: process-external-to-the-registry history/head anchor. This is process-local
-# mechanics only and never satisfies R1/R4 HUMAN_EXECUTABLE trust custody.
+# B5: process-external-to-the-registry history/head anchor. This is deliberately
+# process-local mechanics only and never satisfies R1/R4 HUMAN_EXECUTABLE trust
+# custody. Durable out-of-process anchoring remains a later prerequisite.
 @dataclass
 class _RegistryHistorySession:
     genesis_sha: str
@@ -216,11 +217,13 @@ def derive_real_reference_ready(unit_id, registry, *, dependency_verifier=None, 
 
 
 def _validate_existing_human_external_evidence(unit_id, registry, authority_object_resolver):
-    required = {
-        "PROCESS_ISOLATION": "process isolation",
-        "CROSS_PROCESS_LEDGER_CUSTODY": "cross-process custody/persistence",
-    }
-    for requirement_class, friendly in required.items():
+    """Validate both existing R1/R4 evidence classes and report all defects together."""
+    required = (
+        ("PROCESS_ISOLATION", "process isolation"),
+        ("CROSS_PROCESS_LEDGER_CUSTODY", "cross-process custody/persistence"),
+    )
+    blockers = []
+    for requirement_class, friendly in required:
         records = [
             p for p in registry.prerequisites
             if p.dependent_unit_id == unit_id
@@ -228,17 +231,24 @@ def _validate_existing_human_external_evidence(unit_id, registry, authority_obje
             and p.requirement_class == requirement_class
         ]
         if len(records) != 1:
-            raise RegistryError(f"HUMAN_EXECUTABLE requires exactly one {friendly} prerequisite")
+            blockers.append(f"requires exactly one {friendly} prerequisite")
+            continue
         p = records[0]
         if p.external_state != "SATISFIED":
-            raise RegistryError(f"HUMAN_EXECUTABLE {friendly} prerequisite is not satisfied")
-        evidence = _legacy._resolve_object(
-            p.evidence_receipt_sha,
-            authority_object_resolver,
-            expected_role="PREREQUISITE_EVIDENCE",
-            label=p.prerequisite_id + " evidence",
-        )
-        _legacy._validate_requirement_evidence(requirement_class, evidence, label=p.prerequisite_id)
+            blockers.append(f"{p.prerequisite_id} {friendly} prerequisite is not satisfied")
+            continue
+        try:
+            evidence = _legacy._resolve_object(
+                p.evidence_receipt_sha,
+                authority_object_resolver,
+                expected_role="PREREQUISITE_EVIDENCE",
+                label=p.prerequisite_id + " evidence",
+            )
+            _legacy._validate_requirement_evidence(requirement_class, evidence, label=p.prerequisite_id)
+        except RegistryError as exc:
+            blockers.append(str(exc))
+    if blockers:
+        raise RegistryError("HUMAN_EXECUTABLE prerequisite evidence unresolved: " + "; ".join(blockers))
 
 
 def promote_unit(
@@ -284,9 +294,8 @@ def promote_unit(
         if reviewer_actor in {controller_actor, producer_actor, executor_actor}:
             raise RegistryError("reviewer actor must differ from controller/producer/executor actors")
 
-    # Future stages with no accepted evidence object fail closed before any attempt
-    # to accept a hand-built advanced history. HUMAN_EXECUTABLE is special: its
-    # already-defined R1/R4 evidence is substantively checked first, then history.
+    # Stages whose evidence contracts do not yet exist fail closed before accepting
+    # any hand-built advanced state.
     if destination_stage in {
         QualificationStage.KNOWN_TRUTH_QUALIFIED,
         QualificationStage.HUMAN_EXECUTED,
@@ -296,13 +305,21 @@ def promote_unit(
     }:
         _enforce_stage_evidence_gate(destination_stage)
 
-    if destination_stage is QualificationStage.HUMAN_EXECUTABLE:
-        _validate_existing_human_external_evidence(unit_id, registry, authority_object_resolver)
-        _require_current_history(registry)
-        _enforce_stage_evidence_gate(destination_stage)
-
     session = None
-    if destination_stage is not QualificationStage.HUMAN_EXECUTABLE:
+    if destination_stage is QualificationStage.HUMAN_EXECUTABLE:
+        # If the registry already claims history, authenticate that lineage first so
+        # revocation deletion/rebuild cannot hide behind missing evidence diagnostics.
+        if registry.promotions or registry.revocations:
+            session = _require_current_history(registry)
+            _validate_existing_human_external_evidence(unit_id, registry, authority_object_resolver)
+        else:
+            # For a hand-built RRR state, inspect both R1/R4 evidence classes first so
+            # their substantive failure remains observable; then reject the missing
+            # fixed-start promotion history even if those flags were hand-written true.
+            _validate_existing_human_external_evidence(unit_id, registry, authority_object_resolver)
+            session = _require_current_history(registry)
+        _enforce_stage_evidence_gate(destination_stage)
+    else:
         session = _require_current_history(registry)
 
     if destination_stage is QualificationStage.REAL_REFERENCE_READY:
@@ -318,8 +335,6 @@ def promote_unit(
         authority_object_resolver=authority_object_resolver,
         dependency_verifier=dependency_verifier, verification_cache={})
     _validate_candidate_authority(repaired.units_by_id()[unit_id])
-    if session is None:
-        session = _require_current_history(registry)
     _advance_history(session, registry, repaired, "PROMOTION")
     return repaired
 
