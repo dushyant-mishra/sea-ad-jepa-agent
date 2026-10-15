@@ -6,6 +6,9 @@
   "required": [
     "object_role",
     "policy_schema",
+    "population_authority",
+    "reader_split_raw_sha256",
+    "population_registry_sha256",
     "assignment_basis",
     "assignment_basis_sha",
     "fold_count",
@@ -16,24 +19,59 @@
   "properties": {
     "object_role": {"const": "ACCESS_POLICY"},
     "policy_schema": {"const": "POPULATION_ACCESS_POLICY_V1"},
+    "population_authority": {"enum": ["FIXTURE_UNBOUND", "AUTHENTICATED_READER_SPLIT"]},
+    "reader_split_raw_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "population_registry_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
     "assignment_basis": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["fit_donors", "donor_source", "fold_count", "assignment_law"],
-      "properties": {
-        "fit_donors": {
-          "type": "array",
-          "minItems": 5,
-          "uniqueItems": true,
-          "items": {"type": "string", "minLength": 1}
-        },
-        "donor_source": {
+      "oneOf": [
+        {
           "type": "object",
-          "additionalProperties": {"type": "string", "minLength": 1}
+          "additionalProperties": false,
+          "required": ["fit_donors", "donor_source", "fold_count", "assignment_law"],
+          "properties": {
+            "fit_donors": {
+              "type": "array",
+              "minItems": 5,
+              "uniqueItems": true,
+              "items": {"type": "string", "minLength": 1}
+            },
+            "donor_source": {
+              "type": "object",
+              "additionalProperties": {"type": "string", "minLength": 1}
+            },
+            "fold_count": {"const": 5},
+            "assignment_law": {"const": "SOURCE_STRATIFIED_HASH_ORDER_ROUND_ROBIN_V1"}
+          }
         },
-        "fold_count": {"const": 5},
-        "assignment_law": {"const": "SOURCE_STRATIFIED_HASH_ORDER_ROUND_ROBIN_V1"}
-      }
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fit_donors",
+            "fold_count",
+            "assignment_law",
+            "reader_split_raw_sha256",
+            "population_registry_sha256"
+          ],
+          "properties": {
+            "fit_donors": {
+              "type": "array",
+              "minItems": 104,
+              "maxItems": 104,
+              "uniqueItems": true,
+              "items": {"type": "string", "minLength": 1}
+            },
+            "fold_count": {"const": 5},
+            "assignment_law": {"const": "DONOR_SHA256_ORDER_ROUND_ROBIN_V1"},
+            "reader_split_raw_sha256": {
+              "const": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511"
+            },
+            "population_registry_sha256": {
+              "const": "50b29d7e1137c5a457fd0b528580030dedfbeff1b809e2b426f8f640ae38486d"
+            }
+          }
+        }
+      ]
     },
     "assignment_basis_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "fold_count": {"const": 5},
@@ -61,13 +99,7 @@
         }
       }
     },
-    "allowed_outcome_partitions": {
-      "type": "array",
-      "const": ["reader_fit"]
-    },
-    "protected_partitions": {
-      "type": "array",
-      "const": ["reader_validation", "reader_oracle"]
-    }
+    "allowed_outcome_partitions": {"type": "array", "const": ["reader_fit"]},
+    "protected_partitions": {"type": "array", "const": ["reader_validation", "reader_oracle"]}
   }
 }
