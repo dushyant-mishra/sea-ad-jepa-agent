@@ -82,5 +82,56 @@ new = '''                    if field == "manifest_sha":
                                 raise RegistryError("dependency access policy population authority mismatch or missing")
 '''
 text = once(text, old, new, "bind Task2 manifest table and access population authority")
+old_reason = '''        else:
+            ok = False
+            try:
+                obj = dependency_verifier(sha)
+'''
+new_reason = '''        else:
+            ok = False
+            failure_detail = None
+            try:
+                obj = dependency_verifier(sha)
+'''
+text = once(text, old_reason, new_reason, "initialize dependency failure detail")
+old_except = '''                ok = True
+            except Exception:
+                ok = False
+            if cache is not None:
+                cache[key] = ok
+        if not ok:
+            blockers.append(f"dependency object/byte verification failed: {field}")
+'''
+new_except = '''                ok = True
+            except Exception as exc:
+                ok = False
+                failure_detail = str(exc) or exc.__class__.__name__
+            if cache is not None:
+                cache[key] = (ok, failure_detail)
+        if cache is not None and key in cache:
+            cached = cache[key]
+            if isinstance(cached, tuple) and len(cached) == 2:
+                ok, failure_detail = bool(cached[0]), cached[1]
+            else:
+                ok, failure_detail = bool(cached), None
+        if not ok:
+            suffix = f": {failure_detail}" if failure_detail else ""
+            blockers.append(f"dependency object/byte verification failed: {field}{suffix}")
+'''
+text = once(text, old_except, new_except, "preserve dependency failure reason")
+# Normalize the pre-existing cache-hit branch so tuple cache entries do not become truthy by tuple-ness.
+old_cache = '''        if cache is not None and key in cache:
+            ok = bool(cache[key])
+        else:
+'''
+new_cache = '''        if cache is not None and key in cache:
+            cached = cache[key]
+            if isinstance(cached, tuple) and len(cached) == 2:
+                ok, failure_detail = bool(cached[0]), cached[1]
+            else:
+                ok, failure_detail = bool(cached), None
+        else:
+'''
+text = once(text, old_cache, new_cache, "read dependency verification cache safely")
 REGISTRY.write_text(text, encoding="utf-8")
 print("Applied Task 3 hostile cycle3 hardening")
