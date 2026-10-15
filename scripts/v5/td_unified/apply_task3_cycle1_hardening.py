@@ -4,6 +4,8 @@ from pathlib import Path
 
 REGISTRY = Path("scripts/v5/td_unified/registry_v1.py")
 TESTS = Path("tests/v5/td_unified/test_registry_v1.py")
+SELF1 = Path("tests/v5/td_unified/test_registry_v1_self_audit1.py")
+SELF2 = Path("tests/v5/td_unified/test_registry_v1_self_audit2.py")
 
 
 def replace_once(text: str, old: str, new: str, label: str) -> str:
@@ -63,5 +65,35 @@ tests = replace_once(
     "positive cached readiness verifier",
 )
 TESTS.write_text(tests, encoding="utf-8")
+
+self1 = SELF1.read_text(encoding="utf-8")
+self1 = replace_once(
+    self1,
+    'result=r.derive_real_reference_ready("G8",registry(dep,target,p),authority_object_resolver=lambda sha:eobj if sha==esha else None)',
+    'result=r.derive_real_reference_ready("G8",registry(dep,target,p),authority_object_resolver=lambda sha:eobj if sha==esha else None,dependency_verifier=lambda _: True)',
+    "self-audit1 external positive dependency verifier",
+)
+SELF1.write_text(self1, encoding="utf-8")
+
+self2 = SELF2.read_text(encoding="utf-8")
+self2 = replace_once(
+    self2,
+    'assert r.derive_real_reference_ready("G8", reg2, authority_object_resolver=lambda sha: good if sha == good_sha else None).ready',
+    'assert r.derive_real_reference_ready("G8", reg2, authority_object_resolver=lambda sha: good if sha == good_sha else None, dependency_verifier=lambda _: True).ready',
+    "self-audit2 evidence positive dependency verifier",
+)
+self2 = replace_once(
+    self2,
+    '                              authority_object_resolver=resolver)\n    assert promoted.units_by_id()["G8"].qualification_stage is QualificationStage.REAL_REFERENCE_READY',
+    '                              authority_object_resolver=resolver, dependency_verifier=lambda _: True)\n    assert promoted.units_by_id()["G8"].qualification_stage is QualificationStage.REAL_REFERENCE_READY',
+    "self-audit2 promotion positive dependency verifier",
+)
+self2 = replace_once(
+    self2,
+    '                              authority_object_resolver={csha:cobj,rsha:robj,esha:eobj}.get)\n    receipt = promoted.promotions[0]',
+    '                              authority_object_resolver={csha:cobj,rsha:robj,esha:eobj}.get, dependency_verifier=lambda _: True)\n    receipt = promoted.promotions[0]',
+    "self-audit2 promotion receipt positive dependency verifier",
+)
+SELF2.write_text(self2, encoding="utf-8")
 
 print("Applied Task 3 hostile cycle1 hardening")
