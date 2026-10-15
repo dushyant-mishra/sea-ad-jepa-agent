@@ -1,0 +1,13 @@
+split sha256: efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511 == frozen: True
+real policy built; fit donors: 104
+BAD P1 forged 104 FAKE donors pass require_current_td_population_authority (should refuse) -> None
+P2 alternative folds differ from law: True
+BAD P2 real donors, folds NOT per DONOR_SHA256_ORDER law pass authority (should refuse) -> None
+BAD P3 hand-fabricated ledger (no session) accepted by validate_producer_access (should refuse) -> None
+BAD P4 manifest with protected policy ALLOWING values + vacuous crossfit + validation RESCUE policy validates (should refuse) -> TD_EXECUTION_MANIFEST_V1
+P5 population registry 50b29d7e bytes resolved during validate_manifest?: False (store never contained it; manifest still validated if P4 printed BAD)
+  fold 0: held-out 21 donors, by source {'HVS': 7, 'NPH52': 4, 'SEA_AD': 10}
+  fold 1: held-out 21 donors, by source {'HVS': 7, 'NPH52': 2, 'SEA_AD': 12}
+  fold 2: held-out 21 donors, by source {'HVS': 11, 'NPH52': 6, 'SEA_AD': 4}
+  fold 3: held-out 21 donors, by source {'HVS': 7, 'NPH52': 4, 'SEA_AD': 10}
+  fold 4: held-out 20 donors, by source {'HVS': 9, 'NPH52': 1, 'SEA_AD': 10}

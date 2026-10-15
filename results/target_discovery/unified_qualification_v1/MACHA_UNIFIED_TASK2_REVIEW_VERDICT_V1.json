@@ -1,0 +1,80 @@
+{
+  "blocking": [
+    {
+      "defect": "population authority string-based at consumption: forged 104 FAKE donors and non-law folds pass; registry 50b29d7e never resolved",
+      "id": "T2-B1",
+      "repair": "re-derive fit donors and folds from raw split bytes at every authority check; resolve/recompute registry or remove it from authority",
+      "severity": "CRITICAL"
+    },
+    {
+      "defect": "hand-fabricated observed-access ledger accepted by validate_producer_access",
+      "id": "T2-B2",
+      "repair": "harness-owned session registry issuing session_id plus attestation; refuse unissued ledgers",
+      "severity": "IMPORTANT"
+    },
+    {
+      "defect": "redundant manifest sub-policies unvalidated; protected policy allowing biological values validates",
+      "id": "T2-B3",
+      "repair": "remove, or derive from access policy with equality and closed per-role schemas",
+      "severity": "IMPORTANT"
+    },
+    {
+      "defect": "manifest omits contract section 8 / plan Step 5 identities: normalization, TargetPortfolio, per-unit producer/executor, metrics, reference producers, falsifiers",
+      "id": "T2-B4",
+      "repair": "add fields, or explicit prospective deferral to verified Task 3 registry content",
+      "severity": "IMPORTANT"
+    }
+  ],
+  "checks": {
+    "1": "FAIL",
+    "10": "PASS",
+    "2": "PARTIAL",
+    "3": "FAIL",
+    "4": "LAW_OK_NOT_ENFORCED_AT_CONSUMPTION",
+    "5": "PASS",
+    "6": "PASS",
+    "7": "FAIL",
+    "8": "PASS",
+    "9": "PASS"
+  },
+  "crossfit_replacement": "LAWFUL_PROSPECTIVE__PREMISE_INCOMPLETE_REGISTRY_EXISTED",
+  "date": "2026-10-15",
+  "fold_heldout_source_composition": {
+    "0": {
+      "HVS": 7,
+      "NPH52": 4,
+      "SEA_AD": 10
+    },
+    "1": {
+      "HVS": 7,
+      "NPH52": 2,
+      "SEA_AD": 12
+    },
+    "2": {
+      "HVS": 11,
+      "NPH52": 6,
+      "SEA_AD": 4
+    },
+    "3": {
+      "HVS": 7,
+      "NPH52": 4,
+      "SEA_AD": 10
+    },
+    "4": {
+      "HVS": 9,
+      "NPH52": 1,
+      "SEA_AD": 10
+    }
+  },
+  "freeze": "TASK2_REMAINS_OPEN__UNIFIED_TASK3_REMAINS_BLOCKED",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "pr": 388,
+  "protected_values_opened": false,
+  "reviewed_head": "2c391137bf0564d31d39efa1ec0a61e198dbf027",
+  "schema": "MACHA_UNIFIED_TASK2_REVIEW_VERDICT_V1",
+  "tests_local": {
+    "evidence_class": "LOCAL_NOT_CI",
+    "td_unified_full": "95 passed"
+  },
+  "verdict": "REJECT_UNIFIED_TASK2"
+}
