@@ -12,30 +12,55 @@ Before opening a new audit, search PR #322 custody surfaces and classify the cla
 
 A new audit is justified only if the claim is absent, the governing bytes changed, or the scientific input/authority context changed.
 
+## Standing operating requirement for every successor
+
+Every future agent inheriting this lane must continue the same iterative owner process. This is not optional handoff advice; it is the standing work discipline for the lane.
+
+For every substantive task, perform multiple rounds of implementation/review rather than a single pass:
+
+1. classify and recover historical evidence first;
+2. write discriminating RED/hostile checks for genuinely open or changed interfaces;
+3. make the smallest lawful implementation or repair;
+4. run focused GREEN plus inherited regression;
+5. perform a hostile self-audit for scientific semantics, leakage, authority, custody and reproducibility;
+6. repair any findings and repeat the audit/fix cycle until clean;
+7. obtain independent review where the qualification contract requires independence;
+8. freeze exact accepted identities and receipts.
+
+Every future agent must also continuously update the durable GitHub audit and handoff surfaces with the work needed for takeover and no-repeat custody: historical audits, exact decisions, scripts, tests, small/public reproducibility data and fixtures, machine ledgers, results/receipts, negative findings, superseded states, exact heads, workflow evidence, unresolved questions and next lawful actions.
+
+Large/private/controlled/local-only data must remain hash/path/provenance-custodied rather than being duplicated into public Git. Protected data must never be opened just to improve documentation.
+
+The purpose is explicit: **a future successor should be able to continue from durable repository state without starting historical audits or project archaeology again, while still being able to detect and repair genuine errors.**
+
+Read `JEPA_ITERATIVE_OWNER_AUDIT_AND_CUSTODY_PROTOCOL_V1_20261015.md` as a controlling process document and carry this requirement forward into every later handoff version.
+
 ## First 30 minutes
 
 1. Re-fetch PR #322, #323, #380, #381 and #382 live heads.
 2. Read `JEPA_NEW_AGENT_TAKEOVER_MANIFEST_V1_20261014.md` on PR #322.
-3. Read `JEPA_MERGED_LANE_MASTER_AUDIT_INDEX_V1_20261014.md`.
-4. Read `JEPA_HISTORICAL_AUDITS_INDEX_20260915.md` before searching old branches manually.
-5. Read `MACHA_GPU_EXECUTION_ENVIRONMENT_AND_RUNTIME_CUSTODY_V1_20261014.md`.
-6. Read the downstream reuse-first evidence matrix and unresolved-work ledger.
+3. Read `JEPA_ITERATIVE_OWNER_AUDIT_AND_CUSTODY_PROTOCOL_V1_20261015.md`.
+4. Read `JEPA_MERGED_LANE_MASTER_AUDIT_INDEX_V1_20261014.md`.
+5. Read `JEPA_HISTORICAL_AUDITS_INDEX_20260915.md` before searching old branches manually.
+6. Read `MACHA_GPU_EXECUTION_ENVIRONMENT_AND_RUNTIME_CUSTODY_V1_20261014.md`.
+7. Read the downstream reuse-first evidence matrix and unresolved-work ledger.
 
 Do not infer authority from a branch name, PR title, or prose status. Re-fetch exact heads and machine receipts.
 
 ## First state check
 
-Expected current stop state:
+Expected current stop state must always be refreshed from live PRs before acting. Do not rely on stale prose snapshots.
 
-- Task 0 review candidate: `c80d7398b41f10208ec1622bc52599383b940be6`
-- Task 0 focused GREEN: `38645994312`, job `116132861396`, 29 pass
-- Task 0 inherited GREEN: `38645994388`
-- old synthetic Tasks 1–2 substrate: `ff597faf2182522a320ec5322f8db9b67c9c6094`
-- controller review focused GREEN: `38644641042`, job `116128364543`, 332 pass
-- controller review inherited GREEN: `38644640881`
-- old Tasks 3–4: stopped; requirements migrate only
-- old Tasks 5–12: no independent continuation
-- unified Task 1: not started; blocked on fresh independent Macha acceptance
+Current known state at this update:
+
+- original Task 0 candidate `c80d7398b41f10208ec1622bc52599383b940be6` was independently rejected on B1–B5;
+- repaired Task 0 candidate is PR #384 exact head `db92f80d128c37b99aa7d2c169eaf44447fa2164`;
+- controller exact-head B1–B5 verification, original Task 0 migration audit and inherited unified synthetic integration are GREEN on the repaired candidate;
+- independent Macha B1–B5 re-check is still required before Task 0 freeze;
+- old synthetic Tasks 1–2 substrate remains `ff597faf2182522a320ec5322f8db9b67c9c6094` and must be adapted/wrapped into the merged workflow rather than treated as completion of unified tasks;
+- old Tasks 3–4 remain stopped with requirements migrating only;
+- old Tasks 5–12 have no independent continuation;
+- Unified Task 1 remains blocked until Task 0 independent acceptance.
 
 If any head moved, stop and reconcile before using old receipts.
 
@@ -83,7 +108,7 @@ Do not open candidate outcomes, reader_validation, or reader_oracle.
 
 ## After Task 0 acceptance
 
-Proceed one task at a time.
+Proceed one task at a time and keep the iterative audit/fix cycle active.
 
 1. Freeze acceptance at exact Task 0 head.
 2. Start unified Task 1 RED-first.
@@ -145,10 +170,13 @@ If 2 is yes and 3 is yes and 4 is no, the default answer is: **reuse the prior a
 
 ## Update discipline
 
-After every meaningful accepted repair or qualification:
+After every meaningful audit, repair, implementation, qualification, rejection or newly discovered blocker:
 - append/update PR #322 audit/custody state;
-- publish a concise new version on PR #323;
-- include exact head, tests/runs, what changed, what did not change, authority ceiling, unresolved dependencies and next lawful action.
+- update PR #323 successor/navigation handoff;
+- preserve relevant scripts, tests, machine ledgers, results and receipts;
+- record exact head, tests/runs, what changed, what did not change, authority ceiling, unresolved dependencies and next lawful action;
+- update no-repeat classifications so settled work is not rediscovered later;
+- carry this iterative-audit and continuous-custody requirement explicitly into every future handoff.
 
 Never rely on chat history as the only custody surface.
 
