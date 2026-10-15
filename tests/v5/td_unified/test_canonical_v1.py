@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 from pathlib import Path
 
@@ -14,19 +15,26 @@ from scripts.v5.td_unified.canonical_v1 import (
     verify_scientific_receipt,
 )
 
-HEX40_A = "a" * 40
 HEX64_B = "b" * 64
 ROOT = Path(__file__).resolve().parents[3]
 SCHEMA = ROOT / "schemas" / "target_discovery" / "unified_v1" / "scientific_receipt_v1.json"
 
+
+def _git_blob_sha1(raw: bytes) -> str:
+    return hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()
+
+
+CODE_BYTES = b"print('task1 fixture producer')\n"
+CODE_SHA = _git_blob_sha1(CODE_BYTES)
 DEFAULT_OBJECTS = {
-    "output": {"artifact": "output", "version": 1},
-    "manifest": {"artifact": "manifest", "version": 1},
-    "registry": {"artifact": "registry", "version": 1},
-    "access": {"artifact": "access", "version": 1},
+    "output": {"artifact": "output", "object_role": "OUTPUT", "version": 1},
+    "manifest": {"artifact": "manifest", "object_role": "MANIFEST", "version": 1},
+    "registry": {"artifact": "registry", "object_role": "REGISTRY", "version": 1},
+    "access": {"artifact": "access", "object_role": "ACCESS_POLICY", "version": 1},
 }
 DEFAULT_SHAS = {name: canonical_sha256(obj) for name, obj in DEFAULT_OBJECTS.items()}
 DEFAULT_BY_SHA = {DEFAULT_SHAS[name]: obj for name, obj in DEFAULT_OBJECTS.items()}
+DEFAULT_BY_SHA[CODE_SHA] = CODE_BYTES
 
 
 def _resolver(extra=None, omit=None):
@@ -41,7 +49,7 @@ def _resolver(extra=None, omit=None):
 def _leaf(payload=None):
     return make_scientific_receipt(
         payload=payload or {"measured_zero": 0, "missing": None},
-        producer_code_sha=HEX40_A,
+        producer_code_sha=CODE_SHA,
         input_shas=[],
         parent_receipt_shas=[],
         output_sha=DEFAULT_SHAS["output"],
@@ -81,7 +89,7 @@ def test_valid_child_with_missing_or_invalid_parent_fails_closed():
     parent = _leaf({"parent": 1})
     child = make_scientific_receipt(
         payload={"child": 1},
-        producer_code_sha=HEX40_A,
+        producer_code_sha=CODE_SHA,
         input_shas=[],
         parent_receipt_shas=[parent["receipt_sha256"]],
         output_sha=DEFAULT_SHAS["output"],
@@ -124,7 +132,7 @@ def test_duplicate_or_conflicting_parent_identity_is_rejected():
     with pytest.raises(CanonicalError, match="duplicate"):
         make_scientific_receipt(
             payload={"child": 1},
-            producer_code_sha=HEX40_A,
+            producer_code_sha=CODE_SHA,
             input_shas=[],
             parent_receipt_shas=[parent["receipt_sha256"], parent["receipt_sha256"]],
             output_sha=DEFAULT_SHAS["output"],
@@ -151,11 +159,11 @@ def test_unexpected_receipt_field_fails_closed_even_if_attacker_rehashes():
 
 
 def test_input_digest_string_never_authenticates_missing_or_mutated_input_object():
-    input_object = {"source": "fixture", "measured_zero": 0}
+    input_object = {"object_role": "INPUT", "source": "fixture", "measured_zero": 0}
     input_sha = canonical_sha256(input_object)
     receipt = make_scientific_receipt(
         payload={"x": 1},
-        producer_code_sha=HEX40_A,
+        producer_code_sha=CODE_SHA,
         input_shas=[input_sha],
         parent_receipt_shas=[],
         output_sha=DEFAULT_SHAS["output"],
@@ -167,14 +175,14 @@ def test_input_digest_string_never_authenticates_missing_or_mutated_input_object
     with pytest.raises(CanonicalError, match="input"):
         verify_scientific_receipt(receipt, _resolver())
     with pytest.raises(CanonicalError, match="input"):
-        verify_scientific_receipt(receipt, _resolver({input_sha: {"source": "mutated"}}))
+        verify_scientific_receipt(receipt, _resolver({input_sha: {"object_role": "INPUT", "source": "mutated"}}))
 
 
 def test_input_receipt_must_resolve_to_the_exact_requested_receipt_identity():
     input_receipt = _leaf({"input_receipt": 1})
     consumer = make_scientific_receipt(
         payload={"consumer": 1},
-        producer_code_sha=HEX40_A,
+        producer_code_sha=CODE_SHA,
         input_shas=[input_receipt["receipt_sha256"]],
         parent_receipt_shas=[],
         output_sha=DEFAULT_SHAS["output"],
@@ -196,15 +204,15 @@ def test_input_receipt_must_resolve_to_the_exact_requested_receipt_identity():
 
 def test_authority_bearing_output_manifest_registry_and_access_hashes_require_actual_objects():
     objects = {
-        "output": {"artifact": "output-special", "v": 1},
-        "manifest": {"artifact": "manifest-special", "v": 1},
-        "registry": {"artifact": "registry-special", "v": 1},
-        "access": {"artifact": "access-special", "v": 1},
+        "output": {"artifact": "output-special", "object_role": "OUTPUT", "v": 1},
+        "manifest": {"artifact": "manifest-special", "object_role": "MANIFEST", "v": 1},
+        "registry": {"artifact": "registry-special", "object_role": "REGISTRY", "v": 1},
+        "access": {"artifact": "access-special", "object_role": "ACCESS_POLICY", "v": 1},
     }
     shas = {name: canonical_sha256(obj) for name, obj in objects.items()}
     receipt = make_scientific_receipt(
         payload={"x": 1},
-        producer_code_sha=HEX40_A,
+        producer_code_sha=CODE_SHA,
         input_shas=[],
         parent_receipt_shas=[],
         output_sha=shas["output"],
@@ -212,7 +220,7 @@ def test_authority_bearing_output_manifest_registry_and_access_hashes_require_ac
         registry_sha=shas["registry"],
         access_policy_sha=shas["access"],
     )
-    by_sha = {shas[name]: obj for name, obj in objects.items()}
+    by_sha = {CODE_SHA: CODE_BYTES, **{shas[name]: obj for name, obj in objects.items()}}
     assert verify_scientific_receipt(receipt, by_sha.get)
     for missing_name, missing_sha in shas.items():
         with pytest.raises(CanonicalError, match=missing_name if missing_name != "access" else "access"):
