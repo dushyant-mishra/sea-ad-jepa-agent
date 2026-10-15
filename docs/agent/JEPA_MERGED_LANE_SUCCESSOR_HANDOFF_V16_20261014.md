@@ -9,14 +9,16 @@ Binding authority remains exactly:
 ## Read first
 
 1. PR #322 canonical audit/custody surface.
-2. `docs/agent/JEPA_COMPLETE_TAKEOVER_AUDIT_MANIFEST_V1_20261014.md` on PR #322.
-3. `docs/agent/JEPA_MERGED_LANE_MASTER_AUDIT_INDEX_V1_20261014.md`.
-4. `results/target_discovery/JEPA_MERGED_LANE_AUDIT_STATE_V2_20261014.json`.
-5. `results/target_discovery/JEPA_MERGED_LANE_EXTERNAL_ARTIFACT_CUSTODY_V1_20261014.csv`.
-6. `docs/agent/MACHA_GPU_EXECUTION_ENVIRONMENT_AND_RUNTIME_CUSTODY_V1_20261014.md`.
-7. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`.
-8. downstream reuse-first package in section 7 below.
-9. `docs/agent/MACHA_TASK0_FINAL_INDEPENDENT_REVIEW_PACKET_V1_20261014.md`.
+2. `docs/agent/JEPA_NEW_AGENT_TAKEOVER_MANIFEST_V1_20261014.md` on PR #322.
+3. `docs/agent/JEPA_COMPLETE_TAKEOVER_AUDIT_MANIFEST_V1_20261014.md` on PR #322.
+4. `docs/agent/JEPA_SUCCESSOR_FIRST_24_HOURS_CHECKLIST_V1_20261014.md` on this branch.
+5. `docs/agent/JEPA_MERGED_LANE_MASTER_AUDIT_INDEX_V1_20261014.md`.
+6. `results/target_discovery/JEPA_MERGED_LANE_AUDIT_STATE_V2_20261014.json`.
+7. `results/target_discovery/JEPA_MERGED_LANE_EXTERNAL_ARTIFACT_CUSTODY_V1_20261014.csv`.
+8. `docs/agent/MACHA_GPU_EXECUTION_ENVIRONMENT_AND_RUNTIME_CUSTODY_V1_20261014.md`.
+9. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`.
+10. downstream reuse-first package and `JEPA_NO_REPEAT_DECISION_TABLE_V1.json` on PR #322.
+11. `docs/agent/MACHA_TASK0_FINAL_INDEPENDENT_REVIEW_PACKET_V1_20261014.md`.
 
 Do not reconstruct history from chat or restart an audit simply because the conversation changed. First classify new work as:
 
@@ -67,19 +69,13 @@ Until accepted:
 
 Macha is a Claude coding/execution agent operating on the project GPU laptop and also a historical scientific custodian/hostile reviewer.
 
-### GPU execution agent
-Project history records a real GPU lane, not a hypothetical future environment. Historical evidence includes RTX 3080 Laptop GPU / 16 GB VRAM class execution, prior full 41,238-address GPU mechanics, frozen-cache/predictor GPU runs, GPU utilization/memory checks, true-gradient-accumulation doctrine, checkpoint/recovery requirements and remote FULL104 execution contracts.
-
-Future GPU runs must re-detect and receipt the current hardware, driver, CUDA, PyTorch, kernels, environment, source roots and configuration. Historical software/settings are evidence only.
-
-### Independent reviewer
-Macha reviews frozen exact heads and adjudicates scientific/custody claims.
+Project history records real GPU execution, not a hypothetical future environment. Future GPU runs must re-detect and receipt the current hardware, driver, CUDA, PyTorch, kernels, environment, source roots and configuration. Historical software/settings are evidence only.
 
 Do not conflate roles. A Macha-executed GPU run does not self-promote because Macha can also review. Execution evidence and independent adjudication must remain logically separate.
 
 ## Old synthetic merger state
 
-Old Task 1 provides strong tested canonicalization primitives but does not complete unified Task 1. Reuse/adapt it under the unified JSON-native authority law. Ordered coordinate-registry identity is order-sensitive; keyed semantic row-set identity may be reorder-invariant. Do not import NumPy convenience semantics into the global identity root without explicit authority.
+Old Task 1 provides strong tested canonicalization primitives but does not complete unified Task 1. Reuse/adapt it under the unified JSON-native authority law.
 
 Old Task 2 provides strong commit/reveal, identity-keyed RNG and custody infrastructure. It maps mainly into unified sealed-challenge/finalizer custody and does not complete unified Task 2.
 
@@ -110,9 +106,6 @@ Initial unified stage ceiling for current full repaired units is no higher than 
 Canonical population/support PR #349:
 `1ab453e5cb60efb209a8eee2aecb61c5ea0fbfc7`
 
-Registry payload SHA:
-`50b29d7e1137c5a457fd0b528580030dedfbeff1b809e2b426f8f640ae38486d`
-
 Known population:
 - 6,351,753 rows
 - 149 donors
@@ -121,7 +114,6 @@ Known population:
 - 2,028 donor×operator strata
 - 104 reader_fit / 22 reader_validation / 23 reader_oracle
 - 4,553,407 reader-fit nuclei
-- 1,400 reader-fit donor×operator groups
 
 Current law:
 - deterministic cross-fitting only within `reader_fit`;
@@ -141,48 +133,14 @@ Current law:
 
 The architecture and much of the mechanics are already historically audited. Do not restart from zero.
 
-Historical evidence includes:
-- teacher/student runtime PR #2 merge head `76bf7912cc621756fdbbd82218025d8e4c00a057`;
-- rich-teacher/partial-RNA PR #312 `2ca8a91a960c823cc327d3885d008d3695837e83`;
-- TargetPortfolio PR #332 `902054ad62eede84086fc2e0a90ceb27e2191da7`;
-- post-TD harness source `97dd73f49e1554053bbfab6c5369377a23a72ceb`, historical GREEN `38448458550` / `115472916925`.
-
-Already-audited mechanics/findings include:
-- T1/C2 protected-gradient failure and repair;
-- optimizer step proof, Adam moment gates and EMA-after-step chronology;
-- no EMA after rejected/skipped update;
-- teacher exact-copy/eval/no-grad mechanics;
-- checkpoint/RNG/resume chronology;
-- scientific-weight-preserving packing;
-- donor-primary target doctrine and p/q separation;
-- visibility/context/within-donor and same-cell measurement-shortcut audits;
-- target-address identity shortcut discovery;
-- semantic carryover rules;
-- 6/48/128×8 preexecution carryover defect;
-- depth-derived protected-registry/current-registry checkpoint successor pattern.
-
-Historical V5 inactive update reference already tested one optimizer step, exact EMA equation at the supplied momentum, no teacher gradients, deterministic replay, weight-preserving packing, checkpoint/resume matching and cursor/step fail-close behavior. It is mechanics/reference evidence, not current production authority.
-
-Target-address shortcut remains scientifically open: historical `BlockPredictor` queried the online trainable gene-identity embedding. The Sept. 15 audit already defined identity-only/shared/fixed/stopgrad/shuffle comparators. Reuse that spec.
+Historical evidence includes teacher/student runtime, rich-teacher/partial-RNA work, TargetPortfolio, post-TD harness, T1/C2 update mechanics, EMA ordering, checkpoint/RNG/resume, V5 donor-primary target/proposal work, V5 inactive weighted update, keyed dropout, target-address shortcut audit, semantic carryover audits, preexecution carryover red-team, depth-derived protected registry and current-registry checkpoint patterns.
 
 EMA mechanics are historically strong, but historical `.996` is not current merged authority. Exact presentation unit/half-life remains prospective.
 
-## Downstream reuse-first package
+Use PR #322 evidence-reuse, exact-asset, historical-test, status and unresolved-work ledgers before adding new downstream audits.
 
-Read before any downstream implementation:
-- `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`
-- `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md`
-- `docs/agent/DOWNSTREAM_QUALIFICATION_DELTA_FROM_HISTORICAL_AUDITS_V1_20261014.md`
-- `docs/agent/DOWNSTREAM_QUALIFICATION_EVIDENCE_REUSE_GUIDE_V1_20261014.md`
-- `results/target_discovery/unified_qualification_v1/DOWNSTREAM_QUALIFICATION_EVIDENCE_REUSE_MATRIX_V1.json`
-- exact historical asset ledgers V1 + delta2 + delta3
-- `DOWNSTREAM_HISTORICAL_TEST_EVIDENCE_DELTA_V1.json`
-- `DOWNSTREAM_QUALIFICATION_STATUS_MATRIX_V1.json`
-- `DOWNSTREAM_UNRESOLVED_WORK_LEDGER_V1.json`
-- `docs/superpowers/plans/2026-10-14-downstream-qualification-program-v1.md`
-- `docs/agent/UNIFIED_DOWNSTREAM_QUALIFICATION_PROGRAM_AMENDMENT_CANDIDATE_V1_20261014.md`
+## Prospective downstream program
 
-Prospective packages A–T:
 A TQB exact consumption; B teacher target/evidence; C student restriction/recoverability; D target-identity shortcut; E masking/evidence acquisition; F scientific weighting/proposal; G representation/subspace/transfer; H normalization/library/support channels; I multimodal provenance; J optimizer/gradient/moment/EMA joined runtime; K EMA timescale; L checkpoint/resume/source/runtime provenance; M model/protected-registry geometry; N packing/RNG/GPU equivalence; O collapse/movement/stability; P leakage/falsifier regression; Q downstream certification; R runtime eligibility; S independent training-eligibility review; T explicit owner authorization.
 
 This is a prospective amendment candidate, not current authority.
@@ -191,52 +149,17 @@ This is a prospective amendment candidate, not current authority.
 
 The project does not need to obtain a production GPU executor; Macha already provides it.
 
-Package N must instead qualify the exact merged runtime on the current GPU environment:
-- re-detect hardware/software/runtime;
-- bind exact source/config/TQB/runtime roots;
-- reference-vs-GPU semantics and gradient equivalence where required;
-- true accumulation/microbatch qualification without changing scientific mass or optimizer definition;
-- GPU RNG/packing qualification;
-- current model/protected registry;
-- current hardware/kernel provenance.
-
-Package J runs inherited optimizer/gradient/moment/EMA attacks on the exact joined GPU configuration. Package L binds checkpoint/resume/source/environment provenance. Package R consumes those receipts.
+Package N must qualify the exact merged runtime on the current GPU environment: re-detect hardware/software, bind source/config/TQB/model/protected-registry roots, qualify reference-vs-GPU semantics/gradients where required, qualify true accumulation without changing scientific mass, test GPU RNG/packing, and freeze hardware/kernel/environment provenance.
 
 ## Heavy/private assets
 
-Large calibration/expression/checkpoint/NPZ assets are not to be recopied into public Git for convenience. Their absence from Git does not mean historical work was absent.
-
-Use:
-`results/target_discovery/JEPA_MERGED_LANE_EXTERNAL_ARTIFACT_CUSTODY_V1_20261014.csv`
-
-and later append-only custody manifests for exact path/size/SHA bindings.
-
-## Permanent negative controls / closed work
-
-Do not revive by default:
-- V79 terminal NOT_QUALIFIED;
-- discarded defective `x4_within` estimator real outputs;
-- old QID matched-null estimand error;
-- pooled context result as population authority;
-- zero-margin G6 authority;
-- G8 599 technical thinnings as biological calibration;
-- caller-supplied geometry human authority;
-- old wrong-cell R1 null;
-- PR #328 disjoint-block geometry as production biology;
-- duplicate repairs #375–#378;
-- old synthetic Tasks 3–12 as an independent authority path.
+Large calibration/expression/checkpoint/NPZ assets are not to be recopied into public Git for convenience. Use the audit branch external-artifact custody manifests and SHA bindings. FULL104 physical assets historically live on the execution laptop/attached drive.
 
 ## Next agent action
 
-Immediate next action is **not** to implement unified Task 1.
-
 1. Re-fetch PR #381 and exact old Task1/2 head.
 2. Inspect Macha fresh independent verdict for `c80d7398...` and `ff597faf...`.
-3. If accepted:
-   - freeze Task 0 acceptance/custody pointers on #322/#323;
-   - formally/prospectively reconcile the downstream A–T amendment into PR #380;
-   - begin unified Task 1 RED-first using the existing canonical compatibility oracles;
-   - do not treat old Task 1 as completing unified receipt/parent/authority logic.
-4. Continue sequentially through manifest/access → registry/prerequisites → sealed custody → CaseBundle/TruthBundle → repaired-unit registration → TQB → downstream A–Q → GPU/runtime eligibility → independent training eligibility → explicit owner authorization.
+3. If accepted: freeze Task 0 acceptance/custody pointers on #322/#323, prospectively reconcile the downstream A–T amendment into PR #380, then begin unified Task 1 only, RED-first.
+4. If not accepted: do not start unified Task 1; continue only non-authorizing audit/design/reuse/custody work.
 
-Every task uses exact-head RED→GREEN, focused + inherited regression, hostile self-audit, independent review where required, and append-only audit/handoff updates.
+For every real defect: discriminating RED → intended failure → minimal repair → focused GREEN → inherited regression → hostile review → exact-head/workflow verification → freeze receipt → update #322/#323.
