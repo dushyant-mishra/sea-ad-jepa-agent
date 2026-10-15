@@ -20,7 +20,11 @@
     "reader_validation_policy_sha",
     "reader_oracle_policy_sha",
     "crossfit_policy_sha",
-    "protected_partition_policy_sha"
+    "protected_partition_policy_sha",
+    "normalization_library_contract_sha",
+    "target_portfolio_code_identity_sha",
+    "target_portfolio_policy_sha",
+    "unit_execution_identity_table_sha"
   ],
   "properties": {
     "schema": {"const": "TD_EXECUTION_MANIFEST_V1"},
@@ -39,6 +43,10 @@
     "reader_validation_policy_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "reader_oracle_policy_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "crossfit_policy_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
-    "protected_partition_policy_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    "protected_partition_policy_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "normalization_library_contract_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "target_portfolio_code_identity_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "target_portfolio_policy_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "unit_execution_identity_table_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
   }
 }
