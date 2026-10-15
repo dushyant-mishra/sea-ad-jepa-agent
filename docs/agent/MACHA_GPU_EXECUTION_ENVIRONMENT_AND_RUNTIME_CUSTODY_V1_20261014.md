@@ -47,7 +47,7 @@ Historical GPU optimization policy was to choose the smallest microbatch within 
 
 ## Correct merged-lane role model
 
-Macha has two distinct roles that must not be conflated:
+Macha has distinct roles that must not be conflated:
 
 1. `GPU_EXECUTION_AGENT`
    - run exact frozen commands on the GPU laptop;
@@ -55,11 +55,22 @@ Macha has two distinct roles that must not be conflated:
    - perform GPU mechanics, equivalence, memory/throughput and later authorized training runs;
    - emit exact source/runtime/hardware/artifact receipts.
 
-2. `INDEPENDENT_HOSTILE_REVIEWER`
-   - review controller/merged-lane artifacts at frozen exact heads;
-   - adjudicate scientific/custody claims independently.
+2. `AUTHOR_IMPLEMENTER`
+   - Macha authored/implemented old synthetic Tasks 1–2 at exact head `ff597faf2182522a320ec5322f8db9b67c9c6094`;
+   - for those bytes, Macha may provide author/provenance attestation and identify defects, but cannot independently qualify/adjudicate his own implementation.
 
-An execution performed by Macha cannot self-promote merely because Macha is also the project's reviewer. Execution evidence and independent review/adjudication must remain logically distinct; where the same agent performed execution, a separate review pass or other independent adjudication is required before promotion.
+3. `INDEPENDENT_HOSTILE_REVIEWER_OF_CONTROLLER_WORK`
+   - Macha may independently review controller/merged-lane artifacts he did not author, including Task 0 custody/consolidation at `c80d7398b41f10208ec1622bc52599383b940be6`;
+   - he may independently adjudicate the controller's migration/classification of historical artifacts.
+
+Controlling independence law:
+
+`SAME_AGENT_SEPARATE_PASS != INDEPENDENT_REVIEW`
+
+An execution or implementation performed by Macha cannot self-promote merely because Macha can also perform a later review pass. Where Macha is the executor/author, a different reviewer/controller must adjudicate before promotion. Where the controller authored the artifact, Macha can serve as independent hostile reviewer.
+
+See also:
+`docs/agent/MACHA_ROLE_INDEPENDENCE_CORRECTION_V1_20261014.md`
 
 ## Consequence for downstream packages
 
