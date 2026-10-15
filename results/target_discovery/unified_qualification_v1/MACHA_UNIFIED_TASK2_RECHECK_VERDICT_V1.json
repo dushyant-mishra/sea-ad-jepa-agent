@@ -1,0 +1,37 @@
+{
+  "authority_changed": false,
+  "date": "2026-10-15",
+  "freeze": "TASK2_MAY_BE_FROZEN__UNIFIED_TASK3_MAY_BEGIN_PROSPECTIVELY",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "hostile_probes": {
+    "bad": 0,
+    "total": 27
+  },
+  "items": {
+    "T2-B1": "CLOSED",
+    "T2-B2": "CLOSED",
+    "T2-B3": "CLOSED",
+    "T2-B4": "CLOSED"
+  },
+  "pr": 390,
+  "protected_values_opened": false,
+  "residual_carry_forward": [
+    "R1 in-process private-attribute finalize yields attested fabricated ledger; process isolation of registry, key and values required before HUMAN_EXECUTABLE",
+    "R2 nested contract content not schema-checked; owning tasks must enforce",
+    "R3 FIXTURE_UNBOUND receipts validate by design; consumers must require AUTHENTICATED_READER_SPLIT",
+    "R4 ledger persistence and HMAC key custody needed before cross-process consumption",
+    "R5 fold 4 holds out one NPH52 donor; pooled donor-level use only",
+    "R6 memoize recursive receipt verification before Task 3"
+  ],
+  "reviewed_head": "c7dfff1cee608e4a101855d42cf0af08491c2aaf",
+  "schema": "MACHA_UNIFIED_TASK2_RECHECK_VERDICT_V1",
+  "schema_parity": {
+    "closed": true,
+    "manifest_required_fields": 21
+  },
+  "tests_local": {
+    "evidence_class": "LOCAL_NOT_CI",
+    "td_unified_full": "103 passed"
+  },
+  "verdict": "ACCEPT_UNIFIED_TASK2"
+}

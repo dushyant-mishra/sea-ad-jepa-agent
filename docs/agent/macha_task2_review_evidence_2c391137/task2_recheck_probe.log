@@ -1,0 +1,36 @@
+== attack 1/2: forged population, non-law folds
+OK  A1 forged FAKE donors with raw resolver refused -> RAISES ManifestError: current-TD donor set does not match frozen reader split bytes
+OK  A1 forged FAKE donors without raw resolver refused -> RAISES ManifestError: current-TD population authority requires raw reader-split resolver
+OK  A2 lawful donors, non-law folds refused -> RAISES ManifestError: current-TD folds do not match DONOR_SHA256_ORDER_ROUND_ROBIN_V1
+OK  A2 payload validation of non-law folds refused -> RAISES ManifestError: current-TD folds do not match DONOR_SHA256_ORDER_ROUND_ROBIN_V1
+OK  positive: real policy accepted with raw resolver -> None
+== attack 3: session issuance / access validation without raw resolver or with altered bytes
+OK  A3 issue_session without raw resolver refused -> RAISES ManifestError: current-TD population authority requires raw reader-split resolver
+OK  A3 issue_session with altered split bytes refused -> RAISES ManifestError: raw-file SHA-256 digest mismatch
+OK  A3 issue_session for forged policy refused -> RAISES ManifestError: current-TD donor set does not match frozen reader split bytes
+OK  positive: harness-attested receipt validates -> None
+OK  A3 validate_producer_access without raw resolver refused -> RAISES ManifestError: current-TD population authority requires raw reader-split resolver
+OK  A3 validate_producer_access with altered bytes refused -> RAISES ManifestError: raw-file SHA-256 digest mismatch
+== attack 4: hand-made ledgers never issued by the harness
+OK  A4 hand-made V1 ledger via ledger_resolver refused (authoritative) -> RAISES ManifestError: authoritative access requires harness-issued session registry
+OK  A4 hand-made V1 ledger with a registry refused -> RAISES ManifestError: observed access ledger unavailable or fields invalid
+OK  A4 hand-made V2 ledger with forged HMAC refused -> RAISES ManifestError: observed access ledger unavailable or fields invalid
+OK  A4 genuine ledger replayed under another registry refused -> RAISES ManifestError: observed access ledger unavailable or fields invalid
+LIMIT (expected under disclosed app-level instrumentation): in-process private-attribute finalize produced an attested ledger that validates
+LIMIT session holds all fit values in producer memory: 104
+== attack 5/6: manifest sub-policies and B4 identities
+OK  positive: full manifest validates -> TD_EXECUTION_MANIFEST_V1
+OK  A5 manifest without raw resolver refused -> RAISES ManifestError: current-TD population authority requires raw reader-split resolver
+OK  A5 protected policy allowing biological values refused -> RAISES ManifestError: manifest sub-policy inconsistent with access policy: protected
+OK  A5 crossfit 'folds chosen later' refused -> RAISES ManifestError: manifest sub-policy inconsistent with access policy: crossfit
+OK  A5 validation 'rescue estimability' refused -> RAISES ManifestError: manifest sub-policy inconsistent with access policy: validation
+OK  A6 omitted unit table refused -> RAISES ManifestError: manifest fields/schema do not match TD_EXECUTION_MANIFEST_V1
+OK  A6 role-spoofed normalization object refused -> RAISES ManifestError: dependency role mismatch for NORMALIZATION_LIBRARY_CONTRACT
+OK  A6 nested spoof: library object in normalization slot refused -> RAISES ManifestError: dependency role mismatch for NORMALIZATION_CONTRACT
+OK  A6 nested spoof: metric slot holds falsifier object refused -> RAISES ManifestError: dependency role mismatch for METRIC_DEFINITION
+OK  A6 unit producer code sha with no bytes refused -> RAISES ManifestError: unit code bytes unavailable
+OK  A6 unit row with extra key refused -> RAISES ManifestError: unit execution identity row invalid
+OK  A6 empty unit table refused -> RAISES ManifestError: unit execution identity table must be non-empty
+NOTE vacuous role-tagged nested contract accepted (content not schema-checked): accepted
+
+SUMMARY: 27/27 expected outcomes; BAD=0
