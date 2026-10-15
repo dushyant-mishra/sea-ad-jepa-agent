@@ -7,7 +7,12 @@ import pytest
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
 from scripts.v5.td_unified import registry_v1 as r
-from tests.v5.td_unified.registry_v1_dependency_fixtures import direct_fixture_actor_objects, verified_pair, verified_prereq
+from tests.v5.td_unified.registry_v1_dependency_fixtures import (
+    bind_actor_registry,
+    direct_fixture_actor_objects,
+    verified_pair,
+    verified_prereq,
+)
 
 
 def actor(role, name):
@@ -73,14 +78,17 @@ def test_controller_and_reviewer_are_resolved_objects_not_digest_strings():
     reg = registry(dep, target, p)
     csha, cobj = actor("QUALIFICATION_CONTROLLER", "C1")
     rsha, robj = actor("INDEPENDENT_REVIEWER", "R1")
-    with pytest.raises(r.RegistryError, match="resolver|controller.*object|authority object"):
+    reg, objects = bind_actor_registry(
+        r, reg, deps, trusted_actor_objects=(cobj, robj)
+    )
+    objects[esha] = eobj
+    with pytest.raises(r.RegistryError, match="resolver|controller.*object|authority object|actor registry"):
         r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
                        controller_identity=csha, reviewer_identity=rsha,
                        prerequisite_evidence_verifier=lambda _: True)
-    resolver = {csha:cobj, rsha:robj, esha:eobj}.get
     promoted = r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
                               controller_identity=csha, reviewer_identity=rsha,
-                              authority_object_resolver=resolver, dependency_verifier=deps.get)
+                              authority_object_resolver=objects.get, dependency_verifier=deps.get)
     assert promoted.units_by_id()["G8"].qualification_stage is QualificationStage.REAL_REFERENCE_READY
 
 
@@ -91,6 +99,10 @@ def test_wrong_role_controller_object_is_refused_even_with_matching_digest():
     rsha, robj = actor("INDEPENDENT_REVIEWER", "R1")
     objects = {csha:cobj, rsha:robj, esha:eobj}
     objects.update(direct_fixture_actor_objects(dep))
+    objects.update(direct_fixture_actor_objects(target))
+    reg, objects = bind_actor_registry(
+        r, reg, objects, trusted_actor_objects=(cobj, robj)
+    )
     with pytest.raises(r.RegistryError, match="controller.*role|role.*controller"):
         r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
                        controller_identity=csha, reviewer_identity=rsha,
@@ -101,9 +113,13 @@ def test_promotion_receipt_explicitly_binds_prerequisite_record_identities():
     dep, target, deps = verified_pair(r); esha, eobj = evidence(); p = verified_prereq(r, dep, target, requirement_class="EXTERNAL_CONTROL", evidence_receipt_sha=esha)
     reg = registry(dep, target, p)
     csha, cobj = actor("QUALIFICATION_CONTROLLER", "C1"); rsha, robj = actor("INDEPENDENT_REVIEWER", "R1")
+    reg, objects = bind_actor_registry(
+        r, reg, deps, trusted_actor_objects=(cobj, robj)
+    )
+    objects[esha] = eobj
     promoted = r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
                               controller_identity=csha, reviewer_identity=rsha,
-                              authority_object_resolver={csha:cobj,rsha:robj,esha:eobj}.get,
+                              authority_object_resolver=objects.get,
                               dependency_verifier=deps.get)
     receipt = promoted.promotions[0]
     assert receipt.prerequisite_shas == (p.canonical_sha256(),)
@@ -115,6 +131,10 @@ def test_supersession_binds_existing_exact_successor_and_pre_registry_identity()
     csha, cobj = actor("QUALIFICATION_CONTROLLER", "C1")
     objects = {csha:cobj}
     objects.update(direct_fixture_actor_objects(old))
+    objects.update(direct_fixture_actor_objects(successor))
+    reg, objects = bind_actor_registry(
+        r, reg, objects, trusted_actor_objects=(cobj,)
+    )
     changed = r.revoke_or_supersede(reg, "G8", ActiveLineageStatus.SUPERSEDED,
         reason_class="POLICY_CHANGE", controller_identity=csha,
         successor_unit_id="G8_V2", successor_unit_sha=successor.canonical_sha256(),
