@@ -71,12 +71,48 @@ def test_b3_v_content_validator_must_be_registered_and_independent_of_producer()
         )
 
 
-def test_b3_e_human_execution_evidence_requires_registered_independent_issuer():
+def test_b3_e_human_execution_evidence_requires_registered_independent_issuer_without_n2_masking():
+    dep, ref, deps, _, registry, controller, reviewer, objects = _setup()
+    process_evidence = {
+        "object_role": "PREREQUISITE_EVIDENCE",
+        "requirement_class": "PROCESS_ISOLATION",
+        "producer_process_isolated": True,
+        "harness_drives_finalization": True,
+        "reader_fit_values_out_of_process": True,
+        "protected_partitions_physically_absent": True,
+    }
+    evidence_sha = r.canonical_sha256(process_evidence)
+    human_prereq = dataclasses.replace(
+        fx.verified_prereq(
+            r,
+            dep,
+            ref,
+            pid="ISO",
+            gate="HUMAN_EXECUTABLE",
+            requirement_class="PROCESS_ISOLATION",
+        ),
+        evidence_receipt_sha=evidence_sha,
+    )
+    attacked = r.TDQualificationRegistry(
+        registry.units,
+        registry.prerequisites + (human_prereq,),
+        (),
+        (),
+        actor_registry_sha=registry.actor_registry_sha,
+    )
+    resolved = dict(objects)
+    resolved[evidence_sha] = process_evidence
     with pytest.raises(r.RegistryError, match="issuer|actor|registered|evidence|independ"):
-        _human_execution_registry()
+        r._require_registered_prerequisite_actors(
+            attacked,
+            "G8",
+            gate="HUMAN_EXECUTABLE",
+            authority_object_resolver=resolved.get,
+            dependency_verifier=deps.get,
+        )
 
 
-def test_b3_r_actor_registry_must_be_pinned_not_producer_authored():
+def test_b3_r_actor_registry_must_be_pinned_not_producer_authored_without_n2_masking():
     dep, ref, deps = fx.verified_pair(r)
     prereq = fx.verified_prereq(r, dep, ref)
     minted_controller = {"object_role": "QUALIFICATION_CONTROLLER", "actor_id": "minted-by-producer-1"}
@@ -92,7 +128,6 @@ def test_b3_r_actor_registry_must_be_pinned_not_producer_authored():
         },
         trusted_actor_objects=(minted_controller, minted_reviewer),
     )
-    custody = r.RegistryHistoryCustody(registry, attestation_key=b"producer-chosen-key")
     with pytest.raises(r.RegistryError, match="actor.registry|pinned|anchor|frozen|trusted"):
         r.promote_unit(
             registry,
@@ -102,44 +137,47 @@ def test_b3_r_actor_registry_must_be_pinned_not_producer_authored():
             reviewer_identity=r.canonical_sha256(minted_reviewer),
             authority_object_resolver=objects.get,
             dependency_verifier=deps.get,
-            history_custody=custody,
         )
 
 
-def test_b5_f_fresh_custody_cannot_erase_prior_revocation_of_same_unit_identity():
-    ref, deps, reg_h, controller, reviewer, objects, _, _, custody = _human_execution_registry()
-    rrr = r.TDQualificationRegistry(
-        reg_h.units,
-        tuple(p for p in reg_h.prerequisites if p.gate == "REAL_REFERENCE_READY"),
-        reg_h.promotions,
-        reg_h.revocations,
-        actor_registry_sha=reg_h.actor_registry_sha,
+def test_b5_f_fresh_custody_cannot_erase_prior_revocation_of_same_prequalification_identity():
+    dep, ref, deps = fx.verified_pair(
+        r, dep_stage=Q.SEMANTICS_ONLY, ref_stage=Q.SEMANTICS_ONLY
     )
-    revoked_identity = rrr.units_by_id()["G8"].canonical_sha256()
-    r.revoke_or_supersede(
-        rrr,
+    registry = r.TDQualificationRegistry((dep, ref), (), (), ())
+    controller, reviewer, actors = _actors()
+    registry, objects = fx.bind_actor_registry(
+        r,
+        registry,
+        {**deps, **actors},
+        trusted_actor_objects=tuple(actors.values()),
+    )
+    custody_a = r.RegistryHistoryCustody(registry, attestation_key=b"custody-a")
+    promoted = r.promote_unit(
+        registry,
+        "G8",
+        Q.SAME_CODE_PATH,
+        controller_identity=controller,
+        reviewer_identity=reviewer,
+        authority_object_resolver=objects.get,
+        dependency_verifier=deps.get,
+        history_custody=custody_a,
+    )
+    revoked = r.revoke_or_supersede(
+        promoted,
         "G8",
         L.REVOKED_BY_DEFECT,
         reason_class="DEFECT",
         controller_identity=controller,
         authority_object_resolver=objects.get,
         dependency_verifier=deps.get,
-        history_custody=custody,
+        history_custody=custody_a,
     )
+    assert revoked.units_by_id()["G8"].active_lineage_status is L.REVOKED_BY_DEFECT
 
-    _, deps2, reg_h2, controller2, reviewer2, objects2, _, _, custody2 = _human_execution_registry()
-    assert reg_h2.units_by_id()["G8"].canonical_sha256() == revoked_identity
+    # Discard custody A and try to restart from the exact same original identity.
     with pytest.raises(r.RegistryError, match="revok|history|anchor|genesis|custody"):
-        r.promote_unit(
-            reg_h2,
-            "G8",
-            Q.HUMAN_EXECUTABLE,
-            controller_identity=controller2,
-            reviewer_identity=reviewer2,
-            authority_object_resolver=objects2.get,
-            dependency_verifier=deps2.get,
-            history_custody=custody2,
-        )
+        r.RegistryHistoryCustody(registry, attestation_key=b"custody-b")
 
 
 def test_n1_rrr_revalidates_manifest_and_population_with_frozen_task2_validators():
