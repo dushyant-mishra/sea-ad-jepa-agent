@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+# One-shot historical repair script. Retire to verification-only after GREEN4.
 from pathlib import Path
 
 REGISTRY = Path("scripts/v5/td_unified/registry_v1.py")
