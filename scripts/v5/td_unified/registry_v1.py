@@ -47,6 +47,14 @@ _ALLOWED_POPULATION_AUTHORITY = {"AUTHENTICATED_READER_SPLIT", "FIXTURE_UNBOUND"
 _ALLOWED_CLAIM_SCOPE = {"POOLED_DONOR_LEVEL", "PER_FOLD_SOURCE_STRATIFIED", "FIXTURE_ONLY"}
 _ALLOWED_GATES = {"REAL_REFERENCE_READY", "HUMAN_EXECUTABLE"}
 _ALLOWED_EXTERNAL_STATES = {"SATISFIED", "UNRESOLVED", "FAILED"}
+_STAGE_EVIDENCE_POLICY = {
+    QualificationStage.FIXTURE_SAME_INTERFACE: "MECHANICAL",
+    QualificationStage.SAME_CODE_PATH: "MECHANICAL",
+    QualificationStage.KNOWN_TRUTH_QUALIFIED: "SEALED_CHALLENGE_REVIEW",
+    QualificationStage.REAL_REFERENCE_READY: "REAL_REFERENCE_READY",
+    QualificationStage.HUMAN_EXECUTABLE: "HUMAN_EXECUTABLE",
+    QualificationStage.HUMAN_EXECUTED: "HUMAN_EXECUTION_RECEIPT",
+}
 AuthorityObjectResolver = Callable[[str], object]
 
 
@@ -75,6 +83,31 @@ def _validate_promotion_authority(unit: "RegistryUnit", destination_stage: Quali
         validate_authority_record(proposed)
     except AuthorityError as exc:
         raise RegistryError(f"promotion violates frozen Task 1 authority law: {exc}") from exc
+
+
+def _validate_stage_evidence_policy(
+    destination_stage: QualificationStage,
+    reviewer_identity: str | None,
+) -> None:
+    policy = _STAGE_EVIDENCE_POLICY.get(destination_stage)
+    if policy is None:
+        raise RegistryError(
+            f"destination stage {destination_stage.value} has no closed Task 3 evidence policy"
+        )
+    if policy == "SEALED_CHALLENGE_REVIEW":
+        if reviewer_identity is None:
+            raise RegistryError(
+                "KNOWN_TRUTH_QUALIFIED requires an independent reviewer and SEALED_CHALLENGE_REVIEW evidence; fail closed"
+            )
+        raise RegistryError(
+            "KNOWN_TRUTH_QUALIFIED requires SEALED_CHALLENGE_REVIEW evidence; that evidence type is not implemented in Task 3, so promotion is closed"
+        )
+    if policy == "HUMAN_EXECUTION_RECEIPT":
+        raise RegistryError(
+            "HUMAN_EXECUTED requires an authenticated HUMAN_EXECUTION_RECEIPT; that evidence type is not implemented in Task 3, so promotion is closed"
+        )
+    if policy not in {"MECHANICAL", "REAL_REFERENCE_READY", "HUMAN_EXECUTABLE"}:
+        raise RegistryError(f"unknown stage evidence policy {policy}; fail closed")
 
 
 def _resolve_object(
@@ -823,6 +856,7 @@ def promote_unit(
     if _STAGE_INDEX[destination_stage] != _STAGE_INDEX[unit.qualification_stage] + 1:
         raise RegistryError("promotion must advance exactly one canonical stage")
     _validate_promotion_authority(unit, destination_stage)
+    _validate_stage_evidence_policy(destination_stage, reviewer_identity)
     if destination_stage is QualificationStage.HUMAN_EXECUTABLE and reviewer_identity is None:
         raise RegistryError("independent reviewer required for HUMAN_EXECUTABLE")
     producer_actor_obj = _resolve_unit_actor(
