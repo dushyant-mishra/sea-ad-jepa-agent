@@ -85,11 +85,49 @@ The frozen Task 2-specific workflow on the same PR did not show a Task 2 regress
 
 Therefore B1 and B4 are mechanically closed on this candidate head, but Task 3 remains rejected because B2, B3 and B5 are open and no independent exact-head Macha recheck has accepted the successor.
 
+## B2 stage-evidence repair batch
+
+The B2 repair was deliberately implemented as a fail-closed custody rule, not by manufacturing evidence inside Task 3.
+
+- implementation plan: `docs/superpowers/plans/2026-10-15-unified-task3-b2-stage-evidence-repair.md`, commit `1b6081ca58996f6cec09b5d95cbe474094b47f5d`
+- added the missing `HUMAN_EXECUTABLE -> HUMAN_EXECUTED` hostile test at `tests/v5/td_unified/test_registry_v1_macha_b2_human_executed.py`, commit `ea3565173d9557c44098aba5f6bce36df3947a48`
+- pre-repair read-only RED proof: `Unified Task 3 registry` run `38793994245`, job `116625508611`, result `9 failed, 56 passed`
+- production repair commit: `1f466fd5c00535e250fd3a8eb46032e9a810fddd`
+
+### T3-B2 mechanical closure
+
+`registry_v1.py` now uses a closed destination-stage evidence policy. Mechanical stages are explicitly identified; `REAL_REFERENCE_READY` and `HUMAN_EXECUTABLE` continue through their already implemented gates; `KNOWN_TRUTH_QUALIFIED` requires an independent reviewer plus `SEALED_CHALLENGE_REVIEW`, which Task 3 does not implement, so it fails closed; `HUMAN_EXECUTED` requires an authenticated `HUMAN_EXECUTION_RECEIPT`, which Task 3 does not implement, so it fails closed. An unmapped or unknown destination-stage evidence policy also fails closed.
+
+No sealed-challenge result, reviewer result, or human-execution result was fabricated to obtain GREEN. The repair records the absence of those evidence types as a binding refusal.
+
+### Exact-head B2 partial-GREEN evidence
+
+On exact production-repair head `1f466fd5c00535e250fd3a8eb46032e9a810fddd`:
+
+- `Unified Task 3 registry` run `38794460817`, job `116627088995`
+- focused result: `7 failed, 58 passed`
+- B1/H1: PASS
+- B2/H2 known-truth evidence-free promotion: PASS (refused)
+- B2/H2 human-executed evidence-free promotion: PASS (refused)
+- B4/H3 and H4 cache attacks: PASS
+- remaining failures: five B3 actor alias/self-minted identity attacks plus B5/H5 and B5/H6 only
+- token authority remained `Contents: read`
+
+Frozen Task 2 remained mechanically intact on the same candidate:
+
+- run `38794461107`, job `116627090736`
+- dedicated Task 2 manifest/access suite: `31 passed in 0.23s`
+- broader unified regression folder: `161 passed, 7 failed in 0.71s`
+- all seven broader failures are the intentionally unresolved Task 3 B3/B5 hostile tests
+- token authority remained `Contents: read`
+
+Therefore B2 is mechanically closed on `1f466fd5...` without increasing scientific authority. Task 3 remains rejected because B3 and B5 are open and no independent exact-head Macha recheck has accepted the successor.
+
 ## Binding next repair order
 
 1. Keep B6 disarmed and preserve the RED baseline.
 2. B1: mechanically closed on `425460c...`; retain frozen Task 1 authority validation on every promotion and `NO_TRAINING_AUTHORITY` as a hard restriction.
-3. Repair B2 with a closed per-stage evidence-gate table; undefined evidence types fail closed. `KNOWN_TRUTH_QUALIFIED` and `HUMAN_EXECUTED` cannot be promoted merely because the caller asks.
+3. B2: mechanically closed on `1f466fd5...`; keep unavailable or undefined stage evidence fail-closed and do not manufacture evidence inside Task 3.
 4. Repair B3 with a frozen identity-bound actor registry, strict canonical ASCII actor IDs, role grants, and registry-based independence checks. Free-string normalization alone is insufficient because self-minted identities must also fail.
 5. B4: mechanically closed on `425460c...`; caller cache entries remain non-authoritative.
 6. Repair B5 by replay-validating promotion/revocation history from an authenticated genesis and requiring an external current-head anchor; internal receipt consistency alone is insufficient.
@@ -99,4 +137,4 @@ Therefore B1 and B4 are mechanically closed on this candidate head, but Task 3 r
 
 ## Authority boundary
 
-This partial-GREEN repair grants no new authority. Task 3 remains `REJECTED_OPEN_REPAIR_REQUIRED`. Task 4 implementation remains blocked. No protected biological, candidate, validation, holdout, or oracle values were opened for this work. No Task 0-2 frozen source was modified. The global authority remains `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+These partial-GREEN repairs grant no new authority. Task 3 remains `REJECTED_OPEN_REPAIR_REQUIRED`. Task 4 implementation remains blocked. No protected biological, candidate, validation, holdout, or oracle values were opened for this work. No Task 0-2 frozen source was modified. The global authority remains `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
