@@ -9,6 +9,7 @@ import hashlib
 from dataclasses import dataclass, replace
 from typing import Callable, Mapping, MutableMapping
 
+from scripts.v5.td_unified.actor_registry_v1 import ActorRegistryError, resolve_registered_actor
 from scripts.v5.td_unified.authority_v1 import (
     ActiveLineageStatus,
     AuthorityError,
@@ -138,23 +139,11 @@ def _resolve_object(
     return obj
 
 
-def _actor_id(obj: Mapping[str, object], *, label: str) -> str:
-    actor_id = obj.get("actor_id")
-    if type(actor_id) is not str or not actor_id.strip():
-        raise RegistryError(f"{label} must declare a non-empty actor_id")
-    return actor_id
-
-
-def _resolve_unit_actor(
-    expected_sha: str,
+def _combined_actor_resolver(
     authority_object_resolver: AuthorityObjectResolver | None,
     dependency_verifier: Callable[[str], object] | None,
-    *,
-    expected_role: str,
-    label: str,
-) -> Mapping[str, object]:
-    """Resolve a unit-bound actor through either authenticated object surface."""
-    def combined(sha: str):
+) -> AuthorityObjectResolver:
+    def resolve(sha: str):
         if authority_object_resolver is not None:
             obj = authority_object_resolver(sha)
             if obj is not None:
@@ -162,7 +151,29 @@ def _resolve_unit_actor(
         if dependency_verifier is not None:
             return dependency_verifier(sha)
         return None
-    return _resolve_object(expected_sha, combined, expected_role=expected_role, label=label)
+    return resolve
+
+
+def _registered_actor(
+    registry: "TDQualificationRegistry",
+    expected_sha: str,
+    *,
+    expected_role: str,
+    label: str,
+    authority_object_resolver: AuthorityObjectResolver | None,
+    dependency_verifier: Callable[[str], object] | None = None,
+) -> str:
+    try:
+        return resolve_registered_actor(
+            expected_sha,
+            expected_role,
+            registry.actor_registry_sha,
+            authority_object_resolver,
+            _combined_actor_resolver(authority_object_resolver, dependency_verifier),
+            label=label,
+        )
+    except ActorRegistryError as exc:
+        raise RegistryError(str(exc)) from exc
 
 
 def _validate_requirement_evidence(requirement_class: str, obj: Mapping[str, object], *, label: str) -> None:
@@ -452,6 +463,7 @@ class TDQualificationRegistry:
     prerequisites: tuple[PrerequisiteRecord, ...]
     promotions: tuple[PromotionReceipt, ...]
     revocations: tuple[RevocationReceipt, ...]
+    actor_registry_sha: str | None = None
 
     def __post_init__(self) -> None:
         if type(self.units) is not tuple or any(not isinstance(x, RegistryUnit) for x in self.units):
@@ -462,6 +474,8 @@ class TDQualificationRegistry:
             raise RegistryError("promotions must be a tuple of PromotionReceipt")
         if type(self.revocations) is not tuple or any(not isinstance(x, RevocationReceipt) for x in self.revocations):
             raise RegistryError("revocations must be a tuple of RevocationReceipt")
+        if self.actor_registry_sha is not None and not _hex(self.actor_registry_sha, 64):
+            raise RegistryError("actor_registry_sha must be null or exact 64-hex identity")
         ids = [x.unit_id for x in self.units]
         if len(ids) != len(set(ids)):
             raise RegistryError("duplicate unit_id with conflicting or duplicate registry identity")
@@ -475,6 +489,7 @@ class TDQualificationRegistry:
     def to_payload(self) -> dict[str, object]:
         return {
             "schema": "TD_QUALIFICATION_REGISTRY_V1",
+            "actor_registry_sha": self.actor_registry_sha,
             "units": [u.to_payload() for u in sorted(self.units, key=lambda x: x.unit_id)],
             "prerequisites": [p.to_payload() for p in sorted(self.prerequisites, key=lambda x: x.prerequisite_id)],
             "promotions": [p.to_payload() for p in self.promotions],
@@ -491,6 +506,7 @@ def replace_unit(registry: TDQualificationRegistry, unit: RegistryUnit) -> TDQua
     return TDQualificationRegistry(
         tuple(unit if x.unit_id == unit.unit_id else x for x in registry.units),
         registry.prerequisites, registry.promotions, registry.revocations,
+        actor_registry_sha=registry.actor_registry_sha,
     )
 
 
@@ -802,6 +818,8 @@ def _validate_current_stage_promotion_provenance(
         raise RegistryError("promotion pre_registry provenance digest mismatch")
     if snapshot.get("schema") != "TD_QUALIFICATION_REGISTRY_V1":
         raise RegistryError("promotion pre_registry provenance schema mismatch")
+    if snapshot.get("actor_registry_sha") != registry.actor_registry_sha:
+        raise RegistryError("promotion pre_registry actor-registry binding mismatch")
     units = snapshot.get("units")
     if type(units) is not list:
         raise RegistryError("promotion pre_registry units malformed")
@@ -821,14 +839,16 @@ def _validate_current_stage_promotion_provenance(
     expected_shas = tuple(canonical_sha256(obj) for obj in relevant)
     if receipt.prerequisite_ids != expected_ids or receipt.prerequisite_shas != expected_shas:
         raise RegistryError("promotion receipt prerequisite chain does not match pre_registry snapshot")
-    _resolve_object(
-        receipt.controller_identity, resolver,
+    _registered_actor(
+        registry, receipt.controller_identity,
         expected_role="QUALIFICATION_CONTROLLER", label="prior promotion controller",
+        authority_object_resolver=resolver,
     )
     if receipt.reviewer_identity is not None:
-        _resolve_object(
-            receipt.reviewer_identity, resolver,
+        _registered_actor(
+            registry, receipt.reviewer_identity,
             expected_role="INDEPENDENT_REVIEWER", label="prior promotion reviewer",
+            authority_object_resolver=resolver,
         )
     return receipt
 
@@ -859,31 +879,31 @@ def promote_unit(
     _validate_stage_evidence_policy(destination_stage, reviewer_identity)
     if destination_stage is QualificationStage.HUMAN_EXECUTABLE and reviewer_identity is None:
         raise RegistryError("independent reviewer required for HUMAN_EXECUTABLE")
-    producer_actor_obj = _resolve_unit_actor(
-        unit.producer_actor_identity, authority_object_resolver, dependency_verifier,
+    producer_actor = _registered_actor(
+        registry, unit.producer_actor_identity,
         expected_role="SCIENTIFIC_PRODUCER", label="scientific producer actor",
+        authority_object_resolver=authority_object_resolver, dependency_verifier=dependency_verifier,
     )
-    executor_actor_obj = _resolve_unit_actor(
-        unit.executor_actor_identity, authority_object_resolver, dependency_verifier,
+    executor_actor = _registered_actor(
+        registry, unit.executor_actor_identity,
         expected_role="SCIENTIFIC_EXECUTOR", label="scientific executor actor",
+        authority_object_resolver=authority_object_resolver, dependency_verifier=dependency_verifier,
     )
-    producer_actor = _actor_id(producer_actor_obj, label="scientific producer actor")
-    executor_actor = _actor_id(executor_actor_obj, label="scientific executor actor")
-    controller_obj = _resolve_object(
-        controller_identity, authority_object_resolver,
-        expected_role="QUALIFICATION_CONTROLLER", label="qualification controller",
+    controller_actor = _registered_actor(
+        registry, controller_identity,
+        expected_role="QUALIFICATION_CONTROLLER", label="qualification controller actor registry",
+        authority_object_resolver=authority_object_resolver,
     )
-    controller_actor = _actor_id(controller_obj, label="qualification controller")
     if controller_actor in {producer_actor, executor_actor}:
         raise RegistryError("qualification controller actor must differ from producer/executor actors; self-qualification forbidden")
     if reviewer_identity is not None:
         if reviewer_identity == controller_identity:
             raise RegistryError("independent reviewer must differ from controller")
-        reviewer_obj = _resolve_object(
-            reviewer_identity, authority_object_resolver,
-            expected_role="INDEPENDENT_REVIEWER", label="independent reviewer",
+        reviewer_actor = _registered_actor(
+            registry, reviewer_identity,
+            expected_role="INDEPENDENT_REVIEWER", label="independent reviewer actor registry",
+            authority_object_resolver=authority_object_resolver,
         )
-        reviewer_actor = _actor_id(reviewer_obj, label="independent reviewer")
         if reviewer_actor in {controller_actor, producer_actor, executor_actor}:
             raise RegistryError("independent reviewer actor must differ from qualification controller/producer/executor actors")
     if destination_stage is QualificationStage.REAL_REFERENCE_READY:
@@ -924,6 +944,7 @@ def promote_unit(
     return TDQualificationRegistry(
         tuple(promoted if x.unit_id == unit_id else x for x in registry.units),
         registry.prerequisites, registry.promotions + (receipt,), registry.revocations,
+        actor_registry_sha=registry.actor_registry_sha,
     )
 
 
@@ -950,21 +971,21 @@ def revoke_or_supersede(
         raise RegistryError("only ACTIVE lineage can be revoked or superseded")
     if type(reason_class) is not str or not reason_class:
         raise RegistryError("revocation reason required")
-    producer_actor_obj = _resolve_unit_actor(
-        unit.producer_actor_identity, authority_object_resolver, dependency_verifier,
+    producer_actor = _registered_actor(
+        registry, unit.producer_actor_identity,
         expected_role="SCIENTIFIC_PRODUCER", label="scientific producer actor",
+        authority_object_resolver=authority_object_resolver, dependency_verifier=dependency_verifier,
     )
-    executor_actor_obj = _resolve_unit_actor(
-        unit.executor_actor_identity, authority_object_resolver, dependency_verifier,
+    executor_actor = _registered_actor(
+        registry, unit.executor_actor_identity,
         expected_role="SCIENTIFIC_EXECUTOR", label="scientific executor actor",
+        authority_object_resolver=authority_object_resolver, dependency_verifier=dependency_verifier,
     )
-    controller_obj = _resolve_object(
-        controller_identity, authority_object_resolver,
-        expected_role="QUALIFICATION_CONTROLLER", label="revocation controller",
+    controller_actor = _registered_actor(
+        registry, controller_identity,
+        expected_role="QUALIFICATION_CONTROLLER", label="revocation controller actor registry",
+        authority_object_resolver=authority_object_resolver,
     )
-    producer_actor = _actor_id(producer_actor_obj, label="scientific producer actor")
-    executor_actor = _actor_id(executor_actor_obj, label="scientific executor actor")
-    controller_actor = _actor_id(controller_obj, label="revocation controller")
     if controller_actor in {producer_actor, executor_actor}:
         raise RegistryError("independent revocation controller actor must differ from producer/executor actors")
     if new_status is ActiveLineageStatus.SUPERSEDED:
@@ -993,4 +1014,5 @@ def revoke_or_supersede(
     return TDQualificationRegistry(
         tuple(changed if x.unit_id == unit_id else x for x in registry.units),
         registry.prerequisites, registry.promotions, registry.revocations + (receipt,),
+        actor_registry_sha=registry.actor_registry_sha,
     )
