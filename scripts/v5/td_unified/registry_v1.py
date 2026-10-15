@@ -9,7 +9,13 @@ import hashlib
 from dataclasses import dataclass, replace
 from typing import Callable, Mapping, MutableMapping
 
-from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
+from scripts.v5.td_unified.authority_v1 import (
+    ActiveLineageStatus,
+    AuthorityError,
+    AuthorityRecord,
+    QualificationStage,
+    validate_authority_record,
+)
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
 
 
@@ -50,6 +56,25 @@ def _hex(value: object, n: int) -> bool:
 
 def _stage_at_least(actual: QualificationStage, required: QualificationStage) -> bool:
     return _STAGE_INDEX[actual] >= _STAGE_INDEX[required]
+
+
+def _validate_promotion_authority(unit: "RegistryUnit", destination_stage: QualificationStage) -> None:
+    if (
+        "NO_TRAINING_AUTHORITY" in unit.authority_restrictions
+        and destination_stage in {QualificationStage.TRAINING_ELIGIBLE, QualificationStage.TRAINING_AUTHORIZED}
+    ):
+        raise RegistryError("NO_TRAINING_AUTHORITY forbids promotion to a training stage")
+    proposed = AuthorityRecord(
+        unit_id=unit.unit_id,
+        qualification_stage=destination_stage,
+        active_lineage_status=unit.active_lineage_status,
+        authority_scope=unit.authority_scope,
+        authority_restrictions=unit.authority_restrictions,
+    )
+    try:
+        validate_authority_record(proposed)
+    except AuthorityError as exc:
+        raise RegistryError(f"promotion violates frozen Task 1 authority law: {exc}") from exc
 
 
 def _resolve_object(
@@ -666,12 +691,14 @@ def derive_real_reference_ready(
     authority_object_resolver: AuthorityObjectResolver | None = None,
     verification_cache: MutableMapping[object, object] | None = None,
 ) -> ReadinessResult:
-    # `asserted_ready` and legacy boolean prerequisite_evidence_verifier are intentionally non-authoritative.
+    # Legacy caller inputs remain accepted temporarily for API compatibility,
+    # but caller cache state is never authentication authority.
+    internal_verification_cache: dict[object, object] = {}
     return _evaluate_unit(
         unit_id, registry, gate="REAL_REFERENCE_READY",
         dependency_verifier=dependency_verifier,
         authority_object_resolver=authority_object_resolver,
-        verification_cache=verification_cache, stack=(), require_prerequisite_graph=True,
+        verification_cache=internal_verification_cache, stack=(), require_prerequisite_graph=True,
     )
 
 
@@ -795,6 +822,7 @@ def promote_unit(
         raise RegistryError("destination stage must use Task 1 canonical enum")
     if _STAGE_INDEX[destination_stage] != _STAGE_INDEX[unit.qualification_stage] + 1:
         raise RegistryError("promotion must advance exactly one canonical stage")
+    _validate_promotion_authority(unit, destination_stage)
     if destination_stage is QualificationStage.HUMAN_EXECUTABLE and reviewer_identity is None:
         raise RegistryError("independent reviewer required for HUMAN_EXECUTABLE")
     producer_actor_obj = _resolve_unit_actor(
@@ -838,7 +866,7 @@ def promote_unit(
         if blockers:
             raise RegistryError("HUMAN_EXECUTABLE prerequisites unresolved: " + "; ".join(blockers))
         _validate_current_stage_promotion_provenance(unit, registry, authority_object_resolver)
-        dependency_blockers = _verify_unit_dependencies(unit, dependency_verifier, verification_cache)
+        dependency_blockers = _verify_unit_dependencies(unit, dependency_verifier, {})
         if dependency_blockers:
             raise RegistryError("HUMAN_EXECUTABLE dependency authentication failed: " + "; ".join(dependency_blockers))
     prereqs = tuple(
