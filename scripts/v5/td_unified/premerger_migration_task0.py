@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -145,8 +146,23 @@ def _validate_exact_identity(record: dict[str, Any], label: str) -> None:
     if not isinstance(record["exact_identity_available"], bool):
         raise ValueError(f"{label} exact_identity_available must be boolean")
     if record["exact_identity_available"]:
-        if not record.get("source_commit") or not record.get("artifact_digest"):
-            raise ValueError(f"available exact identity omitted for {label}")
+        commit = record.get("source_commit")
+        if not isinstance(commit, str) or re.fullmatch(r"[0-9a-f]{40}", commit) is None:
+            raise ValueError(f"available exact identity has invalid source_commit for {label}")
+        digest = record.get("artifact_digest")
+        blob = record.get("artifact_blob_sha")
+        digest_ok = isinstance(digest, str) and re.fullmatch(r"[0-9a-f]{64}", digest) is not None
+        blob_ok = isinstance(blob, str) and re.fullmatch(r"[0-9a-f]{40}", blob) is not None and bool(record.get("artifact_path"))
+        if not (digest_ok or blob_ok):
+            raise ValueError(f"available exact payload identity omitted for {label}")
+        if not record.get("byte_custody"):
+            raise ValueError(f"available exact identity missing byte_custody for {label}")
+    else:
+        if not record.get("identity_unavailable_reason"):
+            raise ValueError(f"unavailable exact identity missing reason for {label}")
+        authority = str(record.get("current_authority", ""))
+        if authority.startswith("AUTHENTICATED_CALIBRATION"):
+            raise ValueError(f"authority-bearing identity cannot be unavailable for {label}")
 
 
 def _validate_decompositions(matrix_path: Path, artifacts: list[dict[str, Any]]) -> int:
@@ -297,6 +313,48 @@ def _validate_macha_streams(matrix_path: Path, unresolved_ids: set[str]) -> int:
     return len(artifact_ids)
 
 
+def _validate_b1_b5_repair_guards(matrix_path: Path, unresolved_ids: set[str], artifacts: list[dict[str, Any]]) -> None:
+    by_artifact = {a["artifact_id"]: a for a in artifacts}
+    decomp = _load(matrix_path.with_name("PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json"))
+    pr356 = next((x for x in decomp.get("decompositions", []) if x.get("parent_artifact_id") == "PR356_SYNTH_PLAN"), None)
+    if pr356 is None:
+        raise ValueError("B1 PR356 decomposition missing")
+    children = {x["child_artifact_id"]: x for x in pr356.get("children", [])}
+    required_children = {"OLD_TASK1_IMPLEMENTATION", "OLD_TASK2_IMPLEMENTATION", "OLD_TASK3_REQUIREMENTS", "OLD_TASK4_REQUIREMENTS", "OLD_TASKS5_12"}
+    if set(children) != required_children:
+        raise ValueError("B1 PR356 decomposition does not match merged stop law")
+    old_head = "ff597faf2182522a320ec5322f8db9b67c9c6094"
+    if children["OLD_TASK1_IMPLEMENTATION"].get("source_commit") != old_head or children["OLD_TASK2_IMPLEMENTATION"].get("source_commit") != old_head:
+        raise ValueError("B1 old Tasks1-2 exact implementation head not bound")
+    if children["OLD_TASK4_REQUIREMENTS"].get("continue_stop_or_redirect") != "REDIRECT":
+        raise ValueError("B1 old Task4 requirements were dropped instead of migrated")
+
+    streams = _load(matrix_path.with_name("PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json"))
+    stream_rows = {a["artifact_id"]: a for s in streams.get("streams", []) for a in s.get("artifacts", [])}
+    for artifact_id in set(by_artifact) & set(stream_rows):
+        if by_artifact[artifact_id].get("current_authority") != stream_rows[artifact_id].get("current_authority"):
+            raise ValueError(f"B3 conflicting authority across Task0 surfaces for {artifact_id}")
+    audit = by_artifact.get("MACHA_REAL_DATA_AUDIT", {})
+    for fact in audit.get("protected_partition_facts", []):
+        if fact.get("use_class") != "PROSPECTIVE_CONVENTION_STRESS_ONLY" or fact.get("calibration_authorized") is not False:
+            raise ValueError("B3 protected-partition fact routed into calibration")
+
+    required_unresolved = {*(f"U_TASK2_REUSE_O{i}" for i in range(1, 9)), "U_TASK2_REUSE_D1_EXCEPTION_WRAPPING", "U_TASK2_E2_PRECOMMITMENT_ERRATUM", "U_TASK2_POST_REVEAL_FRESH_FAMILY", "U_TASK3_READER_FIT_CALIBRATION_STATUS"}
+    missing = sorted(required_unresolved - unresolved_ids)
+    if missing:
+        raise ValueError("B4 Task1-2 reuse obligations missing: " + ", ".join(missing))
+
+    taxonomy = _load(matrix_path.with_name("TASK0_MIGRATION_TAXONOMY_V1.json"))
+    if set(taxonomy.get("allowed_migration_classes", [])) != set(MIGRATION_CLASSES):
+        raise ValueError("B5 taxonomy does not match validator enum")
+    if taxonomy.get("controlling_plan_amendment_head") != "5b6bf07e7d8b69b286ea430b09765a5ee4743325":
+        raise ValueError("B5 controlling taxonomy amendment head mismatch")
+    if taxonomy.get("controlling_plan_amendment_blob_sha") != "7f20050c2a8d0f80f0c6418c007bc12f7fc1083f":
+        raise ValueError("B5 controlling taxonomy amendment blob mismatch")
+    if taxonomy.get("historical_biological_evidence_authority") != "RETROSPECTIVELY_RATIFIED_20261014":
+        raise ValueError("B5 taxonomy chronology not truthfully classified")
+
+
 def validate_migration_outputs(matrix_path: Path, unresolved_path: Path) -> dict[str, Any]:
     matrix = _load(matrix_path)
     unresolved = _load(unresolved_path)
@@ -382,6 +440,7 @@ def validate_migration_outputs(matrix_path: Path, unresolved_path: Path) -> dict
             )
 
     macha_stream_artifact_count = _validate_macha_streams(matrix_path, unresolved_ids)
+    _validate_b1_b5_repair_guards(matrix_path, unresolved_ids, artifacts)
 
     required_lessons = set(matrix.get("required_scientific_lessons", []))
     expected_lessons = {

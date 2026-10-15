@@ -45,7 +45,7 @@ def test_b1_pr356_primary_surfaces_bind_implemented_tasks_and_migrate_task4():
     assert children["OLD_TASK1_IMPLEMENTATION"]["source_commit"] == OLD_TASK12_HEAD
     assert children["OLD_TASK2_IMPLEMENTATION"]["source_commit"] == OLD_TASK12_HEAD
     assert children["OLD_TASK4_REQUIREMENTS"]["continue_stop_or_redirect"] == "REDIRECT"
-    assert "CaseBundle" in children["OLD_TASK4_REQUIREMENTS"]["destination_in_unified_architecture"]
+    assert "KNOWN_TRUTH_CASEBUNDLE_V1" in children["OLD_TASK4_REQUIREMENTS"]["destination_in_unified_architecture"]
 
 
 def test_b2_known_available_identities_are_full_and_bound():

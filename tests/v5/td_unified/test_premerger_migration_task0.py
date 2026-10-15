@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -174,8 +175,27 @@ def test_available_exact_identity_is_not_omitted():
     for artifact in matrix["artifacts"]:
         assert "exact_identity_available" in artifact
         if artifact["exact_identity_available"]:
-            assert artifact.get("source_commit")
-            assert artifact.get("artifact_digest")
+            assert re.fullmatch(r"[0-9a-f]{40}", artifact.get("source_commit", ""))
+            digest = artifact.get("artifact_digest")
+            blob = artifact.get("artifact_blob_sha")
+            assert (isinstance(digest, str) and re.fullmatch(r"[0-9a-f]{64}", digest)) or (
+                isinstance(blob, str) and re.fullmatch(r"[0-9a-f]{40}", blob) and artifact.get("artifact_path")
+            )
+
+
+def test_validator_rejects_truncated_exact_commit(tmp_path: Path):
+    matrix = _load(MATRIX)
+    unresolved = _load(UNRESOLVED)
+    target = next(a for a in matrix["artifacts"] if a.get("exact_identity_available"))
+    target["source_commit"] = target["source_commit"][:6]
+    bad_matrix = tmp_path / "PREMERGER_ARTIFACT_MIGRATION_MATRIX_V1.json"
+    ledger = tmp_path / "PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json"
+    bad_matrix.write_text(json.dumps(matrix), encoding="utf-8")
+    ledger.write_text(json.dumps(unresolved), encoding="utf-8")
+    for name in ["PREMERGER_MIXED_ARTIFACT_DECOMPOSITION_V1.json", "PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json", "TASK0_MIGRATION_TAXONOMY_V1.json"]:
+        (tmp_path / name).write_text((RESULT_DIR / name).read_text(encoding="utf-8"), encoding="utf-8")
+    with pytest.raises(ValueError, match="invalid source_commit"):
+        validate_migration_outputs(bad_matrix, ledger)
 
 
 def test_validator_rejects_deleted_exact_identity_attestation(tmp_path: Path):
