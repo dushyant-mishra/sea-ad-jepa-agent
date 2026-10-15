@@ -11,6 +11,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST_SCHEMA = ROOT / "schemas" / "target_discovery" / "unified_v1" / "td_execution_manifest_v1.json"
 POLICY_SCHEMA = ROOT / "schemas" / "target_discovery" / "unified_v1" / "population_access_policy_v1.json"
+ACCESS_RECEIPT_SCHEMA = ROOT / "schemas" / "target_discovery" / "unified_v1" / "producer_access_receipt_v1.json"
 
 
 def _manifest_module():
@@ -235,3 +236,90 @@ def test_population_access_schema_closes_fold_structure_and_assignment_identity(
     folds = schema["properties"]["crossfit_folds"]
     assert folds["items"]["additionalProperties"] is False
     assert set(folds["items"]["required"]) == {"fold_index", "train_donors", "held_out_donors"}
+
+
+# Hostile self-audit cycle 2 -------------------------------------------------
+
+def test_policy_inlines_assignment_basis_so_its_digest_is_not_a_trusted_string():
+    m = _manifest_module()
+    policy = _small_policy(m)
+    payload = policy.to_payload()
+    assert "assignment_basis" in payload
+    from scripts.v5.td_unified.canonical_v1 import canonical_sha256
+
+    assert canonical_sha256(payload["assignment_basis"]) == payload["assignment_basis_sha"]
+
+
+def test_protected_partitions_allow_partition_identity_only_not_generic_metadata():
+    m = _manifest_module()
+    policy = _small_policy(m)
+    receipt = _access_receipt(
+        m,
+        policy,
+        observed_access=(("reader_validation", "METADATA"),),
+    )
+    with pytest.raises(m.ManifestError, match="validation|protected|forbidden"):
+        m.validate_producer_access(policy, receipt)
+
+
+def test_observed_access_binds_fold_phase_and_donor_ids_to_block_fit_leakage():
+    m = _manifest_module()
+    assert hasattr(m, "ObservedAccess")
+    policy = _small_policy(m)
+    fold = policy.crossfit_folds[0]
+    held_out = fold.held_out_donors[0]
+    lawful = m.ProducerAccessReceipt(
+        producer_id="G8",
+        access_policy_sha=policy.canonical_sha256(),
+        observed_access=(
+            m.ObservedAccess(
+                partition="reader_fit",
+                access_class="BIOLOGICAL_VALUES",
+                fold_index=0,
+                phase="TRAIN",
+                donor_ids=(fold.train_donors[0],),
+            ),
+        ),
+    )
+    assert m.validate_producer_access(policy, lawful) is None
+    leaked = m.ProducerAccessReceipt(
+        producer_id="G8",
+        access_policy_sha=policy.canonical_sha256(),
+        observed_access=(
+            m.ObservedAccess(
+                partition="reader_fit",
+                access_class="BIOLOGICAL_VALUES",
+                fold_index=0,
+                phase="TRAIN",
+                donor_ids=(held_out,),
+            ),
+        ),
+    )
+    with pytest.raises(m.ManifestError, match="held|leak|train|donor"):
+        m.validate_producer_access(policy, leaked)
+
+
+def test_access_policy_role_tag_alone_cannot_pass_structural_validation():
+    m = _manifest_module()
+    assert hasattr(m, "validate_population_access_policy_payload")
+    bad = {
+        "object_role": "ACCESS_POLICY",
+        "policy_schema": "POPULATION_ACCESS_POLICY_V1",
+        "assignment_basis_sha": "0" * 64,
+        "fold_count": 4,
+        "crossfit_folds": [],
+        "allowed_outcome_partitions": ["reader_fit"],
+        "protected_partitions": ["reader_validation", "reader_oracle"],
+    }
+    with pytest.raises(m.ManifestError):
+        m.validate_population_access_policy_payload(bad)
+
+
+def test_producer_access_receipt_has_closed_machine_schema():
+    assert ACCESS_RECEIPT_SCHEMA.exists()
+    schema = json.loads(ACCESS_RECEIPT_SCHEMA.read_text(encoding="utf-8"))
+    assert schema["additionalProperties"] is False
+    assert set(schema["required"]) >= {"receipt_schema", "producer_id", "access_policy_sha", "observed_access"}
+    event = schema["properties"]["observed_access"]["items"]
+    assert event["additionalProperties"] is False
+    assert set(event["required"]) == {"partition", "access_class", "fold_index", "phase", "donor_ids"}
