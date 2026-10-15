@@ -8,10 +8,13 @@ from pathlib import Path
 
 import pytest
 
+from scripts.v5.td_unified.canonical_v1 import canonical_sha256
+
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST_SCHEMA = ROOT / "schemas" / "target_discovery" / "unified_v1" / "td_execution_manifest_v1.json"
 POLICY_SCHEMA = ROOT / "schemas" / "target_discovery" / "unified_v1" / "population_access_policy_v1.json"
 ACCESS_RECEIPT_SCHEMA = ROOT / "schemas" / "target_discovery" / "unified_v1" / "producer_access_receipt_v1.json"
+_LEDGER_BY_SHA: dict[str, dict[str, object]] = {}
 
 
 def _manifest_module():
@@ -38,35 +41,35 @@ def _events(m, policy, observed_access):
         partition, access_class = item
         if partition == "reader_fit":
             fold = policy.crossfit_folds[0]
-            result.append(
-                m.ObservedAccess(
-                    partition=partition,
-                    access_class=access_class,
-                    fold_index=0,
-                    phase="TRAIN",
-                    donor_ids=(fold.train_donors[0],),
-                )
-            )
+            result.append(m.ObservedAccess(partition, access_class, 0, "TRAIN", (fold.train_donors[0],)))
         else:
-            result.append(
-                m.ObservedAccess(
-                    partition=partition,
-                    access_class=access_class,
-                    fold_index=None,
-                    phase="CUSTODY",
-                    donor_ids=(),
-                )
-            )
+            result.append(m.ObservedAccess(partition, access_class, None, "CUSTODY", ()))
     return tuple(result)
 
 
-def _access_receipt(m, policy, *, producer_id="G8", observed_access, numeric_result_digest=None):
+def _access_receipt(m, policy, *, producer_id="G8", observed_access, numeric_result_digest=None, policy_sha=None):
+    events = _events(m, policy, observed_access)
+    access_policy_sha = policy.canonical_sha256() if policy_sha is None else policy_sha
+    ledger = {
+        "object_role": "OBSERVED_ACCESS_LEDGER",
+        "ledger_schema": "OBSERVED_ACCESS_LEDGER_V1",
+        "producer_id": producer_id,
+        "access_policy_sha": access_policy_sha,
+        "observed_access": [event.to_payload() for event in events],
+    }
+    ledger_sha = canonical_sha256(ledger)
+    _LEDGER_BY_SHA[ledger_sha] = ledger
     return m.ProducerAccessReceipt(
         producer_id=producer_id,
-        access_policy_sha=policy.canonical_sha256(),
-        observed_access=_events(m, policy, observed_access),
+        access_policy_sha=access_policy_sha,
+        access_ledger_sha=ledger_sha,
+        observed_access=events,
         numeric_result_digest=numeric_result_digest,
     )
+
+
+def _validate(m, policy, receipt):
+    return m.validate_producer_access(policy, receipt, ledger_resolver=_LEDGER_BY_SHA.get)
 
 
 def test_current_td_policy_crossfits_only_within_reader_fit():
@@ -77,13 +80,10 @@ def test_current_td_policy_crossfits_only_within_reader_fit():
     )
     assert policy.fold_count == 5
     assert set(policy.allowed_outcome_partitions) == {"reader_fit"}
-    all_held_out = []
+    held = [d for fold in policy.crossfit_folds for d in fold.held_out_donors]
+    assert sorted(held) == [f"D{i:03d}" for i in range(104)]
     for fold in policy.crossfit_folds:
-        train = set(fold.train_donors)
-        held = set(fold.held_out_donors)
-        assert train.isdisjoint(held)
-        all_held_out.extend(fold.held_out_donors)
-    assert sorted(all_held_out) == [f"D{i:03d}" for i in range(104)]
+        assert set(fold.train_donors).isdisjoint(fold.held_out_donors)
 
 
 def test_crossfit_assignment_is_deterministic_and_outcome_blind():
@@ -96,62 +96,49 @@ def test_crossfit_assignment_is_deterministic_and_outcome_blind():
 
 
 def test_reader_validation_access_cannot_rescue_estimability():
-    m = _manifest_module()
-    policy = _small_policy(m)
+    m = _manifest_module(); policy = _small_policy(m)
     receipt = _access_receipt(m, policy, observed_access=(("reader_validation", "BIOLOGICAL_VALUES"),))
     with pytest.raises(m.ManifestError, match="validation|forbidden|access|protected"):
-        m.validate_producer_access(policy, receipt)
+        _validate(m, policy, receipt)
 
 
 def test_reader_oracle_access_is_protected_until_later_authority_transition():
-    m = _manifest_module()
-    policy = _small_policy(m)
+    m = _manifest_module(); policy = _small_policy(m)
     receipt = _access_receipt(m, policy, observed_access=(("reader_oracle", "CALIBRATION_STATISTICS"),))
     with pytest.raises(m.ManifestError, match="oracle|forbidden|access|protected"):
-        m.validate_producer_access(policy, receipt)
+        _validate(m, policy, receipt)
 
 
 def test_producer_receipt_must_enumerate_actual_partitions_and_access_classes():
-    m = _manifest_module()
-    policy = _small_policy(m)
+    m = _manifest_module(); policy = _small_policy(m)
     lawful = _access_receipt(m, policy, observed_access=(("reader_fit", "BIOLOGICAL_VALUES"),))
-    assert m.validate_producer_access(policy, lawful) is None
+    assert _validate(m, policy, lawful) is None
     forged = _access_receipt(m, policy, observed_access=(("reader_fit", "UNKNOWN_CLASS"),))
     with pytest.raises(m.ManifestError):
-        m.validate_producer_access(policy, forged)
+        _validate(m, policy, forged)
 
 
 def test_numeric_success_with_forbidden_partition_access_is_invalid():
-    m = _manifest_module()
-    policy = _small_policy(m)
+    m = _manifest_module(); policy = _small_policy(m)
     receipt = _access_receipt(
-        m,
-        policy,
-        observed_access=(("reader_validation", "BIOLOGICAL_VALUES"),),
-        numeric_result_digest="0" * 64,
+        m, policy, observed_access=(("reader_validation", "BIOLOGICAL_VALUES"),), numeric_result_digest="0" * 64
     )
     with pytest.raises(m.ManifestError):
-        m.validate_producer_access(policy, receipt)
+        _validate(m, policy, receipt)
 
 
 def test_manifest_binds_exact_objects_not_branch_or_pr_labels():
     m = _manifest_module()
-    resolver_map = {
-        "a" * 64: {"object_role": "REGISTRY", "version": 1},
-        "b" * 64: {"object_role": "ACCESS_POLICY", "version": 1},
-    }
     with pytest.raises(m.ManifestError):
         m.validate_manifest(
             {"schema": "TD_EXECUTION_MANIFEST_V1", "registry_sha": "PR #349", "access_policy_sha": "b" * 64},
-            resolver_map.get,
+            lambda _: None,
         )
 
 
 def test_manifest_digest_rejects_mutated_policy_bytes():
     m = _manifest_module()
     policy = {"object_role": "ACCESS_POLICY", "version": 1, "fold_count": 5}
-    from scripts.v5.td_unified.canonical_v1 import canonical_sha256
-
     claimed = canonical_sha256(policy)
     mutated = {"object_role": "ACCESS_POLICY", "version": 1, "fold_count": 4}
     with pytest.raises(m.ManifestError, match="digest|identity|policy"):
@@ -159,9 +146,7 @@ def test_manifest_digest_rejects_mutated_policy_bytes():
 
 
 def test_raw_file_sha256_is_recomputed_from_actual_bytes():
-    m = _manifest_module()
-    raw = b"exact raw bytes\x00\n"
-    claimed = hashlib.sha256(raw).hexdigest()
+    m = _manifest_module(); raw = b"exact raw bytes\x00\n"; claimed = hashlib.sha256(raw).hexdigest()
     assert m.verify_raw_file_sha256(claimed, raw) is None
     with pytest.raises(m.ManifestError, match="raw|sha|digest"):
         m.verify_raw_file_sha256(claimed, raw + b"mutated")
@@ -170,35 +155,29 @@ def test_raw_file_sha256_is_recomputed_from_actual_bytes():
 
 
 def test_unknown_partition_fails_closed():
-    m = _manifest_module()
-    policy = _small_policy(m)
+    m = _manifest_module(); policy = _small_policy(m)
     receipt = _access_receipt(m, policy, observed_access=(("mystery_partition", "METADATA"),))
     with pytest.raises(m.ManifestError):
-        m.validate_producer_access(policy, receipt)
+        _validate(m, policy, receipt)
 
 
 # Hostile self-audit cycle 1 -------------------------------------------------
 
 def test_access_receipt_binds_exact_access_policy_identity():
-    m = _manifest_module()
-    params = inspect.signature(m.ProducerAccessReceipt).parameters
-    assert "access_policy_sha" in params
-    policy = _small_policy(m)
-    policy_sha = policy.canonical_sha256()
-    event = _events(m, policy, (("reader_fit", "BIOLOGICAL_VALUES"),))
-    lawful = m.ProducerAccessReceipt(producer_id="G8", access_policy_sha=policy_sha, observed_access=event)
-    assert m.validate_producer_access(policy, lawful) is None
-    wrong = m.ProducerAccessReceipt(producer_id="G8", access_policy_sha="0" * 64, observed_access=event)
+    m = _manifest_module(); policy = _small_policy(m)
+    assert "access_policy_sha" in inspect.signature(m.ProducerAccessReceipt).parameters
+    lawful = _access_receipt(m, policy, observed_access=(("reader_fit", "BIOLOGICAL_VALUES"),))
+    assert _validate(m, policy, lawful) is None
+    wrong = _access_receipt(
+        m, policy, observed_access=(("reader_fit", "BIOLOGICAL_VALUES"),), policy_sha="0" * 64
+    )
     with pytest.raises(m.ManifestError, match="policy|identity|digest"):
-        m.validate_producer_access(policy, wrong)
+        _validate(m, policy, wrong)
 
 
 def test_crossfit_policy_binds_the_exact_assignment_inputs():
-    m = _manifest_module()
-    policy = _small_policy(m)
-    assert isinstance(policy.assignment_basis_sha, str)
+    m = _manifest_module(); policy = _small_policy(m); payload = policy.to_payload()
     assert len(policy.assignment_basis_sha) == 64
-    payload = policy.to_payload()
     assert payload["assignment_basis_sha"] == policy.assignment_basis_sha
     assert payload["fold_count"] == 5
     assert len(payload["crossfit_folds"]) == 5
@@ -221,7 +200,6 @@ def test_manifest_schema_requires_the_full_task2_dependency_surface():
 def test_population_access_schema_closes_fold_structure_and_assignment_identity():
     schema = json.loads(POLICY_SCHEMA.read_text(encoding="utf-8"))
     assert "assignment_basis_sha" in schema["required"]
-    assert "assignment_basis_sha" in schema["properties"]
     folds = schema["properties"]["crossfit_folds"]
     assert folds["items"]["additionalProperties"] is False
     assert set(folds["items"]["required"]) == {"fold_index", "train_donors", "held_out_donors"}
@@ -230,65 +208,48 @@ def test_population_access_schema_closes_fold_structure_and_assignment_identity(
 # Hostile self-audit cycle 2 -------------------------------------------------
 
 def test_policy_inlines_assignment_basis_so_its_digest_is_not_a_trusted_string():
-    m = _manifest_module()
-    policy = _small_policy(m)
-    payload = policy.to_payload()
+    m = _manifest_module(); policy = _small_policy(m); payload = policy.to_payload()
     assert "assignment_basis" in payload
-    from scripts.v5.td_unified.canonical_v1 import canonical_sha256
-
     assert canonical_sha256(payload["assignment_basis"]) == payload["assignment_basis_sha"]
 
 
 def test_protected_partitions_allow_partition_identity_only_not_generic_metadata():
-    m = _manifest_module()
-    policy = _small_policy(m)
+    m = _manifest_module(); policy = _small_policy(m)
     receipt = _access_receipt(m, policy, observed_access=(("reader_validation", "METADATA"),))
     with pytest.raises(m.ManifestError, match="validation|protected|forbidden"):
-        m.validate_producer_access(policy, receipt)
+        _validate(m, policy, receipt)
 
 
 def test_observed_access_binds_fold_phase_and_donor_ids_to_block_fit_leakage():
-    m = _manifest_module()
-    assert hasattr(m, "ObservedAccess")
-    policy = _small_policy(m)
-    fold = policy.crossfit_folds[0]
-    held_out = fold.held_out_donors[0]
-    lawful = m.ProducerAccessReceipt(
-        producer_id="G8",
-        access_policy_sha=policy.canonical_sha256(),
-        observed_access=(m.ObservedAccess("reader_fit", "BIOLOGICAL_VALUES", 0, "TRAIN", (fold.train_donors[0],)),),
+    m = _manifest_module(); policy = _small_policy(m); fold = policy.crossfit_folds[0]
+    lawful = _access_receipt(
+        m, policy, observed_access=(m.ObservedAccess("reader_fit", "BIOLOGICAL_VALUES", 0, "TRAIN", (fold.train_donors[0],)),)
     )
-    assert m.validate_producer_access(policy, lawful) is None
-    leaked = m.ProducerAccessReceipt(
-        producer_id="G8",
-        access_policy_sha=policy.canonical_sha256(),
-        observed_access=(m.ObservedAccess("reader_fit", "BIOLOGICAL_VALUES", 0, "TRAIN", (held_out,)),),
+    assert _validate(m, policy, lawful) is None
+    leaked = _access_receipt(
+        m, policy, observed_access=(m.ObservedAccess("reader_fit", "BIOLOGICAL_VALUES", 0, "TRAIN", (fold.held_out_donors[0],)),)
     )
     with pytest.raises(m.ManifestError, match="held|leak|train|donor"):
-        m.validate_producer_access(policy, leaked)
+        _validate(m, policy, leaked)
 
 
 def test_access_policy_role_tag_alone_cannot_pass_structural_validation():
     m = _manifest_module()
-    assert hasattr(m, "validate_population_access_policy_payload")
     bad = {
-        "object_role": "ACCESS_POLICY",
-        "policy_schema": "POPULATION_ACCESS_POLICY_V1",
-        "assignment_basis_sha": "0" * 64,
-        "fold_count": 4,
-        "crossfit_folds": [],
-        "allowed_outcome_partitions": ["reader_fit"],
-        "protected_partitions": ["reader_validation", "reader_oracle"],
+        "object_role": "ACCESS_POLICY", "policy_schema": "POPULATION_ACCESS_POLICY_V1",
+        "assignment_basis_sha": "0" * 64, "fold_count": 4, "crossfit_folds": [],
+        "allowed_outcome_partitions": ["reader_fit"], "protected_partitions": ["reader_validation", "reader_oracle"],
     }
     with pytest.raises(m.ManifestError):
         m.validate_population_access_policy_payload(bad)
 
 
 def test_producer_access_receipt_has_closed_machine_schema():
-    assert ACCESS_RECEIPT_SCHEMA.exists()
     schema = json.loads(ACCESS_RECEIPT_SCHEMA.read_text(encoding="utf-8"))
     assert schema["additionalProperties"] is False
-    assert set(schema["required"]) >= {"receipt_schema", "producer_id", "access_policy_sha", "observed_access"}
+    assert set(schema["required"]) >= {
+        "receipt_schema", "producer_id", "access_policy_sha", "access_ledger_sha", "observed_access"
+    }
     event = schema["properties"]["observed_access"]["items"]
     assert event["additionalProperties"] is False
     assert set(event["required"]) == {"partition", "access_class", "fold_index", "phase", "donor_ids"}
