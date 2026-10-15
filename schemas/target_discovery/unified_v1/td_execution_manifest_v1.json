@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "TD_EXECUTION_MANIFEST_V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "registry_sha", "access_policy_sha"],
+  "properties": {
+    "schema": {"const": "TD_EXECUTION_MANIFEST_V1"},
+    "registry_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "access_policy_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
