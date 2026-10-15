@@ -147,6 +147,31 @@ def derive_real_reference_ready(
     )
 
 
+def _legacy_promotion_preflight(
+    registry,
+    unit_id,
+    destination_stage,
+    *,
+    controller_identity,
+    reviewer_identity,
+    prerequisite_evidence_verifier,
+    authority_object_resolver,
+    dependency_verifier,
+):
+    """Run non-mutating legacy validation so older hostile diagnostics stay visible."""
+    return _legacy.promote_unit(
+        registry,
+        unit_id,
+        destination_stage,
+        controller_identity=controller_identity,
+        reviewer_identity=reviewer_identity,
+        prerequisite_evidence_verifier=prerequisite_evidence_verifier,
+        authority_object_resolver=authority_object_resolver,
+        dependency_verifier=dependency_verifier,
+        verification_cache=None,
+    )
+
+
 def promote_unit(
     registry,
     unit_id,
@@ -163,6 +188,21 @@ def promote_unit(
     if unit_id not in registry.units_by_id():
         raise RegistryError(f"unknown unit_id: {unit_id}")
     custody = None
+    if destination_stage is QualificationStage.HUMAN_EXECUTABLE and history_custody is None:
+        # Preserve inherited reviewer/actor/R1/R4/provenance diagnostics without
+        # allowing the transition. If all legacy checks would pass, custody remains
+        # the final mandatory gate and the candidate is discarded.
+        _legacy_promotion_preflight(
+            registry,
+            unit_id,
+            destination_stage,
+            controller_identity=controller_identity,
+            reviewer_identity=reviewer_identity,
+            prerequisite_evidence_verifier=prerequisite_evidence_verifier,
+            authority_object_resolver=authority_object_resolver,
+            dependency_verifier=dependency_verifier,
+        )
+        raise RegistryError("HUMAN_EXECUTABLE promotion requires external history custody anchor")
     if destination_stage is QualificationStage.HUMAN_EXECUTABLE:
         custody = _require_history_custody(registry, history_custody, context="HUMAN_EXECUTABLE promotion")
     elif history_custody is not None:
