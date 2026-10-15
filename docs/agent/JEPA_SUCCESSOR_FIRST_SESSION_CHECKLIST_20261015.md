@@ -38,25 +38,34 @@ Binding global state:
 
 If live GitHub differs from this snapshot, do not silently reconcile it. Record the changed head/diff in PR #322 and classify whether it is expected history, an unauthorized mutation or a prospectively authorized repair.
 
-## 2. First mutation: neutralize T3-B6
+## 2. T3-B6 status: contained and enumerated; policy regression still required
 
-Before pushing any new Task 3 RED or repair code:
+The successor has already completed the dangerous first mutation before any B1-B5 production repair:
 
-1. preserve rejected `851544e8...` unchanged;
-2. cut/use a focused repair branch;
-3. remove or neutralize all Task 3 self-mutating GitHub workflows with `contents: write` + auto-commit/push behavior;
-4. convert any needed workflow to read-only verification or manual-only tooling;
-5. add a regression/policy check that qualification workflows cannot auto-rewrite RED tests or production registry code;
-6. enumerate all Task 3 commits authored/committed by `github-actions[bot]` and map each exact SHA to its workflow and patch script in PR #322 custody.
+1. exact rejected candidate `851544e8...` remains preserved as rejected evidence;
+2. `.github/workflows/task3-red6-actor-repair.yml` was deleted first at `229317559f69929a72678ceebc1bdd43a0b62f65`;
+3. `.github/workflows/apply-task3-cycle4-hardening.yml` was deleted next at `6d6a0a315575ba61320b3fb7cac767d467219a49`;
+4. both paths were verified absent before the successor RED suite was introduced;
+5. historical bot mutations were enumerated and bound to workflows/scripts in PR #322 `TASK3_REJECTED_LINEAGE_CUSTODY_HAZARDS_20261015.md`.
 
-Known bot commit already identified:
-`9052e3ce32f7f8b84d7445e3ec81826c79b6960d` (`task3 GREEN6: migrate actor-bound registry fixtures`).
+Exactly six Task 3 `github-actions[bot]` commits occur after frozen Task 2 on the rejected lineage:
 
-Do not assume it is the only bot-authored Task 3 commit.
+- `8196f0c4a8c4ac855dc9a23a9d1ff902ba78019c` — GREEN1;
+- `ecab91c0669f6e6798ba280f2c739ed05a346564` — GREEN2;
+- `27c244b896d853ca41ad8e375b32a09ce056b2ad` — GREEN3;
+- `e81ebbfe1ba828a4ea39f7f4d3ed737eb4fffac0` — GREEN4;
+- `a5397a8b81f4f8857ca00fcf38374c045094be2e` — GREEN6 actor binding;
+- `9052e3ce39e8e8acdc53ae19588f01a1ef4501be` — GREEN6 fixture migration.
+
+The previously circulated SHA `9052e3ce32f7f8b84d7445e3ec81826c79b6960d` is invalid and must not be propagated.
+
+Historical cycle1-cycle3 workflows were write-capable when they produced GREEN1-GREEN3, but were already read-only verification workflows by rejected head `851544e8...`. Cycle4 and RED6 were the two write-capable workflows still armed at the rejected head.
+
+**B6 is not closed yet.** Before B1-B5 production fixes, add and prove an automated regression/policy check that Task 3 qualification workflows cannot have repository write permission or auto-commit/push mutation behavior. Future RED tests must remain immutable evidence.
 
 ## 3. Preserve Macha's rejection as RED
 
-Turn the exact Macha attacks into tests before production changes.
+The exact Macha attacks are now preserved as `tests/v5/td_unified/test_registry_v1_macha_rejection.py` on PR #392. Read-only CI run `38792404844`, job `116620027363`, produced `11 failed, 53 passed`: B1, B2, five B3 actor attacks, H3/H4 cache attacks and H5/H6 history attacks. This is the trusted RED baseline; do not weaken or replace it.
 
 Required blockers:
 
@@ -67,9 +76,7 @@ Required blockers:
 - T3-B5: append-only replay from fixed registry genesis + externally anchored current head; deleted revocation or fabricated history cannot restore readiness.
 - T3-B6: write-capable auto-repair workflows cannot mutate qualification RED/code history.
 
-Also preserve actor alias attacks exactly: whitespace variants, case variant and fullwidth-colon lookalike.
-
-Expected first repair run is RED. If it is green before production repair, the tests do not reproduce Macha's findings or the wrong code is under test.
+Preserve actor alias attacks exactly: whitespace variants, case variant and fullwidth-colon lookalike.
 
 ## 4. Repair minimally; do not rebuild known-good Task 3 mechanics
 
@@ -162,4 +169,4 @@ Before ending a substantive session:
 - record unresolved questions rather than silently choosing favorable assumptions;
 - carry this iterative/no-repeat requirement into the next agent handoff.
 
-The successor's immediate mission is not 'finish JEPA'. It is: **repair Task 3 B1-B6 without damaging the frozen Task 0-2 authority or reopening settled historical audits.**
+The successor's immediate mission is not 'finish JEPA'. It is: **close B6 with a non-mutating policy guard, then repair Task 3 B1-B5 without damaging frozen Task 0-2 authority or reopening settled historical audits.**
