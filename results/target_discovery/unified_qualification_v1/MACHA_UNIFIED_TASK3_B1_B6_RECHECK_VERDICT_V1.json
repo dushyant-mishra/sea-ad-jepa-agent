@@ -1,0 +1,93 @@
+{
+  "authority_changed": false,
+  "blocking": [
+    {
+      "defect": "Task 3 never applies frozen Task 2 validate_manifest / population validators; forged 104-donor access policy and 3-field manifest accepted as AUTHENTICATED_READER_SPLIT at RRR",
+      "id": "N1",
+      "note": "first review's Task 2 binding PASS withdrawn",
+      "repair": "validate unit manifest with frozen Task 2 validate_manifest(raw_resolver=...) in RRR/HUMAN_EXECUTABLE gates; fail closed without raw resolver",
+      "severity": "CRITICAL"
+    },
+    {
+      "defect": "KNOWN_TRUTH_QUALIFIED accepted by genesis declaration without SEALED_CHALLENGE_REVIEW and consumed by RRR -> HUMAN_EXECUTABLE",
+      "id": "N2",
+      "repair": "cap custody genesis at SAME_CODE_PATH; RRR requires SEALED_CHALLENGE_REVIEW receipt for unit and prerequisite targets, fail closed until Task 4/5",
+      "severity": "CRITICAL"
+    },
+    {
+      "defect": "content validator resolved by role only, not through closed actor registry; producer-as-validator accepted",
+      "id": "B3-V",
+      "repair": "resolve via _registered_actor CONTENT_VALIDATOR; require distinct from producer/executor",
+      "severity": "IMPORTANT"
+    },
+    {
+      "defect": "PREREQUISITE_EVIDENCE_ISSUER never enforced; HUMAN_EXECUTABLE evidence has no issuer",
+      "id": "B3-E",
+      "repair": "issuer_identity_sha resolved via _registered_actor; distinct from producer/executor",
+      "severity": "IMPORTANT"
+    },
+    {
+      "defect": "actor_registry_sha unanchored; producer-authored registry with minted controller/reviewer reaches RRR",
+      "id": "B3-R",
+      "repair": "commit frozen TD_ACTOR_REGISTRY_V1 and pin its SHA in Task 3 code; refuse others",
+      "severity": "IMPORTANT"
+    },
+    {
+      "defect": "revocation lives only in one custody object; fresh custody re-qualifies the same revoked identity to HUMAN_EXECUTABLE",
+      "id": "B5-F",
+      "repair": "anchored revocation ledger keyed by unit identity consulted at genesis; pinned genesis anchor",
+      "severity": "IMPORTANT"
+    }
+  ],
+  "carry_forward": [
+    "R7 actor identities are public digests, not credentials",
+    "custody private state writable in-process (R1 class)",
+    "registry_v1_legacy.promote_unit is a public custody-free path",
+    "RegistryUnit construction lacks Task 1 validation",
+    "unified-task3-registry.yml lacks explicit permissions"
+  ],
+  "closed": [
+    "T3-B1",
+    "T3-B4",
+    "T3-B6"
+  ],
+  "date": "2026-10-15",
+  "freeze": "TASK3_REMAINS_OPEN__UNIFIED_TASK4_REMAINS_BLOCKED",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "hostile_probes": {
+    "bad": 7,
+    "expected": 31,
+    "notes": 4,
+    "total": 38
+  },
+  "partial": {
+    "T3-B2": "closed for promotion; open by genesis declaration (N2)",
+    "T3-B3": "aliases/self-mint vs curated registry and logical-id independence closed; validator, evidence issuer and registry anchor open",
+    "T3-B5": "same-custody H5/H6 closed; cross-custody revocation erasure open"
+  },
+  "pinned_branch": "candidate/unified-task3-green-68df3158-20261015",
+  "pr": 392,
+  "pr_head_at_review": "0a25f72cdf5ab408c8ed08878636bb3ba3467151",
+  "protected_values_opened": false,
+  "reviewed_head": "68df31584d17f91da2635cdf8e03bbe93695f9d1",
+  "schema": "MACHA_UNIFIED_TASK3_B1_B6_RECHECK_VERDICT_V1",
+  "sections": {
+    "A2": "PARTIAL",
+    "A5": "PARTIAL",
+    "A6": "PASS",
+    "R1": "OPEN",
+    "R2": "OPEN",
+    "R3": "OPEN",
+    "R4": "OPEN",
+    "R5": "PASS",
+    "R6": "CLOSED",
+    "frozen_task2_binding": "FAIL",
+    "provenance": "PARTIAL"
+  },
+  "tests_local": {
+    "evidence_class": "LOCAL_NOT_CI",
+    "harness_note": "run via wrapper pinning repo tests package over site-packages PyMC tests package; no repo file changed",
+    "td_unified_full": "177 passed"
+  },
+  "verdict": "REJECT_UNIFIED_TASK3"
+}

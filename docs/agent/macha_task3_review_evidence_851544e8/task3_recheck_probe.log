@@ -1,0 +1,51 @@
+== P0 positive control: the PR's own lawful flow
+OK   P0 genesis(KTQ) -> RRR -> HUMAN_EXECUTABLE with custody -> ACCEPTED: 'HUMAN_EXECUTABLE'
+== B1 Task 1 authority law
+OK   B1 HUMAN_EXECUTABLE -> HUMAN_EXECUTED (and thus any later stage) -> REFUSED: 'RegistryError: HUMAN_EXECUTED requires an authenticated HUMAN_EXECUTION_RECEIPT; that evidence type is not implemented in Task 3, so promotion is closed'
+OK   B1 [facade] declared HUMAN_EXECUTED -> DOWNSTREAM_CERTIFIED (UNIT scope, bound actors) -> REFUSED: 'RegistryError: promotion violates frozen Task 1 authority law: qualification stage is outside the allowed UNIT scope stage range'
+OK   B1 [legacy] declared HUMAN_EXECUTED -> DOWNSTREAM_CERTIFIED (UNIT scope, bound actors) -> REFUSED: 'RegistryError: promotion violates frozen Task 1 authority law: qualification stage is outside the allowed UNIT scope stage range'
+OK   B1 [facade] declared DOWNSTREAM_CERTIFIED -> TRAINING_ELIGIBLE (UNIT scope, bound actors) -> REFUSED: 'RegistryError: NO_TRAINING_AUTHORITY forbids promotion to a training stage'
+OK   B1 [legacy] declared DOWNSTREAM_CERTIFIED -> TRAINING_ELIGIBLE (UNIT scope, bound actors) -> REFUSED: 'RegistryError: NO_TRAINING_AUTHORITY forbids promotion to a training stage'
+OK   B1 [facade] declared TRAINING_ELIGIBLE -> TRAINING_AUTHORIZED (UNIT scope, bound actors) -> REFUSED: 'RegistryError: NO_TRAINING_AUTHORITY forbids promotion to a training stage'
+OK   B1 [legacy] declared TRAINING_ELIGIBLE -> TRAINING_AUTHORIZED (UNIT scope, bound actors) -> REFUSED: 'RegistryError: NO_TRAINING_AUTHORITY forbids promotion to a training stage'
+NOTE NOTE RegistryUnit construction validates Task 1 law (UNIT scope at TRAINING_AUTHORIZED) -> ACCEPTED: 'TRAINING_AUTHORIZED'
+OK   B1 custody genesis refuses a declared UNIT record at TRAINING_AUTHORIZED -> REFUSED: 'RegistryError: history custody genesis cannot start from an advanced stage'
+== B2 stage evidence
+OK   B2 SAME_CODE_PATH -> KNOWN_TRUTH_QUALIFIED reviewer=no -> REFUSED: 'RegistryError: KNOWN_TRUTH_QUALIFIED requires an independent reviewer and SEALED_CHALLENGE_REVIEW evidence; fail closed'
+OK   B2 SAME_CODE_PATH -> KNOWN_TRUTH_QUALIFIED reviewer=yes -> REFUSED: 'RegistryError: KNOWN_TRUTH_QUALIFIED requires SEALED_CHALLENGE_REVIEW evidence; that evidence type is not implemented in Task 3, so promotion is closed'
+OK   B2 [legacy] SAME_CODE_PATH -> KNOWN_TRUTH_QUALIFIED with reviewer -> REFUSED: 'RegistryError: KNOWN_TRUTH_QUALIFIED requires SEALED_CHALLENGE_REVIEW evidence; that evidence type is not implemented in Task 3, so promotion is closed'
+BAD  N2 KNOWN_TRUTH_QUALIFIED obtained by DECLARATION at genesis (no SEALED_CHALLENGE_REVIEW) then RRR -> HUMAN_EXECUTABLE -> ACCEPTED: 'HUMAN_EXECUTABLE'
+== B3 actor registry
+OK   B3 controller alias 'producer:G8 ' (not in curated registry) -> REFUSED: 'RegistryError: qualification controller actor registry identity is not uniquely authorized by the closed actor registry for role QUALIFICATION_CONTROLLER'
+OK   B3 controller alias ' producer:G8' (not in curated registry) -> REFUSED: 'RegistryError: qualification controller actor registry identity is not uniquely authorized by the closed actor registry for role QUALIFICATION_CONTROLLER'
+OK   B3 controller alias 'PRODUCER:G8' (not in curated registry) -> REFUSED: 'RegistryError: qualification controller actor registry identity is not uniquely authorized by the closed actor registry for role QUALIFICATION_CONTROLLER'
+OK   B3 controller alias 'producer\uff1aG8' (not in curated registry) -> REFUSED: 'RegistryError: qualification controller actor registry identity is not uniquely authorized by the closed actor registry for role QUALIFICATION_CONTROLLER'
+OK   B3 controller alias 'minted-by-producer-1' (not in curated registry) -> REFUSED: 'RegistryError: qualification controller actor registry identity is not uniquely authorized by the closed actor registry for role QUALIFICATION_CONTROLLER'
+OK   B3 reviewer==controller -> REFUSED: 'RegistryError: independent reviewer actor registry identity is not uniquely authorized by the closed actor registry for role INDEPENDENT_REVIEWER'
+OK   B3 reviewer==producer -> REFUSED: 'RegistryError: independent reviewer actor registry identity is not uniquely authorized by the closed actor registry for role INDEPENDENT_REVIEWER'
+BAD  B3-V unregistered CONTENT_VALIDATOR (actor_id = producer:G8) satisfies content-required prerequisite -> ACCEPTED: 'ready'
+BAD  B3-V same, through promote_unit -> RRR -> ACCEPTED: 'REAL_REFERENCE_READY'
+BAD  B3-E HUMAN_EXECUTABLE evidence with no issuer binding (P0 evidence objects have no issuer field) -> ACCEPTED: 'HUMAN_EXECUTABLE'
+BAD  B3-R producer-authored actor registry with self-minted controller+reviewer -> RRR under producer-made custody -> ACCEPTED: 'REAL_REFERENCE_READY'
+NOTE NOTE actor identities are public content digests, not credentials (producer presents registered C1 digest) -> ACCEPTED: 'REAL_REFERENCE_READY'
+OK   B3-I curated C1 holds controller+reviewer roles; reviewer=C1 -> REFUSED: 'RegistryError: independent reviewer actor must differ from qualification controller/producer/executor actors'
+OK   B3-I curated producer:G8 also registered as reviewer; reviewer=producer -> REFUSED: 'RegistryError: independent reviewer actor must differ from qualification controller/producer/executor actors'
+OK   B3-I curated executor:G8 also registered as controller; controller=executor -> REFUSED: 'RegistryError: qualification controller actor must differ from producer/executor actors; self-qualification forbidden'
+OK   B3-I curated producer:G8 also registered as controller; revocation by producer -> REFUSED: 'RegistryError: independent revocation controller actor must differ from producer/executor actors'
+== B4 verification cache
+OK   B4/H4 warmed cache + empty resolver -> REFUSED: 'AssertionError: not ready: dependency object/byte verification failed: manifest_sha: dependency manifest_sha requires actual canonical object; dependency object/byte verification failed:'
+OK   B4/H3 poisoned cache + empty resolver -> REFUSED: 'AssertionError: not ready: dependency object/byte verification failed: manifest_sha: dependency manifest_sha requires actual canonical object; dependency object/byte verification failed:'
+OK   B4/H3 [legacy] poisoned cache + empty resolver via promote_unit RRR -> REFUSED: 'RegistryError: REAL_REFERENCE_READY prerequisites unresolved: dependency object/byte verification failed: manifest_sha: dependency manifest_sha requires actual canonical object; depende'
+== B5 history custody
+OK   B5/H6 deleted revocation, same custody -> REFUSED: 'RegistryError: history custody revocation event/head mismatch'
+OK   B5/H6 deleted revocation, no custody -> REFUSED: 'RegistryError: HUMAN_EXECUTABLE promotion requires external history custody anchor'
+BAD  B5-F revoked unit re-qualified to HUMAN_EXECUTABLE by discarding custody and starting a fresh genesis -> ACCEPTED: 'HUMAN_EXECUTABLE for the SAME G8 identity revoked in custody A'
+OK   B5 fresh custody from advanced (RRR) genesis -> REFUSED: 'RegistryError: history custody genesis cannot start from an advanced stage'
+NOTE NOTE custody private state is writable in-process (cust._revocations = ()) then H6 with same custody -> ACCEPTED: 'HUMAN_EXECUTABLE'
+NOTE NOTE legacy.promote_unit is a public HUMAN_EXECUTABLE path that ignores custody -> ACCEPTED: 'HUMAN_EXECUTABLE'
+== N1 frozen Task 2 population/manifest authority at the RRR consumption point
+OK   N1 control: frozen Task 2 validator refuses the forged access policy -> REFUSED: 'ManifestError: population access policy fields do not match POPULATION_ACCESS_POLICY_V1'
+OK   N1 control: frozen Task 2 validate_manifest refuses the Task-3-accepted manifest -> REFUSED: 'ManifestError: manifest fields/schema do not match TD_EXECUTION_MANIFEST_V1'
+BAD  N1 forged 104 FAKE donors + folds CHOSEN_LATER accepted as AUTHENTICATED_READER_SPLIT -> RRR -> ACCEPTED: 'REAL_REFERENCE_READY'
+
+SUMMARY: 31/38 expected; BAD=7
