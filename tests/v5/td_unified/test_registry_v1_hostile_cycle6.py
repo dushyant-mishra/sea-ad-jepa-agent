@@ -7,7 +7,7 @@ import pytest
 from scripts.v5.td_unified import registry_v1 as r
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
-from tests.v5.td_unified.registry_v1_dependency_fixtures import verified_pair, verified_prereq
+from tests.v5.td_unified.registry_v1_dependency_fixtures import bind_actor_registry, verified_pair, verified_prereq
 
 
 def actor(role: str, actor_id: str):
@@ -44,13 +44,18 @@ def test_producer_actor_cannot_self_issue_qualification_controller_receipt():
         "dependent_unit_sha": dep.canonical_sha256(),
     })
     reg = r.TDQualificationRegistry((dep, target), (p,), (), ())
-    resolver = {
+    objects = dict(deps)
+    objects.update({
         esha: eobj,
         producer_sha: producer_obj,
         executor_sha: executor_obj,
         controller_sha: controller_obj,
         reviewer_sha: reviewer_obj,
-    }.get
+    })
+    reg, objects = bind_actor_registry(
+        r, reg, objects,
+        trusted_actor_objects=(controller_obj, reviewer_obj),
+    )
     with pytest.raises(r.RegistryError, match="producer.*actor|self-qualif|independent.*controller"):
         r.promote_unit(
             reg,
@@ -58,13 +63,13 @@ def test_producer_actor_cannot_self_issue_qualification_controller_receipt():
             QualificationStage.REAL_REFERENCE_READY,
             controller_identity=controller_sha,
             reviewer_identity=reviewer_sha,
-            authority_object_resolver=resolver,
-            dependency_verifier=deps.get,
+            authority_object_resolver=objects.get,
+            dependency_verifier=objects.get,
         )
 
 
 def test_executor_actor_cannot_issue_revocation_controller_receipt():
-    dep, _, _ = verified_pair(r)
+    dep, _, deps = verified_pair(r)
     producer_sha, producer_obj = actor("SCIENTIFIC_PRODUCER", "producer")
     executor_sha, executor_obj = actor("SCIENTIFIC_EXECUTOR", "same-actor")
     controller_sha, controller_obj = actor("QUALIFICATION_CONTROLLER", "same-actor")
@@ -73,12 +78,11 @@ def test_executor_actor_cannot_issue_revocation_controller_receipt():
         "producer_actor_identity": producer_sha,
         "executor_actor_identity": executor_sha,
     })
+    deps.update({producer_sha: producer_obj, executor_sha: executor_obj})
     reg = r.TDQualificationRegistry((dep,), (), (), ())
-    resolver = {
-        producer_sha: producer_obj,
-        executor_sha: executor_obj,
-        controller_sha: controller_obj,
-    }.get
+    objects = dict(deps)
+    objects[controller_sha] = controller_obj
+    reg, objects = bind_actor_registry(r, reg, objects, trusted_actor_objects=(controller_obj,))
     with pytest.raises(r.RegistryError, match="executor.*actor|independent.*revocation"):
         r.revoke_or_supersede(
             reg,
@@ -86,7 +90,8 @@ def test_executor_actor_cannot_issue_revocation_controller_receipt():
             ActiveLineageStatus.REVOKED_BY_DEFECT,
             reason_class="DEFECT",
             controller_identity=controller_sha,
-            authority_object_resolver=resolver,
+            authority_object_resolver=objects.get,
+            dependency_verifier=objects.get,
         )
 
 
@@ -105,6 +110,10 @@ def test_reviewer_actor_cannot_alias_scientific_producer_actor():
     reg = r.TDQualificationRegistry((dep, target), (), (), ())
     resolver_objects = dict(deps)
     resolver_objects.update({controller_sha: controller_obj, reviewer_sha: reviewer_obj})
+    reg, resolver_objects = bind_actor_registry(
+        r, reg, resolver_objects,
+        trusted_actor_objects=(controller_obj, reviewer_obj),
+    )
     with pytest.raises(r.RegistryError, match="reviewer actor.*producer|reviewer actor.*executor"):
         r.promote_unit(
             reg,
