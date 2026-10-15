@@ -67,6 +67,37 @@ def _resolve_object(
     return obj
 
 
+def _actor_id(obj: Mapping[str, object], *, label: str) -> str:
+    actor_id = obj.get("actor_id")
+    if type(actor_id) is not str or not actor_id.strip():
+        raise RegistryError(f"{label} must declare a non-empty actor_id")
+    return actor_id
+
+
+def _validate_requirement_evidence(requirement_class: str, obj: Mapping[str, object], *, label: str) -> None:
+    if obj.get("requirement_class") != requirement_class:
+        raise RegistryError(f"{label} evidence requirement_class mismatch")
+    if requirement_class == "PROCESS_ISOLATION":
+        required_true = (
+            "producer_process_isolated",
+            "harness_drives_finalization",
+            "reader_fit_values_out_of_process",
+            "protected_partitions_physically_absent",
+        )
+        missing = [name for name in required_true if obj.get(name) is not True]
+        if missing:
+            raise RegistryError(
+                f"PROCESS_ISOLATION evidence incomplete for {label}: " + ",".join(missing)
+            )
+    elif requirement_class == "CROSS_PROCESS_LEDGER_CUSTODY":
+        if obj.get("persistent_ledger") is not True:
+            raise RegistryError(f"{label} ledger persistence evidence missing")
+        if obj.get("signing_key_out_of_process") is not True:
+            raise RegistryError(f"{label} signing-key custody evidence missing")
+        if obj.get("key_custodian") != "HARNESS":
+            raise RegistryError(f"{label} key custody must be HARNESS")
+
+
 @dataclass(frozen=True)
 class RegistryUnit:
     unit_id: str
@@ -348,7 +379,7 @@ def _verify_unit_dependencies(
     cache: MutableMapping[object, object] | None,
 ) -> list[str]:
     if dependency_verifier is None:
-        return []
+        return ["authenticated dependency verifier required; digest strings are not authority"]
     blockers: list[str] = []
     unit_key = unit.canonical_sha256()
     for field in _IDENTITY_64_FIELDS + _IDENTITY_40_FIELDS:
@@ -505,12 +536,16 @@ def _human_execution_blockers(
         blockers.append(f"{','.join(p.prerequisite_id for p in custody) or 'R4'} cross-process ledger persistence/key custody prerequisite unresolved")
     for p in prereqs:
         if p.external_state == "SATISFIED" and p.requirement_class != "UNIT":
-            err = _authority_receipt_blocker(
-                p.evidence_receipt_sha, authority_object_resolver,
-                expected_role="PREREQUISITE_EVIDENCE", label=p.prerequisite_id,
-            )
-            if err:
-                blockers.append(err)
+            try:
+                evidence_obj = _resolve_object(
+                    p.evidence_receipt_sha, authority_object_resolver,
+                    expected_role="PREREQUISITE_EVIDENCE", label=p.prerequisite_id,
+                )
+                _validate_requirement_evidence(
+                    p.requirement_class, evidence_obj, label=p.prerequisite_id
+                )
+            except RegistryError as exc:
+                blockers.append(str(exc))
         if p.content_required:
             if not p.content_validated or p.content_validation_receipt_sha is None:
                 blockers.append(f"{p.prerequisite_id} content qualification/receipt unresolved")
@@ -533,6 +568,8 @@ def promote_unit(
     reviewer_identity: str | None,
     prerequisite_evidence_verifier: Callable[[str], bool] | None = None,
     authority_object_resolver: AuthorityObjectResolver | None = None,
+    dependency_verifier: Callable[[str], bool] | None = None,
+    verification_cache: MutableMapping[object, object] | None = None,
 ) -> TDQualificationRegistry:
     units = registry.units_by_id()
     if unit_id not in units:
@@ -546,20 +583,27 @@ def promote_unit(
         raise RegistryError("promotion must advance exactly one canonical stage")
     if controller_identity in {unit.producer_code_sha, unit.executor_code_sha}:
         raise RegistryError("independent qualification controller required; producer/executor cannot self-qualify")
-    _resolve_object(
+    controller_obj = _resolve_object(
         controller_identity, authority_object_resolver,
         expected_role="QUALIFICATION_CONTROLLER", label="qualification controller",
     )
+    controller_actor = _actor_id(controller_obj, label="qualification controller")
     if reviewer_identity is not None:
         if reviewer_identity in {controller_identity, unit.producer_code_sha, unit.executor_code_sha}:
             raise RegistryError("independent reviewer must differ from controller/producer/executor")
-        _resolve_object(
+        reviewer_obj = _resolve_object(
             reviewer_identity, authority_object_resolver,
             expected_role="INDEPENDENT_REVIEWER", label="independent reviewer",
         )
+        reviewer_actor = _actor_id(reviewer_obj, label="independent reviewer")
+        if reviewer_actor == controller_actor:
+            raise RegistryError("independent reviewer actor must differ from qualification controller actor")
     if destination_stage is QualificationStage.REAL_REFERENCE_READY:
         result = derive_real_reference_ready(
-            unit_id, registry, authority_object_resolver=authority_object_resolver,
+            unit_id, registry,
+            dependency_verifier=dependency_verifier,
+            authority_object_resolver=authority_object_resolver,
+            verification_cache=verification_cache,
         )
         if not result.ready:
             raise RegistryError("REAL_REFERENCE_READY prerequisites unresolved: " + "; ".join(result.blockers))
@@ -569,6 +613,15 @@ def promote_unit(
         blockers = _human_execution_blockers(unit_id, registry, authority_object_resolver)
         if blockers:
             raise RegistryError("HUMAN_EXECUTABLE prerequisites unresolved: " + "; ".join(blockers))
+        prior_stage_receipts = tuple(
+            receipt for receipt in registry.promotions
+            if receipt.unit_id == unit_id and receipt.destination_stage is unit.qualification_stage
+        )
+        if not prior_stage_receipts:
+            raise RegistryError("current advanced stage lacks prior promotion history provenance")
+        dependency_blockers = _verify_unit_dependencies(unit, dependency_verifier, verification_cache)
+        if dependency_blockers:
+            raise RegistryError("HUMAN_EXECUTABLE dependency authentication failed: " + "; ".join(dependency_blockers))
     prereqs = tuple(
         p for p in registry.prerequisites
         if p.dependent_unit_id == unit_id and p.gate == destination_stage.value

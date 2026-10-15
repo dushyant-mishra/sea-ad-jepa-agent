@@ -54,7 +54,7 @@ def _prereq(r, *, pid="P1", dependent="G8", target="REF", gate="REAL_REFERENCE_R
 
 def test_historical_promotion_receipt_remains_immutable_after_revocation():
     r=_r(); u,ref=_unit(r),_unit(r,"REF"); reg=_registry(r,[u,ref],[_prereq(r)]); c,rv,res=_actors()
-    promoted=r.promote_unit(reg,"G8",QualificationStage.REAL_REFERENCE_READY,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res)
+    promoted=r.promote_unit(reg,"G8",QualificationStage.REAL_REFERENCE_READY,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res,dependency_verifier=lambda _: True)
     old=promoted.promotions[0]
     revoked=r.revoke_or_supersede(promoted,"G8",ActiveLineageStatus.REVOKED_BY_DEFECT,reason_class="DEFECT",controller_identity=c,authority_object_resolver=res)
     assert revoked.promotions[0]==old
@@ -162,7 +162,7 @@ def test_recursive_verification_cache_invalidates_on_dependency_identity_change(
 
 def test_cached_ready_result_cannot_survive_manifest_or_access_change():
     r=_r(); dep,ref=_unit(r),_unit(r,"REF"); reg=_registry(r,[dep,ref],[_prereq(r)]); cache={}
-    assert r.derive_real_reference_ready("G8",reg,verification_cache=cache).ready
+    assert r.derive_real_reference_ready("G8",reg,dependency_verifier=lambda _: True,verification_cache=cache).ready
     assert not r.derive_real_reference_ready("G8",r.replace_unit(reg,_unit(r,"G8",manifest="e"*64)),verification_cache=cache).ready
 
 
