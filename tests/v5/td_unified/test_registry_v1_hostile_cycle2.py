@@ -5,7 +5,7 @@ import pytest
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
 from scripts.v5.td_unified import registry_v1 as r
-from tests.v5.td_unified.registry_v1_dependency_fixtures import direct_fixture_actor_objects
+from tests.v5.td_unified.registry_v1_dependency_fixtures import bind_actor_registry, direct_fixture_actor_objects
 
 
 def unit(unit_id="G8", *, stage=QualificationStage.KNOWN_TRUTH_QUALIFIED):
@@ -134,6 +134,7 @@ def test_fabricated_promotion_receipt_cannot_establish_advanced_stage_provenance
     )
     objects={csha:cobj,rsha:robj,psha:pobj,ksha:kobj}
     objects.update(direct_fixture_actor_objects(u))
+    reg, objects = bind_actor_registry(r, reg, objects, trusted_actor_objects=(cobj, robj))
     with pytest.raises(r.RegistryError,match="promotion.*provenance|promotion.*history|receipt.*chain|pre_registry|unit identity"):
         r.promote_unit(
             reg,"G8",QualificationStage.HUMAN_EXECUTABLE,
