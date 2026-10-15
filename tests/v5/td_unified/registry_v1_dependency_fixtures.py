@@ -15,6 +15,21 @@ def _semantic(role: str, unit_id: str) -> dict[str, object]:
     return {"object_role": role, "unit_id": unit_id, "fixture": "TASK3_DEPENDENCY_BYTES_V1"}
 
 
+def direct_fixture_actor_objects(unit) -> dict[str, object]:
+    """Resolve actor objects for legacy direct RegistryUnit test fixtures.
+
+    These fixtures intentionally use the minimal actor payloads encoded in their
+    RegistryUnit constructor. The helper refuses to fabricate a mismatched object.
+    """
+    producer = {"object_role": "SCIENTIFIC_PRODUCER", "actor_id": f"producer:{unit.unit_id}"}
+    executor = {"object_role": "SCIENTIFIC_EXECUTOR", "actor_id": f"executor:{unit.unit_id}"}
+    psha = canonical_sha256(producer)
+    esha = canonical_sha256(executor)
+    if psha != unit.producer_actor_identity or esha != unit.executor_actor_identity:
+        raise AssertionError("legacy direct fixture actor identity mismatch")
+    return {psha: producer, esha: executor}
+
+
 def _core(unit_id: str):
     producer_code = f"producer-code:{unit_id}:v1\n".encode()
     executor_code = f"executor-code:{unit_id}:v1\n".encode()
