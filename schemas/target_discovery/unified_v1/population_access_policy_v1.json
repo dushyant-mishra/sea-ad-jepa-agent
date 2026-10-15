@@ -6,6 +6,7 @@
   "required": [
     "object_role",
     "policy_schema",
+    "assignment_basis",
     "assignment_basis_sha",
     "fold_count",
     "crossfit_folds",
@@ -15,6 +16,25 @@
   "properties": {
     "object_role": {"const": "ACCESS_POLICY"},
     "policy_schema": {"const": "POPULATION_ACCESS_POLICY_V1"},
+    "assignment_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fit_donors", "donor_source", "fold_count", "assignment_law"],
+      "properties": {
+        "fit_donors": {
+          "type": "array",
+          "minItems": 5,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "donor_source": {
+          "type": "object",
+          "additionalProperties": {"type": "string", "minLength": 1}
+        },
+        "fold_count": {"const": 5},
+        "assignment_law": {"const": "SOURCE_STRATIFIED_HASH_ORDER_ROUND_ROBIN_V1"}
+      }
+    },
     "assignment_basis_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "fold_count": {"const": 5},
     "crossfit_folds": {
