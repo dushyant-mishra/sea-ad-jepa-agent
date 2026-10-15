@@ -191,25 +191,26 @@ def make_scientific_receipt(
     return body
 
 
-def _verify_resolved_input(
-    input_sha: str,
+def _verify_dependency(
+    label: str,
+    expected_sha: str,
     resolved: object,
     object_resolver: Callable[[str], object | None],
     stack: frozenset[str],
 ) -> None:
     if resolved is None:
-        raise CanonicalError(f"input object unavailable: {input_sha}")
+        raise CanonicalError(f"{label} object unavailable: {expected_sha}")
     if isinstance(resolved, Mapping) and resolved.get("receipt_schema") == _RECEIPT_SCHEMA:
         verified = verify_scientific_receipt(resolved, object_resolver, _stack=stack)
-        if verified.receipt_sha256 != input_sha:
-            raise CanonicalError("input receipt identity mismatch")
+        if verified.receipt_sha256 != expected_sha:
+            raise CanonicalError(f"{label} receipt identity mismatch")
         return
     try:
         actual = canonical_sha256(resolved)
     except CanonicalError as exc:
-        raise CanonicalError(f"input object is not canonically verifiable: {input_sha}") from exc
-    if actual != input_sha:
-        raise CanonicalError("input object digest mismatch")
+        raise CanonicalError(f"{label} object is not canonically verifiable: {expected_sha}") from exc
+    if actual != expected_sha:
+        raise CanonicalError(f"{label} object digest mismatch")
 
 
 def verify_scientific_receipt(
@@ -258,7 +259,16 @@ def verify_scientific_receipt(
     next_stack = stack | {receipt_sha}
 
     for input_sha in inputs:
-        _verify_resolved_input(input_sha, object_resolver(input_sha), object_resolver, next_stack)
+        _verify_dependency("input", input_sha, object_resolver(input_sha), object_resolver, next_stack)
+
+    dependency_fields = (
+        ("output", str(receipt["output_sha"])),
+        ("manifest", str(receipt["manifest_sha"])),
+        ("registry", str(receipt["registry_sha"])),
+        ("access", str(receipt["access_policy_sha"])),
+    )
+    for label, dependency_sha in dependency_fields:
+        _verify_dependency(label, dependency_sha, object_resolver(dependency_sha), object_resolver, next_stack)
 
     verified_parents: list[str] = []
     for parent_sha in parents:
