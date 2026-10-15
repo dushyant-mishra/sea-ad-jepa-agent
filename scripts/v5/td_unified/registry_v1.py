@@ -21,12 +21,15 @@ _STAGES = tuple(QualificationStage)
 _STAGE_INDEX = {stage: i for i, stage in enumerate(_STAGES)}
 _HEX = set("0123456789abcdef")
 _IDENTITY_64_FIELDS = (
-    "manifest_sha", "access_policy_sha", "producer_policy_sha", "executor_policy_sha",
-    "schema_sha", "metric_sha", "reference_producer_sha", "falsifier_sha",
+    "manifest_sha", "access_policy_sha", "producer_actor_identity", "executor_actor_identity",
+    "producer_policy_sha", "executor_policy_sha", "schema_sha", "metric_sha",
+    "reference_producer_sha", "falsifier_sha",
 )
 _IDENTITY_40_FIELDS = ("producer_code_sha", "executor_code_sha")
 _DEPENDENCY_ROLE_BY_FIELD = {
     "access_policy_sha": "ACCESS_POLICY",
+    "producer_actor_identity": "SCIENTIFIC_PRODUCER",
+    "executor_actor_identity": "SCIENTIFIC_EXECUTOR",
     "producer_policy_sha": "PRODUCER_POLICY",
     "executor_policy_sha": "EXECUTOR_POLICY",
     "schema_sha": "UNIT_SCHEMA",
@@ -154,6 +157,8 @@ class RegistryUnit:
     access_policy_sha: str
     producer_code_sha: str
     executor_code_sha: str
+    producer_actor_identity: str
+    executor_actor_identity: str
     producer_policy_sha: str
     executor_policy_sha: str
     schema_sha: str
@@ -197,6 +202,8 @@ class RegistryUnit:
             "access_policy_sha": self.access_policy_sha,
             "producer_code_sha": self.producer_code_sha,
             "executor_code_sha": self.executor_code_sha,
+            "producer_actor_identity": self.producer_actor_identity,
+            "executor_actor_identity": self.executor_actor_identity,
             "producer_policy_sha": self.producer_policy_sha,
             "executor_policy_sha": self.executor_policy_sha,
             "schema_sha": self.schema_sha,
@@ -768,23 +775,33 @@ def promote_unit(
         raise RegistryError("destination stage must use Task 1 canonical enum")
     if _STAGE_INDEX[destination_stage] != _STAGE_INDEX[unit.qualification_stage] + 1:
         raise RegistryError("promotion must advance exactly one canonical stage")
-    if controller_identity in {unit.producer_code_sha, unit.executor_code_sha}:
-        raise RegistryError("independent qualification controller required; producer/executor cannot self-qualify")
+    producer_actor_obj = _resolve_object(
+        unit.producer_actor_identity, authority_object_resolver,
+        expected_role="SCIENTIFIC_PRODUCER", label="scientific producer actor",
+    )
+    executor_actor_obj = _resolve_object(
+        unit.executor_actor_identity, authority_object_resolver,
+        expected_role="SCIENTIFIC_EXECUTOR", label="scientific executor actor",
+    )
+    producer_actor = _actor_id(producer_actor_obj, label="scientific producer actor")
+    executor_actor = _actor_id(executor_actor_obj, label="scientific executor actor")
     controller_obj = _resolve_object(
         controller_identity, authority_object_resolver,
         expected_role="QUALIFICATION_CONTROLLER", label="qualification controller",
     )
     controller_actor = _actor_id(controller_obj, label="qualification controller")
+    if controller_actor in {producer_actor, executor_actor}:
+        raise RegistryError("qualification controller actor must differ from producer/executor actors; self-qualification forbidden")
     if reviewer_identity is not None:
-        if reviewer_identity in {controller_identity, unit.producer_code_sha, unit.executor_code_sha}:
-            raise RegistryError("independent reviewer must differ from controller/producer/executor")
+        if reviewer_identity == controller_identity:
+            raise RegistryError("independent reviewer must differ from controller")
         reviewer_obj = _resolve_object(
             reviewer_identity, authority_object_resolver,
             expected_role="INDEPENDENT_REVIEWER", label="independent reviewer",
         )
         reviewer_actor = _actor_id(reviewer_obj, label="independent reviewer")
-        if reviewer_actor == controller_actor:
-            raise RegistryError("independent reviewer actor must differ from qualification controller actor")
+        if reviewer_actor in {controller_actor, producer_actor, executor_actor}:
+            raise RegistryError("independent reviewer actor must differ from qualification controller/producer/executor actors")
     if destination_stage is QualificationStage.REAL_REFERENCE_READY:
         result = derive_real_reference_ready(
             unit_id, registry,
@@ -850,12 +867,23 @@ def revoke_or_supersede(
         raise RegistryError("only ACTIVE lineage can be revoked or superseded")
     if type(reason_class) is not str or not reason_class:
         raise RegistryError("revocation reason required")
-    if controller_identity in {unit.producer_code_sha, unit.executor_code_sha}:
-        raise RegistryError("independent revocation controller required")
-    _resolve_object(
+    producer_actor_obj = _resolve_object(
+        unit.producer_actor_identity, authority_object_resolver,
+        expected_role="SCIENTIFIC_PRODUCER", label="scientific producer actor",
+    )
+    executor_actor_obj = _resolve_object(
+        unit.executor_actor_identity, authority_object_resolver,
+        expected_role="SCIENTIFIC_EXECUTOR", label="scientific executor actor",
+    )
+    controller_obj = _resolve_object(
         controller_identity, authority_object_resolver,
         expected_role="QUALIFICATION_CONTROLLER", label="revocation controller",
     )
+    producer_actor = _actor_id(producer_actor_obj, label="scientific producer actor")
+    executor_actor = _actor_id(executor_actor_obj, label="scientific executor actor")
+    controller_actor = _actor_id(controller_obj, label="revocation controller")
+    if controller_actor in {producer_actor, executor_actor}:
+        raise RegistryError("independent revocation controller actor must differ from producer/executor actors")
     if new_status is ActiveLineageStatus.SUPERSEDED:
         if not successor_unit_id or not successor_unit_sha or not requalification_scope:
             raise RegistryError("supersession requires successor identity and requalification scope")

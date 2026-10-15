@@ -3,77 +3,416 @@
   "$id": "TD_QUALIFICATION_REGISTRY_V1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "units", "prerequisites", "promotions", "revocations"],
+  "required": [
+    "schema",
+    "units",
+    "prerequisites",
+    "promotions",
+    "revocations"
+  ],
   "properties": {
-    "schema": {"const": "TD_QUALIFICATION_REGISTRY_V1"},
-    "units": {"type": "array", "items": {"$ref": "#/$defs/registryUnit"}},
-    "prerequisites": {"type": "array", "items": {"$ref": "#/$defs/prerequisiteRecord"}},
-    "promotions": {"type": "array", "items": {"$ref": "#/$defs/promotionReceipt"}},
-    "revocations": {"type": "array", "items": {"$ref": "#/$defs/revocationReceipt"}}
+    "schema": {
+      "const": "TD_QUALIFICATION_REGISTRY_V1"
+    },
+    "units": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/registryUnit"
+      }
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/prerequisiteRecord"
+      }
+    },
+    "promotions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/promotionReceipt"
+      }
+    },
+    "revocations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/revocationReceipt"
+      }
+    }
   },
   "$defs": {
-    "stage": {"enum": ["SEMANTICS_ONLY", "FIXTURE_SAME_INTERFACE", "SAME_CODE_PATH", "KNOWN_TRUTH_QUALIFIED", "REAL_REFERENCE_READY", "HUMAN_EXECUTABLE", "HUMAN_EXECUTED", "DOWNSTREAM_CERTIFIED", "TRAINING_ELIGIBLE", "TRAINING_AUTHORIZED"]},
-    "lineage": {"enum": ["ACTIVE", "SUPERSEDED", "REVOKED_BY_DEFECT", "REQUIRES_REQUALIFICATION"]},
-    "sha64": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
-    "sha40": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "stage": {
+      "enum": [
+        "SEMANTICS_ONLY",
+        "FIXTURE_SAME_INTERFACE",
+        "SAME_CODE_PATH",
+        "KNOWN_TRUTH_QUALIFIED",
+        "REAL_REFERENCE_READY",
+        "HUMAN_EXECUTABLE",
+        "HUMAN_EXECUTED",
+        "DOWNSTREAM_CERTIFIED",
+        "TRAINING_ELIGIBLE",
+        "TRAINING_AUTHORIZED"
+      ]
+    },
+    "lineage": {
+      "enum": [
+        "ACTIVE",
+        "SUPERSEDED",
+        "REVOKED_BY_DEFECT",
+        "REQUIRES_REQUALIFICATION"
+      ]
+    },
+    "sha64": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "sha40": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
     "registryUnit": {
-      "type": "object", "additionalProperties": false,
-      "required": ["object_role", "unit_id", "qualification_stage", "active_lineage_status", "authority_scope", "authority_restrictions", "manifest_sha", "access_policy_sha", "producer_code_sha", "executor_code_sha", "producer_policy_sha", "executor_policy_sha", "schema_sha", "metric_sha", "reference_producer_sha", "falsifier_sha", "population_authority", "claim_scope"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_role",
+        "unit_id",
+        "qualification_stage",
+        "active_lineage_status",
+        "authority_scope",
+        "authority_restrictions",
+        "manifest_sha",
+        "access_policy_sha",
+        "producer_code_sha",
+        "executor_code_sha",
+        "producer_actor_identity",
+        "executor_actor_identity",
+        "producer_policy_sha",
+        "executor_policy_sha",
+        "schema_sha",
+        "metric_sha",
+        "reference_producer_sha",
+        "falsifier_sha",
+        "population_authority",
+        "claim_scope"
+      ],
       "properties": {
-        "object_role": {"const": "REGISTRY_UNIT"}, "unit_id": {"type": "string", "minLength": 1},
-        "qualification_stage": {"$ref": "#/$defs/stage"}, "active_lineage_status": {"$ref": "#/$defs/lineage"},
-        "authority_scope": {"type": "string", "pattern": "^UNIT:[^\\s]+$"},
-        "authority_restrictions": {"type": "array", "items": {"type": "string"}, "contains": {"const": "NO_TRAINING_AUTHORITY"}},
-        "manifest_sha": {"$ref": "#/$defs/sha64"}, "access_policy_sha": {"$ref": "#/$defs/sha64"},
-        "producer_code_sha": {"$ref": "#/$defs/sha40"}, "executor_code_sha": {"$ref": "#/$defs/sha40"},
-        "producer_policy_sha": {"$ref": "#/$defs/sha64"}, "executor_policy_sha": {"$ref": "#/$defs/sha64"},
-        "schema_sha": {"$ref": "#/$defs/sha64"}, "metric_sha": {"$ref": "#/$defs/sha64"},
-        "reference_producer_sha": {"$ref": "#/$defs/sha64"}, "falsifier_sha": {"$ref": "#/$defs/sha64"},
-        "population_authority": {"enum": ["AUTHENTICATED_READER_SPLIT", "FIXTURE_UNBOUND"]},
-        "claim_scope": {"enum": ["POOLED_DONOR_LEVEL", "PER_FOLD_SOURCE_STRATIFIED", "FIXTURE_ONLY"]}
+        "object_role": {
+          "const": "REGISTRY_UNIT"
+        },
+        "unit_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "qualification_stage": {
+          "$ref": "#/$defs/stage"
+        },
+        "active_lineage_status": {
+          "$ref": "#/$defs/lineage"
+        },
+        "authority_scope": {
+          "type": "string",
+          "pattern": "^UNIT:[^\\s]+$"
+        },
+        "authority_restrictions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "contains": {
+            "const": "NO_TRAINING_AUTHORITY"
+          }
+        },
+        "manifest_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "access_policy_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "producer_code_sha": {
+          "$ref": "#/$defs/sha40"
+        },
+        "executor_code_sha": {
+          "$ref": "#/$defs/sha40"
+        },
+        "producer_policy_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "executor_policy_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "schema_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "metric_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "reference_producer_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "falsifier_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "population_authority": {
+          "enum": [
+            "AUTHENTICATED_READER_SPLIT",
+            "FIXTURE_UNBOUND"
+          ]
+        },
+        "claim_scope": {
+          "enum": [
+            "POOLED_DONOR_LEVEL",
+            "PER_FOLD_SOURCE_STRATIFIED",
+            "FIXTURE_ONLY"
+          ]
+        },
+        "producer_actor_identity": {
+          "$ref": "#/$defs/sha64"
+        },
+        "executor_actor_identity": {
+          "$ref": "#/$defs/sha64"
+        }
       }
     },
     "prerequisiteRecord": {
-      "type": "object", "additionalProperties": false,
-      "required": ["object_role", "prerequisite_id", "dependent_unit_id", "dependent_unit_sha", "prerequisite_unit_id", "prerequisite_unit_sha", "required_stage", "required_lineage_status", "manifest_sha", "access_policy_sha", "gate", "content_required", "content_validated", "content_validation_receipt_sha", "requirement_class", "external_state", "evidence_receipt_sha"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_role",
+        "prerequisite_id",
+        "dependent_unit_id",
+        "dependent_unit_sha",
+        "prerequisite_unit_id",
+        "prerequisite_unit_sha",
+        "required_stage",
+        "required_lineage_status",
+        "manifest_sha",
+        "access_policy_sha",
+        "gate",
+        "content_required",
+        "content_validated",
+        "content_validation_receipt_sha",
+        "requirement_class",
+        "external_state",
+        "evidence_receipt_sha"
+      ],
       "properties": {
-        "object_role": {"const": "PREREQUISITE_RECORD"}, "prerequisite_id": {"type": "string", "minLength": 1},
-        "dependent_unit_id": {"type": "string", "minLength": 1}, "dependent_unit_sha": {"$ref": "#/$defs/sha64"},
-        "prerequisite_unit_id": {"type": "string", "minLength": 1}, "prerequisite_unit_sha": {"$ref": "#/$defs/sha64"},
-        "required_stage": {"$ref": "#/$defs/stage"}, "required_lineage_status": {"$ref": "#/$defs/lineage"},
-        "manifest_sha": {"$ref": "#/$defs/sha64"}, "access_policy_sha": {"$ref": "#/$defs/sha64"},
-        "gate": {"enum": ["REAL_REFERENCE_READY", "HUMAN_EXECUTABLE"]},
-        "content_required": {"type": "boolean"}, "content_validated": {"type": "boolean"},
-        "content_validation_receipt_sha": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha64"}]},
-        "requirement_class": {"type": "string", "minLength": 1}, "external_state": {"enum": ["SATISFIED", "UNRESOLVED", "FAILED"]},
-        "evidence_receipt_sha": {"$ref": "#/$defs/sha64"}
+        "object_role": {
+          "const": "PREREQUISITE_RECORD"
+        },
+        "prerequisite_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dependent_unit_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dependent_unit_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "prerequisite_unit_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "prerequisite_unit_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "required_stage": {
+          "$ref": "#/$defs/stage"
+        },
+        "required_lineage_status": {
+          "$ref": "#/$defs/lineage"
+        },
+        "manifest_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "access_policy_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "gate": {
+          "enum": [
+            "REAL_REFERENCE_READY",
+            "HUMAN_EXECUTABLE"
+          ]
+        },
+        "content_required": {
+          "type": "boolean"
+        },
+        "content_validated": {
+          "type": "boolean"
+        },
+        "content_validation_receipt_sha": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/sha64"
+            }
+          ]
+        },
+        "requirement_class": {
+          "type": "string",
+          "minLength": 1
+        },
+        "external_state": {
+          "enum": [
+            "SATISFIED",
+            "UNRESOLVED",
+            "FAILED"
+          ]
+        },
+        "evidence_receipt_sha": {
+          "$ref": "#/$defs/sha64"
+        }
       }
     },
     "promotionReceipt": {
-      "type": "object", "additionalProperties": false,
-      "required": ["object_role", "unit_id", "source_stage", "destination_stage", "pre_registry_sha", "unit_identity_sha", "prerequisite_ids", "prerequisite_shas", "manifest_sha", "access_policy_sha", "controller_identity", "reviewer_identity"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_role",
+        "unit_id",
+        "source_stage",
+        "destination_stage",
+        "pre_registry_sha",
+        "unit_identity_sha",
+        "prerequisite_ids",
+        "prerequisite_shas",
+        "manifest_sha",
+        "access_policy_sha",
+        "controller_identity",
+        "reviewer_identity"
+      ],
       "properties": {
-        "object_role": {"const": "PROMOTION_RECEIPT"}, "unit_id": {"type": "string", "minLength": 1},
-        "source_stage": {"$ref": "#/$defs/stage"}, "destination_stage": {"$ref": "#/$defs/stage"},
-        "pre_registry_sha": {"$ref": "#/$defs/sha64"}, "unit_identity_sha": {"$ref": "#/$defs/sha64"},
-        "prerequisite_ids": {"type": "array", "items": {"type": "string", "minLength": 1}},
-        "prerequisite_shas": {"type": "array", "items": {"$ref": "#/$defs/sha64"}},
-        "manifest_sha": {"$ref": "#/$defs/sha64"}, "access_policy_sha": {"$ref": "#/$defs/sha64"},
-        "controller_identity": {"$ref": "#/$defs/sha64"},
-        "reviewer_identity": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha64"}]}
+        "object_role": {
+          "const": "PROMOTION_RECEIPT"
+        },
+        "unit_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_stage": {
+          "$ref": "#/$defs/stage"
+        },
+        "destination_stage": {
+          "$ref": "#/$defs/stage"
+        },
+        "pre_registry_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "unit_identity_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "prerequisite_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "prerequisite_shas": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sha64"
+          }
+        },
+        "manifest_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "access_policy_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "controller_identity": {
+          "$ref": "#/$defs/sha64"
+        },
+        "reviewer_identity": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/sha64"
+            }
+          ]
+        }
       }
     },
     "revocationReceipt": {
-      "type": "object", "additionalProperties": false,
-      "required": ["object_role", "unit_id", "prior_stage", "new_lineage_status", "pre_registry_sha", "affected_unit_sha", "reason_class", "controller_identity", "successor_unit_id", "successor_unit_sha", "requalification_scope"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_role",
+        "unit_id",
+        "prior_stage",
+        "new_lineage_status",
+        "pre_registry_sha",
+        "affected_unit_sha",
+        "reason_class",
+        "controller_identity",
+        "successor_unit_id",
+        "successor_unit_sha",
+        "requalification_scope"
+      ],
       "properties": {
-        "object_role": {"const": "REVOCATION_RECEIPT"}, "unit_id": {"type": "string", "minLength": 1},
-        "prior_stage": {"$ref": "#/$defs/stage"}, "new_lineage_status": {"$ref": "#/$defs/lineage"},
-        "pre_registry_sha": {"$ref": "#/$defs/sha64"}, "affected_unit_sha": {"$ref": "#/$defs/sha64"},
-        "reason_class": {"type": "string", "minLength": 1}, "controller_identity": {"$ref": "#/$defs/sha64"},
-        "successor_unit_id": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1}]},
-        "successor_unit_sha": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha64"}]},
-        "requalification_scope": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1}]}
+        "object_role": {
+          "const": "REVOCATION_RECEIPT"
+        },
+        "unit_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "prior_stage": {
+          "$ref": "#/$defs/stage"
+        },
+        "new_lineage_status": {
+          "$ref": "#/$defs/lineage"
+        },
+        "pre_registry_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "affected_unit_sha": {
+          "$ref": "#/$defs/sha64"
+        },
+        "reason_class": {
+          "type": "string",
+          "minLength": 1
+        },
+        "controller_identity": {
+          "$ref": "#/$defs/sha64"
+        },
+        "successor_unit_id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "successor_unit_sha": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/sha64"
+            }
+          ]
+        },
+        "requalification_scope": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        }
       }
     }
   }

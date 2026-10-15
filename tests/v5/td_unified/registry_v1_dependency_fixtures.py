@@ -19,6 +19,8 @@ def _core(unit_id: str):
     producer_code = f"producer-code:{unit_id}:v1\n".encode()
     executor_code = f"executor-code:{unit_id}:v1\n".encode()
     semantic = {
+        "producer_actor_identity": {"object_role": "SCIENTIFIC_PRODUCER", "actor_id": f"producer:{unit_id}", "unit_id": unit_id, "fixture": "TASK3_DEPENDENCY_BYTES_V1"},
+        "executor_actor_identity": {"object_role": "SCIENTIFIC_EXECUTOR", "actor_id": f"executor:{unit_id}", "unit_id": unit_id, "fixture": "TASK3_DEPENDENCY_BYTES_V1"},
         "producer_policy_sha": _semantic("PRODUCER_POLICY", unit_id),
         "executor_policy_sha": _semantic("EXECUTOR_POLICY", unit_id),
         "schema_sha": _semantic("UNIT_SCHEMA", unit_id),
