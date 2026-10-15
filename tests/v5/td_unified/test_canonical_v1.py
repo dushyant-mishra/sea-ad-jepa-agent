@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import copy
+import json
+from pathlib import Path
 
 import pytest
 
@@ -17,6 +19,8 @@ HEX64_A = "a" * 64
 HEX64_B = "b" * 64
 HEX64_C = "c" * 64
 HEX64_D = "d" * 64
+ROOT = Path(__file__).resolve().parents[3]
+SCHEMA = ROOT / "schemas" / "target_discovery" / "unified_v1" / "scientific_receipt_v1.json"
 
 
 def _leaf(payload=None):
@@ -40,6 +44,14 @@ def test_canonical_bytes_are_mapping_order_invariant_and_semantically_strict():
         canonical_bytes(float("nan"))
     with pytest.raises(CanonicalError):
         canonical_bytes(b"raw")
+
+
+def test_reused_old_task1_canonical_byte_rules_remain_compatible():
+    assert canonical_bytes({"b": [1, 2.5], "a": None}) == b'{"a":null,"b":[1,2.5]}'
+    assert canonical_bytes("a\r\nb\rc") == b'"a\\nb\\nc"'
+    assert canonical_bytes(-0.0) == b"0.0"
+    assert canonical_bytes([True, 1, 1.0, None]) == b"[true,1,1.0,null]"
+    assert canonical_bytes("é") == b'"\xc3\xa9"'
 
 
 def test_declared_digest_never_authenticates_mutated_payload():
@@ -105,3 +117,19 @@ def test_duplicate_or_conflicting_parent_identity_is_rejected():
             registry_sha=HEX64_D,
             access_policy_sha=HEX64_A,
         )
+
+
+def test_closed_receipt_schema_matches_actual_emitted_fields():
+    schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+    receipt = _leaf({"x": 1})
+    assert schema["additionalProperties"] is False
+    assert set(schema["required"]) == set(receipt)
+    assert set(schema["properties"]) == set(receipt)
+
+
+def test_unexpected_receipt_field_fails_closed_even_if_attacker_rehashes():
+    receipt = _leaf({"x": 1})
+    receipt["extra_scientific_knob"] = "hidden"
+    receipt["receipt_sha256"] = canonical_sha256({k: v for k, v in receipt.items() if k != "receipt_sha256"})
+    with pytest.raises(CanonicalError, match="fields"):
+        verify_scientific_receipt(receipt, lambda _sha: None)
