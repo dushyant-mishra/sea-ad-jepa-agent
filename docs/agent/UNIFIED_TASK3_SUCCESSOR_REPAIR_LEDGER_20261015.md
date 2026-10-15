@@ -11,7 +11,8 @@ This ledger records successor custody after the independent Macha rejection of U
 - frozen Task 2: `c7dfff1cee608e4a101855d42cf0af08491c2aaf`
 - rejected historical Task 3 candidate: `851544e8dc2a3881193a4d5bbcf07933e1d61149`
 - Macha rejection review: `869ca777a498181c519ccfc04b8bf5db0f2888c7`
-- repaired Task 3 GREEN candidate: `68df31584d17f91da2635cdf8e03bbe93695f9d1`
+- repaired Task 3 code candidate: `68df31584d17f91da2635cdf8e03bbe93695f9d1`
+- review-package head after evidence-only ledger update: `962be9d09532feeb1dc158739e07da98bc8d2950`
 - global authority remains: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
 ## Preserved RED baseline
@@ -30,9 +31,9 @@ Read-only CI reproduced the independent findings before repair: `11 failed, 53 p
 
 ## Exact-head verification
 
-Candidate: `68df31584d17f91da2635cdf8e03bbe93695f9d1`
+Code candidate: `68df31584d17f91da2635cdf8e03bbe93695f9d1`
 
-All required read-only CI is GREEN on this exact candidate:
+All required read-only CI is GREEN on this exact code candidate:
 
 - Unified Task 3 registry — run `38806385403`, job `116668232197`: focused Task 3 `74 passed`; full `tests/v5/td_unified` `177 passed`; token permission `Contents: read`.
 - Unified Task 3 B6 workflow policy — run `38806385464`: PASS.
@@ -41,10 +42,12 @@ All required read-only CI is GREEN on this exact candidate:
 - Frozen Task 2 regression — run `38806385406`: PASS.
 - Unified synthetic integration — run `38806385364`: PASS.
 
-Diff audit from frozen Task 2 `c7dfff1c...` to candidate `68df3158...` shows Task 3/workflow/docs/schema/test additions only; frozen Task 0-2 production files are not modified.
+Diff audit from frozen Task 2 `c7dfff1c...` to code candidate `68df3158...` shows Task 3/workflow/docs/schema/test additions only; frozen Task 0-2 production files are not modified.
+
+The subsequent branch-head movement to `962be9d...` changes only this evidence ledger; it does not change Task 3 production or tests. Independent review should bind both the reviewed branch head and the verified code candidate above.
 
 ## Remaining acceptance gate
 
-Request a focused independent Macha recheck of B1-B6 only against exact candidate `68df31584d17f91da2635cdf8e03bbe93695f9d1`. Do not restart the historical audit.
+Request a focused independent Macha recheck of B1-B6 only. Do not restart the historical audit.
 
-Task 3 remains non-authoritative until that independent review accepts this exact candidate. Task 4 remains blocked until then.
+Task 3 remains non-authoritative until that independent review accepts the repaired bytes. Task 4 remains blocked until then.
