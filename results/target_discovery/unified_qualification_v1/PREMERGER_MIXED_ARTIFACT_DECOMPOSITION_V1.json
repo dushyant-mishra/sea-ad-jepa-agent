@@ -17,12 +17,17 @@
           "historical_evidence_retained": true,
           "requires_requalification": true,
           "requalification_reason": "reuse only under unified identities and producer contracts",
-          "reusable_components": ["observation mechanics", "blinding mechanics"],
+          "reusable_components": [
+            "observation mechanics",
+            "blinding mechanics"
+          ],
           "superseded_components": [],
           "source_commit": "bfeb2b868aa84cb94594869ef5cb196af286db90",
           "artifact_digest": null,
           "exact_identity_available": false,
-          "authority_basis": "CANONICAL_AUDIT_WRAPPER_ONLY"
+          "authority_basis": "CANONICAL_AUDIT_WRAPPER_ONLY",
+          "identity_unavailable_reason": "exact payload SHA-256 or repo blob is not frozen in current Task0 custody; retain only the narrower historical authority declared by this record",
+          "byte_custody": "HISTORICAL_WRAPPER_OR_NAVIGATION_ONLY"
         },
         {
           "child_artifact_id": "V79_ESTIMATOR_QUALIFICATION_FAILURE",
@@ -35,11 +40,15 @@
           "requires_requalification": true,
           "requalification_reason": "V79 permanently NOT_QUALIFIED; any successor requires a new prospective identity",
           "reusable_components": [],
-          "superseded_components": ["estimator qualification claim"],
+          "superseded_components": [
+            "estimator qualification claim"
+          ],
           "source_commit": "bfeb2b868aa84cb94594869ef5cb196af286db90",
           "artifact_digest": null,
           "exact_identity_available": false,
-          "authority_basis": "CANONICAL_AUDIT_WRAPPER_ONLY"
+          "authority_basis": "CANONICAL_AUDIT_WRAPPER_ONLY",
+          "identity_unavailable_reason": "exact payload SHA-256 or repo blob is not frozen in current Task0 custody; retain only the narrower historical authority declared by this record",
+          "byte_custody": "HISTORICAL_WRAPPER_OR_NAVIGATION_ONLY"
         }
       ]
     },
@@ -56,12 +65,17 @@
           "historical_evidence_retained": true,
           "requires_requalification": true,
           "requalification_reason": "fixture mechanics must be re-bound under unified interfaces",
-          "reusable_components": ["mechanics patterns", "hostile fixture patterns"],
+          "reusable_components": [
+            "mechanics patterns",
+            "hostile fixture patterns"
+          ],
           "superseded_components": [],
           "source_commit": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
           "artifact_digest": null,
           "exact_identity_available": false,
-          "authority_basis": "EXACT_COMMIT_AND_AUTHENTICATED_AUDIT_OR_RECEIPT"
+          "authority_basis": "EXACT_COMMIT_AND_AUTHENTICATED_AUDIT_OR_RECEIPT",
+          "identity_unavailable_reason": "exact payload SHA-256 or repo blob is not frozen in current Task0 custody; retain only the narrower historical authority declared by this record",
+          "byte_custody": "HISTORICAL_WRAPPER_OR_NAVIGATION_ONLY"
         },
         {
           "child_artifact_id": "PR328_OBSOLETE_PRODUCTION_BIOLOGY_ASSUMPTIONS",
@@ -74,11 +88,18 @@
           "requires_requalification": true,
           "requalification_reason": "artificial gene blocks/fixed rare geometry/dense near-oracle ATAC/role-revealing metadata cannot migrate as production biology",
           "reusable_components": [],
-          "superseded_components": ["artificial gene blocks", "fixed rare geometry", "dense near-oracle ATAC", "role-revealing metadata"],
+          "superseded_components": [
+            "artificial gene blocks",
+            "fixed rare geometry",
+            "dense near-oracle ATAC",
+            "role-revealing metadata"
+          ],
           "source_commit": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
           "artifact_digest": null,
           "exact_identity_available": false,
-          "authority_basis": "EXACT_COMMIT_AND_AUTHENTICATED_AUDIT_OR_RECEIPT"
+          "authority_basis": "EXACT_COMMIT_AND_AUTHENTICATED_AUDIT_OR_RECEIPT",
+          "identity_unavailable_reason": "exact payload SHA-256 or repo blob is not frozen in current Task0 custody; retain only the narrower historical authority declared by this record",
+          "byte_custody": "HISTORICAL_WRAPPER_OR_NAVIGATION_ONLY"
         }
       ]
     },
@@ -95,12 +116,19 @@
           "historical_evidence_retained": true,
           "requires_requalification": true,
           "requalification_reason": "requirements must be re-expressed under unified architecture before implementation authority",
-          "reusable_components": ["E1-E7", "candidate neutrality", "support/evidence rights", "library thinning law", "challenge secrecy"],
+          "reusable_components": [
+            "E1-E7",
+            "candidate neutrality",
+            "support/evidence rights",
+            "library thinning law",
+            "challenge secrecy"
+          ],
           "superseded_components": [],
           "source_commit": "847fe734b15e52f204f18903a124e1cfd3bf111d",
           "artifact_digest": "ab1ae1bb67765cc025f580205d7c082ee4af470dd39ef23c4f000414e8e9363f",
           "exact_identity_available": true,
-          "authority_basis": "EXACT_COMMIT_AND_AUTHENTICATED_AUDIT_OR_RECEIPT"
+          "authority_basis": "EXACT_COMMIT_AND_AUTHENTICATED_AUDIT_OR_RECEIPT",
+          "byte_custody": "SHA256_PAYLOAD"
         },
         {
           "child_artifact_id": "PR344_PARALLEL_GATE_CONTROLLER_AUTHORITY",
@@ -113,11 +141,14 @@
           "requires_requalification": true,
           "requalification_reason": "duplicate scientific authority prohibited",
           "reusable_components": [],
-          "superseded_components": ["parallel synthetic gate/controller interpretation"],
+          "superseded_components": [
+            "parallel synthetic gate/controller interpretation"
+          ],
           "source_commit": "847fe734b15e52f204f18903a124e1cfd3bf111d",
           "artifact_digest": "ab1ae1bb67765cc025f580205d7c082ee4af470dd39ef23c4f000414e8e9363f",
           "exact_identity_available": true,
-          "authority_basis": "EXACT_COMMIT_AND_AUTHENTICATED_AUDIT_OR_RECEIPT"
+          "authority_basis": "EXACT_COMMIT_AND_AUTHENTICATED_AUDIT_OR_RECEIPT",
+          "byte_custody": "SHA256_PAYLOAD"
         }
       ]
     },
@@ -125,38 +156,121 @@
       "parent_artifact_id": "PR356_SYNTH_PLAN",
       "children": [
         {
-          "child_artifact_id": "PR356_TASKS1_3_REQUIREMENTS",
-          "scientific_role": "canonical identity, custody/RNG, calibration/provenance requirements preserved from former Tasks 1-3",
+          "child_artifact_id": "OLD_TASK1_IMPLEMENTATION",
+          "scientific_role": "implemented canonical identity/serialization substrate",
           "migration_class": "REUSABLE_SHARED_INFRASTRUCTURE",
-          "current_authority": "REQUIREMENTS_ONLY__IMPLEMENT_UNDER_UNIFIED_PLAN",
-          "destination_in_unified_architecture": "PR #380 Tasks 1-5 after Task 0 acceptance",
+          "current_authority": "CONTROLLER_VERIFIED_REUSE_SUBSTRATE_ONLY__NO_UNIFIED_PROMOTION",
+          "destination_in_unified_architecture": "unified Task1 canonical primitives via ADAPT_AND_WRAP",
           "continue_stop_or_redirect": "REDIRECT",
           "historical_evidence_retained": true,
           "requires_requalification": true,
-          "requalification_reason": "requirements survive but implementation authority belongs to unified plan",
-          "reusable_components": ["Task1 identity requirements", "Task2 custody/RNG requirements", "Task3 calibration/provenance requirements"],
+          "requalification_reason": "must be rebound under the unified architecture before any current authority use",
+          "reusable_components": [
+            "canonical identity",
+            "ordered registry digest",
+            "semantic row-set digest"
+          ],
+          "superseded_components": [],
+          "source_commit": "ff597faf2182522a320ec5322f8db9b67c9c6094",
+          "artifact_digest": null,
+          "artifact_blob_sha": "b8a34d8d47f618e7dcde1b3e5c53584701294561",
+          "exact_identity_available": true,
+          "byte_custody": "REPO_BLOB",
+          "authority_basis": "EXACT_COMMIT_AND_REPO_BLOB",
+          "artifact_path": "scripts/production_synthetic/canonical_v1.py"
+        },
+        {
+          "child_artifact_id": "OLD_TASK2_IMPLEMENTATION",
+          "scientific_role": "implemented sealed custody/RNG substrate",
+          "migration_class": "REUSABLE_SHARED_INFRASTRUCTURE",
+          "current_authority": "CONTROLLER_VERIFIED_REUSE_SUBSTRATE_ONLY__NO_UNIFIED_PROMOTION",
+          "destination_in_unified_architecture": "unified sealed-challenge/finalizer custody via ADAPT_AND_WRAP; not unified Task2 manifest/access law",
+          "continue_stop_or_redirect": "REDIRECT",
+          "historical_evidence_retained": true,
+          "requires_requalification": true,
+          "requalification_reason": "must be rebound under the unified architecture before any current authority use",
+          "reusable_components": [
+            "commit/reveal",
+            "identity-keyed RNG",
+            "exposure ledger",
+            "withheld-family custody"
+          ],
+          "superseded_components": [],
+          "source_commit": "ff597faf2182522a320ec5322f8db9b67c9c6094",
+          "artifact_digest": null,
+          "artifact_blob_sha": "8efb7622eb2773305f9159cafdb19ccae8946fef",
+          "exact_identity_available": true,
+          "byte_custody": "REPO_BLOB",
+          "authority_basis": "EXACT_COMMIT_AND_REPO_BLOB",
+          "artifact_path": "scripts/production_synthetic/custody_v1.py"
+        },
+        {
+          "child_artifact_id": "OLD_TASK3_REQUIREMENTS",
+          "scientific_role": "calibration firewall, numeric provenance and realism requirements only",
+          "migration_class": "PRODUCTION_INTERFACE_DEPENDENCY",
+          "current_authority": "REQUIREMENTS_ONLY__NO_OLD_LANE_IMPLEMENTATION_AUTHORITY",
+          "destination_in_unified_architecture": "unified calibration/provenance/realism contracts after Task0 acceptance",
+          "continue_stop_or_redirect": "REDIRECT",
+          "historical_evidence_retained": true,
+          "requires_requalification": true,
+          "requalification_reason": "must be rebound under the unified architecture before any current authority use",
+          "reusable_components": [
+            "calibration firewall",
+            "number provenance",
+            "realism contract"
+          ],
           "superseded_components": [],
           "source_commit": "2c2723a1a731e7a848196aef3f7c4ab965e9ff6a",
           "artifact_digest": null,
-          "exact_identity_available": false,
-          "authority_basis": "EXACT_COMMIT_AND_AUTHENTICATED_AUDIT_OR_RECEIPT"
+          "artifact_blob_sha": "ad81e3f2d5a7a0efded9b8b38c9060ebe676a48e",
+          "exact_identity_available": true,
+          "byte_custody": "REPO_BLOB",
+          "authority_basis": "EXACT_COMMIT_AND_REPO_BLOB",
+          "artifact_path": "docs/superpowers/plans/2026-10-14-production-synthetic-v3-1-1-implementation.md"
         },
         {
-          "child_artifact_id": "PR356_TASKS4_12_PARALLEL_PLAN",
-          "scientific_role": "parallel synthetic gates/controller/downstream rehearsal plan superseded before implementation",
+          "child_artifact_id": "OLD_TASK4_REQUIREMENTS",
+          "scientific_role": "candidate-neutral known-truth biology requirements only",
+          "migration_class": "KNOWN_TRUTH_SUBSTRATE",
+          "current_authority": "REQUIREMENTS_ONLY__NO_OLD_LANE_IMPLEMENTATION_AUTHORITY",
+          "destination_in_unified_architecture": "KNOWN_TRUTH_CASEBUNDLE_V1 / TRUTH_BUNDLE_V1 substrate requirements",
+          "continue_stop_or_redirect": "REDIRECT",
+          "historical_evidence_retained": true,
+          "requires_requalification": true,
+          "requalification_reason": "must be rebound under the unified architecture before any current authority use",
+          "reusable_components": [
+            "candidate-neutral hidden biology requirements"
+          ],
+          "superseded_components": [],
+          "source_commit": "2c2723a1a731e7a848196aef3f7c4ab965e9ff6a",
+          "artifact_digest": null,
+          "artifact_blob_sha": "ad81e3f2d5a7a0efded9b8b38c9060ebe676a48e",
+          "exact_identity_available": true,
+          "byte_custody": "REPO_BLOB",
+          "authority_basis": "EXACT_COMMIT_AND_REPO_BLOB",
+          "artifact_path": "docs/superpowers/plans/2026-10-14-production-synthetic-v3-1-1-implementation.md"
+        },
+        {
+          "child_artifact_id": "OLD_TASKS5_12",
+          "scientific_role": "former independent synthetic gate/controller/downstream authority path",
           "migration_class": "SUPERSEDED_PARALLEL_IMPLEMENTATION",
           "current_authority": "SUPERSEDED__NO_NEW_SCIENTIFIC_AUTHORITY",
-          "destination_in_unified_architecture": "none; requirements replaced by unified plan",
+          "destination_in_unified_architecture": "historical requirements/challenge lessons only where explicitly migrated",
           "continue_stop_or_redirect": "STOP_AND_FREEZE",
           "historical_evidence_retained": true,
           "requires_requalification": true,
-          "requalification_reason": "duplicate parallel scientific authority prohibited",
+          "requalification_reason": "must be rebound under the unified architecture before any current authority use",
           "reusable_components": [],
-          "superseded_components": ["independent synthetic Tasks4-12"],
+          "superseded_components": [
+            "independent synthetic Tasks5-12 authority path"
+          ],
           "source_commit": "2c2723a1a731e7a848196aef3f7c4ab965e9ff6a",
           "artifact_digest": null,
-          "exact_identity_available": false,
-          "authority_basis": "EXACT_COMMIT_AND_AUTHENTICATED_AUDIT_OR_RECEIPT"
+          "artifact_blob_sha": "ad81e3f2d5a7a0efded9b8b38c9060ebe676a48e",
+          "exact_identity_available": true,
+          "byte_custody": "REPO_BLOB",
+          "authority_basis": "EXACT_COMMIT_AND_REPO_BLOB",
+          "artifact_path": "docs/superpowers/plans/2026-10-14-production-synthetic-v3-1-1-implementation.md"
         }
       ]
     }

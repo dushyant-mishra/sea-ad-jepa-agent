@@ -22,5 +22,16 @@
     "rerun_for_migration_allowed": false,
     "requires_new_prospective_execution_for_current_authority": true,
     "motivating_artifact": "MACHA_PR314_CORRECTED_REPLAY"
+  },
+  "controlling_plan_amendment_blob_sha": "7f20050c2a8d0f80f0c6418c007bc12f7fc1083f",
+  "historical_biological_evidence_authority": "RETROSPECTIVELY_RATIFIED_20261014",
+  "historical_biological_evidence_chronology": {
+    "validator_first_commit": "f98f0041",
+    "validator_first_time_edt": "14:44:53",
+    "plan_ratification_commit": "5b6bf07e7d8b69b286ea430b09765a5ee4743325",
+    "plan_ratification_time_edt": "15:43:21",
+    "taxonomy_binding_commit": "4417949b",
+    "taxonomy_binding_time_edt": "15:45:03",
+    "interpretation": "class content retained; prospective-ordering claim withdrawn and replaced by explicit retrospective ratification"
   }
 }

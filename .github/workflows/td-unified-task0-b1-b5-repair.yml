@@ -1,0 +1,35 @@
+# Exact-head verification only; this workflow does not mutate Task 0.
+name: TD unified Task 0 B1-B5 repair verification
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/td_unified/apply_task0_b1_b5_repairs.py'
+      - 'scripts/v5/td_unified/apply_task0_b1_b5_repairs_v2.py'
+      - 'scripts/v5/td_unified/apply_task0_b1_b5_repairs_v3.py'
+      - 'scripts/v5/td_unified/apply_task0_b1_b5_repairs_v4.py'
+      - 'scripts/v5/td_unified/premerger_migration_task0.py'
+      - 'tests/v5/td_unified/test_task0_b1_b5_regressions.py'
+      - 'tests/v5/td_unified/test_premerger_migration_task0.py'
+      - 'results/target_discovery/unified_qualification_v1/**'
+      - 'docs/superpowers/plans/**'
+      - '.github/workflows/td-unified-task0-b1-b5-repair.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pytest
+        run: python -m pip install 'pytest>=9,<10'
+      - name: Verify B1-B5 and inherited Task 0 tests
+        run: >-
+          python -m pytest -q
+          tests/v5/td_unified/test_task0_b1_b5_regressions.py
+          tests/v5/td_unified/test_premerger_migration_task0.py
+          tests/v5/td_unified/test_premerger_custody_completeness_v1.py
