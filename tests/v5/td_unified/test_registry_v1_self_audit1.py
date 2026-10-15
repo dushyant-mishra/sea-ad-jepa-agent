@@ -36,7 +36,7 @@ def actor(role,name):
     obj={"object_role":role,"actor_id":name}; return canonical_sha256(obj),obj
 
 def evidence(marker="ok"):
-    obj={"object_role":"PREREQUISITE_EVIDENCE","marker":marker}; return canonical_sha256(obj),obj
+    obj={"object_role":"PREREQUISITE_EVIDENCE","requirement_class":"EXTERNAL_CONTROL","marker":marker}; return canonical_sha256(obj),obj
 
 
 def test_participant_identity_must_be_exact_not_free_text():

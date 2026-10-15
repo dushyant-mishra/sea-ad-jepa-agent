@@ -26,7 +26,7 @@ def unit(unit_id="G8", stage=QualificationStage.KNOWN_TRUTH_QUALIFIED):
 
 
 def evidence(role="PREREQUISITE_EVIDENCE", marker="ok"):
-    obj = {"object_role": role, "marker": marker}
+    obj = {"object_role": role, "requirement_class": "EXTERNAL_CONTROL", "marker": marker}
     return canonical_sha256(obj), obj
 
 

@@ -108,6 +108,41 @@ def _validate_requirement_evidence(requirement_class: str, obj: Mapping[str, obj
             raise RegistryError(f"{label} key custody must be HARNESS")
 
 
+def _validate_content_validation_receipt(
+    prerequisite: "PrerequisiteRecord",
+    resolver: AuthorityObjectResolver | None,
+) -> None:
+    receipt = _resolve_object(
+        prerequisite.content_validation_receipt_sha or "",
+        resolver,
+        expected_role="CONTENT_VALIDATION_RECEIPT",
+        label=prerequisite.prerequisite_id + " content",
+    )
+    expected_fields = {
+        "object_role", "receipt_schema", "prerequisite_id", "content_identity_sha",
+        "validator_identity_sha", "status",
+    }
+    if set(receipt) != expected_fields:
+        raise RegistryError(
+            f"{prerequisite.prerequisite_id} content validation receipt must bind prerequisite, content identity, validator identity, and status"
+        )
+    if receipt.get("receipt_schema") != "CONTENT_VALIDATION_RECEIPT_V1":
+        raise RegistryError(f"{prerequisite.prerequisite_id} content validation receipt schema mismatch")
+    if receipt.get("prerequisite_id") != prerequisite.prerequisite_id:
+        raise RegistryError(f"{prerequisite.prerequisite_id} content validation receipt prerequisite mismatch")
+    if receipt.get("content_identity_sha") != prerequisite.prerequisite_unit_sha:
+        raise RegistryError(f"{prerequisite.prerequisite_id} content validation receipt identity mismatch")
+    validator_sha = receipt.get("validator_identity_sha")
+    _resolve_object(
+        validator_sha if type(validator_sha) is str else "",
+        resolver,
+        expected_role="CONTENT_VALIDATOR",
+        label=prerequisite.prerequisite_id + " content validator",
+    )
+    if receipt.get("status") != "QUALIFIED":
+        raise RegistryError(f"{prerequisite.prerequisite_id} content validation receipt is not QUALIFIED")
+
+
 @dataclass(frozen=True)
 class RegistryUnit:
     unit_id: str
@@ -547,24 +582,24 @@ def _evaluate_unit(
         if p.external_state != "SATISFIED":
             pb.append(f"{p.prerequisite_id} external prerequisite unresolved: {p.external_state}")
         if p.requirement_class != "UNIT" and p.external_state == "SATISFIED":
-            err = _authority_receipt_blocker(
-                p.evidence_receipt_sha, authority_object_resolver,
-                expected_role="PREREQUISITE_EVIDENCE", label=p.prerequisite_id,
-            )
-            if err:
-                pb.append(err)
+            try:
+                evidence_obj = _resolve_object(
+                    p.evidence_receipt_sha, authority_object_resolver,
+                    expected_role="PREREQUISITE_EVIDENCE", label=p.prerequisite_id,
+                )
+                _validate_requirement_evidence(p.requirement_class, evidence_obj, label=p.prerequisite_id)
+            except RegistryError as exc:
+                pb.append(str(exc))
         if p.content_required:
             if not p.content_validated:
                 pb.append(f"{p.prerequisite_id} content qualification is not validated")
             elif p.content_validation_receipt_sha is None:
                 pb.append(f"{p.prerequisite_id} content validation receipt is required")
             else:
-                err = _authority_receipt_blocker(
-                    p.content_validation_receipt_sha, authority_object_resolver,
-                    expected_role="CONTENT_VALIDATION_RECEIPT", label=p.prerequisite_id + " content",
-                )
-                if err:
-                    pb.append(err)
+                try:
+                    _validate_content_validation_receipt(p, authority_object_resolver)
+                except RegistryError as exc:
+                    pb.append(str(exc))
         if target is None:
             pb.append(f"{p.prerequisite_id} prerequisite target missing")
         else:
@@ -642,12 +677,10 @@ def _human_execution_blockers(
             if not p.content_validated or p.content_validation_receipt_sha is None:
                 blockers.append(f"{p.prerequisite_id} content qualification/receipt unresolved")
             else:
-                err = _authority_receipt_blocker(
-                    p.content_validation_receipt_sha, authority_object_resolver,
-                    expected_role="CONTENT_VALIDATION_RECEIPT", label=p.prerequisite_id + " content",
-                )
-                if err:
-                    blockers.append(err)
+                try:
+                    _validate_content_validation_receipt(p, authority_object_resolver)
+                except RegistryError as exc:
+                    blockers.append(str(exc))
     return tuple(blockers)
 
 
