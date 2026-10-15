@@ -191,9 +191,30 @@ def make_scientific_receipt(
     return body
 
 
+def _verify_resolved_input(
+    input_sha: str,
+    resolved: object,
+    object_resolver: Callable[[str], object | None],
+    stack: frozenset[str],
+) -> None:
+    if resolved is None:
+        raise CanonicalError(f"input object unavailable: {input_sha}")
+    if isinstance(resolved, Mapping) and resolved.get("receipt_schema") == _RECEIPT_SCHEMA:
+        verified = verify_scientific_receipt(resolved, object_resolver, _stack=stack)
+        if verified.receipt_sha256 != input_sha:
+            raise CanonicalError("input receipt identity mismatch")
+        return
+    try:
+        actual = canonical_sha256(resolved)
+    except CanonicalError as exc:
+        raise CanonicalError(f"input object is not canonically verifiable: {input_sha}") from exc
+    if actual != input_sha:
+        raise CanonicalError("input object digest mismatch")
+
+
 def verify_scientific_receipt(
     receipt: Mapping[str, object],
-    object_resolver: Callable[[str], Mapping[str, object] | None],
+    object_resolver: Callable[[str], object | None],
     *,
     _stack: frozenset[str] | None = None,
 ) -> VerifiedReceipt:
@@ -235,17 +256,20 @@ def verify_scientific_receipt(
     if receipt_sha in stack:
         raise CanonicalError("parent receipt cycle detected")
     next_stack = stack | {receipt_sha}
+
+    for input_sha in inputs:
+        _verify_resolved_input(input_sha, object_resolver(input_sha), object_resolver, next_stack)
+
     verified_parents: list[str] = []
     for parent_sha in parents:
         parent = object_resolver(parent_sha)
         if parent is None:
             raise CanonicalError(f"parent receipt unavailable: {parent_sha}")
+        if not isinstance(parent, Mapping):
+            raise CanonicalError("parent receipt must resolve to a mapping")
         verified = verify_scientific_receipt(parent, object_resolver, _stack=next_stack)
         if verified.receipt_sha256 != parent_sha:
             raise CanonicalError("parent receipt identity mismatch")
         verified_parents.append(parent_sha)
 
-    # Force materialization/validation of input list even though the caller only
-    # needs the receipt result; this prevents malformed hidden dependency fields.
-    _ = inputs
     return VerifiedReceipt(receipt_sha, actual_payload, tuple(verified_parents))
