@@ -1,12 +1,12 @@
 """Unified TD qualification registry, prerequisite graph, promotion, and revocation.
 
-Task 3 is a custody/governance layer. Importing or validating these objects confers no
-biological, human-execution, Stage 4, representation, target, or training authority.
+This module is custody/governance only. It grants no target, representation,
+human-execution, Stage 4, protected-value, or training authority by itself.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
-from typing import Callable, MutableMapping
+from typing import Callable, Mapping, MutableMapping
 
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
@@ -28,18 +28,43 @@ _ALLOWED_POPULATION_AUTHORITY = {"AUTHENTICATED_READER_SPLIT", "FIXTURE_UNBOUND"
 _ALLOWED_CLAIM_SCOPE = {"POOLED_DONOR_LEVEL", "PER_FOLD_SOURCE_STRATIFIED", "FIXTURE_ONLY"}
 _ALLOWED_GATES = {"REAL_REFERENCE_READY", "HUMAN_EXECUTABLE"}
 _ALLOWED_EXTERNAL_STATES = {"SATISFIED", "UNRESOLVED", "FAILED"}
+AuthorityObjectResolver = Callable[[str], object]
 
 
 def _hex(value: object, n: int) -> bool:
     return type(value) is str and len(value) == n and all(ch in _HEX for ch in value)
 
 
-def _participant_identity(value: object) -> bool:
-    return _hex(value, 40) or _hex(value, 64)
-
-
 def _stage_at_least(actual: QualificationStage, required: QualificationStage) -> bool:
     return _STAGE_INDEX[actual] >= _STAGE_INDEX[required]
+
+
+def _resolve_object(
+    expected_sha: str,
+    resolver: AuthorityObjectResolver | None,
+    *,
+    expected_role: str,
+    label: str,
+) -> Mapping[str, object]:
+    if not _hex(expected_sha, 64):
+        raise RegistryError(f"{label} identity must be exact 64-hex canonical digest")
+    if resolver is None:
+        raise RegistryError(f"{label} authority object resolver required")
+    try:
+        obj = resolver(expected_sha)
+    except Exception as exc:
+        raise RegistryError(f"{label} authority object resolution failed") from exc
+    if not isinstance(obj, Mapping):
+        raise RegistryError(f"{label} authority object must be a mapping")
+    try:
+        observed = canonical_sha256(dict(obj))
+    except Exception as exc:
+        raise RegistryError(f"{label} authority object is not canonicalizable") from exc
+    if observed != expected_sha:
+        raise RegistryError(f"{label} authority object identity mismatch")
+    if obj.get("object_role") != expected_role:
+        raise RegistryError(f"{label} authority object role mismatch; expected {expected_role}")
+    return obj
 
 
 @dataclass(frozen=True)
@@ -66,9 +91,9 @@ class RegistryUnit:
         if type(self.unit_id) is not str or not self.unit_id:
             raise RegistryError("unit_id must be non-empty text")
         if not isinstance(self.qualification_stage, QualificationStage):
-            raise RegistryError("qualification_stage must use the Task 1 canonical enum")
+            raise RegistryError("qualification_stage must use Task 1 canonical enum")
         if not isinstance(self.active_lineage_status, ActiveLineageStatus):
-            raise RegistryError("active_lineage_status must use the Task 1 canonical enum")
+            raise RegistryError("active_lineage_status must use Task 1 canonical enum")
         if self.authority_scope != f"UNIT:{self.unit_id}":
             raise RegistryError("registry unit authority scope must be UNIT:<unit_id>")
         if type(self.authority_restrictions) is not tuple or "NO_TRAINING_AUTHORITY" not in self.authority_restrictions:
@@ -86,17 +111,24 @@ class RegistryUnit:
 
     def to_payload(self) -> dict[str, object]:
         return {
-            "object_role": "REGISTRY_UNIT", "unit_id": self.unit_id,
+            "object_role": "REGISTRY_UNIT",
+            "unit_id": self.unit_id,
             "qualification_stage": self.qualification_stage.value,
             "active_lineage_status": self.active_lineage_status.value,
             "authority_scope": self.authority_scope,
             "authority_restrictions": list(self.authority_restrictions),
-            "manifest_sha": self.manifest_sha, "access_policy_sha": self.access_policy_sha,
-            "producer_code_sha": self.producer_code_sha, "executor_code_sha": self.executor_code_sha,
-            "producer_policy_sha": self.producer_policy_sha, "executor_policy_sha": self.executor_policy_sha,
-            "schema_sha": self.schema_sha, "metric_sha": self.metric_sha,
-            "reference_producer_sha": self.reference_producer_sha, "falsifier_sha": self.falsifier_sha,
-            "population_authority": self.population_authority, "claim_scope": self.claim_scope,
+            "manifest_sha": self.manifest_sha,
+            "access_policy_sha": self.access_policy_sha,
+            "producer_code_sha": self.producer_code_sha,
+            "executor_code_sha": self.executor_code_sha,
+            "producer_policy_sha": self.producer_policy_sha,
+            "executor_policy_sha": self.executor_policy_sha,
+            "schema_sha": self.schema_sha,
+            "metric_sha": self.metric_sha,
+            "reference_producer_sha": self.reference_producer_sha,
+            "falsifier_sha": self.falsifier_sha,
+            "population_authority": self.population_authority,
+            "claim_scope": self.claim_scope,
         }
 
     def canonical_sha256(self) -> str:
@@ -124,7 +156,8 @@ class PrerequisiteRecord:
 
     def __post_init__(self) -> None:
         for name in ("prerequisite_id", "dependent_unit_id", "prerequisite_unit_id", "requirement_class"):
-            if type(getattr(self, name)) is not str or not getattr(self, name):
+            value = getattr(self, name)
+            if type(value) is not str or not value:
                 raise RegistryError(f"{name} must be non-empty text")
         for name in ("dependent_unit_sha", "prerequisite_unit_sha", "manifest_sha", "access_policy_sha", "evidence_receipt_sha"):
             if not _hex(getattr(self, name), 64):
@@ -144,18 +177,27 @@ class PrerequisiteRecord:
 
     def to_payload(self) -> dict[str, object]:
         return {
-            "object_role": "PREREQUISITE_RECORD", "prerequisite_id": self.prerequisite_id,
-            "dependent_unit_id": self.dependent_unit_id, "dependent_unit_sha": self.dependent_unit_sha,
-            "prerequisite_unit_id": self.prerequisite_unit_id, "prerequisite_unit_sha": self.prerequisite_unit_sha,
+            "object_role": "PREREQUISITE_RECORD",
+            "prerequisite_id": self.prerequisite_id,
+            "dependent_unit_id": self.dependent_unit_id,
+            "dependent_unit_sha": self.dependent_unit_sha,
+            "prerequisite_unit_id": self.prerequisite_unit_id,
+            "prerequisite_unit_sha": self.prerequisite_unit_sha,
             "required_stage": self.required_stage.value,
             "required_lineage_status": self.required_lineage_status.value,
-            "manifest_sha": self.manifest_sha, "access_policy_sha": self.access_policy_sha,
-            "gate": self.gate, "content_required": self.content_required,
+            "manifest_sha": self.manifest_sha,
+            "access_policy_sha": self.access_policy_sha,
+            "gate": self.gate,
+            "content_required": self.content_required,
             "content_validated": self.content_validated,
             "content_validation_receipt_sha": self.content_validation_receipt_sha,
-            "requirement_class": self.requirement_class, "external_state": self.external_state,
+            "requirement_class": self.requirement_class,
+            "external_state": self.external_state,
             "evidence_receipt_sha": self.evidence_receipt_sha,
         }
+
+    def canonical_sha256(self) -> str:
+        return canonical_sha256(self.to_payload())
 
 
 @dataclass(frozen=True)
@@ -166,27 +208,36 @@ class PromotionReceipt:
     pre_registry_sha: str
     unit_identity_sha: str
     prerequisite_ids: tuple[str, ...]
+    prerequisite_shas: tuple[str, ...]
     manifest_sha: str
     access_policy_sha: str
     controller_identity: str
     reviewer_identity: str | None
 
     def __post_init__(self) -> None:
-        for name in ("pre_registry_sha", "unit_identity_sha", "manifest_sha", "access_policy_sha"):
+        for name in ("pre_registry_sha", "unit_identity_sha", "manifest_sha", "access_policy_sha", "controller_identity"):
             if not _hex(getattr(self, name), 64):
                 raise RegistryError(f"promotion {name} must be exact 64-hex identity")
-        if not _participant_identity(self.controller_identity):
-            raise RegistryError("promotion controller identity must be exact 40/64-hex identity")
-        if self.reviewer_identity is not None and not _participant_identity(self.reviewer_identity):
-            raise RegistryError("promotion reviewer identity must be exact 40/64-hex identity")
+        if self.reviewer_identity is not None and not _hex(self.reviewer_identity, 64):
+            raise RegistryError("promotion reviewer identity must be exact 64-hex identity")
+        if len(self.prerequisite_ids) != len(self.prerequisite_shas):
+            raise RegistryError("promotion prerequisite ids/identities length mismatch")
+        if any(not _hex(x, 64) for x in self.prerequisite_shas):
+            raise RegistryError("promotion prerequisite identities must be exact 64-hex")
 
     def to_payload(self) -> dict[str, object]:
         return {
-            "object_role": "PROMOTION_RECEIPT", "unit_id": self.unit_id,
-            "source_stage": self.source_stage.value, "destination_stage": self.destination_stage.value,
-            "pre_registry_sha": self.pre_registry_sha, "unit_identity_sha": self.unit_identity_sha,
-            "prerequisite_ids": list(self.prerequisite_ids), "manifest_sha": self.manifest_sha,
-            "access_policy_sha": self.access_policy_sha, "controller_identity": self.controller_identity,
+            "object_role": "PROMOTION_RECEIPT",
+            "unit_id": self.unit_id,
+            "source_stage": self.source_stage.value,
+            "destination_stage": self.destination_stage.value,
+            "pre_registry_sha": self.pre_registry_sha,
+            "unit_identity_sha": self.unit_identity_sha,
+            "prerequisite_ids": list(self.prerequisite_ids),
+            "prerequisite_shas": list(self.prerequisite_shas),
+            "manifest_sha": self.manifest_sha,
+            "access_policy_sha": self.access_policy_sha,
+            "controller_identity": self.controller_identity,
             "reviewer_identity": self.reviewer_identity,
         }
 
@@ -196,24 +247,33 @@ class RevocationReceipt:
     unit_id: str
     prior_stage: QualificationStage
     new_lineage_status: ActiveLineageStatus
+    pre_registry_sha: str
     affected_unit_sha: str
     reason_class: str
     controller_identity: str
     successor_unit_id: str | None = None
+    successor_unit_sha: str | None = None
     requalification_scope: str | None = None
 
     def __post_init__(self) -> None:
-        if not _hex(self.affected_unit_sha, 64):
-            raise RegistryError("revocation affected_unit_sha must be exact 64-hex identity")
-        if not _participant_identity(self.controller_identity):
-            raise RegistryError("revocation controller identity must be exact 40/64-hex identity")
+        for name in ("pre_registry_sha", "affected_unit_sha", "controller_identity"):
+            if not _hex(getattr(self, name), 64):
+                raise RegistryError(f"revocation {name} must be exact 64-hex identity")
+        if self.successor_unit_sha is not None and not _hex(self.successor_unit_sha, 64):
+            raise RegistryError("successor_unit_sha must be null or exact 64-hex identity")
 
     def to_payload(self) -> dict[str, object]:
         return {
-            "object_role": "REVOCATION_RECEIPT", "unit_id": self.unit_id,
-            "prior_stage": self.prior_stage.value, "new_lineage_status": self.new_lineage_status.value,
-            "affected_unit_sha": self.affected_unit_sha, "reason_class": self.reason_class,
-            "controller_identity": self.controller_identity, "successor_unit_id": self.successor_unit_id,
+            "object_role": "REVOCATION_RECEIPT",
+            "unit_id": self.unit_id,
+            "prior_stage": self.prior_stage.value,
+            "new_lineage_status": self.new_lineage_status.value,
+            "pre_registry_sha": self.pre_registry_sha,
+            "affected_unit_sha": self.affected_unit_sha,
+            "reason_class": self.reason_class,
+            "controller_identity": self.controller_identity,
+            "successor_unit_id": self.successor_unit_id,
+            "successor_unit_sha": self.successor_unit_sha,
             "requalification_scope": self.requalification_scope,
         }
 
@@ -265,19 +325,15 @@ class TDQualificationRegistry:
 
 
 def replace_unit(registry: TDQualificationRegistry, unit: RegistryUnit) -> TDQualificationRegistry:
-    if not isinstance(registry, TDQualificationRegistry) or not isinstance(unit, RegistryUnit):
-        raise RegistryError("replace_unit requires registry and RegistryUnit")
     if unit.unit_id not in registry.units_by_id():
         raise RegistryError("replacement unit_id absent from registry")
     return TDQualificationRegistry(
-        units=tuple(unit if x.unit_id == unit.unit_id else x for x in registry.units),
-        prerequisites=registry.prerequisites, promotions=registry.promotions, revocations=registry.revocations,
+        tuple(unit if x.unit_id == unit.unit_id else x for x in registry.units),
+        registry.prerequisites, registry.promotions, registry.revocations,
     )
 
 
 def reidentify_unit(unit: RegistryUnit, **changes: object) -> RegistryUnit:
-    if not isinstance(unit, RegistryUnit):
-        raise RegistryError("reidentify_unit requires RegistryUnit")
     allowed = set(_IDENTITY_64_FIELDS + _IDENTITY_40_FIELDS + ("population_authority", "claim_scope"))
     if not changes or not set(changes) <= allowed:
         raise RegistryError("reidentify_unit changes must be decision-bearing identity fields")
@@ -286,46 +342,69 @@ def reidentify_unit(unit: RegistryUnit, **changes: object) -> RegistryUnit:
                    active_lineage_status=ActiveLineageStatus.REQUIRES_REQUALIFICATION)
 
 
-def _verify_unit_dependencies(unit: RegistryUnit, dependency_verifier: Callable[[str], bool] | None,
-                              cache: MutableMapping[object, object] | None) -> list[str]:
+def _verify_unit_dependencies(
+    unit: RegistryUnit,
+    dependency_verifier: Callable[[str], bool] | None,
+    cache: MutableMapping[object, object] | None,
+) -> list[str]:
     if dependency_verifier is None:
         return []
     blockers: list[str] = []
     unit_key = unit.canonical_sha256()
     for field in _IDENTITY_64_FIELDS + _IDENTITY_40_FIELDS:
-        sha = getattr(unit, field); key = ("dependency", unit_key, field, sha)
+        sha = getattr(unit, field)
+        key = ("dependency", unit_key, field, sha)
         if cache is not None and key in cache:
             ok = bool(cache[key])
         else:
-            try: ok = dependency_verifier(sha) is True
-            except Exception: ok = False
-            if cache is not None: cache[key] = ok
-        if not ok: blockers.append(f"dependency verification failed: {field}")
+            try:
+                ok = dependency_verifier(sha) is True
+            except Exception:
+                ok = False
+            if cache is not None:
+                cache[key] = ok
+        if not ok:
+            blockers.append(f"dependency verification failed: {field}")
     return blockers
 
 
-def _verify_receipt(sha: str, verifier: Callable[[str], bool] | None, label: str) -> str | None:
-    if verifier is None:
-        return f"{label} evidence receipt resolver required"
-    try: ok = verifier(sha) is True
-    except Exception: ok = False
-    return None if ok else f"{label} evidence receipt could not be verified"
+def _authority_receipt_blocker(
+    sha: str,
+    resolver: AuthorityObjectResolver | None,
+    *,
+    expected_role: str,
+    label: str,
+) -> str | None:
+    try:
+        _resolve_object(sha, resolver, expected_role=expected_role, label=label)
+        return None
+    except RegistryError as exc:
+        return str(exc)
 
 
 def _relevant_prerequisites(registry: TDQualificationRegistry, unit_id: str, gate: str) -> tuple[PrerequisiteRecord, ...]:
     return tuple(p for p in registry.prerequisites if p.dependent_unit_id == unit_id and p.gate == gate)
 
 
-def _evaluate_unit(unit_id: str, registry: TDQualificationRegistry, *, gate: str,
-                   dependency_verifier: Callable[[str], bool] | None,
-                   prerequisite_evidence_verifier: Callable[[str], bool] | None,
-                   verification_cache: MutableMapping[object, object] | None,
-                   stack: tuple[str, ...], require_prerequisite_graph: bool) -> ReadinessResult:
+def _evaluate_unit(
+    unit_id: str,
+    registry: TDQualificationRegistry,
+    *,
+    gate: str,
+    dependency_verifier: Callable[[str], bool] | None,
+    authority_object_resolver: AuthorityObjectResolver | None,
+    verification_cache: MutableMapping[object, object] | None,
+    stack: tuple[str, ...],
+    require_prerequisite_graph: bool,
+) -> ReadinessResult:
     if unit_id in stack:
         raise RegistryError(f"prerequisite cycle detected: {' -> '.join(stack + (unit_id,))}")
     units = registry.units_by_id()
-    if unit_id not in units: raise RegistryError(f"unknown unit_id: {unit_id}")
-    unit = units[unit_id]; blockers: list[str] = []; unsatisfied: list[str] = []
+    if unit_id not in units:
+        raise RegistryError(f"unknown unit_id: {unit_id}")
+    unit = units[unit_id]
+    blockers: list[str] = []
+    unsatisfied: list[str] = []
     if unit.active_lineage_status is not ActiveLineageStatus.ACTIVE:
         blockers.append(f"unit {unit_id} lineage is {unit.active_lineage_status.value}; ACTIVE required")
     if unit.population_authority != "AUTHENTICATED_READER_SPLIT":
@@ -338,22 +417,31 @@ def _evaluate_unit(unit_id: str, registry: TDQualificationRegistry, *, gate: str
     if require_prerequisite_graph and not prereqs:
         blockers.append(f"no authenticated prerequisite graph registered for {gate}")
     for p in prereqs:
-        pb: list[str] = []; target = units.get(p.prerequisite_unit_id)
+        pb: list[str] = []
+        target = units.get(p.prerequisite_unit_id)
         if unit.canonical_sha256() != p.dependent_unit_sha:
             pb.append(f"{p.prerequisite_id} dependent registry identity mismatch")
         if p.external_state != "SATISFIED":
             pb.append(f"{p.prerequisite_id} external prerequisite unresolved: {p.external_state}")
         if p.requirement_class != "UNIT" and p.external_state == "SATISFIED":
-            err = _verify_receipt(p.evidence_receipt_sha, prerequisite_evidence_verifier, p.prerequisite_id)
-            if err: pb.append(err)
+            err = _authority_receipt_blocker(
+                p.evidence_receipt_sha, authority_object_resolver,
+                expected_role="PREREQUISITE_EVIDENCE", label=p.prerequisite_id,
+            )
+            if err:
+                pb.append(err)
         if p.content_required:
             if not p.content_validated:
                 pb.append(f"{p.prerequisite_id} content qualification is not validated")
             elif p.content_validation_receipt_sha is None:
                 pb.append(f"{p.prerequisite_id} content validation receipt is required")
             else:
-                err = _verify_receipt(p.content_validation_receipt_sha, prerequisite_evidence_verifier, p.prerequisite_id + " content")
-                if err: pb.append(err)
+                err = _authority_receipt_blocker(
+                    p.content_validation_receipt_sha, authority_object_resolver,
+                    expected_role="CONTENT_VALIDATION_RECEIPT", label=p.prerequisite_id + " content",
+                )
+                if err:
+                    pb.append(err)
         if target is None:
             pb.append(f"{p.prerequisite_id} prerequisite target missing")
         else:
@@ -369,32 +457,44 @@ def _evaluate_unit(unit_id: str, registry: TDQualificationRegistry, *, gate: str
                 pb.append(f"{p.prerequisite_id} access-policy identity mismatch")
             pb.extend(_verify_unit_dependencies(target, dependency_verifier, verification_cache))
             if _relevant_prerequisites(registry, target.unit_id, gate):
-                nested = _evaluate_unit(target.unit_id, registry, gate=gate,
+                nested = _evaluate_unit(
+                    target.unit_id, registry, gate=gate,
                     dependency_verifier=dependency_verifier,
-                    prerequisite_evidence_verifier=prerequisite_evidence_verifier,
-                    verification_cache=verification_cache, stack=stack + (unit_id,),
-                    require_prerequisite_graph=False)
+                    authority_object_resolver=authority_object_resolver,
+                    verification_cache=verification_cache,
+                    stack=stack + (unit_id,), require_prerequisite_graph=False,
+                )
                 pb.extend(nested.blockers)
         if pb:
-            unsatisfied.append(p.prerequisite_id); blockers.extend(pb)
+            unsatisfied.append(p.prerequisite_id)
+            blockers.extend(pb)
     return ReadinessResult(not blockers, tuple(blockers), tuple(dict.fromkeys(unsatisfied)))
 
 
-def derive_real_reference_ready(unit_id: str, registry: TDQualificationRegistry, *,
-                                asserted_ready: bool | None = None,
-                                dependency_verifier: Callable[[str], bool] | None = None,
-                                prerequisite_evidence_verifier: Callable[[str], bool] | None = None,
-                                verification_cache: MutableMapping[object, object] | None = None) -> ReadinessResult:
-    if not isinstance(registry, TDQualificationRegistry):
-        raise RegistryError("derive_real_reference_ready requires TDQualificationRegistry")
-    return _evaluate_unit(unit_id, registry, gate="REAL_REFERENCE_READY",
+def derive_real_reference_ready(
+    unit_id: str,
+    registry: TDQualificationRegistry,
+    *,
+    asserted_ready: bool | None = None,
+    dependency_verifier: Callable[[str], bool] | None = None,
+    prerequisite_evidence_verifier: Callable[[str], bool] | None = None,
+    authority_object_resolver: AuthorityObjectResolver | None = None,
+    verification_cache: MutableMapping[object, object] | None = None,
+) -> ReadinessResult:
+    # `asserted_ready` and legacy boolean prerequisite_evidence_verifier are intentionally non-authoritative.
+    return _evaluate_unit(
+        unit_id, registry, gate="REAL_REFERENCE_READY",
         dependency_verifier=dependency_verifier,
-        prerequisite_evidence_verifier=prerequisite_evidence_verifier,
-        verification_cache=verification_cache, stack=(), require_prerequisite_graph=True)
+        authority_object_resolver=authority_object_resolver,
+        verification_cache=verification_cache, stack=(), require_prerequisite_graph=True,
+    )
 
 
-def _human_execution_blockers(unit_id: str, registry: TDQualificationRegistry,
-                              prerequisite_evidence_verifier: Callable[[str], bool] | None) -> tuple[str, ...]:
+def _human_execution_blockers(
+    unit_id: str,
+    registry: TDQualificationRegistry,
+    authority_object_resolver: AuthorityObjectResolver | None,
+) -> tuple[str, ...]:
     prereqs = _relevant_prerequisites(registry, unit_id, "HUMAN_EXECUTABLE")
     process = [p for p in prereqs if p.requirement_class == "PROCESS_ISOLATION"]
     custody = [p for p in prereqs if p.requirement_class == "CROSS_PROCESS_LEDGER_CUSTODY"]
@@ -405,76 +505,146 @@ def _human_execution_blockers(unit_id: str, registry: TDQualificationRegistry,
         blockers.append(f"{','.join(p.prerequisite_id for p in custody) or 'R4'} cross-process ledger persistence/key custody prerequisite unresolved")
     for p in prereqs:
         if p.external_state == "SATISFIED" and p.requirement_class != "UNIT":
-            err = _verify_receipt(p.evidence_receipt_sha, prerequisite_evidence_verifier, p.prerequisite_id)
-            if err: blockers.append(err)
+            err = _authority_receipt_blocker(
+                p.evidence_receipt_sha, authority_object_resolver,
+                expected_role="PREREQUISITE_EVIDENCE", label=p.prerequisite_id,
+            )
+            if err:
+                blockers.append(err)
         if p.content_required:
             if not p.content_validated or p.content_validation_receipt_sha is None:
                 blockers.append(f"{p.prerequisite_id} content qualification/receipt unresolved")
             else:
-                err = _verify_receipt(p.content_validation_receipt_sha, prerequisite_evidence_verifier, p.prerequisite_id + " content")
-                if err: blockers.append(err)
+                err = _authority_receipt_blocker(
+                    p.content_validation_receipt_sha, authority_object_resolver,
+                    expected_role="CONTENT_VALIDATION_RECEIPT", label=p.prerequisite_id + " content",
+                )
+                if err:
+                    blockers.append(err)
     return tuple(blockers)
 
 
-def promote_unit(registry: TDQualificationRegistry, unit_id: str, destination_stage: QualificationStage, *,
-                 controller_identity: str, reviewer_identity: str | None,
-                 prerequisite_evidence_verifier: Callable[[str], bool] | None = None) -> TDQualificationRegistry:
-    if not isinstance(registry, TDQualificationRegistry): raise RegistryError("promote_unit requires TDQualificationRegistry")
+def promote_unit(
+    registry: TDQualificationRegistry,
+    unit_id: str,
+    destination_stage: QualificationStage,
+    *,
+    controller_identity: str,
+    reviewer_identity: str | None,
+    prerequisite_evidence_verifier: Callable[[str], bool] | None = None,
+    authority_object_resolver: AuthorityObjectResolver | None = None,
+) -> TDQualificationRegistry:
     units = registry.units_by_id()
-    if unit_id not in units: raise RegistryError(f"unknown unit_id: {unit_id}")
+    if unit_id not in units:
+        raise RegistryError(f"unknown unit_id: {unit_id}")
     unit = units[unit_id]
     if unit.active_lineage_status is not ActiveLineageStatus.ACTIVE:
         raise RegistryError(f"only ACTIVE unit can promote; got {unit.active_lineage_status.value}")
-    if not isinstance(destination_stage, QualificationStage): raise RegistryError("destination stage must use Task 1 canonical enum")
+    if not isinstance(destination_stage, QualificationStage):
+        raise RegistryError("destination stage must use Task 1 canonical enum")
     if _STAGE_INDEX[destination_stage] != _STAGE_INDEX[unit.qualification_stage] + 1:
         raise RegistryError("promotion must advance exactly one canonical stage")
-    if not _participant_identity(controller_identity):
-        raise RegistryError("qualification controller identity must be exact immutable 40/64-hex identity")
     if controller_identity in {unit.producer_code_sha, unit.executor_code_sha}:
         raise RegistryError("independent qualification controller required; producer/executor cannot self-qualify")
+    _resolve_object(
+        controller_identity, authority_object_resolver,
+        expected_role="QUALIFICATION_CONTROLLER", label="qualification controller",
+    )
     if reviewer_identity is not None:
-        if not _participant_identity(reviewer_identity):
-            raise RegistryError("reviewer identity must be exact immutable 40/64-hex identity")
         if reviewer_identity in {controller_identity, unit.producer_code_sha, unit.executor_code_sha}:
             raise RegistryError("independent reviewer must differ from controller/producer/executor")
+        _resolve_object(
+            reviewer_identity, authority_object_resolver,
+            expected_role="INDEPENDENT_REVIEWER", label="independent reviewer",
+        )
     if destination_stage is QualificationStage.REAL_REFERENCE_READY:
-        result = derive_real_reference_ready(unit_id, registry,
-                    prerequisite_evidence_verifier=prerequisite_evidence_verifier)
-        if not result.ready: raise RegistryError("REAL_REFERENCE_READY prerequisites unresolved: " + "; ".join(result.blockers))
+        result = derive_real_reference_ready(
+            unit_id, registry, authority_object_resolver=authority_object_resolver,
+        )
+        if not result.ready:
+            raise RegistryError("REAL_REFERENCE_READY prerequisites unresolved: " + "; ".join(result.blockers))
     if destination_stage is QualificationStage.HUMAN_EXECUTABLE:
-        if reviewer_identity is None: raise RegistryError("independent reviewer required for HUMAN_EXECUTABLE")
-        hb = _human_execution_blockers(unit_id, registry, prerequisite_evidence_verifier)
-        if hb: raise RegistryError("HUMAN_EXECUTABLE prerequisites unresolved: " + "; ".join(hb))
-    prereq_ids = tuple(p.prerequisite_id for p in registry.prerequisites
-                       if p.dependent_unit_id == unit_id and p.gate == destination_stage.value)
-    receipt = PromotionReceipt(unit_id, unit.qualification_stage, destination_stage,
-        registry.canonical_sha256(), unit.canonical_sha256(), prereq_ids,
-        unit.manifest_sha, unit.access_policy_sha, controller_identity, reviewer_identity)
+        if reviewer_identity is None:
+            raise RegistryError("independent reviewer required for HUMAN_EXECUTABLE")
+        blockers = _human_execution_blockers(unit_id, registry, authority_object_resolver)
+        if blockers:
+            raise RegistryError("HUMAN_EXECUTABLE prerequisites unresolved: " + "; ".join(blockers))
+    prereqs = tuple(
+        p for p in registry.prerequisites
+        if p.dependent_unit_id == unit_id and p.gate == destination_stage.value
+    )
+    receipt = PromotionReceipt(
+        unit_id=unit_id,
+        source_stage=unit.qualification_stage,
+        destination_stage=destination_stage,
+        pre_registry_sha=registry.canonical_sha256(),
+        unit_identity_sha=unit.canonical_sha256(),
+        prerequisite_ids=tuple(p.prerequisite_id for p in prereqs),
+        prerequisite_shas=tuple(p.canonical_sha256() for p in prereqs),
+        manifest_sha=unit.manifest_sha,
+        access_policy_sha=unit.access_policy_sha,
+        controller_identity=controller_identity,
+        reviewer_identity=reviewer_identity,
+    )
     promoted = replace(unit, qualification_stage=destination_stage)
-    return TDQualificationRegistry(tuple(promoted if x.unit_id == unit_id else x for x in registry.units),
-                                   registry.prerequisites, registry.promotions + (receipt,), registry.revocations)
+    return TDQualificationRegistry(
+        tuple(promoted if x.unit_id == unit_id else x for x in registry.units),
+        registry.prerequisites, registry.promotions + (receipt,), registry.revocations,
+    )
 
 
-def revoke_or_supersede(registry: TDQualificationRegistry, unit_id: str, new_status: ActiveLineageStatus, *,
-                        reason_class: str, controller_identity: str, successor_unit_id: str | None = None,
-                        requalification_scope: str | None = None) -> TDQualificationRegistry:
-    if not isinstance(registry, TDQualificationRegistry): raise RegistryError("revoke_or_supersede requires TDQualificationRegistry")
+def revoke_or_supersede(
+    registry: TDQualificationRegistry,
+    unit_id: str,
+    new_status: ActiveLineageStatus,
+    *,
+    reason_class: str,
+    controller_identity: str,
+    successor_unit_id: str | None = None,
+    successor_unit_sha: str | None = None,
+    requalification_scope: str | None = None,
+    authority_object_resolver: AuthorityObjectResolver | None = None,
+) -> TDQualificationRegistry:
     if new_status not in {ActiveLineageStatus.REVOKED_BY_DEFECT, ActiveLineageStatus.SUPERSEDED, ActiveLineageStatus.REQUIRES_REQUALIFICATION}:
         raise RegistryError("revocation must move to a non-ACTIVE lineage state")
     units = registry.units_by_id()
-    if unit_id not in units: raise RegistryError(f"unknown unit_id: {unit_id}")
+    if unit_id not in units:
+        raise RegistryError(f"unknown unit_id: {unit_id}")
     unit = units[unit_id]
     if unit.active_lineage_status is not ActiveLineageStatus.ACTIVE:
         raise RegistryError("only ACTIVE lineage can be revoked or superseded")
-    if type(reason_class) is not str or not reason_class: raise RegistryError("revocation reason required")
-    if not _participant_identity(controller_identity):
-        raise RegistryError("revocation controller identity must be exact immutable 40/64-hex identity")
+    if type(reason_class) is not str or not reason_class:
+        raise RegistryError("revocation reason required")
     if controller_identity in {unit.producer_code_sha, unit.executor_code_sha}:
         raise RegistryError("independent revocation controller required")
-    if new_status is ActiveLineageStatus.SUPERSEDED and (not successor_unit_id or not requalification_scope):
-        raise RegistryError("supersession requires successor identity and requalification scope")
-    receipt = RevocationReceipt(unit_id, unit.qualification_stage, new_status, unit.canonical_sha256(),
-                                reason_class, controller_identity, successor_unit_id, requalification_scope)
+    _resolve_object(
+        controller_identity, authority_object_resolver,
+        expected_role="QUALIFICATION_CONTROLLER", label="revocation controller",
+    )
+    if new_status is ActiveLineageStatus.SUPERSEDED:
+        if not successor_unit_id or not successor_unit_sha or not requalification_scope:
+            raise RegistryError("supersession requires successor identity and requalification scope")
+        successor = units.get(successor_unit_id)
+        if successor is None or successor.unit_id == unit_id:
+            raise RegistryError("supersession successor identity missing or invalid")
+        if successor.canonical_sha256() != successor_unit_sha:
+            raise RegistryError("supersession successor identity mismatch")
+    elif successor_unit_id is not None or successor_unit_sha is not None:
+        raise RegistryError("successor identity is valid only for SUPERSEDED lineage")
+    receipt = RevocationReceipt(
+        unit_id=unit_id,
+        prior_stage=unit.qualification_stage,
+        new_lineage_status=new_status,
+        pre_registry_sha=registry.canonical_sha256(),
+        affected_unit_sha=unit.canonical_sha256(),
+        reason_class=reason_class,
+        controller_identity=controller_identity,
+        successor_unit_id=successor_unit_id,
+        successor_unit_sha=successor_unit_sha,
+        requalification_scope=requalification_scope,
+    )
     changed = replace(unit, active_lineage_status=new_status)
-    return TDQualificationRegistry(tuple(changed if x.unit_id == unit_id else x for x in registry.units),
-                                   registry.prerequisites, registry.promotions, registry.revocations + (receipt,))
+    return TDQualificationRegistry(
+        tuple(changed if x.unit_id == unit_id else x for x in registry.units),
+        registry.prerequisites, registry.promotions, registry.revocations + (receipt,),
+    )
