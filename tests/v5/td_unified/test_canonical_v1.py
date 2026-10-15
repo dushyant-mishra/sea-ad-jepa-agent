@@ -177,3 +177,31 @@ def test_input_receipt_must_resolve_to_the_exact_requested_receipt_identity():
             consumer,
             lambda sha: other if sha == input_receipt["receipt_sha256"] else None,
         )
+
+
+def test_authority_bearing_output_manifest_registry_and_access_hashes_require_actual_objects():
+    objects = {
+        "output": {"artifact": "output", "v": 1},
+        "manifest": {"artifact": "manifest", "v": 1},
+        "registry": {"artifact": "registry", "v": 1},
+        "access": {"artifact": "access", "v": 1},
+    }
+    shas = {name: canonical_sha256(obj) for name, obj in objects.items()}
+    receipt = make_scientific_receipt(
+        payload={"x": 1},
+        producer_code_sha=HEX40_A,
+        input_shas=[],
+        parent_receipt_shas=[],
+        output_sha=shas["output"],
+        manifest_sha=shas["manifest"],
+        registry_sha=shas["registry"],
+        access_policy_sha=shas["access"],
+    )
+    by_sha = {shas[name]: obj for name, obj in objects.items()}
+    assert verify_scientific_receipt(receipt, by_sha.get)
+    for missing_name, missing_sha in shas.items():
+        with pytest.raises(CanonicalError, match=missing_name if missing_name != "access" else "access"):
+            verify_scientific_receipt(
+                receipt,
+                lambda sha, missing_sha=missing_sha: None if sha == missing_sha else by_sha.get(sha),
+            )
