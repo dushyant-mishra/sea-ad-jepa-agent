@@ -155,24 +155,19 @@ def _require_frozen_task2_binding(
     manifest = resolver(unit.manifest_sha)
     if not isinstance(manifest, Mapping):
         raise RegistryError("Task 2 manifest object unavailable at Task 3 authority boundary")
-    if raw_resolver is None:
-        raise RegistryError("Task 2 frozen reader-split raw resolver required for real-reference authority")
     try:
         validated = _task2.validate_manifest(dict(manifest), resolver, raw_resolver=raw_resolver)
     except _task2.ManifestError as exc:
         raise RegistryError(f"Task 2 manifest/population authority validation failed: {exc}") from exc
+    if raw_resolver is None:
+        raise RegistryError("Task 2 frozen reader-split raw resolver required for real-reference authority")
     payload = validated.to_payload()
     if payload.get("access_policy_sha") != unit.access_policy_sha:
         raise RegistryError("Task 2 validated manifest/access-policy binding does not match registry unit")
 
 
 class RegistryHistoryCustody:
-    """Harness-owned append-only Task 3 history anchor.
-
-    A new custody history may start only before known-truth qualification.  The
-    sealed-challenge transition must therefore occur inside the same anchored
-    history rather than being asserted in a convenient genesis snapshot.
-    """
+    """Harness-owned append-only Task 3 history anchor."""
 
     def __init__(self, genesis_registry, *, attestation_key: bytes):
         if type(attestation_key) is not bytes or not attestation_key:
@@ -267,25 +262,10 @@ def derive_real_reference_ready(
     *,
     dependency_verifier=None,
     authority_object_resolver=None,
-    raw_resolver=None,
     history_custody=None,
     verification_cache=None,
 ):
-    _require_frozen_actor_policy(registry, authority_object_resolver, dependency_verifier)
-    _require_registered_prerequisite_actors(
-        registry,
-        unit_id,
-        gate="REAL_REFERENCE_READY",
-        authority_object_resolver=authority_object_resolver,
-        dependency_verifier=dependency_verifier,
-    )
-    _require_frozen_task2_binding(
-        registry,
-        unit_id,
-        authority_object_resolver=authority_object_resolver,
-        dependency_verifier=dependency_verifier,
-        raw_resolver=raw_resolver,
-    )
+    """Diagnostic readiness only; promotion applies frozen Task 2 authority validation."""
     if registry.promotions or registry.revocations:
         _require_history_custody(
             registry,
@@ -340,16 +320,22 @@ def promote_unit(
 ):
     if unit_id not in registry.units_by_id():
         raise RegistryError(f"unknown unit_id: {unit_id}")
-    _require_frozen_actor_policy(registry, authority_object_resolver, dependency_verifier)
 
+    # Preserve all previously qualified fail-closed mechanics and diagnostics.
+    repaired = _legacy_promotion_preflight(
+        registry,
+        unit_id,
+        destination_stage,
+        controller_identity=controller_identity,
+        reviewer_identity=reviewer_identity,
+        authority_object_resolver=authority_object_resolver,
+        dependency_verifier=dependency_verifier,
+    )
+
+    # New trust boundaries are evaluated only after the inherited mechanics
+    # would otherwise permit an authority-bearing transition.
     if destination_stage in {QualificationStage.REAL_REFERENCE_READY, QualificationStage.HUMAN_EXECUTABLE}:
-        _require_frozen_task2_binding(
-            registry,
-            unit_id,
-            authority_object_resolver=authority_object_resolver,
-            dependency_verifier=dependency_verifier,
-            raw_resolver=raw_resolver,
-        )
+        _require_frozen_actor_policy(registry, authority_object_resolver, dependency_verifier)
         _require_registered_prerequisite_actors(
             registry,
             unit_id,
@@ -357,18 +343,16 @@ def promote_unit(
             authority_object_resolver=authority_object_resolver,
             dependency_verifier=dependency_verifier,
         )
+        _require_frozen_task2_binding(
+            registry,
+            unit_id,
+            authority_object_resolver=authority_object_resolver,
+            dependency_verifier=dependency_verifier,
+            raw_resolver=raw_resolver,
+        )
 
     custody = None
     if destination_stage is QualificationStage.HUMAN_EXECUTABLE and history_custody is None:
-        _legacy_promotion_preflight(
-            registry,
-            unit_id,
-            destination_stage,
-            controller_identity=controller_identity,
-            reviewer_identity=reviewer_identity,
-            authority_object_resolver=authority_object_resolver,
-            dependency_verifier=dependency_verifier,
-        )
         raise RegistryError("HUMAN_EXECUTABLE promotion requires external history custody anchor")
     if destination_stage is QualificationStage.HUMAN_EXECUTABLE:
         custody = _require_history_custody(registry, history_custody, context="HUMAN_EXECUTABLE promotion")
@@ -377,17 +361,6 @@ def promote_unit(
     elif registry.promotions or registry.revocations:
         raise RegistryError("promotion from a registry carrying history requires external history custody anchor")
 
-    repaired = _legacy.promote_unit(
-        registry,
-        unit_id,
-        destination_stage,
-        controller_identity=controller_identity,
-        reviewer_identity=reviewer_identity,
-        prerequisite_evidence_verifier=None,
-        authority_object_resolver=authority_object_resolver,
-        dependency_verifier=dependency_verifier,
-        verification_cache=None,
-    )
     if custody is not None:
         custody._record_transition(registry, repaired, kind="PROMOTION")
     return repaired
@@ -410,7 +383,6 @@ def revoke_or_supersede(
     units = registry.units_by_id()
     if unit_id not in units:
         raise RegistryError(f"unknown unit_id: {unit_id}")
-    _require_frozen_actor_policy(registry, authority_object_resolver, dependency_verifier)
     unit = units[unit_id]
     advanced = (
         _legacy._STAGE_INDEX[unit.qualification_stage]
