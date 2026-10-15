@@ -24,25 +24,29 @@ def _authoritative_policy(monkeypatch):
     return raw, sha, policy
 
 
-def test_t2_b1_authority_re_resolves_split_bytes_and_recomputes_donors(monkeypatch):
-    raw, sha, real = _authoritative_policy(monkeypatch)
+def _forged_policy(raw_sha: str):
     fake = sorted(f"FAKE_{i:03d}" for i in range(104))
     basis = {
         "fit_donors": fake,
         "fold_count": 5,
         "assignment_law": m.CURRENT_TD_ASSIGNMENT_LAW,
-        "reader_split_raw_sha256": sha,
+        "reader_split_raw_sha256": raw_sha,
         "population_registry_sha256": m.FROZEN_POPULATION_REGISTRY_SHA256,
     }
     folds = tuple(
         m.CrossFitFold(k, tuple(d for d in fake if d not in fake[k::5]), tuple(fake[k::5]))
         for k in range(5)
     )
-    forged = m.PopulationAccessPolicy(
+    return m.PopulationAccessPolicy(
         "ACCESS_POLICY", "POPULATION_ACCESS_POLICY_V1", "AUTHENTICATED_READER_SPLIT",
-        sha, m.FROZEN_POPULATION_REGISTRY_SHA256, basis, canonical_sha256(basis), 5,
+        raw_sha, m.FROZEN_POPULATION_REGISTRY_SHA256, basis, canonical_sha256(basis), 5,
         folds, ("reader_fit",), ("reader_validation", "reader_oracle"),
     )
+
+
+def test_t2_b1_authority_re_resolves_split_bytes_and_recomputes_donors(monkeypatch):
+    raw, sha, real = _authoritative_policy(monkeypatch)
+    forged = _forged_policy(sha)
     resolver = {sha: raw}.get
     with pytest.raises(m.ManifestError, match="donor|split|fold|authority"):
         m.require_current_td_population_authority(forged, raw_resolver=resolver)
@@ -67,6 +71,43 @@ def test_t2_b1_authority_recomputes_exact_folds_not_just_partition_validity(monk
         m.require_current_td_population_authority(altered, raw_resolver={sha: raw}.get)
 
 
+def test_t2_b1_harness_refuses_forged_authoritative_policy_at_session_issuance(monkeypatch):
+    raw, sha, real = _authoritative_policy(monkeypatch)
+    forged = _forged_policy(sha)
+    registry = m.HarnessAccessRegistry(attestation_key=b"task2-test-harness-key")
+    values = {d: 0 for d in forged.assignment_basis["fit_donors"]}
+    with pytest.raises(m.ManifestError, match="donor|split|fold|authority|raw"):
+        registry.issue_session(
+            policy=forged,
+            producer_id="evil",
+            reader_fit_values=values,
+            raw_resolver={sha: raw}.get,
+        )
+
+
+def test_t2_b1_access_validation_rechecks_population_bytes(monkeypatch):
+    raw, sha, policy = _authoritative_policy(monkeypatch)
+    registry = m.HarnessAccessRegistry(attestation_key=b"task2-test-harness-key")
+    values = {d: 0 for d in policy.assignment_basis["fit_donors"]}
+    session = registry.issue_session(
+        policy=policy,
+        producer_id="good",
+        reader_fit_values=values,
+        raw_resolver={sha: raw}.get,
+    )
+    fold = policy.crossfit_folds[0]
+    session.read_fit(0, "EVAL", fold.held_out_donors[:1], "BIOLOGICAL_VALUES")
+    receipt, _ = session.finalize()
+    with pytest.raises(m.ManifestError, match="raw|split|authority|unavailable"):
+        m.validate_producer_access(policy, receipt, session_registry=registry)
+    assert m.validate_producer_access(
+        policy,
+        receipt,
+        session_registry=registry,
+        raw_resolver={sha: raw}.get,
+    ) is None
+
+
 def test_t2_b2_handmade_ledger_is_not_harness_attested(monkeypatch):
     raw, sha, policy = _authoritative_policy(monkeypatch)
     assert hasattr(m, "HarnessAccessRegistry")
@@ -79,8 +120,35 @@ def test_t2_b2_handmade_ledger_is_not_harness_attested(monkeypatch):
         "observed_access": [event.to_payload()],
     }
     receipt = m.ProducerAccessReceipt("evil", policy.canonical_sha256(), canonical_sha256(ledger), (event,))
-    with pytest.raises(m.ManifestError, match="harness|session|attest|issued"):
-        m.validate_producer_access(policy, receipt, session_registry=registry)
+    with pytest.raises(m.ManifestError, match="ledger|harness|session|attest|issued"):
+        m.validate_producer_access(
+            policy,
+            receipt,
+            session_registry=registry,
+            raw_resolver={sha: raw}.get,
+        )
+
+
+def test_t2_b2_harness_issued_attested_ledger_passes(monkeypatch):
+    raw, sha, policy = _authoritative_policy(monkeypatch)
+    registry = m.HarnessAccessRegistry(attestation_key=b"task2-test-harness-key")
+    values = {d: i for i, d in enumerate(policy.assignment_basis["fit_donors"])}
+    session = registry.issue_session(
+        policy=policy,
+        producer_id="good",
+        reader_fit_values=values,
+        raw_resolver={sha: raw}.get,
+    )
+    fold = policy.crossfit_folds[0]
+    session.read_fit(0, "EVAL", fold.held_out_donors[:1], "BIOLOGICAL_VALUES")
+    receipt, ledger = session.finalize()
+    assert ledger["ledger_schema"] == "OBSERVED_ACCESS_LEDGER_V2_HARNESS_ATTESTED"
+    assert m.validate_producer_access(
+        policy,
+        receipt,
+        session_registry=registry,
+        raw_resolver={sha: raw}.get,
+    ) is None
 
 
 def test_t2_b3_redundant_subpolicies_must_equal_access_policy_derivations(monkeypatch):
