@@ -72,10 +72,10 @@ def _prereq(r, *, pid="P1", dependent="G8", target="REF", gate="REAL_REFERENCE_R
 
 
 def test_historical_promotion_receipt_remains_immutable_after_revocation():
-    r=_r(); u,ref,deps=verified_pair(r); p=verified_prereq(r,u,ref); reg=_registry(r,[u,ref],[p])
+    r=_r(); u,ref,deps=verified_pair(r,dep_stage=QualificationStage.SEMANTICS_ONLY,ref_stage=QualificationStage.SEMANTICS_ONLY); reg=_registry(r,[u,ref])
     reg,c,rv,res=_actors(r,reg,objects=deps)
     custody=r.RegistryHistoryCustody(reg,attestation_key=b"task3-lawful-history-fixture")
-    promoted=r.promote_unit(reg,"G8",QualificationStage.REAL_REFERENCE_READY,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res,dependency_verifier=deps.get,history_custody=custody)
+    promoted=r.promote_unit(reg,"G8",QualificationStage.SAME_CODE_PATH,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res,dependency_verifier=deps.get,history_custody=custody)
     old=promoted.promotions[0]
     revoked=r.revoke_or_supersede(promoted,"G8",ActiveLineageStatus.REVOKED_BY_DEFECT,reason_class="DEFECT",controller_identity=c,authority_object_resolver=res,dependency_verifier=deps.get,history_custody=custody)
     assert revoked.promotions[0]==old
