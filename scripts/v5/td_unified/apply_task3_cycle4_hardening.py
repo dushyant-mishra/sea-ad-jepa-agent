@@ -52,7 +52,9 @@ def _validate_content_validation_receipt(
         "validator_identity_sha", "status",
     }
     if set(receipt) != expected_fields:
-        raise RegistryError(f"{prerequisite.prerequisite_id} content validation receipt fields invalid")
+        raise RegistryError(
+            f"{prerequisite.prerequisite_id} content validation receipt must bind prerequisite, content identity, validator identity, and status"
+        )
     if receipt.get("receipt_schema") != "CONTENT_VALIDATION_RECEIPT_V1":
         raise RegistryError(f"{prerequisite.prerequisite_id} content validation receipt schema mismatch")
     if receipt.get("prerequisite_id") != prerequisite.prerequisite_id:
