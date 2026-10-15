@@ -1,0 +1,2 @@
+OK  {} alone as access refused: access object role mismatch: expected ACCESS_POLICY
+OK  untagged input refused: input object role mismatch: expected INPUT

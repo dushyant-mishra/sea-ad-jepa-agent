@@ -1,0 +1,36 @@
+{
+  "authority_changed": false,
+  "date": "2026-10-15",
+  "domain_mutation": "2 tests fail",
+  "freeze": "TASK1_MAY_BE_FROZEN__UNIFIED_TASK2_MAY_BEGIN_PROSPECTIVELY",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "hostile_probes": {
+    "bad": 0,
+    "total": 42
+  },
+  "items": {
+    "T1-B1": "CLOSED",
+    "T1-B2": "CLOSED",
+    "T1-B3": "CLOSED",
+    "T1-B4": "CLOSED",
+    "T1-B5": "CLOSED"
+  },
+  "kat_independent": "8b441603e35b6bb16384a91a82453ad13144a79cc9b5b15750a4dc00d09030e9",
+  "non_blocking": [
+    "M1 memoize recursive verification before Task 3",
+    "M3 raw-byte identity path for Task 2",
+    "M4 revoked usability gating in Task 3",
+    "N5 record scope-stage table in controlling plan",
+    "N6 numpy dependency deviation from stdlib-only"
+  ],
+  "old_task1_compat_incl_numpy": "0/4000 mismatches",
+  "pr": 386,
+  "reviewed_head": "799d2e235901dfad9ce3b305c767a1c989e362f6",
+  "schema": "MACHA_UNIFIED_TASK1_RECHECK_VERDICT_V1",
+  "tests_local": {
+    "evidence_class": "LOCAL_NOT_CI",
+    "task1_files": "27 passed",
+    "td_unified_full": "64 passed (with docs/superpowers/plans checked out)"
+  },
+  "verdict": "ACCEPT_UNIFIED_TASK1_T1_B1_B5_REPAIR"
+}

@@ -1,0 +1,50 @@
+== T1-B1
+OK  np.float64(1.5) bytes == float 1.5 bytes -> True
+OK  rejects float subclass -> RAISES CanonicalError unsupported canonical type or subclass: F
+OK  rejects int subclass -> RAISES CanonicalError unsupported canonical type or subclass: I
+OK  rejects str subclass -> RAISES CanonicalError unsupported canonical type or subclass: S
+OK  rejects dict subclass -> RAISES CanonicalError unsupported canonical type or subclass: D
+OK  rejects list subclass -> RAISES CanonicalError unsupported canonical type or subclass: L
+OK  rejects np.float64 subclass -> RAISES CanonicalError unsupported canonical type or subclass: G
+OK  rejects np.str_ -> RAISES CanonicalError unsupported canonical type: str_
+OK  rejects np.complex128 -> RAISES CanonicalError unsupported canonical type: complex128
+OK  rejects np.datetime64 -> RAISES CanonicalError unsupported canonical type: datetime64
+OK  rejects np.ndarray -> RAISES CanonicalError unsupported canonical type or subclass: ndarray
+OK  rejects IntEnum (int subclass) -> RAISES CanonicalError unsupported canonical type or subclass: E
+OK  np.float32(0.1) widened like old Task1 -> b'0.10000000149011612'
+OK  np.int64 / np.uint64 max -> b'[-5,18446744073709551615,true]'
+old-vs-unified incl numpy scalars: 0 mismatches / 4000
+== T1-B5 independent KAT
+independent hashlib: 8b441603e35b6bb16384a91a82453ad13144a79cc9b5b15750a4dc00d09030e9 module: 8b441603e35b6bb16384a91a82453ad13144a79cc9b5b15750a4dc00d09030e9 equal: True
+== T1-B2 / T1-B3
+OK  valid receipt verifies -> 0e0fc62ee063
+OK  producer 0*40 refused -> RAISES CanonicalError producer code object unavailable
+OK  producer resolving to wrong bytes refused -> RAISES CanonicalError producer code identity mismatch
+OK  producer resolving to str (not bytes) refused -> RAISES CanonicalError producer code must resolve to exact bytes
+OK  {} as all four roles refused -> RAISES CanonicalError one identity cannot fill distinct receipt roles: output and manifest
+OK  input reused as output refused -> RAISES CanonicalError one identity cannot fill distinct receipt roles: input and output
+OK  manifest object in registry slot refused -> RAISES CanonicalError one identity cannot fill distinct receipt roles: manifest and registry
+OK  receipt in access-policy slot refused -> RAISES CanonicalError access role cannot be filled by a scientific receipt
+== T1-B4
+OK  refuses scope 'PIPELINE' for unit G8 -> RAISES AuthorityError authority scope must be UNIT:<id>, PIPELINE:<id>, or PROJECT
+OK  refuses scope 'PROJECT_WIDE' for unit G8 -> RAISES AuthorityError authority scope must be UNIT:<id>, PIPELINE:<id>, or PROJECT
+OK  refuses scope 'TD_PIPELINE' for unit G8 -> RAISES AuthorityError authority scope must be UNIT:<id>, PIPELINE:<id>, or PROJECT
+OK  refuses scope 'ALL' for unit G8 -> RAISES AuthorityError authority scope must be UNIT:<id>, PIPELINE:<id>, or PROJECT
+OK  refuses scope 'GLOBAL_PROJECT' for unit G8 -> RAISES AuthorityError authority scope must be UNIT:<id>, PIPELINE:<id>, or PROJECT
+OK  refuses scope 'project-training' for unit G8 -> RAISES AuthorityError authority scope must be UNIT:<id>, PIPELINE:<id>, or PROJECT
+OK  refuses scope 'TRAINING_PROJECT' for unit G8 -> RAISES AuthorityError authority scope must be UNIT:<id>, PIPELINE:<id>, or PROJECT
+OK  refuses scope 'Project Training' for unit G8 -> RAISES AuthorityError authority scope must be UNIT:<id>, PIPELINE:<id>, or PROJECT
+OK  refuses scope 'PROJECT\n' for unit G8 -> RAISES AuthorityError authority scope must be UNIT:<id>, PIPELINE:<id>, or PROJECT
+OK  refuses scope 'UNIT:G9' for unit G8 -> RAISES AuthorityError authority scope identifier must match unit_id
+OK  refuses scope 'PIPELINE:G8 ' for unit G8 -> RAISES AuthorityError authority scope must be UNIT:<id>, PIPELINE:<id>, or PROJECT
+OK  refuses scope 'unit:G8' for unit G8 -> RAISES AuthorityError authority scope must be UNIT:<id>, PIPELINE:<id>, or PROJECT
+OK  refuses scope 'UNIT:G8__NO_TRAINING_AUTHORITY' for unit G8 -> RAISES AuthorityError authority scope identifier must match unit_id
+OK  UNIT:G8 @ FIXTURE accepted -> UNIT:G8
+OK  UNIT:G8 @ DOWNSTREAM_CERTIFIED refused -> RAISES AuthorityError qualification stage is outside the allowed UNIT scope stage range
+OK  UNIT:G8 @ TRAINING_AUTHORIZED refused -> RAISES AuthorityError qualification stage is outside the allowed UNIT scope stage range
+OK  PIPELINE:TD @ FIXTURE refused -> RAISES AuthorityError qualification stage is outside the allowed PIPELINE scope stage range
+OK  PROJECT with unit_id G8 refused -> RAISES AuthorityError PROJECT authority scope requires unit_id PROJECT
+OK  PROJECT @ TRAINING_ELIGIBLE refused -> RAISES AuthorityError qualification stage is outside the allowed PROJECT scope stage range
+OK  lowercase restriction refused -> RAISES AuthorityError authority restriction must be a frozen uppercase token
+OK  restriction list (not tuple) refused -> RAISES AuthorityError authority_restrictions must be a tuple
+OK  unit_id int refused as AuthorityError -> RAISES AuthorityError unit_id must be a non-empty string
