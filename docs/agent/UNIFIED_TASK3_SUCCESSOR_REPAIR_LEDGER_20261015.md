@@ -12,7 +12,6 @@ This ledger records successor custody after the independent Macha rejection of U
 - rejected historical Task 3 candidate: `851544e8dc2a3881193a4d5bbcf07933e1d61149`
 - Macha rejection review: `869ca777a498181c519ccfc04b8bf5db0f2888c7`
 - repaired Task 3 code candidate: `68df31584d17f91da2635cdf8e03bbe93695f9d1`
-- review-package head after evidence-only ledger update: `962be9d09532feeb1dc158739e07da98bc8d2950`
 - global authority remains: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
 ## Preserved RED baseline
@@ -44,10 +43,18 @@ All required read-only CI is GREEN on this exact code candidate:
 
 Diff audit from frozen Task 2 `c7dfff1c...` to code candidate `68df3158...` shows Task 3/workflow/docs/schema/test additions only; frozen Task 0-2 production files are not modified.
 
-The subsequent branch-head movement to `962be9d...` changes only this evidence ledger; it does not change Task 3 production or tests. Independent review should bind both the reviewed branch head and the verified code candidate above.
+## Focused independent recheck brief
 
-## Remaining acceptance gate
+Review only B1-B6 on repaired code candidate `68df31584d17f91da2635cdf8e03bbe93695f9d1`; do not restart historical audits.
 
-Request a focused independent Macha recheck of B1-B6 only. Do not restart the historical audit.
+Required questions:
+1. Can a `UNIT:*` / `NO_TRAINING_AUTHORITY` unit reach a forbidden training stage?
+2. Can any stage advance without its closed evidence requirement?
+3. Can aliases, Unicode lookalikes, unknown/self-minted actors, or same-actor identities bypass independence?
+4. Can caller cache state create or preserve false readiness?
+5. Can deleted/fabricated promotion or revocation history regain readiness or permit an advanced transition without the external genesis/head anchor?
+6. Can any qualification workflow rewrite Task 3 production code/tests or push an automatic GREEN repair?
+
+Acceptance requires all six answers to be no and no new authority/custody blocker of equivalent severity.
 
 Task 3 remains non-authoritative until that independent review accepts the repaired bytes. Task 4 remains blocked until then.
