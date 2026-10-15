@@ -1,21 +1,20 @@
-name: Apply Task 3 cycle1 hardening
+name: Task 3 cycle1 historical regression
 
 permissions:
-  contents: write
+  contents: read
 
 on:
   push:
     branches:
       - 'work/unified-task3-registry-impl-20261015'
     paths:
-      - 'scripts/v5/td_unified/apply_task3_cycle1_hardening.py'
-      - 'tests/v5/td_unified/test_registry_v1_hostile_cycle1.py'
-      - '.github/workflows/apply-task3-cycle1-hardening.yml'
       - 'scripts/v5/td_unified/registry_v1.py'
-      - 'tests/v5/td_unified/test_registry_v1.py'
+      - 'tests/v5/td_unified/test_registry_v1*.py'
+      - 'tests/v5/td_unified/registry_v1_dependency_fixtures.py'
+      - '.github/workflows/apply-task3-cycle1-hardening.yml'
 
 jobs:
-  apply-and-verify:
+  verify-only:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,20 +24,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install pytest==9.1.1 numpy==1.26.4
-      - name: Apply deterministic hardening
-        run: python scripts/v5/td_unified/apply_task3_cycle1_hardening.py
-      - name: Verify Task 3 focused plus hostile cycle1
+      - name: Verify preserved cycle1 hostile regressions
         run: python -m pytest -q tests/v5/td_unified/test_registry_v1.py tests/v5/td_unified/test_registry_v1_hostile_cycle1.py
       - name: Verify complete unified regression
         run: python -m pytest -q tests/v5/td_unified
-      - name: Commit repaired source and fixtures when changed
-        run: |
-          if git diff --quiet; then
-            echo 'No patch changes to commit.'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add scripts/v5/td_unified/registry_v1.py tests/v5/td_unified/test_registry_v1.py
-          git commit -m 'task3 GREEN1: harden dependency, independence, and R1/R4 authority'
-          git push origin HEAD:work/unified-task3-registry-impl-20261015
