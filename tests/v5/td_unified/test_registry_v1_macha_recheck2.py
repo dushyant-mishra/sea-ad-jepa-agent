@@ -142,7 +142,11 @@ def test_b3_r_actor_registry_must_be_pinned_not_producer_authored_without_n2_mas
 
 def test_b5_f_fresh_custody_cannot_erase_prior_revocation_of_same_prequalification_identity():
     dep, ref, deps = fx.verified_pair(
-        r, dep_stage=Q.SEMANTICS_ONLY, ref_stage=Q.SEMANTICS_ONLY
+        r,
+        dep_id="B5F_G8",
+        ref_id="B5F_REF",
+        dep_stage=Q.SEMANTICS_ONLY,
+        ref_stage=Q.SEMANTICS_ONLY,
     )
     registry = r.TDQualificationRegistry((dep, ref), (), (), ())
     controller, reviewer, actors = _actors()
@@ -152,20 +156,11 @@ def test_b5_f_fresh_custody_cannot_erase_prior_revocation_of_same_prequalificati
         {**deps, **actors},
         trusted_actor_objects=tuple(actors.values()),
     )
+    original_identity = registry.units_by_id()["B5F_G8"].canonical_sha256()
     custody_a = r.RegistryHistoryCustody(registry, attestation_key=b"custody-a")
-    promoted = r.promote_unit(
-        registry,
-        "G8",
-        Q.SAME_CODE_PATH,
-        controller_identity=controller,
-        reviewer_identity=reviewer,
-        authority_object_resolver=objects.get,
-        dependency_verifier=deps.get,
-        history_custody=custody_a,
-    )
     revoked = r.revoke_or_supersede(
-        promoted,
-        "G8",
+        registry,
+        "B5F_G8",
         L.REVOKED_BY_DEFECT,
         reason_class="DEFECT",
         controller_identity=controller,
@@ -173,9 +168,11 @@ def test_b5_f_fresh_custody_cannot_erase_prior_revocation_of_same_prequalificati
         dependency_verifier=deps.get,
         history_custody=custody_a,
     )
-    assert revoked.units_by_id()["G8"].active_lineage_status is L.REVOKED_BY_DEFECT
+    assert revoked.revocations[-1].affected_unit_sha == original_identity
+    assert revoked.units_by_id()["B5F_G8"].active_lineage_status is L.REVOKED_BY_DEFECT
 
     # Discard custody A and try to restart from the exact same original identity.
+    assert registry.units_by_id()["B5F_G8"].canonical_sha256() == original_identity
     with pytest.raises(r.RegistryError, match="revok|history|anchor|genesis|custody"):
         r.RegistryHistoryCustody(registry, attestation_key=b"custody-b")
 
