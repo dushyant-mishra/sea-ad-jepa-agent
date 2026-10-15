@@ -28,6 +28,15 @@ def _small_policy(m):
     )
 
 
+def _access_receipt(m, policy, *, producer_id="G8", observed_access, numeric_result_digest=None):
+    return m.ProducerAccessReceipt(
+        producer_id=producer_id,
+        access_policy_sha=policy.canonical_sha256(),
+        observed_access=observed_access,
+        numeric_result_digest=numeric_result_digest,
+    )
+
+
 def test_current_td_policy_crossfits_only_within_reader_fit():
     m = _manifest_module()
     policy = m.build_current_td_access_policy(
@@ -57,8 +66,9 @@ def test_crossfit_assignment_is_deterministic_and_outcome_blind():
 def test_reader_validation_access_cannot_rescue_estimability():
     m = _manifest_module()
     policy = _small_policy(m)
-    receipt = m.ProducerAccessReceipt(
-        producer_id="G8",
+    receipt = _access_receipt(
+        m,
+        policy,
         observed_access=(("reader_validation", "BIOLOGICAL_VALUES"),),
     )
     with pytest.raises(m.ManifestError, match="validation|forbidden|access"):
@@ -68,8 +78,9 @@ def test_reader_validation_access_cannot_rescue_estimability():
 def test_reader_oracle_access_is_protected_until_later_authority_transition():
     m = _manifest_module()
     policy = _small_policy(m)
-    receipt = m.ProducerAccessReceipt(
-        producer_id="G8",
+    receipt = _access_receipt(
+        m,
+        policy,
         observed_access=(("reader_oracle", "CALIBRATION_STATISTICS"),),
     )
     with pytest.raises(m.ManifestError, match="oracle|forbidden|access"):
@@ -79,13 +90,15 @@ def test_reader_oracle_access_is_protected_until_later_authority_transition():
 def test_producer_receipt_must_enumerate_actual_partitions_and_access_classes():
     m = _manifest_module()
     policy = _small_policy(m)
-    lawful = m.ProducerAccessReceipt(
-        producer_id="G8",
+    lawful = _access_receipt(
+        m,
+        policy,
         observed_access=(("reader_fit", "BIOLOGICAL_VALUES"),),
     )
     assert m.validate_producer_access(policy, lawful) is None
-    forged = m.ProducerAccessReceipt(
-        producer_id="G8",
+    forged = _access_receipt(
+        m,
+        policy,
         observed_access=(("reader_fit", "UNKNOWN_CLASS"),),
     )
     with pytest.raises(m.ManifestError):
@@ -95,8 +108,9 @@ def test_producer_receipt_must_enumerate_actual_partitions_and_access_classes():
 def test_numeric_success_with_forbidden_partition_access_is_invalid():
     m = _manifest_module()
     policy = _small_policy(m)
-    receipt = m.ProducerAccessReceipt(
-        producer_id="G8",
+    receipt = _access_receipt(
+        m,
+        policy,
         observed_access=(("reader_validation", "BIOLOGICAL_VALUES"),),
         numeric_result_digest="0" * 64,
     )
@@ -146,8 +160,9 @@ def test_raw_file_sha256_is_recomputed_from_actual_bytes():
 def test_unknown_partition_fails_closed():
     m = _manifest_module()
     policy = _small_policy(m)
-    receipt = m.ProducerAccessReceipt(
-        producer_id="G8",
+    receipt = _access_receipt(
+        m,
+        policy,
         observed_access=(("mystery_partition", "METADATA"),),
     )
     with pytest.raises(m.ManifestError):
