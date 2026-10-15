@@ -88,3 +88,30 @@ def test_executor_actor_cannot_issue_revocation_controller_receipt():
             controller_identity=controller_sha,
             authority_object_resolver=resolver,
         )
+
+
+def test_reviewer_actor_cannot_alias_scientific_producer_actor():
+    dep, target, deps = verified_pair(r)
+    producer_sha, producer_obj = actor("SCIENTIFIC_PRODUCER", "same-actor")
+    executor_sha, executor_obj = actor("SCIENTIFIC_EXECUTOR", "executor")
+    controller_sha, controller_obj = actor("QUALIFICATION_CONTROLLER", "controller")
+    reviewer_sha, reviewer_obj = actor("INDEPENDENT_REVIEWER", "same-actor")
+    dep = r.RegistryUnit(**{
+        **dep.__dict__,
+        "producer_actor_identity": producer_sha,
+        "executor_actor_identity": executor_sha,
+    })
+    deps.update({producer_sha: producer_obj, executor_sha: executor_obj})
+    reg = r.TDQualificationRegistry((dep, target), (), (), ())
+    resolver_objects = dict(deps)
+    resolver_objects.update({controller_sha: controller_obj, reviewer_sha: reviewer_obj})
+    with pytest.raises(r.RegistryError, match="reviewer actor.*producer|reviewer actor.*executor"):
+        r.promote_unit(
+            reg,
+            dep.unit_id,
+            QualificationStage.REAL_REFERENCE_READY,
+            controller_identity=controller_sha,
+            reviewer_identity=reviewer_sha,
+            authority_object_resolver=resolver_objects.get,
+            dependency_verifier=resolver_objects.get,
+        )
