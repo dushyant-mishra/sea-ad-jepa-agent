@@ -1,0 +1,39 @@
+np.float64 bytes -> b'{"x":np.float64(1.5)}'
+float 1.5 bytes -> b'{"x":1.5}'
+same digest float vs np.float64 -> False
+float subclass repr override -> b'{"x":999}'
+IntEnum bytes -> b'{"x":1}'
+np.int64 -> RAISES CanonicalError unsupported canonical type: int64
+np.bool_ -> RAISES CanonicalError unsupported canonical type: bool
+receipt with producer 0*40 and {} as output/manifest/registry/access verifies -> VerifiedReceipt(receipt_sha256='9eea3ccf4307f30c8bfd1db0bfe356c2cfe2463ea7823d20c685f3cb441794e1', payload_sha256='f2536f4022b458e3824c524c3109743b5d1b5eb31bfa7e722e5f7aae7ae8c0c2', verified_parent_shas=())
+input reused as output/manifest/registry/access verifies -> VerifiedReceipt(receipt_sha256='192b5b53c12f7a0be01b9d5d276898ab26242100d889555d969b1f4b5a2d6f00', payload_sha256='dd9680917368d972831a20e1c4184e744e0ca8a2b25021eb78849c34c2fb723c', verified_parent_shas=())
+diamond depth 8: verify 0.05s
+diamond depth 12: verify 0.78s
+diamond depth 14: verify 3.02s
+diamond depth 16: verify 11.59s
+scope 'PIPELINE' @ FIXTURE_SAME_INTERFACE -> PIPELINE
+scope 'PIPELINE' @ TRAINING_AUTHORIZED -> PIPELINE
+scope 'PROJECT_WIDE' @ FIXTURE_SAME_INTERFACE -> PROJECT_WIDE
+scope 'PROJECT_WIDE' @ TRAINING_AUTHORIZED -> PROJECT_WIDE
+scope 'TD_PIPELINE' @ FIXTURE_SAME_INTERFACE -> TD_PIPELINE
+scope 'TD_PIPELINE' @ TRAINING_AUTHORIZED -> TD_PIPELINE
+scope 'ALL' @ FIXTURE_SAME_INTERFACE -> ALL
+scope 'ALL' @ TRAINING_AUTHORIZED -> ALL
+scope 'GLOBAL_PROJECT' @ FIXTURE_SAME_INTERFACE -> GLOBAL_PROJECT
+scope 'GLOBAL_PROJECT' @ TRAINING_AUTHORIZED -> GLOBAL_PROJECT
+scope 'project-training' @ FIXTURE_SAME_INTERFACE -> project-training
+scope 'project-training' @ TRAINING_AUTHORIZED -> project-training
+scope 'TRAINING_PROJECT' @ FIXTURE_SAME_INTERFACE -> TRAINING_PROJECT
+scope 'TRAINING_PROJECT' @ TRAINING_AUTHORIZED -> TRAINING_PROJECT
+scope 'Project Training' @ FIXTURE_SAME_INTERFACE -> Project Training
+scope 'Project Training' @ TRAINING_AUTHORIZED -> Project Training
+scope 'TRAINING ' @ FIXTURE_SAME_INTERFACE -> RAISES AuthorityError training authority cannot be implied below TRAINING_ELIGIBLE
+scope 'TRAINING ' @ TRAINING_AUTHORIZED -> TRAINING 
+scope 'UNIT:G8' @ FIXTURE_SAME_INTERFACE -> UNIT:G8
+scope 'UNIT:G8' @ TRAINING_AUTHORIZED -> UNIT:G8
+scope 'NO_TRAINING' @ FIXTURE_SAME_INTERFACE -> NO_TRAINING
+scope 'NO_TRAINING' @ TRAINING_AUTHORIZED -> NO_TRAINING
+unit_id int -> RAISES AttributeError 'int' object has no attribute 'strip'
+REVOKED record at TRAINING_AUTHORIZED unit scope -> QualificationStage.TRAINING_AUTHORIZED
+int subclass str override -> b'{"x":777}'
+str subclass replace override -> b'{"x":"FORGED"}'

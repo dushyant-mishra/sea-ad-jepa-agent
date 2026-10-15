@@ -1,0 +1,62 @@
+{
+  "blocking": [
+    {
+      "defect": "isinstance dispatch + subclass repr/str/replace: np.float64 emits np.float64(1.5); float/int/str subclasses forge bytes",
+      "id": "T1-B1",
+      "locus": "scripts/v5/td_unified/canonical_v1.py:_encode/_encode_string",
+      "repair": "exact-type dispatch with base-class encoders; prospectively chosen numpy policy; tests",
+      "severity": "CRITICAL"
+    },
+    {
+      "defect": "format-checked only; 0*40 verifies",
+      "id": "T1-B2",
+      "locus": "verify_scientific_receipt producer_code_sha",
+      "repair": "resolve and recompute producer code identity; refuse nonexistent",
+      "severity": "IMPORTANT"
+    },
+    {
+      "defect": "{} verifies as output/manifest/registry/access; one SHA may fill several roles",
+      "id": "T1-B3",
+      "locus": "_verify_dependency roles",
+      "repair": "cross-role uniqueness + object_role tag equals slot; schema typing carried to Tasks 2-3",
+      "severity": "IMPORTANT"
+    },
+    {
+      "defect": "PIPELINE/PROJECT_WIDE/ALL/... accepted at FIXTURE_SAME_INTERFACE",
+      "id": "T1-B4",
+      "locus": "authority_v1.py scope denylist + schema authority_scope free string",
+      "repair": "closed scope grammar UNIT:<unit_id>|PIPELINE:<id>|PROJECT + frozen scope-stage table; restrictions separate field",
+      "severity": "IMPORTANT"
+    },
+    {
+      "defect": "no frozen known-answer digests; identity format unpinned",
+      "id": "T1-B5",
+      "locus": "tests/v5/td_unified/test_canonical_v1.py",
+      "repair": "KAT digests for canonical_sha256 and a fixed receipt; byte-level docstring spec",
+      "severity": "IMPORTANT"
+    }
+  ],
+  "date": "2026-10-15",
+  "freeze": "TASK1_REMAINS_OPEN__UNIFIED_TASK2_REMAINS_BLOCKED",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "non_blocking": [
+    "M1 exponential diamond verification (depth16 11.9s)",
+    "M2 unit_id non-str AttributeError",
+    "M3 no raw-byte identity path (Task 2)",
+    "M4 TRAINING_AUTHORIZED+REVOKED accepted (Task 3)"
+  ],
+  "pr": 385,
+  "protected_opened": false,
+  "reviewed_head": "86fa996f609bec3f39d0f6a12d7f040b2544af39",
+  "schema": "MACHA_UNIFIED_TASK1_REVIEW_VERDICT_V1",
+  "tests_local": {
+    "evidence_class": "LOCAL_NOT_CI",
+    "result": "18 passed"
+  },
+  "verdict": "REJECT_UNIFIED_TASK1",
+  "verified": {
+    "old_task1_byte_compat_plain_json": "0 mismatches / 3000 + KAT",
+    "recursive_recomputation": true,
+    "stage_enum_and_lineage": true
+  }
+}
