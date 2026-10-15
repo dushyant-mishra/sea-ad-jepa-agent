@@ -17,6 +17,9 @@ on:
       - 'tests/v5/td_unified/**'
       - '.github/workflows/unified-task3-registry.yml'
 
+permissions:
+  contents: read
+
 jobs:
   task3-registry:
     runs-on: ubuntu-latest
