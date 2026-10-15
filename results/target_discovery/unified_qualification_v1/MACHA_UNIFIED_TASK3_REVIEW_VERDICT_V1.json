@@ -1,0 +1,71 @@
+{
+  "authority_changed": false,
+  "blocking": [
+    {
+      "defect": "UNIT-scoped record promoted to TRAINING_AUTHORIZED while carrying NO_TRAINING_AUTHORITY; frozen Task 1 scope-stage law not applied",
+      "id": "T3-B1",
+      "repair": "validate promoted record with Task 1 validate_authority_record; UNIT max HUMAN_EXECUTED; NO_TRAINING_AUTHORITY refuses TRAINING_*",
+      "severity": "CRITICAL"
+    },
+    {
+      "defect": "KNOWN_TRUTH_QUALIFIED and HUMAN_EXECUTED promotable with no evidence or reviewer",
+      "id": "T3-B2",
+      "repair": "closed per-stage evidence-gate table; fail closed until Task 4/5 sealed-challenge and execution receipts exist",
+      "severity": "CRITICAL"
+    },
+    {
+      "defect": "actor_id aliasing (whitespace, case, fullwidth colon) and self-minted actors pass independence checks",
+      "id": "T3-B3",
+      "repair": "frozen identity-bound ACTOR_REGISTRY with strict canonical ids and permitted roles; refuse unknown actors; evidence and validators issued by registry actors",
+      "severity": "CRITICAL"
+    },
+    {
+      "defect": "caller-supplied verification cache poisonable; cached positives survive resolver change",
+      "id": "T3-B4",
+      "repair": "internal per-call or context-bound cache; never trust caller-written entries",
+      "severity": "IMPORTANT"
+    },
+    {
+      "defect": "revocation undone by rebuilding registry; fabricated promotion history enables HUMAN_EXECUTABLE",
+      "id": "T3-B5",
+      "repair": "replay-validated append-only history from genesis anchor; re-derive readiness for gated promotions; external head anchoring",
+      "severity": "IMPORTANT"
+    },
+    {
+      "defect": "armed contents:write CI workflows rewrite code and tests on human push (fixture migration would neutralize new RED tests)",
+      "id": "T3-B6",
+      "repair": "delete or disarm write workflows before further pushes and freeze",
+      "severity": "IMPORTANT"
+    }
+  ],
+  "date": "2026-10-15",
+  "freeze": "TASK3_REMAINS_OPEN__UNIFIED_TASK4_REMAINS_BLOCKED",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "hostile_probes": {
+    "bad": 10,
+    "expected": 8,
+    "total": 18
+  },
+  "pr": 392,
+  "protected_values_opened": false,
+  "reviewed_head": "851544e8dc2a3881193a4d5bbcf07933e1d61149",
+  "schema": "MACHA_UNIFIED_TASK3_REVIEW_VERDICT_V1",
+  "sections": {
+    "A2": "PARTIAL_FAIL",
+    "A5": "FAIL",
+    "A6": "PASS_EXCEPT_R6",
+    "R1": "INSUFFICIENT_SELF_ASSERTED",
+    "R2": "INSUFFICIENT_SELF_MINTED_VALIDATOR",
+    "R3": "PASS",
+    "R4": "INSUFFICIENT_SELF_ASSERTED",
+    "R5": "PASS",
+    "R6": "FAIL",
+    "frozen_task2_binding": "PASS",
+    "provenance": "FAIL"
+  },
+  "tests_local": {
+    "evidence_class": "LOCAL_NOT_CI",
+    "td_unified_full": "154 passed"
+  },
+  "verdict": "REJECT_UNIFIED_TASK3"
+}
