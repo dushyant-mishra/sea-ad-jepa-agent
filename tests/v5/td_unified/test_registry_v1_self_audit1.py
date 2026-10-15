@@ -13,6 +13,8 @@ def unit(unit_id="G8", *, metric="6" * 64, stage=QualificationStage.KNOWN_TRUTH_
         unit_id=unit_id, qualification_stage=stage, active_lineage_status=ActiveLineageStatus.ACTIVE,
         authority_scope=f"UNIT:{unit_id}", authority_restrictions=("NO_TRAINING_AUTHORITY",),
         manifest_sha="1"*64, access_policy_sha="2"*64, producer_code_sha="a"*40, executor_code_sha="b"*40,
+        producer_actor_identity=r.canonical_sha256({"object_role":"SCIENTIFIC_PRODUCER","actor_id":f"producer:{unit_id}"}),
+        executor_actor_identity=r.canonical_sha256({"object_role":"SCIENTIFIC_EXECUTOR","actor_id":f"executor:{unit_id}"}),
         producer_policy_sha="3"*64, executor_policy_sha="4"*64, schema_sha="5"*64, metric_sha=metric,
         reference_producer_sha="7"*64, falsifier_sha="8"*64,
         population_authority="AUTHENTICATED_READER_SPLIT", claim_scope="POOLED_DONOR_LEVEL")

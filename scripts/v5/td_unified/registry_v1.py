@@ -87,6 +87,26 @@ def _actor_id(obj: Mapping[str, object], *, label: str) -> str:
     return actor_id
 
 
+def _resolve_unit_actor(
+    expected_sha: str,
+    authority_object_resolver: AuthorityObjectResolver | None,
+    dependency_verifier: Callable[[str], object] | None,
+    *,
+    expected_role: str,
+    label: str,
+) -> Mapping[str, object]:
+    """Resolve a unit-bound actor through either authenticated object surface."""
+    def combined(sha: str):
+        if authority_object_resolver is not None:
+            obj = authority_object_resolver(sha)
+            if obj is not None:
+                return obj
+        if dependency_verifier is not None:
+            return dependency_verifier(sha)
+        return None
+    return _resolve_object(expected_sha, combined, expected_role=expected_role, label=label)
+
+
 def _validate_requirement_evidence(requirement_class: str, obj: Mapping[str, object], *, label: str) -> None:
     if obj.get("requirement_class") != requirement_class:
         raise RegistryError(f"{label} evidence requirement_class mismatch")
@@ -775,12 +795,14 @@ def promote_unit(
         raise RegistryError("destination stage must use Task 1 canonical enum")
     if _STAGE_INDEX[destination_stage] != _STAGE_INDEX[unit.qualification_stage] + 1:
         raise RegistryError("promotion must advance exactly one canonical stage")
-    producer_actor_obj = _resolve_object(
-        unit.producer_actor_identity, authority_object_resolver,
+    if destination_stage is QualificationStage.HUMAN_EXECUTABLE and reviewer_identity is None:
+        raise RegistryError("independent reviewer required for HUMAN_EXECUTABLE")
+    producer_actor_obj = _resolve_unit_actor(
+        unit.producer_actor_identity, authority_object_resolver, dependency_verifier,
         expected_role="SCIENTIFIC_PRODUCER", label="scientific producer actor",
     )
-    executor_actor_obj = _resolve_object(
-        unit.executor_actor_identity, authority_object_resolver,
+    executor_actor_obj = _resolve_unit_actor(
+        unit.executor_actor_identity, authority_object_resolver, dependency_verifier,
         expected_role="SCIENTIFIC_EXECUTOR", label="scientific executor actor",
     )
     producer_actor = _actor_id(producer_actor_obj, label="scientific producer actor")
@@ -812,8 +834,6 @@ def promote_unit(
         if not result.ready:
             raise RegistryError("REAL_REFERENCE_READY prerequisites unresolved: " + "; ".join(result.blockers))
     if destination_stage is QualificationStage.HUMAN_EXECUTABLE:
-        if reviewer_identity is None:
-            raise RegistryError("independent reviewer required for HUMAN_EXECUTABLE")
         blockers = _human_execution_blockers(unit_id, registry, authority_object_resolver)
         if blockers:
             raise RegistryError("HUMAN_EXECUTABLE prerequisites unresolved: " + "; ".join(blockers))
@@ -856,6 +876,7 @@ def revoke_or_supersede(
     successor_unit_sha: str | None = None,
     requalification_scope: str | None = None,
     authority_object_resolver: AuthorityObjectResolver | None = None,
+    dependency_verifier: Callable[[str], object] | None = None,
 ) -> TDQualificationRegistry:
     if new_status not in {ActiveLineageStatus.REVOKED_BY_DEFECT, ActiveLineageStatus.SUPERSEDED, ActiveLineageStatus.REQUIRES_REQUALIFICATION}:
         raise RegistryError("revocation must move to a non-ACTIVE lineage state")
@@ -867,12 +888,12 @@ def revoke_or_supersede(
         raise RegistryError("only ACTIVE lineage can be revoked or superseded")
     if type(reason_class) is not str or not reason_class:
         raise RegistryError("revocation reason required")
-    producer_actor_obj = _resolve_object(
-        unit.producer_actor_identity, authority_object_resolver,
+    producer_actor_obj = _resolve_unit_actor(
+        unit.producer_actor_identity, authority_object_resolver, dependency_verifier,
         expected_role="SCIENTIFIC_PRODUCER", label="scientific producer actor",
     )
-    executor_actor_obj = _resolve_object(
-        unit.executor_actor_identity, authority_object_resolver,
+    executor_actor_obj = _resolve_unit_actor(
+        unit.executor_actor_identity, authority_object_resolver, dependency_verifier,
         expected_role="SCIENTIFIC_EXECUTOR", label="scientific executor actor",
     )
     controller_obj = _resolve_object(

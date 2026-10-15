@@ -30,6 +30,8 @@ def _unit(r, unit_id="G8", *, stage=QualificationStage.KNOWN_TRUTH_QUALIFIED,
         unit_id=unit_id, qualification_stage=stage, active_lineage_status=status,
         authority_scope=f"UNIT:{unit_id}", authority_restrictions=("NO_TRAINING_AUTHORITY",),
         manifest_sha=manifest, access_policy_sha=access, producer_code_sha="a"*40, executor_code_sha="b"*40,
+        producer_actor_identity=r.canonical_sha256({"object_role":"SCIENTIFIC_PRODUCER","actor_id":f"producer:{unit_id}"}),
+        executor_actor_identity=r.canonical_sha256({"object_role":"SCIENTIFIC_EXECUTOR","actor_id":f"executor:{unit_id}"}),
         producer_policy_sha="3"*64, executor_policy_sha="4"*64, schema_sha="5"*64,
         metric_sha="6"*64, reference_producer_sha="7"*64, falsifier_sha="8"*64,
         population_authority=population_authority, claim_scope=claim_scope)

@@ -18,6 +18,8 @@ def unit(unit_id="G8", *, stage=QualificationStage.KNOWN_TRUTH_QUALIFIED):
         access_policy_sha="2"*64,
         producer_code_sha="a"*40,
         executor_code_sha="b"*40,
+        producer_actor_identity=r.canonical_sha256({"object_role":"SCIENTIFIC_PRODUCER","actor_id":f"producer:{unit_id}"}),
+        executor_actor_identity=r.canonical_sha256({"object_role":"SCIENTIFIC_EXECUTOR","actor_id":f"executor:{unit_id}"}),
         producer_policy_sha="3"*64,
         executor_policy_sha="4"*64,
         schema_sha="5"*64,
