@@ -7,6 +7,7 @@ import pytest
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
 from scripts.v5.td_unified import registry_v1 as r
+from tests.v5.td_unified.registry_v1_dependency_fixtures import verified_pair, verified_prereq
 
 
 def actor(role, name):
@@ -56,18 +57,18 @@ def test_boolean_true_callback_is_not_evidence_authority():
 
 
 def test_evidence_receipt_must_resolve_to_exact_role_tagged_object():
-    dep, target = unit(), unit("REF")
+    dep, target, deps = verified_pair(r)
     good_sha, good = evidence(); bad_sha, bad = evidence("METRIC_DEFINITION", "spoof")
-    p = prereq(dep, target, evidence_sha=bad_sha); reg = registry(dep, target, p)
-    result = r.derive_real_reference_ready("G8", reg, authority_object_resolver=lambda sha: bad if sha == bad_sha else None)
+    p = verified_prereq(r, dep, target, requirement_class="EXTERNAL_CONTROL", evidence_receipt_sha=bad_sha); reg = registry(dep, target, p)
+    result = r.derive_real_reference_ready("G8", reg, authority_object_resolver=lambda sha: bad if sha == bad_sha else None, dependency_verifier=deps.get)
     assert not result.ready
     assert any("role" in b.lower() for b in result.blockers)
-    p2 = prereq(dep, target, evidence_sha=good_sha); reg2 = registry(dep, target, p2)
-    assert r.derive_real_reference_ready("G8", reg2, authority_object_resolver=lambda sha: good if sha == good_sha else None).ready
+    p2 = verified_prereq(r, dep, target, requirement_class="EXTERNAL_CONTROL", evidence_receipt_sha=good_sha); reg2 = registry(dep, target, p2)
+    assert r.derive_real_reference_ready("G8", reg2, authority_object_resolver=lambda sha: good if sha == good_sha else None, dependency_verifier=deps.get).ready
 
 
 def test_controller_and_reviewer_are_resolved_objects_not_digest_strings():
-    dep, target = unit(), unit("REF"); esha, eobj = evidence(); p = prereq(dep, target, evidence_sha=esha)
+    dep, target, deps = verified_pair(r); esha, eobj = evidence(); p = verified_prereq(r, dep, target, requirement_class="EXTERNAL_CONTROL", evidence_receipt_sha=esha)
     reg = registry(dep, target, p)
     csha, cobj = actor("QUALIFICATION_CONTROLLER", "C1")
     rsha, robj = actor("INDEPENDENT_REVIEWER", "R1")
@@ -78,7 +79,7 @@ def test_controller_and_reviewer_are_resolved_objects_not_digest_strings():
     resolver = {csha:cobj, rsha:robj, esha:eobj}.get
     promoted = r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
                               controller_identity=csha, reviewer_identity=rsha,
-                              authority_object_resolver=resolver)
+                              authority_object_resolver=resolver, dependency_verifier=deps.get)
     assert promoted.units_by_id()["G8"].qualification_stage is QualificationStage.REAL_REFERENCE_READY
 
 
@@ -95,12 +96,13 @@ def test_wrong_role_controller_object_is_refused_even_with_matching_digest():
 
 
 def test_promotion_receipt_explicitly_binds_prerequisite_record_identities():
-    dep, target = unit(), unit("REF"); esha, eobj = evidence(); p = prereq(dep, target, evidence_sha=esha)
+    dep, target, deps = verified_pair(r); esha, eobj = evidence(); p = verified_prereq(r, dep, target, requirement_class="EXTERNAL_CONTROL", evidence_receipt_sha=esha)
     reg = registry(dep, target, p)
     csha, cobj = actor("QUALIFICATION_CONTROLLER", "C1"); rsha, robj = actor("INDEPENDENT_REVIEWER", "R1")
     promoted = r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
                               controller_identity=csha, reviewer_identity=rsha,
-                              authority_object_resolver={csha:cobj,rsha:robj,esha:eobj}.get)
+                              authority_object_resolver={csha:cobj,rsha:robj,esha:eobj}.get,
+                              dependency_verifier=deps.get)
     receipt = promoted.promotions[0]
     assert receipt.prerequisite_shas == (p.canonical_sha256(),)
 

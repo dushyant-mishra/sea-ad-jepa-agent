@@ -6,6 +6,7 @@ import pytest
 
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
+from tests.v5.td_unified.registry_v1_dependency_fixtures import verified_pair, verified_prereq
 
 
 def _r():
@@ -53,8 +54,8 @@ def _prereq(r, *, pid="P1", dependent="G8", target="REF", gate="REAL_REFERENCE_R
 
 
 def test_historical_promotion_receipt_remains_immutable_after_revocation():
-    r=_r(); u,ref=_unit(r),_unit(r,"REF"); reg=_registry(r,[u,ref],[_prereq(r)]); c,rv,res=_actors()
-    promoted=r.promote_unit(reg,"G8",QualificationStage.REAL_REFERENCE_READY,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res,dependency_verifier=lambda _: True)
+    r=_r(); u,ref,deps=verified_pair(r); p=verified_prereq(r,u,ref); reg=_registry(r,[u,ref],[p]); c,rv,res=_actors()
+    promoted=r.promote_unit(reg,"G8",QualificationStage.REAL_REFERENCE_READY,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res,dependency_verifier=deps.get)
     old=promoted.promotions[0]
     revoked=r.revoke_or_supersede(promoted,"G8",ActiveLineageStatus.REVOKED_BY_DEFECT,reason_class="DEFECT",controller_identity=c,authority_object_resolver=res)
     assert revoked.promotions[0]==old
@@ -151,9 +152,8 @@ def test_pooled_crossfit_scope_cannot_promote_per_fold_source_stratified_claim()
 
 
 def test_recursive_verification_cache_invalidates_on_dependency_identity_change():
-    r=_r(); calls=[]
-    def verify(sha): calls.append(sha); return True
-    dep,ref=_unit(r),_unit(r,"REF"); reg=_registry(r,[dep,ref],[_prereq(r)]); cache={}
+    r=_r(); calls=[]; dep,ref,deps=verified_pair(r); p=verified_prereq(r,dep,ref); reg=_registry(r,[dep,ref],[p]); cache={}
+    def verify(sha): calls.append(sha); return deps.get(sha)
     assert r.derive_real_reference_ready("G8",reg,dependency_verifier=verify,verification_cache=cache).ready
     changed=r.replace_unit(reg,r.reidentify_unit(ref,metric_sha="9"*64))
     assert not r.derive_real_reference_ready("G8",changed,dependency_verifier=verify,verification_cache=cache).ready
@@ -161,9 +161,9 @@ def test_recursive_verification_cache_invalidates_on_dependency_identity_change(
 
 
 def test_cached_ready_result_cannot_survive_manifest_or_access_change():
-    r=_r(); dep,ref=_unit(r),_unit(r,"REF"); reg=_registry(r,[dep,ref],[_prereq(r)]); cache={}
-    assert r.derive_real_reference_ready("G8",reg,dependency_verifier=lambda _: True,verification_cache=cache).ready
-    assert not r.derive_real_reference_ready("G8",r.replace_unit(reg,_unit(r,"G8",manifest="e"*64)),verification_cache=cache).ready
+    r=_r(); dep,ref,deps=verified_pair(r); p=verified_prereq(r,dep,ref); reg=_registry(r,[dep,ref],[p]); cache={}
+    assert r.derive_real_reference_ready("G8",reg,dependency_verifier=deps.get,verification_cache=cache).ready
+    assert not r.derive_real_reference_ready("G8",r.replace_unit(reg,_unit(r,"G8",manifest="e"*64)),dependency_verifier=deps.get,verification_cache=cache).ready
 
 
 def test_registry_uses_exact_task1_stage_and_lineage_enums():

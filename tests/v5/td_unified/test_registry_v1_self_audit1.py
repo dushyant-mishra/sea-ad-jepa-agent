@@ -5,6 +5,7 @@ import pytest
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
 from scripts.v5.td_unified import registry_v1 as r
+from tests.v5.td_unified.registry_v1_dependency_fixtures import verified_pair, verified_prereq
 
 
 def unit(unit_id="G8", *, metric="6" * 64, stage=QualificationStage.KNOWN_TRUTH_QUALIFIED):
@@ -75,6 +76,6 @@ def test_external_satisfied_status_requires_resolved_evidence_receipt():
 
 
 def test_external_evidence_positive_control_requires_exact_receipt_resolution():
-    dep,target=unit(),unit("REF"); esha,eobj=evidence(); p=prereq(dep,target,requirement_class="EXTERNAL_CONTROL",evidence_receipt_sha=esha)
-    result=r.derive_real_reference_ready("G8",registry(dep,target,p),authority_object_resolver=lambda sha:eobj if sha==esha else None)
+    dep,target,deps=verified_pair(r); esha,eobj=evidence(); p=verified_prereq(r,dep,target,requirement_class="EXTERNAL_CONTROL",evidence_receipt_sha=esha)
+    result=r.derive_real_reference_ready("G8",registry(dep,target,p),authority_object_resolver=lambda sha:eobj if sha==esha else None,dependency_verifier=deps.get)
     assert result.ready

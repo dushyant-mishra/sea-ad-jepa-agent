@@ -5,6 +5,7 @@ human-execution, Stage 4, protected-value, or training authority by itself.
 """
 from __future__ import annotations
 
+import hashlib
 from dataclasses import dataclass, replace
 from typing import Callable, Mapping, MutableMapping
 
@@ -24,6 +25,15 @@ _IDENTITY_64_FIELDS = (
     "schema_sha", "metric_sha", "reference_producer_sha", "falsifier_sha",
 )
 _IDENTITY_40_FIELDS = ("producer_code_sha", "executor_code_sha")
+_DEPENDENCY_ROLE_BY_FIELD = {
+    "access_policy_sha": "ACCESS_POLICY",
+    "producer_policy_sha": "PRODUCER_POLICY",
+    "executor_policy_sha": "EXECUTOR_POLICY",
+    "schema_sha": "UNIT_SCHEMA",
+    "metric_sha": "METRIC_DEFINITION",
+    "reference_producer_sha": "REFERENCE_PRODUCER",
+    "falsifier_sha": "FALSIFIER_CONTROL",
+}
 _ALLOWED_POPULATION_AUTHORITY = {"AUTHENTICATED_READER_SPLIT", "FIXTURE_UNBOUND"}
 _ALLOWED_CLAIM_SCOPE = {"POOLED_DONOR_LEVEL", "PER_FOLD_SOURCE_STRATIFIED", "FIXTURE_ONLY"}
 _ALLOWED_GATES = {"REAL_REFERENCE_READY", "HUMAN_EXECUTABLE"}
@@ -375,27 +385,58 @@ def reidentify_unit(unit: RegistryUnit, **changes: object) -> RegistryUnit:
 
 def _verify_unit_dependencies(
     unit: RegistryUnit,
-    dependency_verifier: Callable[[str], bool] | None,
+    dependency_verifier: Callable[[str], object] | None,
     cache: MutableMapping[object, object] | None,
 ) -> list[str]:
+    # Historical name retained for API compatibility.  This is an object/byte
+    # resolver, never a trusted boolean callback.
     if dependency_verifier is None:
-        return ["authenticated dependency verifier required; digest strings are not authority"]
+        return ["authenticated dependency object/byte resolver required; digest strings are not authority"]
     blockers: list[str] = []
     unit_key = unit.canonical_sha256()
     for field in _IDENTITY_64_FIELDS + _IDENTITY_40_FIELDS:
         sha = getattr(unit, field)
-        key = ("dependency", unit_key, field, sha)
+        key = ("dependency-object-v1", unit_key, field, sha)
         if cache is not None and key in cache:
             ok = bool(cache[key])
         else:
+            ok = False
             try:
-                ok = dependency_verifier(sha) is True
+                obj = dependency_verifier(sha)
+                if field in _IDENTITY_40_FIELDS:
+                    if type(obj) is not bytes:
+                        raise RegistryError(f"dependency {field} requires actual code bytes")
+                    prefix = f"blob {len(obj)}\0".encode("ascii")
+                    observed = hashlib.sha1(prefix + obj).hexdigest()
+                    if observed != sha:
+                        raise RegistryError(f"dependency {field} Git blob identity mismatch")
+                else:
+                    if not isinstance(obj, Mapping):
+                        raise RegistryError(f"dependency {field} requires actual canonical object")
+                    observed = canonical_sha256(dict(obj))
+                    if observed != sha:
+                        raise RegistryError(f"dependency {field} canonical identity mismatch")
+                    if field == "manifest_sha":
+                        if obj.get("schema") != "TD_EXECUTION_MANIFEST_V1":
+                            raise RegistryError("dependency manifest_sha schema mismatch")
+                        bound_access = obj.get("access_policy_sha")
+                        if bound_access is not None and bound_access != unit.access_policy_sha:
+                            raise RegistryError("dependency manifest/access-policy binding mismatch")
+                    else:
+                        expected_role = _DEPENDENCY_ROLE_BY_FIELD.get(field)
+                        if expected_role is None or obj.get("object_role") != expected_role:
+                            raise RegistryError(f"dependency {field} role mismatch; expected {expected_role}")
+                        if field == "access_policy_sha":
+                            population = obj.get("population_authority")
+                            if population is not None and population != unit.population_authority:
+                                raise RegistryError("dependency access policy population authority mismatch")
+                ok = True
             except Exception:
                 ok = False
             if cache is not None:
                 cache[key] = ok
         if not ok:
-            blockers.append(f"dependency verification failed: {field}")
+            blockers.append(f"dependency object/byte verification failed: {field}")
     return blockers
 
 
@@ -422,7 +463,7 @@ def _evaluate_unit(
     registry: TDQualificationRegistry,
     *,
     gate: str,
-    dependency_verifier: Callable[[str], bool] | None,
+    dependency_verifier: Callable[[str], object] | None,
     authority_object_resolver: AuthorityObjectResolver | None,
     verification_cache: MutableMapping[object, object] | None,
     stack: tuple[str, ...],
@@ -507,7 +548,7 @@ def derive_real_reference_ready(
     registry: TDQualificationRegistry,
     *,
     asserted_ready: bool | None = None,
-    dependency_verifier: Callable[[str], bool] | None = None,
+    dependency_verifier: Callable[[str], object] | None = None,
     prerequisite_evidence_verifier: Callable[[str], bool] | None = None,
     authority_object_resolver: AuthorityObjectResolver | None = None,
     verification_cache: MutableMapping[object, object] | None = None,
@@ -559,6 +600,68 @@ def _human_execution_blockers(
     return tuple(blockers)
 
 
+def _validate_current_stage_promotion_provenance(
+    unit: RegistryUnit,
+    registry: TDQualificationRegistry,
+    resolver: AuthorityObjectResolver | None,
+) -> PromotionReceipt:
+    candidates = [
+        receipt for receipt in registry.promotions
+        if receipt.unit_id == unit.unit_id and receipt.destination_stage is unit.qualification_stage
+    ]
+    if len(candidates) != 1:
+        raise RegistryError("current advanced stage requires exactly one verifiable prior promotion history receipt")
+    receipt = candidates[0]
+    if _STAGE_INDEX[receipt.destination_stage] != _STAGE_INDEX[receipt.source_stage] + 1:
+        raise RegistryError("promotion receipt chain is not one canonical stage")
+    if receipt.manifest_sha != unit.manifest_sha or receipt.access_policy_sha != unit.access_policy_sha:
+        raise RegistryError("promotion receipt manifest/access provenance mismatch")
+    predecessor = replace(unit, qualification_stage=receipt.source_stage)
+    if receipt.unit_identity_sha != predecessor.canonical_sha256():
+        raise RegistryError("promotion receipt unit identity does not match exact predecessor")
+    if resolver is None:
+        raise RegistryError("promotion provenance requires exact pre-registry resolver")
+    try:
+        snapshot = resolver(receipt.pre_registry_sha)
+    except Exception as exc:
+        raise RegistryError("promotion pre_registry authority resolution failed") from exc
+    if not isinstance(snapshot, Mapping):
+        raise RegistryError("promotion pre_registry provenance must resolve to registry object")
+    if canonical_sha256(dict(snapshot)) != receipt.pre_registry_sha:
+        raise RegistryError("promotion pre_registry provenance digest mismatch")
+    if snapshot.get("schema") != "TD_QUALIFICATION_REGISTRY_V1":
+        raise RegistryError("promotion pre_registry provenance schema mismatch")
+    units = snapshot.get("units")
+    if type(units) is not list:
+        raise RegistryError("promotion pre_registry units malformed")
+    prior_units = [obj for obj in units if isinstance(obj, Mapping) and obj.get("unit_id") == unit.unit_id]
+    if len(prior_units) != 1 or dict(prior_units[0]) != predecessor.to_payload():
+        raise RegistryError("promotion pre_registry unit identity/provenance mismatch")
+    prereqs = snapshot.get("prerequisites")
+    if type(prereqs) is not list:
+        raise RegistryError("promotion pre_registry prerequisites malformed")
+    relevant = [
+        dict(obj) for obj in prereqs
+        if isinstance(obj, Mapping)
+        and obj.get("dependent_unit_id") == unit.unit_id
+        and obj.get("gate") == receipt.destination_stage.value
+    ]
+    expected_ids = tuple(obj.get("prerequisite_id") for obj in relevant)
+    expected_shas = tuple(canonical_sha256(obj) for obj in relevant)
+    if receipt.prerequisite_ids != expected_ids or receipt.prerequisite_shas != expected_shas:
+        raise RegistryError("promotion receipt prerequisite chain does not match pre_registry snapshot")
+    _resolve_object(
+        receipt.controller_identity, resolver,
+        expected_role="QUALIFICATION_CONTROLLER", label="prior promotion controller",
+    )
+    if receipt.reviewer_identity is not None:
+        _resolve_object(
+            receipt.reviewer_identity, resolver,
+            expected_role="INDEPENDENT_REVIEWER", label="prior promotion reviewer",
+        )
+    return receipt
+
+
 def promote_unit(
     registry: TDQualificationRegistry,
     unit_id: str,
@@ -568,7 +671,7 @@ def promote_unit(
     reviewer_identity: str | None,
     prerequisite_evidence_verifier: Callable[[str], bool] | None = None,
     authority_object_resolver: AuthorityObjectResolver | None = None,
-    dependency_verifier: Callable[[str], bool] | None = None,
+    dependency_verifier: Callable[[str], object] | None = None,
     verification_cache: MutableMapping[object, object] | None = None,
 ) -> TDQualificationRegistry:
     units = registry.units_by_id()
@@ -613,12 +716,7 @@ def promote_unit(
         blockers = _human_execution_blockers(unit_id, registry, authority_object_resolver)
         if blockers:
             raise RegistryError("HUMAN_EXECUTABLE prerequisites unresolved: " + "; ".join(blockers))
-        prior_stage_receipts = tuple(
-            receipt for receipt in registry.promotions
-            if receipt.unit_id == unit_id and receipt.destination_stage is unit.qualification_stage
-        )
-        if not prior_stage_receipts:
-            raise RegistryError("current advanced stage lacks prior promotion history provenance")
+        _validate_current_stage_promotion_provenance(unit, registry, authority_object_resolver)
         dependency_blockers = _verify_unit_dependencies(unit, dependency_verifier, verification_cache)
         if dependency_blockers:
             raise RegistryError("HUMAN_EXECUTABLE dependency authentication failed: " + "; ".join(dependency_blockers))
