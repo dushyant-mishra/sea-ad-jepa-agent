@@ -14,90 +14,14 @@
   "handoff_surface": {
     "pr": 323,
     "branch": "handoff/jepa-lane-takeover-20261013",
+    "handoff_head_at_checkpoint": "a178290abfa183950c50cc1e43cb9b3c471df821",
     "handoff": "docs/agent/JEPA_MERGED_LANE_SUCCESSOR_HANDOFF_V16_20261014.md",
     "first_24_hours": "docs/agent/JEPA_SUCCESSOR_FIRST_24_HOURS_CHECKLIST_V1_20261014.md"
   },
-  "architecture": {
-    "pr": 379,
-    "head": "3064ca545f0c94859ea989cd49a04fcbd5b9a303"
-  },
-  "task0": {
-    "pr": 381,
-    "review_candidate": "c80d7398b41f10208ec1622bc52599383b940be6",
-    "focused_run": 38645994312,
-    "focused_job": 116132861396,
-    "focused_result": "SUCCESS_29_PASS",
-    "inherited_run": 38645994388,
-    "inherited_result": "SUCCESS",
-    "final_gate": "FRESH_INDEPENDENT_MACHA_REVIEW_REQUIRED"
-  },
-  "old_synthetic_task1_2": {
-    "head": "ff597faf2182522a320ec5322f8db9b67c9c6094",
-    "controller_review_pr": 382,
-    "focused_run": 38644641042,
-    "focused_job": 116128364543,
-    "focused_result": "SUCCESS_332_PASS",
-    "inherited_run": 38644640881,
-    "inherited_result": "SUCCESS",
-    "task1_classification": "ADAPT_AND_WRAP__DOES_NOT_COMPLETE_UNIFIED_TASK1",
-    "task2_classification": "SEALED_CUSTODY_RNG_SUBSTRATE__DOES_NOT_COMPLETE_UNIFIED_TASK2",
-    "old_task3": "STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY",
-    "old_task4": "STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY",
-    "old_task5_12": "NO_INDEPENDENT_CONTINUATION"
-  },
-  "macha": {
-    "roles": ["GPU_EXECUTION_AGENT", "INDEPENDENT_HOSTILE_REVIEWER", "HISTORICAL_SCIENTIFIC_CUSTODIAN"],
-    "role_separation_required": true,
-    "gpu_custody_doc": "docs/agent/MACHA_GPU_EXECUTION_ENVIRONMENT_AND_RUNTIME_CUSTODY_V1_20261014.md",
-    "gpu_status": "HISTORICAL_EXECUTION_CAPABILITY_EXISTS__CURRENT_MERGED_RUNTIME_REQUALIFICATION_REQUIRED"
-  },
-  "population": {
-    "pr": 349,
-    "head": "1ab453e5cb60efb209a8eee2aecb61c5ea0fbfc7",
-    "registry_payload_sha256": "50b29d7e1137c5a457fd0b528580030dedfbeff1b809e2b426f8f640ae38486d",
-    "rows": 6351753,
-    "donors": 149,
-    "operators": 42,
-    "sources": 3,
-    "donor_operator_strata": 2028,
-    "reader_fit_donors": 104,
-    "reader_validation_donors": 22,
-    "reader_oracle_donors": 23,
-    "reader_fit_cells": 4553407,
-    "reader_fit_donor_operator_groups": 1400
-  },
-  "controlling_td_repairs": {
-    "G8": "95dd474a02ce571722df9e8f08b42e81af2e8736",
-    "G6": "4110d4478c3353d86740dd135d62460ff7a7611f",
-    "GEOMETRY": "8d6b23a18051f64463ee9b2649f4fe5fc7123f0d",
-    "R1": "949d76ff03cb57c5a88fef9efdb79fced9154024",
-    "G2": "42df903d6190b7aa1b8eb65d810ab813cd327445",
-    "G7": "5a711f9a4ea0328445a05dadc1e011efb16a3c13",
-    "R4_C6_C4": "b7c317c640aa231a7d5ec1fa12271a39bfee86e6",
-    "C4_C6_FIREWALL": "2abcb9fe156eac340ff12adff9426ed38d929e3e",
-    "G12": "01ebdb9384b42d5cfae3de03c2adf5b6b327ee81",
-    "SYSTEM": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36"
-  },
-  "downstream": {
-    "historical_runtime_merge_head": "76bf7912cc621756fdbbd82218025d8e4c00a057",
-    "rich_teacher_pr312_head": "2ca8a91a960c823cc327d3885d008d3695837e83",
-    "target_portfolio_pr332_head": "902054ad62eede84086fc2e0a90ceb27e2191da7",
-    "post_td_harness_source": "97dd73f49e1554053bbfab6c5369377a23a72ceb",
-    "historical_post_td_workflow": 38448458550,
-    "historical_post_td_job": 115472916925,
-    "reuse_policy": "CLASSIFY_FIRST__PORT_OR_REBIND_EXISTING_ATTACKS__DO_NOT_REAUDIT_FROM_ZERO",
-    "current_joined_tqb_teacher_student_ema_authority": "NOT_QUALIFIED",
-    "ema_timescale_authority": "OPEN",
-    "runtime_eligibility": "NOT_QUALIFIED",
-    "training_eligibility": "NOT_QUALIFIED",
-    "training_authorization": "OFF"
-  },
-  "prospective_downstream_packages": ["A_TQB", "B_TEACHER", "C_STUDENT", "D_TARGET_IDENTITY", "E_MASKING", "F_WEIGHTING_PROPOSAL", "G_REPRESENTATION_TRANSFER", "H_LIBRARY_SUPPORT_CHANNELS", "I_MULTIMODAL_PROVENANCE", "J_OPTIMIZER_EMA_RUNTIME", "K_EMA_TIMESCALE", "L_CHECKPOINT_RUNTIME_PROVENANCE", "M_MODEL_REGISTRY_GEOMETRY", "N_GPU_EQUIVALENCE", "O_COLLAPSE_STABILITY", "P_FALSIFIER_BATTERY", "Q_DOWNSTREAM_CERTIFICATION", "R_RUNTIME_ELIGIBILITY", "S_TRAINING_ELIGIBILITY_REVIEW", "T_EXPLICIT_OWNER_AUTHORIZATION"],
-  "protected_data_state": {
-    "candidate_outcomes_opened": false,
-    "reader_validation_opened": false,
-    "reader_oracle_opened": false,
-    "unified_task1_started": false
-  },
+  "architecture": {"pr": 379, "head": "3064ca545f0c94859ea989cd49a04fcbd5b9a303"},
+  "task0": {"pr": 381, "review_candidate": "c80d7398b41f10208ec1622bc52599383b940be6", "focused_run": 38645994312, "focused_job": 116132861396, "focused_result": "SUCCESS_29_PASS", "inherited_run": 38645994388, "inherited_result": "SUCCESS", "final_gate": "FRESH_INDEPENDENT_MACHA_REVIEW_REQUIRED"},
+  "old_synthetic_task1_2": {"head": "ff597faf2182522a320ec5322f8db9b67c9c6094", "controller_review_pr": 382, "focused_run": 38644641042, "focused_job": 116128364543, "focused_result": "SUCCESS_332_PASS", "inherited_run": 38644640881, "inherited_result": "SUCCESS", "task1_classification": "ADAPT_AND_WRAP__DOES_NOT_COMPLETE_UNIFIED_TASK1", "task2_classification": "SEALED_CUSTODY_RNG_SUBSTRATE__DOES_NOT_COMPLETE_UNIFIED_TASK2", "old_task3": "STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY", "old_task4": "STOPPED_AFTER_MERGER__REQUIREMENTS_MIGRATE_ONLY", "old_task5_12": "NO_INDEPENDENT_CONTINUATION"},
+  "macha": {"roles": ["GPU_EXECUTION_AGENT", "INDEPENDENT_HOSTILE_REVIEWER", "HISTORICAL_SCIENTIFIC_CUSTODIAN"], "role_separation_required": true, "gpu_custody_doc": "docs/agent/MACHA_GPU_EXECUTION_ENVIRONMENT_AND_RUNTIME_CUSTODY_V1_20261014.md", "gpu_status": "HISTORICAL_EXECUTION_CAPABILITY_EXISTS__CURRENT_MERGED_RUNTIME_REQUALIFICATION_REQUIRED"},
+  "protected_data_state": {"candidate_outcomes_opened": false, "reader_validation_opened": false, "reader_oracle_opened": false, "unified_task1_started": false},
   "next_action": "OBTAIN_FRESH_INDEPENDENT_MACHA_VERDICT_ON_TASK0_c80d7398_AND_OLD_TASK1_2_ff597faf__IF_ACCEPTED_FREEZE_TASK0_AND_BEGIN_UNIFIED_TASK1_RED_FIRST"
 }
