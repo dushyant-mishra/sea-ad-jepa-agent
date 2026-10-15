@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 import re
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -12,10 +14,13 @@ STREAMS = RESULT_DIR / "PREMERGER_MACHA_DUAL_STREAM_CUSTODY_V1.json"
 UNRESOLVED = RESULT_DIR / "PREMERGER_UNRESOLVED_WORK_LEDGER_V1.json"
 TAXONOMY = RESULT_DIR / "TASK0_MIGRATION_TAXONOMY_V1.json"
 COMPLETENESS = RESULT_DIR / "PREMERGER_MERGED_CUSTODY_COMPLETENESS_V1.json"
+VALIDATOR = ROOT / "scripts" / "v5" / "td_unified" / "premerger_migration_task0.py"
+PLAN_AMENDMENT = ROOT / "docs" / "superpowers" / "plans" / "2026-10-14-unified-td-qualification-downstream-custody-v1-task0-taxonomy-amendment.md"
 
 OLD_TASK12_HEAD = "ff597faf2182522a320ec5322f8db9b67c9c6094"
 CHECKPOINT_HEAD = "f53c13e6eed329651b1088775782fea399ba1bf6"
 PLAN_HEAD = "5b6bf07e7d8b69b286ea430b09765a5ee4743325"
+PLAN_AMENDMENT_BLOB = "7f20050c2a8d0f80f0c6418c007bc12f7fc1083f"
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 
@@ -32,6 +37,19 @@ def _has_bound_payload_identity(row):
     digest = row.get("artifact_digest")
     blob = row.get("artifact_blob_sha")
     return bool((digest and HEX64.match(digest)) or (blob and HEX40.match(blob) and row.get("artifact_path")))
+
+
+def _validator_migration_classes():
+    spec = importlib.util.spec_from_file_location("task0_validator", VALIDATOR)
+    module = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(module)
+    return set(module.MIGRATION_CLASSES)
+
+
+def _amendment_migration_classes(text: str):
+    section = text.split("## Controlling migration taxonomy", 1)[1].split("## `HISTORICAL_BIOLOGICAL_EVIDENCE`", 1)[0]
+    return set(re.findall(r"^- `([A-Z0-9_]+)`$", section, flags=re.MULTILINE))
 
 
 def test_b1_pr356_primary_surfaces_bind_implemented_tasks_and_migrate_task4():
@@ -104,4 +122,21 @@ def test_b5_taxonomy_records_retrospective_ratification_and_exact_plan_binding()
     assert chronology["plan_ratification_commit"] == PLAN_HEAD
     assert chronology["taxonomy_binding_commit"] == "4417949b"
     assert taxonomy["controlling_plan_amendment_path"].endswith("task0-taxonomy-amendment.md")
-    assert taxonomy["controlling_plan_amendment_blob_sha"] == "7f20050c2a8d0f80f0c6418c007bc12f7fc1083f"
+    assert taxonomy["controlling_plan_amendment_blob_sha"] == PLAN_AMENDMENT_BLOB
+
+
+def test_b5_controlling_plan_amendment_is_present_exact_and_matches_validator_enum():
+    assert PLAN_AMENDMENT.exists(), "controlling Task 0 taxonomy amendment is missing from repaired tree"
+    blob = subprocess.check_output(["git", "hash-object", str(PLAN_AMENDMENT)], cwd=ROOT, text=True).strip()
+    assert blob == PLAN_AMENDMENT_BLOB
+    text = PLAN_AMENDMENT.read_text(encoding="utf-8")
+    assert _amendment_migration_classes(text) == _validator_migration_classes()
+
+
+def test_b5_task0_does_not_delete_any_plan_file_from_controlling_plan_head():
+    deleted = subprocess.check_output(
+        ["git", "diff", "--name-only", "--diff-filter=D", f"{PLAN_HEAD}..HEAD", "--", "docs/superpowers/plans"],
+        cwd=ROOT,
+        text=True,
+    ).splitlines()
+    assert deleted == [], f"Task 0 deletes controlling plan files: {deleted}"
