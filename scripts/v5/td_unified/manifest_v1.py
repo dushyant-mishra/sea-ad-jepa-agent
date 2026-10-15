@@ -519,7 +519,11 @@ class HarnessAccessRegistry:
         self.__ledgers: dict[str, dict[str, object]] = {}
         self.__counter = 0
 
-    def issue_session(self, *, policy: PopulationAccessPolicy, producer_id: str, reader_fit_values: dict[str, object]) -> PopulationAccessSession:
+    def issue_session(self, *, policy: PopulationAccessPolicy, producer_id: str, reader_fit_values: dict[str, object], raw_resolver: Callable[[str], object | None] | None = None) -> PopulationAccessSession:
+        if policy.population_authority == "AUTHENTICATED_READER_SPLIT":
+            require_current_td_population_authority(policy, raw_resolver=raw_resolver)
+        else:
+            _validate_population_access_policy_structure(policy.to_payload())
         self.__counter += 1
         seed = f"{self.__counter}\0{producer_id}\0{policy.canonical_sha256()}".encode()
         session_id = hmac.new(self.__key, seed, hashlib.sha256).hexdigest()
@@ -555,10 +559,13 @@ class HarnessAccessRegistry:
         return dict(ledger)
 
 
-def validate_producer_access(policy: PopulationAccessPolicy, receipt: ProducerAccessReceipt, *, ledger_resolver: Callable[[str], object | None] | None = None, session_registry: HarnessAccessRegistry | None = None) -> None:
+def validate_producer_access(policy: PopulationAccessPolicy, receipt: ProducerAccessReceipt, *, ledger_resolver: Callable[[str], object | None] | None = None, session_registry: HarnessAccessRegistry | None = None, raw_resolver: Callable[[str], object | None] | None = None) -> None:
     if not isinstance(policy, PopulationAccessPolicy) or not isinstance(receipt, ProducerAccessReceipt):
         raise ManifestError("policy/receipt type mismatch")
-    _validate_population_access_policy_structure(policy.to_payload())
+    if policy.population_authority == "AUTHENTICATED_READER_SPLIT":
+        require_current_td_population_authority(policy, raw_resolver=raw_resolver)
+    else:
+        _validate_population_access_policy_structure(policy.to_payload())
     if receipt.receipt_schema != "PRODUCER_ACCESS_RECEIPT_V1" or not receipt.observed_access:
         raise ManifestError("invalid producer access receipt")
     if receipt.access_policy_sha != policy.canonical_sha256():
