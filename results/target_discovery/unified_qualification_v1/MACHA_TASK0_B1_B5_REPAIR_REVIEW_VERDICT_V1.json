@@ -1,0 +1,43 @@
+{
+  "blocking": [
+    {
+      "consequence": "merging Task 0 into plan branch (merge base 5b6bf07e) deletes the controlling taxonomy amendment",
+      "expected_blob": "7f20050c2a8d0f80f0c6418c007bc12f7fc1083f",
+      "file": "docs/superpowers/plans/2026-10-14-unified-td-qualification-downstream-custody-v1-task0-taxonomy-amendment.md",
+      "id": "B5-R1",
+      "record": "merge f1267d5e keeps first-parent tree; file absent at db92f80d",
+      "repair": [
+        "git checkout 5b6bf07e -- <path>; commit byte-identical (blob 7f20050c)",
+        "test: path present, blob hash == 7f20050c, parsed class list == MIGRATION_CLASSES",
+        "test/CI: no deletions under docs/superpowers/plans relative to plan base"
+      ],
+      "scope": "B5_ONLY"
+    }
+  ],
+  "date": "2026-10-15",
+  "freeze": "TASK0_REMAINS_OPEN__UNIFIED_TASK1_REMAINS_BLOCKED",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "hostile_tests_local": {
+    "command": "pytest test_task0_b1_b5_regressions.py test_premerger_migration_task0.py test_premerger_custody_completeness_v1.py",
+    "evidence_class": "LOCAL_NOT_CI",
+    "result": "35 passed"
+  },
+  "items": {
+    "B1": "CLOSED",
+    "B2": "CLOSED",
+    "B3": "CLOSED",
+    "B4": "CLOSED",
+    "B5": "NOT_CLOSED"
+  },
+  "non_blocking": [
+    "N1 identity-unavailable records with EXACT_COMMIT basis label",
+    "N2 bind old Task1-2 test blobs",
+    "N3 effective_classification marker on mixed parents",
+    "N4 mark one-shot repair scripts historical"
+  ],
+  "pr": 384,
+  "protected_opened": false,
+  "reviewed_head": "db92f80d128c37b99aa7d2c169eaf44447fa2164",
+  "schema": "MACHA_TASK0_B1_B5_REPAIR_REVIEW_VERDICT_V1",
+  "verdict": "REJECT_TASK0_B1_B5_REPAIR"
+}
