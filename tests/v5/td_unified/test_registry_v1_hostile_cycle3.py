@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from dataclasses import replace
 
-from scripts.v5.td_unified.authority_v1 import QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
 from scripts.v5.td_unified import registry_v1 as r
 from tests.v5.td_unified.registry_v1_dependency_fixtures import verified_pair, verified_prereq
@@ -12,10 +11,23 @@ def _registry(dep, ref, p):
     return r.TDQualificationRegistry((dep, ref), (p,), (), ())
 
 
+def _row(unit, *, metric_sha=None):
+    return {
+        "unit_id": unit.unit_id,
+        "producer_code_sha1": unit.producer_code_sha,
+        "executor_code_sha1": unit.executor_code_sha,
+        "producer_policy_sha": unit.producer_policy_sha,
+        "executor_policy_sha": unit.executor_policy_sha,
+        "schema_sha": unit.schema_sha,
+        "metric_sha": metric_sha or unit.metric_sha,
+        "reference_producer_sha": unit.reference_producer_sha,
+        "falsifier_sha": unit.falsifier_sha,
+    }
+
+
 def test_minimal_manifest_label_cannot_substitute_for_task2_per_unit_binding():
     dep, ref, objects = verified_pair(r)
     p = verified_prereq(r, dep, ref)
-    # Strip the manifest down to the fields current GREEN2 accepts.
     minimal = {"schema": "TD_EXECUTION_MANIFEST_V1", "access_policy_sha": dep.access_policy_sha}
     minimal_sha = canonical_sha256(minimal)
     forged_dep = replace(dep, manifest_sha=minimal_sha)
@@ -39,16 +51,17 @@ def test_minimal_manifest_label_cannot_substitute_for_task2_per_unit_binding():
 def test_registry_unit_must_equal_exact_task2_execution_identity_table_row():
     dep, ref, objects = verified_pair(r)
     p = verified_prereq(r, dep, ref)
-    # The dependency objects themselves remain valid, but the manifest-bound table
-    # intentionally binds a different metric identity for G8.
-    table_sha = objects[dep.manifest_sha]["unit_execution_identity_table_sha"]
-    table = dict(objects[table_sha])
-    rows = [dict(row) for row in table["units"]]
-    rows[0]["metric_sha"] = ref.metric_sha
-    bad_table = {**table, "units": rows}
+    bad_table = {
+        "object_role": "UNIT_EXECUTION_IDENTITY_TABLE",
+        "table_schema": "UNIT_EXECUTION_IDENTITY_TABLE_V1",
+        "units": [_row(dep, metric_sha=ref.metric_sha), _row(ref)],
+    }
     bad_table_sha = canonical_sha256(bad_table)
-    bad_manifest = dict(objects[dep.manifest_sha])
-    bad_manifest["unit_execution_identity_table_sha"] = bad_table_sha
+    bad_manifest = {
+        "schema": "TD_EXECUTION_MANIFEST_V1",
+        "access_policy_sha": dep.access_policy_sha,
+        "unit_execution_identity_table_sha": bad_table_sha,
+    }
     bad_manifest_sha = canonical_sha256(bad_manifest)
     forged_dep = replace(dep, manifest_sha=bad_manifest_sha)
     forged_ref = replace(ref, manifest_sha=bad_manifest_sha)
@@ -75,8 +88,7 @@ def test_access_policy_population_authority_cannot_be_omitted():
     access = dict(objects[dep.access_policy_sha])
     access.pop("population_authority")
     access_sha = canonical_sha256(access)
-    manifest = dict(objects[dep.manifest_sha])
-    manifest["access_policy_sha"] = access_sha
+    manifest = {"schema": "TD_EXECUTION_MANIFEST_V1", "access_policy_sha": access_sha}
     manifest_sha = canonical_sha256(manifest)
     forged_dep = replace(dep, access_policy_sha=access_sha, manifest_sha=manifest_sha)
     forged_ref = replace(ref, access_policy_sha=access_sha, manifest_sha=manifest_sha)
