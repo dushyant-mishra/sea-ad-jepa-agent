@@ -20,6 +20,13 @@ for _name, _value in vars(_legacy).items():
     if not _name.startswith("__"):
         globals()[_name] = _value
 
+# Process-wide revocation memory closes the exact B5-F fresh-custody reset attack:
+# every custody instance in the qualification process consults one shared anchor.
+# This is deliberately NOT represented as cross-process persistence or R4 closure;
+# real HUMAN_EXECUTABLE authority still requires separately qualified external
+# ledger/key custody and Task 4 remains blocked.
+_PROCESS_REVOCATION_ANCHOR: set[str] = set()
+
 
 def _canonical_event_bytes(payload: Mapping[str, object]) -> bytes:
     return json.dumps(dict(payload), sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("ascii")
@@ -174,6 +181,11 @@ class RegistryHistoryCustody:
             raise RegistryError("history custody attestation_key must be non-empty bytes")
         if genesis_registry.promotions or genesis_registry.revocations:
             raise RegistryError("history custody genesis must be history-free")
+        for unit in genesis_registry.units:
+            if unit.canonical_sha256() in _PROCESS_REVOCATION_ANCHOR:
+                raise RegistryError(
+                    "history custody genesis refuses unit identity already present in anchored revocation ledger"
+                )
         if any(
             _legacy._STAGE_INDEX[unit.qualification_stage]
             > _legacy._STAGE_INDEX[QualificationStage.SAME_CODE_PATH]
@@ -247,6 +259,11 @@ class RegistryHistoryCustody:
         self._events.append(event)
         self._unit_state = _unit_payloads(after)
         self._promotions, self._revocations = after_promotions, after_revocations
+        if kind == "REVOCATION":
+            affected = receipt.get("affected_unit_sha")
+            if type(affected) is not str:
+                raise RegistryError("revocation event missing affected unit identity for anchor")
+            _PROCESS_REVOCATION_ANCHOR.add(affected)
 
 
 def _require_history_custody(registry, history_custody, *, context: str) -> RegistryHistoryCustody:
@@ -321,7 +338,6 @@ def promote_unit(
     if unit_id not in registry.units_by_id():
         raise RegistryError(f"unknown unit_id: {unit_id}")
 
-    # Preserve all previously qualified fail-closed mechanics and diagnostics.
     repaired = _legacy_promotion_preflight(
         registry,
         unit_id,
@@ -332,8 +348,6 @@ def promote_unit(
         dependency_verifier=dependency_verifier,
     )
 
-    # New trust boundaries are evaluated only after the inherited mechanics
-    # would otherwise permit an authority-bearing transition.
     if destination_stage in {QualificationStage.REAL_REFERENCE_READY, QualificationStage.HUMAN_EXECUTABLE}:
         _require_frozen_actor_policy(registry, authority_object_resolver, dependency_verifier)
         _require_registered_prerequisite_actors(
