@@ -5,6 +5,7 @@ import pytest
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
 from scripts.v5.td_unified import registry_v1 as r
+from tests.v5.td_unified.registry_v1_dependency_fixtures import direct_fixture_actor_objects
 
 
 def _unit(unit_id: str = "G8", *, stage=QualificationStage.KNOWN_TRUTH_QUALIFIED):
@@ -68,6 +69,12 @@ def _evidence(requirement_class: str, **claims):
     return sha, obj
 
 
+def _with_unit_actors(unit, objects):
+    merged = dict(objects)
+    merged.update(direct_fixture_actor_objects(unit))
+    return merged
+
+
 def test_ready_requires_actual_dependency_authentication_not_consistent_hash_strings():
     dep = _unit("G8")
     ref = _unit("REF")
@@ -114,7 +121,7 @@ def test_two_distinct_reviewer_objects_with_same_actor_id_are_not_independent():
             evidence_receipt_sha=sha,
         )
     reg = _registry(unit, prerequisites=(p("R1", "PROCESS_ISOLATION", process_sha), p("R4", "CROSS_PROCESS_LEDGER_CUSTODY", custody_sha)))
-    objects = {csha: cobj, rsha: robj, process_sha: process_obj, custody_sha: custody_obj}
+    objects = _with_unit_actors(unit, {csha: cobj, rsha: robj, process_sha: process_obj, custody_sha: custody_obj})
     with pytest.raises(r.RegistryError, match="actor|independent|same"):
         r.promote_unit(reg, "G8", QualificationStage.HUMAN_EXECUTABLE,
                        controller_identity=csha, reviewer_identity=rsha,
@@ -153,7 +160,7 @@ def test_vacuous_process_isolation_label_cannot_satisfy_R1():
             evidence_receipt_sha=sha,
         )
     reg = _registry(unit, prerequisites=(p("R1", "PROCESS_ISOLATION", bad_sha), p("R4", "CROSS_PROCESS_LEDGER_CUSTODY", good_sha)))
-    objects = {csha: cobj, rsha: robj, bad_sha: bad, good_sha: good}
+    objects = _with_unit_actors(unit, {csha: cobj, rsha: robj, bad_sha: bad, good_sha: good})
     with pytest.raises(r.RegistryError, match="PROCESS_ISOLATION|process isolation|evidence"):
         r.promote_unit(reg, "G8", QualificationStage.HUMAN_EXECUTABLE,
                        controller_identity=csha, reviewer_identity=rsha,
@@ -193,7 +200,7 @@ def test_vacuous_cross_process_custody_label_cannot_satisfy_R4():
             evidence_receipt_sha=sha,
         )
     reg = _registry(unit, prerequisites=(p("R1", "PROCESS_ISOLATION", good_sha), p("R4", "CROSS_PROCESS_LEDGER_CUSTODY", bad_sha)))
-    objects = {csha: cobj, rsha: robj, good_sha: good, bad_sha: bad}
+    objects = _with_unit_actors(unit, {csha: cobj, rsha: robj, good_sha: good, bad_sha: bad})
     with pytest.raises(r.RegistryError, match="custody|persistence|key|R4"):
         r.promote_unit(reg, "G8", QualificationStage.HUMAN_EXECUTABLE,
                        controller_identity=csha, reviewer_identity=rsha,
@@ -237,7 +244,7 @@ def test_hand_constructed_real_reference_ready_stage_without_promotion_history_c
             evidence_receipt_sha=sha,
         )
     reg = _registry(unit, prerequisites=(p("R1", "PROCESS_ISOLATION", psha), p("R4", "CROSS_PROCESS_LEDGER_CUSTODY", ksha)))
-    objects = {csha: cobj, rsha: robj, psha: pobj, ksha: kobj}
+    objects = _with_unit_actors(unit, {csha: cobj, rsha: robj, psha: pobj, ksha: kobj})
     with pytest.raises(r.RegistryError, match="promotion history|provenance|prior promotion"):
         r.promote_unit(reg, "G8", QualificationStage.HUMAN_EXECUTABLE,
                        controller_identity=csha, reviewer_identity=rsha,
