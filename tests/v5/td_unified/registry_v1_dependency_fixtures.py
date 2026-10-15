@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import hashlib
+from dataclasses import replace
+from typing import Mapping
 
+from scripts.v5.td_unified.actor_registry_v1 import canonical_actor_registry
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
 
@@ -9,6 +12,24 @@ from scripts.v5.td_unified.canonical_v1 import canonical_sha256
 def git_blob_sha1(raw: bytes) -> str:
     prefix = f"blob {len(raw)}\0".encode("ascii")
     return hashlib.sha1(prefix + raw).hexdigest()
+
+
+def actor_object(role: str, actor_id: str, **extra: object) -> dict[str, object]:
+    return {"object_role": role, "actor_id": actor_id, **extra}
+
+
+def standard_authority_actor_objects() -> tuple[dict[str, object], ...]:
+    """Explicit trusted synthetic actors; hostile resolver extras are not auto-registered."""
+    return (
+        actor_object("QUALIFICATION_CONTROLLER", "C1"),
+        actor_object("INDEPENDENT_REVIEWER", "R1"),
+        actor_object("PREREQUISITE_EVIDENCE_ISSUER", "HARNESS"),
+        actor_object("CONTENT_VALIDATOR", "validator-1"),
+    )
+
+
+def standard_actor_object_map() -> dict[str, object]:
+    return {canonical_sha256(obj): obj for obj in standard_authority_actor_objects()}
 
 
 def _semantic(role: str, unit_id: str) -> dict[str, object]:
@@ -28,6 +49,42 @@ def direct_fixture_actor_objects(unit) -> dict[str, object]:
     if psha != unit.producer_actor_identity or esha != unit.executor_actor_identity:
         raise AssertionError("legacy direct fixture actor identity mismatch")
     return {psha: producer, esha: executor}
+
+
+def bind_actor_registry(
+    r,
+    registry,
+    objects: Mapping[str, object] | None = None,
+    *,
+    trusted_actor_objects: tuple[Mapping[str, object], ...] | list[Mapping[str, object]] = (),
+):
+    """Bind a closed registry from explicitly trusted actors only.
+
+    Objects merely present in a resolver are deliberately not auto-registered.
+    Unit producer/executor identities are the only implicit members because they
+    are already bound in the RegistryUnit identity itself.
+    """
+    merged: dict[str, object] = dict(objects or {})
+    trusted: list[Mapping[str, object]] = []
+    for unit in registry.units:
+        for sha, role in (
+            (unit.producer_actor_identity, "SCIENTIFIC_PRODUCER"),
+            (unit.executor_actor_identity, "SCIENTIFIC_EXECUTOR"),
+        ):
+            obj = merged.get(sha)
+            if obj is None:
+                obj = direct_fixture_actor_objects(unit).get(sha)
+            if not isinstance(obj, Mapping) or obj.get("object_role") != role:
+                raise AssertionError(f"missing exact unit actor object for {unit.unit_id}/{role}")
+            trusted.append(dict(obj))
+            merged[sha] = dict(obj)
+    for obj in trusted_actor_objects:
+        trusted.append(dict(obj))
+        merged[canonical_sha256(dict(obj))] = dict(obj)
+    actor_registry = canonical_actor_registry(trusted)
+    actor_registry_sha = canonical_sha256(actor_registry)
+    merged[actor_registry_sha] = actor_registry
+    return replace(registry, actor_registry_sha=actor_registry_sha), merged
 
 
 def _core(unit_id: str):
