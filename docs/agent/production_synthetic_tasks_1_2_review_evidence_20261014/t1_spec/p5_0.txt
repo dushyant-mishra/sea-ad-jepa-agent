@@ -1,0 +1,34 @@
+1E-400: CE nonzero float literal underflows to zero: 1E-400
+0.0e-0: OK -> 0.0
+00.1: CE invalid JSON artifact: Extra data: line 1 column 2 (char 1)
+-00.1: CE invalid JSON artifact: Extra data: line 1 column 3 (char 2)
+-0.0000000e-9999: OK -> -0.0
+1+400z e-800 (~1e-400, true underflow): CE nonzero float literal underflows to zero: 10000000000000000000000000000000000000
+1+400z e-500 (=1e-100, legit): OK -> 1e-100
+1+400z e-722 (=1e-322 subnormal, legit): OK -> 1e-322
+0.000..1 e-300 (=1e-310 subnormal): OK -> 1e-310
+2.5e-324 (rounds up to min subnormal): OK -> 5e-324
+2.4703282292062328e-324 (just above half): OK -> 5e-324
+2.4703282292062327e-324 (just below half): CE nonzero float literal underflows to zero: 2.4703282292062327e-324
+4.9e-324: OK -> 5e-324
+1e-323: OK -> 1e-323
+0.0e999: OK -> 0.0
+0e+5: OK -> 0.0
+-0e-0: OK -> -0.0
+1e999 nested: CE float overflows to Inf: 1e999
+1e-400 in obj: CE nonzero float literal underflows to zero: 1e-400
+1.0: OK -> 1.0
+1e308: OK -> 1e+308
+1.8e308: CE float overflows to Inf: 1.8e308
+big mantissa 1+5000 zeros .0: CE float overflows to Inf: 10000000000000000000000000000000000000000000000000000000
+lone hi surrogate value: CE JSON string contains a lone surrogate
+lone lo surrogate in key nested: CE JSON string contains a lone surrogate
+reversed pair: CE JSON string contains a lone surrogate
+valid pair: OK -> '\U0001f600'
+nested CR vs LF keys in array: CE duplicate JSON object key (after line-ending normalization): 'a\n'
+CRLF vs CR keys: CE duplicate JSON object key (after line-ending normalization): 'a\r'
+distinct keys a vs a
+: OK -> {'a': 1, 'a\n': 2}
+same key in sibling objects ok: OK -> [{'a': 1}, {'a': 2}]
+dup via escape: CE duplicate JSON object key (after line-ending normalization): 'a'
+random literal rule violations: 0

@@ -1,0 +1,21 @@
+all: ['CanonicalError', 'canonical_json_bytes', 'raw_sha256', 'semantic_sha256', 'ordered_registry_digest', 'semantic_row_set_sha256', 'load_canonical_json', 'semantic_text_sha256', 'semantic_json_file_sha256']
+text eol eq: True True
+semantic_sha256(bytes) CE semantic_sha256 does not accept bytes; use semantic_text_sha256 or sem
+semantic_sha256(bytearray) CE semantic_sha256 does not accept bytes; use semantic_text_sha256 or sem
+json file equiv: True
+text vs json domains differ: True True
+registry adjacent swaps distinct: True rev differs: True
+idkey order irrelevant: True True
+rowset invariant: True True
+dup across shards CE duplicate identity at row 300: ["X150"]
+rows=None CE rows must be an iterable of mappings, got NoneType
+rows=5 CE rows must be an iterable of mappings, got int
+idkeys collide after norm CE identity_keys must be unique (after line-ending normalization)
+composite id ambiguity OK 5c7c97fac851a441ac0bc53cfff82ecb0779d0892082ab909dd13eb7a6ce2dd0
+longdouble OK b'0.1'
+longdouble itemsize: 8
+float16/32/64 OK [b'0.0999755859375', b'0.10000000149011612', b'0.1']
+loader underflow CE nonzero float literal underflows to zero: 1e-400
+10**5000 CE integer too large to serialize exactly
+nan CE NaN/Inf are not representable; None is the only missing value
+REG41238 be1c97d0ce5ced497708a414f183dc3e311336370e89cac078964ef1dfef2b84
