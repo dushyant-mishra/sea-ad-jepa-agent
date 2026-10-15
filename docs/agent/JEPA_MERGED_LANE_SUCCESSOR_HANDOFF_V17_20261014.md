@@ -121,3 +121,7 @@ If Macha finds no Critical/Important defect in controller-authored Task 0 custod
 5. do not start human candidate execution or training.
 
 If Macha finds a blocker, repair only the named Task 0 custody defect RED-first and keep unified Task 1 blocked.
+
+## Live navigation note
+
+For current Macha instructions, do not follow any older PR-body sentence that says Macha should independently review his own Task 1–2 implementation. Packet V2 and this V17 handoff supersede that wording.
