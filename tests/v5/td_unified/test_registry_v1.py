@@ -75,10 +75,11 @@ def test_historical_promotion_receipt_remains_immutable_after_revocation():
     r=_r(); u,ref,deps=verified_pair(r,dep_stage=QualificationStage.SEMANTICS_ONLY,ref_stage=QualificationStage.SEMANTICS_ONLY); reg=_registry(r,[u,ref])
     reg,c,rv,res=_actors(r,reg,objects=deps)
     custody=r.RegistryHistoryCustody(reg,attestation_key=b"task3-lawful-history-fixture")
-    promoted=r.promote_unit(reg,"G8",QualificationStage.SAME_CODE_PATH,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res,dependency_verifier=deps.get,history_custody=custody)
-    old=promoted.promotions[0]
+    fixture=r.promote_unit(reg,"G8",QualificationStage.FIXTURE_SAME_INTERFACE,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res,dependency_verifier=deps.get,history_custody=custody)
+    promoted=r.promote_unit(fixture,"G8",QualificationStage.SAME_CODE_PATH,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res,dependency_verifier=deps.get,history_custody=custody)
+    old=promoted.promotions[-1]
     revoked=r.revoke_or_supersede(promoted,"G8",ActiveLineageStatus.REVOKED_BY_DEFECT,reason_class="DEFECT",controller_identity=c,authority_object_resolver=res,dependency_verifier=deps.get,history_custody=custody)
-    assert revoked.promotions[0]==old
+    assert revoked.promotions[-1]==old
     assert revoked.units_by_id()["G8"].active_lineage_status is ActiveLineageStatus.REVOKED_BY_DEFECT
 
 
