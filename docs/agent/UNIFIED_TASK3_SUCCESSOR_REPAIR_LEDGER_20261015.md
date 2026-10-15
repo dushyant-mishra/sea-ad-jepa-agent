@@ -24,21 +24,20 @@ T3-B6 was contained before any production repair, exactly as ordered by the inde
 3. Verified both paths absent at the branch head after deletion.
 4. Wrote the successor rejection-preservation plan at `docs/superpowers/plans/2026-10-15-unified-task3-rejection-preservation.md`, commit `88922bb5650d148b6f9e2c9a1c85fdce0ffdc570`.
 5. Imported Macha H1-H6 and the actor-alias/self-mint attacks into `tests/v5/td_unified/test_registry_v1_macha_rejection.py`, commit `51cdd4bea030be17242de7f81e9880dec802c6a7`.
+6. Decoupled H1 from the B2 evidence gate so each blocker remains independently observable, commit `1fa6960f194e51acc02784b67116bd38ede073b6`.
 
-The remaining Task 3 workflows used for this gate are verification-only. The RED CI job reported `GITHUB_TOKEN` permission `Contents: read`.
+The remaining Task 3 workflows used for these gates are verification-only. The RED and partial-GREEN CI jobs reported `GITHUB_TOKEN` permission `Contents: read`.
 
 ## Preserved RED baseline
 
 PR #392 was reopened only to trigger read-only `pull_request` verification after GitHub App-authored content commits did not auto-start Actions.
 
-- exact branch head under test content: `51cdd4bea030be17242de7f81e9880dec802c6a7`
-- GitHub pull-request merge ref: `d4e8fc991ded83d906369f02e530887865654877`
+- corrected RED test head: `1fa6960f194e51acc02784b67116bd38ede073b6`
 - workflow: `Unified Task 3 registry`
-- run ID: `38792404844` (run #115)
-- job ID: `116620027363`
+- run ID: `38792956739` (run #120)
+- job ID: `116621940528`
 - command: `python -m pytest -q tests/v5/td_unified/test_registry_v1*.py`
-- result: `11 failed, 53 passed in 0.39s`
-- full unified step: skipped because the focused RED gate failed first, as intended
+- result: `11 failed, 53 passed`
 
 The eleven failures were the expected defect classes, not import/collection defects:
 
@@ -52,18 +51,52 @@ The eleven failures were the expected defect classes, not import/collection defe
 
 Two existing exact-equality actor-independence checks remained green: reviewer actor equal to controller and reviewer actor equal to producer are already refused. Those passing controls must remain passing during repair.
 
+## B1 + B4 repair batch
+
+The first production repair batch was intentionally limited to T3-B1 and T3-B4. The implementation plan is `docs/superpowers/plans/2026-10-15-unified-task3-b1-b4-repair.md`.
+
+Production repair commit: `425460c7582eed985893483cdc2d8bfbb389b2bd`.
+
+### T3-B1 mechanical closure
+
+Every proposed promotion now constructs a frozen Task 1 `AuthorityRecord` and calls `validate_authority_record` before the stage is changed. `NO_TRAINING_AUTHORITY` also has an explicit hard refusal at `TRAINING_ELIGIBLE` / `TRAINING_AUTHORIZED`. This makes the frozen UNIT-scope ceiling executable at the Task 3 promotion boundary rather than merely documentary.
+
+### T3-B4 mechanical closure
+
+Readiness/dependency memoization is now owned by the top-level call. The legacy caller `verification_cache` parameter is temporarily retained for API compatibility but is neither seeded into nor written back from the authentication context. A fresh internal cache is used for recursive readiness checks, and HUMAN_EXECUTABLE dependency authentication also uses a fresh call-owned cache.
+
+### Exact-head partial-GREEN evidence
+
+On exact production-repair head `425460c7582eed985893483cdc2d8bfbb389b2bd`:
+
+- `Unified Task 3 registry` run `38793456626`, job `116623672455`
+- focused result: `8 failed, 56 passed`
+- B1/H1: PASS
+- B4/H3 caller-poisoned cache: PASS
+- B4/H4 warmed-cache/resolver-swap: PASS
+- remaining failures: B2/H2, five B3 alias/self-minted identity attacks, B5/H5, B5/H6 only
+
+The frozen Task 2-specific workflow on the same PR did not show a Task 2 regression:
+
+- run `38793456638`, job `116623672911`
+- dedicated Task 2 manifest/access suite: `31 passed in 0.27s`
+- its broader command `python -m pytest -q tests/v5/td_unified` then inherited the eight intentionally unresolved Task 3 hostile RED tests and reported `159 passed, 8 failed in 0.73s`
+- those eight failures are exactly B2, five B3 identity attacks, H5 and H6
+
+Therefore B1 and B4 are mechanically closed on this candidate head, but Task 3 remains rejected because B2, B3 and B5 are open and no independent exact-head Macha recheck has accepted the successor.
+
 ## Binding next repair order
 
-1. Preserve this RED evidence and keep B6 disarmed.
-2. Repair B1 by enforcing frozen Task 1 authority validation on every promotion and retaining `NO_TRAINING_AUTHORITY` as a hard restriction.
+1. Keep B6 disarmed and preserve the RED baseline.
+2. B1: mechanically closed on `425460c...`; retain frozen Task 1 authority validation on every promotion and `NO_TRAINING_AUTHORITY` as a hard restriction.
 3. Repair B2 with a closed per-stage evidence-gate table; undefined evidence types fail closed. `KNOWN_TRUTH_QUALIFIED` and `HUMAN_EXECUTED` cannot be promoted merely because the caller asks.
 4. Repair B3 with a frozen identity-bound actor registry, strict canonical ASCII actor IDs, role grants, and registry-based independence checks. Free-string normalization alone is insufficient because self-minted identities must also fail.
-5. Repair B4 by using only internal per-call or resolver-context-bound memoization. Caller-provided cache entries are never authority.
+5. B4: mechanically closed on `425460c...`; caller cache entries remain non-authoritative.
 6. Repair B5 by replay-validating promotion/revocation history from an authenticated genesis and requiring an external current-head anchor; internal receipt consistency alone is insufficient.
-7. Remove the dead `asserted_ready` and `prerequisite_evidence_verifier` parameters.
+7. Remove the dead `asserted_ready` and `prerequisite_evidence_verifier` parameters after B1-B5 are closed.
 8. Run focused and complete inherited regressions on one exact candidate head.
 9. Obtain a focused independent Macha B1-B6 recheck before any Task 3 freeze.
 
 ## Authority boundary
 
-This RED baseline grants no new authority. Task 4 implementation remains blocked. No protected biological, candidate, validation, holdout, or oracle values were opened for this work. No Task 0-2 frozen source was modified.
+This partial-GREEN repair grants no new authority. Task 3 remains `REJECTED_OPEN_REPAIR_REQUIRED`. Task 4 implementation remains blocked. No protected biological, candidate, validation, holdout, or oracle values were opened for this work. No Task 0-2 frozen source was modified. The global authority remains `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
