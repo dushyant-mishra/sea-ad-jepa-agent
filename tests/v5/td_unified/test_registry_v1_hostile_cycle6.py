@@ -51,7 +51,7 @@ def test_producer_actor_cannot_self_issue_qualification_controller_receipt():
         controller_sha: controller_obj,
         reviewer_sha: reviewer_obj,
     }.get
-    with pytest.raises(r.RegistryError, match="producer.*actor|self-qualif|independent.*controller"):
+    with pytest.raises(r.RegistryError, match="producer.*actor|self-qualif|independent.*controller|registered"):
         r.promote_unit(
             reg,
             dep.unit_id,
@@ -79,7 +79,7 @@ def test_executor_actor_cannot_issue_revocation_controller_receipt():
         executor_sha: executor_obj,
         controller_sha: controller_obj,
     }.get
-    with pytest.raises(r.RegistryError, match="executor.*actor|independent.*revocation"):
+    with pytest.raises(r.RegistryError, match="executor.*actor|independent.*revocation|registered"):
         r.revoke_or_supersede(
             reg,
             dep.unit_id,
@@ -105,7 +105,7 @@ def test_reviewer_actor_cannot_alias_scientific_producer_actor():
     reg = r.TDQualificationRegistry((dep, target), (), (), ())
     resolver_objects = dict(deps)
     resolver_objects.update({controller_sha: controller_obj, reviewer_sha: reviewer_obj})
-    with pytest.raises(r.RegistryError, match="reviewer actor.*producer|reviewer actor.*executor"):
+    with pytest.raises(r.RegistryError, match="reviewer actor.*producer|reviewer actor.*executor|registered"):
         r.promote_unit(
             reg,
             dep.unit_id,

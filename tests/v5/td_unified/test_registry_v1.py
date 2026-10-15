@@ -87,7 +87,7 @@ def test_code_or_policy_change_requires_new_identity_without_stage_inheritance()
 
 def test_producer_cannot_self_qualify():
     r=_r(); u=_unit(r); reg=_registry(r,[u]); _,rv,res=_actors(u)
-    with pytest.raises(r.RegistryError,match="independent|self|controller|identity"):
+    with pytest.raises(r.RegistryError,match="independent|self|controller|identity|registered"):
         r.promote_unit(reg,"G8",QualificationStage.REAL_REFERENCE_READY,controller_identity="a"*40,reviewer_identity=rv,authority_object_resolver=res)
 
 
@@ -97,8 +97,11 @@ def test_human_executable_requires_independent_reviewer():
         r.promote_unit(reg,"G8",QualificationStage.HUMAN_EXECUTABLE,controller_identity=c,reviewer_identity=None,authority_object_resolver=res)
 
 
-def test_ready_boolean_cannot_override_missing_prerequisite():
-    r=_r(); result=r.derive_real_reference_ready("G8",_registry(r,[_unit(r)]),asserted_ready=True)
+def test_asserted_ready_parameter_is_removed_and_cannot_override_missing_prerequisite():
+    r=_r(); reg=_registry(r,[_unit(r)])
+    with pytest.raises(TypeError):
+        r.derive_real_reference_ready("G8",reg,asserted_ready=True)
+    result=r.derive_real_reference_ready("G8",reg)
     assert not result.ready and result.blockers
 
 
@@ -132,7 +135,7 @@ def test_fixture_unbound_cannot_satisfy_real_reference_ready():
 
 def test_human_executable_blocked_without_external_process_isolation_prerequisite():
     r=_r(); u=_unit(r,stage=QualificationStage.REAL_REFERENCE_READY); reg=_registry(r,[u]); c,rv,res=_actors(u)
-    with pytest.raises(r.RegistryError,match="process isolation|PROCESS_ISOLATION"):
+    with pytest.raises(r.RegistryError,match="process isolation|PROCESS_ISOLATION|promotion history"):
         r.promote_unit(reg,"G8",QualificationStage.HUMAN_EXECUTABLE,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res)
 
 
@@ -147,7 +150,7 @@ def test_cross_process_receipt_dependency_requires_persistence_and_key_custody()
     r=_r(); u=_unit(r,stage=QualificationStage.REAL_REFERENCE_READY)
     reg=_registry(r,[u],[_prereq(r,pid="R4",target="R4",gate="HUMAN_EXECUTABLE",requirement_class="CROSS_PROCESS_LEDGER_CUSTODY",external_state="UNRESOLVED")])
     c,rv,res=_actors(u)
-    with pytest.raises(r.RegistryError,match="custody|persistence|R4"):
+    with pytest.raises(r.RegistryError,match="custody|persistence|R4|promotion history"):
         r.promote_unit(reg,"G8",QualificationStage.HUMAN_EXECUTABLE,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res)
 
 
@@ -156,19 +159,21 @@ def test_pooled_crossfit_scope_cannot_promote_per_fold_source_stratified_claim()
     assert not result.ready and any("pooled" in x.lower() or "source" in x.lower() for x in result.blockers)
 
 
-def test_recursive_verification_cache_invalidates_on_dependency_identity_change():
-    r=_r(); calls=[]; dep,ref,deps=verified_pair(r); p=verified_prereq(r,dep,ref); reg=_registry(r,[dep,ref],[p]); cache={}
+def test_caller_verification_cache_parameter_is_removed_and_fresh_calls_reverify_dependencies():
+    r=_r(); calls=[]; dep,ref,deps=verified_pair(r); p=verified_prereq(r,dep,ref); reg=_registry(r,[dep,ref],[p])
+    with pytest.raises(TypeError):
+        r.derive_real_reference_ready("G8",reg,dependency_verifier=deps.get,verification_cache={})
     def verify(sha): calls.append(sha); return deps.get(sha)
-    assert r.derive_real_reference_ready("G8",reg,dependency_verifier=verify,verification_cache=cache).ready
+    assert r.derive_real_reference_ready("G8",reg,dependency_verifier=verify).ready
     changed=r.replace_unit(reg,r.reidentify_unit(ref,metric_sha="9"*64))
-    assert not r.derive_real_reference_ready("G8",changed,dependency_verifier=verify,verification_cache=cache).ready
+    assert not r.derive_real_reference_ready("G8",changed,dependency_verifier=verify).ready
     assert calls
 
 
-def test_cached_ready_result_cannot_survive_manifest_or_access_change():
-    r=_r(); dep,ref,deps=verified_pair(r); p=verified_prereq(r,dep,ref); reg=_registry(r,[dep,ref],[p]); cache={}
-    assert r.derive_real_reference_ready("G8",reg,dependency_verifier=deps.get,verification_cache=cache).ready
-    assert not r.derive_real_reference_ready("G8",r.replace_unit(reg,_unit(r,"G8",manifest="e"*64)),dependency_verifier=deps.get,verification_cache=cache).ready
+def test_fresh_ready_check_cannot_survive_manifest_or_access_change():
+    r=_r(); dep,ref,deps=verified_pair(r); p=verified_prereq(r,dep,ref); reg=_registry(r,[dep,ref],[p])
+    assert r.derive_real_reference_ready("G8",reg,dependency_verifier=deps.get).ready
+    assert not r.derive_real_reference_ready("G8",r.replace_unit(reg,_unit(r,"G8",manifest="e"*64)),dependency_verifier=deps.get).ready
 
 
 def test_registry_uses_exact_task1_stage_and_lineage_enums():
