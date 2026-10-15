@@ -13,7 +13,11 @@ import pytest
 from scripts.v5.td_unified import registry_v1 as r
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus as L
 from scripts.v5.td_unified.authority_v1 import QualificationStage as Q
-from tests.v5.td_unified.registry_v1_dependency_fixtures import verified_pair, verified_prereq
+from tests.v5.td_unified.registry_v1_dependency_fixtures import (
+    bind_actor_registry,
+    verified_pair,
+    verified_prereq,
+)
 
 
 def _actors(*, cid: str = "C1", rid: str = "R1"):
@@ -31,7 +35,13 @@ def _setup(*, dep_stage=Q.KNOWN_TRUTH_QUALIFIED):
     prerequisite = verified_prereq(r, dep, ref)
     registry = r.TDQualificationRegistry((dep, ref), (prerequisite,), (), ())
     controller, reviewer, authority_objects = _actors()
-    return dep, ref, dependencies, prerequisite, registry, controller, reviewer, authority_objects
+    registry, resolver_objects = bind_actor_registry(
+        r,
+        registry,
+        {**dependencies, **authority_objects},
+        trusted_actor_objects=tuple(authority_objects.values()),
+    )
+    return dep, ref, dependencies, prerequisite, registry, controller, reviewer, resolver_objects
 
 
 def _human_execution_registry():
@@ -89,6 +99,7 @@ def _human_execution_registry():
         ),
         ready_registry.promotions,
         ready_registry.revocations,
+        actor_registry_sha=ready_registry.actor_registry_sha,
     )
     return (
         ref,
@@ -145,23 +156,27 @@ def test_h2_known_truth_qualified_requires_closed_evidence_gate_and_reviewer():
     ],
 )
 def test_b3_alias_or_self_minted_controller_is_refused(controller_actor_id: str):
-    _, _, dependencies, _, registry, _, _, _ = _setup()
-    controller, reviewer, authority_objects = _actors(cid=controller_actor_id)
-    with pytest.raises(r.RegistryError, match="actor|registry|canonical|self|unknown|independ"):
+    _, _, dependencies, _, registry, _, reviewer, legitimate_objects = _setup()
+    controller, _, hostile_objects = _actors(cid=controller_actor_id)
+    resolver_objects = dict(legitimate_objects)
+    resolver_objects.update(hostile_objects)
+    with pytest.raises(r.RegistryError, match="actor|registry|canonical|self|unknown|independ|authorized"):
         r.promote_unit(
             registry,
             "G8",
             Q.REAL_REFERENCE_READY,
             controller_identity=controller,
             reviewer_identity=reviewer,
-            authority_object_resolver=authority_objects.get,
+            authority_object_resolver=resolver_objects.get,
             dependency_verifier=dependencies.get,
         )
 
 
 def test_b3_reviewer_actor_equal_controller_is_refused():
-    _, _, dependencies, _, registry, _, _, _ = _setup()
-    controller, reviewer, authority_objects = _actors(cid="C1", rid="C1")
+    _, _, dependencies, _, registry, controller, _, legitimate_objects = _setup()
+    _, reviewer, hostile_objects = _actors(cid="C1", rid="C1")
+    resolver_objects = dict(legitimate_objects)
+    resolver_objects.update(hostile_objects)
     with pytest.raises(r.RegistryError):
         r.promote_unit(
             registry,
@@ -169,14 +184,16 @@ def test_b3_reviewer_actor_equal_controller_is_refused():
             Q.REAL_REFERENCE_READY,
             controller_identity=controller,
             reviewer_identity=reviewer,
-            authority_object_resolver=authority_objects.get,
+            authority_object_resolver=resolver_objects.get,
             dependency_verifier=dependencies.get,
         )
 
 
 def test_b3_reviewer_actor_equal_producer_is_refused():
-    _, _, dependencies, _, registry, _, _, _ = _setup()
-    controller, reviewer, authority_objects = _actors(cid="C1", rid="producer:G8")
+    _, _, dependencies, _, registry, controller, _, legitimate_objects = _setup()
+    _, reviewer, hostile_objects = _actors(cid="C1", rid="producer:G8")
+    resolver_objects = dict(legitimate_objects)
+    resolver_objects.update(hostile_objects)
     with pytest.raises(r.RegistryError):
         r.promote_unit(
             registry,
@@ -184,7 +201,7 @@ def test_b3_reviewer_actor_equal_producer_is_refused():
             Q.REAL_REFERENCE_READY,
             controller_identity=controller,
             reviewer_identity=reviewer,
-            authority_object_resolver=authority_objects.get,
+            authority_object_resolver=resolver_objects.get,
             dependency_verifier=dependencies.get,
         )
 
@@ -234,6 +251,7 @@ def test_h6_deleted_revocation_history_cannot_be_rebuilt_into_active_lineage():
         tuple(p for p in registry.prerequisites if p.gate == "REAL_REFERENCE_READY"),
         registry.promotions,
         registry.revocations,
+        actor_registry_sha=registry.actor_registry_sha,
     )
     revoked = r.revoke_or_supersede(
         rrr_registry,
@@ -250,6 +268,7 @@ def test_h6_deleted_revocation_history_cannot_be_rebuilt_into_active_lineage():
         registry.prerequisites,
         revoked.promotions,
         (),
+        actor_registry_sha=registry.actor_registry_sha,
     )
     with pytest.raises(r.RegistryError, match="history|revocation|replay|anchor|genesis"):
         r.promote_unit(
@@ -266,9 +285,17 @@ def test_h6_deleted_revocation_history_cannot_be_rebuilt_into_active_lineage():
 def test_h5_fabricated_rrr_history_cannot_enable_human_executable():
     dep, ref, dependencies = verified_pair(r, dep_stage=Q.REAL_REFERENCE_READY)
     controller, reviewer, authority_objects = _actors()
+    base_registry = r.TDQualificationRegistry((dep, ref), (), (), ())
+    base_registry, resolver_objects = bind_actor_registry(
+        r,
+        base_registry,
+        {**dependencies, **authority_objects},
+        trusted_actor_objects=tuple(authority_objects.values()),
+    )
     predecessor = dataclasses.replace(dep, qualification_stage=Q.KNOWN_TRUTH_QUALIFIED)
     fake_snapshot = {
         "schema": "TD_QUALIFICATION_REGISTRY_V1",
+        "actor_registry_sha": base_registry.actor_registry_sha,
         "units": [predecessor.to_payload(), ref.to_payload()],
         "prerequisites": [],
         "promotions": [],
@@ -302,7 +329,6 @@ def test_h5_fabricated_rrr_history_cannot_enable_human_executable():
         "signing_key_out_of_process": True,
         "key_custodian": "HARNESS",
     }
-    resolver_objects = dict(authority_objects)
     resolver_objects[r.canonical_sha256(fake_snapshot)] = fake_snapshot
     resolver_objects[r.canonical_sha256(process_evidence)] = process_evidence
     resolver_objects[r.canonical_sha256(custody_evidence)] = custody_evidence
@@ -328,6 +354,7 @@ def test_h5_fabricated_rrr_history_cannot_enable_human_executable():
         ),
         (fake_receipt,),
         (),
+        actor_registry_sha=base_registry.actor_registry_sha,
     )
     with pytest.raises(r.RegistryError, match="history|replay|lawful|genesis|anchor"):
         r.promote_unit(
