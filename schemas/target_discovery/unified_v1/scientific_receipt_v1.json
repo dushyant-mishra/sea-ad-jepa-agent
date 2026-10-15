@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SCIENTIFIC_RECEIPT_V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "receipt_schema",
+    "producer_code_sha",
+    "input_shas",
+    "parent_receipt_shas",
+    "output_sha",
+    "manifest_sha",
+    "registry_sha",
+    "access_policy_sha",
+    "payload",
+    "payload_sha256",
+    "receipt_sha256"
+  ],
+  "properties": {
+    "receipt_schema": {"const": "SCIENTIFIC_RECEIPT_V1"},
+    "producer_code_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "input_shas": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+    "parent_receipt_shas": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+    "output_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "manifest_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "registry_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "access_policy_sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "payload": {"type": "object"},
+    "payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
