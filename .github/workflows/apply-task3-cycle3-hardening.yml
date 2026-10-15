@@ -1,0 +1,37 @@
+name: Task 3 cycle3 historical regression
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - 'work/unified-task3-registry-impl-20261015'
+    paths:
+      - 'scripts/v5/td_unified/registry_v1.py'
+      - 'tests/v5/td_unified/test_registry_v1*.py'
+      - 'tests/v5/td_unified/registry_v1_dependency_fixtures.py'
+      - '.github/workflows/apply-task3-cycle3-hardening.yml'
+
+jobs:
+  verify-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: Verify Task 3 through hostile cycle3
+        run: >-
+          python -m pytest -q
+          tests/v5/td_unified/test_registry_v1.py
+          tests/v5/td_unified/test_registry_v1_self_audit1.py
+          tests/v5/td_unified/test_registry_v1_self_audit2.py
+          tests/v5/td_unified/test_registry_v1_hostile_cycle1.py
+          tests/v5/td_unified/test_registry_v1_hostile_cycle2.py
+          tests/v5/td_unified/test_registry_v1_hostile_cycle3.py
+      - name: Verify complete unified regression
+        run: python -m pytest -q tests/v5/td_unified
