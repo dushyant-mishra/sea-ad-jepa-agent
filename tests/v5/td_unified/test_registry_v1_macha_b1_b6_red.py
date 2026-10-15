@@ -21,6 +21,7 @@ def _setup(dep_stage=Q.KNOWN_TRUTH_QUALIFIED):
     prereq = verified_prereq(r, dep, ref)
     registry = r.TDQualificationRegistry((dep, ref), (prereq,), (), ())
     controller, reviewer, objects = _actors()
+    objects[registry.canonical_sha256()] = registry.to_payload()
     return dep, ref, deps, prereq, registry, controller, reviewer, objects
 
 
