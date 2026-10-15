@@ -7,7 +7,7 @@ import pytest
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
 from scripts.v5.td_unified import registry_v1 as r
-from tests.v5.td_unified.registry_v1_dependency_fixtures import verified_pair, verified_prereq
+from tests.v5.td_unified.registry_v1_dependency_fixtures import direct_fixture_actor_objects, verified_pair, verified_prereq
 
 
 def actor(role, name):
@@ -52,7 +52,6 @@ def registry(dep, target, p):
 def test_boolean_true_callback_is_not_evidence_authority():
     dep, target = unit(), unit("REF"); p = prereq(dep, target)
     reg = registry(dep, target, p)
-    # A boolean callback is exactly the trusted-status anti-pattern Task 3 is meant to remove.
     result = r.derive_real_reference_ready("G8", reg, prerequisite_evidence_verifier=lambda _: True)
     assert not result.ready
     assert any("object" in b.lower() or "resolver" in b.lower() for b in result.blockers)
@@ -90,11 +89,12 @@ def test_wrong_role_controller_object_is_refused_even_with_matching_digest():
     reg = registry(dep, target, p)
     csha, cobj = actor("INDEPENDENT_REVIEWER", "NOT_CONTROLLER")
     rsha, robj = actor("INDEPENDENT_REVIEWER", "R1")
-    resolver = {csha:cobj, rsha:robj, esha:eobj}.get
+    objects = {csha:cobj, rsha:robj, esha:eobj}
+    objects.update(direct_fixture_actor_objects(dep))
     with pytest.raises(r.RegistryError, match="controller.*role|role.*controller"):
         r.promote_unit(reg, "G8", QualificationStage.REAL_REFERENCE_READY,
                        controller_identity=csha, reviewer_identity=rsha,
-                       authority_object_resolver=resolver)
+                       authority_object_resolver=objects.get, dependency_verifier=objects.get)
 
 
 def test_promotion_receipt_explicitly_binds_prerequisite_record_identities():
@@ -113,10 +113,12 @@ def test_supersession_binds_existing_exact_successor_and_pre_registry_identity()
     old, successor = unit(), unit("G8_V2")
     reg = r.TDQualificationRegistry((old, successor), (), (), ())
     csha, cobj = actor("QUALIFICATION_CONTROLLER", "C1")
+    objects = {csha:cobj}
+    objects.update(direct_fixture_actor_objects(old))
     changed = r.revoke_or_supersede(reg, "G8", ActiveLineageStatus.SUPERSEDED,
         reason_class="POLICY_CHANGE", controller_identity=csha,
         successor_unit_id="G8_V2", successor_unit_sha=successor.canonical_sha256(),
-        requalification_scope="FULL_UNIT", authority_object_resolver={csha:cobj}.get)
+        requalification_scope="FULL_UNIT", authority_object_resolver=objects.get, dependency_verifier=objects.get)
     receipt = changed.revocations[0]
     assert receipt.pre_registry_sha == reg.canonical_sha256()
     assert receipt.successor_unit_sha == successor.canonical_sha256()
@@ -124,4 +126,4 @@ def test_supersession_binds_existing_exact_successor_and_pre_registry_identity()
         r.revoke_or_supersede(reg, "G8", ActiveLineageStatus.SUPERSEDED,
             reason_class="POLICY_CHANGE", controller_identity=csha,
             successor_unit_id="G8_V2", successor_unit_sha="f"*64,
-            requalification_scope="FULL_UNIT", authority_object_resolver={csha:cobj}.get)
+            requalification_scope="FULL_UNIT", authority_object_resolver=objects.get, dependency_verifier=objects.get)
