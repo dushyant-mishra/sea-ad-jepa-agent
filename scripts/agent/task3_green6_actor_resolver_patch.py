@@ -23,7 +23,7 @@ def replace_once(text: str, old: str, new: str, label: str) -> str:
 
 if __name__ == "__main__":
     text = PATH.read_text()
-    helper_anchor = '''def _actor_id(obj: Mapping[str, object], *, label: str) -> str:\n    actor_id = obj.get("actor_id")\n    if not isinstance(actor_id, str) or not actor_id:\n        raise RegistryError(f"{label} actor_id missing")\n    return actor_id\n\n\n'''
+    helper_anchor = '''def _actor_id(obj: Mapping[str, object], *, label: str) -> str:\n    actor_id = obj.get("actor_id")\n    if type(actor_id) is not str or not actor_id.strip():\n        raise RegistryError(f"{label} must declare a non-empty actor_id")\n    return actor_id\n\n\n'''
     helper = helper_anchor + '''def _resolve_unit_actor(\n    expected_sha: str,\n    authority_object_resolver: AuthorityObjectResolver | None,\n    dependency_verifier: Callable[[str], object] | None,\n    *,\n    expected_role: str,\n    label: str,\n) -> Mapping[str, object]:\n    """Resolve a unit-bound actor through either authenticated object surface.\n\n    Unit actor identity is a scientific dependency; controller/reviewer identities are\n    separate qualification authority objects. A resolver returning None is not authority.\n    """\n    def combined(sha: str):\n        if authority_object_resolver is not None:\n            obj = authority_object_resolver(sha)\n            if obj is not None:\n                return obj\n        if dependency_verifier is not None:\n            return dependency_verifier(sha)\n        return None\n    return _resolve_object(expected_sha, combined, expected_role=expected_role, label=label)\n\n\n'''
     text = replace_once(text, helper_anchor, helper, "unit actor resolver helper")
 
