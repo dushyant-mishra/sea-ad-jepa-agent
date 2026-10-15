@@ -2,8 +2,15 @@ from __future__ import annotations
 
 import hashlib
 import importlib
+import inspect
+import json
+from pathlib import Path
 
 import pytest
+
+ROOT = Path(__file__).resolve().parents[3]
+MANIFEST_SCHEMA = ROOT / "schemas" / "target_discovery" / "unified_v1" / "td_execution_manifest_v1.json"
+POLICY_SCHEMA = ROOT / "schemas" / "target_discovery" / "unified_v1" / "population_access_policy_v1.json"
 
 
 def _manifest_module():
@@ -11,6 +18,14 @@ def _manifest_module():
         return importlib.import_module("scripts.v5.td_unified.manifest_v1")
     except ModuleNotFoundError as exc:
         pytest.fail(f"Unified Task 2 manifest_v1 is not implemented yet: {exc}")
+
+
+def _small_policy(m):
+    donors = ["D1", "D2", "D3", "D4", "D5"]
+    return m.build_current_td_access_policy(
+        fit_donors=donors,
+        donor_source={d: "S1" for d in donors},
+    )
 
 
 def test_current_td_policy_crossfits_only_within_reader_fit():
@@ -41,10 +56,7 @@ def test_crossfit_assignment_is_deterministic_and_outcome_blind():
 
 def test_reader_validation_access_cannot_rescue_estimability():
     m = _manifest_module()
-    policy = m.build_current_td_access_policy(
-        fit_donors=["D1", "D2", "D3", "D4", "D5"],
-        donor_source={d: "S1" for d in ["D1", "D2", "D3", "D4", "D5"]},
-    )
+    policy = _small_policy(m)
     receipt = m.ProducerAccessReceipt(
         producer_id="G8",
         observed_access=(("reader_validation", "BIOLOGICAL_VALUES"),),
@@ -55,10 +67,7 @@ def test_reader_validation_access_cannot_rescue_estimability():
 
 def test_reader_oracle_access_is_protected_until_later_authority_transition():
     m = _manifest_module()
-    policy = m.build_current_td_access_policy(
-        fit_donors=["D1", "D2", "D3", "D4", "D5"],
-        donor_source={d: "S1" for d in ["D1", "D2", "D3", "D4", "D5"]},
-    )
+    policy = _small_policy(m)
     receipt = m.ProducerAccessReceipt(
         producer_id="G8",
         observed_access=(("reader_oracle", "CALIBRATION_STATISTICS"),),
@@ -69,10 +78,7 @@ def test_reader_oracle_access_is_protected_until_later_authority_transition():
 
 def test_producer_receipt_must_enumerate_actual_partitions_and_access_classes():
     m = _manifest_module()
-    policy = m.build_current_td_access_policy(
-        fit_donors=["D1", "D2", "D3", "D4", "D5"],
-        donor_source={d: "S1" for d in ["D1", "D2", "D3", "D4", "D5"]},
-    )
+    policy = _small_policy(m)
     lawful = m.ProducerAccessReceipt(
         producer_id="G8",
         observed_access=(("reader_fit", "BIOLOGICAL_VALUES"),),
@@ -88,10 +94,7 @@ def test_producer_receipt_must_enumerate_actual_partitions_and_access_classes():
 
 def test_numeric_success_with_forbidden_partition_access_is_invalid():
     m = _manifest_module()
-    policy = m.build_current_td_access_policy(
-        fit_donors=["D1", "D2", "D3", "D4", "D5"],
-        donor_source={d: "S1" for d in ["D1", "D2", "D3", "D4", "D5"]},
-    )
+    policy = _small_policy(m)
     receipt = m.ProducerAccessReceipt(
         producer_id="G8",
         observed_access=(("reader_validation", "BIOLOGICAL_VALUES"),),
@@ -105,7 +108,7 @@ def test_manifest_binds_exact_objects_not_branch_or_pr_labels():
     m = _manifest_module()
     resolver_map = {
         "a" * 64: {"object_role": "REGISTRY", "version": 1},
-        "b" * 64: {"object_role": "MANIFEST", "version": 1},
+        "b" * 64: {"object_role": "ACCESS_POLICY", "version": 1},
     }
     with pytest.raises(m.ManifestError):
         m.validate_manifest(
@@ -142,13 +145,78 @@ def test_raw_file_sha256_is_recomputed_from_actual_bytes():
 
 def test_unknown_partition_fails_closed():
     m = _manifest_module()
-    policy = m.build_current_td_access_policy(
-        fit_donors=["D1", "D2", "D3", "D4", "D5"],
-        donor_source={d: "S1" for d in ["D1", "D2", "D3", "D4", "D5"]},
-    )
+    policy = _small_policy(m)
     receipt = m.ProducerAccessReceipt(
         producer_id="G8",
         observed_access=(("mystery_partition", "METADATA"),),
     )
     with pytest.raises(m.ManifestError):
         m.validate_producer_access(policy, receipt)
+
+
+# Hostile self-audit cycle 1 -------------------------------------------------
+
+def test_access_receipt_binds_exact_access_policy_identity():
+    m = _manifest_module()
+    params = inspect.signature(m.ProducerAccessReceipt).parameters
+    assert "access_policy_sha" in params
+    policy = _small_policy(m)
+    policy_sha = policy.canonical_sha256()
+    lawful = m.ProducerAccessReceipt(
+        producer_id="G8",
+        access_policy_sha=policy_sha,
+        observed_access=(("reader_fit", "BIOLOGICAL_VALUES"),),
+    )
+    assert m.validate_producer_access(policy, lawful) is None
+    wrong = m.ProducerAccessReceipt(
+        producer_id="G8",
+        access_policy_sha="0" * 64,
+        observed_access=(("reader_fit", "BIOLOGICAL_VALUES"),),
+    )
+    with pytest.raises(m.ManifestError, match="policy|identity|digest"):
+        m.validate_producer_access(policy, wrong)
+
+
+def test_crossfit_policy_binds_the_exact_assignment_inputs():
+    m = _manifest_module()
+    policy = _small_policy(m)
+    assert isinstance(policy.assignment_basis_sha, str)
+    assert len(policy.assignment_basis_sha) == 64
+    payload = policy.to_payload()
+    assert payload["assignment_basis_sha"] == policy.assignment_basis_sha
+    assert payload["fold_count"] == 5
+    assert len(payload["crossfit_folds"]) == 5
+
+
+def test_manifest_schema_requires_the_full_task2_dependency_surface():
+    schema = json.loads(MANIFEST_SCHEMA.read_text(encoding="utf-8"))
+    required_dependencies = {
+        "registry_sha",
+        "observation_contract_sha",
+        "support_contract_sha",
+        "controller_code_sha",
+        "controller_policy_sha",
+        "candidate_registry_sha",
+        "endpoint_registry_sha",
+        "source_registry_sha",
+        "qualification_registry_sha",
+        "population_split_registry_sha",
+        "access_policy_sha",
+        "reader_fit_policy_sha",
+        "reader_validation_policy_sha",
+        "reader_oracle_policy_sha",
+        "crossfit_policy_sha",
+        "protected_partition_policy_sha",
+    }
+    assert required_dependencies <= set(schema["required"])
+    assert required_dependencies <= set(schema["properties"])
+    assert schema["additionalProperties"] is False
+
+
+def test_population_access_schema_closes_fold_structure_and_assignment_identity():
+    schema = json.loads(POLICY_SCHEMA.read_text(encoding="utf-8"))
+    assert "assignment_basis_sha" in schema["required"]
+    assert "assignment_basis_sha" in schema["properties"]
+    folds = schema["properties"]["crossfit_folds"]
+    assert folds["items"]["additionalProperties"] is False
+    assert set(folds["items"]["required"]) == {"fold_index", "train_donors", "held_out_donors"}
