@@ -6,7 +6,7 @@ import pytest
 
 from scripts.v5.td_unified.authority_v1 import ActiveLineageStatus, QualificationStage
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
-from tests.v5.td_unified.registry_v1_dependency_fixtures import verified_pair, verified_prereq
+from tests.v5.td_unified.registry_v1_dependency_fixtures import direct_fixture_actor_objects, verified_pair, verified_prereq
 
 
 def _r():
@@ -16,11 +16,14 @@ def _r():
         pytest.fail(f"Unified Task 3 registry_v1 is not implemented yet: {exc}")
 
 
-def _actors():
+def _actors(unit=None):
     cobj = {"object_role":"QUALIFICATION_CONTROLLER","actor_id":"C1"}
     robj = {"object_role":"INDEPENDENT_REVIEWER","actor_id":"R1"}
     csha, rsha = canonical_sha256(cobj), canonical_sha256(robj)
-    return csha, rsha, {csha:cobj, rsha:robj}.get
+    objects = {csha:cobj, rsha:robj}
+    if unit is not None:
+        objects.update(direct_fixture_actor_objects(unit))
+    return csha, rsha, objects.get
 
 
 def _unit(r, unit_id="G8", *, stage=QualificationStage.KNOWN_TRUTH_QUALIFIED,
@@ -59,7 +62,7 @@ def test_historical_promotion_receipt_remains_immutable_after_revocation():
     r=_r(); u,ref,deps=verified_pair(r); p=verified_prereq(r,u,ref); reg=_registry(r,[u,ref],[p]); c,rv,res=_actors()
     promoted=r.promote_unit(reg,"G8",QualificationStage.REAL_REFERENCE_READY,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res,dependency_verifier=deps.get)
     old=promoted.promotions[0]
-    revoked=r.revoke_or_supersede(promoted,"G8",ActiveLineageStatus.REVOKED_BY_DEFECT,reason_class="DEFECT",controller_identity=c,authority_object_resolver=res)
+    revoked=r.revoke_or_supersede(promoted,"G8",ActiveLineageStatus.REVOKED_BY_DEFECT,reason_class="DEFECT",controller_identity=c,authority_object_resolver=res,dependency_verifier=deps.get)
     assert revoked.promotions[0]==old
     assert revoked.units_by_id()["G8"].active_lineage_status is ActiveLineageStatus.REVOKED_BY_DEFECT
 
@@ -71,7 +74,7 @@ def test_revoked_unit_cannot_satisfy_new_prerequisite():
 
 
 def test_superseded_unit_cannot_promote():
-    r=_r(); reg=_registry(r,[_unit(r,status=ActiveLineageStatus.SUPERSEDED)]); c,rv,res=_actors()
+    r=_r(); u=_unit(r,status=ActiveLineageStatus.SUPERSEDED); reg=_registry(r,[u]); c,rv,res=_actors(u)
     with pytest.raises(r.RegistryError,match="ACTIVE|superseded"):
         r.promote_unit(reg,"G8",QualificationStage.REAL_REFERENCE_READY,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res)
 
@@ -83,13 +86,13 @@ def test_code_or_policy_change_requires_new_identity_without_stage_inheritance()
 
 
 def test_producer_cannot_self_qualify():
-    r=_r(); reg=_registry(r,[_unit(r)]); _,rv,res=_actors()
-    with pytest.raises(r.RegistryError,match="independent|self|controller"):
+    r=_r(); u=_unit(r); reg=_registry(r,[u]); _,rv,res=_actors(u)
+    with pytest.raises(r.RegistryError,match="independent|self|controller|identity"):
         r.promote_unit(reg,"G8",QualificationStage.REAL_REFERENCE_READY,controller_identity="a"*40,reviewer_identity=rv,authority_object_resolver=res)
 
 
 def test_human_executable_requires_independent_reviewer():
-    r=_r(); reg=_registry(r,[_unit(r,stage=QualificationStage.REAL_REFERENCE_READY)]); c,_,res=_actors()
+    r=_r(); u=_unit(r,stage=QualificationStage.REAL_REFERENCE_READY); reg=_registry(r,[u]); c,_,res=_actors(u)
     with pytest.raises(r.RegistryError,match="reviewer|independent"):
         r.promote_unit(reg,"G8",QualificationStage.HUMAN_EXECUTABLE,controller_identity=c,reviewer_identity=None,authority_object_resolver=res)
 
@@ -128,7 +131,7 @@ def test_fixture_unbound_cannot_satisfy_real_reference_ready():
 
 
 def test_human_executable_blocked_without_external_process_isolation_prerequisite():
-    r=_r(); reg=_registry(r,[_unit(r,stage=QualificationStage.REAL_REFERENCE_READY)]); c,rv,res=_actors()
+    r=_r(); u=_unit(r,stage=QualificationStage.REAL_REFERENCE_READY); reg=_registry(r,[u]); c,rv,res=_actors(u)
     with pytest.raises(r.RegistryError,match="process isolation|PROCESS_ISOLATION"):
         r.promote_unit(reg,"G8",QualificationStage.HUMAN_EXECUTABLE,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res)
 
@@ -143,7 +146,7 @@ def test_vacuous_metric_identity_cannot_satisfy_content_qualified_prerequisite()
 def test_cross_process_receipt_dependency_requires_persistence_and_key_custody():
     r=_r(); u=_unit(r,stage=QualificationStage.REAL_REFERENCE_READY)
     reg=_registry(r,[u],[_prereq(r,pid="R4",target="R4",gate="HUMAN_EXECUTABLE",requirement_class="CROSS_PROCESS_LEDGER_CUSTODY",external_state="UNRESOLVED")])
-    c,rv,res=_actors()
+    c,rv,res=_actors(u)
     with pytest.raises(r.RegistryError,match="custody|persistence|R4"):
         r.promote_unit(reg,"G8",QualificationStage.HUMAN_EXECUTABLE,controller_identity=c,reviewer_identity=rv,authority_object_resolver=res)
 
