@@ -346,7 +346,13 @@ def verify_regeneration(campaign: QualificationCampaign, sealed: SealedRealizati
 
 def finalize_custody(campaign: QualificationCampaign, sealed: SealedRealizationSet, *, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
-    if campaign.state is not CampaignState.REGENERATION_VERIFIED or set(campaign.exposed_realization_ids)!=set(sealed.realization_ids) or set(dict(campaign.frozen_outputs))!=set(sealed.realization_ids):
+    realized = set(sealed.realization_ids)
+    if (
+        campaign.state is not CampaignState.REGENERATION_VERIFIED
+        or set(campaign.exposed_realization_ids) != realized
+        or set(dict(campaign.frozen_outputs)) != realized
+        or set(dict(campaign.terminal_statuses)) != realized
+    ):
         raise Task4ChallengeCustodyError("custody finalization requires complete verified realization accounting")
     receipt={"object_role":"SEALED_CUSTODY_RECEIPT_V1","campaign_identity":campaign.campaign_identity,"sealed_root":sealed.sealed_root,"exposures_consumed":campaign.exposures_consumed,"promotion_authority":"NONE"}
     evidence={"object_role":"QUALIFICATION_EVIDENCE_PACKAGE_V1","campaign_identity":campaign.campaign_identity,"claim_scope":"POOLED_DONOR_LEVEL_ONLY","realization_ids":list(sealed.realization_ids),"frozen_outputs":[list(x) for x in campaign.frozen_outputs],"terminal_statuses":[list(x) for x in campaign.terminal_statuses],"authority_effect":"NONE"}
