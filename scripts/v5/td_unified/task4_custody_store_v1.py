@@ -1,8 +1,10 @@
 """Persistent cross-process custody primitives for Unified Task 4.
 
-Canonical JSONL events form an append-only hash chain, a separately published
-head binds the accepted prefix, and signatures are verified through an external
-verifier interface. No production signing key is owned here.
+Canonical JSONL events form an append-only hash chain. Every authoritative
+append must be published through an external head anchor before the local head
+record is advanced. Re-opened stores become authoritative only when the caller
+supplies the externally expected head. No producer-owned signing or anchoring
+secret lives in this module.
 """
 from __future__ import annotations
 
@@ -50,7 +52,17 @@ class ExternalSigner(Protocol):
 class ExternalVerifier(Protocol):
     @property
     def trusted_signer_identities(self) -> frozenset[str]: ...
+    @property
+    def trusted_anchor_identities(self) -> frozenset[str]: ...
     def verify(self, message: bytes, signature: bytes, signer_identity: str) -> bool: ...
+
+
+class ExternalHeadPublisher(Protocol):
+    @property
+    def anchor_identity(self) -> str: ...
+    @property
+    def promotion_authority(self) -> str: ...
+    def publish(self, *, head: str, event_count: int) -> str: ...
 
 
 @dataclass(frozen=True)
@@ -66,7 +78,7 @@ class PersistentCustodyStore:
     HEAD = "published_head.json"
 
     def __init__(self, root: Path, verifier: ExternalVerifier, expected_head: str | None):
-        self.root = root
+        self.root = Path(root)
         self.verifier = verifier
         self.expected_head = expected_head
         self.root.mkdir(parents=True, exist_ok=True)
@@ -122,31 +134,34 @@ class PersistentCustodyStore:
                     revoked.add(subject_id)
 
         published = None
+        anchor_identity = None
         if self.head_path.exists():
             try:
                 published_obj = json.loads(self.head_path.read_text(encoding="utf-8"))
             except json.JSONDecodeError as exc:
                 raise Task4CustodyError("invalid published custody head") from exc
             published = published_obj.get("head")
+            anchor_identity = published_obj.get("anchor_identity")
             if published != previous:
                 raise Task4CustodyError("event chain and published custody head disagree")
             if published_obj.get("event_count") != count:
                 raise Task4CustodyError("published custody event count mismatch")
+            if anchor_identity not in getattr(self.verifier, "trusted_anchor_identities", frozenset()):
+                raise Task4CustodyError("published custody head lacks trusted external anchor identity")
         elif count:
-            raise Task4CustodyError("custody events exist without published head")
+            raise Task4CustodyError("custody events exist without externally published head record")
 
         if self.expected_head is not None and previous != self.expected_head:
             raise Task4CustodyError("custody head differs from externally expected head")
-        authoritative = self.expected_head is not None and published == self.expected_head
+        authoritative = self.expected_head is not None and published == self.expected_head and anchor_identity is not None
         return CustodyReplayResult(previous, count, frozenset(revoked), authoritative)
 
     def replay_reference(self) -> CustodyReplayResult:
         return self._replay_semantic()
 
     def replay_optimized(self) -> CustodyReplayResult:
-        # V1 intentionally shares the reference semantic implementation. An
-        # optimized index may replace this only after equivalence tests remain
-        # byte-identical; correctness is not traded for speed.
+        # V1 deliberately shares reference semantics. Future indexing may replace
+        # this only if hostile equivalence tests remain exact.
         return self._replay_semantic()
 
     def replay(self) -> CustodyReplayResult:
@@ -156,25 +171,54 @@ class PersistentCustodyStore:
     def head(self) -> str:
         return self._replay.head
 
-    def append_event(self, event_payload: Mapping[str, object], *, signer: ExternalSigner) -> str:
+    def append_event(
+        self,
+        event_payload: Mapping[str, object],
+        *,
+        signer: ExternalSigner,
+        head_publisher: ExternalHeadPublisher | None = None,
+    ) -> str:
         if getattr(signer, "promotion_authority", None) != "EXTERNAL_HARNESS_AUTHORITY":
             raise Task4CustodyError("caller-controlled or fixture signer cannot publish authoritative custody")
         if signer.signer_identity not in getattr(self.verifier, "trusted_signer_identities", frozenset()):
             raise Task4CustodyError("signer identity is not in external trust root")
+        if head_publisher is None:
+            raise Task4CustodyError("authoritative custody append requires external head publisher")
+        if getattr(head_publisher, "promotion_authority", None) != "EXTERNAL_HEAD_AUTHORITY":
+            raise Task4CustodyError("caller-controlled head publisher cannot anchor authority")
+        anchor_identity = getattr(head_publisher, "anchor_identity", None)
+        if anchor_identity not in getattr(self.verifier, "trusted_anchor_identities", frozenset()):
+            raise Task4CustodyError("head publisher identity is not in external anchor trust root")
+
         base = dict(event_payload)
         kind = base.get("kind")
         if kind not in {"REVOCATION", "SUPERSESSION", "CAMPAIGN", "EXPOSURE", "OUTPUT_FREEZE", "REVEAL", "STATE"}:
             raise Task4CustodyError("unknown custody event kind")
-        event = {**base, "sequence": self._replay.event_count + 1, "previous_head": self._replay.head, "signer_identity": signer.signer_identity}
-        signature = signer.sign(self._event_message(event))
-        event["signature_hex"] = bytes(signature).hex()
+        event = {
+            **base,
+            "sequence": self._replay.event_count + 1,
+            "previous_head": self._replay.head,
+            "signer_identity": signer.signer_identity,
+        }
+        event["signature_hex"] = bytes(signer.sign(self._event_message(event))).hex()
         line = _canonical_bytes(event) + b"\n"
         with self.events_path.open("ab", buffering=0) as fh:
             fh.write(line)
             os.fsync(fh.fileno())
+
         new_head = _sha(event)
+        published = head_publisher.publish(head=new_head, event_count=event["sequence"])
+        if published != new_head:
+            raise Task4CustodyError("external head publisher did not acknowledge exact custody head")
+
         tmp = self.head_path.with_suffix(".tmp")
-        tmp.write_text(json.dumps({"head": new_head, "event_count": event["sequence"]}, sort_keys=True) + "\n", encoding="utf-8")
+        tmp.write_text(
+            json.dumps(
+                {"head": new_head, "event_count": event["sequence"], "anchor_identity": anchor_identity},
+                sort_keys=True,
+            ) + "\n",
+            encoding="utf-8",
+        )
         with tmp.open("rb") as fh:
             os.fsync(fh.fileno())
         os.replace(tmp, self.head_path)
