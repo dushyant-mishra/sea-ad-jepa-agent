@@ -1,0 +1,41 @@
+== N2 REAL_REFERENCE_READY and later require history custody
+OK   N2 declared KTQ, Task-2-valid manifest, NO custody -> RRR -> REFUSED: 'RegistryError: REAL_REFERENCE_READY promotion requires external history custody anchor'
+OK   N2 declared KTQ: custody genesis -> REFUSED: 'RegistryError: history custody genesis cannot declare KNOWN_TRUTH_QUALIFIED or later; sealed challenge evidence must occur in anchored history'
+OK   N2 lawful custody at SAME_CODE_PATH -> KNOWN_TRUTH_QUALIFIED (the only route to RRR) -> REFUSED: 'RegistryError: KNOWN_TRUTH_QUALIFIED requires SEALED_CHALLENGE_REVIEW evidence; that evidence type is not implemented in Task 3, so promotion is closed'
+OK   N2 declared RRR, NO custody -> HUMAN_EXECUTABLE -> REFUSED: 'RegistryError: HUMAN_EXECUTABLE prerequisites unresolved: PROCESS_ISOLATION / external process isolation prerequisite unresolved; R4 cross-process ledger persistence/key custody prerequ'
+NOTE NOTE legacy.promote_unit still reaches RRR from declared KTQ without custody (public bypass, carried) -> ACCEPTED: 'REAL_REFERENCE_READY'
+== B3-V nested validators
+OK   B3-V nested depth 2: unregistered producer:G8 validator, actor gate on G8 -> REFUSED: 'RegistryError: P2 content validator identity is not uniquely authorized by the closed actor registry for role CONTENT_VALIDATOR'
+OK   B3-V nested depth 2 through promote_unit -> RRR -> REFUSED: 'RegistryError: P2 content validator identity is not uniquely authorized by the closed actor registry for role CONTENT_VALIDATOR'
+OK   B3-V nested depth 3: unregistered producer:G8 validator, actor gate on G8 -> REFUSED: 'RegistryError: P3 content validator identity is not uniquely authorized by the closed actor registry for role CONTENT_VALIDATOR'
+OK   B3-V nested depth 3 through promote_unit -> RRR -> REFUSED: 'RegistryError: P3 content validator identity is not uniquely authorized by the closed actor registry for role CONTENT_VALIDATOR'
+== B5-F revocation anchor
+OK   B5-F exact: fresh custody from the same genesis -> REFUSED: 'RegistryError: history custody genesis refuses execution identity already present in anchored revocation ledger'
+OK   B5-F fork: custody B (pre-revocation) promotes the revoked identity -> REFUSED: 'RegistryError: promotion refuses execution identity already present in anchored revocation ledger'
+OK   B5-F no custody: history-free promotion of the revoked identity -> REFUSED: 'RegistryError: promotion refuses execution identity already present in anchored revocation ledger'
+OK   B5-F stage shift: revoked at FIXTURE_SAME_INTERFACE, restart genesis at SEMANTICS_ONLY -> REFUSED: 'RegistryError: history custody genesis refuses execution identity already present in anchored revocation ledger'
+OK   B5-F + N2 combined: revoked identity declared KTQ -> RRR (no custody) -> REFUSED: 'RegistryError: promotion refuses execution identity already present in anchored revocation ledger'
+== every revocation is anchored
+OK   EVERY low-stage revocation WITHOUT custody, then history-free promotion -> REFUSED: 'RegistryError: promotion refuses execution identity already present in anchored revocation ledger'
+OK   EVERY low-stage revocation WITHOUT custody, then fresh custody genesis -> REFUSED: 'RegistryError: history custody genesis refuses execution identity already present in anchored revocation ledger'
+OK   EVERY supersession is anchored (supersede E2_G8, then promote E2_G8) -> REFUSED: 'RegistryError: promotion refuses execution identity already present in anchored revocation ledger'
+== repair-targeted attacks on the anchor key
+BAD  B5-F KEY: revoked identity re-enters with one extra cosmetic restriction token only -> ACCEPTED: 'FIXTURE_SAME_INTERFACE; every code/policy/actor/manifest identity field unchanged: True'
+BAD  B5-F KEY: revoked identity re-enters with the same tokens reordered only -> ACCEPTED: 'FIXTURE_SAME_INTERFACE; every code/policy/actor/manifest identity field unchanged: True'
+NOTE NOTE lawful reidentify_unit changes a decision-bearing field and leaves REQUIRES_REQUALIFICATION -> ACCEPTED: 'REQUIRES_REQUALIFICATION'
+NOTE NOTE revoked PREREQUISITE TARGET stays ACTIVE in forked custody B; its dependent's promotion is not anchor-checked for targets (latent: RRR closed) -> ACCEPTED: 'FIXTURE_SAME_INTERFACE'
+NOTE NOTE in-process anchor clear then fresh custody (R1 class) -> ACCEPTED: 'created'
+NOTE NOTE second process: fresh custody for an identity revoked here (R4 open, disclosed) -> ACCEPTED: 'created'
+== regression N1 / B3-E / B3-R / B1 / B4 / B6
+OK   N1 PR fixture manifest (not Task-2-valid) -> RRR -> REFUSED: 'RegistryError: Task 2 manifest/population authority validation failed: manifest fields/schema do not match TD_EXECUTION_MANIFEST_V1'
+OK   N1 frozen Task 2 binding, valid world, no raw resolver -> REFUSED: 'RegistryError: Task 2 manifest/population authority validation failed: current-TD population authority requires raw reader-split resolver'
+OK   N1 positive control: frozen Task 2 binding passes on the valid world with raw resolver -> ACCEPTED: 'passed'
+OK   B3-R/B3-E minted controller/reviewer/issuer: frozen privileged-actor policy -> REFUSED: 'ActorRegistryError: frozen Task 3 actor-registry policy forbids minted-by-producer-1 for privileged role QUALIFICATION_CONTROLLER'
+OK   B1 [facade] HUMAN_EXECUTED -> DOWNSTREAM_CERTIFIED -> REFUSED: 'RegistryError: promotion violates frozen Task 1 authority law: qualification stage is outside the allowed UNIT scope stage range'
+OK   B1 [legacy] HUMAN_EXECUTED -> DOWNSTREAM_CERTIFIED -> REFUSED: 'RegistryError: promotion violates frozen Task 1 authority law: qualification stage is outside the allowed UNIT scope stage range'
+OK   B1 [facade] TRAINING_ELIGIBLE -> TRAINING_AUTHORIZED -> REFUSED: 'RegistryError: NO_TRAINING_AUTHORITY forbids promotion to a training stage'
+OK   B1 [legacy] TRAINING_ELIGIBLE -> TRAINING_AUTHORIZED -> REFUSED: 'RegistryError: NO_TRAINING_AUTHORITY forbids promotion to a training stage'
+OK   B4 poisoned cache + empty dependency resolver (readiness) -> REFUSED: 'AssertionError: not ready'
+OK   B6 committed workflows with write/commit/push (55 scanned) -> ACCEPTED: 'none'
+
+SUMMARY: 26/28 expected; BAD=2

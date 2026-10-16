@@ -1,0 +1,87 @@
+{
+  "authority_changed": false,
+  "binding_carry_forward": {
+    "C1": "before any KNOWN_TRUTH_QUALIFIED-or-later stage becomes reachable: (a) revocation key = defect-bearing execution identity excluding/canonicalizing authority_restrictions and authority_scope; (b) anchor-check every unit in prerequisite closure; (c) persistent cross-process revocation/history custody (R4); (d) RED tests for the two BAD rows and target-fork NOTE",
+    "C2": "R4 OPEN; process-local anchor is a labelled stopgap",
+    "C3": "consumers use registry_v1 facade, require RegistryHistoryCustody.validate_current, never import registry_v1_legacy; add import-guard test",
+    "C4": "derive_real_reference_ready is diagnostic only",
+    "C5": "R7 identities are names not credentials; pinned privileged names are conventions; signed/harness-attested actions before human execution",
+    "C6": "apply frozen privileged-actor policy to revoke_or_supersede",
+    "C7": "close requirement-class vocabulary; issuer-bind every non-UNIT class",
+    "C8": "RegistryUnit construction applies Task 1 validate_authority_record",
+    "C9": "R1 in-process tampering",
+    "R5": "pooled donor-level only"
+  },
+  "ci": {
+    "38843717378": "TD unified Task 2 manifest access: success",
+    "38843717386": "unified synthetic integration v1: success",
+    "38843717395": "Unified Task 3 registry: success",
+    "evidence_class": "CI_CONFIRMED",
+    "head_sha": "117dd51dea827e734b299982da93991b934bdc8f"
+  },
+  "closed_in_scope": [
+    "N2",
+    "B3-V nested",
+    "B5-F exact",
+    "B5-F fork",
+    "B5-F no-custody",
+    "B5-F stage-shift",
+    "B5-F combined",
+    "every-revocation (no custody, supersession)"
+  ],
+  "data_note": "synthetic reader split with monkeypatched frozen constant (Task 2 test pattern); no real bytes read",
+  "date": "2026-10-16",
+  "freeze": "TASK3_MAY_BE_FROZEN__UNIFIED_TASK4_MAY_BEGIN_PROSPECTIVELY",
+  "freeze_code_identity": "117dd51dea827e734b299982da93991b934bdc8f",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "hostile_probes": {
+    "bad": 2,
+    "bad_rows": [
+      "revoked identity re-enters with extra cosmetic authority_restrictions token (mechanical stage only)",
+      "revoked identity re-enters with reordered restriction tokens (mechanical stage only)"
+    ],
+    "bad_rows_blocking": false,
+    "expected": 26,
+    "notes": 6,
+    "total": 28
+  },
+  "pinned_branch": "candidate/unified-task3-recheck3-green-117dd51d-20261015",
+  "pr": 401,
+  "pr_head_at_review": "2448cbcec0964e692c52a24a8b1324e2d388314e",
+  "pr_head_delta": "docs-only repair ledger",
+  "protected_values_opened": false,
+  "red_first": {
+    "commit": "a1a42db3b",
+    "evidence_class": "LOCAL",
+    "result": "7 failed"
+  },
+  "regression_closed": [
+    "N1",
+    "B3-E",
+    "B3-R",
+    "T3-B1",
+    "T3-B4",
+    "T3-B6"
+  ],
+  "reviewed_head": "117dd51dea827e734b299982da93991b934bdc8f",
+  "schema": "MACHA_UNIFIED_TASK3_RECHECK3_VERDICT_V1",
+  "sections": {
+    "A2": "PASS",
+    "A5": "PASS",
+    "A6": "PASS",
+    "R1": "GOVERNANCE_GATE_PRESENT_C9",
+    "R2": "PASS",
+    "R3": "PASS",
+    "R4": "OPEN",
+    "R5": "PASS",
+    "R6": "PASS",
+    "frozen_task2_binding": "PASS",
+    "provenance": "PASS"
+  },
+  "tests_local": {
+    "evidence_class": "LOCAL_NOT_CI",
+    "registry_focused": "88 passed",
+    "td_unified_full": "191 passed"
+  },
+  "verdict": "ACCEPT_UNIFIED_TASK3"
+}
