@@ -1,0 +1,41 @@
+== N1 frozen Task 2 binding at the RRR boundary
+    positive control: frozen Task 2 validate_manifest accepts the synthetic world manifest
+OK   N1 PR fixture manifest (not Task-2-valid) -> RRR -> REFUSED: 'RegistryError: Task 2 manifest/population authority validation failed: manifest fields/schema do not match TD_EXECUTION_MANIFEST_V1'
+OK   N1 Task-2-valid manifest but no raw resolver -> RRR -> REFUSED: 'RegistryError: Task 2 manifest/population authority validation failed: current-TD population authority requires raw reader-split resolver'
+OK   N1 Task-2-valid manifest, altered split bytes -> RRR -> REFUSED: 'RegistryError: Task 2 manifest/population authority validation failed: raw-file SHA-256 digest mismatch'
+NOTE NOTE derive_real_reference_ready (diagnostic) on the PR fixture (no Task 2 validation) -> ACCEPTED: 'True'
+== N2 KNOWN_TRUTH_QUALIFIED by declaration
+OK   N2 custody genesis declaring KTQ -> REFUSED: 'RegistryError: history custody genesis cannot declare KNOWN_TRUTH_QUALIFIED or later; sealed challenge evidence must occur in anchored history'
+BAD  N2 history-free registry DECLARING G8+REF at KTQ (no SEALED_CHALLENGE_REVIEW), no custody, Task-2-valid -> RRR -> ACCEPTED: 'REAL_REFERENCE_READY'
+== B3-V content validators
+OK   B3-V direct prerequisite, validator = unregistered producer:G8 -> RRR -> REFUSED: 'RegistryError: P1 content validator identity is not uniquely authorized by the closed actor registry for role CONTENT_VALIDATOR'
+BAD  B3-V NESTED: REF's own RRR prerequisite validated by unregistered producer:G8; actor gate on G8 -> ACCEPTED: 'passed'
+BAD  B3-V NESTED through promote_unit G8 -> RRR -> ACCEPTED: 'REAL_REFERENCE_READY'
+== B3-E evidence issuers
+OK   B3-E HUMAN_EXECUTABLE evidence, no issuer -> REFUSED: 'RegistryError: ISO evidence requires registered issuer_identity_sha'
+OK   B3-E HUMAN_EXECUTABLE evidence, issuer = producer:G8 (registered) -> REFUSED: 'RegistryError: ISO evidence issuer must be independent of producer/executor'
+OK   B3-E HUMAN_EXECUTABLE evidence, issuer unregistered -> REFUSED: 'RegistryError: ISO evidence issuer identity is not uniquely authorized by the closed actor registry for role PREREQUISITE_EVIDENCE_ISSUER'
+OK   B3-E minted issuer registered by producer: frozen privileged-actor policy -> REFUSED: 'ActorRegistryError: frozen Task 3 actor-registry policy forbids minted-issuer for privileged role PREREQUISITE_EVIDENCE_ISSUER'
+OK   B3-E positive control: issuer HARNESS (registered) passes the issuer gate -> ACCEPTED: 'passed'
+== B3-R actor registry anchor
+OK   B3-R producer-authored registry, minted controller+reviewer -> RRR -> REFUSED: 'RegistryError: frozen Task 3 actor-registry policy forbids minted-by-producer-1 for privileged role QUALIFICATION_CONTROLLER'
+NOTE NOTE producer-authored registry whose 'C1' controller object is producer-made (names pinned, not digests) -> RRR -> ACCEPTED: 'REAL_REFERENCE_READY'
+== B5-F revocation anchoring
+OK   B5-F the PR's exact attack: fresh custody from the same genesis after revocation -> REFUSED: 'RegistryError: history custody genesis refuses unit identity already present in anchored revocation ledger'
+BAD  B5-F FORK: custody B created before the revocation keeps promoting the revoked identity -> ACCEPTED: 'FIXTURE_SAME_INTERFACE'
+BAD  B5-F NO CUSTODY: history-free registry promotes the anchored revoked identity -> ACCEPTED: 'FIXTURE_SAME_INTERFACE'
+BAD  B5-F STAGE SHIFT: revoke at FIXTURE_SAME_INTERFACE, restart genesis at SEMANTICS_ONLY, re-promote -> ACCEPTED: 'FIXTURE_SAME_INTERFACE; identity equal to the anchored revoked identity: True'
+BAD  B5-F + N2 COMBINED: unit REVOKED_BY_DEFECT under custody, then declared KTQ in a history-free registry -> RRR -> ACCEPTED: 'REAL_REFERENCE_READY'
+NOTE NOTE in-process anchor clear (r._PROCESS_REVOCATION_ANCHOR.clear()) then fresh custody -> ACCEPTED: 'created'
+NOTE NOTE second process: fresh custody for the identity revoked in this process (disclosed R4) -> ACCEPTED: 'created'
+NOTE NOTE revocation by a minted controller in a producer-authored registry (frozen policy not applied to revoke) -> ACCEPTED: 'DEFECT'
+== regression B1 / B4 / B6 and legacy surface
+OK   B1 [facade] HUMAN_EXECUTED -> DOWNSTREAM_CERTIFIED -> REFUSED: 'RegistryError: promotion violates frozen Task 1 authority law: qualification stage is outside the allowed UNIT scope stage range'
+OK   B1 [legacy] HUMAN_EXECUTED -> DOWNSTREAM_CERTIFIED -> REFUSED: 'RegistryError: promotion violates frozen Task 1 authority law: qualification stage is outside the allowed UNIT scope stage range'
+OK   B1 [facade] TRAINING_ELIGIBLE -> TRAINING_AUTHORIZED -> REFUSED: 'RegistryError: NO_TRAINING_AUTHORITY forbids promotion to a training stage'
+OK   B1 [legacy] TRAINING_ELIGIBLE -> TRAINING_AUTHORIZED -> REFUSED: 'RegistryError: NO_TRAINING_AUTHORITY forbids promotion to a training stage'
+OK   B4 poisoned cache + empty dependency resolver -> RRR -> REFUSED: 'RegistryError: REAL_REFERENCE_READY prerequisites unresolved: dependency object/byte verification failed: manifest_sha: dependency manifest_sha requires actual canonical object; depende'
+OK   B6 committed workflows with write/commit/push (55 scanned) -> ACCEPTED: 'none'
+NOTE NOTE legacy.promote_unit -> RRR on the PR fixture (no Task 2, no frozen actors, no issuer gate) -> ACCEPTED: 'REAL_REFERENCE_READY'
+
+SUMMARY: 18/25 expected; BAD=7

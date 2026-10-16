@@ -1,0 +1,80 @@
+{
+  "authority_changed": false,
+  "b5f_anchor_adjudication": "process-wide non-persistent anchor acceptable as labelled interim for Task 3 freeze once keying/consultation fixed and N2 closed (nothing above SAME_CODE_PATH reachable); binding R4: no KNOWN_TRUTH_QUALIFIED-or-later stage may become reachable until persistent cross-process revocation/history custody exists; does not close R4",
+  "blocking": [
+    {
+      "defect": "history-free registry without custody declares KNOWN_TRUTH_QUALIFIED and promotes to REAL_REFERENCE_READY against a Task-2-valid manifest",
+      "id": "N2",
+      "repair": "require matching history custody for every promotion to REAL_REFERENCE_READY or later (unit and prerequisite-target stages recorded in custody); RRR then fails closed until Task 4/5",
+      "severity": "CRITICAL"
+    },
+    {
+      "combined_severity": "CRITICAL",
+      "defect": "revocation anchor keyed by stage-inclusive canonical sha and consulted only at custody genesis; fork, no-custody, stage-shift bypasses; revoked-by-defect unit reaches RRR combined with N2",
+      "id": "B5-F",
+      "repair": "key anchor by stage/lineage-independent execution identity; consult in every promote_unit and genesis; anchor every revocation incl. custody-free ones",
+      "severity": "IMPORTANT"
+    },
+    {
+      "defect": "registered-validator gate applies only to direct prerequisites; nested prerequisite with unregistered producer validator reaches RRR",
+      "id": "B3-V",
+      "repair": "apply registered-actor/independence check over the full prerequisite closure traversed by readiness",
+      "severity": "IMPORTANT"
+    }
+  ],
+  "carry_forward": [
+    "R7 identities are names not credentials; pinned privileged names are conventions",
+    "R4 persistent cross-process custody before any KTQ-or-later stage",
+    "derive_real_reference_ready is diagnostic, not authority",
+    "registry_v1_legacy.promote_unit public path bypasses all facade gates",
+    "apply frozen actor policy to revoke_or_supersede",
+    "close requirement-class set"
+  ],
+  "closed": [
+    "N1",
+    "B3-E",
+    "B3-R",
+    "T3-B1",
+    "T3-B4",
+    "T3-B6"
+  ],
+  "data_note": "synthetic reader split with monkeypatched frozen constant (Task 2 test pattern); no real bytes read",
+  "date": "2026-10-15",
+  "freeze": "TASK3_REMAINS_OPEN__UNIFIED_TASK4_REMAINS_BLOCKED",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "hostile_probes": {
+    "bad": 7,
+    "expected": 18,
+    "notes": 7,
+    "total": 25
+  },
+  "pinned_branch": "candidate/unified-task3-recheck2-green-d9e58a18-20261015",
+  "protected_values_opened": false,
+  "prs": {
+    "repair": 399,
+    "task3": 392
+  },
+  "reviewed_head": "d9e58a18da5bcfc95d9b9e7484e5686d403c55d4",
+  "schema": "MACHA_UNIFIED_TASK3_RECHECK2_VERDICT_V1",
+  "sections": {
+    "A2": "PARTIAL",
+    "A5": "PARTIAL",
+    "A6": "PASS",
+    "R1": "ISSUER_GATE_PRESENT_INPROCESS_R1_CLASS",
+    "R2": "PARTIAL_NESTED_GAP",
+    "R3": "CLOSED",
+    "R4": "OPEN_DISCLOSED_BOUND",
+    "R5": "PASS",
+    "R6": "CLOSED",
+    "frozen_task2_binding": "PASS",
+    "provenance": "PARTIAL"
+  },
+  "tests_local": {
+    "evidence_class": "LOCAL_NOT_CI",
+    "harness_note": "wrapper pins repo tests package over PyMC site-packages tests; no repo file changed",
+    "registry_focused": "80 passed",
+    "task2_manifest_suites": "39 passed",
+    "td_unified_full": "183 passed"
+  },
+  "verdict": "REJECT_UNIFIED_TASK3"
+}
