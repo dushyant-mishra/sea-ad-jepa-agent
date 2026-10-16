@@ -5,19 +5,34 @@ import pytest
 from scripts.v5.td_unified import challenge_custody_v1 as c
 
 
-def _sealed_dev():
+def _deps(**overrides):
     deps = {
         "task2_manifest_sha": "1" * 64,
         "task3_registry_sha": "2" * 64,
-        "unit_ids": ("G8",),
-        "generator_code_sha": "3" * 40,
-        "generator_policy_sha": "4" * 64,
-        "rng_policy_sha": "5" * 64,
-        "challenge_family_sha": "6" * 64,
-        "adjudication_contract_sha": "7" * 64,
-        "multiplicity_policy_sha": "8" * 64,
+        "registry_unit_identities": (("G8", "3" * 64),),
+        "producer_actor_identity": "4" * 64,
+        "executor_actor_identity": "5" * 64,
+        "controller_actor_identity": "6" * 64,
+        "adjudicator_actor_identity": "7" * 64,
+        "challenge_generator_code_sha": "8" * 40,
+        "challenge_generator_policy_sha": "9" * 64,
+        "realization_schema_sha": "a" * 64,
+        "rng_policy_sha": "b" * 64,
+        "challenge_family_sha": "c" * 64,
+        "adjudication_contract_sha": "d" * 64,
+        "multiplicity_policy_sha": "e" * 64,
+        "publication_policy_sha": "f" * 64,
+        "genesis_ledger_identity": "0" * 64,
+        "authority_scope": "UNIT:G8",
+        "authority_restrictions": ("NO_TRAINING_AUTHORITY",),
+        "qualification_budget": 2,
     }
-    camp = c.create_campaign("dev-hostile", deps, barrier_status=None, namespace="DEVELOPMENT")
+    deps.update(overrides)
+    return deps
+
+
+def _sealed_dev(*, campaign_id="dev-hostile", dependencies=None):
+    camp = c.create_campaign(campaign_id, dependencies or _deps(), barrier_status=None, namespace="DEVELOPMENT")
     camp, definition = c.seal_definition(camp, family="fixture", hidden_spec=b"hidden-fixture")
     rows = [
         {"realization_id": "r0", "content_sha256": "a" * 64, "challenge_class": "A"},
@@ -73,3 +88,9 @@ def test_missing_committed_world_blocks_finalization():
     camp, _ = c.freeze_method_output(camp, exp, output_sha256="c" * 64)
     with pytest.raises(c.Task4ChallengeCustodyError):
         c.finalize_custody(camp, sealed)
+
+
+def test_fresh_ledger_restart_cannot_reuse_same_campaign_identity():
+    a, _, _ = _sealed_dev(campaign_id="restart", dependencies=_deps(genesis_ledger_identity="0" * 64))
+    b, _, _ = _sealed_dev(campaign_id="restart", dependencies=_deps(genesis_ledger_identity="1" * 64))
+    assert a.campaign_identity != b.campaign_identity
