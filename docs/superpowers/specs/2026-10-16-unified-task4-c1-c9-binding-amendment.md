@@ -3,6 +3,7 @@
 Date: 2026-10-16
 Status: DESIGN APPROVED; IMPLEMENTATION PLAN WRITTEN FOR REVIEW
 Controls with: `docs/superpowers/specs/2026-10-15-unified-task4-sealed-challenge-custody-design.md`
+Implementation plan: `docs/superpowers/plans/2026-10-16-unified-task4-sealed-custody-c1-c9-implementation.md`
 Authority effect: NONE
 Frozen prerequisite: Unified Task 3 accepted/frozen code identity `117dd51dea827e734b299982da93991b934bdc8f`
 Independent acceptance verdict: `ACCEPT_UNIFIED_TASK3` at review head `c33f2bd2`
