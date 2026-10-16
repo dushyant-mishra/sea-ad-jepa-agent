@@ -1,6 +1,6 @@
 """Non-authorizing TD→downstream readiness firewall.
 
-This module exists before Unified Task 4 only to audit staging.  It cannot
+This module exists before Unified Task 4 only to audit staging. It cannot
 accept Task 3, issue a Target Qualification Bundle, certify downstream
 consumption, open Stage 4, or authorize training.
 """
@@ -32,6 +32,12 @@ IMPLEMENTATION_PLAN_PATH = (
 )
 
 LEGACY_POST_TD_HARNESS = "scripts/v5/jepa_post_td_harness_contract_v1.py"
+STAGED_RUNTIME_PATHS = (
+    "src/sea_ad_jepa/v4/teacher_student_runtime.py",
+    "src/sea_ad_jepa/v4/teacher_student_checkpoint.py",
+    "src/sea_ad_jepa/v4/ema.py",
+    "src/sea_ad_jepa/v4/ipb_jepa.py",
+)
 TASK4_PRODUCTION_PATHS = (
     "scripts/v5/td_unified/target_bundle_v1.py",
     "scripts/v5/td_unified/downstream_contract_v1.py",
@@ -99,6 +105,29 @@ def _legacy_authority(root: Path) -> dict[str, object]:
     }
 
 
+def _runtime_surface(root: Path) -> dict[str, object]:
+    present = [path for path in STAGED_RUNTIME_PATHS if (root / path).is_file()]
+    missing = [path for path in STAGED_RUNTIME_PATHS if path not in present]
+    if missing:
+        raise DownstreamPreflightError(
+            "staged downstream runtime dependency missing: " + ", ".join(missing)
+        )
+    runtime_source = (root / STAGED_RUNTIME_PATHS[0]).read_text(encoding="utf-8")
+    checkpoint_source = (root / STAGED_RUNTIME_PATHS[1]).read_text(encoding="utf-8")
+    if "No function here authorizes training" not in runtime_source:
+        raise DownstreamPreflightError("teacher/student runtime lost its external-authority declaration")
+    if "authority_bindings" not in checkpoint_source or "validate_checkpoint_header" not in checkpoint_source:
+        raise DownstreamPreflightError("checkpoint runtime lacks authority-binding validation surface")
+    return {
+        "required_paths": list(STAGED_RUNTIME_PATHS),
+        "present_paths": present,
+        "missing_paths": missing,
+        "runtime_declares_external_authority": True,
+        "checkpoint_validates_authority_bindings": True,
+        "classification": "STAGED_MECHANICS_PRESENT__NOT_AUTHORIZED",
+    }
+
+
 def audit_downstream_preflight(
     root: str | Path,
     *,
@@ -133,6 +162,7 @@ def audit_downstream_preflight(
     legacy = _legacy_authority(repo_root)
     if legacy["imported_by_unified_package"]:
         raise DownstreamPreflightError("unified package imports the legacy post-TD harness")
+    runtime = _runtime_surface(repo_root)
 
     return {
         "schema": "JEPA_UNIFIED_DOWNSTREAM_PREFLIGHT_V1",
@@ -153,6 +183,7 @@ def audit_downstream_preflight(
         },
         "task4_production_paths_present": present,
         "legacy_post_td_harness": legacy,
+        "staged_runtime": runtime,
         "next_authority_gate": "INDEPENDENT_TASK3_ACCEPTANCE_AND_EXACT_FREEZE",
         "r4_cross_process_custody_closed": False,
     }
