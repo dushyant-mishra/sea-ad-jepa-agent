@@ -1,8 +1,10 @@
 import pytest
 
+from scripts.v5.td_unified import task4_registry_adapter_v1 as registry_adapter
 from scripts.v5.td_unified.task4_authority_barrier_v1 import (
     Task4BarrierError,
     Task4BarrierStatus,
+    evaluate_task4_preauthority_barrier,
     require_task4_preauthority_barrier_green,
 )
 
@@ -72,3 +74,33 @@ def test_red_overall_blocks_even_when_individual_checks_look_green():
 def test_barrier_cannot_be_constructed_with_promotion_authority():
     with pytest.raises(Task4BarrierError):
         Task4BarrierStatus("GREEN", _green(), authority_effect="PROMOTE")
+
+
+def test_self_asserted_actor_context_mapping_cannot_make_barrier_green(monkeypatch):
+    monkeypatch.setattr(registry_adapter, "validate_registry_snapshot_for_task4", lambda *args, **kwargs: None)
+
+    class Replay:
+        authoritative = True
+        head = "h" * 64
+
+    class Store:
+        def replay(self):
+            return Replay()
+
+    raw_context = {
+        "actor_attestation_mode": "AUTHENTICATED_EXTERNAL",
+        "revocation_policy_current": True,
+        "requirement_policy_current": True,
+        "construction_law_current": True,
+        "process_isolation": "EXTERNAL_HARNESS",
+    }
+    status = evaluate_task4_preauthority_barrier(
+        "G8",
+        object(),
+        custody_store=Store(),
+        expected_head="h" * 64,
+        actor_context=raw_context,
+    )
+    assert status.overall == "RED"
+    assert status.checks["C5_ACTOR_CREDENTIALS"] == "FAIL"
+    assert status.checks["C9_PROCESS_ISOLATION"] == "FAIL"
