@@ -23,11 +23,22 @@ class HarnessSigner:
 
 class HarnessVerifier:
     trusted_signer_identities = frozenset({"harness-key-v1"})
+    trusted_anchor_identities = frozenset({"external-head-anchor-v1"})
     key = HarnessSigner.key
     def verify(self, message: bytes, signature: bytes, signer_identity: str) -> bool:
         return signer_identity in self.trusted_signer_identities and hmac.compare_digest(
             signature, hmac.new(self.key, message, hashlib.sha256).digest()
         )
+
+
+class ExternalHeadPublisher:
+    anchor_identity = "external-head-anchor-v1"
+    promotion_authority = "EXTERNAL_HEAD_AUTHORITY"
+    def __init__(self):
+        self.published = []
+    def publish(self, *, head: str, event_count: int) -> str:
+        self.published.append((head, event_count))
+        return head
 
 
 def _unit(**overrides):
@@ -61,11 +72,18 @@ def test_revocation_identity_changes_when_defect_bearing_dependency_changes():
     assert revocation_subject_identity(_unit()) != revocation_subject_identity(_unit(producer_code_sha="b" * 40))
 
 
+def test_authoritative_append_requires_external_head_publication(tmp_path: Path):
+    store = PersistentCustodyStore.open(tmp_path, verifier=HarnessVerifier(), expected_head=None)
+    with pytest.raises(Task4CustodyError):
+        store.append_event({"kind": "STATE"}, signer=HarnessSigner())
+
+
 def test_revocation_survives_store_reload(tmp_path: Path):
-    signer, verifier = HarnessSigner(), HarnessVerifier()
+    signer, verifier, publisher = HarnessSigner(), HarnessVerifier(), ExternalHeadPublisher()
     store = PersistentCustodyStore.open(tmp_path, verifier=verifier, expected_head=None)
     subject = revocation_subject_identity(_unit())
-    head = store.append_event({"kind": "REVOCATION", "subject_id": subject, "reason_class": "DEFECT"}, signer=signer)
+    head = store.append_event({"kind": "REVOCATION", "subject_id": subject, "reason_class": "DEFECT"}, signer=signer, head_publisher=publisher)
+    assert publisher.published[-1] == (head, 1)
     reopened = PersistentCustodyStore.open(tmp_path, verifier=verifier, expected_head=head)
     with pytest.raises(Task4CustodyError):
         reopened.assert_subject_not_revoked(subject)
@@ -73,10 +91,10 @@ def test_revocation_survives_store_reload(tmp_path: Path):
 
 
 def test_stale_expected_head_and_truncation_fail_closed(tmp_path: Path):
-    signer, verifier = HarnessSigner(), HarnessVerifier()
+    signer, verifier, publisher = HarnessSigner(), HarnessVerifier(), ExternalHeadPublisher()
     store = PersistentCustodyStore.open(tmp_path, verifier=verifier, expected_head=None)
     subject = revocation_subject_identity(_unit())
-    head = store.append_event({"kind": "REVOCATION", "subject_id": subject}, signer=signer)
+    head = store.append_event({"kind": "REVOCATION", "subject_id": subject}, signer=signer, head_publisher=publisher)
     with pytest.raises(Task4CustodyError):
         PersistentCustodyStore.open(tmp_path, verifier=verifier, expected_head="0" * 64)
     events = tmp_path / "events.jsonl"
@@ -90,4 +108,13 @@ def test_fixture_or_caller_signer_cannot_publish_authoritative_head(tmp_path: Pa
         promotion_authority = "NONE"
     store = PersistentCustodyStore.open(tmp_path, verifier=HarnessVerifier(), expected_head=None)
     with pytest.raises(Task4CustodyError):
-        store.append_event({"kind": "STATE"}, signer=BadSigner())
+        store.append_event({"kind": "STATE"}, signer=BadSigner(), head_publisher=ExternalHeadPublisher())
+
+
+def test_caller_created_head_publisher_cannot_anchor_authority(tmp_path: Path):
+    class BadPublisher(ExternalHeadPublisher):
+        anchor_identity = "caller-anchor"
+        promotion_authority = "NONE"
+    store = PersistentCustodyStore.open(tmp_path, verifier=HarnessVerifier(), expected_head=None)
+    with pytest.raises(Task4CustodyError):
+        store.append_event({"kind": "STATE"}, signer=HarnessSigner(), head_publisher=BadPublisher())
