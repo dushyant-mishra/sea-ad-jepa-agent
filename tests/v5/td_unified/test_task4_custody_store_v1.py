@@ -131,7 +131,7 @@ def test_revocation_identity_changes_when_defect_bearing_dependency_changes():
     assert revocation_subject_identity(_unit()) != revocation_subject_identity(_unit(producer_code_sha="b" * 40))
 
 
-def test_authoritative_append_requires_external_head_publication(tmp_path: Path):
+def test_append_requires_head_publication_mechanics(tmp_path: Path):
     store = _open(tmp_path)
     payload = {"kind": "STATE"}
     with pytest.raises(Task4CustodyError):
@@ -148,7 +148,7 @@ def test_trusted_signer_object_without_authenticated_action_attestation_cannot_a
         )
 
 
-def test_revocation_survives_store_reload(tmp_path: Path):
+def test_revocation_survives_store_reload_without_creating_authority(tmp_path: Path):
     publisher = ExternalHeadPublisher()
     store = _open(tmp_path)
     subject = revocation_subject_identity(_unit())
@@ -158,7 +158,7 @@ def test_revocation_survives_store_reload(tmp_path: Path):
     reopened = _open(tmp_path, expected_head=head)
     with pytest.raises(Task4CustodyError):
         reopened.assert_subject_not_revoked(subject)
-    assert reopened.replay().authoritative is True
+    assert reopened.replay().authoritative is False
 
 
 def test_stale_expected_head_and_truncation_fail_closed(tmp_path: Path):
@@ -173,7 +173,7 @@ def test_stale_expected_head_and_truncation_fail_closed(tmp_path: Path):
         _open(tmp_path, expected_head=head)
 
 
-def test_fixture_or_caller_signer_cannot_publish_authoritative_head(tmp_path: Path):
+def test_unqualified_signer_cannot_publish_custody_mechanics(tmp_path: Path):
     class BadSigner(HarnessSigner):
         promotion_authority = "NONE"
     store = _open(tmp_path)
@@ -187,7 +187,7 @@ def test_fixture_or_caller_signer_cannot_publish_authoritative_head(tmp_path: Pa
         )
 
 
-def test_caller_created_head_publisher_cannot_anchor_authority(tmp_path: Path):
+def test_unqualified_head_publisher_cannot_publish_custody_mechanics(tmp_path: Path):
     class BadPublisher(ExternalHeadPublisher):
         anchor_identity = "caller-anchor"
         promotion_authority = "NONE"
