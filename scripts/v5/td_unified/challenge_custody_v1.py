@@ -4,10 +4,16 @@ Custody mechanics only: no biological interpretation, registry promotion,
 Stage 4, or training authority. FINAL transitions re-resolve current authority
 through Task4AuthorityHarness; caller-created GREEN status objects are never
 accepted as authority. Development campaigns remain permanently non-authorizing.
+
+Task 4 V1 also maintains an in-process lifecycle provenance registry. Public
+campaign fields describe state but are not proof that the state was reached by
+lawful transitions. Directly constructed or copied-and-mutated campaign objects
+therefore fail closed. This process-local registry is mechanics-only and is not
+an external authority or a substitute for persistent cross-process custody.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 from enum import Enum
 import hashlib
 import json
@@ -53,9 +59,9 @@ def validate_campaign_dependencies(dependencies: Mapping[str, object]) -> dict[s
         missing = sorted(_REQUIRED_DEPENDENCY_KEYS - supplied)
         extra = sorted(supplied - _REQUIRED_DEPENDENCY_KEYS)
         raise Task4ChallengeCustodyError(f"campaign dependency contract mismatch missing={missing} extra={extra}")
-    for field in _REQUIRED_64:
-        if not _hex(dependencies[field], 64):
-            raise Task4ChallengeCustodyError(f"{field} must be exact lowercase 64-hex identity")
+    for field_name in _REQUIRED_64:
+        if not _hex(dependencies[field_name], 64):
+            raise Task4ChallengeCustodyError(f"{field_name} must be exact lowercase 64-hex identity")
     if not _hex(dependencies["challenge_generator_code_sha"], 40):
         raise Task4ChallengeCustodyError("challenge_generator_code_sha must be exact lowercase 40-hex identity")
     units = dependencies["registry_unit_identities"]
@@ -136,6 +142,7 @@ class QualificationCampaign:
     issued_exposures: tuple[tuple[str, str, str, str, int], ...] = ()
     frozen_outputs: tuple[tuple[str, str], ...] = ()
     terminal_statuses: tuple[tuple[str, str], ...] = ()
+    _lifecycle_token: object | None = field(default=None, repr=False, compare=False)
 
     def to_payload(self) -> dict[str, object]:
         return {
@@ -155,6 +162,46 @@ class QualificationCampaign:
             "frozen_outputs": [list(x) for x in self.frozen_outputs],
             "terminal_statuses": [list(x) for x in self.terminal_statuses],
         }
+
+
+# Process-local lifecycle mechanics. This registry proves only that the object
+# passed through this module's public transition functions in this process. It
+# is intentionally excluded from serialized campaign payloads and confers no
+# cross-process or external authority.
+_LIFECYCLE_DIGESTS: dict[object, str] = {}
+
+
+def _campaign_state_digest(campaign: QualificationCampaign) -> str:
+    return _sha(campaign.to_payload())
+
+
+def _register_campaign(campaign: QualificationCampaign) -> QualificationCampaign:
+    token = campaign._lifecycle_token
+    if token is None:
+        raise Task4ChallengeCustodyError("campaign lacks process-local lifecycle provenance")
+    _LIFECYCLE_DIGESTS[token] = _campaign_state_digest(campaign)
+    return campaign
+
+
+def _assert_lifecycle_current(campaign: QualificationCampaign) -> None:
+    if not isinstance(campaign, QualificationCampaign):
+        raise Task4ChallengeCustodyError("campaign must be a QualificationCampaign")
+    token = campaign._lifecycle_token
+    if token is None:
+        raise Task4ChallengeCustodyError("campaign was not created through the lawful lifecycle")
+    expected = _LIFECYCLE_DIGESTS.get(token)
+    actual = _campaign_state_digest(campaign)
+    if expected is None or expected != actual:
+        raise Task4ChallengeCustodyError("campaign state lacks current lawful transition provenance")
+
+
+def _advance_campaign(campaign: QualificationCampaign, **changes: object) -> QualificationCampaign:
+    _assert_lifecycle_current(campaign)
+    advanced = replace(campaign, **changes)
+    token = campaign._lifecycle_token
+    assert token is not None
+    _LIFECYCLE_DIGESTS[token] = _campaign_state_digest(advanced)
+    return advanced
 
 
 @dataclass(frozen=True)
@@ -246,10 +293,20 @@ def create_campaign(campaign_id: str, dependencies: Mapping[str, object], *, bar
     else:
         promotion_authority = "NONE"
     identity = _campaign_identity(campaign_id, deps, namespace)
-    return QualificationCampaign(campaign_id, deps, namespace, promotion_authority, CampaignState.CAMPAIGN_CREATED, identity)
+    campaign = QualificationCampaign(
+        campaign_id,
+        deps,
+        namespace,
+        promotion_authority,
+        CampaignState.CAMPAIGN_CREATED,
+        identity,
+        _lifecycle_token=object(),
+    )
+    return _register_campaign(campaign)
 
 
 def assert_same_campaign_identity(campaign: QualificationCampaign, campaign_id: str, dependencies: Mapping[str, object]) -> None:
+    _assert_lifecycle_current(campaign)
     deps = validate_campaign_dependencies(dependencies)
     if _campaign_identity(campaign_id, deps, campaign.namespace) != campaign.campaign_identity:
         raise Task4ChallengeCustodyError("campaign ID/dependency mutation creates a new campaign identity")
@@ -257,13 +314,14 @@ def assert_same_campaign_identity(campaign: QualificationCampaign, campaign_id: 
 
 def seal_definition(campaign: QualificationCampaign, *, family: str, hidden_spec: bytes, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
+    _assert_lifecycle_current(campaign)
     if campaign.state is not CampaignState.CAMPAIGN_CREATED:
         raise Task4ChallengeCustodyError("challenge definition can seal only from CAMPAIGN_CREATED")
     if type(hidden_spec) is not bytes or not hidden_spec or type(family) is not str or not family:
         raise Task4ChallengeCustodyError("challenge family and hidden specification must be non-empty")
     definition = SealedChallengeDefinition(campaign.campaign_identity, family, hashlib.sha256(hidden_spec).hexdigest(), campaign.namespace)
     definition_sha = _sha(definition.to_payload())
-    return replace(campaign, state=CampaignState.DEFINITION_SEALED, sealed_definition_sha256=definition_sha), definition
+    return _advance_campaign(campaign, state=CampaignState.DEFINITION_SEALED, sealed_definition_sha256=definition_sha), definition
 
 
 def _validated_rows(rows: Iterable[Mapping[str, object]], budget: int):
@@ -327,6 +385,7 @@ def _validate_bound_realization_set(campaign: QualificationCampaign, sealed: Sea
 
 def seal_realization_set(campaign: QualificationCampaign, definition: SealedChallengeDefinition, rows: Iterable[Mapping[str, object]], *, budget: int, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
+    _assert_lifecycle_current(campaign)
     if campaign.state is not CampaignState.DEFINITION_SEALED:
         raise Task4ChallengeCustodyError("realization set requires matching sealed definition")
     _validate_bound_definition(campaign, definition)
@@ -343,7 +402,7 @@ def seal_realization_set(campaign: QualificationCampaign, definition: SealedChal
         "budget": budget,
     })
     sealed = SealedRealizationSet(campaign.campaign_identity, definition_sha, ids, digests, classes, budget, root)
-    return replace(
+    return _advance_campaign(
         campaign,
         state=CampaignState.REALIZATION_SET_SEALED,
         sealed_budget=budget,
@@ -357,6 +416,7 @@ def _issued_exposure_is_exact(campaign: QualificationCampaign, exposure: Exposur
 
 def issue_exposure(campaign: QualificationCampaign, sealed: SealedRealizationSet, *, realization_id: str, method_scientific_identity: str, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
+    _assert_lifecycle_current(campaign)
     if campaign.state not in {CampaignState.REALIZATION_SET_SEALED, CampaignState.EXPOSURE_ACTIVE}:
         raise Task4ChallengeCustodyError("exposure is not legal in current campaign state")
     _validate_bound_realization_set(campaign, sealed)
@@ -369,7 +429,7 @@ def issue_exposure(campaign: QualificationCampaign, sealed: SealedRealizationSet
     idx = sealed.realization_ids.index(realization_id)
     ordinal = campaign.exposures_consumed + 1
     exposure = ExposureRecord(campaign.campaign_identity, f"exp-{ordinal}", realization_id, sealed.content_sha256s[idx], method_scientific_identity, ordinal)
-    return replace(
+    return _advance_campaign(
         campaign,
         state=CampaignState.EXPOSURE_ACTIVE,
         exposures_consumed=ordinal,
@@ -380,6 +440,7 @@ def issue_exposure(campaign: QualificationCampaign, sealed: SealedRealizationSet
 
 def record_exposure_terminal(campaign: QualificationCampaign, exposure: ExposureRecord, *, terminal_status: str, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
+    _assert_lifecycle_current(campaign)
     allowed = {"EVALUATED", "TECHNICAL_FAILURE", "UNSUPPORTED_NOT_ESTIMABLE", "DEFECT_INVALIDATED"}
     if terminal_status not in allowed or not _issued_exposure_is_exact(campaign, exposure):
         raise Task4ChallengeCustodyError("invalid or hand-constructed terminal exposure accounting")
@@ -387,11 +448,12 @@ def record_exposure_terminal(campaign: QualificationCampaign, exposure: Exposure
     if exposure.realization_id in existing and existing[exposure.realization_id] != terminal_status:
         raise Task4ChallengeCustodyError("terminal accounting cannot be rewritten")
     existing[exposure.realization_id] = terminal_status
-    return replace(campaign, terminal_statuses=tuple(sorted(existing.items())))
+    return _advance_campaign(campaign, terminal_statuses=tuple(sorted(existing.items())))
 
 
 def freeze_method_output(campaign: QualificationCampaign, exposure: ExposureRecord, *, output_sha256: str, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
+    _assert_lifecycle_current(campaign)
     if campaign.state is not CampaignState.EXPOSURE_ACTIVE or not _hex(output_sha256, 64) or not _issued_exposure_is_exact(campaign, exposure):
         raise Task4ChallengeCustodyError("invalid or hand-constructed output freeze")
     frozen = dict(campaign.frozen_outputs)
@@ -400,11 +462,12 @@ def freeze_method_output(campaign: QualificationCampaign, exposure: ExposureReco
     frozen[exposure.realization_id] = output_sha256
     state = CampaignState.ALL_REQUIRED_OUTPUTS_FROZEN if len(frozen) == campaign.sealed_budget else CampaignState.EXPOSURE_ACTIVE
     receipt = MethodOutputFreezeReceipt(exposure.exposure_id, exposure.realization_id, exposure.method_scientific_identity, output_sha256)
-    return replace(campaign, state=state, frozen_outputs=tuple(sorted(frozen.items()))), receipt
+    return _advance_campaign(campaign, state=state, frozen_outputs=tuple(sorted(frozen.items()))), receipt
 
 
 def reveal_hidden_material(campaign: QualificationCampaign, definition: SealedChallengeDefinition, sealed: SealedRealizationSet, *, hidden_spec: bytes, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
+    _assert_lifecycle_current(campaign)
     if campaign.state is not CampaignState.ALL_REQUIRED_OUTPUTS_FROZEN:
         raise Task4ChallengeCustodyError("hidden material reveal preconditions not met")
     _validate_bound_definition(campaign, definition)
@@ -412,11 +475,12 @@ def reveal_hidden_material(campaign: QualificationCampaign, definition: SealedCh
     digest = hashlib.sha256(hidden_spec).hexdigest()
     if digest != definition.hidden_spec_commitment:
         raise Task4ChallengeCustodyError("hidden material does not match sealed commitment")
-    return replace(campaign, state=CampaignState.HIDDEN_MATERIAL_REVEALED), SealedQualificationReveal(campaign.campaign_identity, digest, sealed.sealed_root)
+    return _advance_campaign(campaign, state=CampaignState.HIDDEN_MATERIAL_REVEALED), SealedQualificationReveal(campaign.campaign_identity, digest, sealed.sealed_root)
 
 
 def verify_regeneration(campaign: QualificationCampaign, sealed: SealedRealizationSet, regenerated_rows: Iterable[Mapping[str, object]], *, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
+    _assert_lifecycle_current(campaign)
     if campaign.state is not CampaignState.HIDDEN_MATERIAL_REVEALED:
         raise Task4ChallengeCustodyError("regeneration verification requires reveal")
     _validate_bound_realization_set(campaign, sealed)
@@ -431,11 +495,12 @@ def verify_regeneration(campaign: QualificationCampaign, sealed: SealedRealizati
     })
     if root != sealed.sealed_root:
         raise Task4ChallengeCustodyError("regenerated realization set differs from committed finite exam")
-    return replace(campaign, state=CampaignState.REGENERATION_VERIFIED), RegenerationVerification(campaign.campaign_identity, root, True)
+    return _advance_campaign(campaign, state=CampaignState.REGENERATION_VERIFIED), RegenerationVerification(campaign.campaign_identity, root, True)
 
 
 def finalize_custody(campaign: QualificationCampaign, sealed: SealedRealizationSet, *, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
+    _assert_lifecycle_current(campaign)
     _validate_bound_realization_set(campaign, sealed)
     realized = set(sealed.realization_ids)
     if (
@@ -461,4 +526,4 @@ def finalize_custody(campaign: QualificationCampaign, sealed: SealedRealizationS
         "terminal_statuses": [list(x) for x in campaign.terminal_statuses],
         "authority_effect": "NONE",
     }
-    return replace(campaign, state=CampaignState.CUSTODY_COMPLETE), receipt, evidence
+    return _advance_campaign(campaign, state=CampaignState.CUSTODY_COMPLETE), receipt, evidence
