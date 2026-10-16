@@ -269,6 +269,8 @@ Expected: FAIL because the custody store does not exist.
 
 Persist canonical event bytes append-only. Publish a separate head record only after the event file is fsynced. `open()` refuses disagreement among event chain, signature verification, and caller-supplied externally published expected head. A pending/unpublished tail is recoverable only as non-authoritative evidence and cannot satisfy `expected_head`.
 
+This module provides persistence mechanics only. An `ExternalSigner` supplied by a caller is not sufficient for authority; Task 4 authority paths must additionally validate the signer's authenticated actor/action attestation through Task 4 actor policy before accepting a signed append/head as authoritative.
+
 - [ ] **Step 5: Re-run C1 preserved attacks**
 
 ```bash
@@ -288,7 +290,7 @@ Reviewer gate: this closes only implemented R4 mechanics; no authority-stage pro
 
 ---
 
-### Task 4: Actor attestation, revocation authority, and closed requirement classes
+### Task 4: Actor attestation, revocation authority, signer authority, and closed requirement classes
 
 **Files:**
 - Create: `scripts/v5/td_unified/task4_actor_attestation_v1.py`
@@ -302,13 +304,14 @@ Reviewer gate: this closes only implemented R4 mechanics; no authority-stage pro
 - Produces:
   - `ActorActionAttestation(actor_identity_sha: str, role: str, action: str, subject_sha: str, sequence: int, signature: bytes, signer_identity: str)`
   - `validate_actor_action(attestation, *, actor_registry, frozen_policy, verifier) -> str` returning canonical authenticated actor ID;
+  - `validate_custody_signer(signer_identity: str, signer_attestation: ActorActionAttestation, *, actor_registry, frozen_policy, verifier) -> str`;
   - `RequirementClass` closed enum;
   - `RequirementIssuerPolicy(requirement_class, allowed_roles, content_validation_required)`;
   - `validate_requirement_evidence(requirement, evidence, *, actor_context) -> None`.
 
-- [ ] **Step 1: Write actor-attestation RED tests**
+- [ ] **Step 1: Write actor/signer-attestation RED tests**
 
-Reject name-only actor, caller-minted signer identity, signature from wrong signer, producer/executor acting as forbidden controller/revoker, Unicode/case/whitespace alias, and actor-registry substitution.
+Reject name-only actor, caller-minted signer identity, caller-created signer with no authenticated signer attestation, signature from wrong signer, producer/executor acting as forbidden controller/revoker, Unicode/case/whitespace alias, and actor-registry substitution.
 
 - [ ] **Step 2: Write requirement-class RED tests**
 
@@ -316,7 +319,7 @@ Reject unknown class, generic fallback, missing issuer, issuer wrong role, issue
 
 - [ ] **Step 3: Implement minimum validation interfaces**
 
-Do not introduce a private key or production signing secret in repository code. Fixture signatures use a dedicated non-authorizing test backend and must carry `promotion_authority = NONE`.
+Do not introduce a private key or production signing secret in repository code. Fixture signatures use a dedicated non-authorizing test backend and must carry `promotion_authority = NONE`. `validate_custody_signer` must bind the exact signer identity used by the durable ledger append/head to an authenticated harness/custody role; a signer object alone never grants authority.
 
 - [ ] **Step 4: Verify**
 
@@ -324,13 +327,13 @@ Do not introduce a private key or production signing secret in repository code. 
 python -m pytest -q tests/v5/td_unified/test_task4_actor_attestation_v1.py tests/v5/td_unified/test_task4_requirement_policy_v1.py tests/v5/td_unified/test_task4_red_c1_c9.py
 ```
 
-Expected: C5/C6/C7 preserved attacks PASS; remaining campaign/barrier attacks may still be RED.
+Expected: C5/C6/C7 and signer-spoofing preserved attacks PASS; remaining campaign/barrier attacks may still be RED.
 
 - [ ] **Step 5: Commit**
 
 ```bash
 git add scripts/v5/td_unified/task4_actor_attestation_v1.py scripts/v5/td_unified/task4_requirement_policy_v1.py tests/v5/td_unified/test_task4_actor_attestation_v1.py tests/v5/td_unified/test_task4_requirement_policy_v1.py schemas/target_discovery/unified_v1/task4_actor_action_attestation_v1.json tests/v5/td_unified/test_task4_red_c1_c9.py
-git commit -m "feat(task4): authenticate actors and close requirement classes"
+git commit -m "feat(task4): authenticate actors signers and requirement classes"
 ```
 
 ---
@@ -342,7 +345,7 @@ git commit -m "feat(task4): authenticate actors and close requirement classes"
 - Create: `tests/v5/td_unified/test_task4_authority_barrier_v1.py`
 
 **Interfaces:**
-- Consumes: Task 2 registry adapter, Task 3 persistent custody, Task 4 actor attestation, Task 4 requirement policy.
+- Consumes: Task 2 registry adapter, Task 3 persistent custody, Task 4 actor/signer attestation, Task 4 requirement policy.
 - Produces:
   - `Task4BarrierStatus(overall: str, checks: Mapping[str, str], authority_effect: str, claim_scope: str)`
   - `evaluate_task4_preauthority_barrier(unit_id: str, registry, *, custody_store, expected_head, actor_context, authority_object_resolver, dependency_verifier, raw_resolver) -> Task4BarrierStatus`
@@ -362,7 +365,7 @@ For the same prohibited state, attack direct call, construction, deserialization
 
 - [ ] **Step 3: Implement evaluator**
 
-No method in this module calls `promote_unit`. All authoritative registry/custody checks are re-resolved at evaluation time.
+No method in this module calls `promote_unit`. All authoritative registry/custody checks are re-resolved at evaluation time. A durable head is not GREEN unless the exact signer used for its authoritative append/head is validated through `validate_custody_signer`.
 
 - [ ] **Step 4: Verify focused and inherited registry suites**
 
@@ -587,9 +590,9 @@ Assert identical semantic validation results, final head, subject-revocation sta
 
 Ensure cache/index optimization does not skip signature, sequence, previous-head, subject, actor, or state-order validation.
 
-- [ ] **Step 3: Define and test declared ceilings**
+- [ ] **Step 3: Test fixed qualification scales and ceilings**
 
-Use synthetic ledgers at historical-scale and a larger projected scale. Record the exact sizes and ceiling in test constants; failure is explicit if ceiling is exceeded on CI reference hardware after the ceiling is empirically set on the first GREEN candidate. Do not weaken semantic checks to meet the ceiling.
+Use deterministic synthetic ledgers of exactly 10,000 events (historical-scale qualification target) and 100,000 events (projected-scale stress target). On the Python 3.11 Ubuntu GitHub Actions runner, require `replay_optimized()` to complete the 10,000-event ledger in <= 10 seconds and the 100,000-event ledger in <= 60 seconds. `replay_reference()` is required for exact semantic equivalence at 10,000 events; at 100,000 events it may be sampled only if its full replay would exceed the 60-second workflow budget. Performance assertions must never disable signature, sequence, head, actor, subject, or state-order checks.
 
 - [ ] **Step 4: Commit**
 
