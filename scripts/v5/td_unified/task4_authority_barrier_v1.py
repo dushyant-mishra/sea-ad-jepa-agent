@@ -67,7 +67,15 @@ def evaluate_task4_preauthority_barrier(
     dependency_verifier=None,
     raw_resolver=None,
 ) -> Task4BarrierStatus:
-    """Evaluate current preauthority conditions without calling registry promotion."""
+    """Evaluate current preauthority conditions without calling registry promotion.
+
+    A plain mapping is permitted to carry the already-verifiable Task 3
+    history-custody object, but mapping fields are never accepted as evidence
+    for actor credentials, policy currency, construction law, or process
+    isolation. Those authority-bearing C5-C9 facts require a separately
+    authenticated external context object; until one is supplied they fail
+    closed.
+    """
     from .task4_registry_adapter_v1 import validate_registry_snapshot_for_task4
 
     checks: dict[str, str] = {}
@@ -89,12 +97,12 @@ def evaluate_task4_preauthority_barrier(
     except Exception:
         checks["C1_PERSISTENT_REVOCATION"] = "FAIL"
 
-    actor_mode = actor_context.get("actor_attestation_mode") if isinstance(actor_context, Mapping) else None
-    checks["C5_ACTOR_CREDENTIALS"] = "AUTHENTICATED_EXTERNAL" if actor_mode == "AUTHENTICATED_EXTERNAL" else "FAIL"
-    checks["C6_REVOCATION_ACTOR_POLICY"] = "PASS" if isinstance(actor_context, Mapping) and actor_context.get("revocation_policy_current") is True else "FAIL"
-    checks["C7_REQUIREMENT_CLASSES"] = "PASS" if isinstance(actor_context, Mapping) and actor_context.get("requirement_policy_current") is True else "FAIL"
-    checks["C8_TASK1_CONSTRUCTION_LAW"] = "PASS" if isinstance(actor_context, Mapping) and actor_context.get("construction_law_current") is True else "FAIL"
-    checks["C9_PROCESS_ISOLATION"] = "PASS" if isinstance(actor_context, Mapping) and actor_context.get("process_isolation") == "EXTERNAL_HARNESS" else "FAIL"
+    # Self-asserted dict fields cannot satisfy authority-bearing C5-C9 laws.
+    checks["C5_ACTOR_CREDENTIALS"] = "FAIL"
+    checks["C6_REVOCATION_ACTOR_POLICY"] = "FAIL"
+    checks["C7_REQUIREMENT_CLASSES"] = "FAIL"
+    checks["C8_TASK1_CONSTRUCTION_LAW"] = "FAIL"
+    checks["C9_PROCESS_ISOLATION"] = "FAIL"
     checks["C4_DIAGNOSTIC_ONLY"] = "PASS"
     checks["R5_CLAIM_SCOPE"] = "PASS"
 
@@ -107,8 +115,10 @@ class Task4AuthorityHarness:
     """Exact-current authority resolver for every FINAL campaign transition.
 
     A caller cannot unlock FINAL custody by constructing a GREEN status object;
-    the harness re-evaluates current Task 3 history, persistent Task 4 custody,
-    actor mode, and requirement/construction/process-isolation state each time.
+    the harness re-evaluates current Task 3 history and persistent Task 4
+    custody each time. Self-asserted context mappings cannot satisfy C5-C9;
+    FINAL remains fail-closed until externally authenticated context evidence
+    is wired in.
     """
     unit_id: str
     registry: object
