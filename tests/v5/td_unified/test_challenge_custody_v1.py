@@ -23,18 +23,30 @@ def _forged_barrier():
     return Task4BarrierStatus("GREEN", checks)
 
 
-def _deps():
-    return {
+def _deps(**overrides):
+    deps = {
         "task2_manifest_sha": "1" * 64,
         "task3_registry_sha": "2" * 64,
-        "unit_ids": ("G8",),
-        "generator_code_sha": "3" * 40,
-        "generator_policy_sha": "4" * 64,
-        "rng_policy_sha": "5" * 64,
-        "challenge_family_sha": "6" * 64,
-        "adjudication_contract_sha": "7" * 64,
-        "multiplicity_policy_sha": "8" * 64,
+        "registry_unit_identities": (("G8", "3" * 64),),
+        "producer_actor_identity": "4" * 64,
+        "executor_actor_identity": "5" * 64,
+        "controller_actor_identity": "6" * 64,
+        "adjudicator_actor_identity": "7" * 64,
+        "challenge_generator_code_sha": "8" * 40,
+        "challenge_generator_policy_sha": "9" * 64,
+        "realization_schema_sha": "a" * 64,
+        "rng_policy_sha": "b" * 64,
+        "challenge_family_sha": "c" * 64,
+        "adjudication_contract_sha": "d" * 64,
+        "multiplicity_policy_sha": "e" * 64,
+        "publication_policy_sha": "f" * 64,
+        "genesis_ledger_identity": "0" * 64,
+        "authority_scope": "UNIT:G8",
+        "authority_restrictions": ("NO_TRAINING_AUTHORITY",),
+        "qualification_budget": 2,
     }
+    deps.update(overrides)
+    return deps
 
 
 def test_development_campaign_is_explicitly_nonauthorizing():
@@ -46,17 +58,53 @@ def test_development_campaign_is_explicitly_nonauthorizing():
 def test_final_campaign_refuses_missing_or_caller_forged_barrier_status():
     with pytest.raises(c.Task4ChallengeCustodyError):
         c.create_campaign("final-1", _deps(), barrier_status=None, namespace="FINAL")
-    # A caller-created GREEN data object is not evidence that the current
-    # registry/custody/actor state was actually re-resolved by the harness.
     with pytest.raises(c.Task4ChallengeCustodyError):
         c.create_campaign("final-1", _deps(), barrier_status=_forged_barrier(), namespace="FINAL")
 
 
-def test_campaign_id_binds_dependencies():
-    camp = c.create_campaign("dev-id", _deps(), barrier_status=None, namespace="DEVELOPMENT")
-    altered = dict(_deps(), generator_policy_sha="9" * 64)
+def test_campaign_requires_complete_closed_dependency_contract():
+    for missing in (
+        "task2_manifest_sha", "task3_registry_sha", "registry_unit_identities",
+        "producer_actor_identity", "executor_actor_identity", "controller_actor_identity",
+        "adjudicator_actor_identity", "challenge_generator_code_sha",
+        "challenge_generator_policy_sha", "realization_schema_sha", "rng_policy_sha",
+        "challenge_family_sha", "adjudication_contract_sha", "multiplicity_policy_sha",
+        "publication_policy_sha", "genesis_ledger_identity", "authority_scope",
+        "authority_restrictions", "qualification_budget",
+    ):
+        deps = _deps()
+        deps.pop(missing)
+        with pytest.raises(c.Task4ChallengeCustodyError):
+            c.create_campaign("missing-" + missing, deps, barrier_status=None, namespace="DEVELOPMENT")
+
+
+def test_campaign_rejects_privileged_actor_aliasing():
     with pytest.raises(c.Task4ChallengeCustodyError):
-        c.assert_same_campaign_identity(camp, "dev-id", altered)
+        c.create_campaign(
+            "actor-alias",
+            _deps(controller_actor_identity="4" * 64),
+            barrier_status=None,
+            namespace="DEVELOPMENT",
+        )
+
+
+def test_new_genesis_ledger_creates_new_campaign_identity():
+    a = c.create_campaign("same-id", _deps(genesis_ledger_identity="0" * 64), barrier_status=None, namespace="DEVELOPMENT")
+    b = c.create_campaign("same-id", _deps(genesis_ledger_identity="1" * 64), barrier_status=None, namespace="DEVELOPMENT")
+    assert a.campaign_identity != b.campaign_identity
+
+
+def test_campaign_id_binds_every_decision_bearing_dependency():
+    camp = c.create_campaign("dev-id", _deps(), barrier_status=None, namespace="DEVELOPMENT")
+    for key, value in (
+        ("challenge_generator_policy_sha", "1" * 64),
+        ("realization_schema_sha", "2" * 64),
+        ("publication_policy_sha", "3" * 64),
+        ("genesis_ledger_identity", "4" * 64),
+    ):
+        altered = _deps(**{key: value})
+        with pytest.raises(c.Task4ChallengeCustodyError):
+            c.assert_same_campaign_identity(camp, "dev-id", altered)
 
 
 def test_definition_public_payload_contains_commitment_not_hidden_bytes():
@@ -69,7 +117,19 @@ def test_definition_public_payload_contains_commitment_not_hidden_bytes():
     assert camp2.state is c.CampaignState.DEFINITION_SEALED
 
 
-def test_finite_realization_set_refuses_duplicates_budget_mismatch_and_reordering():
+def test_realization_budget_must_equal_frozen_campaign_budget():
+    camp = c.create_campaign("dev-budget", _deps(qualification_budget=2), barrier_status=None, namespace="DEVELOPMENT")
+    camp, definition = c.seal_definition(camp, family="fixture-family", hidden_spec=b"hidden")
+    rows = [
+        {"realization_id": "r0", "content_sha256": "a" * 64, "challenge_class": "A"},
+        {"realization_id": "r1", "content_sha256": "b" * 64, "challenge_class": "A"},
+    ]
+    c.seal_realization_set(camp, definition, rows, budget=2)
+    with pytest.raises(c.Task4ChallengeCustodyError):
+        c.seal_realization_set(camp, definition, rows, budget=3)
+
+
+def test_finite_realization_set_refuses_duplicates_and_budget_mismatch():
     camp = c.create_campaign("dev-3", _deps(), barrier_status=None, namespace="DEVELOPMENT")
     camp, definition = c.seal_definition(camp, family="fixture-family", hidden_spec=b"hidden")
     rows = [
@@ -79,7 +139,5 @@ def test_finite_realization_set_refuses_duplicates_budget_mismatch_and_reorderin
     camp2, sealed = c.seal_realization_set(camp, definition, rows, budget=2)
     assert camp2.state is c.CampaignState.REALIZATION_SET_SEALED
     assert sealed.realization_ids == ("r0", "r1")
-    with pytest.raises(c.Task4ChallengeCustodyError):
-        c.seal_realization_set(camp, definition, rows, budget=3)
     with pytest.raises(c.Task4ChallengeCustodyError):
         c.seal_realization_set(camp, definition, rows + [rows[0]], budget=3)
