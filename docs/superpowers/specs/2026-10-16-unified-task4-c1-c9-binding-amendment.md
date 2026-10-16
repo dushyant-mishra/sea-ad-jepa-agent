@@ -1,7 +1,7 @@
 # Unified Task 4 — C1–C9 Binding Amendment
 
 Date: 2026-10-16
-Status: DESIGN AMENDMENT FOR REVIEW
+Status: DESIGN APPROVED; IMPLEMENTATION PLAN WRITTEN FOR REVIEW
 Controls with: `docs/superpowers/specs/2026-10-15-unified-task4-sealed-challenge-custody-design.md`
 Authority effect: NONE
 Frozen prerequisite: Unified Task 3 accepted/frozen code identity `117dd51dea827e734b299982da93991b934bdc8f`
@@ -358,6 +358,4 @@ This amendment does not:
 
 ## 21. Design completion condition
 
-This amendment is ready for implementation planning only after human review confirms it correctly carries C1–C9 and the accepted Task 3 ruling without weakening the existing Task 4 sealed-custody design.
-
-After that review, the implementation plan must preserve the exact order: RED attacks first, minimal prospective repair, inherited regressions, sibling-route hostile re-audit, then independent exact-head Macha review.
+This amendment is approved for implementation planning. The implementation plan must preserve the exact order: RED attacks first, minimal prospective repair, inherited regressions, sibling-route hostile re-audit, then independent exact-head Macha review.
