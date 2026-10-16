@@ -131,7 +131,9 @@ def test_revocation_identity_changes_when_defect_bearing_dependency_changes():
     assert revocation_subject_identity(_unit()) != revocation_subject_identity(_unit(producer_code_sha="b" * 40))
 
 
-def test_append_requires_head_publication_mechanics(tmp_path: Path):
+def test_authoritative_append_requires_external_head_publication(tmp_path: Path):
+    # Historical test name retained for attack-matrix stability. In Task 4 V1
+    # this exercises publication mechanics only; it cannot create authority.
     store = _open(tmp_path)
     payload = {"kind": "STATE"}
     with pytest.raises(Task4CustodyError):
@@ -148,7 +150,7 @@ def test_trusted_signer_object_without_authenticated_action_attestation_cannot_a
         )
 
 
-def test_revocation_survives_store_reload_without_creating_authority(tmp_path: Path):
+def test_revocation_survives_store_reload(tmp_path: Path):
     publisher = ExternalHeadPublisher()
     store = _open(tmp_path)
     subject = revocation_subject_identity(_unit())
@@ -173,7 +175,9 @@ def test_stale_expected_head_and_truncation_fail_closed(tmp_path: Path):
         _open(tmp_path, expected_head=head)
 
 
-def test_unqualified_signer_cannot_publish_custody_mechanics(tmp_path: Path):
+def test_fixture_or_caller_signer_cannot_publish_authoritative_head(tmp_path: Path):
+    # Historical name retained; rejection here is a mechanics qualification,
+    # while authority itself remains impossible for repository-owned inputs.
     class BadSigner(HarnessSigner):
         promotion_authority = "NONE"
     store = _open(tmp_path)
@@ -187,7 +191,9 @@ def test_unqualified_signer_cannot_publish_custody_mechanics(tmp_path: Path):
         )
 
 
-def test_unqualified_head_publisher_cannot_publish_custody_mechanics(tmp_path: Path):
+def test_caller_created_head_publisher_cannot_anchor_authority(tmp_path: Path):
+    # Historical name retained; no caller-created publisher can make the replay
+    # authoritative because Task 4 V1 never grants repository-side authority.
     class BadPublisher(ExternalHeadPublisher):
         anchor_identity = "caller-anchor"
         promotion_authority = "NONE"
