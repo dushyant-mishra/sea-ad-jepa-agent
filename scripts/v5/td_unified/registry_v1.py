@@ -20,11 +20,10 @@ for _name, _value in vars(_legacy).items():
     if not _name.startswith("__"):
         globals()[_name] = _value
 
-# Process-wide revocation memory closes the exact B5-F fresh-custody reset attack:
-# every custody instance in the qualification process consults one shared anchor.
-# This is deliberately NOT represented as cross-process persistence or R4 closure;
-# real HUMAN_EXECUTABLE authority still requires separately qualified external
-# ledger/key custody and Task 4 remains blocked.
+# Process-wide revocation memory is an explicitly labelled Task 3 stopgap only.
+# Keys exclude qualification stage and lineage status so a revoked execution
+# identity cannot be recreated by stage shifting or by dropping history. This
+# does NOT claim cross-process persistence or close Task 2 residual R4.
 _PROCESS_REVOCATION_ANCHOR: set[str] = set()
 
 
@@ -41,6 +40,26 @@ def _receipt_payloads(registry):
 
 def _unit_payloads(registry):
     return {unit.unit_id: unit.to_payload() for unit in registry.units}
+
+
+def _revocation_identity(unit) -> str:
+    """Execution identity used by the process-local revocation stopgap.
+
+    Stage and lineage status are deliberately excluded. A lawful re-entry after
+    revocation must therefore use ``reidentify_unit`` and change an execution
+    identity field, not merely restart at another stage.
+    """
+    payload = dict(unit.to_payload())
+    payload.pop("qualification_stage", None)
+    payload.pop("active_lineage_status", None)
+    return canonical_sha256(payload)
+
+
+def _require_not_revoked(unit, *, context: str) -> None:
+    if _revocation_identity(unit) in _PROCESS_REVOCATION_ANCHOR:
+        raise RegistryError(
+            f"{context} refuses execution identity already present in anchored revocation ledger"
+        )
 
 
 def _combined_resolver(authority_object_resolver, dependency_verifier):
@@ -85,6 +104,26 @@ def _registered_unit_actor_ids(registry, unit, authority_object_resolver, depend
     return producer, executor
 
 
+def _gate_prerequisite_closure(registry, unit_id, gate):
+    """Return every prerequisite the recursive readiness walk can traverse."""
+    reachable = {unit_id}
+    selected = []
+    selected_ids = set()
+    changed = True
+    while changed:
+        changed = False
+        for prerequisite in registry.prerequisites:
+            if prerequisite.gate != gate or prerequisite.dependent_unit_id not in reachable:
+                continue
+            if prerequisite.prerequisite_id not in selected_ids:
+                selected.append(prerequisite)
+                selected_ids.add(prerequisite.prerequisite_id)
+            if prerequisite.prerequisite_unit_id not in reachable:
+                reachable.add(prerequisite.prerequisite_unit_id)
+                changed = True
+    return tuple(selected)
+
+
 def _require_registered_prerequisite_actors(
     registry,
     unit_id,
@@ -93,15 +132,14 @@ def _require_registered_prerequisite_actors(
     authority_object_resolver,
     dependency_verifier,
 ) -> None:
-    """Bind content validators/evidence issuers to the closed actor registry."""
+    """Bind validators/evidence issuers across the full readiness closure."""
     resolver = _combined_resolver(authority_object_resolver, dependency_verifier)
-    unit = registry.units_by_id()[unit_id]
-    producer, executor = _registered_unit_actor_ids(
-        registry, unit, authority_object_resolver, dependency_verifier
-    )
-    for prerequisite in registry.prerequisites:
-        if prerequisite.dependent_unit_id != unit_id or prerequisite.gate != gate:
-            continue
+    units = registry.units_by_id()
+    for prerequisite in _gate_prerequisite_closure(registry, unit_id, gate):
+        dependent = units[prerequisite.dependent_unit_id]
+        producer, executor = _registered_unit_actor_ids(
+            registry, dependent, authority_object_resolver, dependency_verifier
+        )
         if prerequisite.content_required:
             receipt = _legacy._resolve_object(
                 prerequisite.content_validation_receipt_sha or "",
@@ -182,10 +220,7 @@ class RegistryHistoryCustody:
         if genesis_registry.promotions or genesis_registry.revocations:
             raise RegistryError("history custody genesis must be history-free")
         for unit in genesis_registry.units:
-            if unit.canonical_sha256() in _PROCESS_REVOCATION_ANCHOR:
-                raise RegistryError(
-                    "history custody genesis refuses unit identity already present in anchored revocation ledger"
-                )
+            _require_not_revoked(unit, context="history custody genesis")
         if any(
             _legacy._STAGE_INDEX[unit.qualification_stage]
             > _legacy._STAGE_INDEX[QualificationStage.SAME_CODE_PATH]
@@ -259,11 +294,6 @@ class RegistryHistoryCustody:
         self._events.append(event)
         self._unit_state = _unit_payloads(after)
         self._promotions, self._revocations = after_promotions, after_revocations
-        if kind == "REVOCATION":
-            affected = receipt.get("affected_unit_sha")
-            if type(affected) is not str:
-                raise RegistryError("revocation event missing affected unit identity for anchor")
-            _PROCESS_REVOCATION_ANCHOR.add(affected)
 
 
 def _require_history_custody(registry, history_custody, *, context: str) -> RegistryHistoryCustody:
@@ -337,6 +367,8 @@ def promote_unit(
 ):
     if unit_id not in registry.units_by_id():
         raise RegistryError(f"unknown unit_id: {unit_id}")
+    unit = registry.units_by_id()[unit_id]
+    _require_not_revoked(unit, context="promotion")
 
     repaired = _legacy_promotion_preflight(
         registry,
@@ -366,10 +398,20 @@ def promote_unit(
         )
 
     custody = None
-    if destination_stage is QualificationStage.HUMAN_EXECUTABLE and history_custody is None:
-        raise RegistryError("HUMAN_EXECUTABLE promotion requires external history custody anchor")
-    if destination_stage is QualificationStage.HUMAN_EXECUTABLE:
-        custody = _require_history_custody(registry, history_custody, context="HUMAN_EXECUTABLE promotion")
+    requires_custody = (
+        _legacy._STAGE_INDEX[destination_stage]
+        >= _legacy._STAGE_INDEX[QualificationStage.REAL_REFERENCE_READY]
+    )
+    if requires_custody and history_custody is None:
+        raise RegistryError(
+            f"{destination_stage.value} promotion requires external history custody anchor"
+        )
+    if requires_custody:
+        custody = _require_history_custody(
+            registry,
+            history_custody,
+            context=f"{destination_stage.value} promotion",
+        )
     elif history_custody is not None:
         custody = _require_history_custody(registry, history_custody, context="recorded promotion")
     elif registry.promotions or registry.revocations:
@@ -422,4 +464,5 @@ def revoke_or_supersede(
     )
     if custody is not None:
         custody._record_transition(registry, repaired, kind="REVOCATION")
+    _PROCESS_REVOCATION_ANCHOR.add(_revocation_identity(unit))
     return repaired
