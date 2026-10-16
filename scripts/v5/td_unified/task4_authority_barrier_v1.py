@@ -83,3 +83,35 @@ def evaluate_task4_preauthority_barrier(
 
     overall = "GREEN" if all(v in {"PASS", "PERSISTENT_EXTERNAL", "AUTHENTICATED_EXTERNAL"} for v in checks.values()) else "RED"
     return Task4BarrierStatus(overall=overall, checks=checks)
+
+
+@dataclass(frozen=True)
+class Task4AuthorityHarness:
+    """Exact-current authority resolver for every FINAL campaign transition.
+
+    A caller cannot unlock FINAL custody by constructing a GREEN status object;
+    the harness re-evaluates current Task 3 history, persistent Task 4 custody,
+    actor mode, and requirement/construction/process-isolation state each time.
+    """
+    unit_id: str
+    registry: object
+    custody_store: object
+    expected_head: str
+    actor_context: Mapping[str, object]
+    authority_object_resolver: object = None
+    dependency_verifier: object = None
+    raw_resolver: object = None
+
+    def current_status(self) -> Task4BarrierStatus:
+        status = evaluate_task4_preauthority_barrier(
+            self.unit_id,
+            self.registry,
+            custody_store=self.custody_store,
+            expected_head=self.expected_head,
+            actor_context=self.actor_context,
+            authority_object_resolver=self.authority_object_resolver,
+            dependency_verifier=self.dependency_verifier,
+            raw_resolver=self.raw_resolver,
+        )
+        require_task4_preauthority_barrier_green(status)
+        return status
