@@ -1,7 +1,7 @@
 # Unified Task 4 — C1–C9 Binding Amendment
 
 Date: 2026-10-16
-Status: DESIGN APPROVED; IMPLEMENTATION PLAN WRITTEN FOR REVIEW
+Status: DESIGN APPROVED; IMPLEMENTATION PLAN READY FOR REVIEW
 Controls with: `docs/superpowers/specs/2026-10-15-unified-task4-sealed-challenge-custody-design.md`
 Implementation plan: `docs/superpowers/plans/2026-10-16-unified-task4-sealed-custody-c1-c9-implementation.md`
 Authority effect: NONE
@@ -359,4 +359,4 @@ This amendment does not:
 
 ## 21. Design completion condition
 
-This amendment is approved for implementation planning. The implementation plan must preserve the exact order: RED attacks first, minimal prospective repair, inherited regressions, sibling-route hostile re-audit, then independent exact-head Macha review.
+This amendment is approved for implementation planning. The implementation plan is now written and must be reviewed before the RED-only execution branch is created. After plan approval, preserve the exact order: RED attacks first, minimal prospective repair, inherited regressions, sibling-route hostile re-audit, then independent exact-head Macha review.
