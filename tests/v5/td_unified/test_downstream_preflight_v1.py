@@ -42,6 +42,16 @@ def test_legacy_pass_label_path_executes_but_cannot_authorize_anything():
     assert portfolio["schema"] != "JEPA_UNIFIED_TARGET_QUALIFICATION_BUNDLE_V1"
 
 
+def test_staged_training_runtime_is_present_but_remains_external_to_authority():
+    report = p.audit_downstream_preflight(ROOT, task3_candidate_sha=TASK3_CANDIDATE)
+    runtime = report["staged_runtime"]
+    assert runtime["missing_paths"] == []
+    assert runtime["present_paths"] == list(p.STAGED_RUNTIME_PATHS)
+    assert runtime["runtime_declares_external_authority"] is True
+    assert runtime["checkpoint_validates_authority_bindings"] is True
+    assert runtime["classification"] == "STAGED_MECHANICS_PRESENT__NOT_AUTHORIZED"
+
+
 def test_unified_package_does_not_import_legacy_post_td_harness():
     report = p.audit_downstream_preflight(ROOT, task3_candidate_sha=TASK3_CANDIDATE)
     assert report["legacy_post_td_harness"]["imported_by_unified_package"] is False
