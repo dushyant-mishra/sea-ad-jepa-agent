@@ -1,0 +1,37 @@
+{
+  "crosswalk": {
+    "bytes": 16383559,
+    "path": "D:/jepa_agent2_outputs_20260926/full/agent2_full104_feature_crosswalk_v1.csv",
+    "sha256": "4afff98d219450bef8d9ffff156c2190275254d1660657ab2d732ae6b48cf8ac"
+  },
+  "generated_utc": "2026-09-26T16:29:12.423222+00:00",
+  "governance": "TRAINING=OFF | AUDIT_B_N1=UNOPENED | PROTECTED_FULL104_OUTCOMES=UNOPENED | D_SHARED_G5=UNOPENED | RARE_TAIL_MOLECULAR=UNOPENED | THERAPEUTIC_RANKING=OFF",
+  "n_canonical_addresses": 41238,
+  "outputs": {
+    "agent2_coverage_matrix_v1.csv": {
+      "bytes": 6427,
+      "path": "D:/jepa_agent2_outputs_20260926/full/agent2_coverage_matrix_v1.csv",
+      "sha256": "c05d7922bcdfe10000da15815cb56f24e5284ea65105bc0efd7ebfc8a605b31d"
+    },
+    "agent2_query_panel_coverage_v1.csv": {
+      "bytes": 9207,
+      "path": "D:/jepa_agent2_outputs_20260926/full/agent2_query_panel_coverage_v1.csv",
+      "sha256": "0df97c56cc17ff6f99a303b6811858bcfc18f21a26c7f833f0576d5af64f6e13"
+    }
+  },
+  "panel_absent_symbols": [
+    "PLCG2"
+  ],
+  "panel_genes_absent_from_registry": 1,
+  "panel_genes_declared": 45,
+  "panel_genes_multi_address": 0,
+  "panel_genes_unique": 45,
+  "panel_name": "QUERY_PANEL",
+  "strata_sizes": {
+    "ALL": 41238,
+    "MICROGLIA_DETECTABLE": 24824,
+    "QUERY_PANEL": 44,
+    "STAGE75F_REGULATOR": 10,
+    "STAGE75F_TARGET": 29
+  }
+}
