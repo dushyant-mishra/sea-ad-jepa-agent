@@ -45,6 +45,13 @@ def test_each_absent_required_condition_blocks(key):
         require_task4_preauthority_barrier_green(Task4BarrierStatus("GREEN", checks))
 
 
+def test_generic_green_alias_cannot_replace_exact_check_value():
+    checks = _green()
+    checks["C1_PERSISTENT_REVOCATION"] = "GREEN"
+    with pytest.raises(Task4BarrierError):
+        require_task4_preauthority_barrier_green(Task4BarrierStatus("GREEN", checks))
+
+
 def test_unknown_extra_condition_blocks_closed_barrier():
     checks = _green()
     checks["CALLER_MINTED_CHECK"] = "PASS"
