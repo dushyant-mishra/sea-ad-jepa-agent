@@ -116,7 +116,9 @@ def test_projected_100k_optimized_replay_meets_ceiling(tmp_path: Path):
     replay = store.replay_optimized()
     optimized_seconds = time.perf_counter() - t1
     assert replay.event_count == 100_000
-    assert replay.authoritative is True
+    # Scale qualification is a mechanics claim only. Repository-constructible
+    # verifier/head inputs cannot create external authority in Task 4 V1.
+    assert replay.authoritative is False
     assert opened_seconds <= 60.0
     assert optimized_seconds <= 60.0
 
