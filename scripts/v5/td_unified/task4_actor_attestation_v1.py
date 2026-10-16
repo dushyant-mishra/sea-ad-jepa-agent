@@ -1,6 +1,6 @@
 """Actor-action attestation boundary for Unified Task 4.
 
-Names and registry roles are identifiers, not credentials.  Authority-bearing
+Names and registry roles are identifiers, not credentials. Authority-bearing
 Task 4 actions require an externally verified attestation bound to the exact
 action and subject.
 """
@@ -79,3 +79,36 @@ def validate_actor_action(attestation, *, actor_registry, frozen_policy, verifie
     if not allowed or attestation.role not in set(allowed):
         raise Task4ActorError("actor role is not privileged for requested action")
     return attestation.actor_identity_sha
+
+
+def validate_custody_signer(
+    signer_identity: str,
+    signer_attestation,
+    *,
+    subject_sha: str,
+    sequence: int,
+    actor_registry,
+    frozen_policy,
+    verifier,
+) -> str:
+    """Bind the durable-ledger signer to an authenticated exact action.
+
+    The ledger signer identity must be the canonical actor identity.  The
+    attestation is additionally bound to CUSTODY_APPEND, the exact canonical
+    event-subject digest, and the exact next ledger sequence.
+    """
+    actor_identity = validate_actor_action(
+        signer_attestation,
+        actor_registry=actor_registry,
+        frozen_policy=frozen_policy,
+        verifier=verifier,
+    )
+    if signer_identity != actor_identity:
+        raise Task4ActorError("custody signer identity differs from authenticated actor identity")
+    if signer_attestation.action != "CUSTODY_APPEND":
+        raise Task4ActorError("custody signer attestation is not bound to CUSTODY_APPEND")
+    if signer_attestation.subject_sha != subject_sha:
+        raise Task4ActorError("custody signer attestation subject differs from exact event subject")
+    if signer_attestation.sequence != sequence:
+        raise Task4ActorError("custody signer attestation sequence differs from exact ledger sequence")
+    return actor_identity
