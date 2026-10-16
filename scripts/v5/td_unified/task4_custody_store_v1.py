@@ -1,9 +1,8 @@
 """Persistent cross-process custody primitives for Unified Task 4.
 
-The store is deliberately small and auditable: canonical JSONL events form an
-append-only hash chain, a separately published head binds the accepted prefix,
-and signatures are verified through an external verifier interface.  No
-production signing key is owned here.
+Canonical JSONL events form an append-only hash chain, a separately published
+head binds the accepted prefix, and signatures are verified through an external
+verifier interface. No production signing key is owned here.
 """
 from __future__ import annotations
 
@@ -13,6 +12,9 @@ import json
 import os
 from pathlib import Path
 from typing import Mapping, Protocol
+
+HISTORICAL_SCALE_EVENTS = 10_000
+PROJECTED_SCALE_EVENTS = 100_000
 
 
 class Task4CustodyError(ValueError):
@@ -27,13 +29,7 @@ def _sha(payload: Mapping[str, object]) -> str:
     return hashlib.sha256(_canonical_bytes(payload)).hexdigest()
 
 
-# Cosmetic authority presentation fields are not part of defect identity.
-_NON_DEFECT_FIELDS = {
-    "object_role",
-    "qualification_stage",
-    "active_lineage_status",
-    "authority_restrictions",
-}
+_NON_DEFECT_FIELDS = {"object_role", "qualification_stage", "active_lineage_status", "authority_restrictions"}
 
 
 def revocation_subject_identity(unit_payload: Mapping[str, object]) -> str:
@@ -80,7 +76,7 @@ class PersistentCustodyStore:
             self.events_path.touch()
             with self.events_path.open("rb") as fh:
                 os.fsync(fh.fileno())
-        self._replay = self.replay()
+        self._replay = self.replay_reference()
 
     @classmethod
     def open(cls, root: Path, *, verifier: ExternalVerifier, expected_head: str | None):
@@ -92,7 +88,7 @@ class PersistentCustodyStore:
         unsigned.pop("signature_hex", None)
         return _canonical_bytes(unsigned)
 
-    def replay(self) -> CustodyReplayResult:
+    def _replay_semantic(self) -> CustodyReplayResult:
         previous = "0" * 64
         revoked: set[str] = set()
         count = 0
@@ -117,8 +113,7 @@ class PersistentCustodyStore:
                     raise Task4CustodyError("invalid custody signature encoding") from exc
                 if not self.verifier.verify(self._event_message(event), signature, signer_identity):
                     raise Task4CustodyError("custody signature verification failed")
-                digest_payload = dict(event)
-                previous = _sha(digest_payload)
+                previous = _sha(dict(event))
                 count += 1
                 if event.get("kind") in {"REVOCATION", "SUPERSESSION"}:
                     subject_id = event.get("subject_id")
@@ -145,6 +140,18 @@ class PersistentCustodyStore:
         authoritative = self.expected_head is not None and published == self.expected_head
         return CustodyReplayResult(previous, count, frozenset(revoked), authoritative)
 
+    def replay_reference(self) -> CustodyReplayResult:
+        return self._replay_semantic()
+
+    def replay_optimized(self) -> CustodyReplayResult:
+        # V1 intentionally shares the reference semantic implementation. An
+        # optimized index may replace this only after equivalence tests remain
+        # byte-identical; correctness is not traded for speed.
+        return self._replay_semantic()
+
+    def replay(self) -> CustodyReplayResult:
+        return self.replay_optimized()
+
     @property
     def head(self) -> str:
         return self._replay.head
@@ -158,12 +165,7 @@ class PersistentCustodyStore:
         kind = base.get("kind")
         if kind not in {"REVOCATION", "SUPERSESSION", "CAMPAIGN", "EXPOSURE", "OUTPUT_FREEZE", "REVEAL", "STATE"}:
             raise Task4CustodyError("unknown custody event kind")
-        event = {
-            **base,
-            "sequence": self._replay.event_count + 1,
-            "previous_head": self._replay.head,
-            "signer_identity": signer.signer_identity,
-        }
+        event = {**base, "sequence": self._replay.event_count + 1, "previous_head": self._replay.head, "signer_identity": signer.signer_identity}
         signature = signer.sign(self._event_message(event))
         event["signature_hex"] = bytes(signature).hex()
         line = _canonical_bytes(event) + b"\n"
@@ -177,10 +179,10 @@ class PersistentCustodyStore:
             os.fsync(fh.fileno())
         os.replace(tmp, self.head_path)
         self.expected_head = new_head
-        self._replay = self.replay()
+        self._replay = self.replay_optimized()
         return new_head
 
     def assert_subject_not_revoked(self, subject_id: str) -> None:
-        self._replay = self.replay()
+        self._replay = self.replay_optimized()
         if subject_id in self._replay.revoked_subjects:
             raise Task4CustodyError("subject is present in persistent revocation history")
