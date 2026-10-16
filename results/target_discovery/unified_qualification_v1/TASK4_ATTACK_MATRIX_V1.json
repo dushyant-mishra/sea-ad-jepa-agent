@@ -48,6 +48,8 @@
     {"attack_id":"T4-A43","law":"Published event-count mutation fails replay","test_file":"tests/v5/td_unified/test_task4_replay_mutations_v1.py","test_name":"test_published_event_count_mutation_fails_replay"},
     {"attack_id":"T4-A44","law":"Untrusted anchor identity fails replay","test_file":"tests/v5/td_unified/test_task4_replay_mutations_v1.py","test_name":"test_untrusted_anchor_identity_fails_replay"},
     {"attack_id":"T4-A45","law":"Unknown event kind cannot enter custody","test_file":"tests/v5/td_unified/test_task4_replay_mutations_v1.py","test_name":"test_unknown_event_kind_cannot_enter_custody"},
-    {"attack_id":"T4-A46","law":"Clean publication surfaces do not create false-positive custody refusal","test_file":"tests/v5/td_unified/test_task4_publication_guard_v1.py","test_name":"test_clean_publication_surface_passes"}
+    {"attack_id":"T4-A46","law":"Clean publication surfaces do not create false-positive custody refusal","test_file":"tests/v5/td_unified/test_task4_publication_guard_v1.py","test_name":"test_clean_publication_surface_passes"},
+    {"attack_id":"T4-A47","law":"Trusted signer object cannot append custody without exact authenticated actor action","test_file":"tests/v5/td_unified/test_task4_custody_store_v1.py","test_name":"test_trusted_signer_object_without_authenticated_action_attestation_cannot_append"},
+    {"attack_id":"T4-A48","law":"Self-asserted actor/process context mapping cannot unlock preauthority barrier","test_file":"tests/v5/td_unified/test_task4_authority_barrier_v1.py","test_name":"test_self_asserted_actor_context_mapping_cannot_make_barrier_green"}
   ]
 }
