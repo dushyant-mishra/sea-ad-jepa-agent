@@ -1,73 +1,55 @@
-# Unified Task 4 successor candidate review packet
+# Unified Task 4 successor-2 candidate review packet
 
-Status: `SUCCESSOR_CANDIDATE_ONLY__INDEPENDENT_EXACT_HEAD_REVIEW_REQUIRED`
+Status: `SUCCESSOR2_MECHANICALLY_GREEN__HOSTILE_REVIEW_REQUIRED`
 
 Frozen Task 3 base: `117dd51dea827e734b299982da93991b934bdc8f`  
 Original implementation PR: #404  
-Successor repair PR: #406  
-Successor repair branch: `repair/unified-task4-external-root-boundary-20261016`
+External-root repair PR: #406  
+Sealed-object binding repair PR: #408  
+Active repair branch: `repair/unified-task4-sealed-object-binding-20261016`
 
 ## Authority boundary
 
-Task 4 V1 now makes a narrower claim than the rejected predecessor: repository-constructible custody is **mechanics only**. A Python signer, verifier, actor registry/policy, actor-attestation verifier, head publisher, or caller-supplied expected head cannot establish that its trust root is genuinely external. Therefore repository replay is always non-authorizing. `expected_head` is an integrity/consistency check only.
+Task 4 V1 is non-authorizing custody mechanics. Repository-constructible signers, verifiers, actor policies, head publishers, expected heads, campaigns, challenge definitions, and realization sets cannot create biological, target, representation, Stage 4, protected-value, or training authority. Repository replay remains non-authorizing and genuine external authority remains unwired.
 
-No biological PASS/FAIL, target selection, representation selection, Stage 4, protected-value, or training authority is created. Global authority remains:
+Global authority remains:
 
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
 No final hidden challenge values, production nonces, protected biological values, or final challenge worlds were generated.
 
-## Rejected predecessor — preserve this history
+## Rejected candidates — permanent history
 
-The first pinned candidate was:
+### Candidate 1
 
-- branch `candidate/unified-task4-green-b31371d6-20261016`;
-- exact SHA `b31371d62f3270c965d321e61c35898ca6be3721`.
+`b31371d62f3270c965d321e61c35898ca6be3721` on `candidate/unified-task4-green-b31371d6-20261016` is **rejected**. Hostile PR #405, run `38953203662`, job `117149477378`, proved that caller-owned signer/verifier/actor/policy/head objects could self-mint the whole trust graph. Follow-up RED `38953623988` / `117150890636` showed caller inputs could make replay authoritative.
 
-It is **rejected**, despite its earlier green CI. Hostile review PR #405 constructed the entire trust graph from caller-owned objects. Run `38953203662`, job `117149477378`, failed with `DID NOT RAISE Task4CustodyError`: caller-owned signer, verifier, actor verifier, actor registry/policy, and head publisher could manufacture custody accepted as authoritative.
+### Candidate 2
 
-A follow-up semantic RED on the successor repair branch, run `38953623988`, job `117150890636`, showed the underlying authority bug directly: caller-owned trust inputs and a caller-supplied expected head produced `replay().authoritative == True`.
+`c537db4e7b5b916cb3ddee1872fd4afa623a9b33` on `candidate/unified-task4-successor-green-c537db4e-20261016` is **rejected**. Hostile PR #407, run `38954964212`, job `117155395974`, proved post-seal substitution: a caller could replace the committed challenge definition and committed realization set with hand-constructed objects sharing the campaign identity.
 
-Do not rehabilitate `b31371d6...` based on its earlier green runs.
+Do not rehabilitate either rejected candidate from earlier green CI.
 
-## Successor repair
+## Current successor-2 repair
 
-The repair changes the authority law rather than pretending repository code can authenticate an external root:
+The campaign now binds the exact sealed definition SHA-256 and exact realization-set root. Every downstream transition that consumes sealed objects validates those bindings, and a supplied realization set must recompute to its claimed root. Definition substitution, realization substitution, and root-alias objects therefore fail closed.
 
-- custody event chaining, signatures, actor-action checks, durable revocation, head publication mechanics, replay equivalence, and scale remain testable;
-- `expected_head` remains exact-match integrity evidence;
-- append no longer self-mints a new expected head;
-- `CustodyReplayResult.authoritative` is always `False` in repository Task 4 V1;
-- genuine external authority remains unwired and fail-closed;
-- C1/C5-C9 authority cannot become GREEN from repository-constructible objects.
+Exact mechanically verified code/schema head before review-artifact-only edits:
 
-Last fully verified successor code/test head before review-artifact-only edits:
+`89fb48d581ba37bce9496854d039d900535d47c8`
 
-`ba3e521ff58ce8ad65f49d9fa0930871991a96de`
+Read-only Task 4 run `38955545446`, job `117157367488`:
 
-Fresh read-only Task 4 run `38954292188`, job `117153130016`:
-
-- focused Task 4: `99 passed, 1 skipped`;
+- focused Task 4: `104 passed, 1 skipped`;
 - projected 100k replay benchmark: `1 passed`;
-- full unified Task 0-4 regression: `290 passed, 1 skipped`.
+- full unified Task 0-4 regression: `295 passed, 1 skipped`.
 
-Same-head regressions:
+Same exact head passed:
 
-- Task 2 manifest/access: `38954292154` PASS;
-- Task 3 registry: `38954292151` PASS;
-- unified synthetic integration: `38954292464` PASS.
-
-Task 1 was not triggered by this successor diff; its frozen Task 3 base is unchanged.
-
-## Read first
-
-1. `docs/superpowers/plans/2026-10-16-unified-task4-sealed-custody-c1-c9-implementation.md`
-2. `docs/superpowers/specs/2026-10-16-unified-task4-c1-c9-binding-amendment.md`
-3. `docs/agent/UNIFIED_TASK4_EXECUTION_LEDGER_20261016.md`
-4. `results/target_discovery/unified_qualification_v1/UNIFIED_TASK4_CANDIDATE_STATE_V1.json`
-5. `results/target_discovery/unified_qualification_v1/TASK4_ATTACK_MATRIX_V1.json`
-6. `tests/v5/td_unified/test_task4_external_root_boundary_v1.py`
-7. Task 4 production modules and strict Task 4 schemas/tests.
+- Task 1 A1-A9: `38955545469`;
+- Task 2 manifest/access: `38955545455`;
+- Task 3 registry: `38955545397`;
+- unified synthetic integration: `38955545761`.
 
 ## RED evidence that must remain explainable
 
@@ -78,29 +60,16 @@ Task 1 was not triggered by this successor diff; its frozen Task 3 base is uncha
 - unauthenticated signer object: `38945592644` / `117123776998`;
 - self-asserted actor/process context: `38946266116` / `117126036930`;
 - full caller-self-minted trust graph: `38953203662` / `117149477378`;
-- expected-head authority self-mint: `38953623988` / `117150890636`.
+- expected-head authority self-mint: `38953623988` / `117150890636`;
+- post-seal object substitution: `38954964212` / `117155395974`;
+- missing exact sealed-object bindings: `38955121063` / `117155935852`.
 
-## Inherited CI defects outside Task 4
+## Required next hostile review
 
-Some frozen Task 0 / Task 3 read-only workflows have historically failed before their intended assertions because their environments omit NumPy. Do not infer Task 4 authority from those failures, and do not silently rewrite frozen Task 0-3 workflow authority in this review.
+The next review must attack the exact newly pinned SHA, on a separate branch. In particular, test whether a caller can bypass the lifecycle by directly constructing `QualificationCampaign` in an advanced state with matching attacker-chosen sealed-definition/root fields, without traversing the legal transitions. Also retain all prior trust-root, revocation, exposure, reveal, accounting, replay, and no-echo attacks.
 
-## Required hostile review questions
-
-Reject the successor if any answer is YES:
-
-1. Can any repository-constructible signer/verifier/actor/policy/publisher/expected-head object graph make `replay().authoritative` true?
-2. Can cosmetic stage/status/restriction mutation, restart, truncation, or rechain erase persistent revocation?
-3. Can any Task 4 route regain authority through `registry_v1_legacy`, stale readiness diagnostics, or hand-constructed registry/status objects?
-4. Can C5-C9 become GREEN without genuine external evidence for actor credentials, privileged-policy currency, requirement/construction law, and process isolation?
-5. Can exposure crash/rerun/rename reset spent exposure?
-6. Can hidden material reveal before required outputs freeze, or mutate after freeze?
-7. Can missing/unsupported/technical-failure realizations disappear from terminal accounting or be favorably zero-filled?
-8. Can logs/artifacts/receipts/refusal messages leak hidden material or echo attacker secrets?
-9. Can reference and optimized replay disagree, or can 10k/100k replay violate committed mechanics semantics?
-10. Did the successor modify frozen Task 0-3 production code or create biological/target/representation/training/Stage4 authority?
+Any caller-fabricable advanced lifecycle state that permits downstream mechanics without lawful provenance is a rejection blocker, even though Task 4 remains non-authorizing.
 
 ## Acceptance rule
 
-Pin the exact successor candidate SHA named in the PR conversation. Run or independently reproduce the hostile suites on a separate review branch. Return explicit `ACCEPT_TASK4_CUSTODY_CANDIDATE` or `REJECT_TASK4_CUSTODY_CANDIDATE` with concrete blockers.
-
-Even ACCEPT means only that the **non-authorizing Task 4 custody mechanics** are accepted. External authority remains a separate future integration problem and cannot be inferred from an ACCEPT verdict here.
+Only an immutable exact SHA may be reviewed. Return explicit `ACCEPT_TASK4_CUSTODY_CANDIDATE` or `REJECT_TASK4_CUSTODY_CANDIDATE` with concrete blockers. Even ACCEPT can qualify only non-authorizing Task 4 mechanics; it cannot establish biological truth or grant target, representation, Stage 4, protected-value, or training authority.

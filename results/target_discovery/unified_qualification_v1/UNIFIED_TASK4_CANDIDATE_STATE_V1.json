@@ -1,35 +1,46 @@
 {
   "object_role": "UNIFIED_TASK4_CANDIDATE_STATE_V1",
-  "status": "SUCCESSOR_CANDIDATE_ONLY__INDEPENDENT_EXACT_HEAD_REVIEW_REQUIRED",
+  "status": "SUCCESSOR2_MECHANICALLY_GREEN__HOSTILE_REVIEW_REQUIRED",
   "authority_effect": "NONE",
   "frozen_task3_base_sha": "117dd51dea827e734b299982da93991b934bdc8f",
-  "rejected_predecessor": {
-    "candidate_sha": "b31371d62f3270c965d321e61c35898ca6be3721",
-    "candidate_branch": "candidate/unified-task4-green-b31371d6-20261016",
-    "review_pr": 405,
-    "review_run_id": 38953203662,
-    "review_job_id": 117149477378,
-    "verdict": "REJECT_CALLER_SELF_MINTED_TRUST_ROOTS"
-  },
-  "successor_repair_pr": 406,
-  "successor_repair_branch": "repair/unified-task4-external-root-boundary-20261016",
-  "candidate_sha_binding": "PIN_IMMUTABLE_SUCCESSOR_BRANCH_AFTER_FINAL_ARTIFACT_CONSISTENCY_GREEN",
-  "last_verified_code_test_sha": "ba3e521ff58ce8ad65f49d9fa0930871991a96de",
-  "last_verified_task4_run_id": 38954292188,
-  "last_verified_task4_job_id": 117153130016,
+  "rejected_candidates": [
+    {
+      "candidate_sha": "b31371d62f3270c965d321e61c35898ca6be3721",
+      "candidate_branch": "candidate/unified-task4-green-b31371d6-20261016",
+      "review_pr": 405,
+      "review_run_id": 38953203662,
+      "review_job_id": 117149477378,
+      "verdict": "REJECT_CALLER_SELF_MINTED_TRUST_ROOTS"
+    },
+    {
+      "candidate_sha": "c537db4e7b5b916cb3ddee1872fd4afa623a9b33",
+      "candidate_branch": "candidate/unified-task4-successor-green-c537db4e-20261016",
+      "review_pr": 407,
+      "review_run_id": 38954964212,
+      "review_job_id": 117155395974,
+      "verdict": "REJECT_POST_SEAL_OBJECT_SUBSTITUTION"
+    }
+  ],
+  "active_repair_pr": 408,
+  "active_repair_branch": "repair/unified-task4-sealed-object-binding-20261016",
+  "candidate_sha_binding": "PIN_ONLY_AFTER_REVIEW_ARTIFACT_CONSISTENCY_GREEN",
+  "last_verified_code_test_sha": "89fb48d581ba37bce9496854d039d900535d47c8",
+  "last_verified_task4_run_id": 38955545446,
+  "last_verified_task4_job_id": 117157367488,
   "last_verified_task4_checks": {
-    "focused_task4": "PASS_99__SKIP_1",
+    "focused_task4": "PASS_104__SKIP_1",
     "projected_100k_replay": "PASS_1",
-    "full_unified_regression": "PASS_290__SKIP_1"
+    "full_unified_regression": "PASS_295__SKIP_1"
   },
   "same_head_regressions": {
-    "task2_run": 38954292154,
+    "task1_run": 38955545469,
+    "task1_status": "PASS",
+    "task2_run": 38955545455,
     "task2_status": "PASS",
-    "task3_registry_run": 38954292151,
+    "task3_registry_run": 38955545397,
     "task3_registry_status": "PASS",
-    "unified_synthetic_integration_run": 38954292464,
-    "unified_synthetic_integration_status": "PASS",
-    "task1_status": "NOT_TRIGGERED_BY_SUCCESSOR_DIFF__FROZEN_BASE_UNCHANGED"
+    "unified_synthetic_integration_run": 38955545761,
+    "unified_synthetic_integration_status": "PASS"
   },
   "preserved_red": [
     {"class":"INITIAL_MISSING_INTERFACES","run_id":38938697657,"job_id":117100597615},
@@ -39,19 +50,18 @@
     {"class":"ACTOR_ACTION_SIGNER_BINDING","run_id":38945592644,"job_id":117123776998},
     {"class":"SELF_ASSERTED_AUTHORITY_CONTEXT","run_id":38946266116,"job_id":117126036930},
     {"class":"CALLER_SELF_MINTED_FULL_TRUST_GRAPH","run_id":38953203662,"job_id":117149477378},
-    {"class":"EXPECTED_HEAD_AUTHORITY_SELF_MINT","run_id":38953623988,"job_id":117150890636}
+    {"class":"EXPECTED_HEAD_AUTHORITY_SELF_MINT","run_id":38953623988,"job_id":117150890636},
+    {"class":"POST_SEAL_DEFINITION_AND_REALIZATION_SUBSTITUTION","run_id":38954964212,"job_id":117155395974},
+    {"class":"EXACT_SEALED_OBJECT_BINDING","run_id":38955121063,"job_id":117155935852}
   ],
   "successor_authority_law": {
     "repository_constructible_custody": "MECHANICS_ONLY",
     "expected_head_semantics": "INTEGRITY_CONSISTENCY_ONLY",
     "repository_replay_authoritative": false,
-    "genuine_external_root_wired": false
+    "genuine_external_root_wired": false,
+    "campaign_binds_exact_definition_sha": true,
+    "campaign_binds_exact_realization_root": true
   },
-  "inherited_environment_failures": [
-    {"workflow":"TASK0_MIGRATION_AUDIT","classification":"MISSING_NUMPY_BEFORE_IMPORT"},
-    {"workflow":"TASK0_B1_B5_VERIFICATION","classification":"MISSING_NUMPY_BEFORE_IMPORT"},
-    {"workflow":"TASK3_B6_WORKFLOW_POLICY","classification":"MISSING_NUMPY_BEFORE_IMPORT"}
-  ],
   "final_authority_state": "FAIL_CLOSED_EXTERNAL_ROOT_AND_C5_C9_CONTEXT_NOT_WIRED",
   "frozen_task0_task3_production_modified": false,
   "final_hidden_material_generated": false,
