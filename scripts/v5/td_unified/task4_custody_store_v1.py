@@ -15,6 +15,8 @@ import os
 from pathlib import Path
 from typing import Mapping, Protocol
 
+from .task4_actor_attestation_v1 import Task4ActorError, validate_custody_signer
+
 HISTORICAL_SCALE_EVENTS = 10_000
 PROJECTED_SCALE_EVENTS = 100_000
 
@@ -77,10 +79,22 @@ class PersistentCustodyStore:
     EVENTS = "events.jsonl"
     HEAD = "published_head.json"
 
-    def __init__(self, root: Path, verifier: ExternalVerifier, expected_head: str | None):
+    def __init__(
+        self,
+        root: Path,
+        verifier: ExternalVerifier,
+        expected_head: str | None,
+        *,
+        actor_registry=None,
+        frozen_actor_policy=None,
+        actor_attestation_verifier=None,
+    ):
         self.root = Path(root)
         self.verifier = verifier
         self.expected_head = expected_head
+        self.actor_registry = actor_registry
+        self.frozen_actor_policy = frozen_actor_policy
+        self.actor_attestation_verifier = actor_attestation_verifier
         self.root.mkdir(parents=True, exist_ok=True)
         self.events_path = self.root / self.EVENTS
         self.head_path = self.root / self.HEAD
@@ -91,8 +105,24 @@ class PersistentCustodyStore:
         self._replay = self.replay_reference()
 
     @classmethod
-    def open(cls, root: Path, *, verifier: ExternalVerifier, expected_head: str | None):
-        return cls(Path(root), verifier, expected_head)
+    def open(
+        cls,
+        root: Path,
+        *,
+        verifier: ExternalVerifier,
+        expected_head: str | None,
+        actor_registry=None,
+        frozen_actor_policy=None,
+        actor_attestation_verifier=None,
+    ):
+        return cls(
+            Path(root),
+            verifier,
+            expected_head,
+            actor_registry=actor_registry,
+            frozen_actor_policy=frozen_actor_policy,
+            actor_attestation_verifier=actor_attestation_verifier,
+        )
 
     @staticmethod
     def _event_message(event: Mapping[str, object]) -> bytes:
@@ -171,11 +201,21 @@ class PersistentCustodyStore:
     def head(self) -> str:
         return self._replay.head
 
+    def next_append_subject(self, event_payload: Mapping[str, object]) -> tuple[str, int]:
+        sequence = self._replay.event_count + 1
+        subject_sha = _sha({
+            "event_payload": dict(event_payload),
+            "sequence": sequence,
+            "previous_head": self._replay.head,
+        })
+        return subject_sha, sequence
+
     def append_event(
         self,
         event_payload: Mapping[str, object],
         *,
         signer: ExternalSigner,
+        signer_attestation=None,
         head_publisher: ExternalHeadPublisher | None = None,
     ) -> str:
         if getattr(signer, "promotion_authority", None) != "EXTERNAL_HARNESS_AUTHORITY":
@@ -194,9 +234,26 @@ class PersistentCustodyStore:
         kind = base.get("kind")
         if kind not in {"REVOCATION", "SUPERSESSION", "CAMPAIGN", "EXPOSURE", "OUTPUT_FREEZE", "REVEAL", "STATE"}:
             raise Task4CustodyError("unknown custody event kind")
+
+        subject_sha, sequence = self.next_append_subject(base)
+        if self.actor_registry is None or self.frozen_actor_policy is None or self.actor_attestation_verifier is None:
+            raise Task4CustodyError("authoritative custody append requires external actor-attestation roots")
+        try:
+            validate_custody_signer(
+                signer.signer_identity,
+                signer_attestation,
+                subject_sha=subject_sha,
+                sequence=sequence,
+                actor_registry=self.actor_registry,
+                frozen_policy=self.frozen_actor_policy,
+                verifier=self.actor_attestation_verifier,
+            )
+        except Task4ActorError as exc:
+            raise Task4CustodyError("custody signer lacks valid exact-action actor attestation") from exc
+
         event = {
             **base,
-            "sequence": self._replay.event_count + 1,
+            "sequence": sequence,
             "previous_head": self._replay.head,
             "signer_identity": signer.signer_identity,
         }
