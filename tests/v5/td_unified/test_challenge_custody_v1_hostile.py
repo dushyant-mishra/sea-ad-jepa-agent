@@ -70,7 +70,7 @@ def test_hand_constructed_exposure_record_cannot_freeze_output():
     camp, _, sealed = _sealed_dev()
     camp, real = c.issue_exposure(camp, sealed, realization_id="r0", method_scientific_identity=METHOD)
     forged = c.ExposureRecord(
-        campaign.campaign_identity,
+        camp.campaign_identity,
         "forged-exp",
         "r0",
         "a" * 64,
