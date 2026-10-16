@@ -78,6 +78,16 @@ def test_authoritative_append_requires_external_head_publication(tmp_path: Path)
         store.append_event({"kind": "STATE"}, signer=HarnessSigner())
 
 
+def test_trusted_signer_object_without_authenticated_action_attestation_cannot_append(tmp_path: Path):
+    store = PersistentCustodyStore.open(tmp_path, verifier=HarnessVerifier(), expected_head=None)
+    with pytest.raises(Task4CustodyError):
+        store.append_event(
+            {"kind": "STATE", "subject_id": "a" * 64},
+            signer=HarnessSigner(),
+            head_publisher=ExternalHeadPublisher(),
+        )
+
+
 def test_revocation_survives_store_reload(tmp_path: Path):
     signer, verifier, publisher = HarnessSigner(), HarnessVerifier(), ExternalHeadPublisher()
     store = PersistentCustodyStore.open(tmp_path, verifier=verifier, expected_head=None)
