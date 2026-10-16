@@ -10,22 +10,39 @@ import time
 import pytest
 
 from scripts.v5.td_unified import task4_custody_store_v1 as custody
+from scripts.v5.td_unified.task4_actor_attestation_v1 import ActorActionAttestation
 from scripts.v5.td_unified.task4_custody_store_v1 import PersistentCustodyStore, revocation_subject_identity
 
 
+CUSTODY_ACTOR = "c" * 64
 KEY = b"fixture-perf-key"
+ACTOR_KEY = b"fixture-perf-actor-key"
+ACTOR_REGISTRY = {CUSTODY_ACTOR: {"role": "QUALIFICATION_CONTROLLER"}}
+ACTOR_POLICY = {"CUSTODY_APPEND": {"QUALIFICATION_CONTROLLER"}}
+
+
 class S:
-    signer_identity = "perf-harness"
+    signer_identity = CUSTODY_ACTOR
     promotion_authority = "EXTERNAL_HARNESS_AUTHORITY"
     def sign(self, m): return hmac.new(KEY, m, hashlib.sha256).digest()
 class V:
-    trusted_signer_identities = frozenset({"perf-harness"})
+    trusted_signer_identities = frozenset({CUSTODY_ACTOR})
     trusted_anchor_identities = frozenset({"perf-anchor"})
-    def verify(self, m, s, i): return i == "perf-harness" and hmac.compare_digest(s, hmac.new(KEY, m, hashlib.sha256).digest())
+    def verify(self, m, s, i): return i == CUSTODY_ACTOR and hmac.compare_digest(s, hmac.new(KEY, m, hashlib.sha256).digest())
+class ActorV:
+    trusted_signer_identities = frozenset({"actor-ca-v1"})
+    def verify(self, m, s, i): return i == "actor-ca-v1" and hmac.compare_digest(s, hmac.new(ACTOR_KEY, m, hashlib.sha256).digest())
 class A:
     anchor_identity = "perf-anchor"
     promotion_authority = "EXTERNAL_HEAD_AUTHORITY"
     def publish(self, *, head, event_count): return head
+
+
+def _attest(store, payload):
+    subject, sequence = store.next_append_subject(payload)
+    unsigned = ActorActionAttestation(CUSTODY_ACTOR, "QUALIFICATION_CONTROLLER", "CUSTODY_APPEND", subject, sequence, b"", "actor-ca-v1")
+    signature = hmac.new(ACTOR_KEY, unsigned.message(), hashlib.sha256).digest()
+    return ActorActionAttestation(CUSTODY_ACTOR, "QUALIFICATION_CONTROLLER", "CUSTODY_APPEND", subject, sequence, signature, "actor-ca-v1")
 
 
 def _write_valid_ledger(root: Path, event_count: int) -> str:
@@ -38,7 +55,7 @@ def _write_valid_ledger(root: Path, event_count: int) -> str:
                 "kind": "STATE",
                 "sequence": sequence,
                 "previous_head": previous,
-                "signer_identity": "perf-harness",
+                "signer_identity": CUSTODY_ACTOR,
                 "payload_sha": f"{sequence:064x}"[-64:],
             }
             event["signature_hex"] = hmac.new(KEY, PersistentCustodyStore._event_message(event), hashlib.sha256).digest().hex()
@@ -52,11 +69,19 @@ def _write_valid_ledger(root: Path, event_count: int) -> str:
 
 
 def test_reference_and_optimized_replay_are_semantically_identical(tmp_path: Path):
-    store = PersistentCustodyStore.open(tmp_path, verifier=V(), expected_head=None)
+    store = PersistentCustodyStore.open(
+        tmp_path,
+        verifier=V(),
+        expected_head=None,
+        actor_registry=ACTOR_REGISTRY,
+        frozen_actor_policy=ACTOR_POLICY,
+        actor_attestation_verifier=ActorV(),
+    )
     signer, anchor = S(), A()
     for i in range(25):
         subject = revocation_subject_identity({"unit_id": f"u{i}", "manifest_sha": f"{i:064x}"})
-        store.append_event({"kind": "REVOCATION", "subject_id": subject}, signer=signer, head_publisher=anchor)
+        payload = {"kind": "REVOCATION", "subject_id": subject}
+        store.append_event(payload, signer=signer, signer_attestation=_attest(store, payload), head_publisher=anchor)
     reference = store.replay_reference()
     optimized = store.replay_optimized()
     assert reference == optimized
