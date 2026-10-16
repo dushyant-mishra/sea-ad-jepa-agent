@@ -1,0 +1,171 @@
+{
+  "source_file": "GSE214979_cell_metadata.csv.gz",
+  "source_sha256": "8ce4e0c78747cfa6fb2a556468893df0d378e3f53085e52955f3ecdcc944394b",
+  "source_bytes": 8820297,
+  "outcome_blindness": {
+    "outcome_columns_present_in_deposit": [
+      "Braak",
+      "APOE_Status"
+    ],
+    "outcome_columns_read_by_this_lane": [],
+    "design_columns_read": [
+      "Status",
+      "Diagnosis"
+    ]
+  },
+  "identity_closure": {
+    "n_rows": 105332,
+    "n_unique_barcodes": 105332,
+    "barcodes_unique_and_complete": true,
+    "cells_with_null_donor_id": 0,
+    "cell_identity_key": "barcode string (row index)",
+    "donor_identity_key": "`id` column string"
+  },
+  "pairing": {
+    "n_cells": 105332,
+    "cells_with_both_modalities_non_null": 105332,
+    "cells_with_both_modalities_positive": 105332,
+    "fraction_paired": 1.0,
+    "determination": "VERIFIED_PAIRED",
+    "evidence": "Every barcode in the series-level cell metadata carries non-zero RNA and ATAC counts on the SAME ROW, i.e. one barcode indexes both modalities. Corroborated by the depositor statement in the GSM records: 'Processed files include paired scRNAseq and scATACseq counts from the same cells', and by the single 10x Cell Ranger ARC HDF5 carrying both feature types over one barcode list."
+  },
+  "cell_type_counts": {
+    "Excitatory": 39884,
+    "Oligodendrocytes": 34784,
+    "Inhibitory": 16331,
+    "Astrocytes": 6255,
+    "OPCs": 4193,
+    "Microglia": 3179,
+    "Pericytes": 442,
+    "Endothelial": 264
+  },
+  "total_cells": 105332,
+  "n_donors": 15,
+  "total_microglia": 3179,
+  "min_microglia_per_donor": 17,
+  "min_microglia_donor_id": "4313",
+  "median_microglia_per_donor": 211.0,
+  "max_microglia_per_donor": 415,
+  "gem_lane_structure": {
+    "n_gem_lanes": 17,
+    "n_donors": 15,
+    "pooled_lanes_carrying_multiple_donors": [
+      "5",
+      "6",
+      "7"
+    ],
+    "n_pooled_lanes": 3,
+    "donors_with_multiple_libraries": [
+      "1224",
+      "1238",
+      "3586",
+      "4481",
+      "4627"
+    ],
+    "n_donors_with_replicate_libraries": 5,
+    "note": "Replicate libraries are technical, not biological, replicates: the independent unit is the donor. Pooled lanes mean donor assignment is a genotype-demultiplexing INFERENCE (cellSNP/vireo per the deposit), not a physical separation."
+  },
+  "eligibility_ladder": [
+    {
+      "min_microglia_per_donor": 10,
+      "donors_retained": 15,
+      "donors_dropped": 0,
+      "microglia_retained": 3179
+    },
+    {
+      "min_microglia_per_donor": 20,
+      "donors_retained": 14,
+      "donors_dropped": 1,
+      "microglia_retained": 3162
+    },
+    {
+      "min_microglia_per_donor": 25,
+      "donors_retained": 14,
+      "donors_dropped": 1,
+      "microglia_retained": 3162
+    },
+    {
+      "min_microglia_per_donor": 50,
+      "donors_retained": 13,
+      "donors_dropped": 2,
+      "microglia_retained": 3136
+    },
+    {
+      "min_microglia_per_donor": 100,
+      "donors_retained": 13,
+      "donors_dropped": 2,
+      "microglia_retained": 3136
+    },
+    {
+      "min_microglia_per_donor": 150,
+      "donors_retained": 13,
+      "donors_dropped": 2,
+      "microglia_retained": 3136
+    },
+    {
+      "min_microglia_per_donor": 200,
+      "donors_retained": 9,
+      "donors_dropped": 6,
+      "microglia_retained": 2460
+    },
+    {
+      "min_microglia_per_donor": 250,
+      "donors_retained": 5,
+      "donors_dropped": 10,
+      "microglia_retained": 1574
+    },
+    {
+      "min_microglia_per_donor": 300,
+      "donors_retained": 2,
+      "donors_dropped": 13,
+      "microglia_retained": 762
+    }
+  ],
+  "frozen_exclusions": {
+    "rule": {
+      "exclude_identity_conflict_donors": [
+        "HCT17HEX",
+        "HCTZZT"
+      ],
+      "min_microglia_per_donor": 50
+    },
+    "excluded_for_identity_conflict_only": [
+      "HCT17HEX"
+    ],
+    "excluded_for_low_microglia_only": [
+      "4313"
+    ],
+    "excluded_for_both": [
+      "HCTZZT"
+    ],
+    "excluded_donors": [
+      "4313",
+      "HCT17HEX",
+      "HCTZZT"
+    ],
+    "n_excluded": 3,
+    "n_donors_retained": 12,
+    "donors_retained": [
+      "1224",
+      "1230",
+      "1238",
+      "3329",
+      "3586",
+      "4305",
+      "4443",
+      "4481",
+      "4482",
+      "4627",
+      "NT1261",
+      "NT1271"
+    ],
+    "donors_retained_by_group": {
+      "Ctrl": 6,
+      "AD": 6
+    },
+    "nuclei_retained": 92957,
+    "microglia_retained": 2872,
+    "nuclei_excluded": 12375,
+    "microglia_excluded": 307
+  }
+}
