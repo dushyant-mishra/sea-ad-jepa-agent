@@ -1,0 +1,57 @@
+{
+  "schema": "CHAT_RUNTIME_CUSTODY_MANIFEST_20261005_FINAL_V1",
+  "created_date": "2026-10-05",
+  "branch_base_main": "874939b5e9dd34a4f195dcc163db90e9dd3eee11",
+  "purpose": "Audit every artifact physically present in the final 2026-10-05 chat runtime, deduplicate exact prior-custody matches, and bind genuinely chat-exclusive artifacts by exact size and SHA-256 without making a false byte-preservation claim.",
+  "runtime_artifact_count": 12,
+  "exact_prior_custody_matches": 10,
+  "chat_exclusive_artifact_count": 2,
+  "prior_custody_reference": {
+    "branch": "handoff/jepa-20261005-historical-audit-custody",
+    "head": "8a84a8e7882a047de598a2f25243ef44011ff8fa",
+    "manifest": "docs/agent/archive/chat_runtime_20261005/CHAT_RUNTIME_CUSTODY_MANIFEST_20261005_V1.json"
+  },
+  "exact_prior_custody_matches_detail": [
+    {"name":"66e64913-959f-4a7c-bbfe-6ff906fb281d.npz","bytes":1531109,"sha256":"001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70","disposition":"EXACT_SIZE_AND_SHA256_MATCH__NO_DUPLICATE_PAYLOAD"},
+    {"name":"FOUNDATION_CALIBRATION_BUNDLE_20260824.zip","bytes":410278055,"sha256":"07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444","disposition":"EXACT_SIZE_AND_SHA256_MATCH__NO_DUPLICATE_PAYLOAD"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001","bytes":303979881,"sha256":"b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e","disposition":"EXACT_SIZE_AND_SHA256_MATCH__NO_DUPLICATE_PAYLOAD"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002","bytes":303979880,"sha256":"5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875","disposition":"EXACT_SIZE_AND_SHA256_MATCH__NO_DUPLICATE_PAYLOAD"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv","bytes":437,"sha256":"fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356","disposition":"EXACT_SIZE_AND_SHA256_MATCH__NO_DUPLICATE_PAYLOAD"},
+    {"name":"Status and Repair Plan.txt","bytes":5233,"sha256":"cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56","disposition":"EXACT_SIZE_AND_SHA256_MATCH__NO_DUPLICATE_PAYLOAD"},
+    {"name":"WSL execution issue.txt","bytes":14576,"sha256":"cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e","disposition":"EXACT_SIZE_AND_SHA256_MATCH__NO_DUPLICATE_PAYLOAD"},
+    {"name":"checkpoints.zip","bytes":71356460,"sha256":"ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c","disposition":"EXACT_SIZE_AND_SHA256_MATCH__NO_DUPLICATE_PAYLOAD"},
+    {"name":"expression.zip","bytes":3599456,"sha256":"1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4","disposition":"EXACT_SIZE_AND_SHA256_MATCH__NO_DUPLICATE_PAYLOAD"},
+    {"name":"t1_checkpoint_u0200.zip","bytes":233729581,"sha256":"0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c","disposition":"EXACT_SIZE_AND_SHA256_MATCH__NO_DUPLICATE_PAYLOAD"}
+  ],
+  "chat_exclusive_artifacts": [
+    {
+      "name": "Pasted text.txt",
+      "bytes": 35941,
+      "sha256": "152bb05c84d7ebcbcc8b1ee9094100a96cc9e10d64eedf4600e868a4ba3f27e0",
+      "status": "CHAT_EXCLUSIVE__SHA256_BOUND__BYTE_COPY_NOT_COMMITTED_CONNECTOR_INTEGRITY_LIMIT",
+      "content_scope": "Historical October-5 new-chat handoff and authority-reset context. Useful as lineage evidence; its action statements may be superseded by the final handoff and live authority surface.",
+      "integrity_note": "A lossless Git text/base64 preservation attempt was independently checked and failed byte identity. The non-identical tree entry was deleted. This manifest therefore records the exact local byte count and SHA-256 but does not falsely claim Git contains the source bytes."
+    },
+    {
+      "name": "Pasted markdown.md",
+      "bytes": 27543,
+      "sha256": "53f85c2ca3d01f6957b25ca13285bac21eb7dd13b48f62ad398e6080b0e20a66",
+      "status": "CHAT_EXCLUSIVE__SHA256_BOUND__BYTE_COPY_NOT_COMMITTED_CONNECTOR_INTEGRITY_LIMIT",
+      "content_scope": "Deep premise-level scientific audit underlying the six-gate premise framework: recoverability versus biology, structured-state alternatives, transport/estimand limits, claim separation, MNAR/operator interactions, rare-biology support, and causal boundaries.",
+      "integrity_note": "A lossless Git text/base64 preservation attempt was independently checked and failed byte identity. The non-identical tree entry was deleted. This manifest therefore records the exact local byte count and SHA-256 but does not falsely claim Git contains the source bytes."
+    }
+  ],
+  "expression_reassembly_reference": {
+    "assembly_order": ["FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001","FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002"],
+    "bytes": 607959761,
+    "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "status": "PRIOR_CUSTODY_VERIFIED__NOT_DUPLICATED"
+  },
+  "policy": {
+    "deduplication": "Exact size plus SHA-256 matches are referenced, not duplicated.",
+    "large_binary": "Large scientific binaries/checkpoints are not inserted into ordinary Git history solely for custody.",
+    "integrity": "No artifact is labeled byte-preserved unless remote bytes reproduce the expected digest.",
+    "scientific_authority": "Custody does not create or broaden scientific authority.",
+    "branch_scope": "Documentation/custody/handoff only; no model, training, threshold, test-result, or production scientific-state mutation."
+  }
+}
