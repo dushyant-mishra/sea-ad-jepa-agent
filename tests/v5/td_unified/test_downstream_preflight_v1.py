@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 
+from scripts.v5 import jepa_post_td_harness_contract_v1 as legacy
 from scripts.v5.td_unified import downstream_preflight_v1 as p
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -28,6 +29,17 @@ def test_legacy_post_td_harness_is_explicitly_non_authorizing_and_not_unified_au
     assert report["legacy_post_td_harness"]["classification"] == "LEGACY_NON_AUTHORIZING_MECHANICS_ONLY"
     assert report["legacy_post_td_harness"]["authority_all_false"] is True
     assert report["legacy_post_td_harness"]["uses_unified_registry_evidence"] is False
+
+
+def test_legacy_pass_label_path_executes_but_cannot_authorize_anything():
+    portfolio = legacy.build_target_portfolio(
+        selected_candidate="C1",
+        qualifications={"C1": "PASS"},
+    )
+    assert portfolio["schema"] == legacy.PORTFOLIO_SCHEMA
+    assert portfolio["authority"]
+    assert all(value is False for value in portfolio["authority"].values())
+    assert portfolio["schema"] != "JEPA_UNIFIED_TARGET_QUALIFICATION_BUNDLE_V1"
 
 
 def test_unified_package_does_not_import_legacy_post_td_harness():
