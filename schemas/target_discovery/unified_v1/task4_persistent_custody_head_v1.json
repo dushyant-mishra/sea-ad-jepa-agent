@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"TASK4_PERSISTENT_CUSTODY_HEAD_V1","type":"object","additionalProperties":false,"required":["head","event_count","anchor_identity"],"properties":{"head":{"type":"string","pattern":"^[0-9a-f]{64}$"},"event_count":{"type":"integer","minimum":0},"anchor_identity":{"type":"string","minLength":1}}}
