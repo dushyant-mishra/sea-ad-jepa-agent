@@ -8,7 +8,7 @@ from scripts.v5.td_unified import challenge_custody_v1 as c
 from scripts.v5.td_unified.task4_authority_barrier_v1 import Task4BarrierStatus
 
 
-def _barrier():
+def _forged_barrier():
     checks = {
         "C1_PERSISTENT_REVOCATION": "PERSISTENT_EXTERNAL",
         "C3_CURRENT_REGISTRY": "PASS",
@@ -43,18 +43,20 @@ def test_development_campaign_is_explicitly_nonauthorizing():
     assert camp.promotion_authority == "NONE"
 
 
-def test_final_campaign_requires_green_barrier():
+def test_final_campaign_refuses_missing_or_caller_forged_barrier_status():
     with pytest.raises(c.Task4ChallengeCustodyError):
         c.create_campaign("final-1", _deps(), barrier_status=None, namespace="FINAL")
-    camp = c.create_campaign("final-1", _deps(), barrier_status=_barrier(), namespace="FINAL")
-    assert camp.promotion_authority == "CUSTODY_ONLY"
+    # A caller-created GREEN data object is not evidence that the current
+    # registry/custody/actor state was actually re-resolved by the harness.
+    with pytest.raises(c.Task4ChallengeCustodyError):
+        c.create_campaign("final-1", _deps(), barrier_status=_forged_barrier(), namespace="FINAL")
 
 
 def test_campaign_id_binds_dependencies():
-    camp = c.create_campaign("final-2", _deps(), barrier_status=_barrier(), namespace="FINAL")
+    camp = c.create_campaign("dev-id", _deps(), barrier_status=None, namespace="DEVELOPMENT")
     altered = dict(_deps(), generator_policy_sha="9" * 64)
     with pytest.raises(c.Task4ChallengeCustodyError):
-        c.assert_same_campaign_identity(camp, "final-2", altered)
+        c.assert_same_campaign_identity(camp, "dev-id", altered)
 
 
 def test_definition_public_payload_contains_commitment_not_hidden_bytes():
