@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+**Status:** READY FOR EXECUTION REVIEW; NO IMPLEMENTATION STARTED
+
 **Goal:** Build the prospective Unified Task 4 custody subsystem on exact frozen Task 3 `117dd51dea827e734b299982da93991b934bdc8f`, preserving sealed-exam lifecycle semantics while making C1–C9 machine-enforced prerequisites and keeping all biological/Stage4/training authority off.
 
 **Architecture:** Task 4 is split into seven focused production modules: registry authority adapter, durable custody ledger, actor attestation, closed requirement-class policy, authority barrier, campaign/sealing state machine, and publication/secret-scan support. Authority-bearing operations consume frozen Task 3 through `registry_v1`, never `registry_v1_legacy`, and persistent custody is reloaded/replayed across process boundaries before any qualifying transition. The first executable branch is RED-only; fixture mechanics remain explicitly non-authorizing.
