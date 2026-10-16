@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from scripts.v5.td_unified.task4_actor_attestation_v1 import ActorActionAttestation
 from scripts.v5.td_unified.task4_custody_store_v1 import (
     PersistentCustodyStore,
     Task4CustodyError,
@@ -13,21 +14,34 @@ from scripts.v5.td_unified.task4_custody_store_v1 import (
 )
 
 
+CUSTODY_ACTOR = "a" * 64
+CUSTODY_KEY = b"fixture-only-task4-key"
+ACTOR_CA_KEY = b"fixture-only-actor-ca-key"
+ACTOR_REGISTRY = {CUSTODY_ACTOR: {"role": "QUALIFICATION_CONTROLLER"}}
+ACTOR_POLICY = {"CUSTODY_APPEND": {"QUALIFICATION_CONTROLLER"}}
+
+
 class HarnessSigner:
-    signer_identity = "harness-key-v1"
+    signer_identity = CUSTODY_ACTOR
     promotion_authority = "EXTERNAL_HARNESS_AUTHORITY"
-    key = b"fixture-only-task4-key"
     def sign(self, message: bytes) -> bytes:
-        return hmac.new(self.key, message, hashlib.sha256).digest()
+        return hmac.new(CUSTODY_KEY, message, hashlib.sha256).digest()
 
 
 class HarnessVerifier:
-    trusted_signer_identities = frozenset({"harness-key-v1"})
+    trusted_signer_identities = frozenset({CUSTODY_ACTOR})
     trusted_anchor_identities = frozenset({"external-head-anchor-v1"})
-    key = HarnessSigner.key
     def verify(self, message: bytes, signature: bytes, signer_identity: str) -> bool:
         return signer_identity in self.trusted_signer_identities and hmac.compare_digest(
-            signature, hmac.new(self.key, message, hashlib.sha256).digest()
+            signature, hmac.new(CUSTODY_KEY, message, hashlib.sha256).digest()
+        )
+
+
+class ActorVerifier:
+    trusted_signer_identities = frozenset({"actor-ca-v1"})
+    def verify(self, message: bytes, signature: bytes, signer_identity: str) -> bool:
+        return signer_identity == "actor-ca-v1" and hmac.compare_digest(
+            signature, hmac.new(ACTOR_CA_KEY, message, hashlib.sha256).digest()
         )
 
 
@@ -39,6 +53,51 @@ class ExternalHeadPublisher:
     def publish(self, *, head: str, event_count: int) -> str:
         self.published.append((head, event_count))
         return head
+
+
+def _open(root: Path, expected_head=None):
+    return PersistentCustodyStore.open(
+        root,
+        verifier=HarnessVerifier(),
+        expected_head=expected_head,
+        actor_registry=ACTOR_REGISTRY,
+        frozen_actor_policy=ACTOR_POLICY,
+        actor_attestation_verifier=ActorVerifier(),
+    )
+
+
+def _attest(store: PersistentCustodyStore, payload):
+    subject, sequence = store.next_append_subject(payload)
+    unsigned = ActorActionAttestation(
+        CUSTODY_ACTOR,
+        "QUALIFICATION_CONTROLLER",
+        "CUSTODY_APPEND",
+        subject,
+        sequence,
+        b"",
+        "actor-ca-v1",
+    )
+    signature = hmac.new(ACTOR_CA_KEY, unsigned.message(), hashlib.sha256).digest()
+    return ActorActionAttestation(
+        CUSTODY_ACTOR,
+        "QUALIFICATION_CONTROLLER",
+        "CUSTODY_APPEND",
+        subject,
+        sequence,
+        signature,
+        "actor-ca-v1",
+    )
+
+
+def _append(store, payload, *, signer=None, publisher=None):
+    signer = signer or HarnessSigner()
+    publisher = publisher or ExternalHeadPublisher()
+    return store.append_event(
+        payload,
+        signer=signer,
+        signer_attestation=_attest(store, payload),
+        head_publisher=publisher,
+    )
 
 
 def _unit(**overrides):
@@ -73,13 +132,14 @@ def test_revocation_identity_changes_when_defect_bearing_dependency_changes():
 
 
 def test_authoritative_append_requires_external_head_publication(tmp_path: Path):
-    store = PersistentCustodyStore.open(tmp_path, verifier=HarnessVerifier(), expected_head=None)
+    store = _open(tmp_path)
+    payload = {"kind": "STATE"}
     with pytest.raises(Task4CustodyError):
-        store.append_event({"kind": "STATE"}, signer=HarnessSigner())
+        store.append_event(payload, signer=HarnessSigner(), signer_attestation=_attest(store, payload))
 
 
 def test_trusted_signer_object_without_authenticated_action_attestation_cannot_append(tmp_path: Path):
-    store = PersistentCustodyStore.open(tmp_path, verifier=HarnessVerifier(), expected_head=None)
+    store = _open(tmp_path)
     with pytest.raises(Task4CustodyError):
         store.append_event(
             {"kind": "STATE", "subject_id": "a" * 64},
@@ -89,42 +149,54 @@ def test_trusted_signer_object_without_authenticated_action_attestation_cannot_a
 
 
 def test_revocation_survives_store_reload(tmp_path: Path):
-    signer, verifier, publisher = HarnessSigner(), HarnessVerifier(), ExternalHeadPublisher()
-    store = PersistentCustodyStore.open(tmp_path, verifier=verifier, expected_head=None)
+    publisher = ExternalHeadPublisher()
+    store = _open(tmp_path)
     subject = revocation_subject_identity(_unit())
-    head = store.append_event({"kind": "REVOCATION", "subject_id": subject, "reason_class": "DEFECT"}, signer=signer, head_publisher=publisher)
+    payload = {"kind": "REVOCATION", "subject_id": subject, "reason_class": "DEFECT"}
+    head = _append(store, payload, publisher=publisher)
     assert publisher.published[-1] == (head, 1)
-    reopened = PersistentCustodyStore.open(tmp_path, verifier=verifier, expected_head=head)
+    reopened = _open(tmp_path, expected_head=head)
     with pytest.raises(Task4CustodyError):
         reopened.assert_subject_not_revoked(subject)
     assert reopened.replay().authoritative is True
 
 
 def test_stale_expected_head_and_truncation_fail_closed(tmp_path: Path):
-    signer, verifier, publisher = HarnessSigner(), HarnessVerifier(), ExternalHeadPublisher()
-    store = PersistentCustodyStore.open(tmp_path, verifier=verifier, expected_head=None)
+    store = _open(tmp_path)
     subject = revocation_subject_identity(_unit())
-    head = store.append_event({"kind": "REVOCATION", "subject_id": subject}, signer=signer, head_publisher=publisher)
+    head = _append(store, {"kind": "REVOCATION", "subject_id": subject})
     with pytest.raises(Task4CustodyError):
-        PersistentCustodyStore.open(tmp_path, verifier=verifier, expected_head="0" * 64)
+        _open(tmp_path, expected_head="0" * 64)
     events = tmp_path / "events.jsonl"
     events.write_bytes(b"")
     with pytest.raises(Task4CustodyError):
-        PersistentCustodyStore.open(tmp_path, verifier=verifier, expected_head=head)
+        _open(tmp_path, expected_head=head)
 
 
 def test_fixture_or_caller_signer_cannot_publish_authoritative_head(tmp_path: Path):
     class BadSigner(HarnessSigner):
         promotion_authority = "NONE"
-    store = PersistentCustodyStore.open(tmp_path, verifier=HarnessVerifier(), expected_head=None)
+    store = _open(tmp_path)
+    payload = {"kind": "STATE"}
     with pytest.raises(Task4CustodyError):
-        store.append_event({"kind": "STATE"}, signer=BadSigner(), head_publisher=ExternalHeadPublisher())
+        store.append_event(
+            payload,
+            signer=BadSigner(),
+            signer_attestation=_attest(store, payload),
+            head_publisher=ExternalHeadPublisher(),
+        )
 
 
 def test_caller_created_head_publisher_cannot_anchor_authority(tmp_path: Path):
     class BadPublisher(ExternalHeadPublisher):
         anchor_identity = "caller-anchor"
         promotion_authority = "NONE"
-    store = PersistentCustodyStore.open(tmp_path, verifier=HarnessVerifier(), expected_head=None)
+    store = _open(tmp_path)
+    payload = {"kind": "STATE"}
     with pytest.raises(Task4CustodyError):
-        store.append_event({"kind": "STATE"}, signer=HarnessSigner(), head_publisher=BadPublisher())
+        store.append_event(
+            payload,
+            signer=HarnessSigner(),
+            signer_attestation=_attest(store, payload),
+            head_publisher=BadPublisher(),
+        )
