@@ -39,9 +39,15 @@
     {"attack_id":"T4-A34","law":"Frozen current registry facade internals do not create Task4 legacy route","test_file":"tests/v5/td_unified/test_task4_registry_adapter_v1.py","test_name":"test_task4_import_firewall_ignores_frozen_registry_facade_legacy_internals"},
     {"attack_id":"T4-A35","law":"Actor signer/role/registry substitution fails","test_file":"tests/v5/td_unified/test_task4_actor_attestation_v1.py","test_name":"test_name_only_wrong_signer_wrong_role_and_registry_substitution_fail"},
     {"attack_id":"T4-A36","law":"Incomplete terminal accounting blocks finalization","test_file":"tests/v5/td_unified/test_task4_terminal_accounting_v1.py","test_name":"test_finalize_requires_explicit_terminal_accounting_for_every_realization"},
-    {"attack_id":"T4-A37","law":"Secret bytes cannot leak through repository surface","test_file":"tests/v5/td_unified/test_task4_publication_guard_v1.py","test_name":"test_publication_guard_rejects_secret_in_repository_bytes"},
-    {"attack_id":"T4-A38","law":"Secret cannot leak through logs artifacts receipts or paths","test_file":"tests/v5/td_unified/test_task4_publication_guard_v1.py","test_name":"test_publication_guard_rejects_secret_in_log_artifact_receipt_and_path"},
-    {"attack_id":"T4-A39","law":"Raw binary secret scanning cannot be bypassed by decoding","test_file":"tests/v5/td_unified/test_task4_publication_guard_v1.py","test_name":"test_publication_guard_scans_raw_bytes_not_only_decoded_text"},
-    {"attack_id":"T4-A40","law":"Programming defects remain distinguishable from custody refusal","test_file":"tests/v5/td_unified/test_task4_publication_guard_v1.py","test_name":"test_programming_error_is_not_collapsed_into_custody_refusal"}
+    {"attack_id":"T4-A37","law":"Secret scanning covers every publication surface","test_file":"tests/v5/td_unified/test_task4_publication_guard_v1.py","test_name":"test_secret_scan_catches_each_publication_surface"},
+    {"attack_id":"T4-A38","law":"Custody refusal never echoes attacker secret","test_file":"tests/v5/td_unified/test_task4_publication_guard_v1.py","test_name":"test_refusal_message_never_echoes_attacker_secret"},
+    {"attack_id":"T4-A39","law":"Programming defect remains distinguishable from custody refusal","test_file":"tests/v5/td_unified/test_task4_publication_guard_v1.py","test_name":"test_programming_error_is_not_custody_refusal"},
+    {"attack_id":"T4-A40","law":"Signature mutation fails persistent replay","test_file":"tests/v5/td_unified/test_task4_replay_mutations_v1.py","test_name":"test_signature_mutation_fails_replay"},
+    {"attack_id":"T4-A41","law":"Sequence mutation fails persistent replay","test_file":"tests/v5/td_unified/test_task4_replay_mutations_v1.py","test_name":"test_sequence_mutation_fails_replay"},
+    {"attack_id":"T4-A42","law":"Previous-head mutation fails persistent replay","test_file":"tests/v5/td_unified/test_task4_replay_mutations_v1.py","test_name":"test_previous_head_mutation_fails_replay"},
+    {"attack_id":"T4-A43","law":"Published event-count mutation fails replay","test_file":"tests/v5/td_unified/test_task4_replay_mutations_v1.py","test_name":"test_published_event_count_mutation_fails_replay"},
+    {"attack_id":"T4-A44","law":"Untrusted anchor identity fails replay","test_file":"tests/v5/td_unified/test_task4_replay_mutations_v1.py","test_name":"test_untrusted_anchor_identity_fails_replay"},
+    {"attack_id":"T4-A45","law":"Unknown event kind cannot enter custody","test_file":"tests/v5/td_unified/test_task4_replay_mutations_v1.py","test_name":"test_unknown_event_kind_cannot_enter_custody"},
+    {"attack_id":"T4-A46","law":"Clean publication surfaces do not create false-positive custody refusal","test_file":"tests/v5/td_unified/test_task4_publication_guard_v1.py","test_name":"test_clean_publication_surface_passes"}
   ]
 }
