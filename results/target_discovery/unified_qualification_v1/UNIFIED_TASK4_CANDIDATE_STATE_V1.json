@@ -1,6 +1,6 @@
 {
   "object_role": "UNIFIED_TASK4_CANDIDATE_STATE_V1",
-  "status": "SUCCESSOR2_MECHANICALLY_GREEN__HOSTILE_REVIEW_REQUIRED",
+  "status": "SUCCESSOR3_MECHANICALLY_GREEN__HOSTILE_REVIEW_REQUIRED",
   "authority_effect": "NONE",
   "frozen_task3_base_sha": "117dd51dea827e734b299982da93991b934bdc8f",
   "rejected_candidates": [
@@ -19,27 +19,34 @@
       "review_run_id": 38954964212,
       "review_job_id": 117155395974,
       "verdict": "REJECT_POST_SEAL_OBJECT_SUBSTITUTION"
+    },
+    {
+      "candidate_sha": "b5ed724cbc6a39d4f2cd68103c5367c2cfafcff3",
+      "candidate_branch": "candidate/unified-task4-successor2-green-b5ed724c-20261016",
+      "review_pr": 409,
+      "review_run_id": 38956096848,
+      "review_job_id": 117159222272,
+      "verdict": "REJECT_CALLER_FABRICABLE_ADVANCED_CAMPAIGN_STATE"
     }
   ],
-  "active_repair_pr": 408,
-  "active_repair_branch": "repair/unified-task4-sealed-object-binding-20261016",
+  "active_repair_pr": 410,
+  "active_repair_branch": "repair/unified-task4-lifecycle-provenance-20261016",
   "candidate_sha_binding": "PIN_ONLY_AFTER_REVIEW_ARTIFACT_CONSISTENCY_GREEN",
-  "last_verified_code_test_sha": "89fb48d581ba37bce9496854d039d900535d47c8",
-  "last_verified_task4_run_id": 38955545446,
-  "last_verified_task4_job_id": 117157367488,
+  "last_verified_code_test_sha": "4d4947af63ba067f2f1f06cb5f80ec1fd5bc67e7",
+  "last_verified_task4_run_id": 38956553861,
+  "last_verified_task4_job_id": 117160766667,
   "last_verified_task4_checks": {
-    "focused_task4": "PASS_104__SKIP_1",
+    "focused_task4": "PASS_107__SKIP_1",
     "projected_100k_replay": "PASS_1",
-    "full_unified_regression": "PASS_295__SKIP_1"
+    "full_unified_regression": "PASS_298__SKIP_1"
   },
   "same_head_regressions": {
-    "task1_run": 38955545469,
-    "task1_status": "PASS",
-    "task2_run": 38955545455,
+    "task1_status": "NOT_TRIGGERED_BY_LIFECYCLE_DIFF__FROZEN_TASK3_BASE_UNCHANGED",
+    "task2_run": 38956553918,
     "task2_status": "PASS",
-    "task3_registry_run": 38955545397,
+    "task3_registry_run": 38956553914,
     "task3_registry_status": "PASS",
-    "unified_synthetic_integration_run": 38955545761,
+    "unified_synthetic_integration_run": 38956553937,
     "unified_synthetic_integration_status": "PASS"
   },
   "preserved_red": [
@@ -52,7 +59,9 @@
     {"class":"CALLER_SELF_MINTED_FULL_TRUST_GRAPH","run_id":38953203662,"job_id":117149477378},
     {"class":"EXPECTED_HEAD_AUTHORITY_SELF_MINT","run_id":38953623988,"job_id":117150890636},
     {"class":"POST_SEAL_DEFINITION_AND_REALIZATION_SUBSTITUTION","run_id":38954964212,"job_id":117155395974},
-    {"class":"EXACT_SEALED_OBJECT_BINDING","run_id":38955121063,"job_id":117155935852}
+    {"class":"EXACT_SEALED_OBJECT_BINDING","run_id":38955121063,"job_id":117155935852},
+    {"class":"CALLER_FABRICABLE_ADVANCED_CAMPAIGN_STATE","run_id":38956096848,"job_id":117159222272},
+    {"class":"LIFECYCLE_PROVENANCE_DIRECT_AND_COPY_FORGERY","run_id":38956350630,"job_id":117160081568}
   ],
   "successor_authority_law": {
     "repository_constructible_custody": "MECHANICS_ONLY",
@@ -60,7 +69,10 @@
     "repository_replay_authoritative": false,
     "genuine_external_root_wired": false,
     "campaign_binds_exact_definition_sha": true,
-    "campaign_binds_exact_realization_root": true
+    "campaign_binds_exact_realization_root": true,
+    "in_process_lifecycle_provenance_required": true,
+    "direct_advanced_campaign_construction_allowed": false,
+    "lifecycle_provenance_scope": "PROCESS_LOCAL_MECHANICS_ONLY"
   },
   "final_authority_state": "FAIL_CLOSED_EXTERNAL_ROOT_AND_C5_C9_CONTEXT_NOT_WIRED",
   "frozen_task0_task3_production_modified": false,
