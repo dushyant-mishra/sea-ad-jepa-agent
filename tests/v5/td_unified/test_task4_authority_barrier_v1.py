@@ -37,6 +37,26 @@ def test_each_missing_or_fixture_only_condition_blocks(key):
         require_task4_preauthority_barrier_green(s)
 
 
+@pytest.mark.parametrize("key", sorted(_green()))
+def test_each_absent_required_condition_blocks(key):
+    checks = _green()
+    checks.pop(key)
+    with pytest.raises(Task4BarrierError):
+        require_task4_preauthority_barrier_green(Task4BarrierStatus("GREEN", checks))
+
+
+def test_unknown_extra_condition_blocks_closed_barrier():
+    checks = _green()
+    checks["CALLER_MINTED_CHECK"] = "PASS"
+    with pytest.raises(Task4BarrierError):
+        require_task4_preauthority_barrier_green(Task4BarrierStatus("GREEN", checks))
+
+
+def test_empty_green_status_cannot_unlock_barrier():
+    with pytest.raises(Task4BarrierError):
+        require_task4_preauthority_barrier_green(Task4BarrierStatus("GREEN", {}))
+
+
 def test_red_overall_blocks_even_when_individual_checks_look_green():
     with pytest.raises(Task4BarrierError):
         require_task4_preauthority_barrier_green(Task4BarrierStatus("RED", _green()))
