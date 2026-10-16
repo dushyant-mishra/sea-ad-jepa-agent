@@ -32,13 +32,6 @@ jobs:
           python-version: '3.11'
       - run: python -m pip install pytest==9.1.1 numpy==1.26.4
       - name: Focused Task 3 registry and hostile self-audit suites
-        run: python -m pytest -q tests/v5/td_unified/test_registry_v1*.py 2>&1 | tee focused-task3-pytest.log
-      - name: Preserve focused Task 3 pytest diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: focused-task3-pytest-${{ github.sha }}
-          path: focused-task3-pytest.log
-          if-no-files-found: error
+        run: python -m pytest -q tests/v5/td_unified/test_registry_v1*.py
       - name: Full unified Task 0-3 regression
         run: python -m pytest -q tests/v5/td_unified
