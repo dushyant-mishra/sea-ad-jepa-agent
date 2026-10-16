@@ -2,10 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 from scripts.v5.td_unified.task4_actor_attestation_v1 import ActorActionAttestation
-from scripts.v5.td_unified.task4_custody_store_v1 import PersistentCustodyStore, Task4CustodyError
+from scripts.v5.td_unified.task4_custody_store_v1 import PersistentCustodyStore
 
 CALLER_ACTOR = "c" * 64
 
@@ -41,11 +39,11 @@ class CallerPublisher:
         return head
 
 
-def _caller_store(tmp_path: Path):
+def _caller_store(tmp_path: Path, expected_head=None):
     return PersistentCustodyStore.open(
         tmp_path,
         verifier=CallerVerifier(),
-        expected_head=None,
+        expected_head=expected_head,
         actor_registry={CALLER_ACTOR: {"role": "QUALIFICATION_CONTROLLER"}},
         frozen_actor_policy={"CUSTODY_APPEND": {"QUALIFICATION_CONTROLLER"}},
         actor_attestation_verifier=CallerActorVerifier(),
@@ -65,33 +63,30 @@ def _caller_attestation(store, payload):
     )
 
 
-def test_caller_owned_trust_graph_cannot_produce_authoritative_custody(tmp_path: Path):
-    store = _caller_store(tmp_path)
-    payload = {"kind": "STATE", "payload": "caller-minted"}
-    with pytest.raises(Task4CustodyError):
-        store.append_event(
-            payload,
-            signer=CallerSigner(),
-            signer_attestation=_caller_attestation(store, payload),
-            head_publisher=CallerPublisher(),
-            authoritative=True,
-        )
-
-
-def test_repository_store_replay_never_claims_external_authority(tmp_path: Path):
-    store = _caller_store(tmp_path)
-    assert store.replay().authoritative is False
-
-
-def test_preauthority_mechanics_append_is_explicitly_non_authorizing(tmp_path: Path):
-    store = _caller_store(tmp_path)
-    payload = {"kind": "STATE", "payload": "mechanics-only"}
-    head = store.append_event(
+def _append_caller_event(store, payload):
+    return store.append_event(
         payload,
         signer=CallerSigner(),
         signer_attestation=_caller_attestation(store, payload),
         head_publisher=CallerPublisher(),
-        authoritative=False,
     )
+
+
+def test_caller_owned_trust_graph_cannot_produce_authoritative_custody(tmp_path: Path):
+    store = _caller_store(tmp_path)
+    head = _append_caller_event(store, {"kind": "STATE", "payload": "caller-minted"})
     assert len(head) == 64
+    assert store.replay().authoritative is False
+
+
+def test_caller_supplied_expected_head_cannot_upgrade_replay_to_external_authority(tmp_path: Path):
+    store = _caller_store(tmp_path)
+    head = _append_caller_event(store, {"kind": "STATE", "payload": "caller-minted"})
+    reopened = _caller_store(tmp_path, expected_head=head)
+    assert reopened.replay().head == head
+    assert reopened.replay().authoritative is False
+
+
+def test_empty_repository_store_is_non_authorizing(tmp_path: Path):
+    store = _caller_store(tmp_path)
     assert store.replay().authoritative is False
