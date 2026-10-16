@@ -1,0 +1,1795 @@
+{
+  "GSE147528": {
+    "accession": "GSE147528",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE147nnn/GSE147528/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE147528&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE147528&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:52:59Z",
+    "samples": {
+      "characteristics_keys": {
+        "age (years)": 20,
+        "batch": 20,
+        "braak stage (ad neuropathological progression)": 20,
+        "brain region": 20,
+        "donor id": 20,
+        "sex": 20
+      },
+      "diagnosis_counts": "NOT_STATED_IN_DEPOSIT",
+      "diagnosis_field": "NOT_STATED_IN_DEPOSIT",
+      "donor_count_basis": "unique values of characteristics field 'donor id'",
+      "donor_field": "donor id",
+      "library_strategy_counts": {
+        "RNA-Seq": 20
+      },
+      "n_samples_listed": 20,
+      "n_unique_donor_values": 10,
+      "organism_counts": {
+        "Homo sapiens": 20
+      },
+      "platform_counts": {
+        "GPL24676": 20
+      },
+      "title_shapes": {
+        "EC#": 10,
+        "SFG#": 10
+      }
+    },
+    "series": {
+      "contact_institute": "University of California San Francisco",
+      "contributors": [
+        "Kun,,Leng",
+        "Martin,,Kampmann",
+        "Lea,,Grinberg"
+      ],
+      "last_update_date": "Apr 25 2022",
+      "n_sample_ids_in_series_record": 20,
+      "overall_design": "Single-nucleus RNA-sequencing of post-mortem brain tissue from donors spanning the range of AD progression.",
+      "pubmed_id": [
+        "33432193"
+      ],
+      "relations": [
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA615180",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRP254025"
+      ],
+      "status": "Public on Apr 05 2020",
+      "submission_date": "Mar 25 2020",
+      "summary": "Alzheimer\u2019s disease (AD) is characterized by the selective vulnerability of specific neuronal populations, the molecular signatures of which are largely unknown. To identify and characterize selectively vulnerable neuronal populations, we used single-nucleus RNA sequencing to profile the caudal entorhinal cortex and the superior frontal gyrus \u2013 brain regions where neurofibrillary inclusions and neuronal loss occur early and late in AD, respectively \u2013 from individuals spanning the neuropathological progression of AD. We identified RORB as a marker of selectively vulnerable excitatory neurons in the entorhinal cortex, and subsequently validated their depletion and selective susceptibility to neurofibrillary inclusions during disease progression using quantitative neuropathological methods. We also discovered an astrocyte subpopulation, likely representing reactive astrocytes, characterized by decreased expression of genes involved in homeostatic functions. Our characterization of selectively vulnerable neurons in AD paves the way for future mechanistic studies of selective vulnerability and potential therapeutic strategies for enhancing neuronal resilience.",
+      "title": "Molecular characterization of selectively vulnerable neurons in Alzheimer\u2019s Disease",
+      "types": [
+        "Expression profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "171945e154d1674ae1e95ae95effb443235319860cb5553270d52748f7fa3d42",
+      "series_brief": "da18ca2e890bc9e659f9b5e204c32809fdb9e2934557d3d2cef27bc15b8471d8"
+    },
+    "supplementary": {
+      "n_supplementary_files": 2,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 565182464,
+          "name": "GSE147528_RAW.tar",
+          "size_as_rendered": "539M"
+        },
+        {
+          "bytes_approx_from_dir_index": 1638,
+          "name": "filelist.txt",
+          "size_as_rendered": "1.6K"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 565184102
+    }
+  },
+  "GSE148434": {
+    "accession": "GSE148434",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE148nnn/GSE148434/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE148434&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE148434&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:52:44Z",
+    "samples": {
+      "characteristics_keys": {
+        "chip antibody": 70,
+        "genotype": 70,
+        "tissue": 70
+      },
+      "diagnosis_counts": "NOT_STATED_IN_DEPOSIT",
+      "diagnosis_field": "NOT_STATED_IN_DEPOSIT",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "ATAC-seq": 13,
+        "ChIP-Seq": 18,
+        "Hi-C": 11,
+        "RNA-Seq": 28
+      },
+      "n_samples_listed": 70,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 70
+      },
+      "platform_counts": {
+        "GPL20301": 45,
+        "GPL28038": 25
+      },
+      "title_shapes": {
+        "NOSN#, snATAC-seq": 5,
+        "NOSN#, snRNA-seq": 6,
+        "NOSN#.H#K#ac, bulk ChIP-seq": 3,
+        "NOSN#.HiC, in situ Hi-C": 6,
+        "NOSN#.RNA, bulk RNA-seq": 4,
+        "NOSN#_#.H#K#ac, bulk ChIP-seq": 6,
+        "NOSN#_#.RNA, bulk RNA-seq": 4,
+        "PDSN#, snATAC-seq": 8,
+        "PDSN#, snRNA-seq": 6,
+        "PDSN#.H#K#ac, bulk ChIP-seq": 9,
+        "PDSN#.HiC, in situ Hi-C": 5,
+        "PDSN#.RNA, bulk RNA-seq": 8
+      }
+    },
+    "series": {
+      "contact_institute": "KAIST",
+      "contributors": [
+        "Andrew,J,Lee",
+        "Changyoun,,Kim",
+        "Seongwan,,Park",
+        "Jaegeon,,Joo",
+        "Baekgyu,,Choi",
+        "Dongchan,,Yang",
+        "Kyoungho,,Jun",
+        "Junghyun,,Eom",
+        "Seung-Jae,,Lee",
+        "Sun-Ju,,Chung",
+        "Robert,A,Rissman",
+        "Jongkyeong,,Chung",
+        "Eliezer,,Masliah",
+        "Inkyung,,Jung"
+      ],
+      "last_update_date": "Nov 24 2023",
+      "n_sample_ids_in_series_record": 70,
+      "overall_design": "Transcriptomic profiles of post-mortem brain SN tissues of PD and control donors.",
+      "pubmed_id": [
+        "37058563"
+      ],
+      "relations": [
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA624192",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRP255916"
+      ],
+      "status": "Public on Mar 05 2023",
+      "submission_date": "Apr 09 2020",
+      "summary": "Parkinson\u2019s disease (PD) is a progressive neurodegenerative disorder. However, cell type-dependent transcriptional regulatory programs responsible for PD pathogenesis remain elusive. Here, we establish transcriptomic and epigenomic landscapes of the substantia nigra (SN) by profiling 113,207 nuclei obtained from healthy controls and PD patients. Our multi-omic data integration provides cell type annotation of 128,724 cis-regulatory elements (cREs), and uncovers cell type-specific dysregulations in cREs with a strong transcriptional influence on genes implicated in PD. The establishment of high-resolution three-dimensional (3D) chromatin contact maps identifies 656 target genes of dysregulated cREs and genetic risk loci, uncovering both potential and known PD risk genes. Notably, these candidate genes exhibit modular gene expression patterns with unique molecular signatures in distinct cell types, highlighting altered molecular mechanisms in dopaminergic neurons and glial cells including oligodendrocytes and microglia. Together, our single-cell transcriptome and epigenome reveal cell type-specific disruption in transcriptional regulations related to PD.",
+      "title": "Characterization of altered molecular mechanisms in Parkinson\u2019s disease through cell type-resolved multi-omics analyses",
+      "types": [
+        "Expression profiling by high throughput sequencing",
+        "Genome binding/occupancy profiling by high throughput sequencing",
+        "Other"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "d89fe42eb0f767ae2509796888af71f188549804a5e010a3fa676100f6cc9103",
+      "series_brief": "04f0654a7f49f8c26e02c4b0332370ff8445e25b23820ea62da32329e88074a0"
+    },
+    "supplementary": {
+      "n_supplementary_files": 8,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 12582912,
+          "name": "GSE148434_NS_all.5kb.1e-2.FitHiC.all.txt.gz",
+          "size_as_rendered": "12M"
+        },
+        {
+          "bytes_approx_from_dir_index": 10276044,
+          "name": "GSE148434_PS_all.5kb.1e-2.FitHiC.all.txt.gz",
+          "size_as_rendered": "9.8M"
+        },
+        {
+          "bytes_approx_from_dir_index": 32212254720,
+          "name": "GSE148434_RAW.tar",
+          "size_as_rendered": "30G"
+        },
+        {
+          "bytes_approx_from_dir_index": 1363148,
+          "name": "GSE148434_RNA.log2TPM.combat.qq.txt.gz",
+          "size_as_rendered": "1.3M"
+        },
+        {
+          "bytes_approx_from_dir_index": 3250585,
+          "name": "GSE148434_h3k27ac.1e-5.3kb.RPM.combat.qq.txt.gz",
+          "size_as_rendered": "3.1M"
+        },
+        {
+          "bytes_approx_from_dir_index": 917504,
+          "name": "GSE148434_h3k4me3.1e-5.3kb.RPM.combat.qq.txt.gz",
+          "size_as_rendered": "896K"
+        },
+        {
+          "bytes_approx_from_dir_index": 25165824,
+          "name": "GSE148434_mergeIntList.5kb.1e-2.FitHiC.ProCre.txt.gz",
+          "size_as_rendered": "24M"
+        },
+        {
+          "bytes_approx_from_dir_index": 8192,
+          "name": "filelist.txt",
+          "size_as_rendered": "8.0K"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 32265818929
+    }
+  },
+  "GSE157827": {
+    "accession": "GSE157827",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE157nnn/GSE157827/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE157827&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE157827&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:52:54Z",
+    "samples": {
+      "characteristics_keys": {
+        "diagnosis": 21,
+        "tissue": 21
+      },
+      "diagnosis_counts": {
+        "AD": 12,
+        "healthy control": 9
+      },
+      "diagnosis_field": "diagnosis",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "RNA-Seq": 21
+      },
+      "n_samples_listed": 21,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 21
+      },
+      "platform_counts": {
+        "GPL24676": 21
+      },
+      "title_shapes": {
+        "AD#": 12,
+        "NC#": 9
+      }
+    },
+    "series": {
+      "contact_institute": "Hong Kong University of Science and Technology",
+      "contributors": [
+        "N,,Ip N",
+        "S,F,Lau"
+      ],
+      "last_update_date": "Aug 02 2023",
+      "n_sample_ids_in_series_record": 21,
+      "overall_design": "Single-nucleus RNA-sequencing of prefrotnal cortex from AD patients and healthy control.",
+      "pubmed_id": [
+        "32989152",
+        "37117777"
+      ],
+      "relations": [
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA662923",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRP282056"
+      ],
+      "status": "Public on Sep 28 2020",
+      "submission_date": "Sep 11 2020",
+      "summary": "Alzheimer\u2019s disease (AD) is the most common form of dementia but has no effective treatment. A comprehensive investigation of cell-type-specific responses and cellular heterogeneity in AD is required to provide precise molecular and cellular targets for therapeutic development. Accordingly, we perform single-nucleus transcriptome analysis of 169,496 nuclei from the prefrontal cortical samples of AD patients and normal control (NC) subjects. Differential analysis shows that the cell-type-specific transcriptomic changes in AD are associated with the disruption of biological processes including angiogenesis, immune activation, synaptic signaling, and myelination. Subcluster analysis reveals that compared to NC brains, AD brains contain fewer neuroprotective astrocytes and oligodendrocytes. Importantly, our findings show that a subpopulation of angiogenic endothelial cells is induced in the brain in patients with AD. These angiogenic endothelial cells exhibit increased expression of angiogenic growth factors and their receptors (i.e., EGFL7, FLT1, and VWF) and antigen-presentation machinery (i.e., B2M and HLA-E). This suggests that these endothelial cells contribute to angiogenesis and immune response in AD pathogenesis. Thus, our comprehensive molecular profiling of brain samples from patients with AD reveals previously unknown molecular changes as well as cellular targets that potentially underlie the functional dysregulation of endothelial cells, astrocytes, and oligodendrocytes in AD, providing important insights for therapeutic development.",
+      "title": "Single-nucleus transcriptome analysis reveals dysregulation of angiogenic endothelial cells and neuroprotective glia in Alzheimer's disease",
+      "types": [
+        "Expression profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "6f2cd2efd2bbb71a75e30f4e8cac45d42840012ebcd90a062f97602d25b81619",
+      "series_brief": "6cd99a068d71a3d90060f2870b3080168f3f52d9f0ef93378a60c6a89328a94f"
+    },
+    "supplementary": {
+      "n_supplementary_files": 2,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 1288490188,
+          "name": "GSE157827_RAW.tar",
+          "size_as_rendered": "1.2G"
+        },
+        {
+          "bytes_approx_from_dir_index": 4300,
+          "name": "filelist.txt",
+          "size_as_rendered": "4.2K"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 1288494488
+    }
+  },
+  "GSE163323": {
+    "accession": "GSE163323",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE163nnn/GSE163323/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE163323&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE163323&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:52:50Z",
+    "samples": {
+      "characteristics_keys": {
+        "cell line": 51,
+        "differentiation protocol": 51,
+        "molecule subtype": 6,
+        "rna population": 24,
+        "rs76904798 genotype": 51,
+        "tissue": 51
+      },
+      "diagnosis_counts": "NOT_STATED_IN_DEPOSIT",
+      "diagnosis_field": "NOT_STATED_IN_DEPOSIT",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "ATAC-seq": 11,
+        "OTHER": 14,
+        "RNA-Seq": 26
+      },
+      "n_samples_listed": 51,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 51
+      },
+      "platform_counts": {
+        "GPL21697": 17,
+        "GPL24676": 34
+      },
+      "title_shapes": {
+        "FCtx_S#_snATACseq": 12,
+        "FCtx_S#_snRNAseq": 15,
+        "SN_S#_snMulti-seq_ATAC": 3,
+        "SN_S#_snMulti-seq_GEX": 3,
+        "iFbN_#i_rep#_bulkATACseq": 3,
+        "iMGL_#_bulkATACseq": 4,
+        "iMGL_#_scRNAseq": 2,
+        "iMGL_ci#_scCRISPRi_CMO": 3,
+        "iMGL_ci#_scCRISPRi_GEX": 3,
+        "iMGL_ci#_scCRISPRi_sgRNA": 3
+      }
+    },
+    "series": {
+      "contact_institute": "National Institutes of Health",
+      "contributors": [
+        "Rebekah,G,Langston",
+        "Xylena,,Reed",
+        "Raphael,J,Gibbs"
+      ],
+      "last_update_date": "Nov 29 2022",
+      "n_sample_ids_in_series_record": 51,
+      "overall_design": "Single nuclei RNA sequencing datasets were generated from frontal cortex samples from 15 donors (snRNAseq). Single nuclei ATAC sequencing datasets were generated from frontal cortex samples from 12 of the same group of 15 donors (snATACseq). Single cell RNA sequencing datasets were generated from iPSC-derived microglia from two cell lines (scRNAseq). Bulk ATAC sequencing datasets were generated from iPSC-derived microglia differentiated from four cell lines and also from iPSC-derived forebrain neurons differentiated from one cell line with three technical replicates (bulkATACseq). Single nuclei Multiome sequencing (snMulti-seq) was used to generate both ATAC and gene expression (GEX) datasets from the same nuclei extracted from 3 human substantia nigra samples. A large-scale scRNAseq CRISPRi screen was completed using iPSC-derived microglia differentiated from iPSC constitutively expressing dCas9-KRAB transduced with a pooled lentiviral sgRNA library.",
+      "pubmed_id": [
+        "35895835"
+      ],
+      "relations": [
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA685757",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRP298147"
+      ],
+      "status": "Public on Jan 29 2021",
+      "submission_date": "Dec 16 2020",
+      "summary": "Previous studies have shown that non-coding genetic variation in the 5\u2019 region of the leucine-rich repeat kinase 2 (LRRK2) gene contributes to Parkinson's disease risk and influences LRRK2 expression, with the risk allele associated with increased expression of LRRK2. To interrogate the biological basis of this expression quantitative trait locus (eQTL), we used single nuclei RNA sequencing of human frontal cortex from donors with known LRRK2 risk genotypes to show that the eQTL propagates via microglia, despite robust expression of LRRK2 in other cell types. Second, we found that chromatin in the 5\u2019 region of LRRK2 is differentially accessible in microglia compared to other brain cell types using single nuclei ATAC sequencing. We confirmed these effects in a microglia cell model derived from human induced pluripotent stem cells (iPSCs) by generating single cell RNA sequencing and bulk ATAC sequencing datasets. Our results demonstrate that gene expression as a quantitative trait may influence specific cell populations, and that non-coding genetic variants that are associated with other diseases may propagate through restricted cell types.",
+      "title": "Association of common genetic variation with Parkinson\u2019s disease is driven by microglial modulation of Leucine-rich repeat kinase 2 expression",
+      "types": [
+        "Genome binding/occupancy profiling by high throughput sequencing",
+        "Expression profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "03534aa4b6ecf68392526ddccf64aeb7fc1b0f9b63a31946c7c54a465f5630da",
+      "series_brief": "20ee265fd6f0fcbb261c2dee0cd17e4709fdaf5c92db9ebf938e57d2808de154"
+    },
+    "supplementary": {
+      "n_supplementary_files": 3,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 22548578304,
+          "name": "GSE163323_RAW.tar",
+          "size_as_rendered": "21G"
+        },
+        {
+          "bytes_approx_from_dir_index": 222,
+          "name": "GSE163323_sgRNA_targeting_regions.txt.gz",
+          "size_as_rendered": "222"
+        },
+        {
+          "bytes_approx_from_dir_index": 6656,
+          "name": "filelist.txt",
+          "size_as_rendered": "6.5K"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 22548585182
+    }
+  },
+  "GSE174367": {
+    "accession": "GSE174367",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE174nnn/GSE174367/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE174367&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE174367&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:51:00Z",
+    "samples": {
+      "characteristics_keys": {
+        "age": 230,
+        "brain region": 230,
+        "diagnosis": 230,
+        "isolation": 230,
+        "pmi": 230,
+        "sex": 230
+      },
+      "diagnosis_counts": {
+        "AD": 118,
+        "Control": 112
+      },
+      "diagnosis_field": "diagnosis",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "ATAC-seq": 20,
+        "RNA-Seq": 210
+      },
+      "n_samples_listed": 230,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 230
+      },
+      "platform_counts": {
+        "GPL24676": 230
+      },
+      "title_shapes": {
+        "Sample-# (Total Bulk RNA-seq)": 191,
+        "Sample-# (snATAC-seq)": 20,
+        "Sample-# (snRNA-seq)": 19
+      }
+    },
+    "series": {
+      "contact_institute": "University of California Irvine",
+      "contributors": [
+        "Samuel,,Morabito",
+        "Emily,,Miyoshi",
+        "Vivek,,Swarup"
+      ],
+      "last_update_date": "Aug 11 2021",
+      "n_sample_ids_in_series_record": 230,
+      "overall_design": "A multi-omics analysis of Alzheimer's Disease in human postmortem brain tissue using single-nucleus ATAC-seq and RNA-seq (bulk and single-nucleus).",
+      "pubmed_id": [
+        "34239132"
+      ],
+      "relations": [
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA729525",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRP319543"
+      ],
+      "status": "Public on May 12 2021",
+      "submission_date": "May 12 2021",
+      "summary": "The gene-regulatory landscape of the brain is highly dynamic in health and disease, coordinating a menagerie of biological processes across\u00ac distinct cell-types. Here, we present a multi-omic single-nucleus study of 191,890 nuclei in late-stage Alzheimer\u2019s Disease (AD), accessible through our intuitive web portal, profiling chromatin accessibility and gene expression in the same biological samples and uncovering vast cellular heterogeneity. We identified cell-type specific, disease-associated candidate cis-regulatory elements and their candidate target genes, including an oligodendrocyte-associated regulatory module containing links to APOE and CLU. We describe cis-regulatory relationships in specific cell-types at AD risk loci defined by genome wide association studies (GWAS), demonstrating the utility of this multi-omic single-nucleus approach. Trajectory analysis of glial populations identified disease-relevant transcription factors, like SREBF1 and their regulatory targets. Further, we introduce scWGCNA, a co-expression network analysis strategy robust to the sparsity of single-cell data, to perform a systems-level meta-analysis of AD transcriptomics.",
+      "title": "Single-nucleus chromatin accessibility and transcriptomic characterization of Alzheimer\u2019s Disease",
+      "types": [
+        "Expression profiling by high throughput sequencing",
+        "Genome binding/occupancy profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "e0c8da921556274247bf20246aa4f083f5b44d9ed9c66d7e52c693466b4af3fb",
+      "series_brief": "cb7b0f770c239c87e5856663567672630f11aa11d0022c2962f6efe2bd1a326f"
+    },
+    "supplementary": {
+      "n_supplementary_files": 5,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 12582912,
+          "name": "GSE174367_bulkRNA_processed.rda.gz",
+          "size_as_rendered": "12M"
+        },
+        {
+          "bytes_approx_from_dir_index": 1048576,
+          "name": "GSE174367_snATAC-seq_cell_meta.csv.gz",
+          "size_as_rendered": "1.0M"
+        },
+        {
+          "bytes_approx_from_dir_index": 360710144,
+          "name": "GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5",
+          "size_as_rendered": "344M"
+        },
+        {
+          "bytes_approx_from_dir_index": 435200,
+          "name": "GSE174367_snRNA-seq_cell_meta.csv.gz",
+          "size_as_rendered": "425K"
+        },
+        {
+          "bytes_approx_from_dir_index": 273678336,
+          "name": "GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5",
+          "size_as_rendered": "261M"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 648455168
+    }
+  },
+  "GSE178317": {
+    "accession": "GSE178317",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE178nnn/GSE178317/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE178317&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE178317&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:53:03Z",
+    "samples": {
+      "characteristics_keys": {
+        "cell type": 26,
+        "treatment": 18
+      },
+      "diagnosis_counts": "NOT_STATED_IN_DEPOSIT",
+      "diagnosis_field": "NOT_STATED_IN_DEPOSIT",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "OTHER": 8,
+        "RNA-Seq": 18
+      },
+      "n_samples_listed": 26,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 26
+      },
+      "platform_counts": {
+        "GPL24676": 8,
+        "GPL30173": 18
+      },
+      "title_shapes": {
+        "CROP-Seq Day # iTF-Microglia #X Lane #": 4,
+        "CROP-Seq Day # iTF-Microglia sgRNA enrichment Lane #": 4,
+        "Quant-Seq Day # Brownjohn-iMicroglia LPS Rep #": 3,
+        "Quant-Seq Day # Brownjohn-iMicroglia PBS Rep #": 3,
+        "Quant-Seq Day # iTF-Microglia LPS Rep #": 3,
+        "Quant-Seq Day # iTF-Microglia PBS Rep #": 3,
+        "Quant-Seq Day # iTF-Microglia Rep #": 6
+      }
+    },
+    "series": {
+      "contact_institute": "UCSF",
+      "contributors": [
+        "Sydney,,Sattler",
+        "Nina,,Draeger",
+        "Martin,,Kampmann",
+        "Huang,,Cindy",
+        "Gan,,Li"
+      ],
+      "last_update_date": "Sep 15 2022",
+      "n_sample_ids_in_series_record": 26,
+      "overall_design": "QuantSeq bulk RNA-sequencing of iTF-Microglia (Day 0, Day 8 (non-targeting and PFN1 CRISPRa sgRNAs), Day 9 +/- LPS treatment, Day 15) and Brownjohn-iMicroglia (Brownjohn et al., 2018, Day 9 +/- LPS treatment); Paired-end RNA-sequencing of iTF-Microglia (D14 +/- LPS treatment); and CROP-seq, single cell RNA-sequencing of Day 8 iTF-Microglia infected with a library of sgRNAs targeting 38 genes performed on four lanes of the 10X platform.",
+      "pubmed_id": [
+        "35953545"
+      ],
+      "relations": [
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA738478",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRP324266"
+      ],
+      "status": "Public on Jun 17 2021",
+      "submission_date": "Jun 16 2021",
+      "summary": "Microglia are emerging as key drivers of neurological diseases. However, we lack a systematic understanding of the underlying mechanisms. Here, we present a screening platform that enables the systematic elucidation of functional consequences of genetic alterations in human iPSC-derived microglia. We developed a protocol based on the inducible expression of six transcription factors, which generates microglia-like cells in an efficient eight-day protocol which was confirmed by bulk RNA sequencing. We established inducible CRISPR interference and activation in this system and conducted three screens targeting the \u201cdruggable genome\u201d that uncovered genes controlling microglia survival, activation and phagocytosis, including neurodegeneration-associated genes. A screen with single-cell RNA sequencing readout revealed that these microglia adopt a spectrum of states mirroring those observed in human brains and identifies regulators of these states. A disease-associated state characterized by SPP1 expression is selectively depleted by CSF1R inhibition.Thus, our platform can systematically uncover regulators of microglia states, enabling their functional characterization and therapeutic targeting.",
+      "title": "A CRISPRi/a platform in iPSC-derived microglia uncovers regulators of disease states",
+      "types": [
+        "Expression profiling by high throughput sequencing",
+        "Other"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "ea643ebf96ada4b8e21eee45fedaded2bf11f76f65d0e38debdd402784c1f258",
+      "series_brief": "e0a27ce285b518f1a834c58d8e0e1dadbaa0771495da4501e0943e059a4c3adc"
+    },
+    "supplementary": {
+      "n_supplementary_files": 3,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 1009778688,
+          "name": "GSE178317_RAW.tar",
+          "size_as_rendered": "963M"
+        },
+        {
+          "bytes_approx_from_dir_index": 1677721,
+          "name": "GSE178317_iTF_Microglia_RNAseq_abundance.csv.gz",
+          "size_as_rendered": "1.6M"
+        },
+        {
+          "bytes_approx_from_dir_index": 1740,
+          "name": "filelist.txt",
+          "size_as_rendered": "1.7K"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 1011458149
+    }
+  },
+  "GSE204702": {
+    "accession": "GSE204702",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE204nnn/GSE204702/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE204702&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE204702&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:53:33Z",
+    "samples": {
+      "characteristics_keys": {
+        "antibodies": 22,
+        "tissue": 67
+      },
+      "diagnosis_counts": "NOT_STATED_IN_DEPOSIT",
+      "diagnosis_field": "NOT_STATED_IN_DEPOSIT",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "RNA-Seq": 67
+      },
+      "n_samples_listed": 67,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 67
+      },
+      "platform_counts": {
+        "GPL20301": 1,
+        "GPL24676": 66
+      },
+      "title_shapes": {
+        "ALS# BA#+BA#+SC PM#": 4,
+        "ALS# FN MA#": 1,
+        "ALS# FN PM#": 3,
+        "ALS# GM MA#": 2,
+        "ALS# GM PM#": 7,
+        "ALS# SC MA#": 1,
+        "ALS# SC PM#": 4,
+        "ALS/FTD# BA#+BA#+SC PM#": 1,
+        "ALS/FTD# BA#+BA#+SC; DLBD-PD# BA#+SN PM#": 1,
+        "CNTRL# BA#+BA#+H+SN PM#": 1,
+        "DLBD-PD# BA#+SN PM#": 1,
+        "DLBD-PD# GM PM#": 3,
+        "DLBD-PD# SN PM#": 3,
+        "EOAD# BA#+BA#+H PM#": 2,
+        "FTD# GM PM#": 1,
+        "FTD# H PM#": 1,
+        "LOAD# AH PM#": 1,
+        "LOAD# BA#+AWS PM#": 1,
+        "LOAD# BA#+BA#+H PM#": 8,
+        "LOAD# BA#+BA#+H;HD# BA#+BA#+H PM#": 1,
+        "LOAD# BA#+H PM#": 1,
+        "LOAD# GM DeJager_MO_LOAD#_GM": 1,
+        "LOAD# GM PM#": 5,
+        "LOAD# H PM#": 3,
+        "LOAD# SN PM#": 3,
+        "MS# AWS PM#": 1,
+        "MS# BA#+TH+Lesion+AWS PM#": 1,
+        "MS# GM PM#": 1,
+        "MS# TH PM#": 1,
+        "PSP# GM PM#": 1,
+        "PSP# H PM#": 1,
+        "PSP# SN PM#": 1
+      }
+    },
+    "series": {
+      "contact_institute": "Columbia University",
+      "contributors": [
+        "John,F,Tuddenham",
+        "Marta,,Olah",
+        "Vilas,,Menon",
+        "Philip,L,De Jager"
+      ],
+      "last_update_date": "Oct 22 2024",
+      "n_sample_ids_in_series_record": 67,
+      "overall_design": "Single-cell RNA-sequencing data on CD45+ cells dissociated from autopsy tissue and surgical resections from a broad collection of diseases and brain regions.",
+      "pubmed_id": [
+        "39406950"
+      ],
+      "relations": [
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA841984"
+      ],
+      "status": "Public on Oct 18 2024",
+      "submission_date": "May 24 2022",
+      "summary": "Human microglia play a pivotal role in neurological diseases, but few targeted therapies that directly modulate microglial state or function exist due to an incomplete understanding of microglial heterogeneity. We use single-cell RNA sequencing to profile live human microglia from autopsies or surgical resections across diverse neurological diseases and central nervous system\u00a0regions. We observe a central divide between oxidative and heterocyclic metabolism and identify subsets associated with antigen presentation, motility, and proliferation. Specific subsets are enriched in susceptibility genes for neurodegenerative diseases or the disease-associated microglial signature. We validate subtypes in situ with an RNAscope-immunofluorescence pipeline and leverage our dataset as a classification resource, finding that iPSC model systems recapitulate substantial in vivo heterogeneity. Finally, we identify and validate candidates for chemically inducing subtype-specific states in vitro, showing that Camptothecin downregulates the transcriptional signature of disease-enriched subsets and upregulates a signature previously shown to be depleted in Alzheimer\u2019s.",
+      "title": "A cross-disease human microglial framework identifies disease-enriched subsets and tool compounds for microglial polarization II.",
+      "types": [
+        "Expression profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "d4c74fb1322239e382166fd5f92f127aac699b8b29564e324bd0bb6cddd45bb4",
+      "series_brief": "43a4cd72b1f4a94959f2382807e8b303137f6e33fe2d22cbca3190ccbf4a90ef"
+    },
+    "supplementary": {
+      "n_supplementary_files": 2,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 632291328,
+          "name": "GSE204702_RAW.tar",
+          "size_as_rendered": "603M"
+        },
+        {
+          "bytes_approx_from_dir_index": 5734,
+          "name": "filelist.txt",
+          "size_as_rendered": "5.6K"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 632297062
+    }
+  },
+  "GSE214637": {
+    "accession": "GSE214637",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE214nnn/GSE214637/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE214637&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE214637&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:51:37Z",
+    "samples": {
+      "characteristics_keys": {
+        "age": 48,
+        "cell type": 8,
+        "chip antibody": 8,
+        "disease state": 48,
+        "sex": 48,
+        "tissue": 48
+      },
+      "diagnosis_counts": {
+        "AD": 18,
+        "control": 30
+      },
+      "diagnosis_field": "disease state",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "ATAC-seq": 20,
+        "ChIP-Seq": 8,
+        "RNA-Seq": 20
+      },
+      "n_samples_listed": 48,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 48
+      },
+      "platform_counts": {
+        "GPL24676": 48
+      },
+      "title_shapes": {
+        "# MEF#C ChIPseq": 2,
+        "# MEF#C Input": 2,
+        "# ZEB# ChIPseq": 2,
+        "# ZEB# Input": 2,
+        "# rep#, scATACseq": 10,
+        "# rep#, scRNAseq": 9,
+        "#, rep#, scRNAseq": 1,
+        "#, scATACseq": 6,
+        "#, scRNAseq": 6,
+        "HCT#HEX, scATACseq": 1,
+        "HCT#HEX, scRNAseq": 1,
+        "HCTZZT, scATACseq": 1,
+        "HCTZZT, scRNAseq": 1,
+        "NT#, scATACseq": 2,
+        "NT#, scRNAseq": 2
+      }
+    },
+    "series": {
+      "contact_institute": "HudsonAlpha Institute for Biotechnology",
+      "contributors": [
+        "Ashlyn,,Anderson",
+        "Jacob,,Loupe",
+        "Lindsay,F,Rizzardi"
+      ],
+      "last_update_date": "Aug 27 2025",
+      "n_sample_ids_in_series_record": 48,
+      "overall_design": "We performed single nucleus multiomics (snRNA+snATAC) on postmortem DLPFC tissues from 7 AD and 8 unaffected donors.",
+      "pubmed_id": [
+        "36950385",
+        "40817596"
+      ],
+      "relations": [
+        "SuperSeries of: GSE214911",
+        "SuperSeries of: GSE214979",
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA887727"
+      ],
+      "status": "Public on Jan 09 2023",
+      "submission_date": "Oct 02 2022",
+      "summary": "Cell type-specific transcriptional differences between brain tissues from donors with Alzheimer\u2019s Disease (AD) and unaffected controls have been well-documented, but few studies have rigorously interrogated the regulatory mechanisms responsible for these alterations. We performed single nucleus multiomics (snRNA-seq + snATAC-seq) on 105,332 nuclei isolated from cortical tissues from 7 AD and 8 unaffected donors to identify candidate cis-regulatory elements (CREs) involved in AD-associated transcriptional changes. We detected 319,861 significant correlations, or links, between gene expression and cell-type specific transposase accessible regions that are enriched for active CREs. Among these, 40,831 were unique to AD tissues. Validation experiments confirmed the activity of many regions, including several candidate regulators of APP expression. We identified ZEB1 and MAFB as transcription factors playing important roles in AD-specific gene regulation in neurons and microglia, respectively. Microglial links were globally enriched for heritability of AD risk and previously identified active regulatory regions.",
+      "title": "Single nucleus multiomics identifies ZEB1 and MAFB as candidate regulators of Alzheimer\u2032s disease-specific cis regulatory elements",
+      "types": [
+        "Expression profiling by high throughput sequencing",
+        "Genome binding/occupancy profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "c37acd479ae95258a3d843b4ae4664d230e8d080f5b5d1433040052c1393d737",
+      "series_brief": "1e22ac671e8b6bd98668fae711d14aeefe2d52ed3da975c1b4ec6531ad37584b"
+    },
+    "supplementary": {
+      "rows": "NOT_STATED_IN_DEPOSIT",
+      "size_basis": "no supplementary listing retrievable from the GEO FTP tree",
+      "total_bytes": "NOT_STATED_IN_DEPOSIT"
+    }
+  },
+  "GSE214979": {
+    "accession": "GSE214979",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE214nnn/GSE214979/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE214979&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE214979&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:51:19Z",
+    "samples": {
+      "characteristics_keys": {
+        "age": 40,
+        "disease state": 40,
+        "sex": 40,
+        "tissue": 40
+      },
+      "diagnosis_counts": {
+        "AD": 18,
+        "control": 22
+      },
+      "diagnosis_field": "disease state",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "ATAC-seq": 20,
+        "RNA-Seq": 20
+      },
+      "n_samples_listed": 40,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 40
+      },
+      "platform_counts": {
+        "GPL24676": 40
+      },
+      "title_shapes": {
+        "# rep#, scATACseq": 10,
+        "# rep#, scRNAseq": 9,
+        "#, rep#, scRNAseq": 1,
+        "#, scATACseq": 6,
+        "#, scRNAseq": 6,
+        "HCT#HEX, scATACseq": 1,
+        "HCT#HEX, scRNAseq": 1,
+        "HCTZZT, scATACseq": 1,
+        "HCTZZT, scRNAseq": 1,
+        "NT#, scATACseq": 2,
+        "NT#, scRNAseq": 2
+      }
+    },
+    "series": {
+      "contact_institute": "HudsonAlpha Institute for Biotechnology",
+      "contributors": [
+        "Ashlyn,,Anderson",
+        "Jacob,,Loupe",
+        "Lindsay,F,Rizzardi"
+      ],
+      "last_update_date": "Aug 27 2025",
+      "n_sample_ids_in_series_record": 40,
+      "overall_design": "We performed single nucleus multiomics (snRNA+snATAC) on postmortem DLPFC tissues from 7 AD and 8 unaffected donors.",
+      "pubmed_id": [
+        "36950385",
+        "40817596"
+      ],
+      "relations": [
+        "SubSeries of: GSE214637",
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA887819"
+      ],
+      "status": "Public on Jan 09 2023",
+      "submission_date": "Oct 06 2022",
+      "summary": "Cell type-specific transcriptional differences between brain tissues from donors with Alzheimer\u2019s Disease (AD) and unaffected controls have been well-documented, but few studies have rigorously interrogated the regulatory mechanisms responsible for these alterations. We performed single nucleus multiomics (snRNA-seq + snATAC-seq) on 105,332 nuclei isolated from cortical tissues from 7 AD and 8 unaffected donors to identify candidate cis-regulatory elements (CREs) involved in AD-associated transcriptional changes. We detected 319,861 significant correlations, or links, between gene expression and cell-type specific transposase accessible regions that are enriched for active CREs. Among these, 40,831 were unique to AD tissues. Validation experiments confirmed the activity of many regions, including several candidate regulators of APP expression. We identified ZEB1 and MAFB as transcription factors playing important roles in AD-specific gene regulation in neurons and microglia, respe  ctively. Microglial links were globally enriched for heritability of AD risk and previously identified active regulatory regions.",
+      "title": "Single nucleus multiomics identifies ZEB1 and MAFB as candidate regulators of Alzheimer\u2019s disease-specific cis regulatory elements [Multi-omics]",
+      "types": [
+        "Expression profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "655a95b8f749efc2ad19f131fe0740ef53ccaf6751bc0af3c28b0c0549c8bc2f",
+      "series_brief": "b50b17427f1eb14c603494793fe3edd1fed53540ef1a882782ea6862c1a79499"
+    },
+    "supplementary": {
+      "n_supplementary_files": 5,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 63350767616,
+          "name": "GSE214979_atac_fragments.tsv.gz",
+          "size_as_rendered": "59G"
+        },
+        {
+          "bytes_approx_from_dir_index": 6710886,
+          "name": "GSE214979_atac_fragments.tsv.gz.tbi.gz",
+          "size_as_rendered": "6.4M"
+        },
+        {
+          "bytes_approx_from_dir_index": 8808038,
+          "name": "GSE214979_cell_metadata.csv.gz",
+          "size_as_rendered": "8.4M"
+        },
+        {
+          "bytes_approx_from_dir_index": 1395864371,
+          "name": "GSE214979_filtered_feature_bc_matrix.h5",
+          "size_as_rendered": "1.3G"
+        },
+        {
+          "bytes_approx_from_dir_index": 1610612736,
+          "name": "GSE214979_unfiltered_feature_bc_matrix.h5",
+          "size_as_rendered": "1.5G"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 66372763647
+    }
+  },
+  "GSE244618": {
+    "accession": "GSE244618",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE244nnn/GSE244618/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE244618&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE244618&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:51:45Z",
+    "samples": {
+      "characteristics_keys": {
+        "genotype": 128,
+        "tissue": 128,
+        "treatment": 128
+      },
+      "diagnosis_counts": "NOT_STATED_IN_DEPOSIT",
+      "diagnosis_field": "NOT_STATED_IN_DEPOSIT",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "ATAC-seq": 128
+      },
+      "n_samples_listed": 128,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 128
+      },
+      "platform_counts": {
+        "GPL24676": 128
+      },
+      "title_shapes": {
+        "snATAC-seq of homo sapiens adult brain: A# from donor #": 12,
+        "snATAC-seq of homo sapiens adult brain: A#-A# from donor #": 6,
+        "snATAC-seq of homo sapiens adult brain: A#C from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: ACC from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: AMY from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: BL-La from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: BNST from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: CBL from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: CBV from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: CMN from donor #": 2,
+        "snATAC-seq of homo sapiens adult brain: CMN-CN from donor #": 1,
+        "snATAC-seq of homo sapiens adult brain: CaB from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: Cla from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: FI from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: GPe from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: HiB from donor #": 1,
+        "snATAC-seq of homo sapiens adult brain: HiB from donor # rep #": 4,
+        "snATAC-seq of homo sapiens adult brain: HiT from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: IC from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: ITG from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: Idg from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: Ig from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: LEC from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: M#C from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: MD from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: MEC from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: MTG from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: NAC from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: PN from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: Pir from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: Pro from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: Pu from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: Pul from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: S#C from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: SEP from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: SI from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: Sub from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: TH-TL from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: V# from donor #": 3,
+        "snATAC-seq of homo sapiens adult brain: V#C from donor #": 3
+      }
+    },
+    "series": {
+      "contact_institute": "University of California San Diego",
+      "contributors": [
+        "Yang,E,Li",
+        "Sebastian,,Preissl",
+        "Bing,,Ren"
+      ],
+      "last_update_date": "Feb 15 2024",
+      "n_sample_ids_in_series_record": 128,
+      "overall_design": "single-nucleus ATAC-seq in 42 human brain regions from three neurotypical male donors",
+      "pubmed_id": [
+        "37824643"
+      ],
+      "relations": [
+        "NOT_STATED_IN_DEPOSIT"
+      ],
+      "status": "Public on Oct 04 2023",
+      "submission_date": "Oct 04 2023",
+      "summary": "A comparative atlas of single-cell chromatin accessibility in the human brainRecent advances in single-cell transcriptomics have illuminated the diverse neuronal and glial cell types within the human brain. However, the regulatory programs governing cell identity and function remain unclear. Using a single-nucleus assay for transposase-accessible chromatin using sequencing (ATAC-seq), we explored open chromatin landscapes across 1.1 million cells in 42 brain regions from three adults. Integrating this data unveiled 107 distinct cell types and their specific utilization of 544,735 candidate cis-regulatory DNA elements (cCREs) in the human genome. Nearly a third of the cCREs demonstrated conservation and chromatin accessibility in the mouse brain cells. We reveal strong links between specific brain cell types and neuropsychiatric disorders including schizophrenia, bipolar disorder, Alzheimer\u2019s disease (AD), and major depression, and have developed deep learning models to predict the regulatory roles of noncoding risk variants in these disorders.",
+      "title": "A comparative atlas of single-cell chromatin accessibility in the human brain",
+      "types": [
+        "Genome binding/occupancy profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "09ef474c59396679fcf475d2842ecc388c07fd4b9820bcd59158bbe3e8016f99",
+      "series_brief": "8a877a6ddeba260202c23f0bf169af63c3f49a743883970abaa85d87ff984c85"
+    },
+    "supplementary": {
+      "n_supplementary_files": 2,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 402653184000,
+          "name": "GSE244618_RAW.tar",
+          "size_as_rendered": "375G"
+        },
+        {
+          "bytes_approx_from_dir_index": 17408,
+          "name": "filelist.txt",
+          "size_as_rendered": "17K"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 402653201408
+    }
+  },
+  "GSE246443": {
+    "accession": "GSE246443",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE246nnn/GSE246443/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246443&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246443&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:52:33Z",
+    "samples": {
+      "characteristics_keys": {
+        "tissue": 42,
+        "treatment": 42
+      },
+      "diagnosis_counts": "NOT_STATED_IN_DEPOSIT",
+      "diagnosis_field": "NOT_STATED_IN_DEPOSIT",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "ATAC-seq": 42
+      },
+      "n_samples_listed": 42,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 42
+      },
+      "platform_counts": {
+        "GPL24676": 42
+      },
+      "title_shapes": {
+        "atac_A#B# female and male": 41,
+        "atac_A#B# male": 1
+      }
+    },
+    "series": {
+      "contact_institute": "McGill University",
+      "contributors": [
+        "Anjali,,Chawla",
+        "Corina,,Nagy",
+        "Gustavo,,Turecki"
+      ],
+      "last_update_date": "Jan 30 2025",
+      "n_sample_ids_in_series_record": 42,
+      "overall_design": "10X Genomics Chromium snATAC-seq was performed on nuclei extracted from BA9 of the post-mortem brain tissue of 44 MDD cases who died by suicide and 40 neurotypical controls. We multiplexed nuclei obtained from a pair of male (n=42) and female (n=42) subjects before 10x microfluidic capture and produced combined libraries. These libraries were demultiplexed using common variants and sex-specific chromatin accessibility signals. Unsupervised clustering was perfomed using accessibility measured in 500bp bins and pseudobulk differential accessibility analysis was performed between cases and controls for each cluster and each broad brain cell type. The library preparation was performed with the Chromium Single Cell ATAC v1.1 Chemistry. Paired-end sequencing was performed on the Illumina NovaSeq 6000. FASTQ files were produced with 10x cellranger-atac mkfastq. Alignments were generated with refdata-cellranger-arc-GRCh38-2020-A-2.0.0 and cellranger-atac count. 10x fragment files were converted to peak count matrices using ArchR [release_1.0.1].",
+      "pubmed_id": [
+        "NOT_STATED_IN_DEPOSIT"
+      ],
+      "relations": [
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1032938"
+      ],
+      "status": "Public on Jan 21 2025",
+      "submission_date": "Oct 27 2023",
+      "summary": "We performed high-throughput snATAC-seq using the 10X Genomics Chromium platform on archived post-mortem dorsolateral prefrontal cortex (BA9) tissue in MDD subjects who died by suicide and neurotypical control subjects to identify cell-type specific differentially accessible chromatin regions. We further combined snATAC-seq with previously generated snRNA-seq data from the same subjects to generate high-resolution multi-modal accessibility and expression atlas of cortical cells. This identified accessible chromatin regions potentially regulating expression of genes. Further, MDD-associated genetic risk variants were examined for their allele-specific effects on chromatin accessibility and transcription factors binding sites in cell type speciifc manner, elucdiating target risk genes and pathways associated with MDD.",
+      "title": "Single-nucleus chromatin accessibility profiling identifies cell types and functional variants contributing to major depression",
+      "types": [
+        "Genome binding/occupancy profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "d32451d822c0576f44aab7590bf66ac8653031aa132cc744d01b8293265059af",
+      "series_brief": "e9c7b5781804fd59be1e9d19dff475eda0d4bb52c0f6be069e400f9e351c57ea"
+    },
+    "supplementary": {
+      "n_supplementary_files": 2,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 6657199308,
+          "name": "GSE246443_GEO_broad_peak.tar.gz",
+          "size_as_rendered": "6.2G"
+        },
+        {
+          "bytes_approx_from_dir_index": 6657199308,
+          "name": "GSE246443_GEO_cluster_peak.tar.gz",
+          "size_as_rendered": "6.2G"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 13314398616
+    }
+  },
+  "GSE249315": {
+    "accession": "GSE249315",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE249nnn/GSE249315/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE249315&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE249315&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:53:27Z",
+    "samples": {
+      "characteristics_keys": {
+        "cell type": 398,
+        "tissue": 398,
+        "treatment": 398
+      },
+      "diagnosis_counts": "NOT_STATED_IN_DEPOSIT",
+      "diagnosis_field": "NOT_STATED_IN_DEPOSIT",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "RNA-Seq": 398
+      },
+      "n_samples_listed": 398,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 398
+      },
+      "platform_counts": {
+        "GPL16791": 398
+      },
+      "title_shapes": {
+        "#-#-CC-IFNgamma": 9,
+        "#-#-CC-LPS": 15,
+        "#-#-CC-unstim": 14,
+        "#-#-GFM-ATP": 3,
+        "#-#-GFM-DEX": 9,
+        "#-#-GFM-IFNgamma": 23,
+        "#-#-GFM-IL#": 7,
+        "#-#-GFM-LPS": 33,
+        "#-#-GFM-R#": 17,
+        "#-#-GFM-unstim": 38,
+        "#-#-GFS-IFNgamma": 1,
+        "#-#-GFS-LPS": 1,
+        "#-#-GFS-unstim": 1,
+        "#-#-GTS-IFNgamma": 12,
+        "#-#-GTS-LPS": 26,
+        "#-#-GTS-unstim": 27,
+        "#-#-NA-IFNgamma": 1,
+        "#-#-NA-LPS": 1,
+        "#-#-NA-unstim": 1,
+        "#-#-SVZ-ATP": 1,
+        "#-#-SVZ-IFNgamma": 24,
+        "#-#-SVZ-LPS": 29,
+        "#-#-SVZ-R#": 24,
+        "#-#-SVZ-unstim": 29,
+        "#-#-THA-IFNgamma": 9,
+        "#-#-THA-LPS": 21,
+        "#-#-THA-unstim": 22
+      }
+    },
+    "series": {
+      "contact_institute": "Icahn school of medicine at Mount Sinai",
+      "contributors": [
+        "Gijsje,J,Snijders",
+        "Katia,,de Paiva Lopes",
+        "Marjolein,M,Sneeboer",
+        "Benjamin,Z,Muller"
+      ],
+      "last_update_date": "Jun 14 2025",
+      "n_sample_ids_in_series_record": 398,
+      "overall_design": "We compared the effects of a set of inflammatory and restorative stimuli (lipopolysaccharide, interferon-gamma, resiquimod, tumor necrosis factor-alpha, adenosine triphosphate, dexamethasone, and interleukin-4) on human microglial cells from 67 different donors (N = 398 samples) at the gene and transcript level.",
+      "pubmed_id": [
+        "NOT_STATED_IN_DEPOSIT"
+      ],
+      "relations": [
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1048500"
+      ],
+      "status": "Public on Jun 14 2025",
+      "submission_date": "Dec 04 2023",
+      "summary": "Microglia, the immune cells of the brain, are increasingly implicated in neurodegenerative disorders through genetic studies. However, how genetic risk factors for these diseases are related to microglial gene expression, microglial function, and ultimately disease, is still largely unknown. Microglia change rapidly in response to alterations in their cellular environment, which is regulated through changes in transcriptional programs, which are as yet poorly understood. Here, we compared the effects of a set of inflammatory and restorative stimuli (lipopolysaccharide, interferon-gamma, resiquimod, tumor necrosis factor-alpha, adenosine triphosphate, dexamethasone, and interleukin-4) on human microglial cells from 67 different donors (N = 398 samples) at the gene and transcript level. We show that microglia from different anatomical brain regions show distinct responses to inflammatory stimuli. We observed a greater overlap between human stimulated microglia and human monocytes than with mouse microglia. We define specific microglial signatures across conditions which are highly relevant for a wide range of biological functions and complex human diseases. Finally, we used our stimulation signatures to interpret associations from Alzheimer's disease (AD) genetic studies and microglia by integrating our inflammatory gene expression profiles with common genetic variants to map cis -expression QTLs (eQTLs). Together, we provide the most comprehensive transcriptomic database of the human microglia responsome.",
+      "title": "The human microglia response a resource to better understand microglia states in health and disease",
+      "types": [
+        "Expression profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "04bb3a3fb6de7cbf682d1c882159cd2091db462b893e488272a301206b4fe20e",
+      "series_brief": "2f5073b488385565fe4202c66eb74df2e3d930db35357997bb7a0a5858bf032e"
+    },
+    "supplementary": {
+      "n_supplementary_files": 2,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 20971520,
+          "name": "GSE249315_Raw_Counts.txt.gz",
+          "size_as_rendered": "20M"
+        },
+        {
+          "bytes_approx_from_dir_index": 29360128,
+          "name": "GSE249315_Raw_TPM.txt.gz",
+          "size_as_rendered": "28M"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 50331648
+    }
+  },
+  "GSE256207": {
+    "accession": "GSE256207",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE256nnn/GSE256207/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE256207&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE256207&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:52:04Z",
+    "samples": {
+      "characteristics_keys": {
+        "age": 92,
+        "classification": 92,
+        "disease status": 92,
+        "ethnicity": 92,
+        "lib batch": 92,
+        "ph": 92,
+        "pmi": 92,
+        "rin": 92,
+        "sex": 92,
+        "tissue": 92
+      },
+      "diagnosis_counts": {
+        "Cases": 57,
+        "Controls": 35
+      },
+      "diagnosis_field": "disease status",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "ATAC-seq": 92
+      },
+      "n_samples_listed": 92,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 92
+      },
+      "platform_counts": {
+        "GPL24676": 92
+      },
+      "title_shapes": {
+        "s#_PFC_ATAC": 92
+      }
+    },
+    "series": {
+      "contact_institute": "Max Planck Institute of Psychiatry",
+      "contributors": [
+        "Nathalie,,Gerstner",
+        "Anna,S,Fr\u00f6hlich",
+        "Miriam,,Gagliardi",
+        "Maik,,K\u00f6del",
+        "Natalie,,Matosin",
+        "Simone,,Roeh",
+        "Vanessa,,Murek",
+        "Janine,,Knauer-Arloth",
+        "Michael,J,Ziller",
+        "Elisabeth,B,Binder"
+      ],
+      "last_update_date": "Mar 12 2025",
+      "n_sample_ids_in_series_record": 92,
+      "overall_design": "Fresh-frozen post mortem orbitofrontal cortex tissues of Brodmann area 11 (BA 11) was obtained from the NSW Brain Tissue Resource Centre in Sydney, Australia. Single-nucleus ATAC sequencing from tissue samples from 35 psychiatrically healthy donors and 57 donors diagnosed with a psychiatric disease was performed.",
+      "pubmed_id": [
+        "40053590"
+      ],
+      "relations": [
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1078420"
+      ],
+      "status": "Public on Feb 17 2025",
+      "submission_date": "Feb 20 2024",
+      "summary": "The human cortex consists of a variety of different cell types. We used single-nuclei ATAC sequencing to characterize cell-type specific open chromatin profiles in a cohort of psychiatrically healthy controls and individuals diagnosed with psychiatric disease.",
+      "title": "Accessible chromatin profiles (ATAC) at single-cell level of human post-mortem brain tissue from the orbitofrontal cortex",
+      "types": [
+        "Expression profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "924d31de6bfa5e169f3f2aab6e567f717229ca5f1f48dc3cc515eb1210e60a27",
+      "series_brief": "5f0cfba3e12616a090145f861af04370d2cc604e6759aab29741ecf6601a8e25"
+    },
+    "supplementary": {
+      "n_supplementary_files": 4,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 195035136,
+          "name": "GSE256207_GeneScoreMatrix_Pseudobulk_Normalized.csv.gz",
+          "size_as_rendered": "186M"
+        },
+        {
+          "bytes_approx_from_dir_index": 6764573491,
+          "name": "GSE256207_PeakMatrix.mtx.gz",
+          "size_as_rendered": "6.3G"
+        },
+        {
+          "bytes_approx_from_dir_index": 31457280,
+          "name": "GSE256207_PeakSet.csv.gz",
+          "size_as_rendered": "30M"
+        },
+        {
+          "bytes_approx_from_dir_index": 39845888,
+          "name": "GSE256207_Peak_CellMetadata.csv.gz",
+          "size_as_rendered": "38M"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 7030911795
+    }
+  },
+  "GSE259298": {
+    "accession": "GSE259298",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE259nnn/GSE259298/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE259298&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE259298&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:52:20Z",
+    "samples": {
+      "characteristics_keys": {
+        "cell line": 11,
+        "tissue": 17
+      },
+      "diagnosis_counts": "NOT_STATED_IN_DEPOSIT",
+      "diagnosis_field": "NOT_STATED_IN_DEPOSIT",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "ATAC-seq": 16,
+        "RNA-Seq": 12
+      },
+      "n_samples_listed": 28,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 28
+      },
+      "platform_counts": {
+        "GPL24676": 28
+      },
+      "title_shapes": {
+        "#, Control, snATAC": 9,
+        "#, Pick's disease ,snATAC": 1,
+        "#, Pick's disease, snATAC": 6,
+        "Pick's disease and Control snRNA": 1,
+        "S#, UBE#A, D#-Neuron": 3,
+        "S#, UBE#A, D#-iPSC": 3,
+        "S#, WT, D#-Neuron": 3,
+        "S#, WT, D#-iPSC": 2
+      }
+    },
+    "series": {
+      "contact_institute": "UCI",
+      "contributors": [
+        "Zechuan,,Shi",
+        "Sudeshna,,Das",
+        "Samuel,,Morabito",
+        "Emily,,Miyoshi",
+        "Elizabeth,,Head",
+        "Vivek,,Swarup"
+      ],
+      "last_update_date": "Dec 16 2025",
+      "n_sample_ids_in_series_record": 28,
+      "overall_design": "Nuclei from human PFC tissue were isolated from 7 patients with Pick's disease, and 9 of their age-matched controls. snATAC-seq and snRNA-seq were performed to study the regulatory mechanisms and gene expression alternation.",
+      "pubmed_id": [
+        "41223260"
+      ],
+      "relations": [
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1080602"
+      ],
+      "status": "Public on Sep 16 2025",
+      "submission_date": "Feb 26 2024",
+      "summary": "The study of transcriptomic and epigenomic variations in neurodegenerative diseases, particularly tauopathies like Pick\u2019s disease (PiD) and Alzheimer\u2019s disease (AD), offers insights into their underlying regulatory mechanisms. Here, we identified critical regulatory changes driving disease progression, revealing potential therapeutic targets. Our comparative analyses uncovered disease-enriched non-coding regions and genome-wide transcription factor (TF) binding differences, linking them to target genes. Notably, we identified a distal human-gained enhancer (HGE) associated with E3 ubiquitin ligase (UBE3A), highlighting disease-specific regulatory alterations. Additionally, fine-mapping of AD risk genes uncovered loci enriched in microglial enhancers and accessible in other cell-types. Shared and distinct TF binding patterns were observed in neurons and glial cells across PiD and AD. We validated our findings using CRISPR to excise a predicted enhancer region in UBE3A and developed an interactive database, scROAD, to visualize predicted single-cell TF occupancy and regulatory networks.",
+      "title": "Single-nucleus multi-omics identifies shared and distinct pathways in Pick\u2019s and Alzheimer\u2019s disease",
+      "types": [
+        "Expression profiling by high throughput sequencing",
+        "Genome binding/occupancy profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "ca6c1328377e31752d9111dd8af9e65f260c58c9d2804838e7acbd2f8c875551",
+      "series_brief": "5a90a23401cc26bf48966417c00f2d68306faba6ae4cf5d210333ad66d99279a"
+    },
+    "supplementary": {
+      "n_supplementary_files": 10,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 2621440,
+          "name": "GSE259298_bulkRNA_processed.rda.gz",
+          "size_as_rendered": "2.5M"
+        },
+        {
+          "bytes_approx_from_dir_index": 485376,
+          "name": "GSE259298_snATAC_barcodes.tsv.gz",
+          "size_as_rendered": "474K"
+        },
+        {
+          "bytes_approx_from_dir_index": 9122611,
+          "name": "GSE259298_snATAC_cell_meta.csv.gz",
+          "size_as_rendered": "8.7M"
+        },
+        {
+          "bytes_approx_from_dir_index": 4823449,
+          "name": "GSE259298_snATAC_features.tsv.gz",
+          "size_as_rendered": "4.6M"
+        },
+        {
+          "bytes_approx_from_dir_index": 825229312,
+          "name": "GSE259298_snATAC_filtered_peak_counts_matrix.mtx.gz",
+          "size_as_rendered": "787M"
+        },
+        {
+          "bytes_approx_from_dir_index": 223232,
+          "name": "GSE259298_snRNA_barcodes.tsv.gz",
+          "size_as_rendered": "218K"
+        },
+        {
+          "bytes_approx_from_dir_index": 7969177,
+          "name": "GSE259298_snRNA_cell_meta.csv.gz",
+          "size_as_rendered": "7.6M"
+        },
+        {
+          "bytes_approx_from_dir_index": 124928,
+          "name": "GSE259298_snRNA_features.tsv.gz",
+          "size_as_rendered": "122K"
+        },
+        {
+          "bytes_approx_from_dir_index": 247463936,
+          "name": "GSE259298_snRNA_filtered_RNA_counts_matrix.mtx.gz",
+          "size_as_rendered": "236M"
+        },
+        {
+          "bytes_approx_from_dir_index": 129,
+          "name": "GSE259298_snRNA_sample-list.txt.gz",
+          "size_as_rendered": "129"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 1098063590
+    }
+  },
+  "GSE261983": {
+    "accession": "GSE261983",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE261nnn/GSE261983/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE261983&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE261983&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:51:51Z",
+    "samples": {
+      "characteristics_keys": {
+        "age death_(yrs)": 40,
+        "diagnosis": 40,
+        "pmi (hrs)": 40,
+        "sex": 40,
+        "tissue": 40
+      },
+      "diagnosis_counts": {
+        "Control": 40
+      },
+      "diagnosis_field": "diagnosis",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "ATAC-seq": 20,
+        "RNA-Seq": 20
+      },
+      "n_samples_listed": 40,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 40
+      },
+      "platform_counts": {
+        "GPL24676": 40
+      },
+      "title_shapes": {
+        "RT#N snATAC-seq": 20,
+        "RT#N snRNA-seq": 20
+      }
+    },
+    "series": {
+      "contact_institute": "University of California, Irvine",
+      "contributors": [
+        "Declan,,Clarke",
+        "Cagatay,,Dursun",
+        "Prashant,,Emani",
+        "Chirag,,Gupta",
+        "Matthew,,Jensen",
+        "Che,Y,Lee",
+        "Jason,,Liu",
+        "Shaoke,,Lou",
+        "Ran,,Meng",
+        "Jonathan,,Warrell",
+        "Siwei,,Xu",
+        "Yuhang,,Chen",
+        "Zhiyuan,,Chu",
+        "Timur,,Galeev",
+        "Ahyeon,,Hwang",
+        "Pengyu,,Ni",
+        "Xiao,,Zhou",
+        "Trygve,,Bakken",
+        "Lucy,,Bicks",
+        "Tanima,,Chatterjee",
+        "Lijun,,Cheng",
+        "Yuyan,,Cheng",
+        "Yi,,Dai",
+        "Ziheng,,Duan",
+        "Mary,,Flaherty",
+        "Sophia,,Gaynor",
+        "Jennifer,,Grundman",
+        "Natalie,,Hawken",
+        "Ella,,Henry",
+        "Ao,,Huang",
+        "Ting,,Jin",
+        "Nikolas,,Jorstad",
+        "Riki,,Kawaguchi",
+        "Junhao,,Liu",
+        "Jianyin,,Liu",
+        "Shuang,,Liu",
+        "Shaojie,,Ma",
+        "Michael,,Margolis",
+        "Samantha,,Mazariegos",
+        "Jill,,Moore",
+        "Jennifer,,Moran",
+        "Eric,,Nguyen",
+        "Nishigandha,,Phalke",
+        "Henry,,Pratt",
+        "Diana,,Quintero",
+        "Ananya,,Rajagopalan",
+        "Tiernon,,Riesenmy",
+        "Nicole,,Shedd",
+        "Manman,,Shi"
+      ],
+      "last_update_date": "Aug 11 2024",
+      "n_sample_ids_in_series_record": 40,
+      "overall_design": "Single nuclei were isolated from human postmortem dlPFC from normal control group and sequenced for transcription profile (snRNA-seq) and chromatin accessibility (snATAC-seq)",
+      "pubmed_id": [
+        "38781369"
+      ],
+      "relations": [
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1089984"
+      ],
+      "status": "Public on May 10 2024",
+      "submission_date": "Mar 20 2024",
+      "summary": "Single-cell genomics is a powerful tool for studying heterogeneous tissues such as the brain. Yet, little is understood about how genetic variants influence cell-level gene expression. Addressing this, we uniformly processed single-nuclei, multi-omics datasets into a resource comprising >2.8M nuclei from the prefrontal cortex across 388 individuals. For 28 cell types, we assessed population-level variation in expression and chromatin across gene families and drug targets. We identified >550K cell-type-specific regulatory elements and >1.4M single-cell expression-quantitative-trait loci, which we used to build cell-type regulatory and cell-to-cell communication networks. These networks manifest cellular changes in aging and neuropsychiatric disorders. We further constructed an integrative model accurately imputing single-cell expression and simulating perturbations; the model prioritized ~250 disease-risk genes and drug targets with associated cell types.",
+      "title": "Single-cell genomics & regulatory networks for 388 human brains",
+      "types": [
+        "Expression profiling by high throughput sequencing",
+        "Genome binding/occupancy profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "6c4760641ca6df532e6d44369e6a33e42287cd7d000519c8096f64bc73fe4bb6",
+      "series_brief": "4435201afd77147c0e1675dac4c70274d128e94087d8937352ec5bce2ec71e67"
+    },
+    "supplementary": {
+      "n_supplementary_files": 4,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 4928307,
+          "name": "GSE261983_ATAC_peakset.bed.gz",
+          "size_as_rendered": "4.7M"
+        },
+        {
+          "bytes_approx_from_dir_index": 5690831667,
+          "name": "GSE261983_RAW.tar",
+          "size_as_rendered": "5.3G"
+        },
+        {
+          "bytes_approx_from_dir_index": 130048,
+          "name": "GSE261983_RNA_gene_list.txt.gz",
+          "size_as_rendered": "127K"
+        },
+        {
+          "bytes_approx_from_dir_index": 6144,
+          "name": "filelist.txt",
+          "size_as_rendered": "6.0K"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 5695896166
+    }
+  },
+  "GSE272082": {
+    "accession": "GSE272082",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE272nnn/GSE272082/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE272082&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE272082&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:52:09Z",
+    "samples": {
+      "characteristics_keys": {
+        "age on_death": 42,
+        "disease state": 42,
+        "pmi (hours)": 42,
+        "sex": 42,
+        "tissue": 42
+      },
+      "diagnosis_counts": {
+        "Control": 22,
+        "sEOAD": 20
+      },
+      "diagnosis_field": "disease state",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "ATAC-seq": 21,
+        "RNA-Seq": 21
+      },
+      "n_samples_listed": 42,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 42
+      },
+      "platform_counts": {
+        "GPL24676": 6,
+        "GPL34281": 36
+      },
+      "title_shapes": {
+        "NIH#, control, snMultiome [ATAC]": 8,
+        "NIH#, control, snMultiome [GEX]": 8,
+        "NIH#, control, snMultiome, ATAC": 1,
+        "NIH#, control, snMultiome, GEX": 1,
+        "NIH#, sEOAD, snMultiome [ATAC]": 9,
+        "NIH#, sEOAD, snMultiome [GEX]": 9,
+        "UT#,sEOAD, snMultiome [ATAC]": 3,
+        "UT#,sEOAD, snMultiome [GEX]": 3
+      }
+    },
+    "series": {
+      "contact_institute": "The University of Texas Health Science Center at Houston",
+      "contributors": [
+        "NOT_STATED_IN_DEPOSIT"
+      ],
+      "last_update_date": "Feb 18 2026",
+      "n_sample_ids_in_series_record": 42,
+      "overall_design": "Nuclei were isolated from postmortem prefrontal cortex (PFC,n=9), entorhinal cortex (EC, n=6), and hippocampus (HIP, n=5) of sprodic early-onset Alzheimer's Disease patient (n=4) and matched controls (n=5). The isolated nuclei were then subjected to single-nuclei multiome sequcing. ll tissues were de-identified under The Health Insurance Portability and Accountability Act of 1996 (HIPAA) privacy rules. The tissue donation consent was obtained from all participants by UTHealth.",
+      "pubmed_id": [
+        "41406216"
+      ],
+      "relations": [
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1135080"
+      ],
+      "status": "Public on Nov 19 2025",
+      "submission_date": "Jul 12 2024",
+      "summary": "Sporadic early-onset Alzheimer\u2019s Disease (sEOAD) represents a significant but less-studied subtype of Alzheimer\u2019s Disease. In this study, we generated a single-nucleus multiome atlas from over 70,000 nuclei derived from the postmortem prefrontal cortex, entorhinal cortex, and hippocampus of four sEOAD patients and five control donors. Comprehensive analyses were conducted to delineate cell type-specific transcriptomic changes and linked candidate cis-regulatory elements (cCREs) across these brain regions. We identified and prioritized seven conservative transcription factors in glial cells and neurons in multiple brain regions, including RFX4 in astrocytes and IKZF1 in microglia, which are implicated in the regulation of sEOAD-associated genes. Moreover, we investigated altered intercellular signaling between glial cells and neurons, highlighting their regulatory potential on gene expression in receiver cells. Finally, we reported an enrichment of late-onset Alzheimer\u2019s Disease risk loci within microglial cCREs linked to sEOAD-associated genes. This atlas enhances our understanding of the transcriptional and chromatin dynamics in sEOAD and provides a foundational resource for further pathological investigations.",
+      "title": "Single-nucleus multiomics reveals the regulatory programs in three brain regions of sporadic early-onset Alzheimer's Disease",
+      "types": [
+        "Expression profiling by high throughput sequencing",
+        "Genome binding/occupancy profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "e7c1b32959f4778198607a13f93938a5cb23c3ed0eda0b7f5086414670c84f9c",
+      "series_brief": "4435ce35f11e4cb03e890cb2cbf353f8d6d82d88dbc1fa1e644c8ca1def7f1a4"
+    },
+    "supplementary": {
+      "n_supplementary_files": 2,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 37580963840,
+          "name": "GSE272082_RAW.tar",
+          "size_as_rendered": "35G"
+        },
+        {
+          "bytes_approx_from_dir_index": 6860,
+          "name": "filelist.txt",
+          "size_as_rendered": "6.7K"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 37580970700
+    }
+  },
+  "GSE338484": {
+    "accession": "GSE338484",
+    "primary_record_endpoints": {
+      "filelist": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE338nnn/GSE338484/suppl/filelist.txt",
+      "samples": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE338484&targ=gsm&form=text&view=brief",
+      "series": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE338484&targ=self&form=text&view=brief"
+    },
+    "retrieved_utc": "2026-09-26T08:52:38Z",
+    "samples": {
+      "characteristics_keys": {
+        "cell type": 29,
+        "cognitive status": 29,
+        "tissue": 29
+      },
+      "diagnosis_counts": "NOT_STATED_IN_DEPOSIT",
+      "diagnosis_field": "NOT_STATED_IN_DEPOSIT",
+      "donor_count_basis": "no donor/subject/individual characteristics field present in the deposit; donor count is NOT derivable from GEO alone and must not be estimated",
+      "donor_field": "NOT_STATED_IN_DEPOSIT",
+      "library_strategy_counts": {
+        "ATAC-seq": 29
+      },
+      "n_samples_listed": 29,
+      "n_unique_donor_values": "NOT_STATED_IN_DEPOSIT",
+      "organism_counts": {
+        "Homo sapiens": 29
+      },
+      "platform_counts": {
+        "GPL34284": 29
+      },
+      "title_shapes": {
+        "UW#": 20,
+        "UW#_Ce": 2,
+        "UW#_Pu": 4,
+        "UW#_v#": 3
+      }
+    },
+    "series": {
+      "contact_institute": "Stanford University",
+      "contributors": [
+        "Julia,A,Belk",
+        "Howard,Y,Chang",
+        "Siddhartha,,Jaiswal"
+      ],
+      "last_update_date": "Jul 14 2026",
+      "n_sample_ids_in_series_record": 29,
+      "overall_design": "snATAC-seq was performed on archival tissue specimens from the UW BRaIN Lab. Individuals were identified who harbored marrow-derived cells in their brain (assessed via passenger-assisted clone tracking), and snATAC-seq enabled assessment of the immune cell phenotypes present in each individual.",
+      "pubmed_id": [
+        "NOT_STATED_IN_DEPOSIT"
+      ],
+      "relations": [
+        "SubSeries of: GSE338521",
+        "BioProject: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1494556"
+      ],
+      "status": "Public on Jul 13 2026",
+      "submission_date": "Jul 13 2026",
+      "summary": "Microglia are the resident macrophages of the central nervous system. In mice, microglia seed the brain during embryogenesis and can be maintained throughout life with minimal input from adult hematopoiesis. The origins of human microglia are less clear, but recent evidence suggests that marrow-derived cells contribute to the human microglial pool in certain individuals. Here, to investigate the ontogeny of human microglia, we develop a method that uses the collection of accumulated somatic mutations which uniquely labels each clone of cells to track the infiltration of marrow-derived cells into the human brain. Applying this method to 20 aged individuals, we find evidence of an influx of marrow-derived cells into the brain in all examined individuals. Single cell analysis, including single cell lineage tracing using mitochondrial DNA variants, demonstrates that these infiltrating cells are similar to microglia and can comprise a large fraction of the microglial pool. Analysis of large-scale sequencing cohorts demonstrates a protective association between most types of clonal hematopoiesis and Alzheimer\u2019s disease. In sum, this work uncovers a widespread influx of myeloid cells into the healthy human brain which contributes to the pool of human microglia and becomes common with aging.",
+      "title": "Somatic mutations reveal the ontogeny of microglia in human aging [snATAC-seq]",
+      "types": [
+        "Genome binding/occupancy profiling by high throughput sequencing"
+      ]
+    },
+    "sha256_of_retrieved": {
+      "sample_brief": "891b13f9d6d1d9610a69798b0b6e158001ce4d42aa2c659224e2f1373c4ea7f5",
+      "series_brief": "533a9321aa0d0495d6bedae5626a8455454c88b6b05963954688a26056dde007"
+    },
+    "supplementary": {
+      "n_supplementary_files": 2,
+      "rows": [
+        {
+          "bytes_approx_from_dir_index": 55834574848,
+          "name": "GSE338484_RAW.tar",
+          "size_as_rendered": "52G"
+        },
+        {
+          "bytes_approx_from_dir_index": 2252,
+          "name": "filelist.txt",
+          "size_as_rendered": "2.2K"
+        }
+      ],
+      "rows_note": "first 12 of n_supplementary_files; full listing in the lane output dir",
+      "size_basis": "UNIT-ROUNDED sizes parsed from the NCBI FTP directory index; series has no filelist.txt, so exact byte counts are NOT_STATED_IN_DEPOSIT",
+      "total_bytes": 55834577100
+    }
+  }
+}
