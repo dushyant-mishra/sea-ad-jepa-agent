@@ -132,6 +132,8 @@ def test_revocation_identity_changes_when_defect_bearing_dependency_changes():
 
 
 def test_authoritative_append_requires_external_head_publication(tmp_path: Path):
+    # Historical test name retained for attack-matrix stability. In Task 4 V1
+    # this exercises publication mechanics only; it cannot create authority.
     store = _open(tmp_path)
     payload = {"kind": "STATE"}
     with pytest.raises(Task4CustodyError):
@@ -158,7 +160,7 @@ def test_revocation_survives_store_reload(tmp_path: Path):
     reopened = _open(tmp_path, expected_head=head)
     with pytest.raises(Task4CustodyError):
         reopened.assert_subject_not_revoked(subject)
-    assert reopened.replay().authoritative is True
+    assert reopened.replay().authoritative is False
 
 
 def test_stale_expected_head_and_truncation_fail_closed(tmp_path: Path):
@@ -174,6 +176,8 @@ def test_stale_expected_head_and_truncation_fail_closed(tmp_path: Path):
 
 
 def test_fixture_or_caller_signer_cannot_publish_authoritative_head(tmp_path: Path):
+    # Historical name retained; rejection here is a mechanics qualification,
+    # while authority itself remains impossible for repository-owned inputs.
     class BadSigner(HarnessSigner):
         promotion_authority = "NONE"
     store = _open(tmp_path)
@@ -188,6 +192,8 @@ def test_fixture_or_caller_signer_cannot_publish_authoritative_head(tmp_path: Pa
 
 
 def test_caller_created_head_publisher_cannot_anchor_authority(tmp_path: Path):
+    # Historical name retained; no caller-created publisher can make the replay
+    # authoritative because Task 4 V1 never grants repository-side authority.
     class BadPublisher(ExternalHeadPublisher):
         anchor_identity = "caller-anchor"
         promotion_authority = "NONE"

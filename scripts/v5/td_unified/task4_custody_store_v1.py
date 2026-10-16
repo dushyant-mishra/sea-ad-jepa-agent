@@ -1,10 +1,10 @@
-"""Persistent cross-process custody primitives for Unified Task 4.
+"""Persistent cross-process custody mechanics for Unified Task 4.
 
-Canonical JSONL events form an append-only hash chain. Every authoritative
-append must be published through an external head anchor before the local head
-record is advanced. Re-opened stores become authoritative only when the caller
-supplies the externally expected head. No producer-owned signing or anchoring
-secret lives in this module.
+Canonical JSONL events form an append-only hash chain. Signer, actor and head
+publisher interfaces are validated for mechanical replay integrity, but this
+repository cannot prove that caller-supplied Python objects are genuinely
+external trust roots. Therefore Task 4 V1 never converts these in-repository
+mechanics into authority. `expected_head` is an integrity check only.
 """
 from __future__ import annotations
 
@@ -183,8 +183,13 @@ class PersistentCustodyStore:
 
         if self.expected_head is not None and previous != self.expected_head:
             raise Task4CustodyError("custody head differs from externally expected head")
-        authoritative = self.expected_head is not None and published == self.expected_head and anchor_identity is not None
-        return CustodyReplayResult(previous, count, frozenset(revoked), authoritative)
+
+        # Critical authority boundary: every verifier, signer, actor registry,
+        # policy and publisher accepted by this module is supplied through an
+        # in-process interface. Repository code cannot establish that those
+        # objects originate from an independent trust root. Matching a supplied
+        # expected head therefore proves consistency only, never authority.
+        return CustodyReplayResult(previous, count, frozenset(revoked), False)
 
     def replay_reference(self) -> CustodyReplayResult:
         return self._replay_semantic()
@@ -219,16 +224,16 @@ class PersistentCustodyStore:
         head_publisher: ExternalHeadPublisher | None = None,
     ) -> str:
         if getattr(signer, "promotion_authority", None) != "EXTERNAL_HARNESS_AUTHORITY":
-            raise Task4CustodyError("caller-controlled or fixture signer cannot publish authoritative custody")
+            raise Task4CustodyError("caller-controlled or fixture signer cannot publish custody mechanics")
         if signer.signer_identity not in getattr(self.verifier, "trusted_signer_identities", frozenset()):
-            raise Task4CustodyError("signer identity is not in external trust root")
+            raise Task4CustodyError("signer identity is not in configured signer set")
         if head_publisher is None:
-            raise Task4CustodyError("authoritative custody append requires external head publisher")
+            raise Task4CustodyError("custody append requires a head publisher")
         if getattr(head_publisher, "promotion_authority", None) != "EXTERNAL_HEAD_AUTHORITY":
-            raise Task4CustodyError("caller-controlled head publisher cannot anchor authority")
+            raise Task4CustodyError("unqualified head publisher cannot publish custody mechanics")
         anchor_identity = getattr(head_publisher, "anchor_identity", None)
         if anchor_identity not in getattr(self.verifier, "trusted_anchor_identities", frozenset()):
-            raise Task4CustodyError("head publisher identity is not in external anchor trust root")
+            raise Task4CustodyError("head publisher identity is not in configured anchor set")
 
         base = dict(event_payload)
         kind = base.get("kind")
@@ -237,7 +242,7 @@ class PersistentCustodyStore:
 
         subject_sha, sequence = self.next_append_subject(base)
         if self.actor_registry is None or self.frozen_actor_policy is None or self.actor_attestation_verifier is None:
-            raise Task4CustodyError("authoritative custody append requires external actor-attestation roots")
+            raise Task4CustodyError("custody append requires configured actor-attestation inputs")
         try:
             validate_custody_signer(
                 signer.signer_identity,
@@ -266,7 +271,7 @@ class PersistentCustodyStore:
         new_head = _sha(event)
         published = head_publisher.publish(head=new_head, event_count=event["sequence"])
         if published != new_head:
-            raise Task4CustodyError("external head publisher did not acknowledge exact custody head")
+            raise Task4CustodyError("head publisher did not acknowledge exact custody head")
 
         tmp = self.head_path.with_suffix(".tmp")
         tmp.write_text(
@@ -279,7 +284,10 @@ class PersistentCustodyStore:
         with tmp.open("rb") as fh:
             os.fsync(fh.fileno())
         os.replace(tmp, self.head_path)
-        self.expected_head = new_head
+
+        # Do not self-mint an external expected head. The append advances local
+        # mechanics only; any later expected_head is an independently supplied
+        # consistency check and still cannot create authority in Task 4 V1.
         self._replay = self.replay_optimized()
         return new_head
 
