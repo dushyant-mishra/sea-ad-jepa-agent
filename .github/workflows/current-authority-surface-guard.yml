@@ -16,6 +16,16 @@ on:
       - docs/agent/memory-os/JEPA_PROJECT_MEMORY_OS.md
       - scripts/agent/verify_current_authority_surface_v1.py
       - tests/test_current_authority_surface_guard_v1.py
+      - src/sea_ad_jepa/v5/inactive_runtime_step_guard_v1.py
+      - src/sea_ad_jepa/v5/inactive_guarded_update_v1.py
+      - src/sea_ad_jepa/v5/inactive_checkpoint_binding_v1.py
+      - src/sea_ad_jepa/v5/inactive_update_reference.py
+      - tests/test_v5_inactive_runtime_step_guard_v1.py
+      - tests/test_v5_prefreeze_checkpoint_binding_v1.py
+      - tests/test_teacher_student_v5_inactive_update_reference.py
+      - docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json
+      - tests/governance/test_premise_qualification_v3_surface.py
+      - tests/governance/test_stage_a_v3_machine_contract.py
       - .github/workflows/current-authority-surface-guard.yml
   push:
     paths:
@@ -32,6 +42,16 @@ on:
       - docs/agent/memory-os/JEPA_PROJECT_MEMORY_OS.md
       - scripts/agent/verify_current_authority_surface_v1.py
       - tests/test_current_authority_surface_guard_v1.py
+      - src/sea_ad_jepa/v5/inactive_runtime_step_guard_v1.py
+      - src/sea_ad_jepa/v5/inactive_guarded_update_v1.py
+      - src/sea_ad_jepa/v5/inactive_checkpoint_binding_v1.py
+      - src/sea_ad_jepa/v5/inactive_update_reference.py
+      - tests/test_v5_inactive_runtime_step_guard_v1.py
+      - tests/test_v5_prefreeze_checkpoint_binding_v1.py
+      - tests/test_teacher_student_v5_inactive_update_reference.py
+      - docs/agent/JEPA_PREMISE_QUALIFICATION_V3_STATE_20261006.json
+      - tests/governance/test_premise_qualification_v3_surface.py
+      - tests/governance/test_stage_a_v3_machine_contract.py
       - .github/workflows/current-authority-surface-guard.yml
 
 permissions:
@@ -51,3 +71,38 @@ jobs:
         run: python -m pytest -q tests/test_current_authority_surface_guard_v1.py
       - name: Validate live current-authority surface
         run: python scripts/agent/verify_current_authority_surface_v1.py .
+      - name: Recheck frozen V3 premise governance
+        run: |
+          python -m pytest -q \
+            tests/governance/test_premise_qualification_v3_surface.py \
+            tests/governance/test_stage_a_v3_machine_contract.py
+
+  inactive-runtime-step-guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install focused runtime dependencies
+        run: |
+          python -m pip install --disable-pip-version-check pytest numpy
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Run guarded inactive-runtime tests
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python -m pytest -q \
+            tests/test_v5_inactive_runtime_step_guard_v1.py \
+            tests/test_v5_prefreeze_checkpoint_binding_v1.py \
+            tests/test_teacher_student_v5_inactive_update_reference.py
+      - name: Compile guarded V5 successor modules
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python -m py_compile \
+            src/sea_ad_jepa/v5/inactive_runtime_step_guard_v1.py \
+            src/sea_ad_jepa/v5/inactive_guarded_update_v1.py \
+            src/sea_ad_jepa/v5/inactive_checkpoint_binding_v1.py \
+            src/sea_ad_jepa/v5/inactive_update_reference.py
