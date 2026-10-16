@@ -102,6 +102,25 @@ class CampaignState(str, Enum):
 
 
 @dataclass(frozen=True)
+class ExposureRecord:
+    campaign_identity: str
+    exposure_id: str
+    realization_id: str
+    realization_content_sha256: str
+    method_scientific_identity: str
+    ordinal: int
+
+    def identity_tuple(self) -> tuple[str, str, str, str, int]:
+        return (
+            self.exposure_id,
+            self.realization_id,
+            self.realization_content_sha256,
+            self.method_scientific_identity,
+            self.ordinal,
+        )
+
+
+@dataclass(frozen=True)
 class QualificationCampaign:
     campaign_id: str
     dependencies: Mapping[str, object]
@@ -112,16 +131,23 @@ class QualificationCampaign:
     exposures_consumed: int = 0
     sealed_budget: int = 0
     exposed_realization_ids: tuple[str, ...] = ()
+    issued_exposures: tuple[tuple[str, str, str, str, int], ...] = ()
     frozen_outputs: tuple[tuple[str, str], ...] = ()
     terminal_statuses: tuple[tuple[str, str], ...] = ()
 
     def to_payload(self) -> dict[str, object]:
         return {
-            "object_role": "QUALIFICATION_CAMPAIGN", "campaign_id": self.campaign_id,
-            "dependencies": dict(self.dependencies), "namespace": self.namespace,
-            "promotion_authority": self.promotion_authority, "state": self.state.value,
-            "campaign_identity": self.campaign_identity, "exposures_consumed": self.exposures_consumed,
-            "sealed_budget": self.sealed_budget, "exposed_realization_ids": list(self.exposed_realization_ids),
+            "object_role": "QUALIFICATION_CAMPAIGN",
+            "campaign_id": self.campaign_id,
+            "dependencies": dict(self.dependencies),
+            "namespace": self.namespace,
+            "promotion_authority": self.promotion_authority,
+            "state": self.state.value,
+            "campaign_identity": self.campaign_identity,
+            "exposures_consumed": self.exposures_consumed,
+            "sealed_budget": self.sealed_budget,
+            "exposed_realization_ids": list(self.exposed_realization_ids),
+            "issued_exposures": [list(x) for x in self.issued_exposures],
             "frozen_outputs": [list(x) for x in self.frozen_outputs],
             "terminal_statuses": [list(x) for x in self.terminal_statuses],
         }
@@ -148,16 +174,6 @@ class SealedRealizationSet:
     sealed_root: str
     def to_payload(self) -> dict[str, object]:
         return {"object_role":"SEALED_REALIZATION_SET","campaign_identity":self.campaign_identity,"definition_sha256":self.definition_sha256,"realization_ids":list(self.realization_ids),"content_sha256s":list(self.content_sha256s),"challenge_classes":list(self.challenge_classes),"budget":self.budget,"sealed_root":self.sealed_root}
-
-
-@dataclass(frozen=True)
-class ExposureRecord:
-    campaign_identity: str
-    exposure_id: str
-    realization_id: str
-    realization_content_sha256: str
-    method_scientific_identity: str
-    ordinal: int
 
 
 @dataclass(frozen=True)
@@ -256,6 +272,10 @@ def seal_realization_set(campaign: QualificationCampaign, definition: SealedChal
     return replace(campaign, state=CampaignState.REALIZATION_SET_SEALED, sealed_budget=budget), sealed
 
 
+def _issued_exposure_is_exact(campaign: QualificationCampaign, exposure: ExposureRecord) -> bool:
+    return exposure.campaign_identity == campaign.campaign_identity and exposure.identity_tuple() in campaign.issued_exposures
+
+
 def issue_exposure(campaign: QualificationCampaign, sealed: SealedRealizationSet, *, realization_id: str, method_scientific_identity: str, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
     if campaign.state not in {CampaignState.REALIZATION_SET_SEALED, CampaignState.EXPOSURE_ACTIVE}:
@@ -264,19 +284,25 @@ def issue_exposure(campaign: QualificationCampaign, sealed: SealedRealizationSet
         raise Task4ChallengeCustodyError("realization is not in this committed finite exam")
     if realization_id in campaign.exposed_realization_ids:
         raise Task4ChallengeCustodyError("committed realization already exposed; rename/rerun cannot reset exposure")
-    if type(method_scientific_identity) is not str or not method_scientific_identity:
-        raise Task4ChallengeCustodyError("method scientific identity must be non-empty")
+    if not _hex(method_scientific_identity, 64):
+        raise Task4ChallengeCustodyError("method scientific identity must be exact lowercase SHA-256")
     idx = sealed.realization_ids.index(realization_id)
     ordinal = campaign.exposures_consumed + 1
     exposure = ExposureRecord(campaign.campaign_identity, f"exp-{ordinal}", realization_id, sealed.content_sha256s[idx], method_scientific_identity, ordinal)
-    return replace(campaign,state=CampaignState.EXPOSURE_ACTIVE,exposures_consumed=ordinal,exposed_realization_ids=campaign.exposed_realization_ids+(realization_id,)), exposure
+    return replace(
+        campaign,
+        state=CampaignState.EXPOSURE_ACTIVE,
+        exposures_consumed=ordinal,
+        exposed_realization_ids=campaign.exposed_realization_ids + (realization_id,),
+        issued_exposures=campaign.issued_exposures + (exposure.identity_tuple(),),
+    ), exposure
 
 
 def record_exposure_terminal(campaign: QualificationCampaign, exposure: ExposureRecord, *, terminal_status: str, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
     allowed={"EVALUATED","TECHNICAL_FAILURE","UNSUPPORTED_NOT_ESTIMABLE","DEFECT_INVALIDATED"}
-    if terminal_status not in allowed or exposure.realization_id not in campaign.exposed_realization_ids:
-        raise Task4ChallengeCustodyError("invalid terminal exposure accounting")
+    if terminal_status not in allowed or not _issued_exposure_is_exact(campaign, exposure):
+        raise Task4ChallengeCustodyError("invalid or hand-constructed terminal exposure accounting")
     existing=dict(campaign.terminal_statuses)
     if exposure.realization_id in existing and existing[exposure.realization_id] != terminal_status:
         raise Task4ChallengeCustodyError("terminal accounting cannot be rewritten")
@@ -286,8 +312,8 @@ def record_exposure_terminal(campaign: QualificationCampaign, exposure: Exposure
 
 def freeze_method_output(campaign: QualificationCampaign, exposure: ExposureRecord, *, output_sha256: str, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
-    if campaign.state is not CampaignState.EXPOSURE_ACTIVE or not _hex(output_sha256,64) or exposure.realization_id not in campaign.exposed_realization_ids:
-        raise Task4ChallengeCustodyError("invalid output freeze")
+    if campaign.state is not CampaignState.EXPOSURE_ACTIVE or not _hex(output_sha256,64) or not _issued_exposure_is_exact(campaign, exposure):
+        raise Task4ChallengeCustodyError("invalid or hand-constructed output freeze")
     frozen=dict(campaign.frozen_outputs)
     if exposure.realization_id in frozen:
         raise Task4ChallengeCustodyError("output already frozen and cannot mutate")
