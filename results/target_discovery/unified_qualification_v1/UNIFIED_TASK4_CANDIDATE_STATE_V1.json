@@ -1,0 +1,103 @@
+{
+  "object_role": "UNIFIED_TASK4_CANDIDATE_STATE_V1",
+  "status": "SUCCESSOR4_MECHANICALLY_GREEN__HOSTILE_REVIEW_REQUIRED",
+  "authority_effect": "NONE",
+  "frozen_task3_base_sha": "117dd51dea827e734b299982da93991b934bdc8f",
+  "rejected_candidates": [
+    {
+      "candidate_sha": "b31371d62f3270c965d321e61c35898ca6be3721",
+      "candidate_branch": "candidate/unified-task4-green-b31371d6-20261016",
+      "review_pr": 405,
+      "review_run_id": 38953203662,
+      "review_job_id": 117149477378,
+      "verdict": "REJECT_CALLER_SELF_MINTED_TRUST_ROOTS"
+    },
+    {
+      "candidate_sha": "c537db4e7b5b916cb3ddee1872fd4afa623a9b33",
+      "candidate_branch": "candidate/unified-task4-successor-green-c537db4e-20261016",
+      "review_pr": 407,
+      "review_run_id": 38954964212,
+      "review_job_id": 117155395974,
+      "verdict": "REJECT_POST_SEAL_OBJECT_SUBSTITUTION"
+    },
+    {
+      "candidate_sha": "b5ed724cbc6a39d4f2cd68103c5367c2cfafcff3",
+      "candidate_branch": "candidate/unified-task4-successor2-green-b5ed724c-20261016",
+      "review_pr": 409,
+      "review_run_id": 38956096848,
+      "review_job_id": 117159222272,
+      "verdict": "REJECT_CALLER_FABRICABLE_ADVANCED_CAMPAIGN_STATE"
+    },
+    {
+      "candidate_sha": "d41720be93db27801fdac1ae62cfd608084dce25",
+      "candidate_branch": "candidate/unified-task4-successor3-green-d41720be-20261016",
+      "review_pr": 413,
+      "review_run_id": 38999531146,
+      "review_job_id": 117299315140,
+      "verdict": "REJECT_POST_REVEAL_TERMINAL_ACCOUNTING_MUTATION"
+    }
+  ],
+  "superseded_review_pins": [
+    {
+      "candidate_sha": "56b864e2b944956746771fb5d26040835d093dd5",
+      "candidate_branch": "candidate/unified-task4-successor4-green-56b864e2-20261017",
+      "review_pr": 415,
+      "reason": "MECHANICS_GREEN_BUT_REVIEW_PACKET_AND_MACHINE_STATE_STALE"
+    }
+  ],
+  "active_repair_pr": 414,
+  "active_repair_branch": "repair/unified-task4-pre-reveal-accounting-20261016",
+  "candidate_sha_binding": "PIN_ONLY_AFTER_REVIEW_ARTIFACT_CONSISTENCY_GREEN",
+  "last_verified_code_test_sha": "56b864e2b944956746771fb5d26040835d093dd5",
+  "last_verified_task4_run_id": 38999855385,
+  "last_verified_task4_job_id": 117300282006,
+  "last_verified_task4_checks": {
+    "focused_task4": "PASS_109__SKIP_1",
+    "projected_100k_replay": "PASS_1",
+    "full_unified_regression": "PASS_300__SKIP_1"
+  },
+  "same_head_regressions": {
+    "task2_run": 38999855298,
+    "task2_status": "PASS",
+    "task3_registry_run": 38999855309,
+    "task3_registry_status": "PASS",
+    "unified_synthetic_integration_run": 38999855304,
+    "unified_synthetic_integration_status": "PASS",
+    "task0_environment_status": "INHERITED_WORKFLOW_ENVIRONMENT_FAILURES_SEPARATELY_CLASSIFIED"
+  },
+  "preserved_red": [
+    {"class":"INITIAL_MISSING_INTERFACES","run_id":38938697657,"job_id":117100597615},
+    {"class":"TERMINAL_ACCOUNTING","run_id":38943608912,"job_id":117117078319},
+    {"class":"SCHEMA_DRIFT","run_id":38944319232,"job_id":117119472176},
+    {"class":"C1_C9_CLOSED_VOCABULARY","run_id":38944836349,"job_id":117121219990},
+    {"class":"ACTOR_ACTION_SIGNER_BINDING","run_id":38945592644,"job_id":117123776998},
+    {"class":"SELF_ASSERTED_AUTHORITY_CONTEXT","run_id":38946266116,"job_id":117126036930},
+    {"class":"CALLER_SELF_MINTED_FULL_TRUST_GRAPH","run_id":38953203662,"job_id":117149477378},
+    {"class":"EXPECTED_HEAD_AUTHORITY_SELF_MINT","run_id":38953623988,"job_id":117150890636},
+    {"class":"POST_SEAL_DEFINITION_AND_REALIZATION_SUBSTITUTION","run_id":38954964212,"job_id":117155395974},
+    {"class":"EXACT_SEALED_OBJECT_BINDING","run_id":38955121063,"job_id":117155935852},
+    {"class":"CALLER_FABRICABLE_ADVANCED_CAMPAIGN_STATE","run_id":38956096848,"job_id":117159222272},
+    {"class":"LIFECYCLE_PROVENANCE_DIRECT_AND_COPY_FORGERY","run_id":38956350630,"job_id":117160081568},
+    {"class":"POST_REVEAL_TERMINAL_ACCOUNTING_MUTATION","run_id":38999531146,"job_id":117299315140}
+  ],
+  "successor_authority_law": {
+    "repository_constructible_custody": "MECHANICS_ONLY",
+    "expected_head_semantics": "INTEGRITY_CONSISTENCY_ONLY",
+    "repository_replay_authoritative": false,
+    "genuine_external_root_wired": false,
+    "campaign_binds_exact_definition_sha": true,
+    "campaign_binds_exact_realization_root": true,
+    "in_process_lifecycle_provenance_required": true,
+    "direct_advanced_campaign_construction_allowed": false,
+    "lifecycle_provenance_scope": "PROCESS_LOCAL_MECHANICS_ONLY",
+    "terminal_accounting_complete_before_hidden_reveal": true,
+    "terminal_accounting_mutable_after_hidden_reveal": false
+  },
+  "final_authority_state": "FAIL_CLOSED_EXTERNAL_ROOT_AND_C5_C9_CONTEXT_NOT_WIRED",
+  "frozen_task0_task3_production_modified": false,
+  "final_hidden_material_generated": false,
+  "target_winner": "NONE",
+  "representation_winner": "NONE",
+  "real_training": "OFF",
+  "stage4_authorized": false
+}
