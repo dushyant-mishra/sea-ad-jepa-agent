@@ -31,7 +31,7 @@ def _deps():
     }
 
 
-def _ready_for_finalize():
+def _all_outputs_frozen():
     camp = c.create_campaign("terminal-accounting", _deps(), barrier_status=None, namespace="DEVELOPMENT")
     camp, definition = c.seal_definition(camp, family="fixture", hidden_spec=b"hidden-fixture")
     rows = [
@@ -44,22 +44,22 @@ def _ready_for_finalize():
         camp, exposure = c.issue_exposure(camp, sealed, realization_id=rid, method_scientific_identity=METHOD)
         camp, _ = c.freeze_method_output(camp, exposure, output_sha256=out)
         exposures.append(exposure)
-    camp, _ = c.reveal_hidden_material(camp, definition, sealed, hidden_spec=b"hidden-fixture")
-    camp, _ = c.verify_regeneration(camp, sealed, rows)
-    return camp, sealed, exposures
+    return camp, definition, sealed, rows, exposures
 
 
-def test_finalize_requires_explicit_terminal_accounting_for_every_realization():
-    camp, sealed, exposures = _ready_for_finalize()
+def test_reveal_requires_explicit_terminal_accounting_for_every_realization():
+    camp, definition, sealed, _, exposures = _all_outputs_frozen()
     camp = c.record_exposure_terminal(camp, exposures[0], terminal_status="EVALUATED")
     with pytest.raises(c.Task4ChallengeCustodyError):
-        c.finalize_custody(camp, sealed)
+        c.reveal_hidden_material(camp, definition, sealed, hidden_spec=b"hidden-fixture")
 
 
 def test_finalize_succeeds_only_after_every_realization_has_terminal_status():
-    camp, sealed, exposures = _ready_for_finalize()
+    camp, definition, sealed, rows, exposures = _all_outputs_frozen()
     for exposure in exposures:
         camp = c.record_exposure_terminal(camp, exposure, terminal_status="EVALUATED")
+    camp, _ = c.reveal_hidden_material(camp, definition, sealed, hidden_spec=b"hidden-fixture")
+    camp, _ = c.verify_regeneration(camp, sealed, rows)
     camp, receipt, evidence = c.finalize_custody(camp, sealed)
     assert camp.state is c.CampaignState.CUSTODY_COMPLETE
     assert set(dict(camp.terminal_statuses)) == set(sealed.realization_ids)
