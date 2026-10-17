@@ -1,0 +1,73 @@
+{
+  "schema": "JEPA_NO_REPEAT_DECISION_TABLE_V1",
+  "date": "2026-10-14",
+  "authority": "CUSTODY_ONLY__NO_SCIENTIFIC_OR_TRAINING_AUTHORITY",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "classification_order": [
+    "ALREADY_AUDITED",
+    "SUPERSEDED",
+    "OPEN",
+    "CHANGED_INPUT_REQUIRES_REQUALIFICATION"
+  ],
+  "new_audit_allowed_only_if": [
+    "claim_absent_from_custody_surfaces",
+    "governing_bytes_changed",
+    "scientific_input_or_authority_context_changed",
+    "concrete_new_failure_mode_not_covered_by_existing_hostile_tests"
+  ],
+  "default_no_repeat": [
+    "population_support_census_pr349",
+    "macha_real_data_hostile_audit",
+    "spent_corrected_replay_pr314",
+    "td_repair_lineage_364_369",
+    "v79_q00_q11_history",
+    "old_synthetic_tasks_1_2",
+    "teacher_student_t1_c2_mechanics",
+    "optimizer_before_ema_chronology",
+    "checkpoint_rng_resume_mechanics",
+    "full104_support_geometry",
+    "donor_primary_target_and_p_q_separation",
+    "visibility_context_within_donor_audits",
+    "target_identity_shortcut_discovery",
+    "masking_shortcut_discovery",
+    "v5_preexecution_6_48_128x8_carryover_discovery",
+    "semantic_carryover_biology_common_core_estimand_rank",
+    "v5_inactive_update_reference_mechanics",
+    "layer2_cross_view_shortcut_audit"
+  ],
+  "never_reactivate_without_new_prospective_authority": [
+    "v79_not_qualified",
+    "discarded_x4_within_outputs",
+    "old_wrong_cell_r1_null",
+    "g6_zero_margin_human_authority",
+    "g8_599_thinnings_as_biological_calibration",
+    "caller_supplied_geometry_human_authority",
+    "pr328_disjoint_block_geometry_as_production_biology",
+    "duplicate_repairs_375_378",
+    "old_synthetic_tasks_3_12_as_parallel_authority_lane"
+  ],
+  "changed_input_requalification_examples": [
+    "exact_tqb_bound_teacher",
+    "exact_tqb_bound_student",
+    "joined_current_teacher_student_ema_runtime",
+    "current_ema_timescale",
+    "current_model_and_protected_registry",
+    "current_gpu_runtime_and_kernel_environment",
+    "current_checkpoint_source_runtime_provenance",
+    "current_full_falsifier_battery",
+    "downstream_certification",
+    "runtime_eligibility"
+  ],
+  "role_separation": {
+    "macha_gpu_execution": "EXECUTION_EVIDENCE_ONLY_UNTIL_SEPARATELY_ADJUDICATED",
+    "macha_independent_review": "REVIEW_ROLE_LOGICALLY_DISTINCT_FROM_EXECUTION"
+  },
+  "successor_questionnaire": [
+    "What exact scientific claim is being qualified?",
+    "Is it already present in the historical audit index or downstream reuse matrix?",
+    "Are the relevant bytes identical to previously audited bytes?",
+    "Did target, support, population, TQB, model geometry, runtime or authority context change?",
+    "What exact new failure mode is not covered by historical hostile tests?"
+  ],
+  "decision_rule": "IF_ALREADY_AUDITED_AND_BYTES_UNCHANGED_AND_CONTEXT_UNCHANGED_THEN_REUSE_DO_NOT_REPEAT"
+}

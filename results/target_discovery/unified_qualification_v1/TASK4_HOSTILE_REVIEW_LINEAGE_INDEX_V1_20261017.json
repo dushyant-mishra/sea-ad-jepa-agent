@@ -1,0 +1,91 @@
+{
+  "schema": "TASK4_HOSTILE_REVIEW_LINEAGE_INDEX_V1",
+  "date": "2026-10-17",
+  "frozen_task3_sha": "117dd51dea827e734b299982da93991b934bdc8f",
+  "design_plan": {
+    "pr": 402,
+    "head": "979833a51391248f568426f508cce1d01e3e32a5"
+  },
+  "initial_red": {
+    "pr": 403,
+    "head": "c5e40b04c6dcbb07d3a92edc9f9677ceb7f584ff",
+    "run": 38938697657,
+    "job": 117100597615,
+    "result": "14 intentional failures",
+    "token": "contents:read"
+  },
+  "candidate_lineage": [
+    {
+      "sha": "b31371d62f3270c965d321e61c35898ca6be3721",
+      "status": "REJECTED",
+      "finding": "caller-self-minted trust graph / caller-controlled injected trust roots",
+      "review_prs": [405, 412],
+      "repair_pr": 406
+    },
+    {
+      "sha": "c537db4e7b5b916cb3ddee1872fd4afa623a9b33",
+      "status": "REJECTED",
+      "finding": "post-seal challenge-definition and realization-set substitution",
+      "review_prs": [407],
+      "repair_pr": 408
+    },
+    {
+      "sha": "b5ed724cbc6a39d4f2cd68103c5367c2cfafcff3",
+      "status": "REJECTED",
+      "finding": "caller-fabricable advanced QualificationCampaign state / lifecycle provenance bypass",
+      "review_prs": [409],
+      "repair_pr": 410
+    },
+    {
+      "sha": "d41720be93db27801fdac1ae62cfd608084dce25",
+      "status": "REJECTED",
+      "finding": "post-reveal terminal-accounting mutation / hidden reveal before terminal accounting freeze",
+      "review_prs": [413],
+      "repair_pr": 414
+    },
+    {
+      "sha": "56b864e2b944956746771fb5d26040835d093dd5",
+      "status": "SUPERSEDED_REVIEW_PIN",
+      "finding": "mechanically green but contained stale predecessor review artifacts",
+      "review_prs": [415]
+    },
+    {
+      "sha": "068880822bca8036e605e3c5264770ce89057fee",
+      "status": "REJECTED_BY_CURRENT_HOSTILE_RED",
+      "review_prs": [416, 417],
+      "pre_attack_green": {
+        "task4_run": 39000088264,
+        "task4_job": 117300978493,
+        "focused": "109 passed, 1 skipped",
+        "projected_100k": "PASS",
+        "full_unified": "300 passed, 1 skipped",
+        "task2_run": 39000088288,
+        "task3_run": 39000088311,
+        "synthetic_integration_run": 39000088325
+      },
+      "current_red": {
+        "review_head": "c543bd7c8b40d89db550dedad3ff5adbfbc356c0",
+        "run": 39000234158,
+        "job": 117301422733,
+        "token": "contents:read",
+        "focused": "1 failed, 109 passed, 1 skipped",
+        "failing_test": "test_replaying_preexisting_rows_is_not_deterministic_regeneration_evidence",
+        "finding": "REGENERATION_VERIFIED accepts caller replay/copy of already-known sealed rows without proof the frozen generator/code/policy/RNG contract actually regenerated them"
+      }
+    }
+  ],
+  "current_state": "TASK4_SUCCESSOR4_REJECTED_BY_REGENERATION_PROVENANCE_RED__SUCCESSOR5_REPAIR_REQUIRED__INDEPENDENT_ACCEPTANCE_ABSENT",
+  "next_repair_attacks": [
+    "echo original rows",
+    "copy rows into fresh object with same root",
+    "fake generator object/interface",
+    "generator code identity substitution",
+    "generator policy identity substitution",
+    "RNG identity/state substitution",
+    "regeneration before lawful reveal",
+    "regeneration against different sealed definition/root",
+    "stale/replayed regeneration receipt",
+    "post-reveal provenance mutation"
+  ],
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

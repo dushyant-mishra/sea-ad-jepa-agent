@@ -1,0 +1,51 @@
+{
+  "schema": "JEPA_LANE_AUDIT_SNAPSHOT_V4",
+  "date": "2026-10-17",
+  "status": "DURABLE_AUDIT_CUSTODY__TASK4_SUCCESSOR4_REJECTED_BY_HOSTILE_RED__NO_REPEAT",
+  "frozen_authority": {
+    "task0": "e37a22b8059c0a4a93a789a8ca916fb7acde9fe3",
+    "task1": "799d2e235901dfad9ce3b305c767a1c989e362f6",
+    "task2": "c7dfff1cee608e4a101855d42cf0af08491c2aaf",
+    "task3": "117dd51dea827e734b299982da93991b934bdc8f"
+  },
+  "task3": {
+    "freeze_branch": "freeze/unified-task3-accepted-117dd51d-20261016",
+    "acceptance_pr": 401,
+    "review_head": "c33f2bd2",
+    "verdict": "ACCEPT_UNIFIED_TASK3",
+    "rejected_predecessors": [
+      "851544e8dc2a3881193a4d5bbcf07933e1d61149",
+      "68df31584d17f91da2635cdf8e03bbe93695f9d1",
+      "d9e58a18da5bcfc95d9b9e7484e5686d403c55d4"
+    ],
+    "carry_forward": ["C1-C9", "R4", "R7", "R5 pooled donor-level scope"]
+  },
+  "task4": {
+    "design_pr": 402,
+    "design_head": "979833a51391248f568426f508cce1d01e3e32a5",
+    "red_pr": 403,
+    "initial_red_run": 38938697657,
+    "initial_red_job": 117100597615,
+    "implementation_pr": 404,
+    "current_review_pr": 417,
+    "current_rejected_candidate": "068880822bca8036e605e3c5264770ce89057fee",
+    "current_review_head": "c543bd7c8b40d89db550dedad3ff5adbfbc356c0",
+    "current_red_run": 39000234158,
+    "current_red_job": 117301422733,
+    "current_failure": "caller replay/copy of already-known sealed rows can obtain REGENERATION_VERIFIED without generator/code/policy/RNG regeneration provenance",
+    "status": "TASK4_SUCCESSOR4_REJECTED_BY_REGENERATION_PROVENANCE_RED__SUCCESSOR5_REPAIR_REQUIRED__INDEPENDENT_ACCEPTANCE_ABSENT",
+    "lineage_index": "results/target_discovery/unified_qualification_v1/TASK4_HOSTILE_REVIEW_LINEAGE_INDEX_V1_20261017.json"
+  },
+  "historical_science_custody": {
+    "population_support_pr": 349,
+    "population_support_head": "1ab453e5cb60efb209a8eee2aecb61c5ea0fbfc7",
+    "population_registry_sha256": "50b29d7e1137c5a457fd0b528580030dedfbeff1b809e2b426f8f640ae38486d",
+    "population": {"rows": 6351753, "donors": 149, "observation_operators": 42, "sources": 3, "donor_operator_strata": 2028, "reader_fit": 104, "reader_validation": 22, "reader_oracle": 23},
+    "repaired_td_prs": {"G8":364,"G6":365,"G9_S1_S2":366,"R1":367,"G2":368,"G7":362,"R4_C6_C4":358,"C4_C6_firewall":351,"G12":360,"system_battery":369},
+    "superseded_duplicates": [375,376,377,378],
+    "motif_program_design": "docs/agent/TD_MOTIF_PROGRAM_EVIDENCE_LAYER_CHROMVAR_LIMMA_V1_20261015.md"
+  },
+  "no_repeat_classes": ["ALREADY_AUDITED", "SUPERSEDED", "OPEN", "CHANGED_INPUT_REQUIRES_REQUALIFICATION"],
+  "local_artifact_manifest": "results/target_discovery/unified_qualification_v1/LOCAL_ARTIFACT_CUSTODY_MANIFEST_V4_20261017.json",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

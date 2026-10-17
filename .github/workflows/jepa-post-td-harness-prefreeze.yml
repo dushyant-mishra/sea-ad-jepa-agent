@@ -1,0 +1,61 @@
+name: JEPA post-TD harness prefreeze
+
+on:
+  push:
+    branches:
+      - 'implementation/jepa-post-td-harness-prefreeze-20261013'
+    paths:
+      - 'scripts/v5/jepa_post_td_harness_contract_v1.py'
+      - 'scripts/v5/jepa_post_td_rehearsal_preflight_v1.py'
+      - 'scripts/v5/jepa_post_td_tournament_controller_v1.py'
+      - 'scripts/v5/jepa_post_td_presentation_ema_v1.py'
+      - 'tests/v5/test_jepa_post_td_harness_contract_v1.py'
+      - 'tests/v5/test_jepa_post_td_rehearsal_preflight_v1.py'
+      - 'tests/v5/test_jepa_post_td_tournament_controller_v1.py'
+      - 'tests/v5/test_jepa_post_td_presentation_ema_v1.py'
+      - 'docs/agent/JEPA_POST_TD_HARNESS_PREFREEZE_20261013.md'
+      - '.github/workflows/jepa-post-td-harness-prefreeze.yml'
+  pull_request:
+    paths:
+      - 'scripts/v5/jepa_post_td_harness_contract_v1.py'
+      - 'scripts/v5/jepa_post_td_rehearsal_preflight_v1.py'
+      - 'scripts/v5/jepa_post_td_tournament_controller_v1.py'
+      - 'scripts/v5/jepa_post_td_presentation_ema_v1.py'
+      - 'tests/v5/test_jepa_post_td_harness_contract_v1.py'
+      - 'tests/v5/test_jepa_post_td_rehearsal_preflight_v1.py'
+      - 'tests/v5/test_jepa_post_td_tournament_controller_v1.py'
+      - 'tests/v5/test_jepa_post_td_presentation_ema_v1.py'
+      - 'docs/agent/JEPA_POST_TD_HARNESS_PREFREEZE_20261013.md'
+      - '.github/workflows/jepa-post-td-harness-prefreeze.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile post-TD harness sources and tests
+        run: |
+          python -m py_compile \
+            scripts/v5/jepa_post_td_harness_contract_v1.py \
+            scripts/v5/jepa_post_td_rehearsal_preflight_v1.py \
+            scripts/v5/jepa_post_td_tournament_controller_v1.py \
+            tests/v5/test_jepa_post_td_harness_contract_v1.py \
+            tests/v5/test_jepa_post_td_rehearsal_preflight_v1.py \
+            tests/v5/test_jepa_post_td_tournament_controller_v1.py \
+            tests/v5/test_jepa_post_td_presentation_ema_v1.py
+      - name: Run post-TD harness contract tests
+        run: |
+          python -m unittest \
+            tests.v5.test_jepa_post_td_harness_contract_v1 \
+            tests.v5.test_jepa_post_td_rehearsal_preflight_v1 \
+            tests.v5.test_jepa_post_td_tournament_controller_v1 \
+            tests.v5.test_jepa_post_td_presentation_ema_v1 \
+            -v

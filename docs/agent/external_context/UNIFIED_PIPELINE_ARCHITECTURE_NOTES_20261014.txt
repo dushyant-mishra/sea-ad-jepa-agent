@@ -1,0 +1,422 @@
+This is **architectural**, and I agree with the change in direction: the “synthetic lane” should stop existing as an independently advancing execution lane.
+
+The project now needs **one TD→downstream qualification pipeline**, with known-truth synthetic worlds embedded as a certification mode of the same production system.
+
+Your success criterion is now clear:
+
+> A single scientific chain of custody in which the same producers, artifacts, executors, registries, controller, and downstream contracts are exercised first under known truth and later on sealed human data—without a parallel synthetic implementation and without caller-supplied scientific authority.
+
+That is also consistent with where the real lane has actually evolved. The latest Macha-repair set repeatedly converts caller-authority into explicit producer requirements: G8 needs a lawful producer/statistical estimand, G6 needs produced substantive-margin qualification, geometry needs an independently qualified producer pipeline, R1 needs the real identity-null producer, and G2 needs a static candidate-specific policy.
+
+## The architectural change I recommend
+
+We should collapse the current conceptual split into one pipeline:
+
+```text
+AUTHENTICATED REAL CALIBRATION / SUPPORT
+                  │
+                  ▼
+        TD PRODUCER CONTRACTS
+                  │
+        ┌─────────┴──────────┐
+        │                    │
+        ▼                    ▼
+KNOWN-TRUTH MODE        HUMAN SEALED MODE
+synthetic substrate     authenticated real inputs
+hidden truth only       no truth object
+        │                    │
+        └─────────┬──────────┘
+                  ▼
+      AUTHENTICATED ARTIFACTS
+                  │
+                  ▼
+        EXACT GATE EXECUTORS
+                  │
+                  ▼
+       TD QUALIFICATION REGISTRY
+                  │
+                  ▼
+         FROZEN TD CONTROLLER
+                  │
+                  ▼
+     TARGET QUALIFICATION BUNDLE
+                  │
+                  ▼
+   DOWNSTREAM CERTIFICATION LAYER
+ teacher → evidence restriction → representation
+          → JEPA objective → evaluation
+                  │
+                  ▼
+          TRAINING ELIGIBILITY
+```
+
+There is no synthetic TD controller, synthetic G6, synthetic R1, or synthetic geometry executor.
+
+There is only:
+
+**one producer, one artifact schema, one executor.**
+
+Known-truth mode supplies a controlled input substrate and a hidden truth adjudicator around that same path.
+
+## Four integration objects should become the spine
+
+### 1. `TD_EXECUTION_MANIFEST_V1`
+
+This answers:
+
+**What exact scientific system are we about to run?**
+
+It freezes exact identities for:
+
+- producer implementations;
+- executor implementations;
+- support/observation contracts;
+- metric definitions;
+- candidate policies;
+- reference producers;
+- controller implementation;
+- registries and canonical universes;
+- required challenge suites.
+
+Critically, it contains immutable code/artifact identities—not PR numbers.
+
+The current problem where #355 becomes #366, #359 becomes #364, and handoffs immediately become stale disappears. A new code head means a **new manifest identity**, not an implicit upgrade.
+
+### 2. `TD_QUALIFICATION_REGISTRY_V1`
+
+This answers:
+
+**What has actually been demonstrated about each scientific component?**
+
+I would make the lifecycle essentially the one you proposed:
+
+```text
+SEMANTICS_ONLY
+    ↓
+FIXTURE_SAME_INTERFACE
+    ↓
+SAME_CODE_PATH
+    ↓
+KNOWN_TRUTH_QUALIFIED
+    ↓
+REAL_REFERENCE_READY
+    ↓
+HUMAN_EXECUTABLE
+```
+
+But I would make one important refinement:
+
+Qualification should attach to a **producer→artifact→executor unit**, not merely to a “gate.”
+
+For example:
+
+```text
+G9_S1_S2_UNIT
+  support producer
+  alignment producer
+  displacement producer
+  adverse-null producer
+  reference producer
+  decision executor
+```
+
+If any producer changes, the qualification identity changes.
+
+That directly captures what Macha taught us.
+
+### 3. `TARGET_QUALIFICATION_BUNDLE_V1`
+
+This answers:
+
+**What exactly did TD qualify, and what must downstream preserve?**
+
+This is the scientific handoff boundary between TD and JEPA.
+
+It should include both positive qualification and constraints:
+
+```text
+target_or_portfolio
+target_semantics
+canonical_addresses
+relation_semantics
+observation_contract
+support_universe
+evidence_rights
+estimability_scope
+required_sources
+gate_receipts
+producer_receipts
+reference_receipts
+mandatory_falsifiers
+negative_controls
+uncertainty_semantics
+known_limitations
+forbidden_interpretations
+downstream_regression_requirements
+```
+
+The bundle should support:
+
+```text
+TARGET = NONE
+```
+
+as a completely valid terminal TD result.
+
+That is important. The real TD controller must not be structurally forced to choose something.
+
+### 4. `DOWNSTREAM_CERTIFICATION_CONTRACT_V1`
+
+This answers:
+
+**What must the JEPA pipeline prove before it is allowed to use the TD result?**
+
+This is where our entire historical teacher/student audit becomes operational.
+
+The contract should test the actual downstream path for:
+
+- target semantics preservation;
+- teacher genuinely constructing the qualified object;
+- evidence-restricted student input;
+- no target leakage;
+- no normalization leakage;
+- no support leakage;
+- no query-scalar leakage;
+- no hidden-total leakage;
+- donor/source isolation;
+- wrong-cell controls;
+- evidence starvation;
+- rich-teacher legitimacy;
+- oracle separation;
+- stable-subspace versus coordinate interpretation;
+- inherited TD negative controls.
+
+Only after this certification passes does:
+
+```text
+REAL_TRAINING_OFF
+```
+
+become even eligible for reconsideration.
+
+Not automatically switched on—eligible for the next authorization gate.
+
+---
+
+# What happens to the production synthetic work
+
+We should **not throw it away**.
+
+Most of the work survives, but its ownership changes.
+
+Tasks such as canonical serialization, custody, four-state observation semantics, realistic donor/source/operator geometry, identity-keyed RNG, hidden truth, challenge generation and sealed realization custody become shared infrastructure for **known-truth mode**.
+
+What disappears is the idea of independently implementing:
+
+- downstream gate logic;
+- synthetic versions of real gate executors;
+- a parallel synthetic qualification controller;
+- a separate synthetic winner-selection system.
+
+For example, instead of:
+
+```text
+synthetic_r1_executor()
+```
+
+we want:
+
+```text
+real_r1_producer(real_shaped_synthetic_casebundle)
+real_r1_executor(produced_artifact)
+truth_controller.score(result)
+```
+
+The truth controller never supplies the answer to either producer or executor.
+
+That is the key firewall.
+
+---
+
+# The full TD rehearsal changes meaning
+
+The end-to-end known-truth rehearsal should eventually exercise the actual tournament framework, not merely a gate battery.
+
+PR #369 is valuable because it shows that the repaired gate system can be replayed together under sealed challenge worlds. But it explicitly stops at mechanics/firewall qualification and says real producer/reference dependencies remain blocked.
+
+The next-level rehearsal should execute:
+
+```text
+CaseBundle
+↓
+candidate-specific producer policies
+↓
+reference producers
+↓
+gate producers
+↓
+authenticated artifacts
+↓
+gate executors
+↓
+gate registry
+↓
+falsifiers
+↓
+TargetPortfolio
+↓
+winner / NO_WINNER
+↓
+TargetQualificationBundle
+```
+
+Then hidden truth asks:
+
+- Did the right gates abstain?
+- Did unsupported biology stay unsupported?
+- Did nuisance-only candidates lose?
+- Did source-confounded signals fail appropriately?
+- Was the true candidate selected when scientifically identifiable?
+- Did the controller return `NO_WINNER` when nothing deserved selection?
+- Could any malformed producer artifact gain authority?
+
+That is qualitatively stronger than testing whether individual gate functions return expected statuses.
+
+---
+
+# What should be inherited downstream
+
+A particularly important principle is:
+
+**The bundle does not just export the winner. It exports the reasons the winner was allowed to win.**
+
+So if TD qualification required:
+
+- source noncompensation,
+- measured-zero semantics,
+- depth-matched R1 nulls,
+- evidence-right separation,
+- support-state distinctions,
+- a nuisance baseline,
+- subspace rather than coordinate stability,
+
+then downstream JEPA is not allowed to erase those constraints.
+
+Example:
+
+If a target is relational and its qualification depended on a depth/detection-matched null, downstream evaluation cannot later report relational structure without that negative control.
+
+Likewise if a target only qualified over a particular support universe, JEPA cannot claim biological failure on cells for which that target was structurally unobservable.
+
+That is how we prevent semantics from drifting between TD and training.
+
+---
+
+# What we should stop doing immediately
+
+I would retire the mental model of:
+
+```text
+TD lane
++
+synthetic lane
++
+JEPA lane
+```
+
+and replace it with:
+
+```text
+ONE SCIENTIFIC PIPELINE
+  ├── known-truth qualification mode
+  └── human execution mode
+```
+
+with a downstream continuation rather than a separate reinterpretation.
+
+The existing PRs can remain as historical branches and qualification evidence. We do **not** need destructive consolidation of Git history.
+
+But future authority should flow through the unified registry/manifest/bundle system.
+
+---
+
+# What this means for the current Tasks 1–12
+
+Tasks **1–3 remain good work**:
+
+- canonical identity;
+- custody / commit-reveal / RNG;
+- calibration and provenance.
+
+Those are common infrastructure.
+
+Before Task 4, however, I would **replace the remainder of the synthetic implementation roadmap with the unified architecture**.
+
+Some later tasks survive but move:
+
+- candidate-neutral hidden biology → known-truth substrate generator;
+- observation → shared real-shaped observation contract;
+- evidence rights → shared support/evidence model;
+- controller truth → strictly external truth adjudicator;
+- controls → unified qualification challenges;
+- packaging → shared artifact schema;
+- downstream rehearsal → replaced by exact production producer/executor execution;
+- synthetic qualification → becomes TD known-truth qualification;
+- synthetic finalizer → becomes qualification-registry/manifest receipt finalization.
+
+So I would not execute the existing Tasks 4–12 unchanged.
+
+## One more thing we need
+
+There should be an **authority firewall in the registry itself**.
+
+A registry entry should distinguish at least:
+
+```text
+MECHANICS_QUALIFIED
+KNOWN_TRUTH_QUALIFIED
+REAL_REFERENCE_READY
+HUMAN_EXECUTABLE
+HUMAN_EXECUTED
+```
+
+because the project has repeatedly suffered from language such as “qualified” becoming ambiguous.
+
+For example, #364 repairs G8's observation operator and arithmetic but explicitly keeps the statistical estimand and reference generation blocked.
+
+The registry should make it impossible for that state to be serialized as simply:
+
+```json
+"g8": "PASS"
+```
+
+That ambiguity should become structurally impossible.
+
+---
+
+## Recommended next architectural milestone
+
+I would name it something like:
+
+**Unified TD Qualification and Downstream Custody Architecture V1**
+
+Its scope should be exactly:
+
+1. execution manifest;
+2. producer/artifact/executor contract;
+3. qualification registry;
+4. known-truth mode;
+5. real human mode;
+6. full TD controller rehearsal;
+7. Target Qualification Bundle;
+8. downstream certification contract;
+9. authority-state transition law.
+
+No new biological target work.
+No new candidate outcome opening.
+No training.
+No production realization.
+
+The architecture is large enough that it deserves a proper written spec before we touch Tasks 4+. I would keep Tasks 1–3 as the already-approved common foundation, then make this spec the new controlling architecture for everything after them.
+
+That is the direction I recommend. It converts the work we have already done from several highly audited lanes into **one qualified scientific instrument** rather than trying to keep those lanes synchronized indefinitely.

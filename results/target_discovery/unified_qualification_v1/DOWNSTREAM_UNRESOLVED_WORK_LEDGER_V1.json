@@ -1,0 +1,44 @@
+{
+  "schema": "DOWNSTREAM_UNRESOLVED_WORK_LEDGER_V1",
+  "date": "2026-10-14",
+  "authority": "ANALYSIS_ONLY__NO_DOWNSTREAM_OR_TRAINING_AUTHORITY",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "program_amendment": "docs/agent/UNIFIED_DOWNSTREAM_QUALIFICATION_PROGRAM_AMENDMENT_CANDIDATE_V1_20261014.md",
+  "items": [
+    {"id":"DS_A","package":"A","dependency":"VERIFIED_TARGET_QUALIFICATION_BUNDLE_V1","blocked_by":["UNIFIED_TASK7"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_B","package":"B","dependency":"EXACT_TQB_TARGET_AND_EVIDENCE_RIGHTS","blocked_by":["DS_A"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_C","package":"C","dependency":"EXACT_TQB_SUPPORT_ESTIMABILITY_AND_TEACHER_RECEIPT","blocked_by":["DS_A","DS_B"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_D","package":"D","dependency":"FROZEN_TQB_TARGET_ADDRESSES_AND_TEACHER_TARGET_SEMANTICS","blocked_by":["DS_A","DS_B"],"historical_work_reusable":true,"historical_spec":"docs/agent/V5_TARGET_IDENTITY_SHORTCUT_AUDIT_SPEC_DRAFT_20260915.md@d9a678f261797f5dfc7a6e6b7a281e413ae7e0ae","may_start_now":false},
+    {"id":"DS_E","package":"E","dependency":"FROZEN_TARGET_EVIDENCE_AND_OUTCOME_BLIND_MASKING_CRITERIA","blocked_by":["DS_A","DS_B"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_F","package":"F","dependency":"CURRENT_MANIFEST_TQB_PRESENTATION_HORIZON_AND_EXPOSURE_LIMITS","blocked_by":["UNIFIED_TASK2","DS_A"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_G","package":"G","dependency":"CURRENT_REPRESENTATION_IDENTITY_AND_F6_SCOPE","blocked_by":["DS_A","MODEL_FREEZE"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_H","package":"H","dependency":"TQB_LIBRARY_SUPPORT_AND_F9_INFORMATION_CHANNEL_CONTRACT","blocked_by":["DS_A"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_I","package":"I","dependency":"TQB_MODALITY_AND_REGULATORY_PROVENANCE","blocked_by":["DS_A"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_J","package":"J","dependency":"FINAL_CURRENT_MODEL_CONFIG_PROTECTED_REGISTRY_SCIENTIFIC_WEIGHTS_AND_UPDATE_PATH","blocked_by":["DS_F","DS_M"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_K","package":"K","dependency":"AUTHORIZED_PRESENTATION_UNIT_AND_PROSPECTIVE_EMA_HALF_LIFE","blocked_by":["DS_F"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_L","package":"L","dependency":"CURRENT_JOINED_RUNTIME_TQB_CERTIFICATION_SOURCE_AND_MODEL_IDENTITIES","blocked_by":["DS_J","DS_K","DS_Q"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_M","package":"M","dependency":"PROSPECTIVELY_FROZEN_MODEL_DEPTH_WIDTH_HEADS_AND_CURRENT_PROTECTED_REGISTRY","blocked_by":["MODEL_GEOMETRY_AUTHORITY"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_N","package":"N","dependency":"FINAL_CURRENT_RUNTIME_AND_TARGET_HARDWARE","blocked_by":["DS_J","DS_M"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_O","package":"O","dependency":"CURRENT_MODEL_REPRESENTATION_AND_PROSPECTIVE_STABILITY_THRESHOLDS","blocked_by":["DS_G","DS_M","DS_J"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_P","package":"P","dependency":"EXACT_CURRENT_TQB_AND_PACKAGES_B_TO_O","blocked_by":["DS_B","DS_C","DS_D","DS_E","DS_F","DS_G","DS_H","DS_I","DS_J","DS_K","DS_L","DS_M","DS_N","DS_O"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_Q","package":"Q","dependency":"ALL_MANDATORY_A_TO_P_RECEIPTS","blocked_by":["DS_A","DS_B","DS_C","DS_D","DS_E","DS_F","DS_G","DS_H","DS_I","DS_J","DS_K","DS_L","DS_M","DS_N","DS_O","DS_P"],"historical_work_reusable":false,"may_start_now":false},
+    {"id":"DS_R","package":"R","dependency":"ACTIVE_DOWNSTREAM_CERTIFICATION_AND_CURRENT_JOINED_RUNTIME_Q_SAFETY","blocked_by":["DS_Q","DS_J","DS_K","DS_L","DS_N","DS_O","DS_P"],"historical_work_reusable":true,"may_start_now":false},
+    {"id":"DS_S","package":"S","dependency":"ACTIVE_TQB_DOWNSTREAM_CERTIFICATION_RUNTIME_ELIGIBILITY_AND_INDEPENDENT_REVIEW","blocked_by":["DS_R"],"historical_work_reusable":false,"may_start_now":false},
+    {"id":"DS_T","package":"T","dependency":"ACTIVE_PROJECT_SCOPE_TRAINING_ELIGIBILITY_AND_EXPLICIT_OWNER_AUTHORIZATION","blocked_by":["DS_S"],"historical_work_reusable":false,"may_start_now":false}
+  ],
+  "current_legal_work_before_task0_acceptance": [
+    "HISTORICAL_EVIDENCE_CUSTODY",
+    "NO_REPEAT_CLASSIFICATION",
+    "EXACT_ASSET_RECOVERY",
+    "PROSPECTIVE_TEST_AND_SCHEMA_DESIGN",
+    "HANDOFF_AND_AUDIT_SYNCHRONIZATION"
+  ],
+  "forbidden_before_task0_acceptance": [
+    "UNIFIED_TASK1_IMPLEMENTATION",
+    "A_TO_T_AUTHORITY_BEARING_IMPLEMENTATION",
+    "CANDIDATE_OUTCOME_OPENING",
+    "READER_VALIDATION_VALUE_ACCESS",
+    "READER_ORACLE_VALUE_ACCESS",
+    "TRAINING"
+  ]
+}
