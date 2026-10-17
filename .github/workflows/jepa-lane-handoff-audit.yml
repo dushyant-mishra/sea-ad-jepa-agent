@@ -7,8 +7,12 @@ on:
   pull_request:
     paths:
       - 'docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261013.md'
+      - 'docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261016.md'
+      - 'docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_CHECKLIST_20261016.md'
       - 'docs/agent/JEPA_LANE_TAKEOVER_STATE_20261013.json'
       - 'docs/agent/JEPA_LATEST_HANDOFF_POINTER_20261013.json'
+      - 'docs/agent/JEPA_LATEST_SUCCESSOR_HANDOFF_POINTER_20261013.json'
+      - 'results/target_discovery/unified_qualification_v1/JEPA_SUCCESSOR_POINTER_V2_20261016.json'
       - 'docs/agent/JEPA_EXTERNAL_ARTIFACT_CUSTODY_MANIFEST_20261013.csv'
       - 'docs/agent/JEPA_ACTIVE_BRANCH_PR_MAP_20261013.md'
       - 'docs/agent/JEPA_LANE_TAKEOVER_CHANGELOG_20261013.md'
@@ -53,13 +57,33 @@ jobs:
           v=json.loads(p.read_text())
           assert v['schema']=='JEPA_LATEST_HANDOFF_POINTER_V1'
           assert v['branch']=='handoff/jepa-lane-takeover-20261013'
-          assert v['read_first']=='docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261013.md'
+          assert v['read_first']=='docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261016.md'
+          assert v['checklist']=='docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_CHECKLIST_20261016.md'
+          assert v['task4_implementation_pr']==404
           assert v['authority']['target_selection_authorized'] is False
           assert v['authority']['representation_selection_authorized'] is False
           assert v['authority']['td60_authorized'] is False
           assert v['authority']['stage4_authorized'] is False
           assert v['authority']['training_authorized'] is False
-          print('LATEST_HANDOFF_POINTER_BOUND')
+          print('LATEST_HANDOFF_POINTER_BOUND_CURRENT')
+          PY
+      - name: Validate current successor pointer
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('results/target_discovery/unified_qualification_v1/JEPA_SUCCESSOR_POINTER_V2_20261016.json')
+          v=json.loads(p.read_text())
+          assert v['object_role']=='JEPA_SUCCESSOR_POINTER_V2'
+          assert v['frozen']['task3']=='117dd51dea827e734b299982da93991b934bdc8f'
+          assert v['task4']['implementation_pr']==404
+          assert v['task4']['status']=='CANDIDATE_ONLY__INDEPENDENT_EXACT_HEAD_REVIEW_REQUIRED'
+          assert v['authority']=='TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED'
+          for path in (
+              'docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_CHECKLIST_20261016.md',
+              'docs/agent/JEPA_LANE_TAKEOVER_HANDOFF_20261016.md',
+          ):
+              assert pathlib.Path(path).is_file(), path
+          print('CURRENT_SUCCESSOR_POINTER_BOUND')
           PY
       - name: Run hostile takeover-manifest tests
         run: |
