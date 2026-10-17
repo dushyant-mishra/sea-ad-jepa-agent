@@ -32,12 +32,11 @@ def _deps():
 
 
 def _all_outputs_frozen():
-    camp = c.create_campaign("terminal-accounting", _deps(), barrier_status=None, namespace="DEVELOPMENT")
+    deps = _deps()
+    deps.update(c.development_fixture_generator_identities())
+    camp = c.create_campaign("terminal-accounting", deps, barrier_status=None, namespace="DEVELOPMENT")
     camp, definition = c.seal_definition(camp, family="fixture", hidden_spec=b"hidden-fixture")
-    rows = [
-        {"realization_id": "r0", "content_sha256": "a" * 64, "challenge_class": "A"},
-        {"realization_id": "r1", "content_sha256": "b" * 64, "challenge_class": "A"},
-    ]
+    rows = c.generate_development_fixture_rows(camp, definition, hidden_spec=b"hidden-fixture")
     camp, sealed = c.seal_realization_set(camp, definition, rows, budget=2)
     exposures = []
     for rid, out in (("r0", "c" * 64), ("r1", "d" * 64)):
@@ -59,7 +58,8 @@ def test_finalize_succeeds_only_after_every_realization_has_terminal_status():
     for exposure in exposures:
         camp = c.record_exposure_terminal(camp, exposure, terminal_status="EVALUATED")
     camp, _ = c.reveal_hidden_material(camp, definition, sealed, hidden_spec=b"hidden-fixture")
-    camp, _ = c.verify_regeneration(camp, sealed, rows)
+    camp, proof = c.verify_regeneration(camp, sealed, definition=definition, hidden_spec=b"hidden-fixture")
+    assert proof.authority_effect == "NONE"
     camp, receipt, evidence = c.finalize_custody(camp, sealed)
     assert camp.state is c.CampaignState.CUSTODY_COMPLETE
     assert set(dict(camp.terminal_statuses)) == set(sealed.realization_ids)
