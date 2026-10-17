@@ -1,0 +1,40 @@
+{
+  "object_role": "JEPA_SUCCESSOR_POINTER_V3",
+  "date": "2026-10-17",
+  "status": "SUCCESSOR_READY__NO_REPEAT",
+  "read_first": [
+    "docs/agent/JEPA_NEW_AGENT_DETAILED_HANDOFF_20261017.md",
+    "docs/agent/JEPA_LANE_AUDIT_AND_CUSTODY_SNAPSHOT_20261017.md",
+    "docs/agent/JEPA_LANE_CURRENT_CUSTODY_NO_REPEAT_20261016.md",
+    "results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V3_20261017.json",
+    "results/target_discovery/unified_qualification_v1/LOCAL_ARTIFACT_CUSTODY_MANIFEST_V3_20261017.json",
+    "docs/agent/UNIFIED_TASK4_EXECUTION_LEDGER_20261016.md",
+    "results/target_discovery/unified_qualification_v1/UNIFIED_TASK4_CANDIDATE_STATE_V1.json"
+  ],
+  "frozen": {
+    "task0": "e37a22b8059c0a4a93a789a8ca916fb7acde9fe3",
+    "task1": "799d2e235901dfad9ce3b305c767a1c989e362f6",
+    "task2": "c7dfff1cee608e4a101855d42cf0af08491c2aaf",
+    "task3": "117dd51dea827e734b299982da93991b934bdc8f"
+  },
+  "task4": {
+    "design_pr": 402,
+    "red_pr": 403,
+    "implementation_pr": 404,
+    "implementation_branch": "work/unified-task4-impl-20261016",
+    "live_handoff_head": "b31371d62f3270c965d321e61c35898ca6be3721",
+    "last_verified_code_test_head": "cfa3b7c4f92a1569639b6733a6956c516d7f4cf4",
+    "live_delta_from_verified": "DOCS_RESULTS_ONLY",
+    "status": "CANDIDATE_ONLY__INDEPENDENT_EXACT_HEAD_REVIEW_REQUIRED"
+  },
+  "immediate_actions": [
+    "reconcile live PR404 against handoff head",
+    "if code/test/schema/workflow bytes changed, rerun exact-head Task4 and inherited regressions",
+    "pin immutable final Task4 candidate only after exact-head GREEN",
+    "obtain independent hostile ACCEPT/REJECT bound to exact SHA",
+    "freeze only after independent acceptance",
+    "keep global target/representation/training/Stage4 authority unchanged until separate future gates"
+  ],
+  "no_repeat": "Use PR322 audit indexes before new archaeology. Preserve rejected candidates and RED evidence. Do not reimplement already-staged Task4 modules from design.",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
