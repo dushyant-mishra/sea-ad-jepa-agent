@@ -441,6 +441,8 @@ def issue_exposure(campaign: QualificationCampaign, sealed: SealedRealizationSet
 def record_exposure_terminal(campaign: QualificationCampaign, exposure: ExposureRecord, *, terminal_status: str, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
     _assert_lifecycle_current(campaign)
+    if campaign.state not in {CampaignState.EXPOSURE_ACTIVE, CampaignState.ALL_REQUIRED_OUTPUTS_FROZEN}:
+        raise Task4ChallengeCustodyError("terminal exposure accounting is closed after hidden material reveal")
     allowed = {"EVALUATED", "TECHNICAL_FAILURE", "UNSUPPORTED_NOT_ESTIMABLE", "DEFECT_INVALIDATED"}
     if terminal_status not in allowed or not _issued_exposure_is_exact(campaign, exposure):
         raise Task4ChallengeCustodyError("invalid or hand-constructed terminal exposure accounting")
@@ -472,6 +474,9 @@ def reveal_hidden_material(campaign: QualificationCampaign, definition: SealedCh
         raise Task4ChallengeCustodyError("hidden material reveal preconditions not met")
     _validate_bound_definition(campaign, definition)
     _validate_bound_realization_set(campaign, sealed)
+    realized = set(sealed.realization_ids)
+    if set(dict(campaign.terminal_statuses)) != realized:
+        raise Task4ChallengeCustodyError("hidden material reveal requires complete pre-reveal terminal accounting")
     digest = hashlib.sha256(hidden_spec).hexdigest()
     if digest != definition.hidden_spec_commitment:
         raise Task4ChallengeCustodyError("hidden material does not match sealed commitment")
