@@ -16,6 +16,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field, replace
 from enum import Enum
 import hashlib
+import inspect
 import json
 from typing import Iterable, Mapping
 
@@ -169,6 +170,7 @@ class QualificationCampaign:
 # is intentionally excluded from serialized campaign payloads and confers no
 # cross-process or external authority.
 _LIFECYCLE_DIGESTS: dict[object, str] = {}
+_REGENERATION_EXECUTIONS: dict[object, str] = {}
 
 
 def _campaign_state_digest(campaign: QualificationCampaign) -> str:
@@ -264,6 +266,11 @@ class RegenerationVerification:
     campaign_identity: str
     sealed_root: str
     verified: bool
+    generator_code_sha: str
+    generator_policy_sha: str
+    rng_policy_sha: str
+    execution_digest: str
+    authority_effect: str = "NONE"
 
 
 def _campaign_identity(campaign_id: str, dependencies: Mapping[str, object], namespace: str) -> str:
@@ -383,6 +390,76 @@ def _validate_bound_realization_set(campaign: QualificationCampaign, sealed: Sea
         raise Task4ChallengeCustodyError("realization set differs from exact committed finite exam")
 
 
+
+# A real trusted generator executor is not available in this repository.
+# This closed, deterministic generator exercises DEVELOPMENT custody mechanics
+# only. Neither its code SHA nor its in-process receipt is external authority.
+_DEV_GENERATOR_POLICY_SHA = _sha({
+    "schema": "TASK4_DEVELOPMENT_FIXTURE_GENERATOR_POLICY_V1",
+    "domain": "SYNTHETIC_ONLY",
+    "content": "SHA256_CANONICAL_SEEDED_ROWS",
+})
+_DEV_RNG_POLICY_SHA = _sha({
+    "schema": "TASK4_DEVELOPMENT_FIXTURE_RNG_POLICY_V1",
+    "algorithm": "SHA256_COUNTER_DERIVATION",
+    "seed_sources": ["campaign_identity", "hidden_spec_sha256"],
+})
+
+
+def _development_fixture_generator(campaign_identity: str, hidden_spec: bytes, budget: int):
+    """Freshly compute synthetic rows without reading sealed/caller-provided rows."""
+    seed = _sha({
+        "campaign_identity": campaign_identity,
+        "hidden_spec_sha256": hashlib.sha256(hidden_spec).hexdigest(),
+        "rng_policy_sha": _DEV_RNG_POLICY_SHA,
+    })
+    return tuple({
+        "realization_id": f"r{ordinal}",
+        "content_sha256": _sha({
+            "seed": seed,
+            "ordinal": ordinal,
+            "generator_policy_sha": _DEV_GENERATOR_POLICY_SHA,
+        }),
+        "challenge_class": "SYNTHETIC_DEVELOPMENT",
+    } for ordinal in range(budget))
+
+
+def development_fixture_generator_identities() -> dict[str, str]:
+    """Pin actual fixture implementation source, policy and RNG contract."""
+    return {
+        "challenge_generator_code_sha": hashlib.sha1(
+            inspect.getsource(_development_fixture_generator).encode("utf-8")
+        ).hexdigest(),
+        "challenge_generator_policy_sha": _DEV_GENERATOR_POLICY_SHA,
+        "rng_policy_sha": _DEV_RNG_POLICY_SHA,
+    }
+
+
+def _assert_development_generator_contract(campaign: QualificationCampaign) -> None:
+    if campaign.namespace != "DEVELOPMENT" or campaign.promotion_authority != "NONE":
+        raise Task4ChallengeCustodyError("in-process fixture generator is DEVELOPMENT-only and non-authorizing")
+    expected = development_fixture_generator_identities()
+    if any(campaign.dependencies[key] != val for key, val in expected.items()):
+        raise Task4ChallengeCustodyError("generator source/policy/RNG differs from frozen DEVELOPMENT fixture contract")
+
+
+def generate_development_fixture_rows(
+    campaign: QualificationCampaign,
+    definition: SealedChallengeDefinition,
+    *,
+    hidden_spec: bytes,
+):
+    """Generate a fresh synthetic realization inventory before first exposure."""
+    _assert_lifecycle_current(campaign)
+    if campaign.state is not CampaignState.DEFINITION_SEALED:
+        raise Task4ChallengeCustodyError("synthetic inventory generation requires sealed definition before exposure")
+    _validate_bound_definition(campaign, definition)
+    if type(hidden_spec) is not bytes or hashlib.sha256(hidden_spec).hexdigest() != definition.hidden_spec_commitment:
+        raise Task4ChallengeCustodyError("synthetic generator input differs from committed hidden specification")
+    _assert_development_generator_contract(campaign)
+    return _development_fixture_generator(campaign.campaign_identity, hidden_spec, campaign.dependencies["qualification_budget"])
+
+
 def seal_realization_set(campaign: QualificationCampaign, definition: SealedChallengeDefinition, rows: Iterable[Mapping[str, object]], *, budget: int, authority_harness: Task4AuthorityHarness | None = None):
     _guard_final(campaign, authority_harness)
     _assert_lifecycle_current(campaign)
@@ -483,13 +560,35 @@ def reveal_hidden_material(campaign: QualificationCampaign, definition: SealedCh
     return _advance_campaign(campaign, state=CampaignState.HIDDEN_MATERIAL_REVEALED), SealedQualificationReveal(campaign.campaign_identity, digest, sealed.sealed_root)
 
 
-def verify_regeneration(campaign: QualificationCampaign, sealed: SealedRealizationSet, regenerated_rows: Iterable[Mapping[str, object]], *, authority_harness: Task4AuthorityHarness | None = None):
+def verify_regeneration(
+    campaign: QualificationCampaign,
+    sealed: SealedRealizationSet,
+    regenerated_rows: Iterable[Mapping[str, object]] | None = None,
+    *,
+    definition: SealedChallengeDefinition | None = None,
+    hidden_spec: bytes | None = None,
+    authority_harness: Task4AuthorityHarness | None = None,
+):
     _guard_final(campaign, authority_harness)
     _assert_lifecycle_current(campaign)
     if campaign.state is not CampaignState.HIDDEN_MATERIAL_REVEALED:
-        raise Task4ChallengeCustodyError("regeneration verification requires reveal")
+        raise Task4ChallengeCustodyError("regeneration verification requires lawful hidden reveal")
     _validate_bound_realization_set(campaign, sealed)
-    ids, digests, classes = _validated_rows(regenerated_rows, sealed.budget)
+    # Comparing an arbitrary list with the sealed root proves equality, not
+    # regeneration. An injected generator, assertion or receipt is no proof either.
+    if regenerated_rows is not None:
+        raise Task4ChallengeCustodyError("caller-supplied rows are not regeneration execution evidence")
+    if not isinstance(definition, SealedChallengeDefinition) or type(hidden_spec) is not bytes:
+        raise Task4ChallengeCustodyError("committed challenge definition and revealed hidden input required")
+    _validate_bound_definition(campaign, definition)
+    if hashlib.sha256(hidden_spec).hexdigest() != definition.hidden_spec_commitment:
+        raise Task4ChallengeCustodyError("regeneration hidden input differs from sealed challenge definition")
+    _assert_development_generator_contract(campaign)
+    # This is a fresh invocation of the exact pinned synthetic source. The
+    # source/policy/RNG checks are process-local mechanics, NOT independent
+    # attestation and NEVER valid for FINAL or biological authority.
+    computed_rows = _development_fixture_generator(campaign.campaign_identity, hidden_spec, sealed.budget)
+    ids, digests, classes = _validated_rows(computed_rows, sealed.budget)
     root = _sha({
         "campaign_identity": campaign.campaign_identity,
         "definition_sha256": sealed.definition_sha256,
@@ -499,8 +598,30 @@ def verify_regeneration(campaign: QualificationCampaign, sealed: SealedRealizati
         "budget": sealed.budget,
     })
     if root != sealed.sealed_root:
-        raise Task4ChallengeCustodyError("regenerated realization set differs from committed finite exam")
-    return _advance_campaign(campaign, state=CampaignState.REGENERATION_VERIFIED), RegenerationVerification(campaign.campaign_identity, root, True)
+        raise Task4ChallengeCustodyError("actual synthetic regeneration differs from exact sealed realization root")
+    identities = development_fixture_generator_identities()
+    event_digest = _sha({
+        "object_role": "DEVELOPMENT_REGENERATION_EXECUTION_V1",
+        "campaign_identity": campaign.campaign_identity,
+        "definition_sha256": sealed.definition_sha256,
+        "sealed_root": sealed.sealed_root,
+        "generator_code_sha": identities["challenge_generator_code_sha"],
+        "generator_policy_sha": identities["challenge_generator_policy_sha"],
+        "rng_policy_sha": identities["rng_policy_sha"],
+        "hidden_spec_sha256": hashlib.sha256(hidden_spec).hexdigest(),
+        "authority_effect": "NONE",
+    })
+    advanced = _advance_campaign(campaign, state=CampaignState.REGENERATION_VERIFIED)
+    token = advanced._lifecycle_token
+    assert token is not None
+    _REGENERATION_EXECUTIONS[token] = event_digest
+    return advanced, RegenerationVerification(
+        campaign.campaign_identity, root, True,
+        identities["challenge_generator_code_sha"],
+        identities["challenge_generator_policy_sha"],
+        identities["rng_policy_sha"],
+        event_digest,
+    )
 
 
 def finalize_custody(campaign: QualificationCampaign, sealed: SealedRealizationSet, *, authority_harness: Task4AuthorityHarness | None = None):
@@ -508,6 +629,8 @@ def finalize_custody(campaign: QualificationCampaign, sealed: SealedRealizationS
     _assert_lifecycle_current(campaign)
     _validate_bound_realization_set(campaign, sealed)
     realized = set(sealed.realization_ids)
+    if campaign.namespace != "DEVELOPMENT" or campaign._lifecycle_token not in _REGENERATION_EXECUTIONS:
+        raise Task4ChallengeCustodyError("no lawfully executed DEVELOPMENT regeneration event exists")
     if (
         campaign.state is not CampaignState.REGENERATION_VERIFIED
         or set(campaign.exposed_realization_ids) != realized
