@@ -2,7 +2,9 @@
 
 Status: `DURABLE_AUDIT_CUSTODY__NON_AUTHORIZING`
 
-Purpose: this is the current read-first index for the JEPA Target Discovery -> unified qualification -> downstream lane. It supersedes the *navigation state* in the 2026-10-15 no-repeat index but does not delete or rewrite historical rejection/audit records. A successor must use this file to avoid repeating settled audits, rebuilding already-qualified mechanics, or treating superseded evidence as current authority.
+> **Current successor entrypoint (2026-10-17):** read `docs/agent/JEPA_LANE_AUDIT_AND_CUSTODY_SNAPSHOT_20261017.md` and `results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V3_20261017.json` first. This 2026-10-16 file remains the deep current-state/no-repeat index and is preserved rather than rewritten away.
+
+Purpose: this is the deep current-state index for the JEPA Target Discovery -> unified qualification -> downstream lane. A successor must use it to avoid repeating settled audits, rebuilding already-qualified mechanics, or treating superseded evidence as current authority.
 
 ## Current authority / gate state
 
@@ -18,7 +20,7 @@ Frozen accepted authority:
 - verdict: `ACCEPT_UNIFIED_TASK3`
 - gate: `TASK3_MAY_BE_FROZEN__UNIFIED_TASK4_MAY_BEGIN_PROSPECTIVELY`
 
-Task 4 is now prospective implementation only. It is **not accepted authority**.
+Task 4 is prospective implementation only. It is **not accepted authority**.
 
 Global authority remains:
 
@@ -55,7 +57,7 @@ RED-only PR #403:
 Implementation PR #404:
 
 - branch `work/unified-task4-impl-20261016`
-- current observed PR head during this custody refresh: `b31371d62f3270c965d321e61c35898ca6be3721`
+- current observed PR head during the 2026-10-17 custody refresh: `b31371d62f3270c965d321e61c35898ca6be3721`
 - last fully verified code/test head: `cfa3b7c4f92a1569639b6733a6956c516d7f4cf4`
 - exact diff `cfa3b7c4... -> b31371d...` is documentation/result-only: candidate review packet, execution ledger, attack matrix metadata and candidate-state JSON.
 - Task 4 run `38946411134`, job `117126540739`: focused Task 4 PASS, projected 100k replay PASS, full unified regression PASS.
@@ -63,7 +65,7 @@ Implementation PR #404:
 - candidate classification: `CANDIDATE_ONLY__INDEPENDENT_EXACT_HEAD_REVIEW_REQUIRED`.
 - final authority remains fail-closed because genuine external C5-C9 context evidence is not yet wired.
 
-Preserved later REDs that found real defects and must remain part of the review story:
+Preserved later Task 4 REDs that found real defects and must remain part of the review story:
 
 - terminal accounting: `38943608912` / `117117078319`
 - campaign schema drift: `38944319232` / `117119472176`
@@ -133,7 +135,7 @@ Frozen code must not be silently repaired on downstream branches. Any inherited 
 
 ## Local/private binary custody
 
-Large/private artifacts are hash/path-custodied, not copied into Git. Read `results/target_discovery/unified_qualification_v1/LOCAL_ARTIFACT_CUSTODY_MANIFEST_20261015.json` and the 2026-10-16 V2 manifest before use. Verify exact SHA-256 first. Presence of bytes confers no authority.
+Large/private artifacts are hash-custodied, not copied into Git. Read `results/target_discovery/unified_qualification_v1/LOCAL_ARTIFACT_CUSTODY_MANIFEST_V3_20261017.json` before use. Verify exact SHA-256 first. Presence of bytes confers no authority.
 
 ## No-repeat rules for successor agents
 
@@ -141,7 +143,7 @@ Classify prior work as one of `ALREADY_AUDITED`, `SUPERSEDED`, `OPEN`, or `CHANG
 
 A successor must:
 
-1. read this file, the 2026-10-15 no-repeat index, the Task 4 execution ledger and current candidate-state JSON before new qualification work;
+1. read the 2026-10-17 snapshot, this file, the 2026-10-15 no-repeat index, the Task 4 execution ledger and current candidate-state JSON before new qualification work;
 2. use existing scripts/results/receipts where the bytes and scientific question are unchanged;
 3. preserve failures and rejected candidates as evidence rather than rewriting history into a clean narrative;
 4. distinguish mechanics evidence from biological evidence and shared-source analyses from independent replication;
