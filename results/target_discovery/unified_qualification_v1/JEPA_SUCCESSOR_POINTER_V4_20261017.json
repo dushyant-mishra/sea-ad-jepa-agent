@@ -1,0 +1,39 @@
+{
+  "schema": "JEPA_SUCCESSOR_POINTER_V4",
+  "date": "2026-10-17",
+  "read_first": [
+    "docs/agent/JEPA_NEW_AGENT_DETAILED_HANDOFF_V4_20261017.md",
+    "PR322:docs/agent/JEPA_LANE_AUDIT_AND_CUSTODY_SNAPSHOT_V4_20261017.md",
+    "PR322:results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V4_20261017.json",
+    "PR322:results/target_discovery/unified_qualification_v1/TASK4_HOSTILE_REVIEW_LINEAGE_INDEX_V1_20261017.json",
+    "PR322:results/target_discovery/unified_qualification_v1/LOCAL_ARTIFACT_CUSTODY_MANIFEST_V4_20261017.json"
+  ],
+  "frozen": {
+    "task0": "e37a22b8059c0a4a93a789a8ca916fb7acde9fe3",
+    "task1": "799d2e235901dfad9ce3b305c767a1c989e362f6",
+    "task2": "c7dfff1cee608e4a101855d42cf0af08491c2aaf",
+    "task3": "117dd51dea827e734b299982da93991b934bdc8f"
+  },
+  "current_task4": {
+    "status": "TASK4_SUCCESSOR4_REJECTED_BY_REGENERATION_PROVENANCE_RED__SUCCESSOR5_REPAIR_REQUIRED__INDEPENDENT_ACCEPTANCE_ABSENT",
+    "rejected_candidate": "068880822bca8036e605e3c5264770ce89057fee",
+    "hostile_review_pr": 417,
+    "review_head": "c543bd7c8b40d89db550dedad3ff5adbfbc356c0",
+    "red_run": 39000234158,
+    "red_job": 117301422733,
+    "failing_test": "test_replaying_preexisting_rows_is_not_deterministic_regeneration_evidence",
+    "finding": "caller-supplied replay/copy can satisfy REGENERATION_VERIFIED without proving frozen generator/code/policy/RNG regeneration provenance"
+  },
+  "next_actions": [
+    "preserve PR417 RED unchanged",
+    "cut successor5 repair from exact 068880822bca8036e605e3c5264770ce89057fee",
+    "retain failing regeneration-provenance attack before repair",
+    "bind regeneration to non-caller-self-mintable generator/code/policy/RNG provenance",
+    "attack echo/copy/fake-generator/code-policy-RNG substitution/pre-reveal/wrong-root/stale-receipt/provenance-mutation sibling routes",
+    "run focused Task4 + projected100k + full unified + Task1/2/3 + synthetic integration on one exact head",
+    "pin immutable successor5 only after exact-head GREEN",
+    "obtain independent exact-SHA ACCEPT or REJECT"
+  ],
+  "work_classification": ["ALREADY_AUDITED", "SUPERSEDED", "OPEN", "CHANGED_INPUT_REQUIRES_REQUALIFICATION"],
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
