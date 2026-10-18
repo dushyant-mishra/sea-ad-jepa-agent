@@ -67,3 +67,84 @@ def test_same_campaign_identity_cannot_remint_budget_after_spending_exposure():
         c.create_campaign(
             "same-ledger-no-reset", deps, barrier_status=None, namespace="DEVELOPMENT"
         )
+
+
+def test_same_identity_cannot_remint_even_before_first_exposure():
+    deps = _deps()
+    camp = c.create_campaign(
+        "claimed-before-exposure", deps, barrier_status=None, namespace="DEVELOPMENT"
+    )
+    assert camp.exposures_consumed == 0
+    with pytest.raises(c.Task4ChallengeCustodyError):
+        c.create_campaign(
+            "claimed-before-exposure", deps, barrier_status=None, namespace="DEVELOPMENT"
+        )
+
+
+def test_deleting_original_object_does_not_release_spent_identity():
+    import gc
+
+    deps = _deps()
+    camp = c.create_campaign(
+        "identity-persists-after-gc", deps, barrier_status=None, namespace="DEVELOPMENT"
+    )
+    camp, definition = c.seal_definition(
+        camp, family="fixture", hidden_spec=b"hidden-fixture"
+    )
+    rows = c.generate_development_fixture_rows(
+        camp, definition, hidden_spec=b"hidden-fixture"
+    )
+    camp, sealed = c.seal_realization_set(camp, definition, rows, budget=2)
+    camp, exposure = c.issue_exposure(
+        camp, sealed, realization_id=sealed.realization_ids[0],
+        method_scientific_identity="a" * 64
+    )
+    assert exposure.ordinal == 1
+    del camp, exposure, sealed, definition, rows
+    gc.collect()
+    with pytest.raises(c.Task4ChallengeCustodyError):
+        c.create_campaign(
+            "identity-persists-after-gc", deps, barrier_status=None, namespace="DEVELOPMENT"
+        )
+
+
+def test_simultaneous_identical_campaign_creation_has_exactly_one_winner():
+    from concurrent.futures import ThreadPoolExecutor
+    from threading import Barrier
+
+    deps = _deps()
+    barrier = Barrier(2)
+
+    def start():
+        barrier.wait(timeout=10)
+        try:
+            camp = c.create_campaign(
+                "simultaneous-same-identity", deps,
+                barrier_status=None, namespace="DEVELOPMENT"
+            )
+            return ("CREATED", camp.campaign_identity)
+        except c.Task4ChallengeCustodyError:
+            return ("REFUSED", None)
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        a = pool.submit(start)
+        b = pool.submit(start)
+        results = [a.result(timeout=15), b.result(timeout=15)]
+    assert sorted(x[0] for x in results) == ["CREATED", "REFUSED"]
+
+
+def test_canonicalized_dependency_sequences_cannot_create_identity_alias():
+    deps = _deps()
+    camp = c.create_campaign(
+        "canonical-deps", deps, barrier_status=None, namespace="DEVELOPMENT"
+    )
+    aliases = dict(deps)
+    aliases["registry_unit_identities"] = [list(x) for x in deps["registry_unit_identities"]]
+    aliases["authority_restrictions"] = list(deps["authority_restrictions"])
+    with pytest.raises(c.Task4ChallengeCustodyError):
+        c.create_campaign(
+            "canonical-deps", aliases, barrier_status=None, namespace="DEVELOPMENT"
+        )
+    assert camp.campaign_identity == c._campaign_identity(
+        camp.campaign_id, c.validate_campaign_dependencies(aliases), camp.namespace
+    )
