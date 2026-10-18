@@ -21,9 +21,9 @@ Status: `CANDIDATE_ONLY__AUTHORED_BY_MACHA__INDEPENDENT_AUDIT_REQUIRED`
    - The payload digest check is kept. It still detects in-place mutation of the issued campaign's dependency dict.
 2. **Exact built-in arguments.** `realization_id`, `terminal_status`, `namespace`, `budget`, `hidden_spec` and each realization row (`dict`) must be exact built-in types.
 3. **Dependencies.** Campaign dependencies must be an exact `dict`. One `dict.items()` snapshot is validated and stored, so validation and storage cannot see different values.
-4. **Minor fixes.**
-   - `require_task4_preauthority_barrier_green` now checks the exact type of `Task4BarrierStatus`.
-   - On POSIX, the custody store fsyncs the parent directory when it first creates `events.jsonl`.
+4. **Minor fix.** `require_task4_preauthority_barrier_green` now checks the exact type of `Task4BarrierStatus`.
+
+**Reverted.** A POSIX parent-directory fsync at `events.jsonl` creation was reverted in `cc` (see below). The B5 harness `test_new_store_fsync_does_not_use_readonly_fd` simulates Windows by rejecting *every* read-only descriptor, and POSIX directories can only be opened read-only. That failed CI run `39093821991`. The test is skipped on Windows, so the local run missed it. Creation-time directory durability stays a non-blocking open item. It needs a harness that exempts directory descriptors, decided by the owning lane.
 
 ## Attacks now refused
 
