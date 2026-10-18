@@ -148,3 +148,58 @@ def test_canonicalized_dependency_sequences_cannot_create_identity_alias():
     assert camp.campaign_identity == c._campaign_identity(
         camp.campaign_id, c.validate_campaign_dependencies(aliases), camp.namespace
     )
+
+
+def test_two_threads_cannot_spend_same_realization_twice(monkeypatch):
+    """Force both threads to pass initial validation before an atomic spend."""
+    from concurrent.futures import ThreadPoolExecutor
+    from threading import Barrier, BrokenBarrierError, local
+
+    deps = _deps()
+    camp = c.create_campaign(
+        "race-same-realization", deps, barrier_status=None, namespace="DEVELOPMENT"
+    )
+    camp, definition = c.seal_definition(
+        camp, family="fixture", hidden_spec=b"hidden-fixture"
+    )
+    rows = c.generate_development_fixture_rows(
+        camp, definition, hidden_spec=b"hidden-fixture"
+    )
+    camp, sealed = c.seal_realization_set(camp, definition, rows, budget=2)
+
+    # Scheduling-only instrumentation: the real lifecycle validator still runs
+    # with the same inputs. We align two callers immediately after validation
+    # inside _advance_campaign to reveal any unlocked check-then-write race.
+    original = c._assert_lifecycle_current
+    barrier = Barrier(2)
+    per_thread = local()
+
+    def scheduled_check(campaign):
+        original(campaign)
+        n = getattr(per_thread, "checks", 0) + 1
+        per_thread.checks = n
+        if n == 2:
+            try:
+                barrier.wait(timeout=1.0)
+            except BrokenBarrierError:
+                pass
+
+    monkeypatch.setattr(c, "_assert_lifecycle_current", scheduled_check)
+
+    def attempt():
+        try:
+            updated, exposure = c.issue_exposure(
+                camp,
+                sealed,
+                realization_id=sealed.realization_ids[0],
+                method_scientific_identity="a" * 64,
+            )
+            return ("ISSUED", updated.exposures_consumed, exposure.ordinal)
+        except c.Task4ChallengeCustodyError:
+            return ("REFUSED", None, None)
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        a = pool.submit(attempt)
+        b = pool.submit(attempt)
+        outcome = [a.result(timeout=10), b.result(timeout=10)]
+    assert sorted(x[0] for x in outcome) == ["ISSUED", "REFUSED"]
