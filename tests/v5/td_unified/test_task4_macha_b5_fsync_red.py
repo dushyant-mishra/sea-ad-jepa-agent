@@ -22,3 +22,16 @@ def test_new_store_fsync_does_not_use_readonly_fd(tmp_path, monkeypatch):
         pytest.skip("POSIX-only fcntl harness; Windows validation separately required")
     monkeypatch.setattr(os,"fsync",reject_readonly)
     c.PersistentCustodyStore.open(tmp_path/"store",verifier=NoTrust(),expected_head=None)
+
+def test_posix_rename_directory_is_fsynced(tmp_path, monkeypatch):
+    if os.name=="nt":
+        pytest.skip("Windows has no POSIX directory fsync")
+    import stat
+    actual=os.fsync
+    seen=[]
+    def trace(fd):
+        seen.append(stat.S_ISDIR(os.fstat(fd).st_mode))
+        return actual(fd)
+    monkeypatch.setattr(os,"fsync",trace)
+    c._fsync_parent_directory(tmp_path/"head.json")
+    assert seen and seen[-1] is True
