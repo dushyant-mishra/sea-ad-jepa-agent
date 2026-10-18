@@ -183,7 +183,7 @@ _LIFECYCLE_TRANSITION_LOCK = Lock()
 
 
 def _campaign_state_digest(campaign: QualificationCampaign) -> str:
-    return _sha(campaign.to_payload())
+    return _sha(QualificationCampaign.to_payload(campaign))
 
 
 def _register_campaign(campaign: QualificationCampaign) -> QualificationCampaign:
@@ -195,7 +195,7 @@ def _register_campaign(campaign: QualificationCampaign) -> QualificationCampaign
 
 
 def _assert_lifecycle_current(campaign: QualificationCampaign) -> None:
-    if not isinstance(campaign, QualificationCampaign):
+    if type(campaign) is not QualificationCampaign:
         raise Task4ChallengeCustodyError("campaign must be a QualificationCampaign")
     token = campaign._lifecycle_token
     if token is None:
@@ -293,10 +293,10 @@ def _campaign_identity(campaign_id: str, dependencies: Mapping[str, object], nam
 def _guard_final(campaign: QualificationCampaign | None, authority_harness: Task4AuthorityHarness | None) -> None:
     if campaign is not None and campaign.namespace != "FINAL":
         return
-    if not isinstance(authority_harness, Task4AuthorityHarness):
+    if type(authority_harness) is not Task4AuthorityHarness:
         raise Task4ChallengeCustodyError("FINAL transition requires Task4AuthorityHarness current-state re-resolution")
     try:
-        authority_harness.current_status()
+        Task4AuthorityHarness.current_status(authority_harness)
     except Exception as exc:
         raise Task4ChallengeCustodyError(f"FINAL transition authority re-resolution failed: {type(exc).__name__}") from exc
 
@@ -347,7 +347,7 @@ def seal_definition(campaign: QualificationCampaign, *, family: str, hidden_spec
     if type(hidden_spec) is not bytes or not hidden_spec or type(family) is not str or not family:
         raise Task4ChallengeCustodyError("challenge family and hidden specification must be non-empty")
     definition = SealedChallengeDefinition(campaign.campaign_identity, family, hashlib.sha256(hidden_spec).hexdigest(), campaign.namespace)
-    definition_sha = _sha(definition.to_payload())
+    definition_sha = _sha(SealedChallengeDefinition.to_payload(definition))
     return _advance_campaign(campaign, state=CampaignState.DEFINITION_SEALED, sealed_definition_sha256=definition_sha), definition
 
 
@@ -369,7 +369,9 @@ def _validated_rows(rows: Iterable[Mapping[str, object]], budget: int):
 
 
 def _definition_identity(definition: SealedChallengeDefinition) -> str:
-    return _sha(definition.to_payload())
+    if type(definition) is not SealedChallengeDefinition:
+        raise Task4ChallengeCustodyError("exact sealed challenge definition required")
+    return _sha(SealedChallengeDefinition.to_payload(definition))
 
 
 def _realization_root(sealed: SealedRealizationSet) -> str:
@@ -391,6 +393,8 @@ def _realization_root(sealed: SealedRealizationSet) -> str:
 
 
 def _validate_bound_definition(campaign: QualificationCampaign, definition: SealedChallengeDefinition) -> None:
+    if type(definition) is not SealedChallengeDefinition:
+        raise Task4ChallengeCustodyError("exact sealed challenge definition required")
     if definition.campaign_identity != campaign.campaign_identity:
         raise Task4ChallengeCustodyError("sealed definition campaign identity mismatch")
     actual = _definition_identity(definition)
@@ -399,6 +403,8 @@ def _validate_bound_definition(campaign: QualificationCampaign, definition: Seal
 
 
 def _validate_bound_realization_set(campaign: QualificationCampaign, sealed: SealedRealizationSet) -> None:
+    if type(sealed) is not SealedRealizationSet:
+        raise Task4ChallengeCustodyError("exact sealed realization set required")
     if sealed.campaign_identity != campaign.campaign_identity:
         raise Task4ChallengeCustodyError("sealed realization campaign identity mismatch")
     if campaign.sealed_definition_sha256 is None or sealed.definition_sha256 != campaign.sealed_definition_sha256:
@@ -528,7 +534,7 @@ def seal_realization_set(campaign: QualificationCampaign, definition: SealedChal
 
 
 def _issued_exposure_is_exact(campaign: QualificationCampaign, exposure: ExposureRecord) -> bool:
-    return exposure.campaign_identity == campaign.campaign_identity and exposure.identity_tuple() in campaign.issued_exposures
+    return type(exposure) is ExposureRecord and exposure.campaign_identity == campaign.campaign_identity and ExposureRecord.identity_tuple(exposure) in campaign.issued_exposures
 
 
 def issue_exposure(campaign: QualificationCampaign, sealed: SealedRealizationSet, *, realization_id: str, method_scientific_identity: str, authority_harness: Task4AuthorityHarness | None = None):
@@ -551,7 +557,7 @@ def issue_exposure(campaign: QualificationCampaign, sealed: SealedRealizationSet
         state=CampaignState.EXPOSURE_ACTIVE,
         exposures_consumed=ordinal,
         exposed_realization_ids=campaign.exposed_realization_ids + (realization_id,),
-        issued_exposures=campaign.issued_exposures + (exposure.identity_tuple(),),
+        issued_exposures=campaign.issued_exposures + (ExposureRecord.identity_tuple(exposure),),
     ), exposure
 
 
