@@ -1,0 +1,70 @@
+{
+  "authority_changed": false,
+  "blocking": [
+    {
+      "attacks": {
+        "N3": "exact ExposureRecord with eq-anything str realization_id freezes unexposed r1, reveal",
+        "N4": "exact SealedChallengeDefinition with ne-nothing str commitment reveals uncommitted spec",
+        "N6": "dict-subclass dependencies (__getitem__ only) keeps digest, shrinks finite exam 2->1, CUSTODY_COMPLETE",
+        "N7": "issue_exposure(realization_id=eq-anything str) records r1 with r0 content",
+        "N8": "validate_campaign_dependencies validates __getitem__ view, stores dict() view: producer==controller accepted"
+      },
+      "defect": "exact-type checks cover only the outer object; forged nested values bypass custody",
+      "id": "T4-B1R",
+      "repair": "registry-held handle identity for campaign/definition/sealed set/issued exposures; exact built-in caller arguments; normalize-then-validate-then-store dependencies with recursive exact types; RED tests N3,N4,N6,N7,N8",
+      "reviewer_note": "Macha's 36e3b46f smallest-repair text was insufficient (exact types only); full side-door list now supplied",
+      "severity": "CRITICAL"
+    }
+  ],
+  "ci": {
+    "39091542252": "Task 4 success",
+    "39091542253": "Task 2 success",
+    "39091542274": "Task 3 B6 success",
+    "39091542280": "Task 3 registry success",
+    "39091542281": "Task 1 success",
+    "39091542283": "Task 0 B1-B5 success",
+    "39091542287": "Task 0 migration success",
+    "39091542289": "synthetic success",
+    "evidence_class": "CI_CONFIRMED",
+    "head_sha": "64535753acfab0993165b5666797808f20cd8743"
+  },
+  "closed": [
+    "T4-B2",
+    "T4-B3",
+    "T4-B4",
+    "T4-B5",
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "duck-typed sealed set",
+    "concurrency double-spend",
+    "lease after abandonment"
+  ],
+  "date": "2026-10-17",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "hostile_probes": {
+    "bad": 5,
+    "expected": 12,
+    "total": 17
+  },
+  "non_blocking": [
+    "Task4BarrierStatus isinstance (not exploitable via _guard_final)",
+    "no parent-directory fsync on events.jsonl creation",
+    "claim 'Tasks 0-3 unchanged' holds for production code only (Task 3 conftest + Task 0/3 workflows changed)",
+    "carry C1(b), R4, C5/R7, store non-authoritative"
+  ],
+  "pr": 427,
+  "protected_values_opened": false,
+  "reviewed_head": "64535753acfab0993165b5666797808f20cd8743",
+  "schema": "MACHA_UNIFIED_TASK4_B1_B5_RECHECK_VERDICT_V1",
+  "tests_local_windows": {
+    "evidence_class": "LOCAL_NOT_CI",
+    "platform": "Windows, Python 3.9.7",
+    "projected_100k": "1 passed",
+    "store_suites": "17 passed, 2 skipped",
+    "td_unified_full": "324 passed, 3 skipped"
+  },
+  "verdict": "REJECT_TASK4_CUSTODY_CANDIDATE"
+}

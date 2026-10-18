@@ -1,0 +1,23 @@
+== positive control
+OK   P0 lawful DEVELOPMENT chain -> CUSTODY_COMPLETE -> ACCEPTED: 'CUSTODY_COMPLETE'
+== original attacks A1-A5 (exact rerun of the 36e3b46f probe logic)
+OK   A1 ShadowCampaign(to_payload override) -> REFUSED: 'Task4ChallengeCustodyError: campaign must be a QualificationCampaign'
+OK   A2 ShadowHarness(current_status override) creates FINAL -> REFUSED: 'Task4ChallengeCustodyError: FINAL transition requires Task4AuthorityHarness current-state re-resolution'
+OK   A3 ShadowExposure(identity_tuple override) freezes unexposed r1 -> REFUSED: 'Task4ChallengeCustodyError: invalid or hand-constructed output freeze'
+OK   A4 ShadowDefinition(to_payload override) reveals uncommitted spec -> REFUSED: 'Task4ChallengeCustodyError: exact sealed challenge definition required'
+OK   A5 re-create the same campaign identity after an exposure -> REFUSED: 'Task4ChallengeCustodyError: campaign identity already claimed in this process; cannot reset finite-exam exposure budget'
+OK   A1b duck-typed sealed set (SimpleNamespace) -> REFUSED: 'Task4ChallengeCustodyError: exact sealed realization set required'
+OK   control: exact-type campaign with forged fields + copied token -> REFUSED: 'Task4ChallengeCustodyError: campaign state lacks current lawful transition provenance'
+OK   control: genuine harness still refuses FINAL -> REFUSED: 'Task4ChallengeCustodyError: FINAL transition authority re-resolution failed: Task4BarrierError'
+== side doors: forged NESTED values inside exact-type objects
+BAD  N3 exact ExposureRecord whose realization_id is an eq-anything str('r1'): freeze unexposed r1, reveal -> ACCEPTED: "HIDDEN_MATERIAL_REVEALED; exposed=['r0']; frozen=['r0', 'r1']; type(ghost) is ExposureRecord: True"
+BAD  N4 exact SealedChallengeDefinition whose commitment is a ne-nothing str: reveal uncommitted spec -> ACCEPTED: 'HIDDEN_MATERIAL_REVEALED; revealed digest equals commitment: False; type exact: True'
+BAD  N6 exact QualificationCampaign whose dependencies is a dict subclass: finite exam shrunk 2 -> 1, custody complete -> ACCEPTED: 'CUSTODY_COMPLETE; identity-frozen budget=2; sealed/exposed worlds=1; receipt exposures_consumed=1'
+BAD  N7 issue_exposure(realization_id=eq-anything str 'r1') records r1 with r0's content -> ACCEPTED: "exposure recorded as 'r1' but carries r0 content: True"
+BAD  N8 validate_campaign_dependencies checks __getitem__ view but stores dict() view (producer == controller) -> ACCEPTED: 'created; stored producer == controller: True; stored type dict'
+OK   N8 control: plain dict with producer == controller -> REFUSED: 'Task4ChallengeCustodyError: producer/executor/controller/adjudicator actors must be pairwise distinct'
+== concurrency and lease
+OK   C two threads issue exposures from the same campaign version (only one may win) -> ACCEPTED: "one winner ['r0'], refusals ['Task4ChallengeCustodyError']"
+OK   C lease survives abandonment of the first object -> REFUSED: 'Task4ChallengeCustodyError: campaign identity already claimed in this process; cannot reset finite-exam exposure budget'
+
+SUMMARY: 12/17 expected; BAD=5
