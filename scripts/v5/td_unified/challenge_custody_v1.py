@@ -177,6 +177,9 @@ _REGENERATION_EXECUTIONS: dict[object, str] = {}
 # same finite exam. Cross-process uniqueness still requires external custody.
 _CAMPAIGN_IDENTITY_LEASES: set[str] = set()
 _CAMPAIGN_CREATION_LOCK = Lock()
+# Atomic in-process lifecycle check+transition. External durable custody remains
+# separately required; a Python lock does not authenticate provenance.
+_LIFECYCLE_TRANSITION_LOCK = Lock()
 
 
 def _campaign_state_digest(campaign: QualificationCampaign) -> str:
@@ -204,12 +207,16 @@ def _assert_lifecycle_current(campaign: QualificationCampaign) -> None:
 
 
 def _advance_campaign(campaign: QualificationCampaign, **changes: object) -> QualificationCampaign:
-    _assert_lifecycle_current(campaign)
-    advanced = replace(campaign, **changes)
-    token = campaign._lifecycle_token
-    assert token is not None
-    _LIFECYCLE_DIGESTS[token] = _campaign_state_digest(advanced)
-    return advanced
+    # Protect the second, decisive lifecycle check together with the write.
+    # Public callers may have validated the original state earlier, but only
+    # one thread may consume that version of the finite exam.
+    with _LIFECYCLE_TRANSITION_LOCK:
+        _assert_lifecycle_current(campaign)
+        advanced = replace(campaign, **changes)
+        token = campaign._lifecycle_token
+        assert token is not None
+        _LIFECYCLE_DIGESTS[token] = _campaign_state_digest(advanced)
+        return advanced
 
 
 @dataclass(frozen=True)
