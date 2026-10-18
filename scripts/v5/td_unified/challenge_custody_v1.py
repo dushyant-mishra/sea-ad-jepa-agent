@@ -18,6 +18,7 @@ from enum import Enum
 import hashlib
 import inspect
 import json
+from threading import Lock
 from typing import Iterable, Mapping
 
 from .task4_authority_barrier_v1 import Task4AuthorityHarness, Task4BarrierStatus
@@ -171,6 +172,11 @@ class QualificationCampaign:
 # cross-process or external authority.
 _LIFECYCLE_DIGESTS: dict[object, str] = {}
 _REGENERATION_EXECUTIONS: dict[object, str] = {}
+# Non-authorizing in-process campaign-identity leases. Prevent a duplicate
+# create_campaign call from minting a fresh zero-spend lifecycle token for the
+# same finite exam. Cross-process uniqueness still requires external custody.
+_CAMPAIGN_IDENTITY_LEASES: set[str] = set()
+_CAMPAIGN_CREATION_LOCK = Lock()
 
 
 def _campaign_state_digest(campaign: QualificationCampaign) -> str:
@@ -309,7 +315,14 @@ def create_campaign(campaign_id: str, dependencies: Mapping[str, object], *, bar
         identity,
         _lifecycle_token=object(),
     )
-    return _register_campaign(campaign)
+    with _CAMPAIGN_CREATION_LOCK:
+        if identity in _CAMPAIGN_IDENTITY_LEASES:
+            raise Task4ChallengeCustodyError(
+                "campaign identity already claimed in this process; cannot reset finite-exam exposure budget"
+            )
+        _register_campaign(campaign)
+        _CAMPAIGN_IDENTITY_LEASES.add(identity)
+    return campaign
 
 
 def assert_same_campaign_identity(campaign: QualificationCampaign, campaign_id: str, dependencies: Mapping[str, object]) -> None:
