@@ -1,0 +1,32 @@
+{
+  "schema": "JEPA_SUCCESSOR_POINTER_V5",
+  "date": "2026-10-17",
+  "read_first": [
+    "docs/agent/JEPA_NEW_AGENT_DETAILED_HANDOFF_V5_20261017.md",
+    "PR322:docs/agent/JEPA_LANE_AUDIT_SNAPSHOT_V5_20261017.md",
+    "PR322:results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V5_20261017.json",
+    "PR421:docs/agent/UNIFIED_TASK4_SUCCESSOR5_REGENERATION_REVIEW_PACKET_V1_20261017.md",
+    "PR421:results/target_discovery/unified_qualification_v1/UNIFIED_TASK4_SUCCESSOR5_CANDIDATE_STATE_V1.json"
+  ],
+  "task3_frozen_sha": "117dd51dea827e734b299982da93991b934bdc8f",
+  "task4_current": {
+    "status": "SUCCESSOR5_EXACT_HEAD_GREEN__INDEPENDENT_ACCEPTANCE_ABSENT",
+    "review_pr": 421,
+    "exact_review_sha": "36e3b46f1ca44465864a11872b459b5d108d6a67",
+    "repair_pr": 418,
+    "red_prs": [
+      417,
+      419
+    ],
+    "followon_repair_pr": 420,
+    "exact_head_task4_run": 39083379145,
+    "exact_head_task4_job": 117544789400,
+    "focused": "122 passed, 1 skipped",
+    "full_unified": "313 passed, 1 skipped",
+    "projected_100k": "1 passed",
+    "final_authority": "FAIL_CLOSED"
+  },
+  "next_action": "INDEPENDENT_HOSTILE_REVIEW_EXACT_SHA",
+  "historical_no_repeat": "PR322 V4 current-custody and historical audit plus local artifact V4 hash manifest",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
