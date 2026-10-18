@@ -117,6 +117,7 @@ class PersistentCustodyStore:
             self.events_path.touch()
             with self.events_path.open("r+b") as fh:
                 os.fsync(fh.fileno())
+            _fsync_parent_directory(self.events_path)
         self._replay = self.replay_reference()
 
     @classmethod

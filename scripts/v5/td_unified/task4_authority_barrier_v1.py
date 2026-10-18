@@ -37,7 +37,7 @@ class Task4BarrierStatus:
 
 
 def require_task4_preauthority_barrier_green(status: Task4BarrierStatus) -> None:
-    if not isinstance(status, Task4BarrierStatus):
+    if type(status) is not Task4BarrierStatus:
         raise Task4BarrierError("structured Task4BarrierStatus required")
     if status.authority_effect != "NONE":
         raise Task4BarrierError("preauthority barrier cannot itself grant authority")
