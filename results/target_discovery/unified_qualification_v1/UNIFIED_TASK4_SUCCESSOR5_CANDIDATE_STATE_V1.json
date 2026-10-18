@@ -1,0 +1,56 @@
+{
+  "schema": "UNIFIED_TASK4_SUCCESSOR5_CANDIDATE_STATE_V1",
+  "date": "2026-10-17",
+  "status": "CANDIDATE_ONLY__EXACT_HEAD_GREEN_AND_INDEPENDENT_REVIEW_REQUIRED",
+  "frozen_task3_sha": "117dd51dea827e734b299982da93991b934bdc8f",
+  "source_predecessor_rejected": "068880822bca8036e605e3c5264770ce89057fee",
+  "original_red": {
+    "pr": 417,
+    "head": "c543bd7c8b40d89db550dedad3ff5adbfbc356c0",
+    "run_id": 39000234158,
+    "job_id": 117301422733,
+    "finding": "echo of sealed rows counted as verified regeneration"
+  },
+  "initial_repair": {
+    "pr": 418,
+    "head": "e60689c5fe6b8319e2d40037bc25a7a62ab421dd"
+  },
+  "independent_red": {
+    "pr": 419,
+    "head": "603ea44b649e87d4719f6f7fa3c3a9f9012f4c10",
+    "run_id": 39083015888,
+    "job_id": 117543716134,
+    "finding": "same generator code object with replaced globals/replay row-hash helper incorrectly verified"
+  },
+  "followon_repair": {
+    "pr": 420,
+    "last_verified_code_test_sha": "441b24971668a6ea916205f79fd5f6abec4f0abc",
+    "task4_run": 39083139869,
+    "task4_job": 117544081882,
+    "focused": "121 passed, 1 skipped",
+    "projected_100k": "1 passed",
+    "full_unified": "312 passed, 1 skipped",
+    "task2_run": 39083139883,
+    "task3_run": 39083139871,
+    "synthetic_integration_run": 39083139868
+  },
+  "exact_review_head": "PIN_AFTER_FINAL_EXACT_HEAD_GREEN",
+  "rejected_predecessors": [
+    "b31371d62f3270c965d321e61c35898ca6be3721",
+    "c537db4e7b5b916cb3ddee1872fd4afa623a9b33",
+    "b5ed724cbc6a39d4f2cd68103c5367c2cfafcff3",
+    "d41720be93db27801fdac1ae62cfd608084dce25",
+    "068880822bca8036e605e3c5264770ce89057fee"
+  ],
+  "superseded_pin": "56b864e2b944956746771fb5d26040835d093dd5",
+  "scope": {
+    "development_generator_only": true,
+    "final_authority_fail_closed": true,
+    "external_execution_attestation_wired": false,
+    "process_local_provenance_only": true,
+    "claim_scope": "POOLED_DONOR_LEVEL_ONLY",
+    "authority_effect": "NONE"
+  },
+  "independent_acceptance": "ABSENT",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
