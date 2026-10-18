@@ -1,0 +1,108 @@
+{
+  "schema": "DOWNSTREAM_INHERITED_OBLIGATIONS_F6_F9_V1",
+  "date": "2026-10-14",
+  "authority": "ANALYSIS_ONLY__NO_DOWNSTREAM_CERTIFICATION",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "obligations": [
+    {
+      "id": "F6_SUBSPACE_ONLY",
+      "source": "Task0 F6 / PR276",
+      "target_bundle_requirements": [
+        "representation_scope",
+        "technology_invariance_qualified",
+        "matrix_identifiability_scope",
+        "unavailable_matrices_or_strata",
+        "source_acquisition_limitations",
+        "forbidden_axis_semantics"
+      ],
+      "required_current_values": {
+        "representation_scope": "SUBSPACE_ONLY",
+        "technology_invariance_qualified": false,
+        "canonical_broad_available_matrices": 34,
+        "canonical_broad_total_matrices": 42,
+        "nph52_available_matrices": 0,
+        "nph52_total_matrices": 7
+      },
+      "downstream_failures": [
+        "AXIS_SEMANTICS_SUBSTITUTED_FOR_SUBSPACE",
+        "UNIVERSAL_TECH_TRANSFER_CLAIMED_FROM_PARTIAL_COVERAGE",
+        "UNAVAILABLE_MATRICES_DROPPED_FROM_LIMITATION_SCOPE",
+        "SOURCE_ACQUISITION_SIGNAL_DECLARED_PURE_TECHNICAL_WITHOUT_QUALIFICATION"
+      ]
+    },
+    {
+      "id": "F7_MULTIMODAL_REGULATORY_PROVENANCE",
+      "source": "Task0 F7 / PR164 PR179 PR312",
+      "casebundle_requirements": [
+        "modality",
+        "same_nucleus_vs_separate_nucleus",
+        "independent_measurement_vs_rna_derived_hypothesis",
+        "regulatory_truth_status"
+      ],
+      "target_bundle_requirements": [
+        "evidence_provenance",
+        "observation_operator",
+        "independence_boundary",
+        "incomplete_stopped_regulatory_work",
+        "negative_graph_control_prior"
+      ],
+      "downstream_failures": [
+        "SAME_AND_SEPARATE_NUCLEUS_CONFLATED",
+        "RNA_DERIVED_EDGE_USED_AS_INDEPENDENT_REGULATORY_TRUTH",
+        "NEAREST_GENE_PROMOTED_TO_CAUSAL_TARGET",
+        "INCOMPLETE_SCENIC_WORK_PROMOTED",
+        "STRUCTURALLY_IDENTICAL_GRAPH_CONTROL_ACCEPTED"
+      ]
+    },
+    {
+      "id": "F8_RUNTIME_TRAINING_SAFETY",
+      "source": "Task0 F8 / PR223 PR224",
+      "lifecycle_scope": "POST_DOWNSTREAM_CERTIFICATION_BEFORE_TRAINING_ELIGIBLE",
+      "requirements": [
+        "OPTIMIZER_COMPLETION_BEFORE_EMA",
+        "NO_EMA_ADVANCE_ON_REJECTED_OR_INCOMPLETE_UPDATE",
+        "TYPED_PHYSICAL_CHECKPOINT_RECEIPT_BINDING",
+        "RUNTIME_SOURCE_PROVENANCE_BINDING",
+        "COORDINATE_VALUE_COUPLING",
+        "Q_SAFETY_FINAL_JOIN_EXECUTION"
+      ],
+      "promotion_rule": "DOWNSTREAM_CERTIFIED_CANNOT_PROMOTE_TO_TRAINING_ELIGIBLE_WITHOUT_EXPLICIT_RUNTIME_ELIGIBILITY_RECEIPT",
+      "scientific_boundary": "RUNTIME_CORRECTNESS_NE_TARGET_OR_REPRESENTATION_VALIDITY"
+    },
+    {
+      "id": "F9_FULL104_INFORMATION_CHANNELS",
+      "source": "Task0 F9 / PR33",
+      "manifest_casebundle_requirements": [
+        "normalization_and_library_provenance",
+        "full_library_mass_where_decision_bearing",
+        "stored_and_unmaterialized_mass_distinction",
+        "source_donor_operator_hierarchy",
+        "per_source_estimability"
+      ],
+      "target_bundle_requirements": [
+        "support_and_estimability_scope",
+        "no_zero_fill_interpretation",
+        "metric_blindness_limitations",
+        "nuisance_source_channel_obligations"
+      ],
+      "required_challenge_traps": [
+        "NORMALIZATION_DENOMINATOR_SOURCE_SHORTCUT",
+        "EQUAL_ADDRESS_UNEQUAL_EVIDENCE_BURDEN",
+        "SILENT_TARGET_ZERO_FILL_FALSE_EASE",
+        "WITHIN_DONOR_METRIC_BLIND_TO_SOURCE_DONOR_CHANNEL"
+      ],
+      "downstream_failures": [
+        "DENOMINATOR_SOURCE_SHORTCUT_UNTESTED",
+        "ADDRESS_PARITY_TREATED_AS_EVIDENCE_PARITY",
+        "NONESTIMABLE_TARGET_ZERO_FILLED",
+        "METRIC_USED_TO_CERTIFY_ABSENCE_OF_CHANNEL_IT_IS_INVARIANT_TO"
+      ],
+      "withdrawn_finding": "FULL104_G_WITHDRAWN__DO_NOT_RESURRECT"
+    }
+  ],
+  "training_boundary": {
+    "downstream_certification_is_not_training_eligibility": true,
+    "runtime_safety_receipt_required_for_training_eligibility": true,
+    "training_authorized": false
+  }
+}

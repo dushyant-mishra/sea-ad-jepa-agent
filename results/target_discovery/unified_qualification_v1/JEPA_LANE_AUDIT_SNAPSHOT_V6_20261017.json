@@ -1,0 +1,43 @@
+{
+  "schema": "JEPA_LANE_AUDIT_SNAPSHOT_V6",
+  "date": "2026-10-17",
+  "status": "TASK4_SUCCESSOR5_REJECTED__SUCCESSOR6_EXACT_HEAD_GREEN__INDEPENDENT_ACCEPTANCE_ABSENT",
+  "read_historical": [
+    "JEPA_LANE_AUDIT_SNAPSHOT_V5_20261017.json",
+    "JEPA_LANE_AUDIT_SNAPSHOT_V4_20261017.json",
+    "LOCAL_ARTIFACT_CUSTODY_MANIFEST_V4_20261017.json"
+  ],
+  "accepted_task3_sha": "117dd51dea827e734b299982da93991b934bdc8f",
+  "rejected_s5_sha": "36e3b46f1ca44465864a11872b459b5d108d6a67",
+  "rejections": [
+    {
+      "pr": 422,
+      "run": 39084356745,
+      "job": 117547707249,
+      "defect": "same genesis and campaign ID remints zero-spend token"
+    },
+    {
+      "pr": 424,
+      "run": 39084723524,
+      "job": 117548785850,
+      "defect": "concurrent duplicate ordinal-1 exposure issuance"
+    }
+  ],
+  "repair_pr": 423,
+  "review_pr": 425,
+  "candidate_sha": "211375de57cc1f70d46c6eb3a4860d61a1aba0a6",
+  "candidate_branch": "candidate/unified-task4-successor6-review-ready-211375de-20261017",
+  "same_head_checks": {
+    "task4_run": 39084913154,
+    "task4_job": 117549328489,
+    "focused": "129 passed, 1 skipped",
+    "full_unified": "320 passed, 1 skipped",
+    "projected_100k": "1 passed",
+    "task2": 39084913157,
+    "task3": 39084913175,
+    "synthetic_integration": 39084913173
+  },
+  "cross_process_trust": "UNWIRED_FAIL_CLOSED",
+  "independent_acceptance": "ABSENT",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

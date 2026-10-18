@@ -1,0 +1,151 @@
+{
+  "schema": "INITIAL_TD_PREREQUISITE_GRAPH_BLUEPRINT_V1",
+  "date": "2026-10-14",
+  "authority": "ANALYSIS_ONLY__TASK3_PREREQUISITE_BLUEPRINT__NO_STAGE_PROMOTION",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "current_full_unit_ceiling": "FIXTURE_SAME_INTERFACE",
+  "shared_prerequisites": {
+    "SAME_CODE_PATH": [
+      "UNIFIED_TASK1_CANONICAL_AUTHORITY_ACTIVE",
+      "UNIFIED_TASK2_MANIFEST_ACCESS_POLICY_ACTIVE",
+      "U_A7_MODE_EQUIVALENCE"
+    ],
+    "KNOWN_TRUTH_QUALIFIED": [
+      "SAME_CODE_PATH",
+      "SEALED_FINAL_QUALIFICATION_ACCEPTED",
+      "INDEPENDENT_QUALIFICATION_CONTROLLER_RECEIPT"
+    ],
+    "REAL_REFERENCE_READY": [
+      "KNOWN_TRUTH_QUALIFIED",
+      "ACTIVE_REAL_PRODUCER_CHAIN",
+      "ACTIVE_REAL_REFERENCE_ARTIFACTS",
+      "MANIFEST_POLICY_ACCESS_IDENTITY_MATCH",
+      "NO_REVOKED_OR_SUPERSEDED_PREREQUISITE"
+    ],
+    "HUMAN_EXECUTABLE": [
+      "REAL_REFERENCE_READY",
+      "INDEPENDENT_HUMAN_EXECUTABLE_PROMOTION_RECEIPT",
+      "CANDIDATE_SPECIFIC_SUPPORT_AND_ESTIMABILITY_SCOPE"
+    ]
+  },
+  "units": [
+    {
+      "unit_id": "G8",
+      "evidence_head": "95dd474a02ce571722df9e8f08b42e81af2e8736",
+      "current_max_stage": "FIXTURE_SAME_INTERFACE",
+      "unit_specific_prerequisites": {
+        "SAME_CODE_PATH": ["U_G8_REFERENCE", "U_CANDIDATE_SUPPORT_OVERLAYS"],
+        "REAL_REFERENCE_READY": ["U_REAL_REFERENCE_ARTIFACTS"],
+        "HUMAN_EXECUTABLE": ["G8_PROSPECTIVE_ESTIMAND_FROZEN", "G8_EXCHANGEABILITY_LAW_FROZEN"]
+      },
+      "known_current_block": "observation/conformal mechanics repaired; human statistical estimand/reference generation unresolved"
+    },
+    {
+      "unit_id": "G6",
+      "evidence_head": "4110d4478c3353d86740dd135d62460ff7a7611f",
+      "current_max_stage": "FIXTURE_SAME_INTERFACE",
+      "unit_specific_prerequisites": {
+        "SAME_CODE_PATH": ["U_G6_MARGIN", "U_CANDIDATE_SUPPORT_OVERLAYS"],
+        "REAL_REFERENCE_READY": ["U_REAL_REFERENCE_ARTIFACTS", "G6_PRODUCED_QUALIFICATION_RECEIPT"],
+        "HUMAN_EXECUTABLE": ["G6_METRIC_SCALE_CONTRACT", "G6_NONDEGENERATE_SUBSTANTIVE_MARGIN"]
+      },
+      "known_current_block": "decision/probe mechanics cannot confer substantive margin authority"
+    },
+    {
+      "unit_id": "G9_S1_S2_GEOMETRY",
+      "evidence_head": "8d6b23a18051f64463ee9b2649f4fe5fc7123f0d",
+      "current_max_stage": "FIXTURE_SAME_INTERFACE",
+      "unit_specific_prerequisites": {
+        "SAME_CODE_PATH": ["U_GEOMETRY_PRODUCER", "U_CANDIDATE_SUPPORT_OVERLAYS"],
+        "REAL_REFERENCE_READY": ["U_REAL_REFERENCE_ARTIFACTS", "GEOMETRY_PRODUCED_ADVERSE_NULL"],
+        "HUMAN_EXECUTABLE": ["GEOMETRY_EIGENGAP_LAW", "PRODUCER_OWNED_ALIGNMENT_DISPLACEMENT_CHAIN"]
+      },
+      "known_current_block": "caller-supplied support/alignment/displacements and incomplete adverse-null/eigengap authority"
+    },
+    {
+      "unit_id": "R1",
+      "evidence_head": "949d76ff03cb57c5a88fef9efdb79fced9154024",
+      "current_max_stage": "FIXTURE_SAME_INTERFACE",
+      "unit_specific_prerequisites": {
+        "SAME_CODE_PATH": ["U_R1_NULL", "U_CANDIDATE_SUPPORT_OVERLAYS"],
+        "REAL_REFERENCE_READY": ["U_REAL_REFERENCE_ARTIFACTS", "R1_Y_CELL_IDENTITY_NULL_PRODUCER"],
+        "HUMAN_EXECUTABLE": ["R1_NULL_SPECIFIC_MEASURABILITY_RECEIPT"]
+      },
+      "known_current_block": "depth/detection-null mechanics repaired; real Y-cell identity reassignment null producer missing"
+    },
+    {
+      "unit_id": "G2",
+      "evidence_head": "42df903d6190b7aa1b8eb65d810ab813cd327445",
+      "current_max_stage": "FIXTURE_SAME_INTERFACE",
+      "unit_specific_prerequisites": {
+        "SAME_CODE_PATH": ["U_G2_POLICY", "U_CANDIDATE_SUPPORT_OVERLAYS"],
+        "REAL_REFERENCE_READY": ["U_REAL_REFERENCE_ARTIFACTS", "G2_STATIC_BASELINE_STRATA_POLICY"],
+        "HUMAN_EXECUTABLE": ["G2_SUBSTANTIVE_MARGIN_POLICY", "G2_PROSPECTIVE_APPLICABLE_BASELINES"]
+      },
+      "known_current_block": "status/alpha mechanics repaired; candidate-specific baseline/strata policy and real reference producer missing"
+    },
+    {
+      "unit_id": "G7",
+      "evidence_head": "5a711f9a4ea0328445a05dadc1e011efb16a3c13",
+      "current_max_stage": "FIXTURE_SAME_INTERFACE",
+      "unit_specific_prerequisites": {
+        "SAME_CODE_PATH": ["U_G7_EVIDENCE_PRODUCER", "U_CANDIDATE_SUPPORT_OVERLAYS"],
+        "REAL_REFERENCE_READY": ["U_REAL_REFERENCE_ARTIFACTS", "G7_CONTENT_HASHED_EVIDENCE_RIGHTS_CHAIN"],
+        "HUMAN_EXECUTABLE": ["G7_REQUIRED_SOURCE_SET_FROZEN", "G7_SOURCE_DONOR_MARGIN_RECEIPTS"]
+      },
+      "known_current_block": "source-aware decision mechanics exist; complete content-enforcing evidence-right/support producer chain missing"
+    },
+    {
+      "unit_id": "R4_C6_C4_INCREMENT",
+      "evidence_head": "b7c317c640aa231a7d5ec1fa12271a39bfee86e6",
+      "current_max_stage": "FIXTURE_SAME_INTERFACE",
+      "unit_specific_prerequisites": {
+        "SAME_CODE_PATH": ["U_INCREMENT_PRODUCERS", "U_CANDIDATE_SUPPORT_OVERLAYS"],
+        "REAL_REFERENCE_READY": ["U_REAL_REFERENCE_ARTIFACTS", "INCREMENT_ENDPOINT_REFERENCE_PRODUCERS"],
+        "HUMAN_EXECUTABLE": ["C6_INDEPENDENT_QUALIFICATION", "C4_DOES_NOT_DELETE_INDEPENDENT_FOUNDATIONS"]
+      },
+      "known_current_block": "matched increment decision mechanics exist without complete candidate endpoint/support/reference producers"
+    },
+    {
+      "unit_id": "G12_SCOPE_GUARD",
+      "evidence_head": "01ebdb9384b42d5cfae3de03c2adf5b6b327ee81",
+      "current_max_stage": "FIXTURE_SAME_INTERFACE",
+      "unit_specific_prerequisites": {
+        "SAME_CODE_PATH": ["U_G12_HUMAN_SUPPORT", "U_CANDIDATE_SUPPORT_OVERLAYS"],
+        "REAL_REFERENCE_READY": ["G12_CANDIDATE_SPECIFIC_SUPPORT_OBJECT"],
+        "HUMAN_EXECUTABLE": ["G12_HUMAN_OUTCOME_EXECUTION_OBJECT"]
+      },
+      "known_current_block": "runtime scope guard only; candidate-specific support and human execution objects absent"
+    },
+    {
+      "unit_id": "TD_SYSTEM_BATTERY_V3",
+      "evidence_head": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+      "current_max_stage": "FIXTURE_SAME_INTERFACE",
+      "authority_scope": "PIPELINE:TD",
+      "unit_specific_prerequisites": {
+        "SAME_CODE_PATH": ["ALL_REQUIRED_CONSTITUENT_SAME_CODE_PATH_RECEIPTS"],
+        "KNOWN_TRUTH_QUALIFIED": ["ALL_REQUIRED_CONSTITUENT_KNOWN_TRUTH_RECEIPTS"]
+      },
+      "known_current_block": "system mechanics/firewall battery is test-of-test evidence and cannot promote constituent units by association"
+    }
+  ],
+  "pipeline_prerequisites": {
+    "controller_binding": "U_CONTROLLER_EXACT_BINDING",
+    "targetportfolio_binding": "U_TARGETPORTFOLIO_BINDING",
+    "readiness_matrix_regeneration": "U_READINESS_MATRIX_REGEN",
+    "real_reference_generation": "U_REAL_REFERENCE_ARTIFACTS",
+    "historical_real_td_registration": "U_MACHA_REAL_TD_HISTORY_REGISTRATION",
+    "historical_v79_registration": "U_MACHA_V79_HISTORY_REGISTRATION"
+  },
+  "derivation_laws": [
+    "NO_AUTHORITATIVE_READY_BOOLEAN",
+    "EVERY_VALIDATION_RECOMPUTES_COMPLETE_ACTIVE_PREREQUISITE_GRAPH",
+    "ONE_REVOKED_OR_SUPERSEDED_REQUIRED_PARENT_BLOCKS_PROMOTION",
+    "MISSING_PREREQUISITE_REMAINS_MACHINE_VISIBLE",
+    "GREEN_CI_OR_SYSTEM_BATTERY_CANNOT_PROMOTE_CONSTITUENT",
+    "PR_BRANCH_OR_PROSE_STATUS_CANNOT_SATISFY_PREREQUISITE",
+    "SUPPORT_AND_ESTIMABILITY_SCOPE_CANNOT_BE_WIDENED_BY_PROMOTION",
+    "PROTECTED_VALIDATION_ORACLE_ACCESS_INVALIDATES_REAL_REFERENCE_READINESS_UNDER_CURRENT_MANIFEST"
+  ],
+  "terminal": "INITIAL_PREREQUISITE_GRAPH_BLUEPRINT_FROZEN__NO_REAL_REFERENCE_READY_UNIT__NO_HUMAN_EXECUTION_AUTHORITY"
+}

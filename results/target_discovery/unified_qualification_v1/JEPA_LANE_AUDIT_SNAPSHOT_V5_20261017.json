@@ -1,0 +1,53 @@
+{
+  "schema": "JEPA_LANE_AUDIT_SNAPSHOT_V5",
+  "date": "2026-10-17",
+  "status": "DURABLE_NONAUTHORIZING_CUSTODY__TASK4_SUCCESSOR5_EXACT_HEAD_GREEN__INDEPENDENT_ACCEPTANCE_ABSENT",
+  "historical_v4": "results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V4_20261017.json",
+  "frozen": {
+    "task0": "e37a22b8059c0a4a93a789a8ca916fb7acde9fe3",
+    "task1": "799d2e235901dfad9ce3b305c767a1c989e362f6",
+    "task2": "c7dfff1cee608e4a101855d42cf0af08491c2aaf",
+    "task3": "117dd51dea827e734b299982da93991b934bdc8f"
+  },
+  "task4": {
+    "current_review_pr": 421,
+    "exact_candidate_sha": "36e3b46f1ca44465864a11872b459b5d108d6a67",
+    "candidate_branch": "candidate/unified-task4-successor5-review-ready-36e3b46f-20261017",
+    "repair_pr": 418,
+    "first_red": {
+      "review_pr": 417,
+      "run": 39000234158,
+      "job": 117301422733
+    },
+    "second_red": {
+      "review_pr": 419,
+      "run": 39083015888,
+      "job": 117543716134
+    },
+    "second_repair_pr": 420,
+    "exact_head_green": {
+      "task4_run": 39083379145,
+      "task4_job": 117544789400,
+      "focused": "122 passed, 1 skipped",
+      "projected_100k": "1 passed",
+      "full_unified": "313 passed, 1 skipped",
+      "task1_run": 39083379077,
+      "task2_run": 39083379092,
+      "task3_run": 39083379094,
+      "synthetic_run": 39083379087
+    },
+    "independent_review_verdict": "ABSENT",
+    "final_external_trust": "FAIL_CLOSED"
+  },
+  "predecessor_rejections": [
+    "b31371d62f3270c965d321e61c35898ca6be3721",
+    "c537db4e7b5b916cb3ddee1872fd4afa623a9b33",
+    "b5ed724cbc6a39d4f2cd68103c5367c2cfafcff3",
+    "d41720be93db27801fdac1ae62cfd608084dce25",
+    "068880822bca8036e605e3c5264770ce89057fee"
+  ],
+  "superseded_review_pin": "56b864e2b944956746771fb5d26040835d093dd5",
+  "historical_science_v4": "docs/agent/JEPA_LANE_AUDIT_AND_CUSTODY_SNAPSHOT_V4_20261017.md",
+  "artifact_manifest_v4": "results/target_discovery/unified_qualification_v1/LOCAL_ARTIFACT_CUSTODY_MANIFEST_V4_20261017.json",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
