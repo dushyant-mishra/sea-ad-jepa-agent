@@ -424,6 +424,16 @@ def _development_fixture_generator(campaign_identity: str, hidden_spec: bytes, b
     } for ordinal in range(budget))
 
 
+# Pin this exact DEVELOPMENT generator object and the helpers its code resolves.
+# Hashing inspect.getsource alone cannot distinguish a copied code object
+# executing in an attacker-supplied global namespace. These process-local
+# checks are defense in depth only: they are NOT an independent trust root.
+_PINNED_DEV_GENERATOR_FUNCTION = _development_fixture_generator
+_PINNED_DEV_GENERATOR_CODE = _development_fixture_generator.__code__
+_PINNED_DEV_ROW_HASH = _sha
+_PINNED_DEV_SHA256 = hashlib.sha256
+
+
 def development_fixture_generator_identities() -> dict[str, str]:
     """Pin actual fixture implementation source, policy and RNG contract."""
     return {
@@ -438,6 +448,16 @@ def development_fixture_generator_identities() -> dict[str, str]:
 def _assert_development_generator_contract(campaign: QualificationCampaign) -> None:
     if campaign.namespace != "DEVELOPMENT" or campaign.promotion_authority != "NONE":
         raise Task4ChallengeCustodyError("in-process fixture generator is DEVELOPMENT-only and non-authorizing")
+    if (
+        _development_fixture_generator is not _PINNED_DEV_GENERATOR_FUNCTION
+        or _development_fixture_generator.__code__ is not _PINNED_DEV_GENERATOR_CODE
+        or _development_fixture_generator.__globals__ is not globals()
+        or _sha is not _PINNED_DEV_ROW_HASH
+        or hashlib.sha256 is not _PINNED_DEV_SHA256
+    ):
+        raise Task4ChallengeCustodyError(
+            "DEVELOPMENT generator execution environment differs from the pinned module implementation"
+        )
     expected = development_fixture_generator_identities()
     if any(campaign.dependencies[key] != val for key, val in expected.items()):
         raise Task4ChallengeCustodyError("generator source/policy/RNG differs from frozen DEVELOPMENT fixture contract")
