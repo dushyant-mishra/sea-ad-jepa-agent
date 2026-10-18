@@ -1,0 +1,85 @@
+{
+  "authority_changed": false,
+  "base": "117dd51dea827e734b299982da93991b934bdc8f",
+  "blocking": [
+    {
+      "defect": "isinstance + overridable to_payload/identity_tuple + caller-supplied fields defeat lifecycle provenance: fabricated DEVELOPMENT CUSTODY_COMPLETE with zero real exposures (A1); output frozen for never-exposed realization (A3); reveal of uncommitted hidden material (A4); duck-typed sealed set accepted",
+      "id": "T4-B1",
+      "repair": "exact-type checks; module-owned digests over dataclass fields; registry-held lawful state with caller object as handle; RED tests",
+      "severity": "CRITICAL"
+    },
+    {
+      "defect": "Task4AuthorityHarness subclass overriding current_status drives FINAL campaign to HIDDEN_MATERIAL_REVEALED (A2)",
+      "id": "T4-B2",
+      "repair": "type(h) is Task4AuthorityHarness; evaluate barrier via module functions on fields; exact-type Task4BarrierStatus; RED test",
+      "severity": "CRITICAL"
+    },
+    {
+      "defect": "same campaign identity re-creatable in-process; exposure accounting reset; two CUSTODY_COMPLETE for one identity/sealed root (A5); restart test mislabelled",
+      "id": "T4-B3",
+      "repair": "process-local issued-identity refusal in create_campaign; persistent CAMPAIGN/EXPOSURE events before FINAL (R4); fix test",
+      "severity": "IMPORTANT"
+    },
+    {
+      "defect": "Task 0 migration, Task 0 B1-B5 and Task 3 B6 workflow-policy CI permanently RED since 8beef2bb (Task 3 conftest -> numpy; workflows install pytest only); missed in Macha Task 3 acceptance",
+      "id": "T4-B4",
+      "repair": "install numpy==1.26.4 in those workflows or lazy conftest import",
+      "severity": "IMPORTANT"
+    },
+    {
+      "defect": "PersistentCustodyStore os.fsync on read-only handles raises EBADF on Windows (canonical workspace): 16 local failures; no directory fsync after os.replace",
+      "id": "T4-B5",
+      "repair": "fsync via writable handle; directory fsync on POSIX; portable test",
+      "severity": "IMPORTANT"
+    }
+  ],
+  "ci": {
+    "39083379077": "Task 1 success",
+    "39083379080": "Task 0 migration failure (numpy)",
+    "39083379087": "synthetic success",
+    "39083379092": "Task 2 success",
+    "39083379094": "Task 3 registry success",
+    "39083379098": "Task 0 B1-B5 failure (numpy)",
+    "39083379103": "Task 3 B6 policy failure (numpy)",
+    "39083379145": "Task 4 success",
+    "evidence_class": "CI_CONFIRMED",
+    "head_sha": "36e3b46f1ca44465864a11872b459b5d108d6a67"
+  },
+  "date": "2026-10-17",
+  "freeze": "TASK4_REMAINS_OPEN",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "holds": [
+    "PR#417 echo refused",
+    "PR#419 globals substitution refused (CI suite)",
+    "plain replace() token copy refused",
+    "genuine harness keeps FINAL closed",
+    "barrier RED with forged authoritative store",
+    "Task 3 KTQ still closed",
+    "no legacy registry import",
+    "delta is additions only"
+  ],
+  "hostile_probes": {
+    "bad": 5,
+    "expected": 9,
+    "notes": 2,
+    "total": 14
+  },
+  "non_blocking": [
+    "test_revoked_identity_target_fork_cannot_evade_anchor mislabelled; C1(b) unimplemented (acceptable while KTQ unreachable)",
+    "C1(a) revocation_subject_identity excludes restrictions",
+    "custody store never authoritative and not wired to lifecycle",
+    "requirement policy roles from caller actor_context (C5/R7)",
+    "barrier C5-C9 hard FAIL correct apart from T4-B2"
+  ],
+  "pr": 421,
+  "protected_values_opened": false,
+  "reviewed_head": "36e3b46f1ca44465864a11872b459b5d108d6a67",
+  "schema": "MACHA_UNIFIED_TASK4_REVIEW_VERDICT_V1",
+  "tests_local": {
+    "evidence_class": "LOCAL_NOT_CI",
+    "failure_cause": "os.fsync on read-only handle EBADF on Windows",
+    "platform": "Windows, Python 3.9.7",
+    "td_unified_full": "297 passed, 16 failed, 1 skipped"
+  },
+  "verdict": "REJECT_TASK4_CUSTODY_CANDIDATE"
+}

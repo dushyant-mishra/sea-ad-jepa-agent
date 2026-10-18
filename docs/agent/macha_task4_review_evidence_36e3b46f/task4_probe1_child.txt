@@ -1,0 +1,11 @@
+# ---child---
+d = {"task2_manifest_sha": "1"*64, "task3_registry_sha": "2"*64, "registry_unit_identities": (("G8","3"*64),),
+     "producer_actor_identity": "4"*64, "executor_actor_identity": "5"*64, "controller_actor_identity": "6"*64,
+     "adjudicator_actor_identity": "7"*64, "realization_schema_sha": "a"*64, "challenge_family_sha": "c"*64,
+     "adjudication_contract_sha": "d"*64, "multiplicity_policy_sha": "e"*64, "publication_policy_sha": "f"*64,
+     "genesis_ledger_identity": "0"*64, "authority_scope": "UNIT:G8", "authority_restrictions": ("NO_TRAINING_AUTHORITY",),
+     "qualification_budget": 2}
+d.update(c.development_fixture_generator_identities())
+x = c.create_campaign("same-identity", d, barrier_status=None, namespace="DEVELOPMENT")
+print("created", x.campaign_identity[:12])
+# ---child---

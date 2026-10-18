@@ -1,0 +1,25 @@
+== positive control and preserved REDs
+OK   P0 lawful DEVELOPMENT chain -> CUSTODY_COMPLETE -> ACCEPTED: 'CUSTODY_COMPLETE'
+OK   PR#417 echo of sealed rows as regeneration -> REFUSED: 'Task4ChallengeCustodyError: caller-supplied rows are not regeneration execution evidence'
+OK   FINAL with genuine harness-less create -> REFUSED: 'Task4ChallengeCustodyError: FINAL transition requires Task4AuthorityHarness current-state re-resolution'
+OK   plain replace() token copy with forged advanced state (PR test pattern) -> REFUSED: 'Task4ChallengeCustodyError: campaign state lacks current lawful transition provenance'
+== A1 subclassed campaign: fabricated CUSTODY_COMPLETE with zero real exposures
+BAD  A1 ShadowCampaign(to_payload override) + copied fields -> reveal/regeneration/finalize -> ACCEPTED: "CUSTODY_COMPLETE; receipt exposures_consumed=2; evidence frozen_outputs=[['r0', 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'], ['r1', 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff']]; real exposure
+== A2 subclassed authority harness: FINAL fail-closed bypass
+BAD  A2 ShadowHarness(current_status override) drives a FINAL campaign to HIDDEN_MATERIAL_REVEALED -> ACCEPTED: 'namespace=FINAL promotion_authority=CUSTODY_ONLY state=HIDDEN_MATERIAL_REVEALED'
+OK   A2 control: genuine Task4AuthorityHarness refuses FINAL -> REFUSED: 'Task4ChallengeCustodyError: FINAL transition authority re-resolution failed: Task4BarrierError'
+== A3 subclassed exposure: output frozen for a realization that was never exposed
+BAD  A3 ShadowExposure(identity_tuple override) freezes r1 unexposed, then hidden material is revealed -> ACCEPTED: "HIDDEN_MATERIAL_REVEALED; exposed=('r0',); frozen=['r0', 'r1']"
+== A4 subclassed definition: reveal accepts hidden material that differs from the commitment
+BAD  A4 ShadowDefinition(to_payload override) reveals uncommitted hidden material -> ACCEPTED: 'HIDDEN_MATERIAL_REVEALED; revealed hidden_spec_sha256 == committed? False'
+OK   A4 control: plain definition with mismatched hidden material at reveal -> REFUSED: 'Task4ChallengeCustodyError: hidden material does not match sealed commitment'
+== A5 same campaign identity re-created in-process: exposure accounting reset
+BAD  A5 re-create the same campaign identity after an exposed failed world, complete custody again -> ACCEPTED: "same campaign_identity/sealed_root=(True, True); B CUSTODY_COMPLETE with r0 terminal EVALUATED (A had TECHNICAL_FAILURE); A's exposure history absent from B"
+NOTE NOTE second process re-creates the same campaign identity (process-local lifecycle, disclosed) -> ACCEPTED: 'created 282ce56698ab'
+== authority boundary
+OK   barrier with a forged authoritative custody store -> REFUSED: 'Task4BarrierError: C1-C9 preauthority barrier is not GREEN'
+OK   Task 3 SAME_CODE_PATH -> KNOWN_TRUTH_QUALIFIED still closed -> REFUSED: 'RegistryError: KNOWN_TRUTH_QUALIFIED requires SEALED_CHALLENGE_REVIEW evidence; that evidence type is not implemented in Task 3, so promotion is closed'
+OK   Task 4 modules have no legacy-registry import -> ACCEPTED: 'clean'
+NOTE NOTE duck-typed sealed set (SimpleNamespace copy of the campaign's own set; no type check) accepted by issue_exposure -> ACCEPTED: 'r0'
+
+SUMMARY: 9/14 expected; BAD=5
