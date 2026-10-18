@@ -1,0 +1,39 @@
+{
+  "schema": "JEPA_FULL_LANE_TAKEOVER_POINTER_V8",
+  "date": "2026-10-17",
+  "status": "SYNTHETIC_HISTORICAL_CUSTODY_RESTORED__TASK4_RECHECK_PENDING",
+  "handoff": "docs/agent/JEPA_FULL_LANE_HISTORICAL_SYNTHETIC_TAKEOVER_V8_20261017.md",
+  "task3_accepted": "117dd51dea827e734b299982da93991b934bdc8f",
+  "task4": {
+    "candidate_pr": 427,
+    "sha": "64535753acfab0993165b5666797808f20cd8743",
+    "acceptance": "ABSENT",
+    "real_windows_review": "ABSENT"
+  },
+  "synthetic": {
+    "historical_audit_pr": 325,
+    "operational_handoff_pr": 324,
+    "merged_mechanics_fixture_pr": 328,
+    "fixture_sha": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+    "hostile_audit_pr": 339,
+    "production_design_pr": 344,
+    "implementation_plan_pr": 356,
+    "production_realization": "NOT_AUTHORIZED",
+    "v79": "FROZEN_NOT_QUALIFIED_Q08",
+    "v80_benchmark": "QUALIFIED",
+    "v80_estimator": "NOT_QUALIFIED"
+  },
+  "population": {
+    "pr": 349,
+    "donors": 149,
+    "rows": 6351753,
+    "operators": 42,
+    "partitions": {
+      "fit": 104,
+      "validation": 22,
+      "oracle": 23
+    }
+  },
+  "binary_manifest": "results/target_discovery/unified_qualification_v1/LOCAL_ARTIFACT_CUSTODY_MANIFEST_V4_20261017.json",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
