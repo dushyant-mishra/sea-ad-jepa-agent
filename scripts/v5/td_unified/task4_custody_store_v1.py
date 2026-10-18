@@ -25,6 +25,21 @@ class Task4CustodyError(ValueError):
     pass
 
 
+def _fsync_parent_directory(path: Path) -> None:
+    """Persist atomic rename metadata on POSIX; directory fsync unsupported on Windows.
+
+    This is local durability mechanics, not independent trust/authorization.
+    """
+    if os.name == "nt":
+        return
+    flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
+    descriptor = os.open(str(path.parent), flags)
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
 def _canonical_bytes(payload: Mapping[str, object]) -> bytes:
     return json.dumps(dict(payload), sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("ascii")
 
@@ -100,7 +115,7 @@ class PersistentCustodyStore:
         self.head_path = self.root / self.HEAD
         if not self.events_path.exists():
             self.events_path.touch()
-            with self.events_path.open("rb") as fh:
+            with self.events_path.open("r+b") as fh:
                 os.fsync(fh.fileno())
         self._replay = self.replay_reference()
 
@@ -281,9 +296,10 @@ class PersistentCustodyStore:
             ) + "\n",
             encoding="utf-8",
         )
-        with tmp.open("rb") as fh:
+        with tmp.open("r+b") as fh:
             os.fsync(fh.fileno())
         os.replace(tmp, self.head_path)
+        _fsync_parent_directory(self.head_path)
 
         # Do not self-mint an external expected head. The append advances local
         # mechanics only; any later expected_head is an independently supplied
