@@ -49,12 +49,46 @@ Status: `CANDIDATE_ONLY__AUTHORED_BY_MACHA__INDEPENDENT_AUDIT_REQUIRED`
 
 CI evidence is produced by the PR checks on the pushed head.
 
+## Round 2: after the independent rejection of `11ef009c` (PR #429)
+
+**My first round was wrong on one point.** In that round's audit list I filed in-place mutation of issued objects as C9 in-process tampering. The independent auditor showed it is an ordinary caller action against an object the module hands out. In PR #429 (`c8e3aa07`, run `39094331098`), mutating an authentic `ExposureRecord` with `object.__setattr__` was enough to freeze an output for a world that was never exposed. The finding is correct and has been repaired.
+
+| commit | content |
+|---|---|
+| `c8e3aa07` | independent PR #429 RED, fast-forwarded in unchanged |
+| `b2eb9406` | sibling-route RED: definition, sealed set, campaign terminal accounting, an eq-anything value swapped into the campaign (JSON-identical), and an in-place edit of dependencies. Against `11ef009c`: PR #429, the definition route and the eq-anything campaign route are accepted; the other three are already refused and are kept as regression guards. |
+| `efd77956` | **private snapshots** |
+
+**What `efd77956` does.**
+- For each issued campaign, definition, sealed set and exposure, the module keeps the public handle it returned and a separate private copy that it never returns.
+- Every transition reads private state only. Terminal accounting lives in that private state.
+- A handle is accepted only if it is the exact object issued **and** every field still equals the private copy under exact built-in types at every depth. `_exact_equal` never calls an overridable `__eq__`.
+- So the following are all refused:
+  - value-equal copies;
+  - subclasses;
+  - forged nested values;
+  - `object.__setattr__` mutation;
+  - in-place edits of a mutable dict;
+  - look-alike `str`/`int` subclasses.
+
+**Round 2 evidence (local, Windows, Python 3.9.7 — not CI).**
+
+| check | result |
+|---|---|
+| PR #429 RED + sibling REDs + T4-B1R REDs | 15 passed |
+| full `tests/v5/td_unified` | 339 passed, 3 skipped |
+| projected 100k replay | 1 passed |
+| re-check probe / original probe | 17/17 and 14/14 expected |
+| author self-check (`task4_mutation_probe.py`) | 5/5. Refuses plain-value mutation, a lifecycle-token swap, a namespace flip and a stale handle; confirms no private object or private dependency dict is ever returned. |
+
+CI on the pushed head is the confirming evidence. This is an author's self-check, **not** an independent review.
+
 ## What the independent auditor should attack
 
-- Any remaining entry point that reads a caller-supplied object or value without handle identity or an exact built-in type.
-- Thread interleavings around the post-advance registration of the definition, sealed set and exposure. These are designed to fail closed if another thread uses the advanced campaign before registration.
-- In-place mutation of issued objects: `object.__setattr__` on frozen dataclasses is in-process tampering (C9), while the dict digest is a defence-in-depth check.
-- Regression of A1–A5, the lease, concurrency, FINAL fail-closed and B4/B5.
+- Any entry point that still reads caller-held state instead of the private copy.
+- Any route by which a private copy, or a mutable value inside one, reaches a caller. Private objects share immutable `str`, `int` and `tuple` values with their public handles; each public campaign gets its own dependency dict.
+- The window between an advance and the registration of a definition, sealed set or exposure (designed to fail closed).
+- Regression of A1–A5, N3–N9, the lease, concurrency, FINAL fail-closed and B4/B5.
 
 ## Unchanged
 
