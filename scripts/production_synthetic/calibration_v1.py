@@ -16,11 +16,23 @@ statistic is never promoted to authentication:
   family per process, and is not durable across processes (a STOP_B
   prerequisite that remains open).
 * Authority-bearing outputs (``CalibrationCheck``, ``RealismState``) are issued
-  handles backed by private copies that never leave the module. Consumers must
-  call ``verify_calibration_check`` / ``verify_realism_state`` at every use;
+  handles checked against module-held snapshots. Consumers must call
+  ``verify_calibration_check`` / ``verify_realism_state`` at every use;
   hand-built, stale, token-swapped or mutated handles are refused. Inputs are
   re-validated at use because construction-time checks do not survive
   ``object.__setattr__``.
+
+Trust model (``TRUST_MODEL``): COOPERATIVE SAME-PROCESS CALLERS, FIXTURE ONLY.
+The snapshots detect ordinary or accidental mutation of issued handles by
+callers that use this module's public API. They are NOT a security boundary
+against hostile code running in the same Python interpreter, which can read and
+rewrite module state (including ``_REALISM_PRIVATE``, ``_ISSUED_CHECKS`` and
+the pinned registries). Moving state to another module-level object would not
+change that. No result here claims protection against such callers
+(``HOSTILE_SAME_PROCESS_PROTECTION is False``); adversarial custody needs a
+separate trust boundary (out-of-process, OS-enforced or externally signed
+durable custody), which is a STOP_B prerequisite that this module does not
+implement.
 
 Which artifacts, split authority and universe registries get pinned is a
 deciding-lane decision; this module only fails closed until they exist.
@@ -32,7 +44,8 @@ from hashlib import sha256
 from math import ceil, isfinite, log
 from threading import Lock
 from typing import Mapping
-import json
+
+from scripts.production_synthetic import canonical_v1 as C
 
 
 class CalibrationError(ValueError):
@@ -70,6 +83,9 @@ _REALISM_NAMES = frozenset({
 _AUTHENTICATED_CALIBRATION_REGISTRY: frozenset[str] = frozenset()
 _PINNED_PILOT_UNIVERSE_SHA256: str | None = None
 _PINNED_FULL_UNIVERSE_SHA256: str | None = None
+
+TRUST_MODEL = "COOPERATIVE_SAME_PROCESS_CALLERS__FIXTURE_ONLY__NO_HOSTILE_CALLER_PROTECTION"
+HOSTILE_SAME_PROCESS_PROTECTION = False
 
 UNAUTHENTICATED_FIXTURE = "CONSISTENT_UNAUTHENTICATED_FIXTURE"
 AUTHENTICATED = "AUTHENTICATED_EMPIRICAL_CALIBRATION"
@@ -191,6 +207,10 @@ class CalibrationCheck:
             raise CalibrationError("AUTHENTICATED status requires a code-pinned authenticated artifact")
 
     @property
+    def trust_model(self) -> str:
+        return TRUST_MODEL
+
+    @property
     def provenance(self) -> str:
         return AUTHENTICATED if self.authenticated else UNAUTHENTICATED_FIXTURE
 
@@ -205,8 +225,10 @@ class CalibrationCheck:
 def verify_calibration_check(check: CalibrationCheck) -> CalibrationCheck:
     """Return ``check`` only if it is the issued, unmutated handle; refuse anything else.
 
-    The module's private copy is never returned, so a caller cannot edit it.
-    Verify again at every use: a later mutation of the handle is refused then.
+    No public API returns the module's snapshot. Verify again at every use: a
+    later mutation of the handle is refused then. Under ``TRUST_MODEL`` this
+    detects cooperative-caller mutation only; hostile same-process code can
+    rewrite the snapshot itself.
     """
     if type(check) is not CalibrationCheck:
         raise CalibrationError("exact calibration check required")
@@ -218,7 +240,7 @@ def verify_calibration_check(check: CalibrationCheck) -> CalibrationCheck:
         raise CalibrationError("issued calibration check was mutated after issuance")
     if private.status == AUTHENTICATED and private.artifact.content_sha256 not in _AUTHENTICATED_CALIBRATION_REGISTRY:
         raise CalibrationError("authenticated identity is no longer pinned")
-    return check  # the verified public handle; the private copy never leaves the module
+    return check  # the verified public handle; no public API returns the snapshot
 
 
 def _issue_check(artifact: CalibrationArtifact, status: str) -> CalibrationCheck:
@@ -416,17 +438,26 @@ def derive_budget_from_precision(targets: Mapping[str, PrecisionTarget]) -> dict
         if type(item) is not PrecisionTarget:
             raise CalibrationError("precision budgets must be typed frozen targets")
         _validate_precision(item)
-        n = ceil(log(2.0 / item.alpha) / (2.0 * item.epsilon ** 2))
-        if n <= 0 or n > 10**9:
+        try:
+            denominator = 2.0 * item.epsilon ** 2
+            numerator = log(2.0 / item.alpha)
+            raw = numerator / denominator
+        except (ZeroDivisionError, OverflowError, ValueError) as exc:
+            raise CalibrationError("precision target is not numerically representable") from exc
+        if not isfinite(raw) or not 0.0 < raw <= 10**9:
             raise CalibrationError("precision budget cannot be represented safely")
-        out[name] = n
+        out[name] = ceil(raw)
     return out
 
 
 def _contract_parts(contract: "RealismContract") -> dict[str, object]:
+    # Exact typed values: ints stay ints (arbitrary precision), floats keep their
+    # shortest round-trip repr, via the Task 1 canonical encoding. Converting with
+    # float() here would alias distinct integer bounds (2**53 vs 2**53+1).
     return {
+        "schema": "PRODUCTION_SYNTHETIC_REALISM_CONTRACT_V1",
         "metrics": [
-            [name, [float(low), float(high)]]
+            [name, [low, high]]
             for name, (low, high) in contract.metric_bands
         ],
         "adjustable_observation_parameters": list(contract.adjustable_observation_parameters),
@@ -437,9 +468,7 @@ def _contract_parts(contract: "RealismContract") -> dict[str, object]:
 
 
 def _contract_digest(contract: "RealismContract") -> str:
-    raw = json.dumps(_contract_parts(contract), sort_keys=True,
-                     separators=(",", ":"), allow_nan=False).encode("utf-8")
-    return sha256(raw).hexdigest()
+    return C.semantic_sha256(_contract_parts(contract))
 
 
 @dataclass(frozen=True)
@@ -502,7 +531,7 @@ class RealismContract:
             object.__setattr__(probe, key, value)
         try:
             digest = _contract_digest(probe)
-        except (TypeError, ValueError, OverflowError) as exc:
+        except (TypeError, ValueError, OverflowError, C.CanonicalError) as exc:
             raise CalibrationError("realism contract parts are not canonically serializable") from exc
         return cls(digest, metric_bands, adjustable_observation_parameters, max_iterations,
                    version_family_sha256, authority_scope)
@@ -510,8 +539,10 @@ class RealismContract:
 
 # Process-local realism custody. One contract and one search per generator family
 # per process; states are issued by this module only, and each issued state is
-# checked against a private copy that is never returned. Not durable across
-# processes: persistent custody is a STOP_B prerequisite that remains open.
+# checked against a module-held snapshot that no public API returns. This detects
+# cooperative-caller mutation only (see TRUST_MODEL): hostile same-process code
+# can rewrite these maps. Not durable across processes: persistent custody is a
+# STOP_B prerequisite that remains open.
 _REALISM_LOCK = Lock()
 _REALISM_FAMILY_LEASES: dict[str, "RealismContract"] = {}  # version family -> private contract snapshot
 _REALISM_PUBLIC: dict[object, "RealismState"] = {}    # token -> current public state
@@ -528,6 +559,10 @@ class RealismState:
     first_passing_version: str | None
     status: str
     _token: object | None = field(default=None, repr=False, compare=False)
+
+    @property
+    def trust_model(self) -> str:
+        return TRUST_MODEL
 
     @classmethod
     def initial(cls, contract: RealismContract) -> "RealismState":
@@ -581,7 +616,7 @@ def verify_realism_state(state: RealismState) -> RealismState:
         raise CalibrationError("exact realism state required")
     with _REALISM_LOCK:
         _current_private_state(state)
-    return state  # the verified public handle; the private copy never leaves the module
+    return state  # the verified public handle; no public API returns the snapshot
 
 
 def advance_realism_iteration(
