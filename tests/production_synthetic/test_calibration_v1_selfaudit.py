@@ -102,3 +102,59 @@ def test_R1g_mutated_issued_check_is_not_verified():
     object.__setattr__(checked, "status", cal.AUTHENTICATED)
     with pytest.raises(cal.CalibrationError):
         cal.verify_calibration_check(checked)
+
+
+# --- Round 2: attacks on the round-1 fixes and remaining surfaces -------------------------
+
+def _contract(family, max_iterations=2):
+    return cal.RealismContract.frozen(
+        metric_bands=(("OBS_DEPTH", (0.25, 0.75)),), adjustable_observation_parameters=("OBS_DEPTH_SCALE",),
+        max_iterations=max_iterations, version_family_sha256=hashlib.sha256(family).hexdigest(),
+        authority_scope="SYNTH_DEBUG_ONLY")
+
+
+def test_R2a_forged_terminal_realism_state_fails_public_verification():
+    c = _contract(b"r2a")
+    s = cal.RealismState.initial(c)
+    forged = cal.RealismState(s.contract_state_sha256, s.contract_sha256, (hashlib.sha256(b"x").hexdigest(),),
+                              hashlib.sha256(b"x").hexdigest(), "FIRST_JOINT_PASS_FROZEN")
+    with pytest.raises(cal.CalibrationError):
+        cal.verify_realism_state(forged)
+
+
+def test_R2a_lawful_terminal_state_verifies():
+    c = _contract(b"r2a-lawful")
+    s = cal.RealismState.initial(c)
+    s = cal.advance_realism_iteration(c, s, version_sha256=hashlib.sha256(b"p").hexdigest(), metrics={"OBS_DEPTH": 0.5})
+    assert cal.verify_realism_state(s).status == "FIRST_JOINT_PASS_FROZEN"
+
+
+def test_R2b_precision_target_mutated_after_construction_is_a_calibration_error():
+    t = cal.PrecisionTarget(epsilon=0.1, alpha=0.01)
+    object.__setattr__(t, "epsilon", 0.0)
+    with pytest.raises(cal.CalibrationError):
+        cal.derive_budget_from_precision({"donors": t, "worlds": cal.PrecisionTarget(0.1, 0.01),
+                                          "nulls": cal.PrecisionTarget(0.1, 0.01)})
+
+
+def test_R2c_huge_integer_band_is_a_calibration_error():
+    with pytest.raises(cal.CalibrationError):
+        cal.RealismContract.frozen(
+            metric_bands=(("OBS_DEPTH", (0, 10 ** 400)),), adjustable_observation_parameters=("OBS_DEPTH_SCALE",),
+            max_iterations=1, version_family_sha256=hashlib.sha256(b"r2c").hexdigest(), authority_scope="SYNTH_DEBUG_ONLY")
+
+
+def test_R2d_hand_built_check_is_not_authenticated_even_when_digest_is_pinned(monkeypatch):
+    monkeypatch.setattr(cal, "_AUTHENTICATED_CALIBRATION_REGISTRY", frozenset({SHA}))
+    forged = cal.CalibrationCheck(artifact(donors=("DUMMY_ORACLE",)), cal.AUTHENTICATED)
+    assert forged.authenticated is False
+    with pytest.raises(cal.CalibrationError):
+        cal.verify_calibration_check(forged)
+
+
+def test_R2e_token_swapped_check_is_refused():
+    a = firewall()
+    b = firewall()
+    object.__setattr__(a, "_token", object.__getattribute__(b, "_token"))
+    with pytest.raises(cal.CalibrationError):
+        cal.verify_calibration_check(a)
