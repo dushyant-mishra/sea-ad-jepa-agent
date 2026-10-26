@@ -347,7 +347,7 @@ class PersistentCustodyStore:
         signer_attestation=None,
         head_publisher: ExternalHeadPublisher | None = None,
     ) -> str:
-        with _exclusive_append_lock(self.root / ".task4-append.lock"):
+        with _exclusive_append_lock(self.root / ".task4-append.lock") as locked_root_identity:
             # Recheck the *live disk state* only after acquiring the same OS
             # writer lock. A stale signed subject/sequence must refuse before
             # writing bytes, publishing a head or reusing a temp filename.
@@ -403,6 +403,7 @@ class PersistentCustodyStore:
             }
             event["signature_hex"] = bytes(signer.sign(self._event_message(event))).hex()
             line = _canonical_bytes(event) + b"\n"
+            _assert_store_directory_continuity(self.root, locked_root_identity)
             # Windows raw file readers may veto replacement without joining
             # our protocol. Refuse before committing an event in that case.
             _windows_preflight_head_replace(self.head_path)
