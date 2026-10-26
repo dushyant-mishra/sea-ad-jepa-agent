@@ -120,8 +120,14 @@ def test_limitation_F1_impact_extracted_fixture_portfolio_reaches_existing_ready
     assert man["status"] == "READY_FOR_AUTHORIZED_SYNTHETIC_ARCHITECTURE_REHEARSAL"
     assert all(v is False for v in pre["authority"].values())
     assert all(v is False for v in man["authority"].values())
-    # Nothing in either downstream receipt records that the target came from a fixture.
-    assert "FIXTURE" not in repr(p) and "FIXTURE" not in repr(man)
+    # At 28c2bf17 nothing in the extracted portfolio recorded that the target
+    # came from a fixture (RED PR #450). After the F1 repair every block keeps
+    # its fixture-label provenance, bound to the case bundle.
+    for block in p["blocks"]:
+        rec = block["qualification_receipt"]
+        assert rec["receipt_class"] == bridge.FIXTURE_LABEL_RECEIPT_CLASS
+        assert rec["biological_qualification"] is False
+        assert rec["casebundle_sha256"] == r["casebundle_sha256"]
 
 
 # --------------------------------------------------------------------------
