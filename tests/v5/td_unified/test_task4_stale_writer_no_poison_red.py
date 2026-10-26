@@ -90,3 +90,41 @@ def test_two_racing_issued_writers_cannot_corrupt_custody(tmp_path:Path):
     reloaded=_open(tmp_path)
     assert reloaded.replay().event_count==1
     assert reloaded.replay().authoritative is False
+
+def _subprocess_stale_writer(root, label, gate, out):
+    store = _open(Path(root))
+    gate.wait(timeout=12)
+    try:
+        out.put(("ok", _append(store, {"kind":"STATE","id":label})))
+    except Task4CustodyError:
+        out.put(("refused", None))
+    except Exception as exc:
+        out.put(("unexpected", type(exc).__name__))
+
+def test_separate_os_processes_are_serialized_before_append(tmp_path: Path):
+    import multiprocessing
+    import os
+    if os.name != "posix" or "fork" not in multiprocessing.get_all_start_methods():
+        pytest.skip("requires POSIX fork; Windows mechanisms tested separately")
+    ctx = multiprocessing.get_context("fork")
+    barrier = ctx.Barrier(2)
+    results = ctx.Queue()
+    workers = [ctx.Process(target=_subprocess_stale_writer,
+                args=(str(tmp_path), label, barrier, results))
+               for label in ("first", "second")]
+    try:
+        for worker in workers:
+            worker.start()
+        for worker in workers:
+            worker.join(timeout=15)
+        assert all(not worker.is_alive() and worker.exitcode == 0 for worker in workers)
+        outcomes = [results.get(timeout=3) for _ in workers]
+        assert sorted(x[0] for x in outcomes) == ["ok", "refused"]
+        fresh = _open(tmp_path).replay()
+        assert fresh.event_count == 1
+        assert fresh.authoritative is False
+    finally:
+        for worker in workers:
+            if worker.is_alive():
+                worker.terminate()
+                worker.join(timeout=3)
