@@ -16,6 +16,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python -m pip install pytest==9.1.1
+      - run: python -m pip install pytest==9.1.1 numpy==1.26.4
       - name: Task5 scientific and authority firewalls
         run: python -m pytest -q tests/v5/td_unified/test_task5_fixture_handoff_v1.py
