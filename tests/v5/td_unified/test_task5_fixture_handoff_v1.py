@@ -153,3 +153,31 @@ def test_fixture_receipt_cannot_assert_promoted_authority():
     assert r["known_truth_qualified"] is False
     assert r["real_reference_ready"] is False
     assert r["training_authorized"] is False
+
+def test_one_cell_cannot_change_donor_source_or_operator_between_addresses():
+    for field,new_value in [
+        ("donor_id","DONOR-IMPOSTOR"),("source_id","SRC-OTHER"),
+        ("operator_id","OP-OTHER")
+    ]:
+        c=case()
+        c["observations"][1][field]=new_value
+        with pytest.raises(CaseBundleError):
+            validate_casebundle(c)
+
+def test_sum_of_measured_gene_counts_must_fit_physical_library():
+    c=case()
+    c["observations"].append({
+        "cell_id":"CELL-1","donor_id":"DONOR-A","source_id":"SRC-A",
+        "operator_id":"OP-1","address_id":"ADDR-4","state":"MEASURED_SCALAR",
+        "count":40,"library_size":44,"evidence_right":"RNA:CORE"})
+    c["observations"][0]["count"]=9
+    with pytest.raises(CaseBundleError):
+        validate_casebundle(c)
+
+def test_cannot_forge_fixture_same_code_path_receipt_via_trace_digest_change():
+    c=case()
+    first=trace_scientific_path(mode="KNOWN_TRUTH",case_payload=c,stages=stages())
+    second=trace_scientific_path(mode="HUMAN_SEALED",case_payload=c,stages=stages())
+    second["scientific_trace"][0]["code_identity"]="f"*64
+    with pytest.raises(PathEquivalenceError):
+        certify_mode_path_equivalence(first,second)
