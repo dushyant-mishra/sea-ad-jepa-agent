@@ -22,6 +22,8 @@ RAW = b"DUMMY_OBSERVATION_DEPTH_COUNTS_V1"
 SHA = h(RAW)
 FIT = ("DUMMY_F01", "DUMMY_F02", "DUMMY_F03")
 BLOCKED = ("DUMMY_VALIDATION", "DUMMY_ORACLE", "DUMMY_RESERVED", "DUMMY_DEV")
+PARTITIONS = {"VALIDATION": ("DUMMY_VALIDATION",), "ORACLE": ("DUMMY_ORACLE",),
+              "RESERVED": ("DUMMY_RESERVED",), "DEVELOPMENT": ("DUMMY_DEV",)}
 
 def artifact(**over):
     p = dict(content_sha256=SHA, source_scope="DUMMY_RNA_COUNTS",
@@ -35,11 +37,14 @@ def validate(a=None, **over):
     return validate_calibration_firewall(
         a if a is not None else artifact(), raw_bytes=RAW,
         independently_pinned_sha256=SHA, expected_source_scope="DUMMY_RNA_COUNTS",
-        eligible_fit_donors=FIT, excluded_donors=BLOCKED, **over
+        eligible_fit_donors=FIT, protected_partitions=PARTITIONS, **over
     )
 
 def test_real_calibration_requires_pinned_bytes_scope_and_fit_split():
-    assert validate().content_sha256 == SHA
+    checked = validate()
+    assert checked.artifact.content_sha256 == SHA
+    # A caller-pinned digest is consistency only, never authentication (Macha PS3-B1).
+    assert checked.status == "CONSISTENT_UNAUTHENTICATED_FIXTURE" and not checked.authenticated
     with pytest.raises(CalibrationError):
         validate(artifact(content_sha256="0"*64))
     with pytest.raises(CalibrationError):
@@ -50,7 +55,7 @@ def test_real_calibration_requires_pinned_bytes_scope_and_fit_split():
         validate_calibration_firewall(artifact(), raw_bytes=RAW,
                                      independently_pinned_sha256="f"*64,
                                      expected_source_scope="DUMMY_RNA_COUNTS",
-                                     eligible_fit_donors=FIT, excluded_donors=BLOCKED)
+                                     eligible_fit_donors=FIT, protected_partitions=PARTITIONS)
 
 @pytest.mark.parametrize("name", ["DUMMY_VALIDATION", "DUMMY_ORACLE", "DUMMY_RESERVED", "DUMMY_DEV"])
 def test_every_protected_role_overlap_fails(name):
@@ -99,15 +104,18 @@ def test_96_gene_envelopes_do_not_auto_qualify_41238():
             pilot_n_addresses=96,full_n_addresses=41238,
             full_universe_sha256=h(b"full-address-universe"),
             expected_full_universe_sha256=h(b"full-address-universe"))
-    assert validate_address_universe_agnostic(
+    witness = validate_address_universe_agnostic(
         "OBSERVATION_MEAN_DEPTH",a,a,
         pilot_n_addresses=96,full_n_addresses=41238,
         full_universe_sha256=h(b"full-address-universe"),
-        expected_full_universe_sha256=h(b"full-address-universe")) is True
+        expected_full_universe_sha256=h(b"full-address-universe"))
+    # A matching caller witness is fixture-only, never real eligibility (Macha PS3-B3).
+    assert witness.status == "FIXTURE_WITNESS_ONLY__CALIBRATION_INELIGIBLE"
+    assert witness.calibration_eligible is False
 
 def contract(max_iterations=2):
-    return RealismContract(
-        contract_sha256=h(b"realism-contract-v1"),
+    # Contract identity must equal its own content digest (Macha PS3-B4/D5).
+    return RealismContract.frozen(
         metric_bands=(("OBS_DEPTH",(0.25,0.75)),("DETECTION",(0.1,0.4))),
         adjustable_observation_parameters=("OBS_DEPTH_SCALE","OBS_DETECTION_SCALE"),
         max_iterations=max_iterations, version_family_sha256=h(b"fixture-generator-v1"),
