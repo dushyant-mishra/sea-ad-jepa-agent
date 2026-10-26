@@ -68,3 +68,4 @@ jobs:
           python -m pytest -q
           tests/v5/td_unified/test_task4_stale_writer_no_poison_red.py
           tests/v5/td_unified/test_task4_stale_writer_macha_hostile.py
+          tests/v5/td_unified/test_task4_h1h4_recheck_macha_hostile.py
