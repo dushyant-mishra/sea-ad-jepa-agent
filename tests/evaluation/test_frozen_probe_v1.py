@@ -130,3 +130,25 @@ def test_deterministic_receipt_and_finite_scores():
     assert first["fitted_encoder_updates"]==0
     assert first["fitted_ema_updates"]==0
     assert first["score_family"]=="TRAIN_ONLY_GAUSSIAN_RIDGE_CONTINUOUS_FIXTURE"
+
+def test_nuisance_only_raw_likelihood_can_look_good_but_increment_is_trivial():
+    x=_world("NUISANCE")
+    controlled=evaluate_frozen_probe(**x)
+    # Deliberately remove source/depth/biology control to expose raw-score trap.
+    x["baseline"]=np.zeros((len(x["target"]),1),dtype=np.float64)
+    uncontrolled=evaluate_frozen_probe(**x)
+    assert uncontrolled["mean_delta_nll"]>controlled["mean_delta_nll"]
+    assert uncontrolled["mean_delta_nll"]>0
+    assert controlled["authority_effect"]=="NONE"
+
+def test_exact_query_in_embedding_rejected_even_with_lying_fixture_label():
+    x=_world("MULTIPROGRAM")
+    x["embeddings"][:,0]=x["target"].copy()
+    with pytest.raises(FrozenProbeError):
+        evaluate_frozen_probe(**x)
+
+def test_exact_query_in_baseline_rejected_even_with_lying_fixture_label():
+    x=_world("MULTIPROGRAM")
+    x["baseline"][:,1]=x["target"].copy()
+    with pytest.raises(FrozenProbeError):
+        evaluate_frozen_probe(**x)
