@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "TARGET_NONE_FIXTURE_QUALIFICATION_BUNDLE_V1",
+  "title": "Unified TD Task7 fixture-only no-target bundle (not production qualification)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "target_selection",
+    "scope",
+    "qualification_stage",
+    "manifest_sha256",
+    "registry_sha256",
+    "controller_sha256",
+    "negative_evidence_sha256",
+    "negative_obligations",
+    "failure_semantics",
+    "target_semantics",
+    "selected_support",
+    "externally_authenticated",
+    "real_reference_ready",
+    "same_code_path_qualified",
+    "training_authorized",
+    "authority_effect",
+    "target_bundle_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "TARGET_QUALIFICATION_BUNDLE_V1"
+    },
+    "target_selection": {
+      "const": "NONE"
+    },
+    "scope": {
+      "const": "DEVELOPMENT_FIXTURE_ONLY"
+    },
+    "qualification_stage": {
+      "const": "SEMANTICS_ONLY"
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "registry_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "controller_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "negative_evidence_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "negative_obligations": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "failure_semantics": {
+      "const": "NO_BIOLOGICALLY_QUALIFIED_TARGET"
+    },
+    "target_semantics": {
+      "type": "null"
+    },
+    "selected_support": {
+      "type": "null"
+    },
+    "externally_authenticated": {
+      "const": false
+    },
+    "real_reference_ready": {
+      "const": false
+    },
+    "same_code_path_qualified": {
+      "const": false
+    },
+    "training_authorized": {
+      "const": false
+    },
+    "authority_effect": {
+      "const": "NONE"
+    },
+    "target_bundle_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+name: Unified Task 6-8 no-promotion boundaries
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/td_unified/gate_registration_v1.py'
+      - 'scripts/v5/td_unified/target_bundle_v1.py'
+      - 'scripts/v5/td_unified/downstream_contract_v1.py'
+      - 'tests/v5/td_unified/test_tasks6_8_no_promotion_v1.py'
+      - 'tests/v5/td_unified/test_tasks7_8_none_schema_v1.py'
+      - 'schemas/target_discovery/unified_v1/*none*fixture*.json'
+      - '.github/workflows/td-unified-tasks6-8-none.yml'
+      - 'docs/agent/UNIFIED_TASKS6_8_NONE_BOUNDARY_STATUS_20261026.md'
+permissions:
+  contents: read
+jobs:
+  tasks6-8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1 numpy==1.26.4 jsonschema==4.23.0
+      - name: Prospective no-promotion red/green and Task3 policy tests
+        run: >-
+          python -m pytest -q
+          tests/v5/td_unified/test_tasks6_8_no_promotion_v1.py
+          tests/v5/td_unified/test_tasks7_8_none_schema_v1.py
+          tests/v5/td_unified/test_registry_v1.py
