@@ -1,0 +1,31 @@
+name: PS Task 1 canonical hostile + Task 3 custody compatibility
+on:
+  pull_request:
+    paths:
+      - 'scripts/production_synthetic/canonical_v1.py'
+      - 'tests/production_synthetic/test_canonical_v1_author_disclosed_red.py'
+      - '.github/workflows/ps-task1-canonical-shared-policy.yml'
+permissions:
+  contents: read
+jobs:
+  ps1-3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install "pytest==9.1.1" "numpy==2.4.6"
+      - name: Independent hostile test + old PS Task 1/2/3 regressions
+        run: >-
+          python -m pytest -q
+          tests/production_synthetic/test_canonical_v1_author_disclosed_red.py
+          tests/production_synthetic/test_canonical_v1.py
+          tests/production_synthetic/test_custody_v1.py
+          tests/production_synthetic/test_custody_v1_hostile.py
+          tests/production_synthetic/test_calibration_v1.py
+          tests/production_synthetic/test_calibration_v1_independent_273f4a_red.py
+          tests/production_synthetic/test_calibration_v1_macha_hostile.py
+          tests/production_synthetic/test_calibration_v1_repair.py
+          tests/production_synthetic/test_calibration_v1_selfaudit.py
+          tests/production_synthetic/test_calibration_v1_trust_model.py

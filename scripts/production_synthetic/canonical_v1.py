@@ -185,53 +185,100 @@ def _enc_float(x: float) -> str:
     return repr(float(x))
 
 
+# Shared with Unified Task1: exact built-in containers and numerics only.
+# Project-frozen integer policy: 4300 decimal digits independent of Python env.
+_MAX_DECIMAL_DIGITS = 4300
+_MAX_ABS_INT = 10 ** _MAX_DECIMAL_DIGITS
+
+
+def _bounded_decimal(n: int) -> str:
+    if type(n) is not int:
+        raise CanonicalError("exact built-in integer required")
+    magnitude = abs(n)
+    if magnitude >= _MAX_ABS_INT:
+        raise CanonicalError("integer exceeds frozen 4300-digit domain")
+    if magnitude == 0:
+        return "0"
+    chunks = []
+    while magnitude:
+        magnitude, rem = divmod(magnitude, 1_000_000_000)
+        chunks.append(rem)
+    result = str(chunks.pop())
+    while chunks:
+        result += f"{chunks.pop():09d}"
+    return ("-" if n < 0 else "") + result
+
+
+def _parse_bounded_int(text: str) -> int:
+    if type(text) is not str or not text:
+        raise CanonicalError("invalid integer literal")
+    sign = text.startswith("-")
+    digits = text[1:] if sign else text
+    if not digits.isascii() or not digits.isdigit() or len(digits) > _MAX_DECIMAL_DIGITS:
+        raise CanonicalError("integer outside frozen 4300-digit domain")
+    result = 0
+    for i in range(0, len(digits), 9):
+        chunk = digits[i:i + 9]
+        result = result * 10 ** len(chunk) + int(chunk)
+    return -result if sign else result
+
+
+def _exact_numpy_scalar(x) -> bool:
+    return isinstance(x, np.generic) and type(x) is x.dtype.type
+
+
 def _enc(obj: Any, out: list) -> None:
-    # bool before int: bool is a subclass of int but is never an integer here.
+    kind = type(obj)
     if obj is None:
         out.append("null")
-    elif isinstance(obj, (bool, np.bool_)):
-        out.append("true" if bool(obj) else "false")
-    elif isinstance(obj, (np.datetime64, np.timedelta64)):
-        raise CanonicalError(f"unsupported type for canonical serialization: {type(obj).__name__}")
-    elif isinstance(obj, (int, np.integer)):
-        try:
-            out.append(str(int(obj)))
-        except ValueError as exc:  # interpreter int->str digit limit
-            raise CanonicalError("integer too large to serialize exactly") from exc
-    elif isinstance(obj, (float, np.floating)):
-        if isinstance(obj, np.floating) and obj.dtype.itemsize > 8:
-            raise CanonicalError(f"numpy floating type wider than float64 is not supported: {obj.dtype}")
-        out.append(_enc_float(float(obj)))
-    elif isinstance(obj, str):
+    elif kind is bool:
+        out.append("true" if obj else "false")
+    elif kind is int:
+        out.append(_bounded_decimal(obj))
+    elif kind is float:
+        out.append(_enc_float(obj))
+    elif kind is str:
         out.append(_enc_str(_norm_eol(obj)))
-    elif isinstance(obj, Mapping):
+    elif _exact_numpy_scalar(obj):
+        if kind is np.bool_:
+            out.append("true" if bool(obj) else "false")
+        elif isinstance(obj, (np.datetime64, np.timedelta64)):
+            raise CanonicalError("numpy datetime or timedelta has no identity")
+        elif isinstance(obj, np.integer):
+            out.append(_bounded_decimal(int(obj)))
+        elif isinstance(obj, np.floating):
+            if obj.dtype.itemsize > 8:
+                raise CanonicalError("numpy float wider than float64 unsupported")
+            out.append(_enc_float(float(obj)))
+        else:
+            raise CanonicalError("unsupported numpy scalar")
+    elif kind is dict:
         items = {}
-        for k, v in obj.items():
-            if not isinstance(k, str):
-                raise CanonicalError(f"mapping keys must be str, got {type(k).__name__}")
-            nk = _norm_eol(k)
-            if nk in items:
-                raise CanonicalError(f"mapping keys collide after normalization: {nk!r}")
-            items[nk] = v
+        for k,v in dict.items(obj):
+            if type(k) is not str:
+                raise CanonicalError("mapping key must be exact str")
+            key = _norm_eol(k)
+            if key in items:
+                raise CanonicalError("normalized mapping keys collide")
+            items[key] = v
         out.append("{")
-        first = True
-        for k in sorted(items):
-            if not first:
-                out.append(",")
-            first = False
-            out.append(_enc_str(k))
-            out.append(":")
-            _enc(items[k], out)
-        out.append("}")
-    elif isinstance(obj, (list, tuple)):
-        out.append("[")
-        for i, v in enumerate(obj):
+        for i,key in enumerate(sorted(items)):
             if i:
                 out.append(",")
-            _enc(v, out)
+            out.append(_enc_str(key))
+            out.append(":")
+            _enc(items[key], out)
+        out.append("}")
+    elif kind in (list,tuple):
+        out.append("[")
+        for i,value in enumerate(obj):
+            if i:
+                out.append(",")
+            _enc(value,out)
         out.append("]")
     else:
-        raise CanonicalError(f"unsupported type for canonical serialization: {type(obj).__name__}")
+        raise CanonicalError(f"unsupported canonical type or subclass: {kind.__name__}")
+
 
 
 def canonical_json_bytes(obj: Any) -> bytes:
@@ -248,8 +295,8 @@ def canonical_json_bytes(obj: Any) -> bytes:
 
 def raw_sha256(data: bytes) -> str:
     """SHA-256 hex of the exact bytes."""
-    if not isinstance(data, bytes):
-        raise CanonicalError(f"raw_sha256 requires bytes, got {type(data).__name__}")
+    if type(data) is not bytes:
+        raise CanonicalError(f"raw_sha256 requires exact bytes, got {type(data).__name__}")
     return hashlib.sha256(data).hexdigest()
 
 
@@ -264,8 +311,8 @@ def semantic_sha256(obj: Any) -> str:
 
 def semantic_text_sha256(raw: bytes) -> str:
     """Semantic identity of a UTF-8 text artifact (BOM and line endings normalized)."""
-    if not isinstance(raw, bytes):
-        raise CanonicalError(f"semantic_text_sha256 requires bytes, got {type(raw).__name__}")
+    if type(raw) is not bytes:
+        raise CanonicalError(f"semantic_text_sha256 requires exact bytes, got {type(raw).__name__}")
     try:
         text = raw.decode("utf-8")
     except UnicodeDecodeError as exc:
@@ -285,12 +332,12 @@ def semantic_json_file_sha256(raw: bytes) -> str:
 
 
 def _check_keys(identity_keys: Sequence[str]) -> list:
-    if isinstance(identity_keys, (str, bytes)) or not isinstance(identity_keys, (list, tuple)):
+    if type(identity_keys) not in (list, tuple):
         raise CanonicalError("identity_keys must be a list/tuple of key names")
     keys = list(identity_keys)
     if not keys:
         raise CanonicalError("identity_keys must be non-empty")
-    if any(not isinstance(k, str) for k in keys):
+    if any(type(k) is not str for k in keys):
         raise CanonicalError("identity_keys must all be str")
     keys = [_norm_eol(k) for k in keys]  # row keys are normalized the same way
     if len(set(keys)) != len(keys):
@@ -306,14 +353,17 @@ def _iter_rows(rows):
 
 
 def _identity_bytes(row: Any, keys: list, pos: int) -> bytes:
-    if not isinstance(row, Mapping):
-        raise CanonicalError(f"row {pos} is not a mapping")
+    if type(row) is not dict:
+        raise CanonicalError(f"row {pos} must be exact built-in mapping")
     ident = []
     norm_row = {}
-    for rk, rv in row.items():
-        if not isinstance(rk, str):
+    for rk, rv in dict.items(row):
+        if type(rk) is not str:
             raise CanonicalError(f"row {pos} has a non-str key {type(rk).__name__}")
-        norm_row[_norm_eol(rk)] = rv
+        norm_key = _norm_eol(rk)
+        if norm_key in norm_row:
+            raise CanonicalError("colliding normalized row keys")
+        norm_row[norm_key] = rv
     for k in keys:
         if k not in norm_row:
             raise CanonicalError(f"row {pos} is missing identity key {k!r}")
@@ -411,8 +461,8 @@ def _parse_float(text):
 
 def load_canonical_json(data: bytes) -> Any:
     """Strictly parse a JSON artifact (see module docstring, item 4)."""
-    if not isinstance(data, bytes):
-        raise CanonicalError(f"load_canonical_json requires bytes, got {type(data).__name__}")
+    if type(data) is not bytes:
+        raise CanonicalError(f"load_canonical_json requires exact bytes, got {type(data).__name__}")
     try:
         text = data.decode("utf-8")
     except UnicodeDecodeError as exc:
@@ -425,6 +475,7 @@ def load_canonical_json(data: bytes) -> Any:
             object_pairs_hook=_no_dupes,
             parse_constant=_bad_constant,
             parse_float=_parse_float,
+            parse_int=_parse_bounded_int,
         )
         _check_strings(obj)
         return obj
