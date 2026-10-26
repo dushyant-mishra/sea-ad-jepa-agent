@@ -3,8 +3,12 @@ from copy import deepcopy
 import json
 from pathlib import Path
 
-from jsonschema import Draft202012Validator
 import pytest
+
+jsonschema = pytest.importorskip(
+    'jsonschema', reason='standalone Task7/8 schema CI installs jsonschema; inherited Task2/3 do not'
+)
+Draft202012Validator = jsonschema.Draft202012Validator
 
 from scripts.v5.td_unified.canonical_v1 import canonical_sha256
 from scripts.v5.td_unified.target_bundle_v1 import issue_target_none_fixture
