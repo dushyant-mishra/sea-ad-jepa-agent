@@ -679,7 +679,7 @@ def _digest(domain: bytes, *fields: bytes) -> bytes:
 
 
 def _is_hex64(x: Any) -> bool:
-    return isinstance(x, str) and len(x) == 64 and set(x) <= _HEX
+    return type(x) is str and len(x) == 64 and set(x) <= _HEX
 
 
 def _hex64(x: Any, what: str) -> bytes:
@@ -697,8 +697,8 @@ def _secret_shape(b: bytes, what: str) -> None:
 
 
 def _nonce(x: Any) -> bytes:
-    if not isinstance(x, bytes):
-        raise CustodyError(f"nonce must be bytes, got {type(x).__name__}")
+    if type(x) is not bytes:
+        raise CustodyError(f"nonce must be exact bytes, got {type(x).__name__}")
     if len(x) < MIN_NONCE_BYTES:
         raise CustodyError(f"nonce must carry at least 256 bits ({MIN_NONCE_BYTES} bytes)")
     _secret_shape(x, "nonce")
@@ -706,8 +706,8 @@ def _nonce(x: Any) -> bytes:
 
 
 def _root(x: Any) -> bytes:
-    if not isinstance(x, bytes):
-        raise CustodyError(f"stream root must be bytes (integer seeds are prohibited), got {type(x).__name__}")
+    if type(x) is not bytes:
+        raise CustodyError(f"stream root must be exact bytes (integer seeds are prohibited), got {type(x).__name__}")
     if len(x) != ROOT_BYTES:
         raise CustodyError(f"stream root must be exactly {ROOT_BYTES} bytes")
     _secret_shape(x, "stream root")
@@ -715,8 +715,8 @@ def _root(x: Any) -> bytes:
 
 
 def _tag(tag: Any, what: str) -> bytes:
-    if not isinstance(tag, str) or not tag:
-        raise CustodyError(f"{what} must be a non-empty str")
+    if type(tag) is not str or not tag:
+        raise CustodyError(f"{what} must be a non-empty exact str")
     try:
         return tag.encode("utf-8")
     except UnicodeEncodeError:
@@ -735,8 +735,8 @@ def _class_tag(tag: Any, what: str = "class tag") -> bytes:
 
 
 def _u64(n: Any, what: str, minimum: int) -> bytes:
-    if isinstance(n, bool) or not isinstance(n, int):
-        raise CustodyError(f"{what} must be an int, got {type(n).__name__}")
+    if type(n) is not int:
+        raise CustodyError(f"{what} must be an exact int, got {type(n).__name__}")
     if n < minimum or n >= 2**63:
         raise CustodyError(f"{what} must be in [{minimum}, 2**63)")
     return n.to_bytes(8, "big")
