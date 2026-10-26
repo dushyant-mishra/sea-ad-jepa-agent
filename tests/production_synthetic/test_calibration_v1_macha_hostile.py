@@ -4,6 +4,11 @@ Dummy fixtures only. Each test pins one blocking defect and must FAIL against
 1f2b7f1fab7a952ffd4aee11d5ef7af827cf6b47. Tests are written to accept either a
 CalibrationError or an explicitly non-authoritative result, so a repair is free
 to choose its API, but may not keep presenting caller assertions as authority.
+
+Original RED preserved at cdf0bc56 (CI run 40342119953: 11 failed). The repair
+replaced the caller tuple ``excluded_donors`` with a per-role
+``protected_partitions`` mapping, so ``firewall()`` below passes partitions;
+every attack is unchanged (A2 still omits all protected partitions).
 """
 from __future__ import annotations
 
@@ -26,7 +31,8 @@ def h(value: bytes) -> str:
 RAW = b"DUMMY_OBSERVATION_DEPTH_COUNTS_V1"
 SHA = h(RAW)
 FIT = ("DUMMY_F01", "DUMMY_F02", "DUMMY_F03")
-BLOCKED = ("DUMMY_VALIDATION", "DUMMY_ORACLE", "DUMMY_RESERVED", "DUMMY_DEV")
+PARTITIONS = {"VALIDATION": ("DUMMY_VALIDATION",), "ORACLE": ("DUMMY_ORACLE",),
+              "RESERVED": ("DUMMY_RESERVED",), "DEVELOPMENT": ("DUMMY_DEV",)}
 
 
 class EqAnyStr(str):
@@ -48,11 +54,12 @@ def artifact(**over):
     return CalibrationArtifact(**p)
 
 
-def firewall(a, *, raw=RAW, pinned=SHA, eligible=FIT, excluded=BLOCKED):
+def firewall(a, *, raw=RAW, pinned=SHA, eligible=FIT, partitions=None):
     return validate_calibration_firewall(
         a, raw_bytes=raw, independently_pinned_sha256=pinned,
         expected_source_scope="DUMMY_RNA_COUNTS",
-        eligible_fit_donors=eligible, excluded_donors=excluded,
+        eligible_fit_donors=eligible,
+        protected_partitions=PARTITIONS if partitions is None else partitions,
     )
 
 
@@ -71,7 +78,7 @@ def test_A1_forged_provenance_lookalike_cannot_pass_firewall():
 def test_A2_protected_partitions_cannot_be_omitted_by_the_caller():
     # A caller that omits every protected role can list any donor as fit-eligible.
     with pytest.raises(CalibrationError):
-        firewall(artifact(donors=("DUMMY_VALIDATION",)), eligible=("DUMMY_VALIDATION",), excluded=())
+        firewall(artifact(donors=("DUMMY_VALIDATION",)), eligible=("DUMMY_VALIDATION",), partitions={})
 
 
 def test_A3_self_pinned_digest_is_not_authenticated_empirical_calibration():

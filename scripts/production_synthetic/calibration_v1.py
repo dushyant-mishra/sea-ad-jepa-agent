@@ -2,14 +2,29 @@
 
 Fixture/development mechanics. No real donor data or controller secrets are
 embedded; in particular, *no* result here grants authenticated-human,
-known-truth, production-realization, FINAL, or training authority. Pinned
-content identities must come from an independently authenticated source.
+known-truth, production-realization, FINAL, or training authority.
+
+Authority is fail-closed. A caller-supplied digest, donor list, split label or
+statistic is never promoted to authentication:
+
+* ``AUTHENTICATED_EMPIRICAL_CALIBRATION`` is reachable only for a content
+  digest present in the code-pinned ``_AUTHENTICATED_CALIBRATION_REGISTRY``.
+  V1 pins none, so V1 can only report consistency, never authentication.
+* Address-universe invariance for real reuse is not demonstrable in V1; the
+  check returns an explicitly non-authoritative fixture status.
+* Realism search state is issued only by this module, once per generator
+  family per process, and is not durable across processes (a STOP_B
+  prerequisite that remains open).
+
+Which artifacts, split authority and universe registries get pinned is a
+deciding-lane decision; this module only fails closed until they exist.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field, fields as dataclass_fields, replace
 from hashlib import sha256
 from math import ceil, isfinite, log
+from threading import Lock
 from typing import Mapping
 import json
 
@@ -34,6 +49,7 @@ _ALLOWED_STRATA = frozenset({
     "OBS_DEPTH_BIN", "OBS_DETECTION_BIN", "OBS_OPERATOR",
     "OBS_MODALITY", "OBS_SUPPORT_STATE",
 })
+_PROTECTED_ROLES = frozenset({"VALIDATION", "ORACLE", "RESERVED", "DEVELOPMENT"})
 _UNIVERSE_INVARIANT_METRICS = frozenset({"OBSERVATION_MEAN_DEPTH"})
 _REALISM_NAMES = frozenset({
     "OBS_DEPTH", "DETECTION", "MISSINGNESS", "SUPPORT",
@@ -43,13 +59,28 @@ _REALISM_NAMES = frozenset({
     "PCA_LINEAR_CEILING",
 })
 
+# Code-pinned authority registries. Empty in V1: nothing is authenticated until
+# the deciding lane pins independently authenticated identities here.
+_AUTHENTICATED_CALIBRATION_REGISTRY: frozenset[str] = frozenset()
+_PINNED_PILOT_UNIVERSE_SHA256: str | None = None
+_PINNED_FULL_UNIVERSE_SHA256: str | None = None
+
+UNAUTHENTICATED_FIXTURE = "CONSISTENT_UNAUTHENTICATED_FIXTURE"
+AUTHENTICATED = "AUTHENTICATED_EMPIRICAL_CALIBRATION"
+UNIVERSE_FIXTURE_ONLY = "FIXTURE_WITNESS_ONLY__CALIBRATION_INELIGIBLE"
+
 
 def _hex64(s: object) -> bool:
     return type(s) is str and len(s) == 64 and all(x in "0123456789abcdef" for x in s)
 
 
 def _finite(x: object) -> bool:
-    return type(x) in (int, float) and isfinite(x)
+    if type(x) not in (int, float):
+        return False
+    try:
+        return isfinite(x)
+    except OverflowError:
+        return False
 
 
 def _strtuple(items: object, *, nonempty: bool = False) -> bool:
@@ -58,6 +89,10 @@ def _strtuple(items: object, *, nonempty: bool = False) -> bool:
         and all(type(x) is str and bool(x) for x in items)
         and len(set(items)) == len(items)
     )
+
+
+def _exact_str(x: object) -> bool:
+    return type(x) is str and bool(x)
 
 
 @dataclass(frozen=True)
@@ -72,6 +107,34 @@ class CalibrationArtifact:
     stratification: tuple[str, ...]
     provenance: str
 
+    def __post_init__(self) -> None:
+        if (
+            not _hex64(self.content_sha256)
+            or not _exact_str(self.source_scope)
+            or not _strtuple(self.donors, nonempty=True)
+            or not _exact_str(self.split_role)
+            or not _exact_str(self.feature_family)
+            or not _strtuple(self.stratification)
+            or not _exact_str(self.provenance)
+        ):
+            raise CalibrationError("calibration artifact fields must be exact canonical types")
+
+
+@dataclass(frozen=True)
+class CalibrationCheck:
+    """Firewall outcome. ``status`` is the only authority-bearing field."""
+
+    artifact: CalibrationArtifact
+    status: str
+
+    @property
+    def provenance(self) -> str:
+        return self.status
+
+    @property
+    def authenticated(self) -> bool:
+        return self.status == AUTHENTICATED
+
 
 @dataclass(frozen=True)
 class NumericProvenance:
@@ -82,12 +145,16 @@ class NumericProvenance:
 
     def __post_init__(self) -> None:
         if (
-            type(self.name) is not str or not self.name
+            not _exact_str(self.name)
             or not _finite(self.value)
             or type(self.category) is not str or self.category not in _PROVENANCE
             or not _hex64(self.identity_sha256)
         ):
             raise CalibrationError("decision-bearing number lacks closed provenance or finite value")
+        if self.category == AUTHENTICATED and self.identity_sha256 not in _AUTHENTICATED_CALIBRATION_REGISTRY:
+            raise CalibrationError(
+                "AUTHENTICATED_EMPIRICAL_CALIBRATION must reference a code-pinned authenticated artifact"
+            )
 
 
 def validate_calibration_firewall(
@@ -96,45 +163,64 @@ def validate_calibration_firewall(
     independently_pinned_sha256: str,
     expected_source_scope: str,
     eligible_fit_donors: tuple[str, ...],
-    excluded_donors: tuple[str, ...],
-) -> CalibrationArtifact:
-    """Check pinned observation-only input against externally supplied identities.
+    protected_partitions: Mapping[str, tuple[str, ...]],
+) -> CalibrationCheck:
+    """Check observation-only input for consistency; authenticate only via the code-pinned registry.
 
-    Matching a digest is NOT independent authentication of the digest's issuer.
-    This function never computes latent human prevalence, disease parameters,
-    target truth, or candidate decisions.
+    Matching a caller-supplied digest is NOT authentication. ``protected_partitions``
+    must name every protected role (validation, oracle, reserved, development),
+    each non-empty. This function never computes latent human prevalence,
+    disease parameters, target truth, or candidate decisions.
     """
     if type(artifact) is not CalibrationArtifact or type(raw_bytes) is not bytes:
         raise CalibrationError("exact calibration artifact and raw bytes required")
-    if not _hex64(independently_pinned_sha256) or not _hex64(artifact.content_sha256):
-        raise CalibrationError("exact authenticated content digest required")
+    if not _hex64(independently_pinned_sha256):
+        raise CalibrationError("exact content digest required")
     actual = sha256(raw_bytes).hexdigest()
     if actual != independently_pinned_sha256 or actual != artifact.content_sha256:
         raise CalibrationError("calibration byte identity differs from pinned source")
     if (
-        type(expected_source_scope) is not str or not expected_source_scope
-        or type(artifact.source_scope) is not str
+        not _exact_str(expected_source_scope)
         or artifact.source_scope != expected_source_scope
         or artifact.split_role != "CALIBRATION_FIT"
-        or artifact.provenance != "AUTHENTICATED_EMPIRICAL_CALIBRATION"
+        or artifact.provenance != AUTHENTICATED
     ):
         raise CalibrationError("calibration source, split or provenance mismatch")
-    if not (
-        _strtuple(artifact.donors, nonempty=True)
-        and _strtuple(eligible_fit_donors, nonempty=True)
-        and _strtuple(excluded_donors)
-    ):
+    if not _strtuple(eligible_fit_donors, nonempty=True):
         raise CalibrationError("calibration donor identities require unique canonical strings")
+    if type(protected_partitions) is not dict or set(protected_partitions) != _PROTECTED_ROLES:
+        raise CalibrationError("every protected partition (validation, oracle, reserved, development) is required")
+    protected: set[str] = set()
+    for role in _PROTECTED_ROLES:
+        members = dict.__getitem__(protected_partitions, role)
+        if not _strtuple(members, nonempty=True):
+            raise CalibrationError(f"protected partition {role} must be a non-empty canonical donor tuple")
+        protected.update(members)
     donors = set(artifact.donors)
-    if donors - set(eligible_fit_donors) or donors & set(excluded_donors):
+    eligible = set(eligible_fit_donors)
+    if eligible & protected:
+        raise CalibrationError("fit-eligible donors overlap a protected partition")
+    if donors - eligible or donors & protected:
         raise CalibrationError("calibration donors overlap or escape allowed fit partition")
-    if type(artifact.feature_family) is not str or artifact.feature_family not in _ALLOWED_FEATURES:
+    if artifact.feature_family not in _ALLOWED_FEATURES:
         raise CalibrationError("biological truth/pathology proxy not eligible as calibration feature")
-    if not _strtuple(artifact.stratification) or any(
-        x not in _ALLOWED_STRATA for x in artifact.stratification
-    ):
+    if any(x not in _ALLOWED_STRATA for x in artifact.stratification):
         raise CalibrationError("pathology, diagnosis, source-as-disease proxy or unapproved stratification")
-    return artifact
+    status = AUTHENTICATED if actual in _AUTHENTICATED_CALIBRATION_REGISTRY else UNAUTHENTICATED_FIXTURE
+    return CalibrationCheck(artifact, status)
+
+
+@dataclass(frozen=True)
+class UniverseCheck:
+    """Outcome of the cross-universe check. Only ``calibration_eligible`` bears authority."""
+
+    metric_name: str
+    n_units: int
+    status: str
+
+    @property
+    def calibration_eligible(self) -> bool:
+        return False
 
 
 def validate_address_universe_agnostic(
@@ -146,12 +232,14 @@ def validate_address_universe_agnostic(
     full_n_addresses: int,
     full_universe_sha256: str,
     expected_full_universe_sha256: str,
-) -> bool:
-    """Strict *fixture-level* cross-universe invariance check.
+) -> UniverseCheck:
+    """Strict *fixture-level* cross-universe invariance witness; never real eligibility in V1.
 
-    Only a prespecified observation statistic can pass; a detected-feature
-    envelope from the 96-gene pilot is ineligible. A matching synthetic witness
-    is not a substitute for a human-data receipt or authenticated 41k values.
+    Only a prespecified observation statistic is considered; a detected-feature
+    envelope from the 96-gene pilot is ineligible. Caller-computed statistics and
+    caller-matched digests cannot demonstrate §22.13 invariance, so the result
+    is always ``FIXTURE_WITNESS_ONLY__CALIBRATION_INELIGIBLE`` until pinned
+    universe registries and an authenticated per-address computation exist.
     """
     if (
         type(metric_name) is not str or metric_name not in _UNIVERSE_INVARIANT_METRICS
@@ -166,13 +254,13 @@ def validate_address_universe_agnostic(
         raise CalibrationError("explicit exact-keyed cross-universe fixtures required")
     if not pilot_values or set(pilot_values) != set(full_values):
         raise CalibrationError("same scientific units must be inspected in both universes")
-    for key, value in pilot_values.items():
+    for key, value in dict.items(pilot_values):
         if type(key) is not str or not key or not _finite(value):
             raise CalibrationError("invalid pilot universe statistic")
-        other = full_values[key]
+        other = dict.__getitem__(full_values, key)
         if not _finite(other) or float(value) != float(other):
             raise CalibrationError("pilot/full universe statistic is not invariant")
-    return True
+    return UniverseCheck(metric_name, len(pilot_values), UNIVERSE_FIXTURE_ONLY)
 
 
 @dataclass(frozen=True)
@@ -231,7 +319,11 @@ def _contract_digest(contract: "RealismContract") -> str:
 
 @dataclass(frozen=True)
 class RealismContract:
-    """Immutable prospective fixture criteria. Never selects biology parameters."""
+    """Immutable prospective fixture criteria. Never selects biology parameters.
+
+    ``contract_sha256`` must equal the content digest of the contract itself;
+    use ``RealismContract.frozen(...)`` to compute it.
+    """
 
     contract_sha256: str
     metric_bands: tuple[tuple[str, tuple[float, float]], ...]
@@ -268,23 +360,96 @@ class RealismContract:
             names.append(name)
         if len(names) != len(set(names)):
             raise CalibrationError("duplicate realism metric names")
+        if self.contract_sha256 != _contract_digest(self):
+            raise CalibrationError("realism contract identity must equal its own content digest")
+
+    @classmethod
+    def frozen(cls, *, metric_bands, adjustable_observation_parameters, max_iterations,
+               version_family_sha256, authority_scope) -> "RealismContract":
+        probe = object.__new__(cls)
+        for key, value in dict(
+            metric_bands=metric_bands,
+            adjustable_observation_parameters=adjustable_observation_parameters,
+            max_iterations=max_iterations,
+            version_family_sha256=version_family_sha256,
+            authority_scope=authority_scope,
+        ).items():
+            object.__setattr__(probe, key, value)
+        try:
+            digest = _contract_digest(probe)
+        except (TypeError, ValueError) as exc:
+            raise CalibrationError("realism contract parts are not canonically serializable") from exc
+        return cls(digest, metric_bands, adjustable_observation_parameters, max_iterations,
+                   version_family_sha256, authority_scope)
+
+
+# Process-local realism custody. One contract and one search per generator family
+# per process; states are issued by this module only, and each issued state is
+# checked against a private copy that is never returned. Not durable across
+# processes: persistent custody is a STOP_B prerequisite that remains open.
+_REALISM_LOCK = Lock()
+_REALISM_FAMILY_LEASES: dict[str, str] = {}          # version family -> contract digest
+_REALISM_PUBLIC: dict[object, "RealismState"] = {}    # token -> current public state
+_REALISM_PRIVATE: dict[object, "RealismState"] = {}   # token -> private copy
 
 
 @dataclass(frozen=True)
 class RealismState:
-    """Append-only conceptual fixture state; external durable custody is separate."""
+    """Module-issued fixture search state; external durable custody is separate."""
 
     contract_state_sha256: str
     contract_sha256: str
     versions_tested: tuple[str, ...]
     first_passing_version: str | None
     status: str
+    _token: object | None = field(default=None, repr=False, compare=False)
 
     @classmethod
     def initial(cls, contract: RealismContract) -> "RealismState":
         if type(contract) is not RealismContract:
             raise CalibrationError("typed realism contract required")
-        return cls(_contract_digest(contract), contract.contract_sha256, (), None, "SEARCHING")
+        digest = _contract_digest(contract)
+        with _REALISM_LOCK:
+            if contract.version_family_sha256 in _REALISM_FAMILY_LEASES:
+                raise CalibrationError(
+                    "realism search already opened for this generator family in this process; "
+                    "re-initialisation, replay or re-contracting is refused"
+                )
+            _REALISM_FAMILY_LEASES[contract.version_family_sha256] = digest
+            private = cls(digest, contract.contract_sha256, (), None, "SEARCHING", object())
+            return _issue_state(private)
+
+
+def _issue_state(private: RealismState) -> RealismState:
+    public = replace(private)
+    _REALISM_PRIVATE[private._token] = private
+    _REALISM_PUBLIC[private._token] = public
+    return public
+
+
+def _exact_equal(a: object, b: object) -> bool:
+    if type(a) is not type(b):
+        return False
+    if a is None:
+        return True
+    if type(a) is str:
+        return str.__eq__(a, b)
+    if type(a) is tuple:
+        return len(a) == len(b) and all(_exact_equal(x, y) for x, y in zip(a, b))
+    return False
+
+
+def _current_private_state(state: RealismState) -> RealismState:
+    token = object.__getattribute__(state, "_token")
+    if token is None or _REALISM_PUBLIC.get(token) is not state:
+        raise CalibrationError("realism state is not the current module-issued state")
+    private = _REALISM_PRIVATE[token]
+    for f in dataclass_fields(RealismState):
+        if f.name == "_token":
+            continue
+        if not _exact_equal(object.__getattribute__(state, f.name), object.__getattribute__(private, f.name)):
+            raise CalibrationError("issued realism state was mutated after issuance")
+    return private
 
 
 def advance_realism_iteration(
@@ -297,29 +462,33 @@ def advance_realism_iteration(
     """First jointly passing *fixture* version terminates search irreversibly."""
     if type(contract) is not RealismContract or type(state) is not RealismState:
         raise CalibrationError("typed contract and state required")
-    if (
-        state.contract_sha256 != contract.contract_sha256
-        or state.contract_state_sha256 != _contract_digest(contract)
-        or state.status != "SEARCHING"
-        or state.first_passing_version is not None
-    ):
-        raise CalibrationError("realism criteria moved or terminal search was reopened")
-    if not _hex64(version_sha256) or version_sha256 in state.versions_tested:
-        raise CalibrationError("realism generator version must be unique and exact")
-    if len(state.versions_tested) >= contract.max_iterations:
-        raise CalibrationError("frozen realism iteration budget exhausted")
-    bands = dict(contract.metric_bands)
-    if type(metrics) is not dict or set(metrics) != set(bands):
-        raise CalibrationError("metric roster differs from frozen contract")
-    if not all(_finite(x) for x in metrics.values()):
-        raise CalibrationError("nonfinite/forged realism metric")
-    passing = all(low <= metrics[name] <= high for name, (low, high) in bands.items())
-    versions = state.versions_tested + (version_sha256,)
-    if passing:
-        return RealismState(state.contract_state_sha256, state.contract_sha256,
-                            versions, version_sha256, "FIRST_JOINT_PASS_FROZEN")
-    if len(versions) >= contract.max_iterations:
-        return RealismState(state.contract_state_sha256, state.contract_sha256,
-                            versions, None, "REALISM_NOT_QUALIFIED")
-    return RealismState(state.contract_state_sha256, state.contract_sha256,
-                        versions, None, "SEARCHING")
+    with _REALISM_LOCK:
+        s = _current_private_state(state)
+        digest = _contract_digest(contract)
+        if (
+            _REALISM_FAMILY_LEASES.get(contract.version_family_sha256) != digest
+            or s.contract_sha256 != contract.contract_sha256
+            or s.contract_state_sha256 != digest
+            or s.status != "SEARCHING"
+            or s.first_passing_version is not None
+        ):
+            raise CalibrationError("realism criteria moved or terminal search was reopened")
+        if not _hex64(version_sha256) or version_sha256 in s.versions_tested:
+            raise CalibrationError("realism generator version must be unique and exact")
+        if len(s.versions_tested) >= contract.max_iterations:
+            raise CalibrationError("frozen realism iteration budget exhausted")
+        bands = dict(contract.metric_bands)
+        if type(metrics) is not dict or set(metrics) != set(bands):
+            raise CalibrationError("metric roster differs from frozen contract")
+        if any(type(k) is not str for k in metrics) or not all(_finite(x) for x in dict.values(metrics)):
+            raise CalibrationError("nonfinite/forged realism metric")
+        passing = all(low <= dict.__getitem__(metrics, name) <= high for name, (low, high) in bands.items())
+        versions = s.versions_tested + (version_sha256,)
+        if passing:
+            nxt = replace(s, versions_tested=versions, first_passing_version=version_sha256,
+                          status="FIRST_JOINT_PASS_FROZEN")
+        elif len(versions) >= contract.max_iterations:
+            nxt = replace(s, versions_tested=versions, status="REALISM_NOT_QUALIFIED")
+        else:
+            nxt = replace(s, versions_tested=versions)
+        return _issue_state(nxt)
