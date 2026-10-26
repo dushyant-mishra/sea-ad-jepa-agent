@@ -139,6 +139,14 @@ def evaluate_frozen_probe(*, donor_ids: np.ndarray, baseline: np.ndarray,
     z=_matrix(embeddings,"frozen embeddings",len(y))
     if base.shape[1]<1 or z.shape[1]<1:
         raise FrozenProbeError("fixture needs baseline and frozen embedding coordinates")
+    # Defeat the most blatant query-leakage forgery even when fixture metadata
+    # is falsely asserted. Nontrivial deterministic descendants of q cannot
+    # be ruled out from arrays alone; producer lineage authentication remains
+    # mandatory before any real-data adapter is possible.
+    if any(np.array_equal(base[:,j],y) for j in range(base.shape[1])) or any(
+        np.array_equal(z[:,j],y) for j in range(z.shape[1])
+    ):
+        raise FrozenProbeError("queried target value directly included in permitted readout evidence")
     donors=_donors(donor_ids,len(y))
     valid_folds=_validate_folds(folds,donors)
     # Identity is diagnostic only; SHA over bytes is NOT external source custody.
