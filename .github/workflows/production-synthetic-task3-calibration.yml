@@ -24,5 +24,7 @@ jobs:
           tests/production_synthetic/test_calibration_v1_macha_hostile.py
           tests/production_synthetic/test_calibration_v1_repair.py
           tests/production_synthetic/test_calibration_v1_selfaudit.py
+          tests/production_synthetic/test_calibration_v1_independent_273f4a_red.py
+          tests/production_synthetic/test_calibration_v1_trust_model.py
       - name: Production-synthetic Tasks 1-3 regression
         run: python -m pytest -q tests/production_synthetic
