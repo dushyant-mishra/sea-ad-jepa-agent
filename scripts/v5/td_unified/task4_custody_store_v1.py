@@ -44,44 +44,79 @@ def _fsync_parent_directory(path: Path) -> None:
 
 @contextmanager
 def _exclusive_append_lock(path: Path):
-    """Serialize one local store's writers across processes, *without authority*.
+    """Guard both reads and writes at the local store boundary.
 
-    This lock is a mechanics guard, not an external trust root or an actor
-    credential. Crash/lock failure must refuse instead of writing unguarded.
+    On POSIX lock the *non-empty directory inode*, not an unlinkable sidecar
+    file. On Windows byte-lock the stable sidecar. These locks are local
+    filesystem mechanics, NOT a hostile-process or external authority root.
     """
+    posix = os.name != "nt"
     try:
-        fd = os.open(str(path), os.O_CREAT | os.O_RDWR, 0o600)
+        if posix:
+            fd = os.open(str(path.parent), os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+        else:
+            fd = os.open(str(path), os.O_CREAT | os.O_RDWR, 0o600)
     except OSError as exc:
-        raise Task4CustodyError("custody writer lock unavailable") from exc
+        raise Task4CustodyError("custody store lock unavailable") from exc
     locked = False
     try:
         try:
-            if os.name == "nt":
+            if posix:
+                import fcntl
+                fcntl.flock(fd, fcntl.LOCK_EX)
+            else:
                 import msvcrt
-                # A stable one-byte lock region on Windows.
                 if os.fstat(fd).st_size == 0:
                     os.write(fd, bytes((0,)))
                 os.lseek(fd, 0, os.SEEK_SET)
                 msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
-            else:
-                import fcntl
-                fcntl.flock(fd, fcntl.LOCK_EX)
             locked = True
+            if posix:
+                held = os.fstat(fd)
+                named = os.stat(path.parent, follow_symlinks=False)
+                if held.st_ino != named.st_ino or held.st_dev != named.st_dev:
+                    raise Task4CustodyError("custody store directory identity changed during lock")
         except OSError as exc:
-            raise Task4CustodyError("could not exclusively lock custody writer") from exc
+            raise Task4CustodyError("could not exclusively lock custody store") from exc
         yield
     finally:
         try:
             if locked:
-                if os.name == "nt":
+                if posix:
+                    import fcntl
+                    fcntl.flock(fd, fcntl.LOCK_UN)
+                else:
                     import msvcrt
                     os.lseek(fd, 0, os.SEEK_SET)
                     msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
-                else:
-                    import fcntl
-                    fcntl.flock(fd, fcntl.LOCK_UN)
         finally:
             os.close(fd)
+
+
+def _windows_preflight_head_replace(head_path: Path) -> None:
+    """Fail before event bytes if an existing raw Windows reader blocks rename.
+
+    This only covers a reader already holding the head. A hostile process
+    opening the path *after* preflight can still race; do not claim genuine
+    atomic external custody until a separately qualified transaction design.
+    """
+    if os.name != "nt" or not head_path.exists():
+        return
+    tmp = head_path.with_name(".task4-head-preflight.tmp")
+    try:
+        old = head_path.read_bytes()
+        with tmp.open("wb") as fh:
+            fh.write(old)
+            fh.flush()
+            os.fsync(fh.fileno())
+        os.replace(tmp, head_path)
+    except OSError as exc:
+        raise Task4CustodyError("Windows custody head cannot be safely replaced; append refused before write") from exc
+    finally:
+        try:
+            tmp.unlink(missing_ok=True)
+        except OSError:
+            pass
 
 
 def _canonical_bytes(payload: Mapping[str, object]) -> bytes:
@@ -161,7 +196,8 @@ class PersistentCustodyStore:
             self.events_path.touch()
             with self.events_path.open("r+b") as fh:
                 os.fsync(fh.fileno())
-        self._replay = self.replay_reference()
+        with _exclusive_append_lock(self.root / ".task4-append.lock"):
+            self._replay = self.replay_reference()
 
     @classmethod
     def open(
@@ -259,7 +295,8 @@ class PersistentCustodyStore:
         return self._replay_semantic()
 
     def replay(self) -> CustodyReplayResult:
-        return self.replay_optimized()
+        with _exclusive_append_lock(self.root / ".task4-append.lock"):
+            return self.replay_optimized()
 
     @property
     def head(self) -> str:
@@ -287,7 +324,8 @@ class PersistentCustodyStore:
             # writer lock. A stale signed subject/sequence must refuse before
             # writing bytes, publishing a head or reusing a temp filename.
             latest = self.replay_optimized()
-            if latest.head != self._replay.head or latest.event_count != self._replay.event_count:
+            cached = self._replay
+            if latest.head != cached.head or latest.event_count != cached.event_count:
                 raise Task4CustodyError("stale custody writer must reopen and re-attest on current head")
             if getattr(signer, "promotion_authority", None) != "EXTERNAL_HARNESS_AUTHORITY":
                 raise Task4CustodyError("caller-controlled or fixture signer cannot publish custody mechanics")
@@ -306,7 +344,14 @@ class PersistentCustodyStore:
             if kind not in {"REVOCATION", "SUPERSESSION", "CAMPAIGN", "EXPOSURE", "OUTPUT_FREEZE", "REVEAL", "STATE"}:
                 raise Task4CustodyError("unknown custody event kind")
 
-            subject_sha, sequence = self.next_append_subject(base)
+            # Compute the attested subject solely from the snapshot checked
+            # while holding the lock. Never consult a mutable cached head again.
+            sequence = latest.event_count + 1
+            subject_sha = _sha({
+                "event_payload": base,
+                "sequence": sequence,
+                "previous_head": latest.head,
+            })
             if self.actor_registry is None or self.frozen_actor_policy is None or self.actor_attestation_verifier is None:
                 raise Task4CustodyError("custody append requires configured actor-attestation inputs")
             try:
@@ -325,11 +370,14 @@ class PersistentCustodyStore:
             event = {
                 **base,
                 "sequence": sequence,
-                "previous_head": self._replay.head,
+                "previous_head": latest.head,
                 "signer_identity": signer.signer_identity,
             }
             event["signature_hex"] = bytes(signer.sign(self._event_message(event))).hex()
             line = _canonical_bytes(event) + b"\n"
+            # Windows raw file readers may veto replacement without joining
+            # our protocol. Refuse before committing an event in that case.
+            _windows_preflight_head_replace(self.head_path)
             with self.events_path.open("ab", buffering=0) as fh:
                 fh.write(line)
                 os.fsync(fh.fileno())
@@ -359,6 +407,8 @@ class PersistentCustodyStore:
             return new_head
 
     def assert_subject_not_revoked(self, subject_id: str) -> None:
-        self._replay = self.replay_optimized()
-        if subject_id in self._replay.revoked_subjects:
-            raise Task4CustodyError("subject is present in persistent revocation history")
+        with _exclusive_append_lock(self.root / ".task4-append.lock"):
+            checked = self.replay_optimized()
+            self._replay = checked
+            if subject_id in checked.revoked_subjects:
+                raise Task4CustodyError("subject is present in persistent revocation history")
