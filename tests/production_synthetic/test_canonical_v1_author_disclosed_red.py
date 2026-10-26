@@ -212,7 +212,7 @@ try:
         print("OK", len(out), C.semantic_sha256(n))
     else:
         obj = C.load_canonical_json(b"[1" + b"0" * {digits_minus_one} + b"]")
-        print("OK", len(str(obj[0])) if obj[0] == n else -1, C.semantic_sha256(obj))
+        print("OK", len(C.canonical_json_bytes(obj[0])) if obj[0] == n else -1, C.semantic_sha256(obj))
 except C.CanonicalError as exc:
     print("REFUSED", type(exc).__name__)
 """
