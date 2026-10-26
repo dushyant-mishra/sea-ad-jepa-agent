@@ -141,3 +141,52 @@ def test_relabelled_content_cannot_claim_independent_pin_issuer():
     r=check(m,f,levels,pins)
     assert "externally_authenticated" in r
     assert r["externally_authenticated"] is False
+
+def _g7_typed_row(binding, *, pen=2, fin=3, added=1, source="SEA_AD", donor="D1"):
+    return {"source":source,"donor_id":donor, "terminal_displacement":0.02,
+            "penultimate_supported_evidence":pen, "full_supported_evidence":fin,
+            "added_supported_evidence":added, "input_binding_sha256":binding}
+
+def test_terminal_support_inputs_bind_to_actual_rights_content_not_caller_counts():
+    m,f,levels,pins=fixture()
+    binding=E.derive_fixture_g7_e3_input_binding(m,pins,required_sources=["SEA_AD"])
+    receipt=E.bind_g7_terminal_inputs_e3(
+        manifest=m,full_atoms=f,levels=levels,expected_pins=pins,
+        required_sources=["SEA_AD"],rows=[_g7_typed_row(binding)],
+        reference_input_binding_sha256=binding)
+    assert receipt["status"]=="E3_TERMINAL_INPUTS_BOUND_FIXTURE_ONLY"
+    assert receipt["same_code_path_authorized"] is False
+    assert receipt["human_g7_authorized"] is False
+    assert receipt["bound_unit_count"]==1
+
+@pytest.mark.parametrize("pen,fin,added",[(0,3,3),(2,2,0),(2,4,2),(2,3,0)])
+def test_terminal_caller_supported_evidence_numbers_cannot_override_content(pen,fin,added):
+    m,f,levels,pins=fixture()
+    binding=E.derive_fixture_g7_e3_input_binding(m,pins,required_sources=["SEA_AD"])
+    with pytest.raises(E.G7ContentError):
+        E.bind_g7_terminal_inputs_e3(
+            manifest=m,full_atoms=f,levels=levels,expected_pins=pins,
+            required_sources=["SEA_AD"],rows=[_g7_typed_row(binding,pen=pen,fin=fin,added=added)],
+            reference_input_binding_sha256=binding)
+
+def test_terminal_binding_rejects_wrong_reference_or_row_hash():
+    m,f,levels,pins=fixture()
+    binding=E.derive_fixture_g7_e3_input_binding(m,pins,required_sources=["SEA_AD"])
+    with pytest.raises(E.G7ContentError):
+        E.bind_g7_terminal_inputs_e3(manifest=m,full_atoms=f,levels=levels,expected_pins=pins,
+                                     required_sources=["SEA_AD"],rows=[_g7_typed_row(binding)],
+                                     reference_input_binding_sha256="f"*64)
+    with pytest.raises(E.G7ContentError):
+        E.bind_g7_terminal_inputs_e3(manifest=m,full_atoms=f,levels=levels,expected_pins=pins,
+                                     required_sources=["SEA_AD"],rows=[_g7_typed_row("f"*64)],
+                                     reference_input_binding_sha256=binding)
+
+def test_terminal_binding_rejects_source_donor_reassignment_and_unlisted_rows():
+    m,f,levels,pins=fixture()
+    binding=E.derive_fixture_g7_e3_input_binding(m,pins,required_sources=["SEA_AD"])
+    for source,donor in [("HVS","D1"),("SEA_AD","D2")]:
+        with pytest.raises(E.G7ContentError):
+            E.bind_g7_terminal_inputs_e3(manifest=m,full_atoms=f,levels=levels,expected_pins=pins,
+                                         required_sources=["SEA_AD"],rows=[
+                                             _g7_typed_row(binding,source=source,donor=donor)],
+                                         reference_input_binding_sha256=binding)
