@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 import threading
+import time
 from pathlib import Path
 from typing import Mapping, Protocol
 
@@ -92,7 +93,19 @@ def _exclusive_append_lock(path: Path):
                 if os.fstat(fd).st_size == 0:
                     os.write(fd, bytes((0,)))
                 os.lseek(fd, 0, os.SEEK_SET)
-                msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
+                # Windows LK_LOCK retries only for a limited period. A
+                # legitimate external publisher can run longer than that.
+                # Wait with a bounded, explicit policy; never fail the reader
+                # after an arbitrary implementation-defined ten seconds.
+                deadline = time.monotonic() + 40.0
+                while True:
+                    try:
+                        msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
+                        break
+                    except OSError as exc:
+                        if time.monotonic() >= deadline:
+                            raise Task4CustodyError("custody lock wait exceeded bounded development policy") from exc
+                        time.sleep(0.05)
             locked = True
             if posix:
                 held = os.fstat(fd)
@@ -426,7 +439,10 @@ class PersistentCustodyStore:
             )
             with tmp.open("r+b") as fh:
                 os.fsync(fh.fileno())
-            os.replace(tmp, self.head_path)
+            try:
+                os.replace(tmp, self.head_path)
+            except OSError as exc:
+                raise Task4CustodyError("published custody head replacement unavailable") from exc
             _fsync_parent_directory(self.head_path)
 
             # Do not self-mint an external expected head. The append advances local
