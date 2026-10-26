@@ -94,6 +94,8 @@ def validate_casebundle(payload: dict[str, object]) -> dict[str, object]:
         raise CaseBundleError("at least one explicit physical observation required")
     seen=set()
     cell_library={}
+    cell_hierarchy={}
+    counted_mass={}
     for row in rows:
         if type(row) is not dict or set(row) != _ROW_FIELDS:
             raise CaseBundleError("observation row must have exact fields")
@@ -102,6 +104,10 @@ def validate_casebundle(payload: dict[str, object]) -> dict[str, object]:
                 raise CaseBundleError("row contains noncanonical scientific identity")
         if row["state"] not in _STATES:
             raise CaseBundleError("unknown biological-measurement support state")
+        hierarchy=(row["donor_id"],row["source_id"],row["operator_id"])
+        before=cell_hierarchy.setdefault(row["cell_id"],hierarchy)
+        if before!=hierarchy:
+            raise CaseBundleError("one scientific cell cannot switch donor, source or operator")
         atom=(row["cell_id"],row["address_id"])
         if atom in seen:
             raise CaseBundleError("duplicate cell/address evidence atom")
@@ -120,6 +126,9 @@ def validate_casebundle(payload: dict[str, object]) -> dict[str, object]:
             prev=cell_library.setdefault(row["cell_id"],row["library_size"])
             if prev!=row["library_size"]:
                 raise CaseBundleError("inconsistent measured normalization library within cell")
+            counted_mass[row["cell_id"]]=counted_mass.get(row["cell_id"],0)+row["count"]
+            if counted_mass[row["cell_id"]]>prev:
+                raise CaseBundleError("sum of measured address counts exceeds physical library mass")
         elif row["count"] is not None or row["library_size"] is not None:
             raise CaseBundleError("non-scalar state cannot supply hidden count or library mass")
     try:
