@@ -51,7 +51,14 @@ jobs:
   task4-custody-windows:
     runs-on: windows-latest
     steps:
+      # This historical repository contains Windows-incompatible long
+      # preservation paths. Check out only the executable source/test tree.
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+          sparse-checkout-cone-mode: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
