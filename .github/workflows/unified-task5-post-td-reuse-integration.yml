@@ -24,6 +24,7 @@ jobs:
           python -m pytest -q
           tests/v5/td_unified/test_task5_fixture_handoff_v1.py
           tests/v5/td_unified/test_post_td_fixture_bridge_v1.py
+          tests/v5/td_unified/test_post_td_fixture_bridge_v1_macha_hostile.py
       - name: Run existing post-TD harness suites, unchanged
         run: >-
           python -m pytest -q
