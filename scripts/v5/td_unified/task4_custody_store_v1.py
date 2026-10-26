@@ -60,7 +60,7 @@ def _exclusive_append_lock(path: Path):
                 import msvcrt
                 # A stable one-byte lock region on Windows.
                 if os.fstat(fd).st_size == 0:
-                    os.write(fd, b"\\x00")
+                    os.write(fd, bytes((0,)))
                 os.lseek(fd, 0, os.SEEK_SET)
                 msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
             else:
