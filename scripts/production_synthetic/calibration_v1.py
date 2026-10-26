@@ -378,11 +378,18 @@ class PrecisionTarget:
     alpha: float
 
     def __post_init__(self) -> None:
-        if (
-            not _finite(self.epsilon) or not 0 < self.epsilon < 1
-            or not _finite(self.alpha) or not 0 < self.alpha < 1
-        ):
-            raise CalibrationError("precision width and tail probability must be pre-frozen within (0,1)")
+        _validate_precision(self)
+
+
+def _validate_precision(t: "PrecisionTarget") -> None:
+    """Re-run at every use: construction-time checks do not survive object.__setattr__."""
+    epsilon = object.__getattribute__(t, "epsilon")
+    alpha = object.__getattribute__(t, "alpha")
+    if (
+        not _finite(epsilon) or not 0 < epsilon < 1
+        or not _finite(alpha) or not 0 < alpha < 1
+    ):
+        raise CalibrationError("precision width and tail probability must be pre-frozen within (0,1)")
 
 
 def derive_budget_from_precision(targets: Mapping[str, PrecisionTarget]) -> dict[str, int]:
@@ -398,6 +405,7 @@ def derive_budget_from_precision(targets: Mapping[str, PrecisionTarget]) -> dict
     for name, item in targets.items():
         if type(item) is not PrecisionTarget:
             raise CalibrationError("precision budgets must be typed frozen targets")
+        _validate_precision(item)
         n = ceil(log(2.0 / item.alpha) / (2.0 * item.epsilon ** 2))
         if n <= 0 or n > 10**9:
             raise CalibrationError("precision budget cannot be represented safely")
@@ -484,7 +492,7 @@ class RealismContract:
             object.__setattr__(probe, key, value)
         try:
             digest = _contract_digest(probe)
-        except (TypeError, ValueError) as exc:
+        except (TypeError, ValueError, OverflowError) as exc:
             raise CalibrationError("realism contract parts are not canonically serializable") from exc
         return cls(digest, metric_bands, adjustable_observation_parameters, max_iterations,
                    version_family_sha256, authority_scope)
@@ -551,6 +559,18 @@ def _current_private_state(state: RealismState) -> RealismState:
         if not _exact_equal(object.__getattribute__(state, f.name), object.__getattribute__(private, f.name)):
             raise CalibrationError("issued realism state was mutated after issuance")
     return private
+
+
+def verify_realism_state(state: RealismState) -> RealismState:
+    """Return the private copy behind the current module-issued, unmutated realism state.
+
+    Downstream consumers must call this before trusting ``status`` or
+    ``first_passing_version``; a hand-built or stale state is refused.
+    """
+    if type(state) is not RealismState:
+        raise CalibrationError("exact realism state required")
+    with _REALISM_LOCK:
+        return _current_private_state(state)
 
 
 def advance_realism_iteration(
