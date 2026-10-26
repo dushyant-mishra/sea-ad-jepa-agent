@@ -197,7 +197,7 @@ class PersistentCustodyStore:
             with self.events_path.open("r+b") as fh:
                 os.fsync(fh.fileno())
         with _exclusive_append_lock(self.root / ".task4-append.lock"):
-            self._replay = self.replay_reference()
+            self._replay = self._replay_semantic()
 
     @classmethod
     def open(
@@ -287,16 +287,17 @@ class PersistentCustodyStore:
         return CustodyReplayResult(previous, count, frozenset(revoked), False)
 
     def replay_reference(self) -> CustodyReplayResult:
-        return self._replay_semantic()
+        # Both externally callable replay routes share the append lock.
+        with _exclusive_append_lock(self.root / ".task4-append.lock"):
+            return self._replay_semantic()
 
     def replay_optimized(self) -> CustodyReplayResult:
-        # V1 deliberately shares reference semantics. Future indexing may replace
-        # this only if hostile equivalence tests remain exact.
-        return self._replay_semantic()
+        # V1 uses reference semantics, including identical local read locking.
+        with _exclusive_append_lock(self.root / ".task4-append.lock"):
+            return self._replay_semantic()
 
     def replay(self) -> CustodyReplayResult:
-        with _exclusive_append_lock(self.root / ".task4-append.lock"):
-            return self.replay_optimized()
+        return self.replay_optimized()
 
     @property
     def head(self) -> str:
@@ -323,7 +324,7 @@ class PersistentCustodyStore:
             # Recheck the *live disk state* only after acquiring the same OS
             # writer lock. A stale signed subject/sequence must refuse before
             # writing bytes, publishing a head or reusing a temp filename.
-            latest = self.replay_optimized()
+            latest = self._replay_semantic()
             cached = self._replay
             if latest.head != cached.head or latest.event_count != cached.event_count:
                 raise Task4CustodyError("stale custody writer must reopen and re-attest on current head")
@@ -403,12 +404,12 @@ class PersistentCustodyStore:
             # Do not self-mint an external expected head. The append advances local
             # mechanics only; any later expected_head is an independently supplied
             # consistency check and still cannot create authority in Task 4 V1.
-            self._replay = self.replay_optimized()
+            self._replay = self._replay_semantic()
             return new_head
 
     def assert_subject_not_revoked(self, subject_id: str) -> None:
         with _exclusive_append_lock(self.root / ".task4-append.lock"):
-            checked = self.replay_optimized()
+            checked = self._replay_semantic()
             self._replay = checked
             if subject_id in checked.revoked_subjects:
                 raise Task4CustodyError("subject is present in persistent revocation history")
