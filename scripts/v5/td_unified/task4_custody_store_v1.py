@@ -13,6 +13,8 @@ from contextlib import contextmanager
 import hashlib
 import json
 import os
+import threading
+import time
 from pathlib import Path
 from typing import Mapping, Protocol
 
@@ -24,6 +26,24 @@ PROJECTED_SCALE_EVENTS = 100_000
 
 class Task4CustodyError(ValueError):
     pass
+
+
+# Separate WSL and Windows byte/inode lock backends are not a shared mutex.
+MIXED_WINDOWS_WSL_LOCKING_QUALIFIED = False
+_HELD_ROOTS = threading.local()
+
+
+def _assert_store_directory_continuity(root, identity):
+    if identity is None:
+        return
+    try:
+        current = os.stat(root, follow_symlinks=True)
+    except OSError as exc:
+        raise Task4CustodyError("store directory unavailable during append") from exc
+    if (current.st_dev, current.st_ino) != identity:
+        raise Task4CustodyError("store directory replaced during append")
+
+
 
 
 def _fsync_parent_directory(path: Path) -> None:
@@ -51,6 +71,10 @@ def _exclusive_append_lock(path: Path):
     filesystem mechanics, NOT a hostile-process or external authority root.
     """
     posix = os.name != "nt"
+    key = os.path.realpath(os.fspath(path.parent))
+    active = getattr(_HELD_ROOTS, "keys", frozenset())
+    if key in active:
+        raise Task4CustodyError("recursive access during custody append is refused")
     try:
         if posix:
             fd = os.open(str(path.parent), os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
@@ -69,16 +93,32 @@ def _exclusive_append_lock(path: Path):
                 if os.fstat(fd).st_size == 0:
                     os.write(fd, bytes((0,)))
                 os.lseek(fd, 0, os.SEEK_SET)
-                msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
+                # Windows LK_LOCK retries only for a limited period. A
+                # legitimate external publisher can run longer than that.
+                # Wait with a bounded, explicit policy; never fail the reader
+                # after an arbitrary implementation-defined ten seconds.
+                deadline = time.monotonic() + 40.0
+                while True:
+                    try:
+                        msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
+                        break
+                    except OSError as exc:
+                        if time.monotonic() >= deadline:
+                            raise Task4CustodyError("custody lock wait exceeded bounded development policy") from exc
+                        time.sleep(0.05)
             locked = True
             if posix:
                 held = os.fstat(fd)
-                named = os.stat(path.parent, follow_symlinks=False)
+                named = os.stat(path.parent, follow_symlinks=True)
                 if held.st_ino != named.st_ino or held.st_dev != named.st_dev:
                     raise Task4CustodyError("custody store directory identity changed during lock")
         except OSError as exc:
             raise Task4CustodyError("could not exclusively lock custody store") from exc
-        yield
+        _HELD_ROOTS.keys = active | frozenset((key,))
+        try:
+            yield ((held.st_dev, held.st_ino) if posix else None)
+        finally:
+            _HELD_ROOTS.keys = active
     finally:
         try:
             if locked:
@@ -320,7 +360,7 @@ class PersistentCustodyStore:
         signer_attestation=None,
         head_publisher: ExternalHeadPublisher | None = None,
     ) -> str:
-        with _exclusive_append_lock(self.root / ".task4-append.lock"):
+        with _exclusive_append_lock(self.root / ".task4-append.lock") as locked_root_identity:
             # Recheck the *live disk state* only after acquiring the same OS
             # writer lock. A stale signed subject/sequence must refuse before
             # writing bytes, publishing a head or reusing a temp filename.
@@ -376,6 +416,7 @@ class PersistentCustodyStore:
             }
             event["signature_hex"] = bytes(signer.sign(self._event_message(event))).hex()
             line = _canonical_bytes(event) + b"\n"
+            _assert_store_directory_continuity(self.root, locked_root_identity)
             # Windows raw file readers may veto replacement without joining
             # our protocol. Refuse before committing an event in that case.
             _windows_preflight_head_replace(self.head_path)
@@ -398,7 +439,10 @@ class PersistentCustodyStore:
             )
             with tmp.open("r+b") as fh:
                 os.fsync(fh.fileno())
-            os.replace(tmp, self.head_path)
+            try:
+                os.replace(tmp, self.head_path)
+            except OSError as exc:
+                raise Task4CustodyError("published custody head replacement unavailable") from exc
             _fsync_parent_directory(self.head_path)
 
             # Do not self-mint an external expected head. The append advances local
