@@ -9,6 +9,7 @@ mechanics into authority. `expected_head` is an integrity check only.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from contextlib import contextmanager
 import hashlib
 import json
 import os
@@ -38,6 +39,84 @@ def _fsync_parent_directory(path: Path) -> None:
         os.fsync(descriptor)
     finally:
         os.close(descriptor)
+
+
+
+@contextmanager
+def _exclusive_append_lock(path: Path):
+    """Guard both reads and writes at the local store boundary.
+
+    On POSIX lock the *non-empty directory inode*, not an unlinkable sidecar
+    file. On Windows byte-lock the stable sidecar. These locks are local
+    filesystem mechanics, NOT a hostile-process or external authority root.
+    """
+    posix = os.name != "nt"
+    try:
+        if posix:
+            fd = os.open(str(path.parent), os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+        else:
+            fd = os.open(str(path), os.O_CREAT | os.O_RDWR, 0o600)
+    except OSError as exc:
+        raise Task4CustodyError("custody store lock unavailable") from exc
+    locked = False
+    try:
+        try:
+            if posix:
+                import fcntl
+                fcntl.flock(fd, fcntl.LOCK_EX)
+            else:
+                import msvcrt
+                if os.fstat(fd).st_size == 0:
+                    os.write(fd, bytes((0,)))
+                os.lseek(fd, 0, os.SEEK_SET)
+                msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
+            locked = True
+            if posix:
+                held = os.fstat(fd)
+                named = os.stat(path.parent, follow_symlinks=False)
+                if held.st_ino != named.st_ino or held.st_dev != named.st_dev:
+                    raise Task4CustodyError("custody store directory identity changed during lock")
+        except OSError as exc:
+            raise Task4CustodyError("could not exclusively lock custody store") from exc
+        yield
+    finally:
+        try:
+            if locked:
+                if posix:
+                    import fcntl
+                    fcntl.flock(fd, fcntl.LOCK_UN)
+                else:
+                    import msvcrt
+                    os.lseek(fd, 0, os.SEEK_SET)
+                    msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
+        finally:
+            os.close(fd)
+
+
+def _windows_preflight_head_replace(head_path: Path) -> None:
+    """Fail before event bytes if an existing raw Windows reader blocks rename.
+
+    This only covers a reader already holding the head. A hostile process
+    opening the path *after* preflight can still race; do not claim genuine
+    atomic external custody until a separately qualified transaction design.
+    """
+    if os.name != "nt" or not head_path.exists():
+        return
+    tmp = head_path.with_name(".task4-head-preflight.tmp")
+    try:
+        old = head_path.read_bytes()
+        with tmp.open("wb") as fh:
+            fh.write(old)
+            fh.flush()
+            os.fsync(fh.fileno())
+        os.replace(tmp, head_path)
+    except OSError as exc:
+        raise Task4CustodyError("Windows custody head cannot be safely replaced; append refused before write") from exc
+    finally:
+        try:
+            tmp.unlink(missing_ok=True)
+        except OSError:
+            pass
 
 
 def _canonical_bytes(payload: Mapping[str, object]) -> bytes:
@@ -117,7 +196,8 @@ class PersistentCustodyStore:
             self.events_path.touch()
             with self.events_path.open("r+b") as fh:
                 os.fsync(fh.fileno())
-        self._replay = self.replay_reference()
+        with _exclusive_append_lock(self.root / ".task4-append.lock"):
+            self._replay = self._replay_semantic()
 
     @classmethod
     def open(
@@ -207,12 +287,14 @@ class PersistentCustodyStore:
         return CustodyReplayResult(previous, count, frozenset(revoked), False)
 
     def replay_reference(self) -> CustodyReplayResult:
-        return self._replay_semantic()
+        # Both externally callable replay routes share the append lock.
+        with _exclusive_append_lock(self.root / ".task4-append.lock"):
+            return self._replay_semantic()
 
     def replay_optimized(self) -> CustodyReplayResult:
-        # V1 deliberately shares reference semantics. Future indexing may replace
-        # this only if hostile equivalence tests remain exact.
-        return self._replay_semantic()
+        # V1 uses reference semantics, including identical local read locking.
+        with _exclusive_append_lock(self.root / ".task4-append.lock"):
+            return self._replay_semantic()
 
     def replay(self) -> CustodyReplayResult:
         return self.replay_optimized()
@@ -238,76 +320,96 @@ class PersistentCustodyStore:
         signer_attestation=None,
         head_publisher: ExternalHeadPublisher | None = None,
     ) -> str:
-        if getattr(signer, "promotion_authority", None) != "EXTERNAL_HARNESS_AUTHORITY":
-            raise Task4CustodyError("caller-controlled or fixture signer cannot publish custody mechanics")
-        if signer.signer_identity not in getattr(self.verifier, "trusted_signer_identities", frozenset()):
-            raise Task4CustodyError("signer identity is not in configured signer set")
-        if head_publisher is None:
-            raise Task4CustodyError("custody append requires a head publisher")
-        if getattr(head_publisher, "promotion_authority", None) != "EXTERNAL_HEAD_AUTHORITY":
-            raise Task4CustodyError("unqualified head publisher cannot publish custody mechanics")
-        anchor_identity = getattr(head_publisher, "anchor_identity", None)
-        if anchor_identity not in getattr(self.verifier, "trusted_anchor_identities", frozenset()):
-            raise Task4CustodyError("head publisher identity is not in configured anchor set")
+        with _exclusive_append_lock(self.root / ".task4-append.lock"):
+            # Recheck the *live disk state* only after acquiring the same OS
+            # writer lock. A stale signed subject/sequence must refuse before
+            # writing bytes, publishing a head or reusing a temp filename.
+            latest = self._replay_semantic()
+            cached = self._replay
+            if latest.head != cached.head or latest.event_count != cached.event_count:
+                raise Task4CustodyError("stale custody writer must reopen and re-attest on current head")
+            if getattr(signer, "promotion_authority", None) != "EXTERNAL_HARNESS_AUTHORITY":
+                raise Task4CustodyError("caller-controlled or fixture signer cannot publish custody mechanics")
+            if signer.signer_identity not in getattr(self.verifier, "trusted_signer_identities", frozenset()):
+                raise Task4CustodyError("signer identity is not in configured signer set")
+            if head_publisher is None:
+                raise Task4CustodyError("custody append requires a head publisher")
+            if getattr(head_publisher, "promotion_authority", None) != "EXTERNAL_HEAD_AUTHORITY":
+                raise Task4CustodyError("unqualified head publisher cannot publish custody mechanics")
+            anchor_identity = getattr(head_publisher, "anchor_identity", None)
+            if anchor_identity not in getattr(self.verifier, "trusted_anchor_identities", frozenset()):
+                raise Task4CustodyError("head publisher identity is not in configured anchor set")
 
-        base = dict(event_payload)
-        kind = base.get("kind")
-        if kind not in {"REVOCATION", "SUPERSESSION", "CAMPAIGN", "EXPOSURE", "OUTPUT_FREEZE", "REVEAL", "STATE"}:
-            raise Task4CustodyError("unknown custody event kind")
+            base = dict(event_payload)
+            kind = base.get("kind")
+            if kind not in {"REVOCATION", "SUPERSESSION", "CAMPAIGN", "EXPOSURE", "OUTPUT_FREEZE", "REVEAL", "STATE"}:
+                raise Task4CustodyError("unknown custody event kind")
 
-        subject_sha, sequence = self.next_append_subject(base)
-        if self.actor_registry is None or self.frozen_actor_policy is None or self.actor_attestation_verifier is None:
-            raise Task4CustodyError("custody append requires configured actor-attestation inputs")
-        try:
-            validate_custody_signer(
-                signer.signer_identity,
-                signer_attestation,
-                subject_sha=subject_sha,
-                sequence=sequence,
-                actor_registry=self.actor_registry,
-                frozen_policy=self.frozen_actor_policy,
-                verifier=self.actor_attestation_verifier,
+            # Compute the attested subject solely from the snapshot checked
+            # while holding the lock. Never consult a mutable cached head again.
+            sequence = latest.event_count + 1
+            subject_sha = _sha({
+                "event_payload": base,
+                "sequence": sequence,
+                "previous_head": latest.head,
+            })
+            if self.actor_registry is None or self.frozen_actor_policy is None or self.actor_attestation_verifier is None:
+                raise Task4CustodyError("custody append requires configured actor-attestation inputs")
+            try:
+                validate_custody_signer(
+                    signer.signer_identity,
+                    signer_attestation,
+                    subject_sha=subject_sha,
+                    sequence=sequence,
+                    actor_registry=self.actor_registry,
+                    frozen_policy=self.frozen_actor_policy,
+                    verifier=self.actor_attestation_verifier,
+                )
+            except Task4ActorError as exc:
+                raise Task4CustodyError("custody signer lacks valid exact-action actor attestation") from exc
+
+            event = {
+                **base,
+                "sequence": sequence,
+                "previous_head": latest.head,
+                "signer_identity": signer.signer_identity,
+            }
+            event["signature_hex"] = bytes(signer.sign(self._event_message(event))).hex()
+            line = _canonical_bytes(event) + b"\n"
+            # Windows raw file readers may veto replacement without joining
+            # our protocol. Refuse before committing an event in that case.
+            _windows_preflight_head_replace(self.head_path)
+            with self.events_path.open("ab", buffering=0) as fh:
+                fh.write(line)
+                os.fsync(fh.fileno())
+
+            new_head = _sha(event)
+            published = head_publisher.publish(head=new_head, event_count=event["sequence"])
+            if published != new_head:
+                raise Task4CustodyError("head publisher did not acknowledge exact custody head")
+
+            tmp = self.head_path.with_suffix(".tmp")
+            tmp.write_text(
+                json.dumps(
+                    {"head": new_head, "event_count": event["sequence"], "anchor_identity": anchor_identity},
+                    sort_keys=True,
+                ) + "\n",
+                encoding="utf-8",
             )
-        except Task4ActorError as exc:
-            raise Task4CustodyError("custody signer lacks valid exact-action actor attestation") from exc
+            with tmp.open("r+b") as fh:
+                os.fsync(fh.fileno())
+            os.replace(tmp, self.head_path)
+            _fsync_parent_directory(self.head_path)
 
-        event = {
-            **base,
-            "sequence": sequence,
-            "previous_head": self._replay.head,
-            "signer_identity": signer.signer_identity,
-        }
-        event["signature_hex"] = bytes(signer.sign(self._event_message(event))).hex()
-        line = _canonical_bytes(event) + b"\n"
-        with self.events_path.open("ab", buffering=0) as fh:
-            fh.write(line)
-            os.fsync(fh.fileno())
-
-        new_head = _sha(event)
-        published = head_publisher.publish(head=new_head, event_count=event["sequence"])
-        if published != new_head:
-            raise Task4CustodyError("head publisher did not acknowledge exact custody head")
-
-        tmp = self.head_path.with_suffix(".tmp")
-        tmp.write_text(
-            json.dumps(
-                {"head": new_head, "event_count": event["sequence"], "anchor_identity": anchor_identity},
-                sort_keys=True,
-            ) + "\n",
-            encoding="utf-8",
-        )
-        with tmp.open("r+b") as fh:
-            os.fsync(fh.fileno())
-        os.replace(tmp, self.head_path)
-        _fsync_parent_directory(self.head_path)
-
-        # Do not self-mint an external expected head. The append advances local
-        # mechanics only; any later expected_head is an independently supplied
-        # consistency check and still cannot create authority in Task 4 V1.
-        self._replay = self.replay_optimized()
-        return new_head
+            # Do not self-mint an external expected head. The append advances local
+            # mechanics only; any later expected_head is an independently supplied
+            # consistency check and still cannot create authority in Task 4 V1.
+            self._replay = self._replay_semantic()
+            return new_head
 
     def assert_subject_not_revoked(self, subject_id: str) -> None:
-        self._replay = self.replay_optimized()
-        if subject_id in self._replay.revoked_subjects:
-            raise Task4CustodyError("subject is present in persistent revocation history")
+        with _exclusive_append_lock(self.root / ".task4-append.lock"):
+            checked = self._replay_semantic()
+            self._replay = checked
+            if subject_id in checked.revoked_subjects:
+                raise Task4CustodyError("subject is present in persistent revocation history")

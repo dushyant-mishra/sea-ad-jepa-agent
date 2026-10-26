@@ -47,3 +47,24 @@ jobs:
         run: python -m pytest -q tests/v5/td_unified/test_task4_performance_v1.py::test_projected_100k_optimized_replay_meets_ceiling
       - name: Full unified Task 0-4 regression
         run: python -m pytest -q tests/v5/td_unified
+
+  task4-custody-windows:
+    runs-on: windows-latest
+    steps:
+      # This historical repository contains Windows-incompatible long
+      # preservation paths. Check out only the executable source/test tree.
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: Windows stale-reader, writer and held-head race hostile cases
+        run: >-
+          python -m pytest -q
+          tests/v5/td_unified/test_task4_stale_writer_no_poison_red.py
+          tests/v5/td_unified/test_task4_stale_writer_macha_hostile.py
