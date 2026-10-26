@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "DOWNSTREAM_NO_TARGET_ABSTENTION_RECEIPT_V1",
+  "title": "Unified TD Task8 fixture-only no-target abstention; NOT certification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "target_bundle_sha256",
+    "manifest_sha256",
+    "registry_sha256",
+    "negative_evidence_sha256",
+    "inherited_negative_obligations",
+    "selected_target",
+    "teacher_constructed",
+    "student_constructed",
+    "teacher_executed",
+    "student_executed",
+    "optimizer_steps",
+    "ema_updates",
+    "downstream_certified",
+    "real_data_authorized",
+    "training_authorized",
+    "authority_effect",
+    "receipt_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "DOWNSTREAM_CERTIFICATION_RECEIPT_V1"
+    },
+    "status": {
+      "const": "NO_TARGET__DOWNSTREAM_ABSTAIN"
+    },
+    "target_bundle_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "registry_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "negative_evidence_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "inherited_negative_obligations": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "selected_target": {
+      "type": "null"
+    },
+    "teacher_constructed": {
+      "const": false
+    },
+    "student_constructed": {
+      "const": false
+    },
+    "teacher_executed": {
+      "const": false
+    },
+    "student_executed": {
+      "const": false
+    },
+    "optimizer_steps": {
+      "const": 0
+    },
+    "ema_updates": {
+      "const": 0
+    },
+    "downstream_certified": {
+      "const": false
+    },
+    "real_data_authorized": {
+      "const": false
+    },
+    "training_authorized": {
+      "const": false
+    },
+    "authority_effect": {
+      "const": "NONE"
+    },
+    "receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
