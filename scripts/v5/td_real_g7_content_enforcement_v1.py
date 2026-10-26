@@ -104,6 +104,14 @@ def _atom(raw, *, full, full_rights):
     a = dict(raw)
     for field in ("atom_id", "source", "donor_id", "right"):
         _token(a[field], field)
+    # Detect identifiable depth-batch and copied-measurement aliases.
+    # This is deliberately a negative fixture screen, NOT proof that arbitrary
+    # opaque atom IDs correspond one-to-one to physical measurements.
+    lower_id = a["atom_id"].lower()
+    if any(marker in lower_id for marker in (
+        "|read_batch:", "|read_depth:", "#copy", "#duplicate", "|umi_batch:"
+    )):
+        raise G7ContentError("read-depth batch or copied physical measurement cannot become a biological evidence right")
     if a["right"] not in full_rights:
         raise G7ContentError("evidence right not part of frozen ladder")
     state = a["state"]
@@ -114,6 +122,7 @@ def _atom(raw, *, full, full_rights):
     if state == "MEASURED_SCALAR":
         if (type(a["count"]) is not int or a["count"] < 0
                 or type(a["library_size"]) is not int
+                or a["library_size"] < 1
                 or a["library_size"] < a["count"]):
             raise G7ContentError("measured scalar requires intact nonnegative count/library")
     elif a["count"] is not None or a["library_size"] is not None:
@@ -162,6 +171,15 @@ def validate_g7_e3_content(*, manifest, full_atoms, levels, expected_pins):
     ids = [x["level_id"] for x in ladder["levels"]]
     rights = ladder["full_evidence_rights"]
     base = _atoms(full_atoms, full=True, full_rights=set(rights))
+    # A common known leakage witness is a visible denominator equal to the
+    # combined read count of all rights, including rights withheld at this
+    # level. Refuse it. An authentic q-excluded/local-depth producer is STILL
+    # necessary for a general noninterference claim.
+    source_count_totals = {}
+    for atom in base.values():
+        if atom["state"] == "MEASURED_SCALAR":
+            key = (atom["source"], atom["donor_id"])
+            source_count_totals[key] = source_count_totals.get(key, 0) + atom["count"]
     for field in ("token_sha256_by_level", "atoms_sha256_by_level"):
         m = expected_pins[field]
         if type(m) is not dict or set(m) != set(ids):
@@ -199,6 +217,11 @@ def validate_g7_e3_content(*, manifest, full_atoms, levels, expected_pins):
         if set(seen) != set(base):
             raise G7ContentError("atom roster changed under biological-right restriction")
         allowed = set(frozen_level["evidence_rights"])
+        hidden_units = {
+            (a["source"], a["donor_id"])
+            for a in base.values()
+            if a["state"] == "MEASURED_SCALAR" and a["right"] not in allowed
+        }
         visible = {}
         for atom_id, original in base.items():
             actual = seen[atom_id]
@@ -209,6 +232,10 @@ def validate_g7_e3_content(*, manifest, full_atoms, levels, expected_pins):
                 if not _same_bytes(actual, original):
                     raise G7ContentError("structural/unresolved support cannot be withheld or recoded")
             elif original["right"] in allowed:
+                key = (original["source"], original["donor_id"])
+                if (key in hidden_units and source_count_totals.get(key, -1) > 0
+                        and original["library_size"] == source_count_totals[key]):
+                    raise G7ContentError("visible depth equals pooled total containing withheld right mass")
                 if not _same_bytes(actual, original):
                     raise G7ContentError("biological rights cannot thin count, depth or visible bytes")
                 visible[atom_id] = _bytes(actual)
@@ -230,6 +257,8 @@ def validate_g7_e3_content(*, manifest, full_atoms, levels, expected_pins):
         "manifest_sha256": expected_pins["manifest_sha256"],
         "full_atoms_sha256": expected_pins["full_atoms_sha256"],
         "externally_authenticated": False,
+        "physical_atom_identity_authenticated": False,
+        "q_excluded_library_provenance_authenticated": False,
         "same_code_path_authorized": False,
         "human_g7_authorized": False,
         "authority_effect": "NONE",
@@ -275,6 +304,8 @@ def derive_fixture_g7_e3_input_binding(manifest, expected_pins, *, required_sour
             raise G7ContentError("content hash roster is incomplete")
     for key in ("manifest_sha256", "full_atoms_sha256"):
         _digest(expected_pins[key], key)
+    if canonical_sha256(manifest) != expected_pins["manifest_sha256"]:
+        raise G7ContentError("binding helper manifest bytes differ from content digest")
     for field in ("token_sha256_by_level", "atoms_sha256_by_level"):
         for val in expected_pins[field].values():
             _digest(val, field)
@@ -350,8 +381,14 @@ def bind_g7_terminal_inputs_e3(
         seen.add(key)
         if _digest(raw["input_binding_sha256"], "G7 row input binding") != binding:
             raise G7ContentError("G7 decision row not bound to materialized E3 input")
+        if "::" in src or "::" in donor:
+            raise G7ContentError("V3 ambiguous source::donor identity cannot be safely bound")
         dis = raw["terminal_displacement"]
-        if (type(dis) not in (int, float) or not math.isfinite(dis) or dis < 0):
+        try:
+            valid_displacement = type(dis) in (int, float) and math.isfinite(dis) and dis >= 0
+        except (OverflowError, ValueError):
+            valid_displacement = False
+        if not valid_displacement:
             raise G7ContentError("nonfinite or negative terminal displacement")
         p, q = pen[key], terminal[key]
         expected = {
@@ -364,10 +401,17 @@ def bind_g7_terminal_inputs_e3(
                 raise G7ContentError("claimed supported evidence does not equal content")
     if seen != roster_units:
         raise G7ContentError("G7 deciding rows must cover every materialized donor/source")
+    # The later V3 decider must consume EXACTLY these canonical rows, not only
+    # the same upstream E3 input manifest. Digest is data binding, not an
+    # independent external reviewer, signature or durable TOCTOU guarantee.
+    deciding_rows_sha256 = canonical_sha256(sorted(
+        rows, key=lambda row: (row["source"], row["donor_id"])
+    ))
     return {
         "schema": "JEPA_TD_REAL_G7_E3_TERMINAL_INPUT_BINDING_V1",
         "status": "E3_TERMINAL_INPUTS_BOUND_FIXTURE_ONLY",
         "bound_unit_count": len(seen),
+        "deciding_rows_sha256": deciding_rows_sha256,
         "input_binding_sha256": binding,
         "evidence_content_sha256": validation["full_atoms_sha256"],
         "externally_authenticated": False,
