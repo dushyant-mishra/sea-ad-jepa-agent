@@ -9,6 +9,7 @@ on:
       - 'tests/v5/td_unified/test_tasks7_8_none_schema_v1.py'
       - 'schemas/target_discovery/unified_v1/*none*fixture*.json'
       - '.github/workflows/td-unified-tasks6-8-none.yml'
+      - 'docs/agent/UNIFIED_TASKS6_8_NONE_BOUNDARY_STATUS_20261026.md'
 permissions:
   contents: read
 jobs:
