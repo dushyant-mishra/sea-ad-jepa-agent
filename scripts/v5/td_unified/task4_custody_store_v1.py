@@ -27,6 +27,24 @@ class Task4CustodyError(ValueError):
     pass
 
 
+# Separate WSL and Windows byte/inode lock backends are not a shared mutex.
+MIXED_WINDOWS_WSL_LOCKING_QUALIFIED = False
+_HELD_ROOTS = threading.local()
+
+
+def _assert_store_directory_continuity(root, identity):
+    if identity is None:
+        return
+    try:
+        current = os.stat(root, follow_symlinks=True)
+    except OSError as exc:
+        raise Task4CustodyError("store directory unavailable during append") from exc
+    if (current.st_dev, current.st_ino) != identity:
+        raise Task4CustodyError("store directory replaced during append")
+
+
+
+
 def _fsync_parent_directory(path: Path) -> None:
     """Persist atomic rename metadata on POSIX; directory fsync unsupported on Windows.
 
@@ -52,6 +70,10 @@ def _exclusive_append_lock(path: Path):
     filesystem mechanics, NOT a hostile-process or external authority root.
     """
     posix = os.name != "nt"
+    key = os.path.realpath(os.fspath(path.parent))
+    active = getattr(_HELD_ROOTS, "keys", frozenset())
+    if key in active:
+        raise Task4CustodyError("recursive access during custody append is refused")
     try:
         if posix:
             fd = os.open(str(path.parent), os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
@@ -74,12 +96,16 @@ def _exclusive_append_lock(path: Path):
             locked = True
             if posix:
                 held = os.fstat(fd)
-                named = os.stat(path.parent, follow_symlinks=False)
+                named = os.stat(path.parent, follow_symlinks=True)
                 if held.st_ino != named.st_ino or held.st_dev != named.st_dev:
                     raise Task4CustodyError("custody store directory identity changed during lock")
         except OSError as exc:
             raise Task4CustodyError("could not exclusively lock custody store") from exc
-        yield
+        _HELD_ROOTS.keys = active | frozenset((key,))
+        try:
+            yield ((held.st_dev, held.st_ino) if posix else None)
+        finally:
+            _HELD_ROOTS.keys = active
     finally:
         try:
             if locked:
