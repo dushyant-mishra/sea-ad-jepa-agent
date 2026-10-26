@@ -15,6 +15,12 @@ statistic is never promoted to authentication:
 * Realism search state is issued only by this module, once per generator
   family per process, and is not durable across processes (a STOP_B
   prerequisite that remains open).
+* Authority-bearing outputs (``CalibrationCheck``, ``RealismState``) are issued
+  handles backed by private copies that never leave the module. Consumers must
+  call ``verify_calibration_check`` / ``verify_realism_state`` at every use;
+  hand-built, stale, token-swapped or mutated handles are refused. Inputs are
+  re-validated at use because construction-time checks do not survive
+  ``object.__setattr__``.
 
 Which artifacts, split authority and universe registries get pinned is a
 deciding-lane decision; this module only fails closed until they exist.
@@ -197,7 +203,11 @@ class CalibrationCheck:
 
 
 def verify_calibration_check(check: CalibrationCheck) -> CalibrationCheck:
-    """Return the private copy behind an issued, unmutated check; refuse anything else."""
+    """Return ``check`` only if it is the issued, unmutated handle; refuse anything else.
+
+    The module's private copy is never returned, so a caller cannot edit it.
+    Verify again at every use: a later mutation of the handle is refused then.
+    """
     if type(check) is not CalibrationCheck:
         raise CalibrationError("exact calibration check required")
     issued = _ISSUED_CHECKS.get(object.__getattribute__(check, "_token"))
@@ -208,7 +218,7 @@ def verify_calibration_check(check: CalibrationCheck) -> CalibrationCheck:
         raise CalibrationError("issued calibration check was mutated after issuance")
     if private.status == AUTHENTICATED and private.artifact.content_sha256 not in _AUTHENTICATED_CALIBRATION_REGISTRY:
         raise CalibrationError("authenticated identity is no longer pinned")
-    return private
+    return check  # the verified public handle; the private copy never leaves the module
 
 
 def _issue_check(artifact: CalibrationArtifact, status: str) -> CalibrationCheck:
@@ -562,7 +572,7 @@ def _current_private_state(state: RealismState) -> RealismState:
 
 
 def verify_realism_state(state: RealismState) -> RealismState:
-    """Return the private copy behind the current module-issued, unmutated realism state.
+    """Return ``state`` only if it is the current module-issued, unmutated handle.
 
     Downstream consumers must call this before trusting ``status`` or
     ``first_passing_version``; a hand-built or stale state is refused.
@@ -570,7 +580,8 @@ def verify_realism_state(state: RealismState) -> RealismState:
     if type(state) is not RealismState:
         raise CalibrationError("exact realism state required")
     with _REALISM_LOCK:
-        return _current_private_state(state)
+        _current_private_state(state)
+    return state  # the verified public handle; the private copy never leaves the module
 
 
 def advance_realism_iteration(
