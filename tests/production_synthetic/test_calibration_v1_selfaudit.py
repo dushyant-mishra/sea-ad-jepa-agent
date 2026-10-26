@@ -158,3 +158,27 @@ def test_R2e_token_swapped_check_is_refused():
     object.__setattr__(a, "_token", object.__getattribute__(b, "_token"))
     with pytest.raises(cal.CalibrationError):
         cal.verify_calibration_check(a)
+
+
+# --- Round 3: verifiers must never hand out the private copy -------------------------------
+
+def test_R3a_verified_realism_state_is_detached_from_private_custody():
+    c = _contract(b"r3a", max_iterations=1)
+    s = cal.RealismState.initial(c)
+    s = cal.advance_realism_iteration(c, s, version_sha256=hashlib.sha256(b"f").hexdigest(), metrics={"OBS_DEPTH": 0.9})
+    assert s.status == "REALISM_NOT_QUALIFIED"
+    v = cal.verify_realism_state(s)
+    for obj in {id(v): v, id(s): s}.values():
+        object.__setattr__(obj, "status", "SEARCHING")
+        object.__setattr__(obj, "versions_tested", ())
+    with pytest.raises(cal.CalibrationError):
+        cal.advance_realism_iteration(c, s, version_sha256=hashlib.sha256(b"g").hexdigest(), metrics={"OBS_DEPTH": 0.5})
+
+
+def test_R3b_verified_check_is_detached_from_private_custody():
+    checked = firewall()
+    v = cal.verify_calibration_check(checked)
+    for obj in {id(v.artifact): v.artifact, id(checked.artifact): checked.artifact}.values():
+        object.__setattr__(obj, "donors", ("DUMMY_ORACLE",))
+    with pytest.raises(cal.CalibrationError):
+        cal.verify_calibration_check(checked)
