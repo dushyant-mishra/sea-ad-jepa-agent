@@ -9,6 +9,7 @@ mechanics into authority. `expected_head` is an integrity check only.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from contextlib import contextmanager
 import hashlib
 import json
 import os
@@ -38,6 +39,49 @@ def _fsync_parent_directory(path: Path) -> None:
         os.fsync(descriptor)
     finally:
         os.close(descriptor)
+
+
+
+@contextmanager
+def _exclusive_append_lock(path: Path):
+    """Serialize one local store's writers across processes, *without authority*.
+
+    This lock is a mechanics guard, not an external trust root or an actor
+    credential. Crash/lock failure must refuse instead of writing unguarded.
+    """
+    try:
+        fd = os.open(str(path), os.O_CREAT | os.O_RDWR, 0o600)
+    except OSError as exc:
+        raise Task4CustodyError("custody writer lock unavailable") from exc
+    locked = False
+    try:
+        try:
+            if os.name == "nt":
+                import msvcrt
+                # A stable one-byte lock region on Windows.
+                if os.fstat(fd).st_size == 0:
+                    os.write(fd, b"\\x00")
+                os.lseek(fd, 0, os.SEEK_SET)
+                msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(fd, fcntl.LOCK_EX)
+            locked = True
+        except OSError as exc:
+            raise Task4CustodyError("could not exclusively lock custody writer") from exc
+        yield
+    finally:
+        try:
+            if locked:
+                if os.name == "nt":
+                    import msvcrt
+                    os.lseek(fd, 0, os.SEEK_SET)
+                    msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
+                else:
+                    import fcntl
+                    fcntl.flock(fd, fcntl.LOCK_UN)
+        finally:
+            os.close(fd)
 
 
 def _canonical_bytes(payload: Mapping[str, object]) -> bytes:
@@ -238,74 +282,81 @@ class PersistentCustodyStore:
         signer_attestation=None,
         head_publisher: ExternalHeadPublisher | None = None,
     ) -> str:
-        if getattr(signer, "promotion_authority", None) != "EXTERNAL_HARNESS_AUTHORITY":
-            raise Task4CustodyError("caller-controlled or fixture signer cannot publish custody mechanics")
-        if signer.signer_identity not in getattr(self.verifier, "trusted_signer_identities", frozenset()):
-            raise Task4CustodyError("signer identity is not in configured signer set")
-        if head_publisher is None:
-            raise Task4CustodyError("custody append requires a head publisher")
-        if getattr(head_publisher, "promotion_authority", None) != "EXTERNAL_HEAD_AUTHORITY":
-            raise Task4CustodyError("unqualified head publisher cannot publish custody mechanics")
-        anchor_identity = getattr(head_publisher, "anchor_identity", None)
-        if anchor_identity not in getattr(self.verifier, "trusted_anchor_identities", frozenset()):
-            raise Task4CustodyError("head publisher identity is not in configured anchor set")
+        with _exclusive_append_lock(self.root / ".task4-append.lock"):
+            # Recheck the *live disk state* only after acquiring the same OS
+            # writer lock. A stale signed subject/sequence must refuse before
+            # writing bytes, publishing a head or reusing a temp filename.
+            latest = self.replay_optimized()
+            if latest.head != self._replay.head or latest.event_count != self._replay.event_count:
+                raise Task4CustodyError("stale custody writer must reopen and re-attest on current head")
+            if getattr(signer, "promotion_authority", None) != "EXTERNAL_HARNESS_AUTHORITY":
+                raise Task4CustodyError("caller-controlled or fixture signer cannot publish custody mechanics")
+            if signer.signer_identity not in getattr(self.verifier, "trusted_signer_identities", frozenset()):
+                raise Task4CustodyError("signer identity is not in configured signer set")
+            if head_publisher is None:
+                raise Task4CustodyError("custody append requires a head publisher")
+            if getattr(head_publisher, "promotion_authority", None) != "EXTERNAL_HEAD_AUTHORITY":
+                raise Task4CustodyError("unqualified head publisher cannot publish custody mechanics")
+            anchor_identity = getattr(head_publisher, "anchor_identity", None)
+            if anchor_identity not in getattr(self.verifier, "trusted_anchor_identities", frozenset()):
+                raise Task4CustodyError("head publisher identity is not in configured anchor set")
 
-        base = dict(event_payload)
-        kind = base.get("kind")
-        if kind not in {"REVOCATION", "SUPERSESSION", "CAMPAIGN", "EXPOSURE", "OUTPUT_FREEZE", "REVEAL", "STATE"}:
-            raise Task4CustodyError("unknown custody event kind")
+            base = dict(event_payload)
+            kind = base.get("kind")
+            if kind not in {"REVOCATION", "SUPERSESSION", "CAMPAIGN", "EXPOSURE", "OUTPUT_FREEZE", "REVEAL", "STATE"}:
+                raise Task4CustodyError("unknown custody event kind")
 
-        subject_sha, sequence = self.next_append_subject(base)
-        if self.actor_registry is None or self.frozen_actor_policy is None or self.actor_attestation_verifier is None:
-            raise Task4CustodyError("custody append requires configured actor-attestation inputs")
-        try:
-            validate_custody_signer(
-                signer.signer_identity,
-                signer_attestation,
-                subject_sha=subject_sha,
-                sequence=sequence,
-                actor_registry=self.actor_registry,
-                frozen_policy=self.frozen_actor_policy,
-                verifier=self.actor_attestation_verifier,
+            subject_sha, sequence = self.next_append_subject(base)
+            if self.actor_registry is None or self.frozen_actor_policy is None or self.actor_attestation_verifier is None:
+                raise Task4CustodyError("custody append requires configured actor-attestation inputs")
+            try:
+                validate_custody_signer(
+                    signer.signer_identity,
+                    signer_attestation,
+                    subject_sha=subject_sha,
+                    sequence=sequence,
+                    actor_registry=self.actor_registry,
+                    frozen_policy=self.frozen_actor_policy,
+                    verifier=self.actor_attestation_verifier,
+                )
+            except Task4ActorError as exc:
+                raise Task4CustodyError("custody signer lacks valid exact-action actor attestation") from exc
+
+            event = {
+                **base,
+                "sequence": sequence,
+                "previous_head": self._replay.head,
+                "signer_identity": signer.signer_identity,
+            }
+            event["signature_hex"] = bytes(signer.sign(self._event_message(event))).hex()
+            line = _canonical_bytes(event) + b"\n"
+            with self.events_path.open("ab", buffering=0) as fh:
+                fh.write(line)
+                os.fsync(fh.fileno())
+
+            new_head = _sha(event)
+            published = head_publisher.publish(head=new_head, event_count=event["sequence"])
+            if published != new_head:
+                raise Task4CustodyError("head publisher did not acknowledge exact custody head")
+
+            tmp = self.head_path.with_suffix(".tmp")
+            tmp.write_text(
+                json.dumps(
+                    {"head": new_head, "event_count": event["sequence"], "anchor_identity": anchor_identity},
+                    sort_keys=True,
+                ) + "\n",
+                encoding="utf-8",
             )
-        except Task4ActorError as exc:
-            raise Task4CustodyError("custody signer lacks valid exact-action actor attestation") from exc
+            with tmp.open("r+b") as fh:
+                os.fsync(fh.fileno())
+            os.replace(tmp, self.head_path)
+            _fsync_parent_directory(self.head_path)
 
-        event = {
-            **base,
-            "sequence": sequence,
-            "previous_head": self._replay.head,
-            "signer_identity": signer.signer_identity,
-        }
-        event["signature_hex"] = bytes(signer.sign(self._event_message(event))).hex()
-        line = _canonical_bytes(event) + b"\n"
-        with self.events_path.open("ab", buffering=0) as fh:
-            fh.write(line)
-            os.fsync(fh.fileno())
-
-        new_head = _sha(event)
-        published = head_publisher.publish(head=new_head, event_count=event["sequence"])
-        if published != new_head:
-            raise Task4CustodyError("head publisher did not acknowledge exact custody head")
-
-        tmp = self.head_path.with_suffix(".tmp")
-        tmp.write_text(
-            json.dumps(
-                {"head": new_head, "event_count": event["sequence"], "anchor_identity": anchor_identity},
-                sort_keys=True,
-            ) + "\n",
-            encoding="utf-8",
-        )
-        with tmp.open("r+b") as fh:
-            os.fsync(fh.fileno())
-        os.replace(tmp, self.head_path)
-        _fsync_parent_directory(self.head_path)
-
-        # Do not self-mint an external expected head. The append advances local
-        # mechanics only; any later expected_head is an independently supplied
-        # consistency check and still cannot create authority in Task 4 V1.
-        self._replay = self.replay_optimized()
-        return new_head
+            # Do not self-mint an external expected head. The append advances local
+            # mechanics only; any later expected_head is an independently supplied
+            # consistency check and still cannot create authority in Task 4 V1.
+            self._replay = self.replay_optimized()
+            return new_head
 
     def assert_subject_not_revoked(self, subject_id: str) -> None:
         self._replay = self.replay_optimized()
