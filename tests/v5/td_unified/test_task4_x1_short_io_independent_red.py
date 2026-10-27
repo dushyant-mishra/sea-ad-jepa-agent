@@ -44,6 +44,9 @@ class _PositiveShortWrite:
     def fileno(self):
         return self.file.fileno()
 
+    def flush(self):
+        return self.file.flush()
+
 
 def _short_write_on(monkeypatch, wanted_path, wanted_mode):
     original = Path.open
