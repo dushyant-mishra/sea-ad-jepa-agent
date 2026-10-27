@@ -67,11 +67,21 @@
   ],
   "ci": {
     "scoped_workflow": ".github/workflows/td-g7-e3-macha449-r3-r5-scoped-review.yml",
+    "scoped_run_id": 40566765654,
+    "scoped_conclusion": "SUCCESS",
+    "scoped_passed": 45,
+    "scoped_deselected": 10,
     "full_original_workflow": ".github/workflows/td-real-g7-e3-content-v1.yml",
-    "expected_original_full_hostile": "RED_UNTIL_R1_R2_AUTHENTICATED",
-    "scoped_result": "AWAIT_EXACT_HEAD_ACTIONS_RECEIPT",
-    "raw_failure_log_expected": "TEN_R1_R2_HOSTILE_RED",
-    "do_not_infer_success": true
+    "full_run_id": 40566765636,
+    "full_conclusion": "FAILURE",
+    "full_passed": 45,
+    "full_failed": 10,
+    "scoped_red_recheck": "R1_R2_10_HOSTILE_RED_RETAINED__NO_PHYSICAL_OR_DEPTH_AUTHORITY",
+    "scoped_red_recheck_failures": 10,
+    "scoped_red_recheck_deselected": 3,
+    "original_R1_R2_authority": "BLOCKED",
+    "independent_acceptance": false,
+    "no_promoting_inference": true
   },
   "synthetic_execution": {
     "design_pr": 344,
