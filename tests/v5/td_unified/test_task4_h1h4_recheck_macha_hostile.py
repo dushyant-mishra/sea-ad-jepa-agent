@@ -442,8 +442,9 @@ def test_x7_windows_raw_head_reader_after_preflight_yields_domain_error(tmp_path
 
 
 @pytest.mark.skipif(os.name != "nt", reason="Windows-only: POSIX rename(2) replaces an open destination")
-@pytest.mark.xfail(strict=True, reason="DECLARED in PR #445: no protection against raw readers opening the "
-                                       "head after the preflight; no atomic event+head transaction")
+# X1 repair (Macha, 2026-10-27): the strict xfail declared in PR #445 is removed because the
+# intent/commit-point transaction lifts the limitation; the assertions are byte-identical.
+# Strict-xfail RED evidence is preserved in PR #452 (7889516c) and its CI run 40392535492.
 def test_x7b_declared_windows_raw_head_reader_after_preflight_poisons_chain(tmp_path: Path):
     outcome, first_head = _append_with_raw_head_reader_after_preflight(tmp_path)
     replay = _replayable_or_fail(tmp_path, f"raw head reader after preflight -> {outcome}")
@@ -455,7 +456,7 @@ def test_x7b_declared_windows_raw_head_reader_after_preflight_poisons_chain(tmp_
 # termination after the event fsync and before the head replace permanently bricks the
 # store with the same tamper-class error a forged chain raises; no recovery path exists.
 # ---------------------------------------------------------------------------
-@pytest.mark.xfail(strict=True, reason="DECLARED in PR #445: no crash-atomic event+head commit")
+# X1 repair (Macha, 2026-10-27): strict xfail removed (limitation lifted); assertions byte-identical.
 def test_x8_declared_process_killed_between_event_write_and_head_publish(tmp_path: Path):
     store = _open(tmp_path)
     _append(store, {"kind": "STATE", "id": "one"})
