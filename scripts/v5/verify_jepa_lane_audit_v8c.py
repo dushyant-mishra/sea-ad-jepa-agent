@@ -60,7 +60,7 @@ def validate(data, root):
         require((root / name).is_file(), "missing older audit source " + name)
     require((root / NARRATIVE).is_file(), "missing V8c narrative")
     doc = (root / NARRATIVE).read_text(encoding="utf-8")
-    for tag in ("X1-S1", "X1-S2", "#461", "#462", "T2-D", "NON", "X3", AUTHORITY):
+    for tag in ("X1-S1", "X1-S2", "#461", "#462", "T2-D", "noncausal", "X3", AUTHORITY):
         require(tag in doc, "V8c narrative missing guard: " + tag)
     rows = data.get("current")
     require(type(rows) is list and len(rows) == len(EXPECTED_HEADS), "V8c exact roster changed")
