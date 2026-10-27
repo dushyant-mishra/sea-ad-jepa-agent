@@ -9,7 +9,8 @@ POINTER="results/target_discovery/unified_qualification_v1/JEPA_SUCCESSOR_POINTE
 TERMINAL="TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
 HEX40=re.compile(r"^[a-f0-9]{40}$")
 EXPECTED_STATES={
- "task4":"PR459_X1_NEW_CANDIDATE_GREEN__INDEPENDENT_REVIEW_PENDING__X3_CROSS_OS_UNQUALIFIED",
+ "task4":"PR459_X1_S1_S2_INDEPENDENT_RED__AUTHOR_REPAIR_PENDING__X3_UNQUALIFIED",
+ "unified_task1":"PR461_8_HOSTILE_RED__PR463_CANDIDATE_GREEN__INDEPENDENT_REVIEW_PENDING",
  "real_g7":"UNQUALIFIED__PHYSICAL_MEASUREMENT_AND_DEPTH_PROVENANCE",
  "ps_task1":"PR458_NEW_13_HOSTILE_RED__CUMULATIVE_ACCEPTANCE_PENDING",
  "ps_task2":"PR458_NEW_13_HOSTILE_RED__CUMULATIVE_ACCEPTANCE_PENDING",
@@ -35,8 +36,8 @@ def validate_pointer(doc, root):
     require(type(audit) is dict and audit.get("pr")==322, "master audit PR pointer invalid")
     require(audit.get("branch")=="science/jepa-robust-pipeline-post-jepa-anything-audit-20261013", "audit branch changed")
     require(type(audit.get("exact_head_at_pointer")) is str and HEX40.fullmatch(audit["exact_head_at_pointer"]), "audit exact head invalid")
-    require(audit.get("ci_status_at_pointer") in ("QUEUED__NOT_YET_VERIFIED","EXACT_HEAD_CI_GREEN","EXACT_HEAD_V8_V8A_V8B_ALL_GREEN"),"unqualified audit CI state")
-    for field in ("audit_doc","audit_machine","audit_no_repeat","asset_custody","validator","post_v8a_doc","post_v8a_machine","complete_takeover_index","post_v8b_doc","post_v8b_machine","v8b_supplement"):
+    require(audit.get("ci_status_at_pointer") in ("QUEUED__NOT_YET_VERIFIED","EXACT_HEAD_CI_GREEN","EXACT_HEAD_V8_V8A_V8B_ALL_GREEN","EXACT_HEAD_V8_TO_V8C_ALL_GREEN"),"unqualified audit CI state")
+    for field in ("audit_doc","audit_machine","audit_no_repeat","asset_custody","validator","post_v8a_doc","post_v8a_machine","complete_takeover_index","post_v8b_doc","post_v8b_machine","v8b_supplement","post_v8c_doc","post_v8c_machine"):
         value=audit.get(field)
         require(type(value) is str and value.startswith(("docs/agent/","results/target_discovery/","scripts/v5/")),f"missing canonical audit file pointer {field}")
     handoff=doc.get("handoff")
@@ -46,13 +47,13 @@ def validate_pointer(doc, root):
     handoff_path=handoff.get("doc")
     require(handoff_path=="docs/agent/JEPA_SUCCESSOR_HANDOFF_V8_20261027.md","handoff file changed")
     first=handoff.get("first_session")
-    require(first=="docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_V8B_20261027.md","first-session handoff missing")
+    require(first=="docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_V8C_20261027.md","first-session handoff missing")
     require((root/first).is_file(),"first-session handoff file missing")
     text=(root/handoff_path).read_text(encoding="utf-8") + "\n" + (root/first).read_text(encoding="utf-8")
     for item in ["TARGET_WINNER_NONE","#322","#451","Task4","X1","X3","G7","Tasks6–8","#456"]:
         require(item in text,"required unresolved gate/source not in successor handoff: "+item)
     order=doc.get("read_order")
-    require(type(order) is list and len(order)==9 and len(set(order))==9 and order[0]==first and order[1]==handoff_path, "incorrect no-repeat read order")
+    require(type(order) is list and len(order)==11 and len(set(order))==11 and order[0]==first and order[1]==handoff["previous_first_session"] and order[2]==handoff_path, "incorrect no-repeat read order")
     require(doc.get("next_owner",{}).get("independent_non_author"),"independent acceptance role missing")
     require(doc.get("next_owner",{}).get("chatgpt"),"independent new X1 review role missing")
     require(audit.get("post_v8a_machine")=="results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json","new 13 PS REDs or X1 candidate index missing")
@@ -66,7 +67,20 @@ def validate_pointer(doc, root):
     require(audit.get("post_v8b_ci_run_id")==40530745175 and audit.get("post_v8b_static_tests_passed")==11,"V8b exact-head CI evidence mismatch")
     require(audit.get("audit_v8_ci_run_id")==40530744438 and audit.get("audit_v8_hostile_tests_passed")==28,"V8 exact-head CI evidence mismatch")
     require(audit.get("post_v8a_ci_run_id")==40530744455 and audit.get("post_v8a_qualified_static_tests_passed")==51,"V8a exact-head CI evidence mismatch")
-    require("PR322:docs/agent/JEPA_POST_V8A_DELTA_V8B_20261027.md" in order,"read order omits latest V8b drift delta")
+    require("PR322:docs/agent/JEPA_POST_V8A_DELTA_V8B_20261027.md" in order,"read order omits V8b drift delta")
+    require(handoff.get("previous_first_session")=="docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_V8B_20261027.md","V8b first session must remain in chronology")
+    require((root/handoff["previous_first_session"]).is_file(),"old first-session source missing")
+    require(audit.get("post_v8c_doc")=="docs/agent/JEPA_POST_V8B_DELTA_V8C_20261027.md","V8c non-promoting review narrative missing")
+    require(audit.get("post_v8c_machine")=="results/target_discovery/unified_qualification_v1/JEPA_POST_V8B_DELTA_V8C_20261027.json","V8c machine custody missing")
+    require(audit.get("post_v8c_ci_run_id")==40532989787 and audit.get("post_v8c_static_tests_passed")==16,"V8c exact-head audit CI evidence mismatch")
+    require(audit.get("exact_head_at_pointer")=="1a6e59d338906fa9da1cbbc4b93c918349a4a3c5","audit head not pinned to qualified V8c")
+    require("PR322:docs/agent/JEPA_POST_V8B_DELTA_V8C_20261027.md" in order,"read order omits V8c new RED")
+    issues=doc.get("current_review_heads",{})
+    require(type(issues) is dict and set(issues)=={"461","462","463"},"new hostile reviewer roster lost")
+    require(issues["461"].get("head")=="495350d477a0b7ba65c13dcab5032d443f939cd5" and issues["461"].get("ci_run")==40519155593,"Unified Task1 RED misbound")
+    require(issues["462"].get("head")=="67d2336155624a8657d2ef3320c9bfff175951ee" and issues["462"].get("linux_run")==40530824776 and issues["462"].get("windows_run")==40531130624,"Task4 X1-S1/S2 RED misbound")
+    require(issues["463"].get("head_at_pointer")=="84b05952112ca405436ee3ccf35cc1c0df53c14d" and issues["463"].get("focused_ci_run")==40533382517 and "PENDING" in issues["463"].get("status",""),"Unified Task1 candidate self-promoted")
+    require("RED" in doc["active"]["task4"] and "RED" in doc["active"]["unified_task1"],"new RED blocked state suppressed")
 
 
 def main():
