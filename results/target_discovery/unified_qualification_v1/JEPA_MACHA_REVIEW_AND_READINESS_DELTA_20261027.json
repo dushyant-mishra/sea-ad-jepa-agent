@@ -1,0 +1,80 @@
+{
+  "schema": "JEPA_MACHA_REVIEW_AND_READINESS_DELTA_V1",
+  "date": "2026-10-27",
+  "author_lane": "MACHA",
+  "append_only": true,
+  "audit_base_head": "be27535854",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "evidence_labels": {"CI": "exact-head GitHub Actions run", "LOCAL": "Windows py3.11.15 numpy 2.4.6/1.26.4; WSL numpy 1.26.4"},
+  "verdicts": [
+    {"pr": 470, "head": "2e173fa4889531ba686aa439707cf86effd6cc95", "author_lane": "CHATGPT", "reviewer_lane": "MACHA",
+     "verdict": "REPAIR_REQUIRED",
+     "comment": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/470#issuecomment-6452013488",
+     "closed": ["R3", "R4", "R5_RECURSION"],
+     "open_new": {"R5X": "payload-chosen exception via six uncanonicalized containers (pre-existing)",
+                  "R6": "validate-in-place: hostile row key / level_id yields BOUND receipt for forged support; V3 NOT_ESTIMABLE->PASS (pre-existing)",
+                  "R1D": "donor identity opaque: one donor's 8 specimen IDs bound as 8 donors; V3 PASS (external blocker)"},
+     "still_red": ["R1", "R2"],
+     "red_pr": {"pr": 472, "head": "98a893f2f1b8925f6ce22b244db557b135fb0ff6", "ci_run": 40571069907,
+                "ci": {"inherited": "45 passed / 10 deselected", "review": "9 failed / 7 passed"},
+                "local_base_062bfe36": "15 failed / 1 passed"},
+     "probe_sha256": "e88aa2f59a3ac2ae2f9e2f480a22b965c655b7ce6a631e48094e9497ac90b259"},
+    {"pr": 467, "head": "180b550e96b786ddfc53faa29bc81c1d3b503877", "author_lane": "CHATGPT", "reviewer_lane": "MACHA",
+     "verdict": "ACCEPT_INCREMENTAL_WITH_LIMITATIONS",
+     "comment": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/467#issuecomment-6451979345",
+     "scope": "canonical_v1.py blob 8c05ea3a -> 1531f1b8 only; not cumulative Unified Task 1",
+     "local": {"differential_20k_asymmetric": {"windows_np2": 0, "windows_np1_26": 0, "wsl_np1_26": 0},
+               "task1_tests": "53 passed on all three", "consumer_overlay_on_3b86b946": {"windows": "402 passed / 10 skipped", "wsl": "400 passed / 10 skipped / 2 failed (B5 env)"}},
+     "author_ci_run": 40543388869,
+     "limitations": ["non-author historical receipt compatibility decision", "requalify Tasks 2-4 at a committed head", "keep Windows job", "shared lineage authorship"],
+     "probe_sha256": "6b075eda14dcb0bbafd0dc4463e380b6f0427d245c65e1e248677eb1b2eb428e"},
+    {"pr": 464, "head": "f6ee226c146c4c31d88ce5b845449ce21758cdeb", "author_lane": "CHATGPT", "reviewer_lane": "MACHA",
+     "verdict": "REJECT_INCREMENTAL",
+     "comment": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/464#issuecomment-6452244879",
+     "closed": ["458_R1", "458_R2", "458_R3", "458_R4", "458_R5", "T2-R1", "T2-R2", "T2-R3"],
+     "preserved_red": ["T2-D"],
+     "open_new": {"V1": "intc/uintc refused on Windows (introduced); 811/20000 asymmetric, all explained; 0 on Linux",
+                  "V2": "type(x).__name__ in six refusal messages (pre-existing since ff597faf, Macha code)"},
+     "red_pr": {"pr": 473, "head": "48453e4da9", "ci_run": 40573969293,
+                "ci": {"linux": "7 failed / 16 passed", "windows_np1_26": "9 failed / 14 passed", "windows_np2": "9 failed / 14 passed"},
+                "task3_workflow_run": 40573969428},
+     "probe_sha256": "73a224513cde6161bd627b53d953b7df965ede712ce330504135b845680730b3"}
+  ],
+  "corrections": [
+    {"target": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/437#issuecomment-6444309187",
+     "wrong": "Macha authored Task 3 (#432/#437)",
+     "correct": "ChatGPT authored #432; Macha authored the #437 repair; ChatGPT accepted #437 at fd3242ad",
+     "conclusion_unchanged": "Task 3 requalification needs a reviewer other than Macha"}
+  ],
+  "r1_r2_feasibility": {
+    "evidenced": [
+      {"fact": "row is one authenticated deposited matrix row", "source": "scripts/v4/materialize_full104_phase2_expression.py:215-217", "limit": "not proof of one physical nucleus"},
+      {"fact": "physical total includes queried gene and off-ledger mass", "source": "scripts/v4/materialize_full104_phase2_expression.py:222", "off_ledger_fraction": {"pooled": 0.0382, "HVS": 0.0, "NPH52": 0.014, "SEA_AD": 0.0399, "SEA_AD_max": 0.25}},
+      {"fact": "operator x address states 0/1/2", "source": "src/sea_ad_jepa/v4/contextual_query_local.py:19-21"},
+      {"fact": "41,238 injective addresses", "source": "results/v4/stage81a2r_foundation_molecular_address_injectivity_audit.json"},
+      {"fact": "SEA-AD acquisition keys in source obs", "source": "results/v4/stage81a1b_*crosswalk*.csv", "limit": "candidate_only_not_frozen"},
+      {"fact": "RNA-ATAC pairing by ID equality (SEA-AD MTG; GSE214979); GSE174367 separate nuclei", "source": "PR #182, PR #164"}
+    ],
+    "not_reconstructible": ["one row = one physical nucleus (BAM/FASTQ forbidden)", "read/UMI lineage", "SEA-AD specimen/tissue block (Allen metadata not acquired)", "cross-namespace donor identity", "R5 producer code (absent)", "off-ledger alias attestation", "depositor QC / obs-derived q contamination"],
+    "least_invasive_repair": {
+      "R2": ["base-excluded, ladder-invariant depth law (fixture: PR #474)", "reviewed source producer from Level-4 source_library minus outside-base stored counts", "consumer contract change separating depth covariate from physical total (deciding lane)", "attest off-ledger aliases and depositor-derived features"],
+      "R1": ["coordinate atom identity bound to asset SHA + matrix row + address", "freeze SEA-AD sample_name+barcode keys", "per-source donor registry with library->donor map (closes R1D within source)", "scope claims to deposited count-matrix rows; keep stronger physical identity BLOCKED"]
+    },
+    "external_dependencies": ["Allen specimen metadata", "BAM/FASTQ (needs explicit authorization)"]
+  },
+  "ps_v3_1_1_matrix": {
+    "tasks": {"1": "REJECT_INCREMENTAL at #464 (V1); cumulative pending", "2": "#456 accepted incrementally; T2-D open", "3": "#437 fixture-accepted (ChatGPT reviewer); requalification pending non-Macha reviewer", "4": "NOT_STARTED_BLOCKED"},
+    "requirements": {"1": "DESIGN_ONLY", "2": "DESIGN_ONLY", "3": "DESIGN_ONLY", "4": "DESIGN_ONLY_PS__DEPTH_LAW_FIXTURE_PR474", "5": "DESIGN_ONLY", "6": "IMPLEMENTED_OPEN_HOSTILE_RED_T2D", "7": "PARTIAL", "8": "EXTERNALLY_BLOCKED"},
+    "pr328": "LIMITED_MECHANICS_FIXTURE_CONFIRMED"
+  },
+  "known_truth_readiness": {
+    "first_missing_link": "candidate-neutral biology generator (PS Task 4 biology_v1.py): absent and gated by PS Tasks 1-3 independent acceptance",
+    "sealed_qualification_possible": false,
+    "increment_delivered": {"pr": 474, "red_commit": "36a6d522", "red_ci_run": 40576364421, "green_commit": "4520e4eb", "head": "e7635e79",
+                            "green_ci_run": 40577079947, "ci": {"producer": "101 passed", "td_unified": "386 passed"},
+                            "author_lane": "MACHA", "independent_review": "REQUIRED",
+                            "g7_conformance_probe_local": {"accepted": 172, "refused": 28, "refused_count_le_library": 21, "refused_pooled_total_equality_screen": 7},
+                            "probe_sha256": "c948a1f588e9468700577939dc64970e05d265286b4d19325ce36b32e2061ffc"}
+  },
+  "not_done": ["#460 pointer file untouched (comment only; coordinate with ChatGPT)", "#469 not reviewed"]
+}
