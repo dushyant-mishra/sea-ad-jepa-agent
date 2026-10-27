@@ -1,3 +1,16 @@
+# READ FIRST: V8a post-snapshot delta — 2026-10-27
+
+The original V8 takeover below is frozen historical navigation. **New PRs arrived during handoff publication.** Read audit PR #322 `docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md` and its machine mirror **before** using the older V8 next-action table.
+
+- **PR #459** Macha X1 transaction candidate `57e707149b46ca011eee096f01dc08b64aeb8f9f` has Linux/Windows CI GREEN (Task4 run `40518058012`). **It is NOT independently accepted; X3 Windows/WSL cross-lock qualification is open.** Immediate action is ChatGPT hostile review of that head, then separate cumulative Task4 review—not a second X1 implementation.
+- **PR #458** `3b08081d7fb3fa99cf1459b13cbe47d5b0962547` introduced **13 new hostile failures** against previously green PS Task1/2 #453/#456. CI `40516953772`: 13 failed, 407 passed, 1 xfailed. Cumulative Task1/2 acceptance blocked; do not begin synthetic Task4.
+- **PR #457** E2G seven-public-track source reference is symbol-only exploratory coverage, **not** validated TF causality/biology. Result receipt run `40517601114` RED at test collection; public intake run separate. Keep on its own `main`-based lane.
+- **Clean successor PR #460** carries this handoff on a conflict-free branch from audit PR #322; historical PR #323 remains preserved but was not mergeable. On every head movement, verify audit PR #322's newest exact SHA and the V8a machine delta.
+
+Global authority stays `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # JEPA successor takeover handoff V8 — 2026-10-27
 
 **Current operational handoff. Start here.** The previous V1–V7 handoffs remain historical evidence, not current next-step instructions. Do **not** repeat the full historical audit or rebuild JEPA/Target Discovery merely because old branches contain many files.
