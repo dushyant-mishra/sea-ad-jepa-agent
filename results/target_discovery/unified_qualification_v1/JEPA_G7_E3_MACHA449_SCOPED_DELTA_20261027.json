@@ -1,0 +1,97 @@
+{
+  "schema": "JEPA_G7_E3_MACHA449_SCOPED_DELTA_V1",
+  "date": "2026-10-27",
+  "document_kind": "APPEND_ONLY_HISTORICAL_AUDIT_DELTA__CANDIDATE_NOT_ACCEPTANCE",
+  "parent_qualified_audit": {
+    "pr": 322,
+    "previous_head": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+    "previously_qualified_head_unchanged": true
+  },
+  "handoff": {
+    "pr": 460,
+    "previous_head": "b867a348d9244bcbc9d4ac696ebc0df6f325b6f8"
+  },
+  "source_review": {
+    "pr": 449,
+    "head": "062bfe369348ac4d9ed89c0aa162abf0d9806397",
+    "reviewer": "MACHA",
+    "verdict": "HOSTILE_RED_13_CASES"
+  },
+  "repair_candidate": {
+    "pr": 470,
+    "head": "2e173fa4889531ba686aa439707cf86effd6cc95",
+    "status": "AUTHOR_CANDIDATE__INDEPENDENT_REVIEW_OUTSTANDING",
+    "base_pr": 449
+  },
+  "unchanged_tests": {
+    "macha_recheck_git_blob": "02b7923e42df901c5f14bb757c44e5fb3cfa1373",
+    "macha_original_hostile_git_blob": "efaf84b0fb6fe22ad199e677e546ad27fee42c08",
+    "original_base_git_blob": "d28ca093f8b50c422f01e2182c93816222890121",
+    "real_g7_v3_executor_git_blob": "b9a232011f370d89038edadfd053a9333230acbe"
+  },
+  "changes": [
+    {
+      "finding": "R3",
+      "classification": "SCOPED_IMPLEMENTATION_ATTEMPT",
+      "action": "Reject non-injective V3 source::donor keys across full source materialized roster; preserved unchanged V3 executor",
+      "independent_acceptance": false
+    },
+    {
+      "finding": "R4",
+      "classification": "SCOPED_IMPLEMENTATION_ATTEMPT",
+      "action": "Carry both explicit false physical identity and q-excluded depth lineage flags into fixture consumer binder",
+      "independent_acceptance": false
+    },
+    {
+      "finding": "R5",
+      "classification": "SCOPED_IMPLEMENTATION_ATTEMPT",
+      "action": "Bound canonical JSON nesting and convert deep hostile input to G7 domain error",
+      "independent_acceptance": false
+    }
+  ],
+  "known_unresolved": [
+    {
+      "finding": "R1",
+      "severity": "IMPORTANT",
+      "reason": "No externally authenticated physical measurement unit identity; opaque IDs can encode the same read batch or copied measure",
+      "classification": "BLOCKED_EXTERNAL_PHYSICAL_ATOM_IDENTITY",
+      "must_remain_red": true
+    },
+    {
+      "finding": "R2",
+      "severity": "IMPORTANT",
+      "reason": "Visible library/depth totals can include q-withheld counts even when provenance hashes are consistent; no externally verified q-excluded normalizer",
+      "classification": "BLOCKED_EXTERNAL_Q_EXCLUDED_LIBRARY_PROVENANCE",
+      "must_remain_red": true
+    }
+  ],
+  "ci": {
+    "scoped_workflow": ".github/workflows/td-g7-e3-macha449-r3-r5-scoped-review.yml",
+    "full_original_workflow": ".github/workflows/td-real-g7-e3-content-v1.yml",
+    "expected_original_full_hostile": "RED_UNTIL_R1_R2_AUTHENTICATED",
+    "scoped_result": "AWAIT_EXACT_HEAD_ACTIONS_RECEIPT",
+    "raw_failure_log_expected": "TEN_R1_R2_HOSTILE_RED",
+    "do_not_infer_success": true
+  },
+  "synthetic_execution": {
+    "design_pr": 344,
+    "pivot_pr": 379,
+    "source_fixture_pr": 328,
+    "interop_pr": 469,
+    "known_truth_goal": "EXACT_SHARED_PRODUCERS_NOT_FIXTURE_STAGE",
+    "status": "NOT_FULL_KNOWN_TRUTH_QUALIFIED"
+  },
+  "target_science": {
+    "historical_replay_pr": 314,
+    "corrected_relational_outcome": "C2_ACTIVE_BROAD_MESOSCALE_SUPPORTED__TD57C_NEAREST_THIRD_FAIL__NO_WINNER",
+    "teacher_guard": "MEASURED_TARGET_CONSTRUCTOR_NOT_SURROGATE_PREDICTOR",
+    "target_winner": "NONE",
+    "real_training_authorized": false
+  },
+  "review_actions": [
+    "Macha independently audits PR470 R3-R5 exact source plus unchanged hostile files; accept only incremental with residual blockers",
+    "Complete authentic issuer/observation identity and rights-aware library lineage at shared production observation to CaseBundle/G7 edge",
+    "Require executable same-code-path known-truth under candidate-neutral V3.1.1 sealed world and frozen controller before human/JEPA authority"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
