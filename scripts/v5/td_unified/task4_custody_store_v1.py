@@ -16,6 +16,10 @@ outcome unknown: the intent stays, new appends are refused, and only
 ``recover_pending`` resolves it, by re-publishing the identical intent. After
 acknowledgement, local materialization (event line, head mirror, intent
 removal) only rolls forward. States are listed in ``APPEND_TRANSACTION_STATES``.
+A short write is a failure, never progress: temp files are fsynced and read
+back before rename, the publisher is called only after the complete intent is
+re-read from disk, and the intent stays until the fsynced log provably ends
+with the whole acknowledged line.
 This is cooperative local mechanics; atomicity with the external publisher
 rests on the publisher contract in ``ExternalHeadPublisher``.
 """
@@ -23,6 +27,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from contextlib import contextmanager
+import errno
 import hashlib
 import json
 import os
@@ -110,6 +115,33 @@ def _fsync_parent_directory(path: Path) -> None:
         os.fsync(descriptor)
     finally:
         os.close(descriptor)
+
+
+def _write_exact(fh, data: bytes) -> None:
+    """Write all of `data` in one call or raise.
+
+    A short count is a failure, never partial progress to continue: the
+    buffered and unbuffered files used here write everything or raise, so a
+    short count means an unqualified file layer and the transaction stops.
+    """
+    written = fh.write(data)
+    if type(written) is not int or written != len(data):
+        raise OSError(errno.EIO, f"short custody write ({written!r} of {len(data)} bytes)")
+
+
+def _replace_verified(tmp: Path, target: Path, data: bytes) -> None:
+    """Durably write `data` to `tmp`, read it back, then atomically rename onto `target`.
+
+    `target` therefore only ever holds its previous bytes or exactly `data`.
+    """
+    with tmp.open("wb") as fh:
+        _write_exact(fh, data)
+        fh.flush()
+        os.fsync(fh.fileno())
+    if tmp.read_bytes() != data:
+        raise OSError(errno.EIO, "custody temp file does not hold the bytes written")
+    os.replace(tmp, target)
+    _fsync_parent_directory(target)
 
 
 def _lock_domain(held_dev):
@@ -302,12 +334,7 @@ def _windows_preflight_head_replace(head_path: Path) -> None:
         return
     tmp = head_path.with_name(".task4-head-preflight.tmp")
     try:
-        old = head_path.read_bytes()
-        with tmp.open("wb") as fh:
-            fh.write(old)
-            fh.flush()
-            os.fsync(fh.fileno())
-        os.replace(tmp, head_path)
+        _replace_verified(tmp, head_path, head_path.read_bytes())
     except OSError as exc:
         raise Task4CustodyError("Windows custody head cannot be safely replaced; append refused before write") from exc
     finally:
@@ -780,15 +807,18 @@ class PersistentCustodyStore:
     def _write_intent(self, raw_intent: bytes) -> None:
         tmp = self.root / ".pending_append.tmp"
         try:
-            with tmp.open("wb") as fh:
-                fh.write(raw_intent)
-                fh.flush()
-                os.fsync(fh.fileno())
-            os.replace(tmp, self.intent_path)
-            _fsync_parent_directory(self.intent_path)
+            # The intent path only ever holds nothing or the complete verified intent.
+            _replace_verified(tmp, self.intent_path, raw_intent)
         except OSError as exc:
             try:
+                tmp.unlink(missing_ok=True)
+            except OSError:
+                pass
+            try:
+                # A rename may already have landed; an undurable unlink could
+                # resurrect the intent after a crash, so the removal is synced.
                 self.intent_path.unlink(missing_ok=True)
+                _fsync_parent_directory(self.intent_path)
             except OSError:
                 raise Task4PublicationOutcomeUnknown(
                     "custody intent durability failed and the intent could not be withdrawn; "
@@ -805,6 +835,14 @@ class PersistentCustodyStore:
                 "resolve with recover_pending()") from exc
 
     def _publish_intent(self, intent, head_publisher) -> None:
+        # Never call the publisher unless the complete intent is durable on disk.
+        try:
+            durable = self.intent_path.read_bytes()
+        except OSError:
+            durable = None
+        if durable != _canonical_bytes(intent):
+            raise Task4CustodyError(
+                "refusing to call the head publisher without the complete durable intent; nothing was published")
         try:
             published = head_publisher.publish(head=intent["new_head"], event_count=intent["sequence"])
         except Exception as exc:
@@ -816,33 +854,42 @@ class PersistentCustodyStore:
             raise Task4PublicationRefused("head publisher did not acknowledge exact custody head; append withdrawn")
 
     def _write_head_mirror(self, head: str, event_count: int, anchor_identity: str) -> None:
-        tmp = self.head_path.with_suffix(".tmp")
-        tmp.write_text(
-            json.dumps({"head": head, "event_count": event_count, "anchor_identity": anchor_identity},
-                       sort_keys=True) + "\n",
-            encoding="utf-8",
-        )
-        with tmp.open("r+b") as fh:
-            os.fsync(fh.fileno())
-        os.replace(tmp, self.head_path)
-        _fsync_parent_directory(self.head_path)
+        # Same bytes as the earlier text-mode write, including the platform line ending.
+        text = json.dumps({"head": head, "event_count": event_count, "anchor_identity": anchor_identity},
+                          sort_keys=True) + os.linesep
+        _replace_verified(self.head_path.with_suffix(".tmp"), self.head_path, text.encode("utf-8"))
+
+    def _log_ends_with(self, line: bytes, size: int) -> bool:
+        if size < len(line):
+            return False
+        with self.events_path.open("rb") as fh:
+            fh.seek(size - len(line))
+            return fh.read(len(line)) == line
 
     def _roll_forward(self, intent, *, log_tail_length: int | None, mirror_current: bool) -> None:
         """Materialize an acknowledged intent. Only appends; never truncates.
 
         `log_tail_length` is None when the event line is already in the log,
         otherwise the length of a torn prefix whose missing suffix is appended.
+        The log is fsynced and must provably end with the whole line before the
+        mirror advances or the intent is removed, so a short, lying or unsynced
+        write leaves a lawful ACKNOWLEDGED state that recover_pending() finishes.
         """
-        if log_tail_length is not None:
-            line = _canonical_bytes(intent["event"]) + b"\n"
-            try:
-                with self.events_path.open("ab", buffering=0) as fh:
-                    fh.write(line[log_tail_length:])
-                    os.fsync(fh.fileno())
-            except OSError as exc:
-                raise Task4LocalMaterializationIncomplete(
-                    "head publisher acknowledged the event but the local event line is not durable; "
-                    "resolve with recover_pending() and never resubmit the event") from exc
+        line = _canonical_bytes(intent["event"]) + b"\n"
+        suffix = b"" if log_tail_length is None else line[log_tail_length:]
+        try:
+            with self.events_path.open("ab", buffering=0) as fh:
+                start = os.fstat(fh.fileno()).st_size
+                if suffix:
+                    _write_exact(fh, suffix)
+                os.fsync(fh.fileno())
+                end = os.fstat(fh.fileno()).st_size
+            if end != start + len(suffix) or not self._log_ends_with(line, end):
+                raise OSError(errno.EIO, "event log does not end with the acknowledged event line")
+        except OSError as exc:
+            raise Task4LocalMaterializationIncomplete(
+                "head publisher acknowledged the event but the local event line is not durable; "
+                "resolve with recover_pending() and never resubmit the event") from exc
         # From here the event is durable in the log and replay reports it. A
         # mirror or intent-removal failure (e.g. a Windows raw reader holding the
         # file) leaves an ACKNOWLEDGED state that recover_pending() finishes.
