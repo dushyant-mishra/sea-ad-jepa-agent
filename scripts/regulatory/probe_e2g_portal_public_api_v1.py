@@ -79,7 +79,13 @@ def main() -> int:
                 str(t.get("modelType") or "unspecified") for t in tracks
             ).items())),
             "relevant_context_triplets_found": len(relevant),
-            "relevant_context_examples": relevant[:25],
+            "microglia_labelled_tracks": sum(
+                "microgl" in str(t.get("cellType") or "").lower() for t in tracks
+            ),
+            "microglia_labelled_contexts": [
+                list(x) for x in seen if "microgl" in x[0].lower()
+            ],
+            "relevant_context_examples": relevant[:40],
             "biological_validation": None,
             "authority": "METADATA_ONLY__NO_TARGET_SELECTION_OR_TRAINING",
         }, indent=2))
