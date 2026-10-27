@@ -1,0 +1,251 @@
+{
+  "schema": "JEPA_BIOLOGICAL_STATE_SYNTHETIC_CROSSWALK_V1",
+  "date": "2026-10-27",
+  "kind": "PROSPECTIVE_SCIENCE_PLANNING_FROM_HISTORICAL_SOURCES__NOT_A_REAL_EXPERIMENT",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "parent_audit": {
+    "pr": 322,
+    "head": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3"
+  },
+  "active_handoff": {
+    "pr": 460,
+    "head": "b867a348d9244bcbc9d4ac696ebc0df6f325b6f8"
+  },
+  "lineage": {
+    "integrated_design": {
+      "pr": 315,
+      "head": "af03ef67d52651463944a6de3a08e101ad00e0ea",
+      "role": "FULL_UNIFIED_BIOLOGY_REHEARSAL_DESIGN_ONLY"
+    },
+    "integrated_fixture": {
+      "pr": 328,
+      "head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+      "role": "QUALIFIED_SMALL_SYNTHETIC_MECHANICS_INTERFACE_FIXTURE"
+    },
+    "synthetic_td": {
+      "pr": 337,
+      "head": "054a87a117aa0bbefafc5032fa354544e038162a",
+      "role": "BLINDED_SYNTHETIC_TD_TEST_QUALIFIED_ONLY"
+    },
+    "real_tournament": {
+      "pr": 313,
+      "head": "206167a1eb86f1dec5f8285db56accbcd469bce9",
+      "role": "REAL_GATE_FRAMEWORK__REAL_OUTCOMES_UNREAD"
+    },
+    "post_td": {
+      "pr": 351,
+      "head": "2abcb9fe156eac340ff12adff9426ed38d929e3e",
+      "role": "EXISTING_REUSABLE_POST_TD_HARNESS__NO_TRAINING"
+    },
+    "fixture_bridge": {
+      "pr": 451,
+      "head": "bbdf9a90973303e41cee6d8bd9d05de38e9b828a",
+      "role": "SCOPED_POST_TD_FIXTURE_BRIDGE__NO_A7_REAL_RECEIPT"
+    },
+    "e2g": {
+      "pr": 457,
+      "head": "5dd02b0954906618202459dd89f36a62f2f02de7",
+      "role": "POSTHOC_SOURCE_GEOMETRY__NONCAUSAL"
+    }
+  },
+  "rules": {
+    "biological_truth": "Only source-authenticated real observations, support and independent criteria can qualify a human biological state. Controller-only planted truth applies to simulation, never humans.",
+    "selection": "All rows are questions/hypotheses; no ranking, target winner, C1-C6 PASS or evidence threshold is selected.",
+    "masking": "Freeze the exact measured-query address, q-value exclusion, source support and teacher/student observation-right maps BEFORE inspecting human decision outcomes.",
+    "comparison": "Start with zero-update forward-only donor-disjoint baselines; generic-cell, address-identity, query-value, operator/depth and shuffled-condition controls; test full-versus-partial RNA information recoverability.",
+    "cross_modal": "ATAC accessibility, motif hits and predicted E2G links are distinct from TF occupancy or perturbation; same-nucleus versus separate-nucleus pairing must not be conflated.",
+    "perturbation": "Interventional evidence requires source guide/target/barcode identity, independent biological replicate units and real observed contrasts; simulated deltas never qualify an experimental effect.",
+    "measurements": "Assayed-but-undetected zero is not structurally unmeasured. Raw integer count/depth reference must be separately authenticated.",
+    "eligibility": "Donor/source/technology/population support and held-out evaluation; failures or inadequate replication produce NOT_ESTIMABLE rather than PASS."
+  },
+  "state_questions": [
+    {
+      "id": "SHARED_RNA_PROGRAM",
+      "family": "C1_SHARED",
+      "question": "Is there a reproducible shared microglial transcriptional program beyond gene identity and generic cell/source/depth effects?",
+      "real_evidence": [
+        {
+          "source": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
+          "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+          "interpretation": "Older internal broad immune expression support, NOT production target qualification"
+        },
+        {
+          "source": "docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md",
+          "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+          "interpretation": "T0/T1/TCTX and donor-residualized V6R5B failed to establish incremental biological target information"
+        }
+      ],
+      "evidence_tier": "REAL_RNA_HISTORICAL_INTERNAL__TARGET_UNQUALIFIED",
+      "simulator_case": "PR328_COMMON_PROGRAM__SOURCE_OPERATOR_PSEUDOSTATE_CONTROL",
+      "simulator_status": "MECHANICS_FIXTURE_CAPABILITY",
+      "human_target_object_needed": "Training-only frozen RNA-derived shared-state score/subspace with exact gene identity and donor/source support, no pathology-defined target",
+      "first_forward_test": "Donor-disjoint zero-optimizer evidence-rights comparison: restricted RNA versus richer lawful complementary RNA, against generic cell, identity, source/depth baselines",
+      "must_fail_or_abstain_on": [
+        "No increment beyond gene/address or generic cell predictor",
+        "Operator or depth-only pseudo-state matches expected result",
+        "Unsupported held-out donors/technologies",
+        "Unknown matrix counts and address identity"
+      ],
+      "promotion": "NOT_ESTIMABLE_PENDING_REAL_TARGET_EVIDENCE"
+    },
+    {
+      "id": "RELATIONAL_RNA_STATE",
+      "family": "C2_RELATIONAL",
+      "question": "Do donor-reproducible relative molecular relationships survive when global RNA abundance and technical depth are controlled?",
+      "real_evidence": [
+        {
+          "source": "docs/agent/JEPA_HISTORICAL_ARCHITECTURE_DECISION_LEDGER_20261013.md",
+          "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+          "interpretation": "TD57B broad scale-free relation prior; TD57C universal fine-local third-neighbor claim failed; do not convert either into global target authority"
+        },
+        {
+          "source": "docs/agent/JEPA_LANE_MASTER_AUDIT_INDEX_20261014.md",
+          "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+          "interpretation": "R1 scale-free triplet manifest mechanically prepared; substantive null/stability threshold not fixed for real biology"
+        }
+      ],
+      "evidence_tier": "REAL_RNA_HISTORICAL_RELATIONAL_PRIOR_ONLY",
+      "simulator_case": "PR328_COMMON_PROGRAM__DONOR_DISJOINT__INDEPENDENT_OBSERVATION",
+      "simulator_status": "PARTIAL_FIXTURE__FULL_SCALE_FREE_RELATIONAL_TRUTH_TOURNAMENT_NOT_RUN",
+      "human_target_object_needed": "Prospectively frozen relation/triplet estimand on source-supported verified molecular addresses, not arbitrary latent-neighbor distances",
+      "first_forward_test": "Zero-update donor/source-heldout triplet-order test against donor/source preserved label-null, abundance rank, and technical-depth baselines",
+      "must_fail_or_abstain_on": [
+        "Global-scale relationship assumed to prove fine-local geometry",
+        "Unbound 41K address identity or structural unmeasurement",
+        "Null/threshold selected after seeing recurrence",
+        "One stratum used as universal biological claim"
+      ],
+      "promotion": "NOT_ESTIMABLE_PENDING_REAL_RELATION_DECISION_LAW"
+    },
+    {
+      "id": "RARE_MICROGLIAL_PROGRAM",
+      "family": "C3_QUERY_LOCAL_OR_SPECIALIST",
+      "question": "Can a reproducible rare microglial activation/tail program be distinguished from technical pseudo-rarity and predicted from partial RNA?",
+      "real_evidence": [
+        {
+          "source": "results/reports/stage70_rare_microglia_auxiliary_head_robustness_lock_audit_report_v1.md",
+          "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+          "interpretation": "Internal robustness experiment did not lock a new rare benchmark or external validation"
+        },
+        {
+          "source": "docs/superpowers/specs/2026-10-13-unified-synthetic-integration-design.md",
+          "sha": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+          "interpretation": "STAT1/50K duplicated sample_row affects calibration; historical tail moments quarantined"
+        }
+      ],
+      "evidence_tier": "RARE_RNA_INTERNAL_NEGATIVE_PRIOR_AND_CALIBRATION_LIMIT",
+      "simulator_case": "PR328_RARE_PROGRAM__TECHNICAL_PSEUDORARITY__PERTURB_CONTROL_NULL",
+      "simulator_status": "MECHANICS_FIXTURE_CAPABILITY__HUMAN_FREQUENCIES_NOT_CALIBRATED",
+      "human_target_object_needed": "Frozen lineage-eligible rare-program expression target with donor-level recurrence, observed support and RNA detection floor; rare class not fitted from synthetic rarity preset",
+      "first_forward_test": "Donor-disjoint rare-tail discrimination at equal support/depth, technical pseudorarity control, wrong-query and cell-global shortcuts",
+      "must_fail_or_abstain_on": [
+        "Program vanishes after source/measurement control",
+        "Synthetic rarity frequency used as human prior",
+        "Rare aux historical benchmark reinterpreted as external success",
+        "Zero or too few independently supported donor-tail observations"
+      ],
+      "promotion": "NOT_ESTIMABLE_PENDING_RARE_PROVENANCE_AND_CALIBRATION"
+    },
+    {
+      "id": "ATAC_CONTEXT_PROGRAM",
+      "family": "C5_SPECIALIST_AUXILIARY_ONLY",
+      "question": "Does measured chromatin accessibility provide distinct, reproducible state evidence that RNA alone could partly predict?",
+      "real_evidence": [
+        {
+          "source": "docs/stage75f_out_of_core_execution_plan_v1.md",
+          "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+          "interpretation": "SCENIC+/motif execution architecture and caveat; enhancer-informed model hypotheses are not validated GRN"
+        },
+        {
+          "source": "docs/agent/JEPA_STAGE75_E2G_POSTHOC_TSS_GEOMETRY_READOUT_20261027.md",
+          "sha": "5dd02b0954906618202459dd89f36a62f2f02de7",
+          "interpretation": "Posthoc: TF labels share physical peaks; E2G overlap indicators invariant at same gene+peak; 9 within-gene matched pairs insufficient for validation"
+        }
+      ],
+      "evidence_tier": "ATAC_MOTIF_E2G_SOURCE_ANNOTATION__NOT_OCCUPANCY",
+      "simulator_case": "PR328_SAME_NUCLEUS_VS_SEPARATE_NUCLEUS_RNA_ATAC__RNA_PARTIAL_VS_PRIVILEGED",
+      "simulator_status": "MECHANICS_FIXTURE_CAPABILITY__NO_HUMAN_CROSSMODAL_STATE_VALIDATION",
+      "human_target_object_needed": "Measured accessibility state on provenance-bound peaks and donors with true pairing semantics; motif/TF assignment only as contextual annotation",
+      "first_forward_test": "Compare actual accessibility-state reproducibility and RNA predictability under paired/split-nucleus support; shuffle peak/source and enforce peak-level nonindependence",
+      "must_fail_or_abstain_on": [
+        "Proximal peak overlap or TF motif used as proof of regulation",
+        "Separate nuclei treated as matched same cell",
+        "No measured ATAC/accessibility or incompatible genome build",
+        "Peak reuse counted as independent TF perturbations"
+      ],
+      "promotion": "NOT_ESTIMABLE_PENDING_MEASURED_ATAC_STATE_AND_SOURCE_IDENTITY"
+    },
+    {
+      "id": "INTERVENTION_RESPONSE_PROGRAM",
+      "family": "PERTURBATION_SUPPORT_NOT_AUTOMATIC_TD_CANDIDATE",
+      "question": "Do authenticated CRISPR perturbations reproducibly change a candidate program, and is its baseline measurable from partial RNA?",
+      "real_evidence": [
+        {
+          "source": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V23_FULL_CURRENT.md",
+          "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+          "interpretation": "GSE301119 raw guide-donor pseudobulk count parity, two donors; no full transcriptome-wide control-relative DE at historical cutoff. GSE311359 duplicate BIN1 guide names make guide-level V1 effects unqualified. GSE178317 lacks per-cell guide identity; do not invent assignments."
+        },
+        {
+          "source": "docs/stage77_tier_a_perturbation_mvp.md",
+          "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+          "interpretation": "STAT1/ELF1/SPI1 model-input shifts are simulations, not measured causal effect"
+        }
+      ],
+      "evidence_tier": "MIXED_REAL_PERTURB_SOURCE_AND_IN_SILICO__NO_UNIFIED_EFFECT_AUTHORITY",
+      "simulator_case": "PR328_ACTIVE_RARE_PROGRAM_PERTURBATION_VS_MATCHED_PERTURB_NULL",
+      "simulator_status": "MECHANICS_FIXTURE_CAPABILITY__NOT_EXPERIMENTAL_EFFECT",
+      "human_target_object_needed": "Independently authenticated guide and target identifiers, raw guide/control response, exact biological replicate unit, effect direction/uncertainty; cross-model transfer declared",
+      "first_forward_test": "Source-valid donor/guide-level perturbation contrast, true versus matched null, test state response under held-out experiment and distinguish iPSC/macrophage from adult human microglia",
+      "must_fail_or_abstain_on": [
+        "Guide-name collapse or missing per-cell guide capture",
+        "Guide/cell treated as an independent donor",
+        "Simulated signed coactivity delta interpreted as CRISPR effect",
+        "Only two donors generalized to adult brain or causal program"
+      ],
+      "promotion": "NOT_ESTIMABLE_PENDING_PERTURBATION_EFFECT_VALIDATION"
+    },
+    {
+      "id": "NONADDITIVE_COMPOSITE_STATE",
+      "family": "C6_THEN_C4_CONDITIONAL",
+      "question": "Is there genuine biological interaction information beyond independently established C1/C2/C3 components, not synthetic factor planting?",
+      "real_evidence": [
+        {
+          "source": "docs/agent/JEPA_LANE_MASTER_AUDIT_INDEX_20261014.md",
+          "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+          "interpretation": "C6 must beat C1 and C3; C4 only interpretable after independently qualifying C6; margins and real support not earned"
+        },
+        {
+          "source": "docs/superpowers/specs/2026-10-12-unified-synthetic-td-rehearsal-design-v2.md",
+          "sha": "af03ef67d52651463944a6de3a08e101ad00e0ea",
+          "interpretation": "Full non-additive synthetic interaction family remains design scope, not PR328 implementation"
+        }
+      ],
+      "evidence_tier": "DESIGN_ONLY__NO_HUMAN_INCREMENT",
+      "simulator_case": "PR315_DESIGN_NONADDITIVE_INTERACTIONS_NOT_IN_PR328_FULLY",
+      "simulator_status": "PLANNED_NOT_QUALIFIED_FULL_SIMULATION",
+      "human_target_object_needed": "Independent, additive-comparator-matched interaction target with biological non-compensation; C1/C3 and C6 must qualify before C4",
+      "first_forward_test": "DEFER real non-additive test until independent constituent signals, lawful matched-compute additive baselines and fixed same-metric meaningful margin",
+      "must_fail_or_abstain_on": [
+        "Synthetic interaction treated as observed biology",
+        "C4 tested before independent C6 evidence",
+        "Composite rescues failed constituents",
+        "Unfrozen effect-size margin"
+      ],
+      "promotion": "DEFERRED_UNSUPPORTED"
+    }
+  ],
+  "next_executable_science": [
+    "Reconcile actual assay/source right table and physical identity per candidate, including assay-present zeros vs unmeasured (no protected outcomes).",
+    "Define one TRAIN-only, donor-disjoint, zero-update C1/C2/C3 forward-screen target object and q-excluded teacher/student masks with fixed controls, without peeking at deciding outcomes.",
+    "Replay existing PR328 synthetic common/rare/pseudo-state/paired-modality perturbation controls through the SAME proposed screen interface as a test-of-test, without retraining JEPA or modifying frozen synthetic worlds.",
+    "Only after synthetic executable checks pass and source/technical reference calibration is independently qualified, request separate authorization for real human deciding outcomes; record PASS/FAIL/NOT_ESTIMABLE without compensating across claims."
+  ],
+  "deferrals": [
+    "No real human candidate evaluation executed in this crosswalk",
+    "No biological state or TF selected, ranked or qualified",
+    "No C1–C6 value, representation dimension or teacher-target policy selected",
+    "No new regulatory graph or E2G causal inference",
+    "No real training, Stage4, real A7 or externally authenticated G7 E3",
+    "No modification to frozen synthetic Q00–Q11, blinded TD Phase1/Phase2, PR328 fixture or existing post-TD harness"
+  ]
+}
