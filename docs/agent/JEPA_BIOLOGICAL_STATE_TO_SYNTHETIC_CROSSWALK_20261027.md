@@ -9,6 +9,21 @@
 - **PR #313** supplies the prospective real candidate/gate framework. The existing post-TD harness **PRs #332/#351** and scoped **#451** fixture bridge provide a downstream consumption path. They are **not** a single fully certified end-to-end real JEPA run. #451's synthetic `PASS` labels explicitly do not qualify biological blocks or create genuine A7. Do not clone these components.
 - The missing scientific operation is **real-state construction and conditional partial-RNA predictability** on source-authenticated observations. The most recent audit #322 and active successor #460 leave real G7 E3, many real gate thresholds/assay rights and independent cross-lineage authorization open.
 
+## Existing cross-lane integration — verified, do not reimplement
+
+This new inventory is **only a biological-question crosswalk**. The following integration is **already documented or implemented** and must be reused:
+
+- **PR #325 / #324:** synthetic-lane historical audit and operational successor. The qualified smaller PR #328 fixture, Stage81A3 biological ancestry, PR #311 rare/multimodal/perturbation mechanics, V79 failure, V80 separately qualified benchmark, and PR #344 V3.1.1 full-production **design only** are indexed and classified.
+- **PR #322** `docs/agent/JEPA_FULL_LANE_HISTORICAL_SYNTHETIC_TAKEOVER_V8_20261017.md`: the complete merged lineage, real support/measurement geometry and nine biological channels were already audited. **Do not introduce another gate registry or adapter system.**
+- **PR #380 / #381:** prospective unified target-discovery/custody execution plan and migrated Task0 F5–F9 controls already connect real population, synthetic challenge, independent source rights, controller/producer/executor separation, and downstream certification.
+- **PR #369:** existing sealed cross-gate *test-of-test*; do not rerun as if no multi-gate integration existed. It is still smaller than a full production synthetic execution.
+- **PR #349:** outcome-blind real 149-donor/42-operator population/support registry with 104/22/23 fit/validation/oracle donor split; C5 cannot inherit biological support merely from RNA-only foundation.
+- **PR #332/#351/#451:** existing TargetPortfolio and post-TD harness/fixture bridge; do not reproduce teacher/student/EMA, target NONE, or A7 shaped interfaces. A fixture-labeled PASS is still not a real Target Qualification Bundle.
+
+**Scientific evidence channels already defined in the audit:** (1) RNA counts and programs; (2) measured ATAC peaks and differential accessibility; (3) chromVAR motif-associated accessibility; (4) footprinting; (5) SCENIC+ inferred regulons; (6) query/program target semantics; (7) experimentally assigned perturbations; (8) external/orthogonal cohort replication; (9) ETL/technology/source observation operators. These are *channels*, not nine independent experiments: DA/chromVAR/footprinting/SCENIC+ may share the same underlying ATAC samples, and RNA-derived edges cannot be treated as independent validation.
+
+The missing work is not another graph or another synthetic stack: it is to bind each **human biological-state estimand** to authenticated observations, supported donor/source units, legitimate teacher evidence and partial-RNA restrictions, then exercise the **already existing** qualification path. Source report presence alone cannot establish a new biological state.
+
 ## Evidence questions, not prechosen target states
 
 | Biological question | Real evidence found in audited history | What the unified synthetic system can challenge | Next decision |
