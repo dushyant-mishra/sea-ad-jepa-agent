@@ -54,7 +54,7 @@ def validate_pointer(doc, root):
     require(doc.get("next_owner",{}).get("chatgpt"),"independent new X1 review role missing")
     require(audit.get("post_v8a_machine")=="results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json","new 13 PS REDs or X1 candidate index missing")
     require(audit.get("post_v8a_doc")=="docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md","V8a human reviewer handoff missing")
-    require(type(audit.get("audit_v8_ci_run_id")) is int and audit["audit_v8_ci_run_id"] == 40517158398,"wrong V8 static CI source")
+    require(type(audit.get("audit_v8_ci_run_id")) is int and audit["audit_v8_ci_run_id"] == 40519925168,"wrong V8 static CI source")
     require("PR322:docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md" in order,"read order omits latest new defects")
 
 
