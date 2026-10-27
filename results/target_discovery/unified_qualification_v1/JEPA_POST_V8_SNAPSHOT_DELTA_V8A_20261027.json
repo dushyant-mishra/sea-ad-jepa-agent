@@ -28,7 +28,8 @@
         40516953617
       ],
       "source_role": "TESTS_ONLY_CANDIDATE_NOT_ACCEPTED",
-      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/458"
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/458",
+      "ci_green": []
     },
     {
       "pr": 459,
