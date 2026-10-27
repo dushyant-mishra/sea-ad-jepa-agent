@@ -15,6 +15,7 @@ from pathlib import Path
 TERMINAL = "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
 SNAPSHOT = "results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.json"
 ASSETS = "docs/agent/JEPA_LOCAL_ATTACHMENT_CUSTODY_RECONCILIATION_V8_20261027.csv"
+POST_V8A = "results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json"
 SHA = re.compile(r"^[a-f0-9]{40}$")
 SHA256 = re.compile(r"^[a-f0-9]{64}$")
 REQUIRED_PR_STATUS = {
@@ -103,6 +104,33 @@ def validate_snapshot(doc: object) -> None:
     require(448 in hostile.values() and 455 in hostile.values(), "Task1/2 RED not retained")
 
 
+def validate_post_v8a_delta(doc: object) -> None:
+    """Require the post-snapshot independent RED and X1 green-but-unaccepted."""
+    require(type(doc) is dict and doc.get("schema")=="JEPA_AUDIT_V8A_POST_SNAPSHOT_DELTA_20261027", "incorrect V8a schema")
+    require(doc.get("authority")==TERMINAL and doc.get("cannot_upgrade_from_ci") is True, "V8a scientific authority promotion")
+    require(doc.get("original_v8_remains_immutable_historical_event") is True, "V8 history rewrite permitted")
+    rows=doc.get("records")
+    require(type(rows) is list and len(rows)==3, "V8a PR roster incomplete")
+    by={r.get("pr"):r for r in rows if type(r) is dict}
+    require(set(by)=={457,458,459}, "missing or duplicate PR 457–459")
+    expected={
+        457:("cd86187ec03092bdc9ebb17e36046ac8853b4fd1","E2G_SEVEN_PUBLIC_SOURCES_PROVISIONAL_COVERAGE_ONLY__RESULT_RECEIPT_CI_RED"),
+        458:("3b08081d7fb3fa99cf1459b13cbe47d5b0962547","PS_TASKS1_2_SECOND_WAVE_INDEPENDENT_RED_13_TESTS__CUMULATIVE_REVIEW_BLOCKED"),
+        459:("57e707149b46ca011eee096f01dc08b64aeb8f9f","TASK4_X1_WRITE_AHEAD_INTENT_CANDIDATE_CI_GREEN__INDEPENDENT_REVIEW_PENDING__X3_UNQUALIFIED"),
+    }
+    for pr,(sha,status) in expected.items():
+        row=by[pr]
+        require(row.get("sha")==sha and row.get("status")==status, f"post-V8 source identity or review status mutated: #{pr}")
+        require(row.get("url")==f"https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/{pr}","invalid post-V8 URL")
+        require(type(row.get("ci_green")) is list and type(row.get("ci_red")) is list, "missing full red/green distinction")
+    require(40516953772 in by[458]["ci_red"] and 40517601114 in by[457]["ci_red"], "new RED evidence lost")
+    require(40518058012 in by[459]["ci_green"], "unreviewed X1 candidate CI evidence lost")
+    require("INDEPENDENT" in doc.get("clear_new_work",{}).get("task4",""), "Task4 nonauthor review omitted")
+    require(doc.get("new_red_ci_counts",{}).get("ps_tasks_1_2",{}).get("failed")==13, "PS Task1/2 failed tests hidden")
+    require(doc.get("task4_author_green_counts",{}).get("windows_focus")==49, "Windows engineering result altered")
+    require(doc.get("handoff_clean_successor_pr")==460, "conflict-free successor pointer missing")
+
+
 def validate_assets(rows: list[dict]) -> None:
     require(len(rows) >= 12, "asset archive inventory incomplete")
     names = set()
@@ -130,6 +158,10 @@ def main() -> int:
     snap = args.snapshot or root / SNAPSHOT
     assets = args.assets or root / ASSETS
     validate_snapshot(json.loads(snap.read_text(encoding="utf-8")))
+    post_v8a = root / POST_V8A
+    if post_v8a.is_file():
+        validate_post_v8a_delta(json.loads(post_v8a.read_text(encoding="utf-8")))
+
     with assets.open(encoding="utf-8", newline="") as fh:
         validate_assets(list(csv.DictReader(fh)))
     for path in MANDATORY_OLD_PATHS:
