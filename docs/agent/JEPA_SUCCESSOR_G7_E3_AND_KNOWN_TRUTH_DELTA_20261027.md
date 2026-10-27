@@ -1,0 +1,36 @@
+# Active successor append-only delta — G7 E3 R1/R2 physical trust and V3.1.1 known-truth next step (2026-10-27)
+
+**Role:** New navigation/custody note added after the qualified V8e handoff at `b867a348d9244bcbc9d4ac696ebc0df6f325b6f8`. Previous V8–V8e and the old audit head remain historical immutable approvals **at their exact old SHA only**. This update does not assert the later audit branch head is independently accepted.
+
+## Completed, source-verified work to carry forward
+
+| Lane | Exact artifact and result | What is not established |
+|---|---|---|
+| Macha independent G7 E3 recheck | [PR #449](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/449) `062bfe369348ac4d9ed89c0aa162abf0d9806397`; 13 hostile cases in unchanged reviewer source | External physical atom provenance, q-excluded library-depth ancestry, human E3 trust |
+| New ChatGPT scoped G7 repair | [PR #470](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/470) `2e173fa4889531ba686aa439707cf86effd6cc95`; R3 key collision, R4 flags and R5 domain-error containment repaired | R1/R2 still RED; repair not independently reviewed or cumulatively accepted |
+| Targeted CI with original RED preserved | [Run 40566765654](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/40566765654): **45 PASS, 10 deselected** for scoped suite; explicit unresolved branch: **10 R1/R2 hostile FAIL**. Original [full hostile run 40566765636](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/40566765636): **45 PASS, 10 FAIL**, overall RED. | A green scoped job is **not** a green full G7 security/biology qualification |
+| Existing synthetic and JEPA engineering | [PR #328](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/328) limited fit/world; [PR #369](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/369) gate test-of-test; [PR #469](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/469) source-generated **432 RNA fixture observation atoms** cross-head to original Task5/downstream | Production V3.1.1 source-authenticated biological world, real G7 unit, independent A7, selected real TQB, JEPA training |
+| Historical real biology | Macha [PR #314](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314) completed physical correction/replay, C2 broad/mesoscale viable, TD57C nearest-third FAIL; developmental R5 q-excluded **measured** target; V44 actual-RNA teacher proxy; Stage69/70; ATAC/SCENIC+/perturbation audits | Current biologically qualified JEPA target or teacher/student architecture winner |
+
+**Machine-verifiable audit mirror:** on [audit PR #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322), new append-only `results/target_discovery/unified_qualification_v1/JEPA_G7_E3_MACHA449_SCOPED_DELTA_20261027.json` and `docs/agent/JEPA_G7_E3_MACHA449_SCOPED_AUDIT_DELTA_20261027.md`; new **unreviewed** audit branch delta head `bd9fe4f246b4e1f29b9cffb25a2c0199a292a833`. Previous qualified #322 V8e head `a271164554076d0acda3bd0cf0b1bf957c0fdfd3` remains the frozen authority; do not infer new head acceptance.
+
+## Next-action order (do not rerun historical science)
+
+1. **Macha independent reviewer of PR #470 exact candidate**: verify R3–R5 under unchanged tests, add any new hostile cases, confirm all R1/R2 old and new remain RED and that no accepted source/consumer got a false physical provenance claim. Only a scoped incremental review verdict is possible. This is already running as a review task candidate; never label author CI acceptance.
+2. **Physical observation producer/issuer and normalization rights**: resolve G7 R1/R2 at the shared source→CaseBundle/real gate edge. Required physical-unit identity, assay/source/donor/address support, read/UMI/cell duplication map, and q-excluded normalizer derivation must come from independently authenticated evidence, not from an opaque atom ID or in-process trust token. Until this exists, full G7 is blocked. Do not patch R1/R2 by string aliases or by declaring source hash authority.
+3. **Parallel engineering review**: PR #467 unified Task1 portability needs Macha independent review; PR #464 PS Tasks1–2 T2-D **external scan** remains RED; Macha Task4 #465 was accepted **incrementally with limitations** only, not cumulatively. Preserve exact CI/hostile scopes in those PRs.
+4. **Known-truth scientific execution**, only after foundational producer/custody readiness: use PR #344 V3.1.1 candidate-neutral biology, withheld family and authenticated observation calibration, shared #379 producer/artifact/executor interfaces, original challenge worlds A–I, and exact registry states. The next real milestone is one identifiable and one no-winner world routed through the **actual** scientific producers/executors and external TruthBundle adjudicator. Do not substitute PR #328 gene-block planted structure, a handwritten Task5 stage, target scalar labels or any caller-supplied PASS.
+5. **Teacher scientific acceptance**: For each lawful current C1/C2/C3 (and conditional C5), preserve the distinction between a measured biological target *constructed from privileged evidence* and a separate surrogate *predicting that target*. R5 q-excluded measured eight-gene context is precedent, not an automatic C3 winner; TD57B/TD59 corrected real positives do not prove partial-RNA C2 recoverability. Use zero-optimizer methods only once target provenance and rights are independently bound.
+6. **Human target and downstream**: Freeze manifest/controller/reference producer/metrics before deciding real outcomes; independently review all authority transitions. A real human target bundle and JEPA training/Stage4 remain OFF. C6→C4 dependence, rare subclaims, SCENIC+ correlation and GSE174367 separate-nucleus ATAC limits remain binding.
+
+### Three non-equivalent uses of the synthetic ecosystem
+
+- The **limited PR #328 world** is a test-of-interface fixture and must remain useful as that, even if full production synthetic V3.1.1 never qualifies.
+- The **V3.1.1 production known-truth world** is designed to falsify and qualify the discovery *method* under blinded, candidate-neutral biology and realistic observation support; its generator cannot be tuned after exposure to make our preferred target win.
+- The **real human datasets** are necessary for actual biological target qualification; synthetic positive outcomes establish neither true human disease program prevalence nor a causal regulatory relation.
+
+### Hard science stops
+
+No claim `SAME_CODE_PATH`, `KNOWN_TRUTH_QUALIFIED`, `REAL_REFERENCE_READY`, `HUMAN_EXECUTABLE`, selected `TARGET_QUALIFICATION_BUNDLE_V1`, real representation winner or Stage4 without the independently identified full producer/artifact/executor receipt, external issuer, real source support and controller freeze. No opportunistic relaxation of the V79 terminal lock, the V80 prospective nonregression conflict or V3.1.1 anti-gaming law.
+
+**Standing authority:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
