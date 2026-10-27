@@ -12,7 +12,9 @@
     "asset_custody": "docs/agent/JEPA_LOCAL_ATTACHMENT_CUSTODY_RECONCILIATION_V8_20261027.csv",
     "validator": "scripts/v5/verify_jepa_lane_audit_v8.py",
     "qualifier": "Static audit source and exact SHA checks only; not external scientific authentication",
-    "ci_status_at_pointer": "QUEUED__NOT_YET_VERIFIED"
+    "ci_status_at_pointer": "EXACT_HEAD_CI_GREEN",
+    "audit_v8_ci_run_id": 40517158398,
+    "audit_v8_hostile_tests_passed": 18
   },
   "handoff": {
     "pr": 323,
