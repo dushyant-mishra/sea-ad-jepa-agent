@@ -26,15 +26,17 @@ LINEAGES = {
 QUESTIONS = {
  "SHARED_RNA_PROGRAM": ("C1_SHARED","NOT_ESTIMABLE_PENDING_REAL_TARGET_EVIDENCE"),
  "RELATIONAL_RNA_STATE": ("C2_RELATIONAL","NOT_ESTIMABLE_PENDING_REAL_RELATION_DECISION_LAW"),
- "RARE_MICROGLIAL_PROGRAM": ("C3_QUERY_LOCAL_OR_SPECIALIST","NOT_ESTIMABLE_PENDING_RARE_PROVENANCE_AND_CALIBRATION"),
+ "RARE_MICROGLIAL_PROGRAM": ("RARE_SPECIALIST_NOT_C3","NOT_ESTIMABLE_PENDING_RARE_PROVENANCE_AND_CALIBRATION"),
  "ATAC_CONTEXT_PROGRAM": ("C5_SPECIALIST_AUXILIARY_ONLY","NOT_ESTIMABLE_PENDING_MEASURED_ATAC_STATE_AND_SOURCE_IDENTITY"),
  "INTERVENTION_RESPONSE_PROGRAM": ("PERTURBATION_SUPPORT_NOT_AUTOMATIC_TD_CANDIDATE","NOT_ESTIMABLE_PENDING_PERTURBATION_EFFECT_VALIDATION"),
  "NONADDITIVE_COMPOSITE_STATE": ("C6_THEN_C4_CONDITIONAL","DEFERRED_UNSUPPORTED"),
+ "QUERY_MEASURED_RNA_STATE": ("C3_QUERY_MEASURED","NOT_ESTIMABLE_PENDING_CURRENT_Q_MEASURED_TARGET_SOURCE_AND_GATE"),
 }
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 CITATION_SOURCES = {
  "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
  "docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md",
+ "docs/agent/JEPA_FULL_LANE_HISTORICAL_SYNTHETIC_TAKEOVER_V8_20261017.md",
  "docs/agent/JEPA_HISTORICAL_ARCHITECTURE_DECISION_LEDGER_20261013.md",
  "docs/agent/JEPA_LANE_MASTER_AUDIT_INDEX_20261014.md",
  "results/reports/stage70_rare_microglia_auxiliary_head_robustness_lock_audit_report_v1.md",
@@ -44,6 +46,27 @@ CITATION_SOURCES = {
  "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V23_FULL_CURRENT.md",
  "docs/stage77_tier_a_perturbation_mvp.md",
  "docs/superpowers/specs/2026-10-12-unified-synthetic-td-rehearsal-design-v2.md",
+}
+# Archival facts: source-controlled development results are distinct from real target authority.
+COMPLETED_REAL_KEYS = {
+ "TD_R5_QUERY_DEVELOPMENT": "HISTORICAL_DEVELOPMENTAL_RESULT__NOT_CURRENT_TARGET_WINNER",
+ "TD56_59_RELATIONAL": "HISTORICAL_REAL_RESULT__HVS_SEA_FEATURE_MAPPING_DEFECT__CORRECTED_REPLAY_REQUIRED",
+ "V44_RNA_TEACHER_PROXIES": "ACTUAL_PROXIES_RUN__NO_Q_CONDITIONING__NO_FAIR_NEURAL_OR_BIOLOGY_WINNER",
+ "STAGE70_REAL_RARE": "SOURCE_NATIVE_SAFE_NEGATIVE_PRIOR__NO_EXTERNAL_OR_TARGET_AUTHORITY",
+ "M_STRICT_REAL_COUNTS": "REAL_SUPPORT_AND_TECHNICAL_AUDIT_QUALIFIED__NO_CANDIDATE_OUTCOMES",
+ "MACHA_RNA_ATAC": "ASSAY_PROVENANCE_QUALIFIED__REGULATORY_STATE_BENCHMARK_NOT_DONE",
+ "MACHA_GSE301119": "EXPERIMENTAL_TARGET_ENGAGEMENT_MEASURED__NOT_ADULT_MICROGLIA_OR_JEPA_STATE",
+ "UNIFIED_FIXTURE_AND_POST_TD": "ALREADY_BUILT_REUSE_NO_DUPLICATE",
+}
+HISTORICAL_SOURCES = {
+ "TD_R5_QUERY_DEVELOPMENT": ("docs/agent/TARGET_DISCOVERY_MASTER_HANDOFF_20261011.md","audit/target-discovery-takeover-20261011"),
+ "TD56_59_RELATIONAL": ("docs/agent/TARGET_DISCOVERY_MASTER_HANDOFF_20261011.md","audit/target-discovery-takeover-20261011"),
+ "V44_RNA_TEACHER_PROXIES": ("docs/agent/JEPA_V44_TINY_TOURNAMENT_NEW_CHAT_HANDOFF_20260926.md","research/v44-tiny-teacher-tournament-20260926"),
+ "STAGE70_REAL_RARE": ("results/reports/stage70_rare_microglia_auxiliary_head_robustness_lock_audit_report_v1.md",PARENT_SHA),
+ "M_STRICT_REAL_COUNTS": ("docs/agent/MACHA_TD_REAL_DATA_QUALIFICATION_HOSTILE_REVIEW_20261014.md","audit/td-real-data-qualification-macha-20261014"),
+ "MACHA_RNA_ATAC": ("PR #164","0e36cede000c6c0eee66ab2b11ed43d41f7b9580"),
+ "MACHA_GSE301119": ("PR #77","9a2a30e4c4c99be2a8f948aba680524c786d2737"),
+ "UNIFIED_FIXTURE_AND_POST_TD": ("docs/agent/JEPA_FULL_LANE_HISTORICAL_SYNTHETIC_TAKEOVER_V8_20261017.md",PARENT_SHA),
 }
 REQUIRED_RULES = {"biological_truth","selection","masking","comparison","cross_modal","perturbation","measurements","eligibility"}
 BANNED_AS_SCIENCE = {"PASS","QUALIFIED","SELECTED","AUTHORIZED","TRAINING_ON"}
@@ -96,6 +119,25 @@ def validate(d:dict,root:Path)->None:
         ensure(type(blockers) is list and len(blockers)>=4 and all(type(x) is str and len(x)>19 for x in blockers),
                "falsifiers missing "+id)
     ensure(seen==set(QUESTIONS),"missing distinct test questions")
+    evidence=d.get("completed_real_evidence")
+    ensure(type(evidence) is list and len(evidence)==len(COMPLETED_REAL_KEYS),"completed real experiments missing")
+    visited=set()
+    for record in evidence:
+        ensure(type(record) is dict,"historical source record type")
+        key=record.get("key")
+        ensure(type(key) is str and key in COMPLETED_REAL_KEYS and key not in visited,
+               "duplicate or invented historical experiment")
+        visited.add(key)
+        ensure(record.get("classification")==COMPLETED_REAL_KEYS[key],"historical result promoted: "+key)
+        ensure((record.get("source"),record.get("source_ref"))==HISTORICAL_SOURCES[key],"source lineage changed: "+key)
+        for field in ("lane","measurement","result","new_experiment"):
+            ensure(type(record.get(field)) is str and len(record[field])>15 if field!="new_experiment" else type(record.get(field)) is str and len(record[field])>=2,
+                   "missing scope for "+key+"/"+field)
+        ensure("TARGET_WINNER" not in record.get("classification","") or "NOT_CURRENT" in record["classification"],
+               "real winner falsely selected")
+    ensure(visited==set(COMPLETED_REAL_KEYS),"missing source class")
+    ensure("C3_QUERY_MEASURED" in {x["family"] for x in items},"q-measured C3 absent")
+    ensure("RARE_SPECIALIST_NOT_C3" in {x["family"] for x in items},"rare being mislabeled C3")
     for field in ("next_executable_science","deferrals"):
         arr=d.get(field)
         ensure(type(arr) is list and len(arr)>=4 and all(type(x) is str and len(x)>35 for x in arr),
@@ -106,7 +148,8 @@ def validate(d:dict,root:Path)->None:
     ensure(doc.is_file(),"narrative crosswalk missing")
     txt=doc.read_text(encoding="utf-8")
     for term in ("PR #315","PR #328","PR #313","PRs #332/#351","PR #451","GSE301119",
-                 "GSE311359","GSE178317","SCENIC+","NOT_ESTIMABLE","same-","G7",AUTH):
+                 "GSE311359","GSE178317","SCENIC+","NOT_ESTIMABLE","same-","G7",
+                 "C3_QUERY_MEASURED","nearest-third","R5","V44","physical feature mapping defect",AUTH):
         ensure(term in txt,"source restriction absent in narrative "+term)
 
 def main():
