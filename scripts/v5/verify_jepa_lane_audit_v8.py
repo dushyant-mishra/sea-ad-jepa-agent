@@ -71,11 +71,20 @@ def validate_snapshot(doc: object) -> None:
     require(type(gates) is dict and len(gates) == 8, "incomplete gate roster")
     for k,value in gates.items():
         require(type(k) is str and type(value) is str and value != "", "empty gate refusal status")
-    require("X1" in gates["unified_task4"] and "X3" in gates["unified_task4"], "Task4 RED or mixed-host blocker lost")
-    require("NO_AUTHORITY" in gates["unified_tasks6_8"] or "FIXTURES_ONLY" in gates["unified_tasks6_8"], "Task6-8 falsely promoted")
-    require("REJECTED" in gates["real_g7_e3"], "G7 E3 unresolved science lost")
-    require("RECHECK" in gates["ps_task3"], "Task3 dependency recheck lost")
-    require("DO_NOT_START" in gates["ps_task4"], "production Task4 STOP lost")
+    # This is a *fixed historical snapshot*: an attacker cannot replace a
+    # refusal with semantically reversed "NO_RECHECK" text or green-looking
+    # values that happen to contain the expected substring.
+    expected_gates = {
+        "unified_task4":"X1_EXTERNAL_PUBLISHER_REFUSAL_RED__X3_WINDOWS_WSL_CROSS_LOCK_UNQUALIFIED__CUMULATIVE_INDEPENDENT_ACCEPTANCE_MISSING",
+        "unified_task5":"TASK5_FIXTURE_ONLY__A7_SAME_CODE_PATH_NOT_QUALIFIED",
+        "unified_tasks6_8":"NONPROMOTING_FIXTURES_ONLY__REAL_PRODUCER_AND_TARGET_RECEIPTS_MISSING",
+        "real_g7_e3":"REJECTED__PHYSICAL_ATOM_AND_Q_EXCLUDED_DEPTH_AUTHENTICATION_MISSING",
+        "ps_task1":"CHANGED_CANONICAL_DEPENDENCY__INDEPENDENT_CUMULATIVE_ACCEPTANCE_MISSING",
+        "ps_task2":"CHANGED_CUSTODY_DEPENDENCY__INDEPENDENT_CUMULATIVE_ACCEPTANCE_MISSING",
+        "ps_task3":"FIXTURE_MECHANICS_ACCEPTED_WITH_LIMITATIONS_OLD_DEPENDENCIES__RECHECK_NEEDED",
+        "ps_task4":"DO_NOT_START_PENDING_TASKS1_3_INDEPENDENT_CHECKPOINT",
+    }
+    require(gates == expected_gates, "fixed historical acceptance or blockers changed")
     records = doc.get("records")
     require(type(records) is list and len(records) >= 30, "historical PR index incomplete")
     by_pr = {}
