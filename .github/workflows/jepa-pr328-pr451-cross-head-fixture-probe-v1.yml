@@ -1,0 +1,47 @@
+name: JEPA PR328 world to PR451 fixture boundary smoke (no authority)
+on:
+  pull_request:
+    paths:
+      - 'tests/v5/td_unified/pr328_to_task5_fixture_boundary_probe_v1.py'
+      - '.github/workflows/jepa-pr328-pr451-cross-head-fixture-probe-v1.yml'
+      - 'docs/agent/JEPA_PR328_TO_PR451_EXECUTION_EDGE_AUDIT_20261027.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-source-code-synthetic-fixture-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.9'
+      - name: Resolve frozen PR328 exact implementation as read-only second worktree
+        shell: bash
+        run: |
+          git fetch --no-tags origin 25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec
+          git worktree add --detach /tmp/jepa-pr328 25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec
+          test "$(git -C /tmp/jepa-pr328 rev-parse HEAD)" = "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec"
+          test "$(git hash-object scripts/v5/td_unified/post_td_fixture_bridge_v1.py)" = "7ee09461cab959f4cfe67d2dc945fbcc372a0654"
+      - name: Install exact PR328 synthetic runtime (only this source world)
+        run: python -m pip install -r /tmp/jepa-pr328/requirements/unified-synthetic-integration-v1.txt
+      - name: Produce new unsealed synthetic RNA observation fixture from PR328 code
+        shell: bash
+        run: >-
+          python tests/v5/td_unified/pr328_to_task5_fixture_boundary_probe_v1.py
+          produce --source-root /tmp/jepa-pr328 --payload /tmp/pr328-source-fit-case.json
+      - name: Consume PR328 generated observations through unmodified PR451 Task5 bridge
+        shell: bash
+        run: >-
+          python tests/v5/td_unified/pr328_to_task5_fixture_boundary_probe_v1.py
+          consume --payload /tmp/pr328-source-fit-case.json
+          --report /tmp/pr328-pr451-boundary-result.json
+      - name: Publish receipt with all real/scientific authority explicitly off
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr328-pr451-unsealed-fixture-boundary-no-authority
+          path: /tmp/pr328-pr451-boundary-result.json
+          if-no-files-found: error
+          retention-days: 30
