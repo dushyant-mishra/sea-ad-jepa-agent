@@ -50,7 +50,7 @@ CITATION_SOURCES = {
 # Archival facts: source-controlled development results are distinct from real target authority.
 COMPLETED_REAL_KEYS = {
  "TD_R5_QUERY_DEVELOPMENT": "HISTORICAL_DEVELOPMENTAL_RESULT__NOT_CURRENT_TARGET_WINNER",
- "TD56_59_RELATIONAL": "HISTORICAL_REAL_RESULT__HVS_SEA_FEATURE_MAPPING_DEFECT__CORRECTED_REPLAY_REQUIRED",
+ "TD56_59_RELATIONAL": "CORRECTED_REPLAY_PR314_COMPLETED__BROAD_MESO_VIABLE__C2_ACTIVE_NOT_WINNER",
  "V44_RNA_TEACHER_PROXIES": "ACTUAL_PROXIES_RUN__NO_Q_CONDITIONING__NO_FAIR_NEURAL_OR_BIOLOGY_WINNER",
  "STAGE70_REAL_RARE": "SOURCE_NATIVE_SAFE_NEGATIVE_PRIOR__NO_EXTERNAL_OR_TARGET_AUTHORITY",
  "M_STRICT_REAL_COUNTS": "REAL_SUPPORT_AND_TECHNICAL_AUDIT_QUALIFIED__NO_CANDIDATE_OUTCOMES",
@@ -60,7 +60,7 @@ COMPLETED_REAL_KEYS = {
 }
 HISTORICAL_SOURCES = {
  "TD_R5_QUERY_DEVELOPMENT": ("docs/agent/TARGET_DISCOVERY_MASTER_HANDOFF_20261011.md","audit/target-discovery-takeover-20261011"),
- "TD56_59_RELATIONAL": ("docs/agent/TARGET_DISCOVERY_MASTER_HANDOFF_20261011.md","audit/target-discovery-takeover-20261011"),
+ "TD56_59_RELATIONAL": ("docs/agent/TD_CORRECTED_REPLAY_OUTCOME_7819aabd_20261012/TD_CORRECTED_REPLAY_OUTCOME.md","c6899a2910244a0352c0c57e7aea6e3026191da1"),
  "V44_RNA_TEACHER_PROXIES": ("docs/agent/JEPA_V44_TINY_TOURNAMENT_NEW_CHAT_HANDOFF_20260926.md","research/v44-tiny-teacher-tournament-20260926"),
  "STAGE70_REAL_RARE": ("results/reports/stage70_rare_microglia_auxiliary_head_robustness_lock_audit_report_v1.md",PARENT_SHA),
  "M_STRICT_REAL_COUNTS": ("docs/agent/MACHA_TD_REAL_DATA_QUALIFICATION_HOSTILE_REVIEW_20261014.md","audit/td-real-data-qualification-macha-20261014"),
@@ -150,7 +150,8 @@ def validate(d:dict,root:Path)->None:
     txt=doc.read_text(encoding="utf-8")
     for term in ("PR #315","PR #328","PR #313","PRs #332/#351","PR #451","GSE301119",
                  "GSE311359","GSE178317","SCENIC+","NOT_ESTIMABLE","same-","G7",
-                 "C3_QUERY_MEASURED","nearest-third","R5","V44","physical feature mapping defect",AUTH):
+                 "C3_QUERY_MEASURED","nearest-third","R5","V44","physical feature mapping defect",
+                 "PR #314","CORRECTED_RELATIONAL_PROGRAM_CONSISTENT_WITH_HISTORICAL_SCALE_BRACKET",AUTH):
         ensure(term in txt,"source restriction absent in narrative "+term)
 
 def main():
