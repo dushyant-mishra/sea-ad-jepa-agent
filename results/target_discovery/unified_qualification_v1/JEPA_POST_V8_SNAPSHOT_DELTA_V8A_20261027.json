@@ -1,0 +1,87 @@
+{
+  "schema": "JEPA_AUDIT_V8A_POST_SNAPSHOT_DELTA_20261027",
+  "timestamp_utc": "2026-10-27T14:13:00Z",
+  "supersedes_active_navigation_only": "JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.json",
+  "original_v8_remains_immutable_historical_event": true,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "records": [
+    {
+      "pr": 457,
+      "sha": "cd86187ec03092bdc9ebb17e36046ac8853b4fd1",
+      "status": "E2G_SEVEN_PUBLIC_SOURCES_PROVISIONAL_COVERAGE_ONLY__RESULT_RECEIPT_CI_RED",
+      "ci_green": [
+        40516374655
+      ],
+      "ci_red": [
+        40517601114
+      ],
+      "source_role": "REGULATORY_ANNOTATION_NOT_CAUSALITY",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/457"
+    },
+    {
+      "pr": 458,
+      "sha": "3b08081d7fb3fa99cf1459b13cbe47d5b0962547",
+      "status": "PS_TASKS1_2_SECOND_WAVE_INDEPENDENT_RED_13_TESTS__CUMULATIVE_REVIEW_BLOCKED",
+      "ci_red": [
+        40516953772,
+        40516953763,
+        40516953617
+      ],
+      "source_role": "TESTS_ONLY_CANDIDATE_NOT_ACCEPTED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/458"
+    },
+    {
+      "pr": 459,
+      "sha": "57e707149b46ca011eee096f01dc08b64aeb8f9f",
+      "status": "TASK4_X1_WRITE_AHEAD_INTENT_CANDIDATE_CI_GREEN__INDEPENDENT_REVIEW_PENDING__X3_UNQUALIFIED",
+      "ci_green": [
+        40518058012,
+        40518058380,
+        40518058230,
+        40518057921,
+        40518058267
+      ],
+      "ci_red": [],
+      "source_role": "MACHA_AUTHORED_TASK4_REPAIR_NOT_CUMULATIVELY_ACCEPTED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/459"
+    }
+  ],
+  "clear_new_work": {
+    "ps_task1_2": "NEW_13_HOSTILE_RED__REPAIR_AND_CUMULATIVE_NONAUTHOR_REVIEW_REQUIRED",
+    "task4": "X1_NEW_MACHAAUTHORED_REPAIR_GREEN_IN_CI__CHATGPT_INDEPENDENT_ADVERSARIAL_RECHECK_NEXT__X3_CROSS_OS_UNQUALIFIED",
+    "g7": "STILL_NOT_QUALIFIED",
+    "e2g": "PUBLIC_SYMBOL_ONLY_COVERAGE_REFERENCE__RESULT_VALIDATION_RED__NOT_TF_BINDING_OR_CAUSAL"
+  },
+  "preserved_old_red": [
+    448,
+    455,
+    452,
+    449,
+    442,
+    450
+  ],
+  "new_red_ci_counts": {
+    "ps_tasks_1_2": {
+      "failed": 13,
+      "prior_passed": 407,
+      "strict_xfailed": 1,
+      "run_id": 40516953772
+    },
+    "e2g_result_receipt": {
+      "test_collection_error": true,
+      "run_id": 40517601114
+    }
+  },
+  "task4_author_green_counts": {
+    "linux_focus": 199,
+    "linux_full": 390,
+    "windows_focus": 49,
+    "source_run_id": 40518058012,
+    "windows_skipped": 7,
+    "linux_focus_skipped": 8,
+    "linux_full_skipped": 8
+  },
+  "handoff_clean_successor_pr": 460,
+  "reviewer_independence": "Macha authored base Task4 and PS Tasks1-2; may review ChatGPT deltas but cannot accept cumulative self-authored implementation",
+  "cannot_upgrade_from_ci": true
+}
