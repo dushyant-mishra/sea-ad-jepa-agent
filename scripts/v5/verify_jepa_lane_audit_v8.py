@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -133,6 +134,15 @@ def main() -> int:
         validate_assets(list(csv.DictReader(fh)))
     for path in MANDATORY_OLD_PATHS:
         require((root/path).is_file(), "historical audit missing: " + path)
+    exact_imports = {
+        "docs/agent/external_context/JEPA_PROBABILISTIC_ANTI_COLLAPSE_BRIEF_SOURCE_UNREVIEWED_20261026.md":"3423d3ba7feb023e25815f0355fcf355ade1a79ceec16dc2c8824700a0552a8d",
+        "docs/agent/historical_imports/JEPA_PRIOR_TAKEOVER_TEXT_V4_20261017.md":"ba2e41dcf96247c12559ccf3bf872447e5b2b467f5b9dfcce14dac7fbfe95020",
+    }
+    for rel, recorded_sha in exact_imports.items():
+        src = root / rel
+        require(src.is_file(), "previously chat-only text missing: " + rel)
+        require(hashlib.sha256(src.read_bytes()).hexdigest() == recorded_sha,
+                "historical imported text bytes changed: " + rel)
     print("JEPA_V8_STATIC_AUDIT_PASS__HISTORICAL_SOURCES_PRESENT__NO_AUTHORITY_ISSUED")
     return 0
 
