@@ -27,6 +27,7 @@ def test_current_handoff_exact_snapshot_passes():
     lambda x:x["active"].update(ps_task2="13_RED_RESOLVED"),
     lambda x:x["active"].update(regulatory_e2g="TF_CAUSALITY_CONFIRMED"),
     lambda x:x["master_audit"].update(post_v8a_machine="MISSING"),
+    lambda x:x["master_audit"].update(complete_takeover_index="MISSING"),
     lambda x:x["active"].update(task5="SAME_CODE_PATH_CERTIFIED"),
     lambda x:x["active"].update(tasks6_8="REAL_TARGET_PASS"),
     lambda x:x["master_audit"].update(exact_head_at_pointer="TO_BE_FETCHED"),
