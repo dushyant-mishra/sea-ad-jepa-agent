@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Test dependencies
-        run: python -m pip install pytest==9.1.1
+        run: python -m pip install pytest==9.1.1 numpy==1.26.4
       - name: Check split-archive digests on synthetic fixtures; no human data
         run: python -m pytest -q tests/production_synthetic/test_foundation_calibration_split_intake_v1.py
       - name: Check historical aggregate receipt never grants scientific authority
