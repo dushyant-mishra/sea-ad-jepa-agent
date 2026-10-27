@@ -143,3 +143,101 @@ def produce_fixture_teacher_view_v2(*, cells, address_rights, operator_states,
         operator_states=operator_states, ladder=ladder,
         query_address_id=query_address_id, view_kind=_TEACHER,
     )
+
+_VIEW_KEYS = frozenset({
+    "schema", "view_kind", "authority_scope", "query_address_id",
+    "reader_partition", "depth_semantics", "rows",
+    "source_authenticated", "donor_identity_authenticated",
+    "physical_measurement_identity_authenticated", "q_rights_issuer_authenticated",
+    "source_feature_mapping_authenticated", "external_truth_access_authorized",
+    "same_code_path_authorized", "real_training_authorized",
+    "authority_effect", "observable_sha256",
+})
+_ROW_KEYS = frozenset({
+    "cell_id", "donor_id", "source_id", "operator_id",
+    "address_id", "evidence_right", "state", "count",
+    "base_rights_normalization_depth",
+})
+_STATES = frozenset({
+    "MEASURED_SCALAR", "STRUCTURALLY_UNMEASURED",
+    "MEASURED_COLLISION_UNRESOLVED", "WITHHELD_BY_EVIDENCE_RIGHTS",
+})
+
+
+def validate_fixture_observation_view_v2(view):
+    """Independent V2 *shape* consumer; never infers an authenticated issuer.
+
+    Explicitly does NOT enforce count <= depth or sum(count) <= depth.
+    Those are physical-library properties, not rights-invariant covariate
+    properties. A real human/scientific consumer requires a separate issued
+    source artifact and a reviewed, authority-bearing contract.
+    """
+    value = _snapshot(view)
+    if type(value) is not dict or set(value) != _VIEW_KEYS:
+        raise QExcludedObservationError("V2 fixture view has unknown or missing fields")
+    digest = value.pop("observable_sha256")
+    if type(digest) is not str or len(digest) != 64 or not all(
+        c in "0123456789abcdef" for c in digest
+    ) or canonical_sha256(value) != digest:
+        raise QExcludedObservationError("V2 observable content digest differs from exact view")
+    if (value["schema"] != _SCHEMA or value["authority_scope"] != "FIXTURE_ONLY"
+            or value["reader_partition"] != "reader_fit"
+            or value["depth_semantics"] != _DEPTH_SEMANTICS
+            or value["authority_effect"] != "NONE"
+            or value["view_kind"] not in (_STUDENT, _TEACHER)):
+        raise QExcludedObservationError("V2 fixture view cannot assume real or legacy authority")
+    for key in (
+        "source_authenticated", "donor_identity_authenticated",
+        "physical_measurement_identity_authenticated",
+        "q_rights_issuer_authenticated", "source_feature_mapping_authenticated",
+        "external_truth_access_authorized", "same_code_path_authorized",
+        "real_training_authorized",
+    ):
+        if value[key] is not False:
+            raise QExcludedObservationError("V2 fixture observation has forbidden issuer claim")
+    query = value["query_address_id"]
+    if type(query) is not str or not query or query != query.strip():
+        raise QExcludedObservationError("V2 fixture query address is malformed")
+    rows = value["rows"]
+    if type(rows) is not list or not rows:
+        raise QExcludedObservationError("V2 fixture observations absent")
+    seen, hierarchy, cell_depth = set(), {}, {}
+    for row in rows:
+        if type(row) is not dict or set(row) != _ROW_KEYS:
+            raise QExcludedObservationError("V2 row cannot contain physical total or unknown field")
+        for k in ("cell_id", "donor_id", "source_id", "operator_id",
+                  "address_id", "evidence_right"):
+            if type(row[k]) is not str or not row[k] or row[k] != row[k].strip():
+                raise QExcludedObservationError("V2 row noncanonical address or source")
+        identity = row["cell_id"], row["address_id"]
+        if identity in seen:
+            raise QExcludedObservationError("duplicate V2 cell-address row")
+        seen.add(identity)
+        h = row["donor_id"], row["source_id"], row["operator_id"]
+        if row["cell_id"] in hierarchy and hierarchy[row["cell_id"]] != h:
+            raise QExcludedObservationError("V2 cell switches source/donor/operator")
+        hierarchy[row["cell_id"]] = h
+        if type(row["state"]) is not str or row["state"] not in _STATES:
+            raise QExcludedObservationError("V2 state unknown")
+        depth, count = row["base_rights_normalization_depth"], row["count"]
+        if row["state"] == MEASURED_SCALAR:
+            if (type(count) is not int or count < 0 or
+                    type(depth) is not int or depth <= 0):
+                raise QExcludedObservationError("measured V2 row needs count and positive depth")
+            if row["cell_id"] in cell_depth and cell_depth[row["cell_id"]] != depth:
+                raise QExcludedObservationError("V2 base depth changes between addresses")
+            cell_depth[row["cell_id"]] = depth
+        elif count is not None or depth is not None:
+            raise QExcludedObservationError("V2 non-scalar row exposes count or depth")
+        if value["view_kind"] == _STUDENT and row["address_id"] == query:
+            if row["state"] == MEASURED_SCALAR:
+                raise QExcludedObservationError("student view exposes queried scalar")
+    return {
+        "schema": "TD_OBSERVATION_VIEW_V2_FIXTURE_VALIDATION_RECEIPT",
+        "status": "V2_FIXTURE_VIEW_VALIDATED_NO_AUTHORITY",
+        "view_kind": value["view_kind"],
+        "observable_sha256": digest,
+        "externally_authenticated": False,
+        "human_execution_authorized": False,
+        "authority_effect": "NONE",
+    }
