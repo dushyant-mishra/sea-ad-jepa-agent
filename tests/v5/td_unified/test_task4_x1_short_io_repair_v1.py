@@ -294,6 +294,35 @@ def test_s9b_partial_log_write_then_exception_stays_recoverable(tmp_path, monkey
     _assert_clean_two_events(root, tmp_path)
 
 
+def test_s10_unsynced_intent_withdrawal_is_reported_as_unknown_not_refused(tmp_path, monkeypatch):
+    # Directory fsync fails after the intent rename landed: the withdrawal of the
+    # intent cannot be made durable either, so a crash could resurrect it. The
+    # caller must not be told "nothing was published" as a definitive refusal.
+    from scripts.v5.td_unified import task4_custody_store_v1 as store_module
+
+    root = tmp_path / "store"
+    store = _open(root)
+    _append(store, FIRST)
+    publisher = _CountingPublisher()
+
+    real_directory_fsync = store_module._fsync_parent_directory
+
+    def broken_directory_fsync(path):
+        if Path(path).name == INTENT:
+            raise OSError(errno.EIO, "injected directory fsync failure")
+        return real_directory_fsync(path)
+
+    with monkeypatch.context() as m:
+        m.setattr(store_module, "_fsync_parent_directory", broken_directory_fsync)
+        with pytest.raises(store_module.Task4PublicationOutcomeUnknown):
+            _append_second(store, publisher)
+    assert publisher.calls == 0
+    # Whatever survived is lawful: recovery publishes the identical intent or finds none.
+    _open(root).recover_pending(head_publisher=Publisher())
+    after = _open(root).replay()
+    assert after.pending_transaction is None and after.event_count in (1, 2)
+
+
 def test_publisher_only_ever_sees_a_complete_durable_intent(tmp_path):
     root = tmp_path / "store"
     store = _open(root)
