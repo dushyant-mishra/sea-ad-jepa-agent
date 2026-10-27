@@ -35,7 +35,7 @@ def validate_pointer(doc, root):
     require(type(audit) is dict and audit.get("pr")==322, "master audit PR pointer invalid")
     require(audit.get("branch")=="science/jepa-robust-pipeline-post-jepa-anything-audit-20261013", "audit branch changed")
     require(type(audit.get("exact_head_at_pointer")) is str and HEX40.fullmatch(audit["exact_head_at_pointer"]), "audit exact head invalid")
-    require(audit.get("ci_status_at_pointer") in ("QUEUED__NOT_YET_VERIFIED","EXACT_HEAD_CI_GREEN"),"unqualified audit CI state")
+    require(audit.get("ci_status_at_pointer") in ("QUEUED__NOT_YET_VERIFIED","EXACT_HEAD_CI_GREEN","EXACT_HEAD_V8_V8A_V8B_ALL_GREEN"),"unqualified audit CI state")
     for field in ("audit_doc","audit_machine","audit_no_repeat","asset_custody","validator","post_v8a_doc","post_v8a_machine","complete_takeover_index","post_v8b_doc","post_v8b_machine","v8b_supplement"):
         value=audit.get(field)
         require(type(value) is str and value.startswith(("docs/agent/","results/target_discovery/","scripts/v5/")),f"missing canonical audit file pointer {field}")
@@ -63,6 +63,9 @@ def validate_pointer(doc, root):
     require(audit.get("post_v8b_doc")=="docs/agent/JEPA_POST_V8A_DELTA_V8B_20261027.md","V8b human drift delta missing")
     require(audit.get("post_v8b_machine")=="results/target_discovery/unified_qualification_v1/JEPA_POST_V8A_DELTA_V8B_20261027.json","V8b machine drift delta missing")
     require(audit.get("v8b_supplement")=="results/target_discovery/unified_qualification_v1/JEPA_TAKEOVER_SUPPLEMENT_V8B_20261027.json","V8b supplement missing")
+    require(audit.get("post_v8b_ci_run_id")==40530745175 and audit.get("post_v8b_static_tests_passed")==11,"V8b exact-head CI evidence mismatch")
+    require(audit.get("audit_v8_ci_run_id")==40530744438 and audit.get("audit_v8_hostile_tests_passed")==28,"V8 exact-head CI evidence mismatch")
+    require(audit.get("post_v8a_ci_run_id")==40530744455 and audit.get("post_v8a_qualified_static_tests_passed")==51,"V8a exact-head CI evidence mismatch")
     require("PR322:docs/agent/JEPA_POST_V8A_DELTA_V8B_20261027.md" in order,"read order omits latest V8b drift delta")
 
 
