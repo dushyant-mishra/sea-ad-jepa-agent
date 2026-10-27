@@ -1,0 +1,63 @@
+name: PS Task1 canonical NumPy Win V1 and V2 hostile exception repair
+on:
+  pull_request:
+    paths:
+      - 'scripts/production_synthetic/canonical_v1.py'
+      - 'tests/production_synthetic/test_ps_t12_464_recheck_macha_red.py'
+      - '.github/workflows/ps-t12-464-v1-v2-platform-repair-20261027.yml'
+permissions:
+  contents: read
+jobs:
+  macha473-cross-platform:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        numpy: ['numpy==1.26.4', 'numpy>=2,<3']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+            schemas
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install hostile-test environment
+        shell: bash
+        run: python -m pip install pytest==9.1.1 '${{ matrix.numpy }}'
+      - name: Run Macha original #473 V1/V2 portable and exception tests
+        shell: bash
+        run: python -m pytest -q tests/production_synthetic/test_ps_t12_464_recheck_macha_red.py
+      - name: Unchanged #458 mechanics, T2-D explicitly excluded as external issuer BLOCKED
+        shell: bash
+        run: >-
+          python -m pytest -q tests/production_synthetic/test_ps_t12_repair_recheck_macha_red.py
+          -k 'not test_t2d_'
+  t2d-intentionally-blocked:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: Assert missing issuer T2-D remains fail-closed, preserve verbatim log
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/production_synthetic/test_ps_t12_repair_recheck_macha_red.py -k test_t2d_ > /tmp/ps-t2d-red.log 2>&1
+          rc=$?
+          set -e
+          tail -35 /tmp/ps-t2d-red.log
+          test "$rc" -ne 0
+          grep -Eq '1 failed' /tmp/ps-t2d-red.log
+          echo 'PS_T2D_EXTERNAL_SCAN_ISSUER_RED_PRESERVED__NO_AUTHORITY'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ps-t2d-external-issuer-hostile-red
+          path: /tmp/ps-t2d-red.log
+          retention-days: 30
