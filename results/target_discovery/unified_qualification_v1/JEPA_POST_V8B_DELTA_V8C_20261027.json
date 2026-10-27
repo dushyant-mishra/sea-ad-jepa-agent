@@ -1,0 +1,123 @@
+{
+  "schema": "JEPA_POST_V8B_DELTA_V8C_20261027",
+  "as_of_utc_date": "2026-10-27",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "prior_audit_head": "c07659ccce04bec18a43cc4a371ec0bf277c9255",
+  "prior_active_successor_head": "3bf155717472c5eb6f2b91339bf45c5e4c45c732",
+  "prior_files": [
+    "docs/agent/JEPA_POST_V8A_DELTA_V8B_20261027.md",
+    "results/target_discovery/unified_qualification_v1/JEPA_POST_V8A_DELTA_V8B_20261027.json",
+    "results/target_discovery/unified_qualification_v1/JEPA_TAKEOVER_SUPPLEMENT_V8B_20261027.json",
+    "results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json"
+  ],
+  "current": [
+    {
+      "pr": 457,
+      "head": "53ff7adc7eb01c84edb7abe623d67dfb848f408d",
+      "classification": "CURRENT_CI_GREEN__PUBLIC_REFERENCE_CONTEXT_ONLY__NOT_CAUSAL_OR_TD_AUTHORITY",
+      "ci": [
+        {
+          "run_id": 40532275239,
+          "result": "SUCCESS_E2G_RECEIPTS"
+        },
+        {
+          "run_id": 40532274784,
+          "result": "SUCCESS_PUBLIC_INTAKE"
+        }
+      ],
+      "action": "No biological promotion; use latest source only for public E2G context."
+    },
+    {
+      "pr": 458,
+      "head": "3b08081d7fb3fa99cf1459b13cbe47d5b0962547",
+      "classification": "13_HOSTILE_RED__PRODUCTION_SYNTHETIC_TASK1_2_CUMULATIVE_BLOCKED",
+      "ci": [
+        {
+          "run_id": 40516953772,
+          "result": "13_FAILED_407_PASSED_1_XFAILED"
+        },
+        {
+          "run_id": 40516953763,
+          "result": "13_FAILED_289_PASSED"
+        }
+      ],
+      "action": "Repair authentic canonicalization and separately resolve T2-D attestation trust boundary; no PS Task4."
+    },
+    {
+      "pr": 459,
+      "head": "57e707149b46ca011eee096f01dc08b64aeb8f9f",
+      "classification": "AUTHOR_CI_GREEN__INDEPENDENT_X1_S1_S2_RED__CUMULATIVE_TASK4_BLOCKED",
+      "ci": [
+        {
+          "run_id": 40518058012,
+          "result": "AUTHOR_REGRESSION_GREEN"
+        }
+      ],
+      "action": "Macha fixes independent short-write RED #462; preserve earlier tested X1 successes and X3/external trust blockers."
+    },
+    {
+      "pr": 460,
+      "head": "3bf155717472c5eb6f2b91339bf45c5e4c45c732",
+      "classification": "PRIOR_SUCCESSOR_GREEN__NAVIGATION_ONLY__POINTER_REQUIRES_V8C_REFRESH",
+      "ci": [
+        {
+          "run_id": 40531398424,
+          "result": "23_PASSED"
+        },
+        {
+          "run_id": 40531398538,
+          "result": "SUCCESS"
+        }
+      ],
+      "action": "After V8c independently verified and audit exact head pinned, update active successor pointer and first-session notice."
+    },
+    {
+      "pr": 461,
+      "head": "495350d477a0b7ba65c13dcab5032d443f939cd5",
+      "classification": "8_NEW_HOSTILE_RED__UNIFIED_TASK1_ENCODER_PRIOR_ACCEPTANCE_QUALIFIED",
+      "ci": [
+        {
+          "run_id": 40519155593,
+          "result": "8_FAILED_27_PASSED"
+        },
+        {
+          "run_id": 40519155528,
+          "result": "SUCCESS_SYNTHETIC_INTEGRATION"
+        }
+      ],
+      "action": "Scoped exact-type and portable-integer repair; unchanged hostile tests and preserved lawful historical hashes required."
+    },
+    {
+      "pr": 462,
+      "head": "67d2336155624a8657d2ef3320c9bfff175951ee",
+      "classification": "INDEPENDENT_TASK4_X1_SHORT_WRITE_RED__NOT_IMPLEMENTATION_REPAIR",
+      "ci": [
+        {
+          "run_id": 40530824776,
+          "result": "LINUX_FOCUSED_2_FAILED_199_PASSED_8_SKIPPED",
+          "exact_head": "e3b0c92c37336dfe16c459d85832f062c8cb2a48"
+        },
+        {
+          "run_id": 40530825628,
+          "result": "LINUX_FULL_2_FAILED_390_PASSED_8_SKIPPED",
+          "exact_head": "e3b0c92c37336dfe16c459d85832f062c8cb2a48"
+        },
+        {
+          "run_id": 40531130624,
+          "result": "WINDOWS_2_FAILED_49_PASSED_7_SKIPPED",
+          "exact_head": "67d2336155624a8657d2ef3320c9bfff175951ee"
+        }
+      ],
+      "action": "Keep reviewer tests unchanged; target #459 original SHA, no cumulative acceptance."
+    }
+  ],
+  "evidence_boundaries": {
+    "unified_task1": "Exact-type claims invalid for hostile duck/subclass; existing lawful golden identities are not automatically revoked.",
+    "task4": "Two specific short-write fail-closed scenarios reproduced on Linux+Windows; other author-tested states remain preserved, cumulative acceptance absent.",
+    "ps_task1_2": "13 RED remain; T2-D handwritten scan attestation cannot authorize withheld secret absence.",
+    "e2g": "Both latest public-reference workflows green; no TF causal binding or microglia-specific validation.",
+    "training": "TARGET_NONE_REPRESENTATION_NONE_REAL_TRAINING_OFF_STAGE4_NOT_AUTHORIZED"
+  },
+  "append_only": true,
+  "no_qualification_promotion": true
+}
