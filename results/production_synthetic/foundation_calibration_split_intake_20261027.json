@@ -1,0 +1,43 @@
+{
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "bundle_manifest_sha256": "da7c3daf507a66118131e88ae6685cf43eb14d4163539ade5e0705f6fb845cef",
+  "calibration_authenticated_under_task3_registry": false,
+  "historical_reader_split_donor_counts": {
+    "reader_fit": 104,
+    "reader_oracle": 23,
+    "reader_validation": 22
+  },
+  "logical_manifest_files": 97,
+  "logical_members_by_archive": {
+    "checkpoints": 3,
+    "expression": 45,
+    "main": 48,
+    "split_41k_expression": 1
+  },
+  "physical_cell_gene_identity_externally_attested": false,
+  "physical_member_hashes_unverified_large": 0,
+  "physical_member_hashes_verified": 97,
+  "present_day_real_reference_ready": false,
+  "safe_for_synthetic_observation_realism_conventions": false,
+  "schema": "JEPA_HISTORICAL_FOUNDATION_CALIBRATION_INTAKE_V1",
+  "source_scope": "HISTORICAL_2026_08_24_ARCHIVE_ONLY__NOT_CURRENT_QUALIFIED_CALIBRATION",
+  "split_expression_archive_bytes": 607959761,
+  "split_expression_archive_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+  "split_expression_parts_verified": true,
+  "status_declared_coverage": {
+    "addresses": 41238,
+    "expression_cells": 50000,
+    "metadata_cells": 6351753,
+    "operators": 42
+  },
+  "status_declares_no_dev_sealed_expression": true,
+  "status_declares_no_pathology_fields": true,
+  "stops": [
+    "August archive cannot inherit later repaired HVS/SEA raw-count/G7 physical identity authority",
+    "Reader split metadata is not a trusted observed count or q-excluded library producer",
+    "Historical expression 50k development sample is not all 6.35M measured observations",
+    "Only source hashes and archive roles were checked; no new biology or real gate was executed",
+    "Production V3.1.1 calibration requires current frozen real TRAIN observation-only stats and independent issuer"
+  ],
+  "verification_mode": "ALL_SHA256"
+}
