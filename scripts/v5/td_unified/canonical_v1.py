@@ -117,8 +117,45 @@ def _encode_float(value: float) -> str:
     return "0.0" if value == 0.0 else float.__repr__(value)
 
 
+# Frozen supported NumPy scalar classes. Testing exact TYPE identity (not equality
+# and not caller-supplied .dtype / .__class__) excludes subclasses and impostors.
+# np.longdouble remains accepted only when its physical width <= 8 bytes.
+_EXACT_NUMPY_SCALAR_TYPES = (
+    np.bool_, np.int8, np.int16, np.int32, np.int64,
+    np.uint8, np.uint16, np.uint32, np.uint64,
+    np.intp, np.uintp, np.longlong, np.ulonglong,
+    np.float16, np.float32, np.float64, np.longdouble,
+)
+
+
 def _is_exact_numpy_scalar(value: object) -> bool:
-    return isinstance(value, np.generic) and type(value) is value.dtype.type
+    actual = type(value)
+    return any(actual is accepted for accepted in _EXACT_NUMPY_SCALAR_TYPES)
+
+
+# Match the historical default Python 3 decimal domain, independently of
+# PYTHONINTMAXSTRDIGITS. Short (<1e9) chunks cannot hit the interpreter limit.
+# This does not enlarge V1's default lawful range or alter lawful V1 bytes.
+_MAX_DECIMAL_DIGITS = 4300
+_MAX_ABS_INT = 10 ** _MAX_DECIMAL_DIGITS
+
+
+def _bounded_decimal(value: int) -> str:
+    if type(value) is not int:
+        raise CanonicalError("exact built-in integer required")
+    magnitude = abs(value)
+    if magnitude >= _MAX_ABS_INT:
+        raise CanonicalError("integer exceeds frozen 4300-digit domain")
+    if magnitude == 0:
+        return "0"
+    chunks = []
+    while magnitude:
+        magnitude, rem = divmod(magnitude, 1_000_000_000)
+        chunks.append(rem)
+    rendered = str(chunks.pop())
+    while chunks:
+        rendered += f"{chunks.pop():09d}"
+    return ("-" if value < 0 else "") + rendered
 
 
 def _encode(value: Any, out: list[str]) -> None:
@@ -128,27 +165,22 @@ def _encode(value: Any, out: list[str]) -> None:
     elif value_type is bool:
         out.append("true" if value else "false")
     elif value_type is int:
-        try:
-            out.append(int.__str__(value))
-        except ValueError as exc:
-            raise CanonicalError("integer too large to serialize exactly") from exc
+        out.append(_bounded_decimal(value))
     elif value_type is float:
         out.append(_encode_float(value))
     elif value_type is str:
         out.append(_encode_string(value))
     elif _is_exact_numpy_scalar(value):
-        if isinstance(value, np.bool_):
+        # The dtype is obtained from the trusted, identity-whitelisted type,
+        # never from a potentially user-overridden instance .dtype property.
+        dtype = np.dtype(value_type)
+        if dtype.kind == "b":
             out.append("true" if bool(value) else "false")
-        elif isinstance(value, (np.datetime64, np.timedelta64)):
-            raise CanonicalError(f"unsupported canonical type: {value_type.__name__}")
-        elif isinstance(value, np.integer):
-            try:
-                out.append(str(int(value)))
-            except ValueError as exc:
-                raise CanonicalError("integer too large to serialize exactly") from exc
-        elif isinstance(value, np.floating):
-            if value.dtype.itemsize > 8:
-                raise CanonicalError(f"numpy floating type wider than float64 is unsupported: {value.dtype}")
+        elif dtype.kind in ("i", "u"):
+            out.append(_bounded_decimal(int(value)))
+        elif dtype.kind == "f":
+            if dtype.itemsize > 8:
+                raise CanonicalError(f"numpy floating type wider than float64 is unsupported: {dtype}")
             out.append(_encode_float(float(value)))
         else:
             raise CanonicalError(f"unsupported canonical type: {value_type.__name__}")
@@ -169,7 +201,7 @@ def _encode(value: Any, out: list[str]) -> None:
             out.append(":")
             _encode(normalized[key], out)
         out.append("}")
-    elif value_type in (list, tuple):
+    elif value_type is list or value_type is tuple:
         out.append("[")
         for index, item in enumerate(value):
             if index:
