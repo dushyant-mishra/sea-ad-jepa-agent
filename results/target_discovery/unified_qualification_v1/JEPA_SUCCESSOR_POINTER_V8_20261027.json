@@ -5,16 +5,19 @@
   "master_audit": {
     "pr": 322,
     "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
-    "exact_head_at_pointer": "78c6c37262a98ca673614ac84b92eea9c12fddf4",
+    "exact_head_at_pointer": "243623d72cb33657792b86c8558b438d6dc1938b",
     "audit_doc": "docs/agent/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.md",
     "audit_machine": "results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.json",
     "audit_no_repeat": "docs/agent/JEPA_NO_REPEAT_DELTA_V8_20261027.md",
     "asset_custody": "docs/agent/JEPA_LOCAL_ATTACHMENT_CUSTODY_RECONCILIATION_V8_20261027.csv",
     "validator": "scripts/v5/verify_jepa_lane_audit_v8.py",
     "qualifier": "Static audit source and exact SHA checks only; not external scientific authentication",
-    "ci_status_at_pointer": "EXACT_HEAD_CI_GREEN",
+    "ci_status_at_pointer": "QUEUED__NOT_YET_VERIFIED",
     "audit_v8_ci_run_id": 40517158398,
-    "audit_v8_hostile_tests_passed": 18
+    "audit_v8_hostile_tests_passed": 18,
+    "post_v8a_machine": "results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json",
+    "post_v8a_doc": "docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md",
+    "post_v8a_ci_run_id": 40519799394
   },
   "handoff": {
     "pr": 323,
@@ -25,13 +28,14 @@
   },
   "frozen_unified_task3": "117dd51dea827e734b299982da93991b934bdc8f",
   "active": {
-    "task4": "X1_EXTERNAL_PUBLISHER_REFUSAL_RED__X3_MIXED_WINDOWS_WSL_NOT_QUALIFIED",
+    "task4": "PR459_X1_NEW_CANDIDATE_GREEN__INDEPENDENT_REVIEW_PENDING__X3_CROSS_OS_UNQUALIFIED",
     "real_g7": "UNQUALIFIED__PHYSICAL_MEASUREMENT_AND_DEPTH_PROVENANCE",
-    "ps_task1": "CUMULATIVE_INDEPENDENT_ACCEPTANCE_PENDING",
-    "ps_task2": "CUMULATIVE_INDEPENDENT_ACCEPTANCE_PENDING",
+    "ps_task1": "PR458_NEW_13_HOSTILE_RED__CUMULATIVE_ACCEPTANCE_PENDING",
+    "ps_task2": "PR458_NEW_13_HOSTILE_RED__CUMULATIVE_ACCEPTANCE_PENDING",
     "ps_task3": "OLD_DEPENDENCY_FIXTURE_ACCEPT_WITH_LIMITS__REVIEW_PENDING",
     "task5": "BRIDGE_INCREMENT_ACCEPTED_ONLY__FULL_A7_PENDING",
-    "tasks6_8": "FIXTURE_ONLY_NONE_AND_ABSTENTION"
+    "tasks6_8": "FIXTURE_ONLY_NONE_AND_ABSTENTION",
+    "regulatory_e2g": "PR457_PUBLIC_SYMBOL_REFERENCE_ONLY__RESULT_RECEIPT_CI_RED__NOT_CAUSAL_BIOLOGY"
   },
   "next_owner": {
     "macha": "Unified Task4 X1 transaction and recovery with exact RED; no self-accept",
@@ -40,6 +44,7 @@
   },
   "read_order": [
     "docs/agent/JEPA_SUCCESSOR_HANDOFF_V8_20261027.md",
+    "PR322:docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md",
     "PR322:docs/agent/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.md",
     "PR322:results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.json",
     "PR322:docs/agent/JEPA_NO_REPEAT_DELTA_V8_20261027.md",
