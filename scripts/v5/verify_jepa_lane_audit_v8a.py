@@ -7,6 +7,7 @@ from scripts.v5.verify_jepa_lane_audit_v8 import TERMINAL, validate_snapshot
 
 BASE="results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.json"
 DELTA="results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json"
+INDEX="results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json"
 EXPECTED={
     457:("cd86187ec03092bdc9ebb17e36046ac8853b4fd1","E2G_SEVEN_PUBLIC_SOURCES_PROVISIONAL_COVERAGE_ONLY__RESULT_RECEIPT_CI_RED"),
     458:("3b08081d7fb3fa99cf1459b13cbe47d5b0962547","PS_TASKS1_2_SECOND_WAVE_INDEPENDENT_RED_13_TESTS__CUMULATIVE_REVIEW_BLOCKED"),
@@ -62,11 +63,56 @@ def validate_delta(doc: object, base: object) -> None:
     refuse(doc.get("task4_author_green_counts",{}).get("windows_skipped")==7,"Windows skips hidden")
 
 
+
+def validate_index(doc: object) -> None:
+    refuse(type(doc) is dict and doc.get("schema")=="JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027","wrong complete takeover index schema")
+    refuse(doc.get("authority")==TERMINAL,"complete file index changed authority")
+    refuse(doc.get("clean_successor_pr")==460,"clean successor pointer changed")
+    refuse(doc.get("raw_binary_policy","").startswith("Large ZIP/NPZ/PT artifacts remain external"),"large private/raw artifact policy changed")
+    cats=doc.get("categories")
+    refuse(type(cats) is dict,"takeover categories missing")
+    required={"historical_audit_docs","external_context_and_historical_imports","plans_and_specs","machine_results","executable_scripts","tests","workflows","clean_successor_files"}
+    refuse(set(cats)==required,"complete file-index categories changed")
+    counts=doc.get("counts")
+    refuse(type(counts) is dict and set(counts)==required,"file-index counts missing")
+    for key in required:
+        refuse(type(cats[key]) is list and counts[key]==len(cats[key]) and counts[key]>0,"file-index count mismatch: "+key)
+        refuse(len(cats[key])==len(set(cats[key])),"duplicate path in file-index category: "+key)
+    docs=set(cats["historical_audit_docs"])
+    results=set(cats["machine_results"])
+    scripts=set(cats["executable_scripts"])
+    tests=set(cats["tests"])
+    for must in (
+        "docs/agent/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.md",
+        "docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md",
+        "docs/agent/JEPA_NO_REPEAT_DELTA_V8_20261027.md",
+        "docs/agent/JEPA_LOCAL_ATTACHMENT_CUSTODY_RECONCILIATION_V8_20261027.csv",
+        "docs/agent/JEPA_HISTORICAL_ARCHITECTURE_DECISION_LEDGER_20261013.md",
+        "docs/agent/JEPA_GENE_IDENTITY_RECLASSIFICATION_AUDIT_20261013.md",
+    ):
+        refuse(must in docs,"critical historical audit missing from complete index: "+must)
+    for must in (
+        "results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.json",
+        "results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json",
+    ):
+        refuse(must in results,"critical machine evidence missing from complete index: "+must)
+    refuse("scripts/v5/verify_jepa_lane_audit_v8.py" in scripts and "scripts/v5/verify_jepa_lane_audit_v8a.py" in scripts,"audit validators not indexed")
+    refuse("tests/v5/test_verify_jepa_lane_audit_v8.py" in tests and "tests/v5/test_verify_jepa_lane_audit_v8a.py" in tests,"audit hostile tests not indexed")
+    latest=doc.get("latest_post_v8_prs")
+    refuse(type(latest) is list and {x.get("pr") for x in latest}=={457,458,459,460},"latest post-V8 PR map incomplete")
+    by={x["pr"]:x for x in latest}
+    refuse(by[458]["head"]=="3b08081d7fb3fa99cf1459b13cbe47d5b0962547","PS second-wave RED head changed")
+    refuse(by[459]["head"]=="57e707149b46ca011eee096f01dc08b64aeb8f9f","Task4 X1 candidate head changed")
+    refuse(by[460]["head"]=="68afef03780a25f7778802ebe3eb53cb0463fe1a","clean successor head changed")
+    refuse(doc.get("reviewer_independence","").startswith("Implementation authors cannot cumulatively self-accept"),"independence rule removed")
+
 def main() -> None:
     root=Path(__file__).resolve().parents[2]
     base=json.loads((root/BASE).read_text(encoding="utf-8"))
     delta=json.loads((root/DELTA).read_text(encoding="utf-8"))
+    index=json.loads((root/INDEX).read_text(encoding="utf-8"))
     validate_delta(delta,base)
+    validate_index(index)
     print("JEPA_V8A_DELTA_STATIC_PASS__RED_PRESERVED__NO_NEW_AUTHORITY")
 
 
