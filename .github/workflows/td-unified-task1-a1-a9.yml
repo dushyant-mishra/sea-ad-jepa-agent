@@ -10,6 +10,7 @@ on:
       - 'tests/v5/td_unified/test_authority_v1.py'
       - 'tests/v5/td_unified/test_task1_macha_repairs_v1.py'
       - 'tests/v5/td_unified/test_task1_canonical_dispatch_bypass_macha_red.py'
+      - 'tests/v5/td_unified/test_task1_463_recheck_macha_red.py'
       - 'docs/agent/UNIFIED_TASK1_EXECUTION_LEDGER_20261015.md'
       - 'results/target_discovery/unified_qualification_v1/UNIFIED_TASK1_REUSE_SUBSTRATE_V1.json'
       - '.github/workflows/td-unified-task1-a1-a9.yml'
@@ -25,4 +26,32 @@ jobs:
       - name: Install test dependencies
         run: python -m pip install 'pytest>=9,<10' 'numpy>=2,<3'
       - name: Run Unified Task 1 A1+A9
-        run: python -m pytest -q tests/v5/td_unified/test_canonical_v1.py tests/v5/td_unified/test_authority_v1.py tests/v5/td_unified/test_task1_macha_repairs_v1.py tests/v5/td_unified/test_task1_canonical_dispatch_bypass_macha_red.py
+        run: python -m pytest -q tests/v5/td_unified/test_canonical_v1.py tests/v5/td_unified/test_authority_v1.py tests/v5/td_unified/test_task1_macha_repairs_v1.py tests/v5/td_unified/test_task1_canonical_dispatch_bypass_macha_red.py tests/v5/td_unified/test_task1_463_recheck_macha_red.py
+
+  # NumPy scalar class identity is platform-specific (C int vs C long are distinct
+  # classes on Windows), so the exact-type encoder is also checked there.
+  task1-a1-a9-windows:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        numpy: ['numpy>=2,<3', 'numpy==1.26.4']
+    steps:
+      # This historical repository contains Windows-incompatible long
+      # preservation paths. Check out only what these tests read.
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+            schemas
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependencies
+        shell: bash
+        run: python -m pip install 'pytest>=9,<10' '${{ matrix.numpy }}'
+      - name: Run Unified Task 1 A1+A9 (Windows)
+        shell: bash
+        run: python -m pytest -q tests/v5/td_unified/test_canonical_v1.py tests/v5/td_unified/test_authority_v1.py tests/v5/td_unified/test_task1_macha_repairs_v1.py tests/v5/td_unified/test_task1_canonical_dispatch_bypass_macha_red.py tests/v5/td_unified/test_task1_463_recheck_macha_red.py
