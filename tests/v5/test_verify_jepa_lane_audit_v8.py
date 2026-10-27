@@ -6,7 +6,8 @@ import json
 from pathlib import Path
 import pytest
 from scripts.v5.verify_jepa_lane_audit_v8 import (
-    TERMINAL, SNAPSHOT, ASSETS, validate_snapshot, validate_assets, main
+    TERMINAL, SNAPSHOT, ASSETS, POST_V8A, validate_snapshot, validate_assets,
+    validate_post_v8a_delta, main
 )
 ROOT=Path(__file__).resolve().parents[2]
 
@@ -69,3 +70,25 @@ def test_audit_static_guard_does_not_authenticate_science():
     doc=sources()
     assert doc["authority"]==TERMINAL
     assert "NO_AUTHORITY" in doc["release_gates"]["unified_tasks6_8"] or "FIXTURES_ONLY" in doc["release_gates"]["unified_tasks6_8"]
+
+
+def test_unmodified_post_v8a_new_work_delta_verifies():
+    validate_post_v8a_delta(json.loads((ROOT/POST_V8A).read_text()))
+
+
+@pytest.mark.parametrize("mutation", [
+    lambda x:x.update(authority="STAGE4_AUTHORIZED"),
+    lambda x:x["records"][0].update(status="VALIDATED_CAUSAL_E2G"),
+    lambda x:x["records"][1].update(status="PS_TASKS1_2_ACCEPTED"),
+    lambda x:x["records"][2].update(status="X1_ACCEPTED_CUMULATIVE"),
+    lambda x:x["records"][1].update(sha="f"*40),
+    lambda x:x["records"][1]["ci_red"].clear(),
+    lambda x:x["clear_new_work"].update(task4="AUTHOR_SELF_ACCEPTED"),
+    lambda x:x["new_red_ci_counts"]["ps_tasks_1_2"].update(failed=0),
+    lambda x:x["task4_author_green_counts"].update(windows_focus=0),
+])
+def test_post_v8a_scientific_and_custody_status_laundering_refused(mutation):
+    doc=json.loads((ROOT/POST_V8A).read_text())
+    mutation(doc)
+    with pytest.raises(ValueError):
+        validate_post_v8a_delta(doc)
