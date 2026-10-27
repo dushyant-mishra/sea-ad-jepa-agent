@@ -1,3 +1,21 @@
+# READ THIS FIRST — V8b smooth takeover update (2026-10-27)
+
+**Start with** `docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_V8B_20261027.md`.
+
+Then read the V8b audit delta on PR #322 before the older V8a/V8 narrative:
+- audit head `c07659ccce04bec18a43cc4a371ec0bf277c9255`;
+- `docs/agent/JEPA_POST_V8A_DELTA_V8B_20261027.md`;
+- `results/target_discovery/unified_qualification_v1/JEPA_POST_V8A_DELTA_V8B_20261027.json`;
+- `results/target_discovery/unified_qualification_v1/JEPA_TAKEOVER_SUPPLEMENT_V8B_20261027.json`.
+
+V8b records one post-V8a head drift: PR #457 is now `17e7cc8818d27222fac5c0a3e91677640ea81153` and its current public-reference workflows are GREEN. Its scientific classification is unchanged: **contextual public annotation only, not causal biology or target authority**. PR #458's 13 hostile RED and PR #459's independently unaccepted Task4 X1 candidate remain the critical current evidence.
+
+PR #460 remains the active operational handoff. PR #323 remains historical custody.
+
+Global authority remains `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # READ FIRST: V8a post-snapshot delta — 2026-10-27
 
 > **CURRENT V8a UPDATE — 2026-10-27:** After this V8 snapshot, PR #459 `57e707149b46ca011eee096f01dc08b64aeb8f9f` supplied Macha's prospective Task4 X1 write-ahead transaction (CI GREEN, **independent cumulative acceptance pending**, Windows/WSL X3 unresolved). Independent PR #458 `3b08081d7fb3fa99cf1459b13cbe47d5b0962547` demonstrated **13 new RED** against repaired Production Synthetic Tasks1–2. Public E2G survey PR #457 is contextual-only and its result-receipt CI failed. **Do not assign X1 creation again or treat prior Tasks1–2 green as unchallenged.** Read `docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md` and its JSON on audit PR #322 first. The older V8 chronology below remains a historical record, not the new immediate task list.
