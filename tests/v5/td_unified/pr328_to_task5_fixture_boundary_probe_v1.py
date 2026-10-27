@@ -113,8 +113,10 @@ def produce(root: Path, output: Path) -> None:
     print(f"PR328_FIXTURE_OBSERVATIONS_EXPORTED__NO_TRUTH__{len(obs)}_ATOMS")
 
 def _stage(role: str):
-    from scripts.v5.td_unified.canonical_v1 import canonical_sha256
     def step(value):
+        # Imported by the test handler, not captured in its closure. The
+        # existing PR440 fingerprint contract permits only primitive captures.
+        from scripts.v5.td_unified.canonical_v1 import canonical_sha256
         return {"fixture_stage":role,"previous_sha256":canonical_sha256(value)}
     return step
 
