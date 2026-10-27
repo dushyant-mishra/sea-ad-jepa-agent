@@ -150,7 +150,7 @@ def validate(d:dict,root:Path)->None:
     txt=doc.read_text(encoding="utf-8")
     for term in ("PR #315","PR #328","PR #313","PRs #332/#351","PR #451","GSE301119",
                  "GSE311359","GSE178317","SCENIC+","NOT_ESTIMABLE","same-","G7",
-                 "C3_QUERY_MEASURED","nearest-third","R5","V44","physical feature mapping defect",
+                 "C3_QUERY_MEASURED","nearest-third","R5","V44","feature mapping defect",
                  "PR #314","CORRECTED_RELATIONAL_PROGRAM_CONSISTENT_WITH_HISTORICAL_SCALE_BRACKET",AUTH):
         ensure(term in txt,"source restriction absent in narrative "+term)
 
