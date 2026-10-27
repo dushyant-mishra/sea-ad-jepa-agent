@@ -1,0 +1,8 @@
+source_id,tested_tf_gene_peaks,tf_gene_pairs_with_e2g_rows,unique_query_peaks_with_e2g_r50,tf_gene_peak_hypotheses_any_bp,tf_gene_peak_hypotheses_r20,tf_gene_peak_hypotheses_r50,tf_gene_peak_hypotheses_r80,tf_gene_pairs_with_r50,direct_class_tf_gene_peaks_with_r50,extended_only_class_tf_gene_peaks_with_r50,spatial_any_gene_hits_at_any_bp,pseudo_shift_hits_r50,pseudo_shift_trials,external_target_tss_identity_not_verified
+inflammatory_macrophage_ENCSR593WXK,149,96,17,102,82,40,14,34,11,29,114,5,894,True
+inflammatory_macrophage_ENCSR643ZGR,149,96,14,107,72,34,9,31,13,21,109,3,894,True
+inflammatory_macrophage_ENCSR226JLK,149,96,18,110,79,43,12,40,15,28,116,7,894,True
+Macrophage,149,95,13,115,76,36,8,35,10,26,117,8,894,True
+Immune_monocyte_1,149,96,20,120,107,51,16,45,15,36,121,9,894,True
+brain_ENCSR344FLH,149,62,2,55,39,3,0,3,0,3,66,1,894,True
+Stitziel_hCA_Myeloid,149,93,22,122,101,59,12,56,20,39,122,17,894,True
