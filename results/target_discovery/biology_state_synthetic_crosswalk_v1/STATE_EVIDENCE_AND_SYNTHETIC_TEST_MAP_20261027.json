@@ -91,24 +91,24 @@
     {
       "id": "RELATIONAL_RNA_STATE",
       "family": "C2_RELATIONAL",
-      "question": "Does pre-repair historical donor-recurrent scale-free RNA relational order (TD56/57B/58/59) survive identity-corrected replay, depth nulls, and partial RNA, while TD57C nearest-third remains a frozen FAIL?",
+      "question": "Does Macha's executed corrected TD56/TD57B/TD57C/TD59 replay (Pattern A: broad/mesoscale PASS, nearest-third FAIL) support a downstream partial-RNA relational target beyond technical, gene-identity and global shortcuts?",
       "real_evidence": [
         {
           "source": "docs/agent/JEPA_HISTORICAL_ARCHITECTURE_DECISION_LEDGER_20261013.md",
           "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
-          "interpretation": "TD57B historical 24/24 broad scale-free and TD57C nearest-third 2/4 HVS FAIL are archived; subsequent HVS/SEA physical feature mapping defect prevents promoting pre-repair HVS/SEA results to current biological authority"
+          "interpretation": "The original HVS/SEA feature mapping defect motivated correction, and was addressed by the executed one-shot corrected replay in PR314. Corrected TD56/TD57B/TD59 PASS; TD57C nearest-third FAIL; not current C2 target winner"
         },
         {
           "source": "docs/agent/JEPA_LANE_MASTER_AUDIT_INDEX_20261014.md",
           "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
-          "interpretation": "Existing R1 and corrected G7/custody rules must be satisfied before prospective reuse; no repeated old TD57B/TD59 experiment, no current C2 PASS"
+          "interpretation": "PR322 historical architecture decision ledger already records PR314 corrected replay as spent and broad/mesoscale viable. R1/gate qualification and teacher/student predictability remain separate, not an unperformed replay"
         }
       ],
-      "evidence_tier": "HISTORICAL_REAL_TD56_57B_58_59_POSITIVES__HVS_SEA_PHYSICAL_MAPPING_REPAIR_REQUIRED__NOT_CURRENT_TARGET_AUTHORITY",
+      "evidence_tier": "PR314_AUTHORIZED_CORRECTED_REAL_REPLAY_COMPLETED__TD56_TD57B_TD59_PASS__TD57C_FAIL__C2_ACTIVE_NOT_WINNER",
       "simulator_case": "PR328_COMMON_PROGRAM__DONOR_DISJOINT__INDEPENDENT_OBSERVATION",
       "simulator_status": "PARTIAL_FIXTURE__FULL_SCALE_FREE_RELATIONAL_TRUTH_TOURNAMENT_NOT_RUN",
-      "human_target_object_needed": "Prospectively frozen relation/triplet estimand on source-supported verified molecular addresses, not arbitrary latent-neighbor distances",
-      "first_forward_test": "Zero-update donor/source-heldout triplet-order test against donor/source preserved label-null, abundance rank, and technical-depth baselines",
+      "human_target_object_needed": "C2 remains ACTIVE after completed corrected Pattern-A replay; now needs current relational evidence-right/metric/technical-null qualification and donor/source transport before JEPA target authority",
+      "first_forward_test": "DO_NOT_RERUN_PR314; confirm exact corrected replay receipt and independent interpretation, then isolate remaining R1/teacher-student and source-support qualification with existing controllers; no unqualified new biological experiment",
       "must_fail_or_abstain_on": [
         "Global-scale relationship assumed to prove fine-local geometry",
         "Unbound 41K address identity or structural unmeasurement",
@@ -264,8 +264,8 @@
     }
   ],
   "next_executable_science": [
-    "FIRST inspect current G7 E3 physical trust and corrected replay external qualification against accepted exact SHA; do not spend or infer a new human biological experiment.",
-    "SECOND map each previously executed R5, TD56/57B/57C/58/59, V44, Stage70, Macha ATAC/perturbation source to its current gene identity, metric, donor support and supersession; reference old results not repeat them.",
+    "FIRST recognize PR314 executed corrected TD56/TD57B/TD57C/TD59 on Oct 12; compare independent scientific adjudication and the later distinct G7 E3 real content-trust problem, without reopening any spent one-shot.",
+    "SECOND preserve actual R5, corrected PR314 Pattern A, V44, Stage70, Macha ATAC and perturbation findings as completed bounded biological evidence; audit only the remaining claim-level target and transport qualification.",
     "THIRD restrict any proposed new experiment to a genuinely unresolved target-specific claim and a predeclared changed input; use frozen TD execution manifest, real producers and existing PR313/369 controller.",
     "FOURTH only after real producer and calibration authority, use the established PR351/451 teacher/student/EMA harness to consume an authenticated TQB; never promote synthetic labels as human outcomes."
   ],
@@ -291,12 +291,12 @@
     {
       "key": "TD56_59_RELATIONAL",
       "lane": "MACHA_TARGET_DISCOVERY_TAKEOVER",
-      "source": "docs/agent/TARGET_DISCOVERY_MASTER_HANDOFF_20261011.md",
-      "source_ref": "audit/target-discovery-takeover-20261011",
-      "measurement": "Real 50K RNA two disjoint panels and donor/source-matched triplet relations",
-      "result": "TD57B 24/24 historical PASS; TD57C nearest-third HVS 2/4 FAIL; TD58 historical 24/24 partial 60%; TD59 nearest-half 24/24 historical PASS",
-      "classification": "HISTORICAL_REAL_RESULT__HVS_SEA_FEATURE_MAPPING_DEFECT__CORRECTED_REPLAY_REQUIRED",
-      "new_experiment": "CORRECTED_PHYSICAL_REPLAY_OF_EXISTING_PREDECLARED_TESTS_ONLY_WHEN_G7_QUALIFIED"
+      "source": "docs/agent/TD_CORRECTED_REPLAY_OUTCOME_7819aabd_20261012/TD_CORRECTED_REPLAY_OUTCOME.md",
+      "source_ref": "c6899a2910244a0352c0c57e7aea6e3026191da1",
+      "measurement": "Historical TD56–59 real RNA donor/source relations were later physically corrected and replayed once under PR314; NPH52 authenticated pass-through, not independent correction",
+      "result": "PR314 one-shot corrected replay Oct 12: TD56 PASS, TD57B PASS, TD57C nearest-third HVS P0 FAIL (3/4), TD59 PASS; Pattern A broad/mesoscale viable; C2 ACTIVE, NO TARGET WINNER",
+      "classification": "CORRECTED_REPLAY_PR314_COMPLETED__BROAD_MESO_VIABLE__C2_ACTIVE_NOT_WINNER",
+      "new_experiment": "NO_REPLAY_REPEAT__ONE_SHOT_SPENT"
     },
     {
       "key": "V44_RNA_TEACHER_PROXIES",
