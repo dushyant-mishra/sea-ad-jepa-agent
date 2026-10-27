@@ -1,0 +1,24 @@
+name: JEPA successor V8 handoff pointer / no-promotion
+on:
+  pull_request:
+    paths:
+      - 'docs/agent/JEPA_SUCCESSOR_HANDOFF_V8_20261027.md'
+      - 'results/target_discovery/unified_qualification_v1/JEPA_SUCCESSOR_POINTER_V8_20261027.json'
+      - 'scripts/v5/verify_jepa_lane_handoff_v8.py'
+      - 'tests/v5/test_verify_jepa_lane_handoff_v8.py'
+      - '.github/workflows/jepa-successor-v8-handoff.yml'
+permissions:
+  contents: read
+jobs:
+  successor-v8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'pytest==9.1.1' 'numpy==1.26.4'
+      - name: V8 successor pointer verifies exact known blockers
+        run: python scripts/v5/verify_jepa_lane_handoff_v8.py
+      - name: V8 successor hostile no-promotion tests
+        run: python -m pytest -q tests/v5/test_verify_jepa_lane_handoff_v8.py
