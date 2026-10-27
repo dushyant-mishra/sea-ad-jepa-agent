@@ -131,7 +131,8 @@ def validate(d:dict,root:Path)->None:
         ensure(record.get("classification")==COMPLETED_REAL_KEYS[key],"historical result promoted: "+key)
         ensure((record.get("source"),record.get("source_ref"))==HISTORICAL_SOURCES[key],"source lineage changed: "+key)
         for field in ("lane","measurement","result","new_experiment"):
-            ensure(type(record.get(field)) is str and len(record[field])>15 if field!="new_experiment" else type(record.get(field)) is str and len(record[field])>=2,
+            minimum = 2 if field=="new_experiment" else (8 if field=="lane" else 16)
+            ensure(type(record.get(field)) is str and len(record[field])>=minimum,
                    "missing scope for "+key+"/"+field)
         ensure("TARGET_WINNER" not in record.get("classification","") or "NOT_CURRENT" in record["classification"],
                "real winner falsely selected")
