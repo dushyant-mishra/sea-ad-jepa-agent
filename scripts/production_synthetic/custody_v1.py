@@ -2019,8 +2019,8 @@ def attest_realization_set(freeze: GeneratorFreeze, ledger: CustodyLedger, *, ro
     rows = []
     for r in emitted:
         _exact_keys(r, ("realization_id", "content_sha256"), "emitted realization row")
-        if not isinstance(r["realization_id"], str):
-            raise CustodyError("realization_id must be str")
+        if type(r["realization_id"]) is not str:
+            raise CustodyError("realization_id must be exact built-in str")
         _hex64(r["content_sha256"], "content_sha256")
         rows.append({"realization_id": r["realization_id"], "content_sha256": r["content_sha256"]})
     ids = [r["realization_id"] for r in rows]
@@ -2270,8 +2270,10 @@ def _bytes_hit(data: bytes, needles) -> bool:
 
 def scan_secret_absence(repo_tree, secret_bytes: bytes) -> dict:
     """Attest whether ``secret_bytes`` is absent from every file and path name under ``repo_tree``."""
-    if not isinstance(secret_bytes, bytes):
-        raise CustodyError("secret must be bytes")
+    # An attacker-controlled bytes subclass can spoof __len__ and .hex(),
+    # making a short secret appear sufficiently strong or hiding a leak.
+    if type(secret_bytes) is not bytes:
+        raise CustodyError("secret must be exact built-in bytes")
     if len(secret_bytes) < MIN_SCAN_SECRET_BYTES:
         raise CustodyError(f"secret must be at least {MIN_SCAN_SECRET_BYTES} bytes to be scanned meaningfully")
     try:
