@@ -55,6 +55,8 @@ The missing work is not another graph or another synthetic stack: it is to bind 
 | Experimental response support | PR #77 CRISPR engagement; GSE311359/GSE178317 guide identity stops | Target engagement is not transcriptome-wide response/state qualification |
 | C6/C4 | Existing noncompensation and additive-comparator rules PR #351/#358 | Depend on qualified constituents and fixed meaningful same-metric increment; don't front-run simpler claims |
 
+**Mapping correction audit:** the original **physical feature mapping defect** concerned historical HVS/SEA-AD data and motivated PR #314's one-shot corrected replay. Its frozen Pattern A terminal is `CORRECTED_RELATIONAL_PROGRAM_CONSISTENT_WITH_HISTORICAL_SCALE_BRACKET`. Do not describe correction as pending or treat this real-data replay as a JEPA target/representation winner.
+
 ## Work done after October 12 — do not erase these separate lanes
 
 1. **Real TD:** PR #314 executed the corrected relational replay. PRs #316–336 then developed and independently tested a sealed known-truth relational qualification test (9/9 challenge outcomes), not a new human target. PR #349 froze 149-donor / 42-operator support and split-specific evidence blockers. Macha's October 14 full raw-count audit sampled no candidate outcome and found human G2/G6/G8/R1/geometry authority defects. PRs #364–368 repaired those mechanics; #369 sealed cross-gate V3 passed, but human deciding references/producer trust remain blocked.
