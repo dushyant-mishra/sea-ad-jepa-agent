@@ -1,0 +1,23 @@
+name: E2G public reference track HEAD probe
+on:
+  push:
+    branches: [audit/external-e2g-compat-20261027]
+    paths:
+      - scripts/regulatory/probe_e2g_public_track_headers_v1.py
+      - .github/workflows/e2g-reference-head-probe.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  head-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Compile
+        run: python -m py_compile scripts/regulatory/probe_e2g_public_track_headers_v1.py
+      - name: Seven public HEAD requests only; no billed/downloaded objects
+        run: python scripts/regulatory/probe_e2g_public_track_headers_v1.py
