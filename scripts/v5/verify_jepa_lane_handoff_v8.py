@@ -49,8 +49,13 @@ def validate_pointer(doc, root):
     for item in ["TARGET_WINNER_NONE","#322","#451","Task4","X1","X3","G7","Tasks6–8","#456"]:
         require(item in text,"required unresolved gate/source not in successor handoff: "+item)
     order=doc.get("read_order")
-    require(type(order) is list and len(order)==6 and len(set(order))==5 and order[0]==handoff_path, "incorrect no-repeat read order")
+    require(type(order) is list and len(order)==6 and len(set(order))==6 and order[0]==handoff_path, "incorrect no-repeat read order")
     require(doc.get("next_owner",{}).get("independent_non_author"),"independent acceptance role missing")
+    require(doc.get("next_owner",{}).get("chatgpt"),"independent new X1 review role missing")
+    require(audit.get("post_v8a_machine")=="results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json","new 13 PS REDs or X1 candidate index missing")
+    require(audit.get("post_v8a_doc")=="docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md","V8a human reviewer handoff missing")
+    require(type(audit.get("audit_v8_ci_run_id")) is int and audit["audit_v8_ci_run_id"] == 40517158398,"wrong V8 static CI source")
+    require("PR322:docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md" in order,"read order omits latest new defects")
 
 
 def main():
