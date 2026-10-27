@@ -5,24 +5,21 @@
   "master_audit": {
     "pr": 322,
     "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
-    "exact_head_at_pointer": "713633f109903b77a812badba53c5186e7e137d4",
+    "exact_head_at_pointer": "d35b3decb97350ad69437ed5776d96a6499a99b9",
     "audit_doc": "docs/agent/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.md",
     "audit_machine": "results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.json",
     "audit_no_repeat": "docs/agent/JEPA_NO_REPEAT_DELTA_V8_20261027.md",
     "asset_custody": "docs/agent/JEPA_LOCAL_ATTACHMENT_CUSTODY_RECONCILIATION_V8_20261027.csv",
     "validator": "scripts/v5/verify_jepa_lane_audit_v8.py",
     "qualifier": "Static audit source and exact SHA checks only; not external scientific authentication",
-    "ci_status_at_pointer": "EXACT_HEAD_CI_GREEN",
-    "audit_v8_ci_run_id": 40519925168,
-    "audit_v8_hostile_tests_passed": 28,
+    "ci_status_at_pointer": "QUEUED__NOT_YET_VERIFIED",
     "post_v8a_machine": "results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json",
     "post_v8a_doc": "docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md",
-    "post_v8a_ci_run_id": 40519925074,
-    "post_v8a_qualified_static_tests_passed": 44
+    "complete_takeover_index": "results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json"
   },
   "handoff": {
-    "pr": 323,
-    "branch": "handoff/jepa-lane-takeover-20261013",
+    "pr": 460,
+    "branch": "handoff/jepa-v8-clean-successor-from-audit-20261027",
     "doc": "docs/agent/JEPA_SUCCESSOR_HANDOFF_V8_20261027.md",
     "doc_intro_commit": "2f7bc1f2f9621add4c926b8f9828b8ec1663c99f",
     "older_versions_historical": true
@@ -46,6 +43,7 @@
   "read_order": [
     "docs/agent/JEPA_SUCCESSOR_HANDOFF_V8_20261027.md",
     "PR322:docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md",
+    "PR322:results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json",
     "PR322:docs/agent/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.md",
     "PR322:results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.json",
     "PR322:docs/agent/JEPA_NO_REPEAT_DELTA_V8_20261027.md",
