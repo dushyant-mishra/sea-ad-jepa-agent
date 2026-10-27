@@ -1,0 +1,23 @@
+name: JEPA V8b active-head drift / no-promotion audit
+on:
+  pull_request:
+    paths:
+      - 'docs/agent/JEPA_POST_V8A_DELTA_V8B_20261027.md'
+      - 'results/target_discovery/unified_qualification_v1/JEPA_POST_V8A_DELTA_V8B_20261027.json'
+      - 'results/target_discovery/unified_qualification_v1/JEPA_TAKEOVER_SUPPLEMENT_V8B_20261027.json'
+      - 'scripts/v5/verify_jepa_lane_audit_v8b.py'
+      - 'tests/v5/test_verify_jepa_lane_audit_v8b.py'
+      - '.github/workflows/jepa-lane-v8b-delta-audit.yml'
+permissions:
+  contents: read
+jobs:
+  v8b:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'pytest==9.1.1'
+      - run: python scripts/v5/verify_jepa_lane_audit_v8b.py
+      - run: python -m pytest -q tests/v5/test_verify_jepa_lane_audit_v8b.py
