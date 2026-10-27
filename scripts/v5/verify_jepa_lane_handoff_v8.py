@@ -9,13 +9,14 @@ POINTER="results/target_discovery/unified_qualification_v1/JEPA_SUCCESSOR_POINTE
 TERMINAL="TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
 HEX40=re.compile(r"^[a-f0-9]{40}$")
 EXPECTED_STATES={
- "task4":"X1_EXTERNAL_PUBLISHER_REFUSAL_RED__X3_MIXED_WINDOWS_WSL_NOT_QUALIFIED",
+ "task4":"PR459_X1_NEW_CANDIDATE_GREEN__INDEPENDENT_REVIEW_PENDING__X3_CROSS_OS_UNQUALIFIED",
  "real_g7":"UNQUALIFIED__PHYSICAL_MEASUREMENT_AND_DEPTH_PROVENANCE",
- "ps_task1":"CUMULATIVE_INDEPENDENT_ACCEPTANCE_PENDING",
- "ps_task2":"CUMULATIVE_INDEPENDENT_ACCEPTANCE_PENDING",
+ "ps_task1":"PR458_NEW_13_HOSTILE_RED__CUMULATIVE_ACCEPTANCE_PENDING",
+ "ps_task2":"PR458_NEW_13_HOSTILE_RED__CUMULATIVE_ACCEPTANCE_PENDING",
  "ps_task3":"OLD_DEPENDENCY_FIXTURE_ACCEPT_WITH_LIMITS__REVIEW_PENDING",
  "task5":"BRIDGE_INCREMENT_ACCEPTED_ONLY__FULL_A7_PENDING",
  "tasks6_8":"FIXTURE_ONLY_NONE_AND_ABSTENTION",
+ "regulatory_e2g":"PR457_PUBLIC_SYMBOL_REFERENCE_ONLY__RESULT_RECEIPT_CI_RED__NOT_CAUSAL_BIOLOGY",
 }
 
 
@@ -35,7 +36,7 @@ def validate_pointer(doc, root):
     require(audit.get("branch")=="science/jepa-robust-pipeline-post-jepa-anything-audit-20261013", "audit branch changed")
     require(type(audit.get("exact_head_at_pointer")) is str and HEX40.fullmatch(audit["exact_head_at_pointer"]), "audit exact head invalid")
     require(audit.get("ci_status_at_pointer") in ("QUEUED__NOT_YET_VERIFIED","EXACT_HEAD_CI_GREEN"),"unqualified audit CI state")
-    for field in ("audit_doc","audit_machine","audit_no_repeat","asset_custody","validator"):
+    for field in ("audit_doc","audit_machine","audit_no_repeat","asset_custody","validator","post_v8a_doc","post_v8a_machine"):
         value=audit.get(field)
         require(type(value) is str and value.startswith(("docs/agent/","results/target_discovery/","scripts/v5/")),f"missing canonical audit file pointer {field}")
     handoff=doc.get("handoff")
@@ -48,7 +49,7 @@ def validate_pointer(doc, root):
     for item in ["TARGET_WINNER_NONE","#322","#451","Task4","X1","X3","G7","Tasks6–8","#456"]:
         require(item in text,"required unresolved gate/source not in successor handoff: "+item)
     order=doc.get("read_order")
-    require(type(order) is list and len(order)==5 and len(set(order))==5 and order[0]==handoff_path, "incorrect no-repeat read order")
+    require(type(order) is list and len(order)==6 and len(set(order))==5 and order[0]==handoff_path, "incorrect no-repeat read order")
     require(doc.get("next_owner",{}).get("independent_non_author"),"independent acceptance role missing")
 
 
