@@ -39,8 +39,8 @@
     "regulatory_e2g": "PR457_PUBLIC_SYMBOL_REFERENCE_ONLY__RESULT_RECEIPT_CI_RED__NOT_CAUSAL_BIOLOGY"
   },
   "next_owner": {
-    "macha": "Unified Task4 X1 transaction and recovery with exact RED; no self-accept",
-    "chatgpt": "independent review of Macha's incremental Task4 X1 and real G7 provenance contract",
+    "macha": "X1 write-ahead intent candidate is on PR459; preserve author source/runs and repair only if independent recheck fails; no cumulative self-acceptance",
+    "chatgpt": "independently review exact PR459 X1 candidate and PR458 thirteen new RED defects; develop genuine G7 observation-provenance requirements",
     "independent_non_author": "cumulative Task4 and PS Tasks1-2 acceptance; Task3 dependency re-review"
   },
   "read_order": [
