@@ -231,7 +231,7 @@ def _parse_bounded_int(text: str) -> int:
 _EXACT_NUMPY_TYPES = (
     np.bool_, np.int8, np.int16, np.int32, np.int64,
     np.uint8, np.uint16, np.uint32, np.uint64,
-    np.intp, np.uintp, np.longlong, np.ulonglong,
+    np.intp, np.uintp, np.intc, np.uintc, np.longlong, np.ulonglong,
     np.float16, np.float32, np.float64, np.longdouble,
 )
 
@@ -292,7 +292,7 @@ def _enc(obj: Any, out: list) -> None:
             _enc(value,out)
         out.append("]")
     else:
-        raise CanonicalError(f"unsupported canonical type or subclass: {kind.__name__}")
+        raise CanonicalError("unsupported canonical type or subclass")
 
 
 
@@ -311,7 +311,7 @@ def canonical_json_bytes(obj: Any) -> bytes:
 def raw_sha256(data: bytes) -> str:
     """SHA-256 hex of the exact bytes."""
     if type(data) is not bytes:
-        raise CanonicalError(f"raw_sha256 requires exact bytes, got {type(data).__name__}")
+        raise CanonicalError("raw_sha256 requires exact bytes")
     return hashlib.sha256(data).hexdigest()
 
 
@@ -327,7 +327,7 @@ def semantic_sha256(obj: Any) -> str:
 def semantic_text_sha256(raw: bytes) -> str:
     """Semantic identity of a UTF-8 text artifact (BOM and line endings normalized)."""
     if type(raw) is not bytes:
-        raise CanonicalError(f"semantic_text_sha256 requires exact bytes, got {type(raw).__name__}")
+        raise CanonicalError("semantic_text_sha256 requires exact bytes")
     try:
         text = raw.decode("utf-8")
     except UnicodeDecodeError as exc:
@@ -369,7 +369,7 @@ def _iter_rows(rows):
     try:
         return iter(rows)
     except TypeError as exc:
-        raise CanonicalError(f"rows must be an iterable of mappings, got {type(rows).__name__}") from exc
+        raise CanonicalError("rows must be an iterable of mappings") from exc
 
 
 def _identity_bytes(row: Any, keys: list, pos: int) -> bytes:
@@ -379,7 +379,7 @@ def _identity_bytes(row: Any, keys: list, pos: int) -> bytes:
     norm_row = {}
     for rk, rv in dict.items(row):
         if type(rk) is not str:
-            raise CanonicalError(f"row {pos} has a non-str key {type(rk).__name__}")
+            raise CanonicalError(f"row {pos} has a non-str key")
         norm_key = _norm_eol(rk)
         if norm_key in norm_row:
             raise CanonicalError("colliding normalized row keys")
@@ -482,7 +482,7 @@ def _parse_float(text):
 def load_canonical_json(data: bytes) -> Any:
     """Strictly parse a JSON artifact (see module docstring, item 4)."""
     if type(data) is not bytes:
-        raise CanonicalError(f"load_canonical_json requires exact bytes, got {type(data).__name__}")
+        raise CanonicalError("load_canonical_json requires exact bytes")
     try:
         text = data.decode("utf-8")
     except UnicodeDecodeError as exc:
