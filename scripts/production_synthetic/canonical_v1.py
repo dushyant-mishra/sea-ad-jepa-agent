@@ -22,8 +22,9 @@ raised for every rejection.
    - bool: ``true`` / ``false`` (Python bool and numpy bool_). A bool is never
      an integer.
    - int: decimal digits with optional leading "-", no "+", no leading zeros,
-     exact (arbitrary precision) up to the interpreter's int-to-str digit limit
-     (4300 digits by default); larger ints are rejected, never truncated.
+     exact (arbitrary precision) under the frozen 4300-decimal-digit domain,
+     independent of the interpreter's int-to-str configuration; larger ints
+     are rejected, never truncated.
      numpy integer scalars convert to Python int.
    - float: take float64, replace -0.0 by 0.0, then write Python 3 ``repr`` of
      that float64 (shortest round-trip). Exponent form is used by ``repr`` when
@@ -223,8 +224,21 @@ def _parse_bounded_int(text: str) -> int:
     return -result if sign else result
 
 
+# Identity-only types provided by NumPy. No instance-controlled __class__, dtype,
+# comparison operator, or conversion method may expand this whitelist.
+# Platform aliases are harmless duplicates. np.longdouble retains its original
+# width-based rejection contract when wider than 8 bytes.
+_EXACT_NUMPY_TYPES = (
+    np.bool_, np.int8, np.int16, np.int32, np.int64,
+    np.uint8, np.uint16, np.uint32, np.uint64,
+    np.intp, np.uintp, np.longlong, np.ulonglong,
+    np.float16, np.float32, np.float64, np.longdouble,
+)
+
+
 def _exact_numpy_scalar(x) -> bool:
-    return isinstance(x, np.generic) and type(x) is x.dtype.type
+    concrete_type = type(x)
+    return any(concrete_type is permitted for permitted in _EXACT_NUMPY_TYPES)
 
 
 def _enc(obj: Any, out: list) -> None:
@@ -240,14 +254,15 @@ def _enc(obj: Any, out: list) -> None:
     elif kind is str:
         out.append(_enc_str(_norm_eol(obj)))
     elif _exact_numpy_scalar(obj):
-        if kind is np.bool_:
+        # Width/kind come from the trusted, exactly matched type, never from
+        # an overrideable value.dtype or forged object.__class__.
+        dtype = np.dtype(kind)
+        if dtype.kind == "b":
             out.append("true" if bool(obj) else "false")
-        elif isinstance(obj, (np.datetime64, np.timedelta64)):
-            raise CanonicalError("numpy datetime or timedelta has no identity")
-        elif isinstance(obj, np.integer):
+        elif dtype.kind in ("i", "u"):
             out.append(_bounded_decimal(int(obj)))
-        elif isinstance(obj, np.floating):
-            if obj.dtype.itemsize > 8:
+        elif dtype.kind == "f":
+            if dtype.itemsize > 8:
                 raise CanonicalError("numpy float wider than float64 unsupported")
             out.append(_enc_float(float(obj)))
         else:
@@ -269,7 +284,7 @@ def _enc(obj: Any, out: list) -> None:
             out.append(":")
             _enc(items[key], out)
         out.append("}")
-    elif kind in (list,tuple):
+    elif kind is list or kind is tuple:
         out.append("[")
         for i,value in enumerate(obj):
             if i:
@@ -332,7 +347,7 @@ def semantic_json_file_sha256(raw: bytes) -> str:
 
 
 def _check_keys(identity_keys: Sequence[str]) -> list:
-    if type(identity_keys) not in (list, tuple):
+    if type(identity_keys) is not list and type(identity_keys) is not tuple:
         raise CanonicalError("identity_keys must be a list/tuple of key names")
     keys = list(identity_keys)
     if not keys:
@@ -346,6 +361,11 @@ def _check_keys(identity_keys: Sequence[str]) -> list:
 
 
 def _iter_rows(rows):
+    # A list/tuple subclass can override __iter__ and silently digest a
+    # different sequence from the physically stored items. Ordinary generators
+    # remain lawful, but must be treated as producer-supplied observations.
+    if isinstance(rows, (list, tuple)) and type(rows) is not list and type(rows) is not tuple:
+        raise CanonicalError("rows list/tuple must be exact built-in containers")
     try:
         return iter(rows)
     except TypeError as exc:

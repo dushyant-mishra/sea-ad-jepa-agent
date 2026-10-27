@@ -1,0 +1,37 @@
+name: PS Tasks1-2 R1-R5 T2-R1-R3 mechanics (T2-D separately RED)
+on:
+  pull_request:
+    paths:
+      - 'scripts/production_synthetic/canonical_v1.py'
+      - 'scripts/production_synthetic/custody_v1.py'
+      - 'tests/production_synthetic/test_ps_t12_repair_recheck_macha_red.py'
+      - '.github/workflows/ps-t12-mechanics-withheld-boundary.yml'
+permissions:
+  contents: read
+jobs:
+  scoped-mechanics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'pytest==9.1.1' 'numpy==2.4.6'
+      - name: Exactly preserve #458 T2-D as an unqualified blocker while running all mechanical attacks
+        run: >-
+          python -m pytest -q tests/production_synthetic/test_ps_t12_repair_recheck_macha_red.py
+          -k 'not test_t2d_hand_written_secret_absence_attestation_is_not_accepted_as_a_scan'
+      - name: Inherited Tasks 1-3 and independent earlier hostile tests
+        run: >-
+          python -m pytest -q
+          tests/production_synthetic/test_canonical_v1_author_disclosed_red.py
+          tests/production_synthetic/test_canonical_v1.py
+          tests/production_synthetic/test_custody_v1.py
+          tests/production_synthetic/test_custody_v1_hostile.py
+          tests/production_synthetic/test_custody_v1_ps1_exact_type_independent_red.py
+          tests/production_synthetic/test_calibration_v1.py
+          tests/production_synthetic/test_calibration_v1_independent_273f4a_red.py
+          tests/production_synthetic/test_calibration_v1_macha_hostile.py
+          tests/production_synthetic/test_calibration_v1_repair.py
+          tests/production_synthetic/test_calibration_v1_selfaudit.py
+          tests/production_synthetic/test_calibration_v1_trust_model.py
