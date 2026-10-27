@@ -90,6 +90,7 @@ def test_v8e_review_precedes_frozen_v8d_v8c_v8b_without_promotion():
     ]
     assert obj["master_audit"]["exact_head_at_pointer"]=="a271164554076d0acda3bd0cf0b1bf957c0fdfd3"
     assert "MACHA_REJECT_463" in obj["active"]["unified_task1"]
+    assert "MACHA_INDEPENDENT_REJECTED" in obj["current_review_heads"]["463"]["status"]
     assert "CUMULATIVE_TASK4_BLOCKED" in obj["active"]["task4"]
     assert "T2D_RED" in obj["current_review_heads"]["464"]["status"]
     assert "PENDING" in obj["current_review_heads"]["467"]["status"]
