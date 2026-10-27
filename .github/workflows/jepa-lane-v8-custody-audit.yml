@@ -3,6 +3,8 @@ on:
   pull_request:
     paths:
       - 'docs/agent/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.md'
+      - 'docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md'
+      - 'results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json'
       - 'docs/agent/JEPA_NO_REPEAT_DELTA_V8_20261027.md'
       - 'docs/agent/JEPA_LOCAL_ATTACHMENT_CUSTODY_RECONCILIATION_V8_20261027.csv'
       - 'results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.json'
