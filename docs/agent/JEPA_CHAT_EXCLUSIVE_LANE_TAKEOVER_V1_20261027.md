@@ -36,7 +36,7 @@
 
 **Do not conflate:** 4.553M/104 reader-fit physical block data with 6.352M/149 metadata coverage; `MEASURED_ZERO` with `STRUCTURALLY_UNMEASURED` or withheld; ATAC/chromVAR/SCENIC+ same underlying assay with independent occupancy; TF motif association with experimental causal binding; source/operator batch with disease state; source hash equality with issuer authentication; teacher address mask/surrogate prediction with measured biological target construction; synthetic planted truth with human disease truth; donor-level signal and technical thinning replicate counts.
 
-**Do not rewrite stopped authority:** V79 Q00–Q11 `NOT_QUALIFIED` (291/292 gates PASS, sparse-positive convergence FAIL); V80 prospective mechanics PASS without qualified successor estimator; no universal TD57C fine-local claims; Task4 incremental acceptances without cumulative custody; PR #471 historical archive integrity without current calibration.
+**Current calibration gate source:** PR #437 is the Macha-authored Task 3 fixture calibration firewall; its authenticated calibration registry remains empty pending independent current TRAIN issuer and independent acceptance.\n\n**Do not rewrite stopped authority:** V79 Q00–Q11 `NOT_QUALIFIED` (291/292 gates PASS, sparse-positive convergence FAIL); V80 prospective mechanics PASS without qualified successor estimator; no universal TD57C fine-local claims; Task4 incremental acceptances without cumulative custody; PR #471 historical archive integrity without current calibration.
 
 ## 4. Succession runbook: smallest legitimate next operations
 
