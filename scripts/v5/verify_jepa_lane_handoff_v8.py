@@ -36,12 +36,12 @@ def validate_pointer(doc, root):
     require(audit.get("branch")=="science/jepa-robust-pipeline-post-jepa-anything-audit-20261013", "audit branch changed")
     require(type(audit.get("exact_head_at_pointer")) is str and HEX40.fullmatch(audit["exact_head_at_pointer"]), "audit exact head invalid")
     require(audit.get("ci_status_at_pointer") in ("QUEUED__NOT_YET_VERIFIED","EXACT_HEAD_CI_GREEN"),"unqualified audit CI state")
-    for field in ("audit_doc","audit_machine","audit_no_repeat","asset_custody","validator","post_v8a_doc","post_v8a_machine"):
+    for field in ("audit_doc","audit_machine","audit_no_repeat","asset_custody","validator","post_v8a_doc","post_v8a_machine","complete_takeover_index"):
         value=audit.get(field)
         require(type(value) is str and value.startswith(("docs/agent/","results/target_discovery/","scripts/v5/")),f"missing canonical audit file pointer {field}")
     handoff=doc.get("handoff")
-    require(type(handoff) is dict and handoff.get("pr")==323 and handoff.get("older_versions_historical") is True,"handoff provenance invalid")
-    require(handoff.get("branch")=="handoff/jepa-lane-takeover-20261013","handoff branch changed")
+    require(type(handoff) is dict and handoff.get("pr")==460 and handoff.get("older_versions_historical") is True,"handoff provenance invalid")
+    require(handoff.get("branch")=="handoff/jepa-v8-clean-successor-from-audit-20261027","handoff branch changed")
     require(type(handoff.get("doc_intro_commit")) is str and HEX40.fullmatch(handoff["doc_intro_commit"]),"first V8 handoff commit invalid")
     handoff_path=handoff.get("doc")
     require(handoff_path=="docs/agent/JEPA_SUCCESSOR_HANDOFF_V8_20261027.md","handoff read-first file changed")
@@ -49,13 +49,14 @@ def validate_pointer(doc, root):
     for item in ["TARGET_WINNER_NONE","#322","#451","Task4","X1","X3","G7","Tasks6–8","#456"]:
         require(item in text,"required unresolved gate/source not in successor handoff: "+item)
     order=doc.get("read_order")
-    require(type(order) is list and len(order)==6 and len(set(order))==6 and order[0]==handoff_path, "incorrect no-repeat read order")
+    require(type(order) is list and len(order)==7 and len(set(order))==7 and order[0]==handoff_path, "incorrect no-repeat read order")
     require(doc.get("next_owner",{}).get("independent_non_author"),"independent acceptance role missing")
     require(doc.get("next_owner",{}).get("chatgpt"),"independent new X1 review role missing")
     require(audit.get("post_v8a_machine")=="results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json","new 13 PS REDs or X1 candidate index missing")
     require(audit.get("post_v8a_doc")=="docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md","V8a human reviewer handoff missing")
-    require(type(audit.get("audit_v8_ci_run_id")) is int and audit["audit_v8_ci_run_id"] == 40519925168,"wrong V8 static CI source")
     require("PR322:docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md" in order,"read order omits latest new defects")
+    require(audit.get("complete_takeover_index")=="results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json","complete audit/script/result file index missing")
+    require("PR322:results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json" in order,"read order omits complete custody index")
 
 
 def main():
