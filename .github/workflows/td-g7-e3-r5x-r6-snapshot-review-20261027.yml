@@ -1,0 +1,54 @@
+name: G7 E3 scoped R5X/R6 snapshot repair with unresolved R1/R2/R1D
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/td_real_g7_content_enforcement_v1.py'
+      - 'tests/v5/test_td_real_g7_content_enforcement_v1_macha_470_red.py'
+      - '.github/workflows/td-g7-e3-r5x-r6-snapshot-review-20261027.yml'
+permissions:
+  contents: read
+jobs:
+  scoped-r5x-r6-green:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1
+      - name: Original, Macha449 and Macha472 hostility — exclude known external physical trust blockers
+        run: >-
+          python -m pytest -q
+          tests/v5/test_td_real_g7_content_enforcement_v1.py
+          tests/v5/test_td_real_g7_content_enforcement_v1_macha_hostile.py
+          tests/v5/test_td_real_g7_content_enforcement_v1_macha_recheck.py
+          tests/v5/test_td_real_g7_content_enforcement_v1_macha_470_red.py
+          tests/v5/test_td_real_g7_terminal_decision_v3.py
+          -k 'not test_r1_ and not test_r2_ and not test_r1d_'
+  preserved-r1-r2-r1d-red:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1
+      - name: Assert non-authorizing residual hostile failures remain RED
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q \
+            tests/v5/test_td_real_g7_content_enforcement_v1_macha_recheck.py \
+            tests/v5/test_td_real_g7_content_enforcement_v1_macha_470_red.py \
+            -k 'test_r1_ or test_r2_ or test_r1d_' > /tmp/g7-r1-r2-r1d-unresolved.log 2>&1
+          rc=$?
+          set -e
+          tail -65 /tmp/g7-r1-r2-r1d-unresolved.log
+          test "$rc" -ne 0
+          grep -Eq '11 failed' /tmp/g7-r1-r2-r1d-unresolved.log
+          echo 'G7_R1_R2_R1D_11_RED_NO_PHYSICAL_DONOR_OR_DEPTH_ISSUER'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: g7-remaining-physical-trust-failures
+          path: /tmp/g7-r1-r2-r1d-unresolved.log
+          retention-days: 30
