@@ -22,7 +22,7 @@ def test_real_crosswalk_is_valid_planning_only():
  lambda x:x["lineage"]["integrated_fixture"].update(role="HUMAN_BIOLOGICAL_EVIDENCE"),
  lambda x:x["lineage"]["integrated_design"].update(role="QUALIFIED_FULL_SIMULATION"),
  lambda x:x["lineage"]["fixture_bridge"].update(role="AUTHENTIC_A7_RECEIPT"),
- lambda x["lineage"]["e2g"]: None,
+ lambda x:x["lineage"].pop("e2g"),
  lambda x:x["rules"].pop("masking"),
  lambda x:x["rules"].update(perturbation="CRISPR applies"),
  lambda x:x["state_questions"].pop(),
@@ -45,12 +45,7 @@ def test_real_crosswalk_is_valid_planning_only():
 ])
 def test_non_authoritative_plan_rejects_hostile_promotion(attack):
     d=deepcopy(original())
-    # One mutation intentionally removes the field, instead of changing its content.
-    try:
-        attack(d)
-    except (AttributeError,TypeError):
-        # The guard must still reject a malformed mutation.
-        return
+    attack(d)
     with pytest.raises(ValueError):
         validate(d,ROOT)
 
