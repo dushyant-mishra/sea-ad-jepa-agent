@@ -18,6 +18,9 @@ CHECK = "query Health { __typename }"
 TRACKS = """query E2GPublicTracks {
   getDataTracks { cellTypeId cellType study dataset modelType }
 }"""
+SCHEMA = """query E2GQueryFieldNames {
+  __schema { queryType { fields { name } } }
+}"""
 MAX_BODY = 6_000_000
 
 
@@ -69,10 +72,22 @@ def main() -> int:
         ))
         relevant = [x for x in seen if any(term in x[0].lower()
                     for term in ("microgl", "macroph", "myeloid", "monocyt", "brain", "astrocyt"))]
+        try:
+            schema = post(args.endpoint, SCHEMA, args.timeout)
+            fields = schema["__schema"]["queryType"]["fields"]
+            e2g_fields = sorted(f["name"] for f in fields
+                                if any(k in f["name"].lower()
+                                       for k in ("enhancer", "e2g", "gene", "track", "celltype")))
+            schema_state = "AVAILABLE"
+        except (KeyError, TypeError, ValueError, RuntimeError, OSError) as schema_exc:
+            e2g_fields = []
+            schema_state = "UNAVAILABLE_" + type(schema_exc).__name__
         print(json.dumps({
             "api_probe_status": "LIVE_PUBLIC_GRAPHQL_METADATA_RETURNED",
             "endpoint": args.endpoint,
-            "operations": ["Health", "E2GPublicTracks"],
+            "operations": ["Health", "E2GPublicTracks", "E2GQueryFieldNames"],
+            "graphql_schema_status": schema_state,
+            "graph_ql_e2g_related_query_fields": e2g_fields,
             "tracks_count": len(tracks),
             "distinct_context_triplets": len(seen),
             "model_family_counts": dict(sorted(Counter(
