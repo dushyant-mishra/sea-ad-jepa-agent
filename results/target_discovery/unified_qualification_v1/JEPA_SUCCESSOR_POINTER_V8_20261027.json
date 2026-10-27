@@ -5,19 +5,20 @@
   "master_audit": {
     "pr": 322,
     "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
-    "exact_head_at_pointer": "243623d72cb33657792b86c8558b438d6dc1938b",
+    "exact_head_at_pointer": "713633f109903b77a812badba53c5186e7e137d4",
     "audit_doc": "docs/agent/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.md",
     "audit_machine": "results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.json",
     "audit_no_repeat": "docs/agent/JEPA_NO_REPEAT_DELTA_V8_20261027.md",
     "asset_custody": "docs/agent/JEPA_LOCAL_ATTACHMENT_CUSTODY_RECONCILIATION_V8_20261027.csv",
     "validator": "scripts/v5/verify_jepa_lane_audit_v8.py",
     "qualifier": "Static audit source and exact SHA checks only; not external scientific authentication",
-    "ci_status_at_pointer": "QUEUED__NOT_YET_VERIFIED",
-    "audit_v8_ci_run_id": 40517158398,
-    "audit_v8_hostile_tests_passed": 18,
+    "ci_status_at_pointer": "EXACT_HEAD_CI_GREEN",
+    "audit_v8_ci_run_id": 40519925168,
+    "audit_v8_hostile_tests_passed": 28,
     "post_v8a_machine": "results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json",
     "post_v8a_doc": "docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md",
-    "post_v8a_ci_run_id": 40519799394
+    "post_v8a_ci_run_id": 40519925074,
+    "post_v8a_qualified_static_tests_passed": 44
   },
   "handoff": {
     "pr": 323,
