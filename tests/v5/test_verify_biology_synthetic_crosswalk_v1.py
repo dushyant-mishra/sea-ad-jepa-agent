@@ -61,3 +61,35 @@ def test_existing_integration_is_reused_without_claiming_a_full_rehearsal():
     assert "DESIGN_ONLY" in d["lineage"]["integrated_design"]["role"]
     assert "NO_A7_REAL_RECEIPT" in d["lineage"]["fixture_bridge"]["role"]
     assert d["authority"].endswith("STAGE4_NOT_AUTHORIZED")
+
+@pytest.mark.parametrize("attack",[
+ lambda d:d.pop("completed_real_evidence"),
+ lambda d:d["completed_real_evidence"].pop(),
+ lambda d:d["completed_real_evidence"][0].update(classification="BIOLOGICAL_TARGET_QUALIFIED"),
+ lambda d:d["completed_real_evidence"][1].update(classification="TD57B_24_OF_24_CURRENT_TARGET_PASS"),
+ lambda d:d["completed_real_evidence"][2].update(classification="V44_REAL_JEPA_CHAMPION"),
+ lambda d:d["completed_real_evidence"][3].update(classification="RARE_BENCHMARK_LOCKED"),
+ lambda d:d["completed_real_evidence"][5].update(classification="SCENIC_PROVEN_CAUSAL_TF"),
+ lambda d:d["completed_real_evidence"][6].update(classification="MICROGLIA_EXPERIMENTAL_CAUSAL_STATE"),
+ lambda d:d["completed_real_evidence"][0].update(source_ref="invented/unreviewed-branch"),
+ lambda d:d["completed_real_evidence"][1].update(source="new_unqualified_24_of_24_data.md"),
+ lambda d:d["state_questions"][2].update(family="C3_QUERY_MEASURED"),
+ lambda d:d["state_questions"][6].update(family="RARE_SPECIALIST_NOT_C3"),
+])
+def test_completed_science_and_c3_taxonomy_cannot_be_rewritten(attack):
+    d=deepcopy(original())
+    attack(d)
+    with pytest.raises(ValueError):
+        validate(d,ROOT)
+
+
+def test_historical_partial_rna_and_source_mapping_limits_kept_together():
+    d=original()
+    by_id={r["key"]:r for r in d["completed_real_evidence"]}
+    assert "0.4300" in by_id["TD_R5_QUERY_DEVELOPMENT"]["result"]
+    assert "0.407823" in by_id["V44_RNA_TEACHER_PROXIES"]["result"]
+    assert "CORRECTED_REPLAY_REQUIRED" in by_id["TD56_59_RELATIONAL"]["classification"]
+    assert "0 reader-validation donors" in by_id["M_STRICT_REAL_COUNTS"]["result"]
+    families={r["id"]:r["family"] for r in d["state_questions"]}
+    assert families["QUERY_MEASURED_RNA_STATE"]=="C3_QUERY_MEASURED"
+    assert families["RARE_MICROGLIAL_PROGRAM"]=="RARE_SPECIALIST_NOT_C3"
