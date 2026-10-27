@@ -304,3 +304,62 @@ def test_hostile_or_ambiguous_input_is_refused_with_the_domain_error(name):
 
 def test_the_honest_small_world_is_accepted():
     assert _produce(_small())["levels"][0]["level_id"] == "L0"
+
+
+# ---------------------------------------------------------------------------
+# Self-audit round 1 (Macha, RED first): values the encoder below cannot hold
+# ---------------------------------------------------------------------------
+
+@pytest.mark.parametrize("name", ["huge_count", "huge_library", "lone_surrogate_cell_id",
+                                  "lone_surrogate_right", "control_char_donor", "lone_surrogate_address"])
+def test_round1_values_outside_the_physical_or_text_domain_are_refused(name):
+    w = _small()
+    c = w["cells"][0]
+    if name == "huge_count":
+        c["counts"]["B1"] = 10 ** 5000
+        c["library_total"] = 10 ** 5000 + 100
+    elif name == "huge_library":
+        c["library_total"] = 2 ** 53
+    elif name == "lone_surrogate_cell_id":
+        c["cell_id"] = "C\ud8001"
+    elif name == "lone_surrogate_right":
+        for lv in w["ladder"]:
+            lv["evidence_rights"] = [r if r != "RNA:EXT" else "RNA:\udc00" for r in lv["evidence_rights"]]
+        w["address_rights"]["E1"] = "RNA:\udc00"
+    elif name == "control_char_donor":
+        c["donor_id"] = "D\r1"
+    elif name == "lone_surrogate_address":
+        w["address_rights"]["\ud800X"] = "RNA:BASE"
+        w["operator_states"]["OP"]["\ud800X"] = MS
+    try:
+        Q.produce_rights_ladder_observations(**w)
+    except Q.QExcludedObservationError:
+        return
+    except BaseException as exc:  # noqa: BLE001
+        pytest.fail(f"{name}: {type(exc).__name__} escaped", pytrace=False)
+    pytest.fail(f"{name}: accepted", pytrace=False)
+
+
+# ---------------------------------------------------------------------------
+# Self-audit round 3 (Macha, RED first): frozen order and storage-layout invariance
+# ---------------------------------------------------------------------------
+
+def test_round3_levels_keep_the_frozen_rights_order_consumers_pin():
+    world = _small()
+    world["ladder"] = [{"level_id": "L0", "evidence_rights": ["RNA:BASE"]},
+                       {"level_id": "L1", "evidence_rights": ["RNA:EXT", "RNA:BASE"]},
+                       {"level_id": "L2", "evidence_rights": ["RNA:QUERY", "RNA:EXT", "RNA:BASE"]}]
+    result = _produce(world)
+    assert [lv["evidence_rights"] for lv in result["levels"]] == [lv["evidence_rights"] for lv in world["ladder"]]
+
+
+def test_round3_identity_does_not_depend_on_input_storage_order():
+    world = _world(21)
+    shuffled = deepcopy(world)
+    random.Random(1).shuffle(shuffled["cells"])
+    shuffled["address_rights"] = dict(reversed(list(shuffled["address_rights"].items())))
+    for op in shuffled["operator_states"]:
+        shuffled["operator_states"][op] = dict(reversed(list(shuffled["operator_states"][op].items())))
+    for cell in shuffled["cells"]:
+        cell["counts"] = dict(reversed(list(cell["counts"].items())))
+    assert canonical_sha256(_produce(world)) == canonical_sha256(_produce(shuffled))
