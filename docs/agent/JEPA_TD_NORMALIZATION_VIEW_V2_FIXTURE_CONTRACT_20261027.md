@@ -26,7 +26,7 @@ The source paths for historical V1 and G7 are **unchanged**. In particular, no `
 
 `tests/v5/td_unified/test_observation_normalization_view_v2_fixture.py` checks mapped-q counterfactual invariance of the *entire* student payload/digest; teacher count greater than base depth; off-ledger residual abstention; query wrongly assigned base rights; unknown q; outside-base collision; measured zero vs structural absence; duplicate cells; caller mutation; payload-chosen Python subclass; forgery of source-authenticated claims, physical total field, query value and digest; preservation of the original V1 CaseBundle physical total requirement.
 
-The new CI also runs the **original 101 Macha #474 producer-law tests** and the **five independently authored PR #478 scope tests**, then asserts the source of original V1 and G7 validators is unchanged and the V2 sample has no physical total. Preserve old and new failure receipts rather than adjusting tests to pass.
+The new CI also runs the **original 101 Macha #474 producer-law tests** and the **five independently authored PR #478 scope tests**, then checks the inherited **CaseBundle V1** physical-total contract remains intact and V2 has no physical total. **G7 is on a different unmerged branch and is not executed by this PR's CI**; cross-head compatibility requires a separate explicitly frozen test, as in PR #469. Preserve old and new failure receipts rather than adjusting tests to pass.
 
 ## Current stop conditions and future production obligations
 
