@@ -1,0 +1,28 @@
+name: Independent public E2G geometry recheck
+on:
+  push:
+    branches: [audit/external-e2g-compat-20261027]
+    paths:
+      - scripts/regulatory/independent_public_e2g_geometry_recheck_v1.py
+      - results/regulatory/e2g_public_geometry_panel_matched_control_counts_v1_20261027.csv
+      - .github/workflows/e2g-public-independent-geometry-recheck.yml
+permissions:
+  contents: read
+jobs:
+  independent-public-recheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Independent implementation against seven hash-verified public files
+        run: |
+          python -m py_compile scripts/regulatory/independent_public_e2g_geometry_recheck_v1.py
+          python scripts/regulatory/independent_public_e2g_geometry_recheck_v1.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: independent-e2g-geometry-recheck-receipt
+          path: e2g_independent_recheck_receipt.json
+          retention-days: 7

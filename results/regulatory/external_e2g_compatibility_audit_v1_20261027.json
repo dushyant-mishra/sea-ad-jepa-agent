@@ -1,0 +1,108 @@
+{
+  "schema": "JEPA_EXTERNAL_E2G_COMPATIBILITY_AUDIT_V1",
+  "date": "2026-10-27",
+  "status": "COMPATIBILITY_AUDIT_ONLY__SC_E2G_INPUT_BLOCKED__NO_E2G_PREDICTIONS_EVALUATED__NO_TRAINING_AUTHORITY",
+  "base_repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "base_commit": "c2bd13e8389dd25dc61612ef2aea88dc53099029",
+  "lane_custody": {
+    "read_first_pr": 323,
+    "current_handoff_version": "V7_20261017",
+    "v7_head": "234ed1b048660cffcf2f9c239709fa29c029aa4c",
+    "v7_task4_candidate": "64535753acfab0993165b5666797808f20cd8743",
+    "v7_task4_acceptance": "ABSENT",
+    "training_authorized": false,
+    "target_winner": null,
+    "representation_winner": null,
+    "stage4_authorized": false
+  },
+  "stage75": {
+    "source_path": "results/v4/stage81a1b_existing_regulatory_evidence_integration.csv",
+    "source_blob_sha": "87117c485c25f9c7295a6ac4ba5ca48b45c844aa",
+    "rows": 96,
+    "tf_count": 7,
+    "tf_names": [
+      "BACH1",
+      "CEBPA",
+      "ELF1",
+      "IRF8",
+      "RELA",
+      "SPI1",
+      "STAT1"
+    ],
+    "target_gene_count": 27,
+    "tier_A": 58,
+    "tier_B": 38,
+    "unique_pairs": true,
+    "gse174367_atac_status": {
+      "status": "not_gene_mappable_from_processed_peak_matrix",
+      "rows": 96
+    },
+    "sea_ad_multiome_status": {
+      "status": "exact_barcode_linkage_available_edge_support_not_inferred",
+      "rows": 96
+    },
+    "inferred_sign_status": {
+      "status": "predicted_response_sign_from_coactivity",
+      "rows": 96
+    },
+    "peak_to_gene_evidence": "proximity_only",
+    "authenticated_stage75_tf_bound_peak_coordinates": false,
+    "tf_target_edge_validation_from_external_models": null
+  },
+  "sea_ad": {
+    "source_path": "results/v4/stage81a1b_acquisition_report.json",
+    "source_version": "june_2026_complete_multiregion",
+    "rna_multiome_nuclei": 144023,
+    "atac_multiome_nuclei": 138118,
+    "exact_linked_rna_atac_nuclei": 133084,
+    "fragment_assets_downloaded": 0,
+    "fragment_assets_access_blocked": 11,
+    "processed_mtg_atac_available": true,
+    "official_peak_to_gene_advertised": false
+  },
+  "external_methods": [
+    {
+      "name": "scE2G",
+      "source_repo": "EngreitzLab/scE2G",
+      "source_commit": "b76d2068d4a549ea4c193e071a913cc7a2291e09",
+      "primary_input": "per-cluster ATAC fragments .tsv.gz with .tbi, raw RNA count matrix for multiome, verified cell IDs",
+      "status": "PIPELINE_NOT_RUN__ATAC_FRAGMENTS_UNAVAILABLE"
+    },
+    {
+      "name": "ENCODE-rE2G",
+      "source_repo": "EngreitzLab/ENCODE_rE2G",
+      "source_commit": "d039062b7092de338ed10a77ea208b3d5b06e89c",
+      "primary_input": "chromatin-accessibility input and appropriate ABC configuration or published atlas predictions",
+      "status": "REFERENCE_CANDIDATE__NOT_AUDITED_FOR_MICROGLIA"
+    },
+    {
+      "name": "ENCODE-E2G",
+      "source_repo": "karbalayghareh/ENCODE-E2G",
+      "source_commit": "7b4a65357c78bb8f9464b1e3fd91b7bc579e6d78",
+      "primary_input": "feature table, TSS, CRISPRi enhancer-gene annotations",
+      "status": "METHODOLOGY_ONLY__NOT_RUN"
+    },
+    {
+      "name": "GraphReg",
+      "source_repo": "karbalayghareh/GraphReg",
+      "source_commit": "f5cec7fc784c2f503c359f2c7da95a8353c38e5c",
+      "primary_input": "sequence/epigenomic tracks and 3D contacts and CAGE; target cell context required",
+      "status": "METHODS_ONLY__INPUTS_NOT_QUALIFIED__ROOT_LICENSE_NOT_FOUND"
+    }
+  ],
+  "match_contract": {
+    "identifiers": "canonical unversioned human Ensembl gene IDs; one-to-one audited map from Stage75 symbols",
+    "coordinate_build": "explicit GRCh38 agreement required; no unapproved liftover",
+    "role": "annotation or independently qualified corroboration after separate authority",
+    "never": "gene name overlap as edge evidence; predicted score as causality; positive=validation; unknown/NOT_ESTIMABLE=zero",
+    "required_link_for_edge_level": "authenticated TF motif/binding-to-element plus exactly joined enhancer interval/gene ID and provenance"
+  },
+  "result": {
+    "score_comparison_executed": false,
+    "external_scE2G_run": false,
+    "atlas_microglial_biosample_qualifed": false,
+    "overlap_count": null,
+    "verified_tf_target_links": null,
+    "explanation": "Only metadata/structural evidence was audited; processed ATAC does not substitute for indexed fragments in native scE2G."
+  }
+}

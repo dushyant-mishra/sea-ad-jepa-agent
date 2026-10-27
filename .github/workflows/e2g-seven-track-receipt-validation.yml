@@ -1,0 +1,33 @@
+name: E2G seven-track result receipt validation
+on:
+  push:
+    branches: [audit/external-e2g-compat-20261027]
+  pull_request:
+    paths:
+      - results/regulatory/e2g_public_7track_27gene_prediction_counts_v1_20261027.csv
+      - results/regulatory/e2g_public_7track_27gene_distal_counts_v1_20261027.csv
+      - results/regulatory/e2g_public_7track_provisional_result_receipt_v1_20261027.json
+      - scripts/regulatory/validate_e2g_seven_track_result_receipt_v1.py
+      - tests/regulatory/test_e2g_seven_track_result_receipt_v1.py
+      - .github/workflows/e2g-seven-track-receipt-validation.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check-read-only-results:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install pytest
+      - run: python -m pytest -q tests/regulatory/test_e2g_seven_track_result_receipt_v1.py
+      - name: Pin source and compare 27x7 mirrors without new downloads
+        run: |
+          python scripts/regulatory/validate_e2g_seven_track_result_receipt_v1.py \
+            results/v4/stage81a1b_existing_regulatory_evidence_integration.csv \
+            results/regulatory/e2g_public_7track_27gene_prediction_counts_v1_20261027.csv \
+            results/regulatory/e2g_public_7track_27gene_distal_counts_v1_20261027.csv \
+            results/regulatory/e2g_public_7track_provisional_result_receipt_v1_20261027.json

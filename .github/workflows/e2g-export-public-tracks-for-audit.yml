@@ -1,0 +1,28 @@
+name: Export hash-pinned public E2G tracks for offline reference audit
+on:
+  push:
+    branches: [audit/external-e2g-compat-20261027]
+    paths:
+      - scripts/regulatory/export_public_7track_audit_bundle_v1.py
+      - .github/workflows/e2g-export-public-tracks-for-audit.yml
+permissions:
+  contents: read
+jobs:
+  export-seven-public-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Byte-bounded and SHA256-verified public files only
+        run: |
+          python -m py_compile scripts/regulatory/export_public_7track_audit_bundle_v1.py
+          python scripts/regulatory/export_public_7track_audit_bundle_v1.py "$RUNNER_TEMP/public_e2g"
+      - name: Ephemeral artifact, no repository data commit
+        uses: actions/upload-artifact@v4
+        with:
+          name: verified-seven-public-e2g-tracks
+          path: ${{ runner.temp }}/public_e2g/
+          retention-days: 2

@@ -1,0 +1,128 @@
+{
+  "schema": "JEPA_PUBLIC_E2G_SEVEN_TRACK_PROVISIONAL_RESULT_RECEIPT_V1",
+  "date": "2026-10-27",
+  "status": "BOUNDED_PUBLIC_TRACKS_PARSED__PROVISIONAL_SYMBOL_OVERLAP__NO_TARGET_OR_BIOLOGICAL_AUTHORITY",
+  "pr": 457,
+  "pre_registered_contract": "docs/agent/JEPA_E2G_PUBLIC_TRACK_PROSPECTIVE_COMPARISON_20261027.md",
+  "stage75": {
+    "source_file": "results/v4/stage81a1b_existing_regulatory_evidence_integration.csv",
+    "source_git_blob_sha": "87117c485c25f9c7295a6ac4ba5ca48b45c844aa",
+    "tf_gene_pairs": 96,
+    "target_symbols": 27,
+    "tf": 7
+  },
+  "execution": {
+    "github_run": 40516374655,
+    "job": 122231225045,
+    "conclusion": "success",
+    "hostile_tests_passed": 10,
+    "prior_red_pre_fix_run": 40516264862,
+    "prior_red_reason": "Git blob checksum code had incorrect NUL delimiter; corrected before successful run",
+    "body_receipt_sha256": "140bcd212cff9d05d8458ff52d81b65573fb6d48fedfa7c940db92ceaf889c2e",
+    "body_receipt_artifact": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/40516374655/artifacts/12738777882",
+    "body_retention_days": 14
+  },
+  "source_order": [
+    "inflammatory_macrophage_ENCSR593WXK",
+    "inflammatory_macrophage_ENCSR643ZGR",
+    "inflammatory_macrophage_ENCSR226JLK",
+    "Macrophage",
+    "Immune_monocyte_1",
+    "brain_ENCSR344FLH",
+    "Stitziel_hCA_Myeloid"
+  ],
+  "source_results": [
+    {
+      "source_id": "inflammatory_macrophage_ENCSR593WXK",
+      "total_thresholded_track_rows": 84593,
+      "panel_prediction_rows": 190,
+      "panel_symbols_with_any_row": 27,
+      "panel_distal_ge_20kb_rows": 59,
+      "panel_symbols_with_any_distal_row": 17,
+      "source_downloaded_bytes": 2035476,
+      "source_sha256": "4bf2322c5eecd52b8031f6ec8140abbc8efb904574d808f18a2c6838622706ce"
+    },
+    {
+      "source_id": "inflammatory_macrophage_ENCSR643ZGR",
+      "total_thresholded_track_rows": 85719,
+      "panel_prediction_rows": 194,
+      "panel_symbols_with_any_row": 27,
+      "panel_distal_ge_20kb_rows": 60,
+      "panel_symbols_with_any_distal_row": 19,
+      "source_downloaded_bytes": 2063501,
+      "source_sha256": "7f5429f59cf810acd4fde8501fc767aee3dea88886bef09e1d6fcdd296308240"
+    },
+    {
+      "source_id": "inflammatory_macrophage_ENCSR226JLK",
+      "total_thresholded_track_rows": 84048,
+      "panel_prediction_rows": 199,
+      "panel_symbols_with_any_row": 27,
+      "panel_distal_ge_20kb_rows": 65,
+      "panel_symbols_with_any_distal_row": 18,
+      "source_downloaded_bytes": 2024583,
+      "source_sha256": "41a1c6d70bcf14f71b2dc85368022419d413c0a89114a47bc6d7c8e27c74926c"
+    },
+    {
+      "source_id": "Macrophage",
+      "total_thresholded_track_rows": 52580,
+      "panel_prediction_rows": 197,
+      "panel_symbols_with_any_row": 26,
+      "panel_distal_ge_20kb_rows": 60,
+      "panel_symbols_with_any_distal_row": 17,
+      "source_downloaded_bytes": 5753037,
+      "source_sha256": "bb9d435c409807801fc3209d7fabcbafd9c8f05f057f9e8ad6164c333b01c1f8"
+    },
+    {
+      "source_id": "Immune_monocyte_1",
+      "total_thresholded_track_rows": 57159,
+      "panel_prediction_rows": 225,
+      "panel_symbols_with_any_row": 27,
+      "panel_distal_ge_20kb_rows": 77,
+      "panel_symbols_with_any_distal_row": 20,
+      "source_downloaded_bytes": 6255242,
+      "source_sha256": "c7d9472e186be5ced2a25ef15aa2bb57c10ab4435eff5218082fb286bca384a9"
+    },
+    {
+      "source_id": "brain_ENCSR344FLH",
+      "total_thresholded_track_rows": 62378,
+      "panel_prediction_rows": 62,
+      "panel_symbols_with_any_row": 17,
+      "panel_distal_ge_20kb_rows": 23,
+      "panel_symbols_with_any_distal_row": 7,
+      "source_downloaded_bytes": 1574654,
+      "source_sha256": "6f75afa68a77ee239a7bf96c10f40980fbf29e4c283f24600d85ebbb49b5eaaf"
+    },
+    {
+      "source_id": "Stitziel_hCA_Myeloid",
+      "total_thresholded_track_rows": 70980,
+      "panel_prediction_rows": 273,
+      "panel_symbols_with_any_row": 26,
+      "panel_distal_ge_20kb_rows": 106,
+      "panel_symbols_with_any_distal_row": 21,
+      "source_downloaded_bytes": 7767277,
+      "source_sha256": "fc572bd2bc738b752def89bcaf9dd5dc9af3b090d2552e97a20172c4724dddb0"
+    }
+  ],
+  "results": {
+    "counts_csv": "results/regulatory/e2g_public_7track_27gene_prediction_counts_v1_20261027.csv",
+    "distal_csv": "results/regulatory/e2g_public_7track_27gene_distal_counts_v1_20261027.csv",
+    "one_line": "All 27 panel genes have thresholded links in each selected inflammatory-macrophage ENCODE-rE2G file; these are contextual annotations, not independent validation.",
+    "illustration": "TREM2 counts 5,7,10 in selected ENCODE-rE2G macrophage contexts, 0 in selected scE2G Macrophages 3 and rE2G broad-brain tracks; not a comparative biological effect.",
+    "symbol_only": true,
+    "canonical_ensembl_identity_verified": false,
+    "comparison_type": "descriptive censored browser-track survey",
+    "distal_definition": "absolute enhancer midpoint to target TSS >= 20kb; not TF binding"
+  },
+  "hard_prohibitions": {
+    "false_absence_from_missing_prediction": false,
+    "independent_microglia_validation": false,
+    "tf_target_edge_validation": null,
+    "causality": false,
+    "disease_effect": false,
+    "donor_level_inference": false,
+    "trajectory_inference": false,
+    "selected_target_winner": null,
+    "real_training": false,
+    "stage4": false
+  }
+}
