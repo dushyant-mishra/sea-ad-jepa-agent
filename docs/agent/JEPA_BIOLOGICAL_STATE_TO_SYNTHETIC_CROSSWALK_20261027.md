@@ -39,6 +39,8 @@ The missing work is not another graph or another synthetic stack: it is to bind 
 | **Macha PR #77 real primary-macrophage CRISPR** | GSE301119 real CRISPRa/i target engagement, **412 target-effect rows each modality**, **177/203** comparable targets opposite direction | Genuine measured external perturbation evidence for target engagement, **not** full transcriptome-wide program effect or adult brain microglia causal validation |
 | **Macha Oct-14 full reader-fit data audit** | **8,915 blocks**, **4,553,407 cells** rawcount/hash verified; 149-donor support mapped, strict common core 17,186 addresses; NPH52 **0 reader-validation donors**; G2/G6/G8/R1/geometry source/reference problems identified | Actual source audit completed; later repaired synthetic-executor PR #369 **did not** execute or qualify all human gates. Source: `audit/td-real-data-qualification-macha-20261014/docs/agent/MACHA_TD_REAL_DATA_QUALIFICATION_HOSTILE_REVIEW_20261014.md` |
 
+**Support decision:** NPH52 has no reader-validation donors. Any donor-primary claim requiring that held-out source must remain `NOT_ESTIMABLE` on the existing split, not be called a biological FAIL, silently dropped, or rescued by SEA-AD/HVS pooling.
+
 **Correct candidate taxonomy:** `C1_SHARED_EMERGENT`; `C2_RELATIONAL_SHARED`; `C3_QUERY_MEASURED`; `C6_SHARED_QUERY_COMPOSITE` (requires C1+C3); `C4_STRUCTURED_COMPOSITE` (C1+C2+C3+C6 plus C4's own qualification); `C5_REGULATORY_SPECIALIST`. Rare biology is a specialist or subclaim, **not a synonym for C3**. See PR #275 and PR #351. A historical `PASS` records that experiment's frozen metric and cohort; it does not bypass later physical corrections.
 
 ### Remaining claims — not a new biological-discovery campaign
