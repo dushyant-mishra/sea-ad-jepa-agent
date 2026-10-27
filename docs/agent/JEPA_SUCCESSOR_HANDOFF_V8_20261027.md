@@ -25,13 +25,17 @@ Production synthetic STOP_A/B/C, protected/real human Target Discovery, actual q
 
 **Master audit branch:** PR #322, `science/jepa-robust-pipeline-post-jepa-anything-audit-20261013`.
 
+**Complete custody/navigation index:** `results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json` on PR #322. It enumerates the audit branch's historical audit documents, external-context imports, plans/specs, machine results, executable scripts, hostile tests, workflows and the clean successor files, plus exact PR457–460 identities. **Use this index before searching the repository or starting a new historical audit.**
+
 **V8 read order on PR #322:**
-1. `docs/agent/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.md` — current October 27 science/audit/authority state.
-2. `results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.json` — machine-readable 30-PR SHA/version index.
-3. `docs/agent/JEPA_NO_REPEAT_DELTA_V8_20261027.md` — what already exists, what is closed, when reopening is legitimate.
-4. `docs/agent/JEPA_LOCAL_ATTACHMENT_CUSTODY_RECONCILIATION_V8_20261027.csv` — actual files, raw hashes, external-only policy.
-5. `scripts/v5/verify_jepa_lane_audit_v8.py` + `tests/v5/test_verify_jepa_lane_audit_v8.py` — read-only static validator/hostile tests.
-6. Only for the specific historical subject, read the original complete archived records (see below). Do not overwrite those with this short status.
+1. `docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md` + machine mirror — newest X1, PS13 RED and E2G delta.
+2. `results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json` — complete file/PR navigation. Use before repository-wide search.
+3. `docs/agent/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.md` — frozen October 27 V8 science/audit/authority state.
+4. `results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.json` — machine-readable earlier 30-PR SHA/version index.
+5. `docs/agent/JEPA_NO_REPEAT_DELTA_V8_20261027.md` — what already exists, what is closed, when reopening is legitimate.
+6. `docs/agent/JEPA_LOCAL_ATTACHMENT_CUSTODY_RECONCILIATION_V8_20261027.csv` — actual files, raw hashes, external-only policy.
+7. `scripts/v5/verify_jepa_lane_audit_v8.py`, `verify_jepa_lane_audit_v8a.py` and hostile tests — static guardrails.
+8. Only for the specific historical subject, read the original complete archived records referenced by the complete index. Do not overwrite those with this handoff.
 
 **This handoff is a navigation layer, not a second executable fork** of the audit branch or a replaceable source of qualification authority.
 
