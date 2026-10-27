@@ -1,5 +1,7 @@
 # READ FIRST: V8a post-snapshot delta — 2026-10-27
 
+> **CURRENT V8a UPDATE — 2026-10-27:** After this V8 snapshot, PR #459 `57e707149b46ca011eee096f01dc08b64aeb8f9f` supplied Macha's prospective Task4 X1 write-ahead transaction (CI GREEN, **independent cumulative acceptance pending**, Windows/WSL X3 unresolved). Independent PR #458 `3b08081d7fb3fa99cf1459b13cbe47d5b0962547` demonstrated **13 new RED** against repaired Production Synthetic Tasks1–2. Public E2G survey PR #457 is contextual-only and its result-receipt CI failed. **Do not assign X1 creation again or treat prior Tasks1–2 green as unchallenged.** Read `docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md` and its JSON on audit PR #322 first. The older V8 chronology below remains a historical record, not the new immediate task list.
+
 The original V8 takeover below is frozen historical navigation. **New PRs arrived during handoff publication.** Read audit PR #322 `docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md` and its machine mirror **before** using the older V8 next-action table.
 
 - **PR #459** Macha X1 transaction candidate `57e707149b46ca011eee096f01dc08b64aeb8f9f` has Linux/Windows CI GREEN (Task4 run `40518058012`). **It is NOT independently accepted; X3 Windows/WSL cross-lock qualification is open.** Immediate action is ChatGPT hostile review of that head, then separate cumulative Task4 review—not a second X1 implementation.
