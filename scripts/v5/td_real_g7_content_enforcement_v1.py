@@ -83,6 +83,22 @@ def _bytes(obj):
         raise G7ContentError("could not canonicalize evidence") from None
 
 
+def _snapshot(value, label):
+    """Materialize only exact built-in JSON evidence before any business checks.
+
+    The caller can supply str subclasses as dict keys, level IDs or row values
+    with hostile __eq__ / __ne__ methods. We must reject those types without
+    *comparing* them, and never validate mutable input then re-read it later.
+    Canonical JSON round-trip creates new exact built-in dict/list/scalar
+    objects for the entire validated transaction. This is a fixture-level
+    process-local snapshot, NOT a durable issuer or interthread lock.
+    """
+    try:
+        return json.loads(_bytes(value))
+    except (ValueError, TypeError, UnicodeError, OverflowError, RecursionError) as exc:
+        raise G7ContentError("invalid exact JSON evidence snapshot: " + label) from None
+
+
 def canonical_sha256(obj) -> str:
     """Domain-local canonical JSON SHA-256 for fixture content verification."""
     return hashlib.sha256(_bytes(obj)).hexdigest()
@@ -159,9 +175,10 @@ def validate_g7_e3_content(*, manifest, full_atoms, levels, expected_pins):
     fixture-consistent inputs. Thus it deliberately returns no human/same-code
     path authority and does not expose the underlying values.
     """
+    manifest, full_atoms, levels, expected_pins = _snapshot(
+        [manifest, full_atoms, levels, expected_pins], "G7 content")
     if type(manifest) is not dict:
         raise G7ContentError("frozen manifest must be an exact mapping")
-    _strict_json(manifest)
     ladder = derive_evidence_ladder(manifest)
     if ladder["status"] != "EVIDENCE_LADDER_FROZEN":
         raise G7ContentError("G7 terminal ladder must have three or more rights levels")
@@ -297,9 +314,10 @@ def _required_sources(values):
 
 def derive_fixture_g7_e3_input_binding(manifest, expected_pins, *, required_sources):
     """Return a *fixture* identity; never evidence of independent attestation."""
+    manifest, expected_pins, required_sources = _snapshot(
+        [manifest, expected_pins, required_sources], "fixture G7 binding")
     if type(manifest) is not dict or type(expected_pins) is not dict:
         raise G7ContentError("typed frozen manifest and pinned content references required")
-    _strict_json(manifest)
     contract = derive_evidence_ladder(manifest)
     if contract["status"] != "EVIDENCE_LADDER_FROZEN":
         raise G7ContentError("terminal evidence levels are not frozen")
@@ -357,6 +375,13 @@ def bind_g7_terminal_inputs_e3(
     exactly match the biological-rights materialization. No source trust,
     human qualification or private actor authority is manufactured.
     """
+    # Snapshot ALL seven caller-controlled inputs before *any* validation,
+    # including required-source, level, row or pinned-digest comparisons. This
+    # prevents the R6 validate-then-read-later forgery of V3 decision support.
+    (manifest, full_atoms, levels, expected_pins,
+     required_sources, rows, reference_input_binding_sha256) = _snapshot(
+        [manifest, full_atoms, levels, expected_pins, required_sources,
+         rows, reference_input_binding_sha256], "G7 terminal binding")
     validation = validate_g7_e3_content(
         manifest=manifest, full_atoms=full_atoms,
         levels=levels, expected_pins=expected_pins
