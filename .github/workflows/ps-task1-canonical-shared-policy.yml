@@ -4,6 +4,7 @@ on:
     paths:
       - 'scripts/production_synthetic/canonical_v1.py'
       - 'tests/production_synthetic/test_canonical_v1_author_disclosed_red.py'
+      - 'tests/production_synthetic/test_ps_t12_repair_recheck_macha_red.py'
       - '.github/workflows/ps-task1-canonical-shared-policy.yml'
 permissions:
   contents: read
@@ -20,6 +21,7 @@ jobs:
         run: >-
           python -m pytest -q
           tests/production_synthetic/test_canonical_v1_author_disclosed_red.py
+          tests/production_synthetic/test_ps_t12_repair_recheck_macha_red.py
           tests/production_synthetic/test_canonical_v1.py
           tests/production_synthetic/test_custody_v1.py
           tests/production_synthetic/test_custody_v1_hostile.py
