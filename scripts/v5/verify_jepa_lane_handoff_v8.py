@@ -16,7 +16,7 @@ EXPECTED_STATES={
  "ps_task3":"OLD_DEPENDENCY_FIXTURE_ACCEPT_WITH_LIMITS__REVIEW_PENDING",
  "task5":"BRIDGE_INCREMENT_ACCEPTED_ONLY__FULL_A7_PENDING",
  "tasks6_8":"FIXTURE_ONLY_NONE_AND_ABSTENTION",
- "regulatory_e2g":"PR457_PUBLIC_SYMBOL_REFERENCE_ONLY__RESULT_RECEIPT_CI_RED__NOT_CAUSAL_BIOLOGY",
+ "regulatory_e2g":"PR457_CURRENT_CI_GREEN__PUBLIC_REFERENCE_CONTEXT_ONLY__NOT_CAUSAL_BIOLOGY",
 }
 
 
@@ -36,7 +36,7 @@ def validate_pointer(doc, root):
     require(audit.get("branch")=="science/jepa-robust-pipeline-post-jepa-anything-audit-20261013", "audit branch changed")
     require(type(audit.get("exact_head_at_pointer")) is str and HEX40.fullmatch(audit["exact_head_at_pointer"]), "audit exact head invalid")
     require(audit.get("ci_status_at_pointer") in ("QUEUED__NOT_YET_VERIFIED","EXACT_HEAD_CI_GREEN"),"unqualified audit CI state")
-    for field in ("audit_doc","audit_machine","audit_no_repeat","asset_custody","validator","post_v8a_doc","post_v8a_machine","complete_takeover_index"):
+    for field in ("audit_doc","audit_machine","audit_no_repeat","asset_custody","validator","post_v8a_doc","post_v8a_machine","complete_takeover_index","post_v8b_doc","post_v8b_machine","v8b_supplement"):
         value=audit.get(field)
         require(type(value) is str and value.startswith(("docs/agent/","results/target_discovery/","scripts/v5/")),f"missing canonical audit file pointer {field}")
     handoff=doc.get("handoff")
@@ -44,12 +44,15 @@ def validate_pointer(doc, root):
     require(handoff.get("branch")=="handoff/jepa-v8-clean-successor-from-audit-20261027","handoff branch changed")
     require(type(handoff.get("doc_intro_commit")) is str and HEX40.fullmatch(handoff["doc_intro_commit"]),"first V8 handoff commit invalid")
     handoff_path=handoff.get("doc")
-    require(handoff_path=="docs/agent/JEPA_SUCCESSOR_HANDOFF_V8_20261027.md","handoff read-first file changed")
-    text=(root/handoff_path).read_text(encoding="utf-8")
+    require(handoff_path=="docs/agent/JEPA_SUCCESSOR_HANDOFF_V8_20261027.md","handoff file changed")
+    first=handoff.get("first_session")
+    require(first=="docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_V8B_20261027.md","first-session handoff missing")
+    require((root/first).is_file(),"first-session handoff file missing")
+    text=(root/handoff_path).read_text(encoding="utf-8") + "\n" + (root/first).read_text(encoding="utf-8")
     for item in ["TARGET_WINNER_NONE","#322","#451","Task4","X1","X3","G7","Tasks6–8","#456"]:
         require(item in text,"required unresolved gate/source not in successor handoff: "+item)
     order=doc.get("read_order")
-    require(type(order) is list and len(order)==7 and len(set(order))==7 and order[0]==handoff_path, "incorrect no-repeat read order")
+    require(type(order) is list and len(order)==9 and len(set(order))==9 and order[0]==first and order[1]==handoff_path, "incorrect no-repeat read order")
     require(doc.get("next_owner",{}).get("independent_non_author"),"independent acceptance role missing")
     require(doc.get("next_owner",{}).get("chatgpt"),"independent new X1 review role missing")
     require(audit.get("post_v8a_machine")=="results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json","new 13 PS REDs or X1 candidate index missing")
@@ -57,6 +60,10 @@ def validate_pointer(doc, root):
     require("PR322:docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md" in order,"read order omits latest new defects")
     require(audit.get("complete_takeover_index")=="results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json","complete audit/script/result file index missing")
     require("PR322:results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json" in order,"read order omits complete custody index")
+    require(audit.get("post_v8b_doc")=="docs/agent/JEPA_POST_V8A_DELTA_V8B_20261027.md","V8b human drift delta missing")
+    require(audit.get("post_v8b_machine")=="results/target_discovery/unified_qualification_v1/JEPA_POST_V8A_DELTA_V8B_20261027.json","V8b machine drift delta missing")
+    require(audit.get("v8b_supplement")=="results/target_discovery/unified_qualification_v1/JEPA_TAKEOVER_SUPPLEMENT_V8B_20261027.json","V8b supplement missing")
+    require("PR322:docs/agent/JEPA_POST_V8A_DELTA_V8B_20261027.md" in order,"read order omits latest V8b drift delta")
 
 
 def main():
