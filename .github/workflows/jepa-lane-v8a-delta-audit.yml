@@ -4,6 +4,7 @@ on:
     paths:
       - 'docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md'
       - 'results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json'
+      - 'results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json'
       - 'scripts/v5/verify_jepa_lane_audit_v8a.py'
       - 'tests/v5/test_verify_jepa_lane_audit_v8a.py'
       - '.github/workflows/jepa-lane-v8a-delta-audit.yml'
