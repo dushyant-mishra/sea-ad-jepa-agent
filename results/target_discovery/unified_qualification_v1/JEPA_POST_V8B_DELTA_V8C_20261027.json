@@ -114,7 +114,7 @@
   "evidence_boundaries": {
     "unified_task1": "Exact-type claims invalid for hostile duck/subclass; existing lawful golden identities are not automatically revoked.",
     "task4": "Two specific short-write fail-closed scenarios reproduced on Linux+Windows; other author-tested states remain preserved, cumulative acceptance absent.",
-    "ps_task1_2": "13 RED remain; T2-D handwritten scan attestation cannot authorize withheld secret absence.",
+    "ps_task1_2": "13 RED remain; T2-D handwritten scan attestation is not an authenticated scan and cannot authorize withheld secret absence.",
     "e2g": "Both latest public-reference workflows green; no TF causal binding or microglia-specific validation.",
     "training": "TARGET_NONE_REPRESENTATION_NONE_REAL_TRAINING_OFF_STAGE4_NOT_AUTHORIZED"
   },
