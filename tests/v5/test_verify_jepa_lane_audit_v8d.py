@@ -25,7 +25,7 @@ def test_exact_v8d_passes_without_source_promotion():
     lambda a:a["live_ledger"][0].update(status="BIOLOGICAL_E2G_PASS"),
     lambda a:a["live_ledger"][0].update(evidence="Source fully authenticated"),
     lambda a:a["live_ledger"][0].update(caveats="No concerns"),
-    lambda a:a["live_ledger"][1].update(status="13_HOSTILE_RED_ACCEPTED"),
+    lambda a:a["live_ledger"][1].update(status="PS_TASKS12_CUMULATIVE_ACCEPTED"),
     lambda a:a["live_ledger"][6].update(status="CUMULATIVE_TASK1_ACCEPTED"),
     lambda a:a["live_ledger"][7].update(status="ALL_13_RED_REPAIRED"),
     lambda a:a["live_ledger"][7]["ci"][1].update(conclusion="success"),
