@@ -62,7 +62,7 @@ def authenticated_stage75(source: Path) -> set[str]:
         content = f.read()
     # Same SHA algorithm as Git blobs, not a plain-file SHA-256.
     git_blob = hashlib.sha1(
-        b"blob " + str(len(content)).encode() + b"\\0" + content
+        b"blob " + str(len(content)).encode() + bytes([0]) + content
     ).hexdigest()
     if git_blob != EXPECTED_BLOB:
         raise EvidenceError("Historical Stage75 source Git blob is not frozen")
