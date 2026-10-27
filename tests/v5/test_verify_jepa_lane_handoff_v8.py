@@ -30,6 +30,16 @@ def test_current_handoff_exact_snapshot_passes():
     lambda x:x["current_review_heads"]["463"].update(status="ACCEPTED"),
     lambda x:x["current_review_heads"]["464"].update(status="PS_T1_2_ACCEPTED"),
     lambda x:x["current_review_heads"]["464"].update(controlling_red_run=0),
+    lambda x:x["current_review_heads"]["465"].update(status="TASK4_CUMULATIVE_ACCEPTED"),
+    lambda x:x["current_review_heads"]["465"].update(review_comment_id=0),
+    lambda x:x["current_review_heads"]["466"].update(status="UNIFIED_TASK1_ACCEPTED"),
+    lambda x:x["current_review_heads"]["466"].update(ci_run=0),
+    lambda x:x["current_review_heads"]["467"].update(status="INDEPENDENT_ACCEPTED"),
+    lambda x:x["current_review_heads"]["467"].update(head_at_pointer="0"*40),
+    lambda x:x["master_audit"].update(post_v8e_doc="MISSING"),
+    lambda x:x["master_audit"].update(post_v8e_machine="MISSING"),
+    lambda x:x["master_audit"].update(post_v8e_ci_run_id=0),
+
     lambda x:x["current_external_heads"]["457"].update(status="E2G_CAUSAL_VALIDATED"),
     lambda x:x["current_external_heads"]["457"].update(head_at_pointer="0"*40),
     lambda x:x["master_audit"].update(post_v8d_doc="MISSING"),
@@ -65,19 +75,22 @@ def test_forged_successor_authority_and_stale_navigation_refused(change):
 def test_old_versions_not_automatically_promoted():
     obj=source()
     assert obj["handoff"]["older_versions_historical"] is True
-    assert obj["master_audit"]["ci_status_at_pointer"] in ("QUEUED__NOT_YET_VERIFIED","EXACT_HEAD_CI_GREEN","EXACT_HEAD_V8_V8A_V8B_ALL_GREEN","EXACT_HEAD_V8_TO_V8C_ALL_GREEN","EXACT_HEAD_V8_TO_V8D_ALL_GREEN")
+    assert obj["master_audit"]["ci_status_at_pointer"] in ("QUEUED__NOT_YET_VERIFIED","EXACT_HEAD_CI_GREEN","EXACT_HEAD_V8_V8A_V8B_ALL_GREEN","EXACT_HEAD_V8_TO_V8C_ALL_GREEN","EXACT_HEAD_V8_TO_V8D_ALL_GREEN","EXACT_HEAD_V8_TO_V8E_ALL_GREEN")
 
 
 
-def test_v8d_leads_historical_v8c_v8b_without_source_promotion():
+def test_v8e_review_precedes_frozen_v8d_v8c_v8b_without_promotion():
     obj=source()
     order=obj["read_order"]
-    assert order[:3]==[
+    assert order[:4]==[
+        "docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_V8E_20261027.md",
         "docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_V8D_20261027.md",
         "docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_V8C_20261027.md",
         "docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_V8B_20261027.md",
     ]
-    assert obj["master_audit"]["exact_head_at_pointer"]=="a4c86fa83adf0cd718105807e9d254e09c989610"
-    assert "PENDING" in obj["current_review_heads"]["463"]["status"]
+    assert obj["master_audit"]["exact_head_at_pointer"]=="a271164554076d0acda3bd0cf0b1bf957c0fdfd3"
+    assert "MACHA_REJECT_463" in obj["active"]["unified_task1"]
+    assert "CUMULATIVE_TASK4_BLOCKED" in obj["active"]["task4"]
     assert "T2D_RED" in obj["current_review_heads"]["464"]["status"]
+    assert "PENDING" in obj["current_review_heads"]["467"]["status"]
     assert obj["no_scientific_authority"] is True
