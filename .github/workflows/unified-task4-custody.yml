@@ -70,3 +70,4 @@ jobs:
           tests/v5/td_unified/test_task4_stale_writer_macha_hostile.py
           tests/v5/td_unified/test_task4_h1h4_recheck_macha_hostile.py
           tests/v5/td_unified/test_task4_x1_publish_transaction_v1.py
+          tests/v5/td_unified/test_task4_x1_short_io_independent_red.py
