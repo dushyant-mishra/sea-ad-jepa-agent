@@ -45,7 +45,7 @@ def validate_pointer(doc, root):
     handoff_path=handoff.get("doc")
     require(handoff_path=="docs/agent/JEPA_SUCCESSOR_HANDOFF_V8_20261027.md","handoff read-first file changed")
     text=(root/handoff_path).read_text(encoding="utf-8")
-    for item in ["TARGET_WINNER_NONE","#322","PR #451","Task4","X1","X3","G7","Tasks6–8","PR #456"]:
+    for item in ["TARGET_WINNER_NONE","#322","#451","Task4","X1","X3","G7","Tasks6–8","#456"]:
         require(item in text,"required unresolved gate/source not in successor handoff: "+item)
     order=doc.get("read_order")
     require(type(order) is list and len(order)==5 and len(set(order))==5 and order[0]==handoff_path, "incorrect no-repeat read order")
