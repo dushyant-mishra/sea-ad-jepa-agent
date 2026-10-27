@@ -1,0 +1,31 @@
+{
+  "schema": "JEPA_TAKEOVER_SUPPLEMENT_V8B_20261027",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "prior_complete_index": "results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json",
+  "v8b_files": [
+    "docs/agent/JEPA_POST_V8A_DELTA_V8B_20261027.md",
+    "results/target_discovery/unified_qualification_v1/JEPA_POST_V8A_DELTA_V8B_20261027.json",
+    "results/target_discovery/unified_qualification_v1/JEPA_TAKEOVER_SUPPLEMENT_V8B_20261027.json",
+    "scripts/v5/verify_jepa_lane_audit_v8b.py",
+    "tests/v5/test_verify_jepa_lane_audit_v8b.py",
+    ".github/workflows/jepa-lane-v8b-delta-audit.yml"
+  ],
+  "active_heads": {
+    "457": "17e7cc8818d27222fac5c0a3e91677640ea81153",
+    "458": "3b08081d7fb3fa99cf1459b13cbe47d5b0962547",
+    "459": "57e707149b46ca011eee096f01dc08b64aeb8f9f",
+    "460": "a081f8d719372b14ab95120f4f7ba290a0940e4a"
+  },
+  "exact_classification": {
+    "457": "CURRENT_CI_GREEN__PUBLIC_REFERENCE_CONTEXT_ONLY__NO_CAUSAL_OR_TARGET_AUTHORITY",
+    "458": "CURRENT_13_HOSTILE_RED__PS_TASK1_2_ACCEPTANCE_BLOCKED",
+    "459": "AUTHOR_CANDIDATE_GREEN__INDEPENDENT_TASK4_REVIEW_PENDING__X3_OPEN",
+    "460": "ACTIVE_CLEAN_SUCCESSOR__NAVIGATION_ONLY__NO_SCIENTIFIC_AUTHORITY"
+  },
+  "required_prior_files": [
+    "docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md",
+    "results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json",
+    "docs/agent/JEPA_LANE_AUDIT_SNAPSHOT_V8_20261027.md",
+    "docs/agent/JEPA_NO_REPEAT_DELTA_V8_20261027.md"
+  ]
+}
