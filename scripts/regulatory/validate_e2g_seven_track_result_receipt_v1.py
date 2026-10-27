@@ -85,12 +85,12 @@ def check(stage75: Path, counts_csv: Path, distal_csv: Path, receipt_path: Path)
         receipt["results"].get("canonical_ensembl_identity_verified") is not False):
         raise AuditError("External symbol matches silently promoted to canonical")
     gate=receipt["hard_prohibitions"]
-    if gate.get("tf_target_edge_validation") is not None or
-       gate.get("selected_target_winner") is not None or
-       any(gate.get(key) is not False for key in (
-         "independent_microglia_validation","causality","disease_effect",
-         "donor_level_inference","trajectory_inference","real_training","stage4"
-       )):
+    if (gate.get("tf_target_edge_validation") is not None or
+        gate.get("selected_target_winner") is not None or
+        any(gate.get(key) is not False for key in (
+            "independent_microglia_validation", "causality", "disease_effect",
+            "donor_level_inference", "trajectory_inference", "real_training", "stage4"
+        ))):
         raise AuditError("Prohibited biological authority introduced")
     return {"result":"PASS_COMPACT_MIRRORS__SOURCE_PINNED__NO_BIOLOGICAL_AUTHORITY",
             "genes":27,"tracks":7,"counts":TOTALS,"distal_counts":DISTAL}
