@@ -1,0 +1,43 @@
+name: Production synthetic historical foundation calibration split-archive intake
+on:
+  pull_request:
+    paths:
+      - 'scripts/production_synthetic/foundation_calibration_split_intake_v1.py'
+      - 'tests/production_synthetic/test_foundation_calibration_split_intake_v1.py'
+      - 'results/production_synthetic/foundation_calibration_split_intake_20261027.json'
+      - 'docs/agent/JEPA_FOUNDATION_CALIBRATION_SPLIT_INTAKE_20261027.md'
+      - '.github/workflows/production-synthetic-historical-foundation-intake-v1.yml'
+permissions:
+  contents: read
+jobs:
+  synthetic-archive-hostile-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test dependencies
+        run: python -m pip install pytest==9.1.1
+      - name: Check split-archive digests on synthetic fixtures; no human data
+        run: python -m pytest -q tests/production_synthetic/test_foundation_calibration_split_intake_v1.py
+      - name: Check historical aggregate receipt never grants scientific authority
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("results/production_synthetic/foundation_calibration_split_intake_20261027.json").read_text())
+          assert r["schema"]=="JEPA_HISTORICAL_FOUNDATION_CALIBRATION_INTAKE_V1"
+          assert r["logical_manifest_files"]==97 and r["physical_member_hashes_verified"]==97
+          assert r["physical_member_hashes_unverified_large"]==0
+          assert r["verification_mode"]=="ALL_SHA256"
+          assert r["present_day_real_reference_ready"] is False
+          assert r["calibration_authenticated_under_task3_registry"] is False
+          assert r["physical_cell_gene_identity_externally_attested"] is False
+          assert r["safe_for_synthetic_observation_realism_conventions"] is False
+          assert r["authority"]=="TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+          assert set(r["historical_reader_split_donor_counts"])=={"reader_fit","reader_validation","reader_oracle"}
+          assert r["source_scope"]=="HISTORICAL_2026_08_24_ARCHIVE_ONLY__NOT_CURRENT_QUALIFIED_CALIBRATION"
+          print("HISTORICAL_FOUNDATION_INTAKE_SHA97_NO_REAL_CALIBRATION_AUTHORITY")
+          PY
