@@ -1,0 +1,185 @@
+{
+  "schema": "JEPA_E2G_PUBLIC_GRAPHQL_PROBE_LIVE_V1",
+  "date": "2026-10-27",
+  "status": "LIVE_METADATA_CONFIRMED__NO_MICROGLIA_LABEL__NO_GENE_CENTRIC_E2G_QUERY_FOUND__NO_BILLABLE_DOWNLOAD",
+  "provenance": {
+    "github_run_id": 40513669994,
+    "github_job_id": 122221832645,
+    "probe_commit": "7b5b99e82bbd778287435b2622e86c6dce4b96a5",
+    "public_frontend_commit": "886f02865c1b23da8ff7e6d84ddee5688d6104b1",
+    "endpoint": "https://e2g.stanford.edu/graphql"
+  },
+  "observations": {
+    "health_and_tracks_successful": true,
+    "introspection_available": true,
+    "returned_public_tracks": 1604,
+    "model_family_counts": {
+      "ENCODE-rE2G": 1458,
+      "scE2G": 146
+    },
+    "distinct_context_triplets": 662,
+    "relevant_context_triplets_found": 28,
+    "microglia_labelled_tracks": 0,
+    "e2g_related_query_field_name_matches": [
+      "geneOntologyTerms",
+      "getDataTracks"
+    ],
+    "relevant_context_examples": [
+      [
+        "BMMC CD14+ monocytes",
+        "Sheth*, Qiu* et al., 2024",
+        "scE2G"
+      ],
+      [
+        "BMMC CD16+ monocytes",
+        "Sheth*, Qiu* et al., 2024",
+        "scE2G"
+      ],
+      [
+        "CD14-positive monocyte",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "CD1c-positive myeloid dendritic cell",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "Macrophages 1",
+        "Ma, Conley et al., 2024",
+        "scE2G"
+      ],
+      [
+        "Macrophages 2",
+        "Ma, Conley et al., 2024",
+        "scE2G"
+      ],
+      [
+        "Macrophages 3",
+        "Ma, Conley et al., 2024",
+        "scE2G"
+      ],
+      [
+        "Macrophages cell cycling",
+        "Ma, Conley et al., 2024",
+        "scE2G"
+      ],
+      [
+        "Myeloid cell (coronary artery)",
+        "Amrute et al., 2024",
+        "scE2G"
+      ],
+      [
+        "PBMC CD14+ monocytes (1)",
+        "Sheth*, Qiu* et al., 2024",
+        "scE2G"
+      ],
+      [
+        "PBMC CD14+ monocytes (2)",
+        "Sheth*, Qiu* et al., 2024",
+        "scE2G"
+      ],
+      [
+        "PBMC CD16+ monocytes",
+        "Sheth*, Qiu* et al., 2024",
+        "scE2G"
+      ],
+      [
+        "astrocyte",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "astrocyte of the cerebellum",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "astrocyte of the hippocampus",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "astrocyte of the spinal cord",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "brain",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "brain microvascular endothelial cell",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "brain pericyte",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "common myeloid progenitor, CD34-positive",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "inflammatory macrophage",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "inflammatory macrophage (Treatment: lipopolysaccharide; 1 hour)",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "inflammatory macrophage (Treatment: lipopolysaccharide; 4 hour)",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "midbrain",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "smooth muscle cell of the brain vasculature",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "suppressor macrophage",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "suppressor macrophage (Treatment: lipopolysaccharide; 1 hour)",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ],
+      [
+        "suppressor macrophage (Treatment: lipopolysaccharide; 4 hour)",
+        "Gschwind* et al. 2026",
+        "ENCODE-rE2G"
+      ]
+    ]
+  },
+  "limitations": [
+    "No enhancer/gene prediction values retrieved",
+    "Schema-name matching is not an exhaustive schema capability proof",
+    "No explicitly microglia-labelled track in returned public metadata; does not establish biological absence",
+    "Brain and macrophage contexts are not direct human adult microglia validation",
+    "No billed Google Cloud transfer or credential use",
+    "No source-specific TF enhancer-gene edge validation"
+  ],
+  "authority": {
+    "target_winner": null,
+    "representation_winner": null,
+    "real_training": false,
+    "stage4": false,
+    "regulatory_validation": false
+  }
+}
