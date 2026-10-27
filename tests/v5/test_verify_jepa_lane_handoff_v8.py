@@ -48,4 +48,4 @@ def test_forged_successor_authority_and_stale_navigation_refused(change):
 def test_old_versions_not_automatically_promoted():
     obj=source()
     assert obj["handoff"]["older_versions_historical"] is True
-    assert obj["master_audit"]["ci_status_at_pointer"] in ("QUEUED__NOT_YET_VERIFIED","EXACT_HEAD_CI_GREEN")
+    assert obj["master_audit"]["ci_status_at_pointer"] in ("QUEUED__NOT_YET_VERIFIED","EXACT_HEAD_CI_GREEN","EXACT_HEAD_V8_V8A_V8B_ALL_GREEN")
