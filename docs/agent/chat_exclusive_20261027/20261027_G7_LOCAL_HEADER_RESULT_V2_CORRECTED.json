@@ -1,0 +1,62 @@
+{
+  "schema": "JEPA_G7_LOCAL_ARCHIVE_ADMISSIBILITY_PROBE_V2_20261027",
+  "scope": "Non-executing read of bounded metadata in two existing local ZIP attachments only; no 41K-part extraction, no checkpoint read, no user identity values emitted",
+  "expression_zip": {
+    "expression_matrix_claim": "log1p(raw_count*10000/full_source_library) exactly once",
+    "expression_rows_claim": 50000,
+    "address_count_claim": 41238,
+    "shard_count_claim": 35,
+    "sampled_operator_metadata_file_count": 42,
+    "metadata_headers_all_equal": true,
+    "sampled_operator_metadata_columns": [
+      "stable_key",
+      "cell_id",
+      "donor_id",
+      "source_library"
+    ],
+    "sample_freeze_columns": [
+      "sample",
+      "sample_row",
+      "source",
+      "matrix_id",
+      "operator_index",
+      "local_row",
+      "donor_id",
+      "cell_id",
+      "native_class",
+      "broad_class",
+      "support_fingerprint",
+      "stable_key",
+      "in_original_t1",
+      "selection_seed",
+      "expression_read_before_freeze"
+    ],
+    "expression_read_before_freeze_column_present": true
+  },
+  "calibration_zip": {
+    "status_schema": "foundation-calibration-bundle-v1",
+    "expression_cells_claim": 50000,
+    "metadata_cells_claim": 6351753,
+    "operator_count_claim": 42,
+    "dev_sealed_expression_included": false,
+    "pathology_fields_included": false,
+    "files_with_raw_or_count_in_name": []
+  },
+  "assessment": "INSUFFICIENT_TO_AUTHORIZE_AUTHENTIC_G7_E3",
+  "observed_limitations": [
+    "Expression audit states log1p(raw_count*10000/full_source_library); not authenticated direct raw-molecule provenance.",
+    "Sample/operator metadata present stable_key, cell_id, donor_id, source_library; lack read-level/raw-count/evidence-right fields.",
+    "The sample-freeze CSV header lists source/operator identifiers and an expression_read_before_freeze column; the column name alone does not prove a measurement or establish its semantics. No per-query raw count or G7 deciding-row digest column is present.",
+    "These two archives do not establish an authenticated physical producer, even if numeric transformations could be algebraically inverted approximately.",
+    "Archive content names/headers cannot prove full external source absence; historical custody and large 41K parts are not re-audited here."
+  ],
+  "required_before_G7": [
+    "authenticated physical source operator and address per deciding row",
+    "independent raw count/read evidence or verifiable raw molecular observations",
+    "measured-zero versus structural-unmeasured/collision status grounded in raw assay",
+    "evidence-right/cell-source ownership provenance from authenticated producer",
+    "query-excluded raw depth and normalization lineage for that deciding row",
+    "the actual G7 V3 decision-row digest and consumer linkage"
+  ],
+  "authorization": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
