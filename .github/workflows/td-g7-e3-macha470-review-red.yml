@@ -1,0 +1,38 @@
+name: JEPA G7 E3 Macha470 independent review RED (tests only)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/td_real_g7_content_enforcement_v1.py'
+      - 'scripts/v5/td_real_g7_terminal_decision_v3.py'
+      - 'tests/v5/test_td_real_g7_content_enforcement_v1*.py'
+      - 'tests/v5/test_td_real_g7_terminal_decision_v3.py'
+      - '.github/workflows/td-g7-e3-macha470-review-red.yml'
+permissions:
+  contents: read
+jobs:
+  inherited-unchanged:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1
+      - name: Inherited original, #441 hostile, #449 recheck (R1/R2 excluded) and V3
+        run: >-
+          python -m pytest -q
+          tests/v5/test_td_real_g7_content_enforcement_v1.py
+          tests/v5/test_td_real_g7_content_enforcement_v1_macha_hostile.py
+          tests/v5/test_td_real_g7_content_enforcement_v1_macha_recheck.py
+          tests/v5/test_td_real_g7_terminal_decision_v3.py
+          -k 'not test_r1_ and not test_r2_'
+  macha470-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1
+      - name: Macha #470 review (R3/R5 guards GREEN; R5X/R6/R1D RED)
+        run: python -m pytest -q -rfE tests/v5/test_td_real_g7_content_enforcement_v1_macha_470_red.py
