@@ -91,20 +91,20 @@
     {
       "id": "RELATIONAL_RNA_STATE",
       "family": "C2_RELATIONAL",
-      "question": "Do donor-reproducible relative molecular relationships survive when global RNA abundance and technical depth are controlled?",
+      "question": "Does pre-repair historical donor-recurrent scale-free RNA relational order (TD56/57B/58/59) survive identity-corrected replay, depth nulls, and partial RNA, while TD57C nearest-third remains a frozen FAIL?",
       "real_evidence": [
         {
           "source": "docs/agent/JEPA_HISTORICAL_ARCHITECTURE_DECISION_LEDGER_20261013.md",
           "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
-          "interpretation": "TD57B broad scale-free relation prior; TD57C universal fine-local third-neighbor claim failed; do not convert either into global target authority"
+          "interpretation": "TD57B historical 24/24 broad scale-free and TD57C nearest-third 2/4 HVS FAIL are archived; subsequent HVS/SEA physical feature mapping defect prevents promoting pre-repair HVS/SEA results to current biological authority"
         },
         {
           "source": "docs/agent/JEPA_LANE_MASTER_AUDIT_INDEX_20261014.md",
           "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
-          "interpretation": "R1 scale-free triplet manifest mechanically prepared; substantive null/stability threshold not fixed for real biology"
+          "interpretation": "Existing R1 and corrected G7/custody rules must be satisfied before prospective reuse; no repeated old TD57B/TD59 experiment, no current C2 PASS"
         }
       ],
-      "evidence_tier": "REAL_RNA_HISTORICAL_RELATIONAL_PRIOR_ONLY",
+      "evidence_tier": "HISTORICAL_REAL_TD56_57B_58_59_POSITIVES__HVS_SEA_PHYSICAL_MAPPING_REPAIR_REQUIRED__NOT_CURRENT_TARGET_AUTHORITY",
       "simulator_case": "PR328_COMMON_PROGRAM__DONOR_DISJOINT__INDEPENDENT_OBSERVATION",
       "simulator_status": "PARTIAL_FIXTURE__FULL_SCALE_FREE_RELATIONAL_TRUTH_TOURNAMENT_NOT_RUN",
       "human_target_object_needed": "Prospectively frozen relation/triplet estimand on source-supported verified molecular addresses, not arbitrary latent-neighbor distances",
@@ -119,8 +119,8 @@
     },
     {
       "id": "RARE_MICROGLIAL_PROGRAM",
-      "family": "C3_QUERY_LOCAL_OR_SPECIALIST",
-      "question": "Can a reproducible rare microglial activation/tail program be distinguished from technical pseudo-rarity and predicted from partial RNA?",
+      "family": "RARE_SPECIALIST_NOT_C3",
+      "question": "Can historical Stage69/70 rare microglial program evidence be externally qualified without technical pseudo-rarity or a false claim of C3 query-target success?",
       "real_evidence": [
         {
           "source": "results/reports/stage70_rare_microglia_auxiliary_head_robustness_lock_audit_report_v1.md",
@@ -133,7 +133,7 @@
           "interpretation": "STAT1/50K duplicated sample_row affects calibration; historical tail moments quarantined"
         }
       ],
-      "evidence_tier": "RARE_RNA_INTERNAL_NEGATIVE_PRIOR_AND_CALIBRATION_LIMIT",
+      "evidence_tier": "REAL_SOURCE_NATIVE_RARE_STAGE69_70_INTERNAL__NO_BENCHMARK_LOCK__NOT_C3_TARGET",
       "simulator_case": "PR328_RARE_PROGRAM__TECHNICAL_PSEUDORARITY__PERTURB_CONTROL_NULL",
       "simulator_status": "MECHANICS_FIXTURE_CAPABILITY__HUMAN_FREQUENCIES_NOT_CALIBRATED",
       "human_target_object_needed": "Frozen lineage-eligible rare-program expression target with donor-level recurrence, observed support and RNA detection floor; rare class not fitted from synthetic rarity preset",
@@ -232,13 +232,42 @@
         "Unfrozen effect-size margin"
       ],
       "promotion": "DEFERRED_UNSUPPORTED"
+    },
+    {
+      "id": "QUERY_MEASURED_RNA_STATE",
+      "family": "C3_QUERY_MEASURED",
+      "question": "Can a real q-conditioned non-q measured same-cell context be recovered from lawful partial RNA beyond address, count, technical and global-cell shortcuts?",
+      "real_evidence": [
+        {
+          "source": "docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md",
+          "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+          "interpretation": "The real T0/T1/TCTX residualization and teacher target-lineage were already experimentally assessed; several targets fail biological-information increment and PR178 synthetic T_A/T_B was not informative for real target choice"
+        },
+        {
+          "source": "docs/agent/JEPA_FULL_LANE_HISTORICAL_SYNTHETIC_TAKEOVER_V8_20261017.md",
+          "sha": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+          "interpretation": "Rich teacher must construct q-conditioned measured target from lawful evidence rather than infer another disjoint RNA panel; protect query identity and q-excluded normalization, donor disjointness and shortcut baselines"
+        }
+      ],
+      "evidence_tier": "ACTUAL_HISTORICAL_R5_PARTIAL_RNA_R2_0_4300_VS_TECH_QUERY_0_3496__DEVELOPMENT_ONLY__NO_TARGET_WINNER",
+      "simulator_case": "PR328_COMMON_PROGRAM__RNA_RECOVERABLE_VS_TEACHER_PRIVATE__WRONG_QUERY",
+      "simulator_status": "SCOPED_MECHANICS_CHALLENGES_EXIST__NOT_PRODUCTION_QUERY_TOURNAMENT",
+      "human_target_object_needed": "R5's historical eight-other-measured-gene q-conditioned target and its no-q-scalar/no-q-normalization rights are developmental prior, not a new candidate freeze; first retrieve its exact producer, split, artifact and supersession ledger",
+      "first_forward_test": "DO_NOT_REPEAT_R5; audit exact existing R5/PR163/PR178 and V44 versus current C3 evidence/metric and identify only changed-input strictly new qualification after authentic G7/corrected replay",
+      "must_fail_or_abstain_on": [
+        "Query gene value or q-dependent normalization reaches teacher or student through any derived channel",
+        "Technical+q or identity-only baseline explains biological increment",
+        "Student teacher-predicted unrelated panel is mislabelled genuinely measured target",
+        "Known R5 development R2 or V44 proxy result promoted as current production C3 PASS"
+      ],
+      "promotion": "NOT_ESTIMABLE_PENDING_CURRENT_Q_MEASURED_TARGET_SOURCE_AND_GATE"
     }
   ],
   "next_executable_science": [
-    "Reconcile actual assay/source right table and physical identity per candidate, including assay-present zeros vs unmeasured (no protected outcomes).",
-    "Define one TRAIN-only, donor-disjoint, zero-update C1/C2/C3 forward-screen target object and q-excluded teacher/student masks with fixed controls, without peeking at deciding outcomes.",
-    "Replay existing PR328 synthetic common/rare/pseudo-state/paired-modality perturbation controls through the SAME proposed screen interface as a test-of-test, without retraining JEPA or modifying frozen synthetic worlds.",
-    "Only after synthetic executable checks pass and source/technical reference calibration is independently qualified, request separate authorization for real human deciding outcomes; record PASS/FAIL/NOT_ESTIMABLE without compensating across claims."
+    "FIRST inspect current G7 E3 physical trust and corrected replay external qualification against accepted exact SHA; do not spend or infer a new human biological experiment.",
+    "SECOND map each previously executed R5, TD56/57B/57C/58/59, V44, Stage70, Macha ATAC/perturbation source to its current gene identity, metric, donor support and supersession; reference old results not repeat them.",
+    "THIRD restrict any proposed new experiment to a genuinely unresolved target-specific claim and a predeclared changed input; use frozen TD execution manifest, real producers and existing PR313/369 controller.",
+    "FOURTH only after real producer and calibration authority, use the established PR351/451 teacher/student/EMA harness to consume an authenticated TQB; never promote synthetic labels as human outcomes."
   ],
   "deferrals": [
     "No real human candidate evaluation executed in this crosswalk",
@@ -247,5 +276,87 @@
     "No new regulatory graph or E2G causal inference",
     "No real training, Stage4, real A7 or externally authenticated G7 E3",
     "No modification to frozen synthetic Q00–Q11, blinded TD Phase1/Phase2, PR328 fixture or existing post-TD harness"
+  ],
+  "completed_real_evidence": [
+    {
+      "key": "TD_R5_QUERY_DEVELOPMENT",
+      "lane": "MACHA_TARGET_DISCOVERY_TAKEOVER",
+      "source": "docs/agent/TARGET_DISCOVERY_MASTER_HANDOFF_20261011.md",
+      "source_ref": "audit/target-discovery-takeover-20261011",
+      "measurement": "Real same-cell complementary RNA: 8 non-q genes; q scalar excluded from target and normalization",
+      "result": "Heldout q-specific R2 0.4300, technical+q 0.3496, q-agnostic 0.2760, q-count-only 0.1610",
+      "classification": "HISTORICAL_DEVELOPMENTAL_RESULT__NOT_CURRENT_TARGET_WINNER",
+      "new_experiment": "NO"
+    },
+    {
+      "key": "TD56_59_RELATIONAL",
+      "lane": "MACHA_TARGET_DISCOVERY_TAKEOVER",
+      "source": "docs/agent/TARGET_DISCOVERY_MASTER_HANDOFF_20261011.md",
+      "source_ref": "audit/target-discovery-takeover-20261011",
+      "measurement": "Real 50K RNA two disjoint panels and donor/source-matched triplet relations",
+      "result": "TD57B 24/24 historical PASS; TD57C nearest-third HVS 2/4 FAIL; TD58 historical 24/24 partial 60%; TD59 nearest-half 24/24 historical PASS",
+      "classification": "HISTORICAL_REAL_RESULT__HVS_SEA_FEATURE_MAPPING_DEFECT__CORRECTED_REPLAY_REQUIRED",
+      "new_experiment": "CORRECTED_PHYSICAL_REPLAY_OF_EXISTING_PREDECLARED_TESTS_ONLY_WHEN_G7_QUALIFIED"
+    },
+    {
+      "key": "V44_RNA_TEACHER_PROXIES",
+      "lane": "V43_V44_RNA_TEACHER_RESEARCH",
+      "source": "docs/agent/JEPA_V44_TINY_TOURNAMENT_NEW_CHAT_HANDOFF_20260926.md",
+      "source_ref": "research/v44-tiny-teacher-tournament-20260926",
+      "measurement": "Actual historical real RNA 2600 cells, 48 distinct heldout donors across repeated splits, PCA/ridge proxies, extra target 192-gene panel",
+      "result": "Comparable T-only arms A 0.402673, B shared trunk 0.407823, C 0.401864, D 0.400415 mean heldout donor-equal Y R2; richer R 0.415882 unfair input advantage",
+      "classification": "ACTUAL_PROXIES_RUN__NO_Q_CONDITIONING__NO_FAIR_NEURAL_OR_BIOLOGY_WINNER",
+      "new_experiment": "NO_REPEAT_WITHOUT_NEW_MEASURED_TARGET_AND_MATCHED_ARCHITECTURE"
+    },
+    {
+      "key": "STAGE70_REAL_RARE",
+      "lane": "SOURCE_NATIVE_MICROGLIA",
+      "source": "results/reports/stage70_rare_microglia_auxiliary_head_robustness_lock_audit_report_v1.md",
+      "source_ref": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+      "measurement": "SEA-AD MTG/DLPFC source-native donor-heldout rare auxiliary program",
+      "result": "Internal improvement and robustness, but new locked benchmark FAIL, external validation FALSE",
+      "classification": "SOURCE_NATIVE_SAFE_NEGATIVE_PRIOR__NO_EXTERNAL_OR_TARGET_AUTHORITY",
+      "new_experiment": "NO_REDO_OF_SAME_AUXILIARY_TEST"
+    },
+    {
+      "key": "M_STRICT_REAL_COUNTS",
+      "lane": "MACHA_REAL_DATA_QUALIFICATION",
+      "source": "docs/agent/MACHA_TD_REAL_DATA_QUALIFICATION_HOSTILE_REVIEW_20261014.md",
+      "source_ref": "audit/td-real-data-qualification-macha-20261014",
+      "measurement": "Physical 8915 reader-fit Level-4 rawcount blocks / 4553407 cells / 104 donors",
+      "result": "Exact raw counts authenticated; 17186 shared core; NPH52 0 reader-validation donors; original G2/G6/G8/R1/geometry decisions blocked or defective",
+      "classification": "REAL_SUPPORT_AND_TECHNICAL_AUDIT_QUALIFIED__NO_CANDIDATE_OUTCOMES",
+      "new_experiment": "NO_DUPLICATE_CENSUS_OR_RERUN"
+    },
+    {
+      "key": "MACHA_RNA_ATAC",
+      "lane": "MACHA_GSE174367",
+      "source": "PR #164",
+      "source_ref": "0e36cede000c6c0eee66ab2b11ed43d41f7b9580",
+      "measurement": "Authenticated snRNA and independently measured ATAC on separate nuclei from 18 shared donors",
+      "result": "Physical chromatin independent of RNA-derived Stage75F graph; no same-cell pairing and biological predictive benchmark NOT_EXECUTED",
+      "classification": "ASSAY_PROVENANCE_QUALIFIED__REGULATORY_STATE_BENCHMARK_NOT_DONE",
+      "new_experiment": "ONLY_REOPEN_FOR_DEFINED_INDEPENDENT_ATAC_STATE_VALIDATION"
+    },
+    {
+      "key": "MACHA_GSE301119",
+      "lane": "MACHA_PERTURBATION",
+      "source": "PR #77",
+      "source_ref": "9a2a30e4c4c99be2a8f948aba680524c786d2737",
+      "measurement": "Real primary macrophage CRISPRa/i guide-donor pseudobulk, 2 donors",
+      "result": "412 target-effect rows each arm; 177/203 jointly measured targets opposite engagement directions; transcriptome-wide perturbation response not qualified",
+      "classification": "EXPERIMENTAL_TARGET_ENGAGEMENT_MEASURED__NOT_ADULT_MICROGLIA_OR_JEPA_STATE",
+      "new_experiment": "DO_NOT_RERUN_ENGAGEMENT_AS_NEW"
+    },
+    {
+      "key": "UNIFIED_FIXTURE_AND_POST_TD",
+      "lane": "SYNTHETIC_UNIFIED_DOWNSTREAM",
+      "source": "docs/agent/JEPA_FULL_LANE_HISTORICAL_SYNTHETIC_TAKEOVER_V8_20261017.md",
+      "source_ref": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+      "measurement": "PR328 integrated candidate-neutral biology; PR369 crossgate sealed; PR351/451 existing downstream bridge",
+      "result": "Mechanics and fixture semantics in place, not real biological A7 or scientific TQB",
+      "classification": "ALREADY_BUILT_REUSE_NO_DUPLICATE",
+      "new_experiment": "NO_NEW_SYNTHETIC_OR_JEPA_INTEGRATION_STACK"
+    }
   ]
 }
