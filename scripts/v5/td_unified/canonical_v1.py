@@ -16,7 +16,11 @@ The frozen NumPy scalar policy matches the reviewed old Task 1 contract:
 ``int``; exact NumPy floating scalar types of width <= 8 bytes widen to Python
 float64 and then use the built-in float encoder; wider NumPy floats are
 rejected. NumPy datetime/timedelta, strings, arrays and other NumPy objects are
-rejected. ``-0.0`` is normalized to ``0.0`` and NaN/Inf are rejected.
+rejected. On Windows, ``np.intc`` and ``np.uintc`` may be distinct from
+fixed-width NumPy classes; both remain in the historically lawful set.
+Built-in integers have a fixed 4300-decimal-digit maximum, independent of
+``PYTHONINTMAXSTRDIGITS``; 4301+ digit values are rejected.
+``-0.0`` is normalized to ``0.0`` and NaN/Inf are rejected.
 
 ``canonical_sha256(payload)`` is lowercase SHA-256 of the literal domain
 ``b"JEPA-TD-UNIFIED-CANONICAL-V1\\x00"`` concatenated with the canonical bytes.
@@ -123,7 +127,7 @@ def _encode_float(value: float) -> str:
 _EXACT_NUMPY_SCALAR_TYPES = (
     np.bool_, np.int8, np.int16, np.int32, np.int64,
     np.uint8, np.uint16, np.uint32, np.uint64,
-    np.intp, np.uintp, np.longlong, np.ulonglong,
+    np.intp, np.uintp, np.intc, np.uintc, np.longlong, np.ulonglong,
     np.float16, np.float32, np.float64, np.longdouble,
 )
 
@@ -183,7 +187,7 @@ def _encode(value: Any, out: list[str]) -> None:
                 raise CanonicalError(f"numpy floating type wider than float64 is unsupported: {dtype}")
             out.append(_encode_float(float(value)))
         else:
-            raise CanonicalError(f"unsupported canonical type: {value_type.__name__}")
+            raise CanonicalError("unsupported NumPy scalar kind")
     elif value_type is dict:
         normalized: dict[str, Any] = {}
         for key, item in dict.items(value):
@@ -209,7 +213,7 @@ def _encode(value: Any, out: list[str]) -> None:
             _encode(item, out)
         out.append("]")
     else:
-        raise CanonicalError(f"unsupported canonical type or subclass: {value_type.__name__}")
+        raise CanonicalError("unsupported canonical type or subclass")
 
 
 def canonical_bytes(payload: Mapping[str, object] | object) -> bytes:
