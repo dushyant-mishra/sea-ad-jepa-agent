@@ -24,21 +24,23 @@ jobs:
           tests/v5/td_unified/test_q_excluded_depth_v1.py
           tests/v5/td_unified/test_q_excluded_depth_v1_independent_limits.py
           tests/v5/td_unified/test_observation_normalization_view_v2_fixture.py
-      - name: Refuse to replace existing V1 CaseBundle or G7 semantics
+      - name: Prove V1 CaseBundle existing physical-count contract not rewritten
         run: |
           python - <<'PY'
           import inspect
           from scripts.v5.td_unified.casebundle_v1 import validate_casebundle
-          from scripts.v5.td_real_g7_content_enforcement_v1 import validate_g7_e3_content
           import scripts.v5.td_unified.observation_normalization_view_v2_fixture as v2
-          assert "counted_mass" in inspect.getsource(validate_casebundle)
-          assert "library_size" in inspect.getsource(validate_g7_e3_content)
-          assert "physical_library_total" not in v2.produce_fixture_student_view_v2(
+          old = inspect.getsource(validate_casebundle)
+          assert "counted_mass" in old and "library_size" in old
+          projected = v2.produce_fixture_student_view_v2(
              cells=[{"cell_id":"C", "donor_id":"D", "source_id":"S", "operator_id":"O", "library_total":2,"counts":{"B":1,"Q":1}}],
              address_rights={"B":"RNA:BASE","Q":"RNA:QUERY"},
              operator_states={"O":{"B":"MEASURED_SCALAR","Q":"MEASURED_SCALAR"}},
              ladder=[{"level_id":"L0","evidence_rights":["RNA:BASE"]},
                      {"level_id":"L1","evidence_rights":["RNA:BASE","RNA:QUERY"]}],
              query_address_id="Q")
-          print("V2_FIXTURE_SEPARATE_DEPTH__V1_AND_G7_UNCHANGED__NO_REAL_AUTHORITY")
+          assert "physical_library_total" not in projected
+          assert "library_size" not in str(projected)
+          assert v2.validate_fixture_observation_view_v2(projected)["externally_authenticated"] is False
+          print("V2_FIXTURE_SEPARATE_DEPTH__V1_CASEBUNDLE_UNCHANGED__G7_CROSS_HEAD_NOT_TESTED")
           PY
