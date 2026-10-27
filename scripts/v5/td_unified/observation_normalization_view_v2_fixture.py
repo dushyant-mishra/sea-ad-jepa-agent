@@ -144,6 +144,35 @@ def produce_fixture_teacher_view_v2(*, cells, address_rights, operator_states,
         query_address_id=query_address_id, view_kind=_TEACHER,
     )
 
+
+def _view_snapshot(value, depth=0):
+    """Copy published V2 receipts with exact JSON booleans for negative flags.
+
+    The source-side PR474 input copier disallows bool, as it should for raw
+    counts. The V2 *receipt* has explicit false issuer/training flags; never
+    loosen the original producer's numeric acceptance to accommodate them.
+    """
+    if depth > 32:
+        raise QExcludedObservationError("V2 receipt exceeds bounded nesting")
+    kind = type(value)
+    if value is None or kind in (str, int, bool):
+        if kind is str and any(0xD800 <= ord(c) <= 0xDFFF for c in value):
+            raise QExcludedObservationError("V2 receipt contains unpaired Unicode surrogate")
+        if kind is int and not -(2**53) < value < (2**53):
+            raise QExcludedObservationError("V2 numeric field exceeds exact canonical domain")
+        return value
+    if kind is list:
+        return [_view_snapshot(item, depth + 1) for item in value]
+    if kind is dict:
+        out = {}
+        for key, item in dict.items(value):
+            if type(key) is not str:
+                raise QExcludedObservationError("V2 keys must be exact strings")
+            out[key] = _view_snapshot(item, depth + 1)
+        return out
+    raise QExcludedObservationError("V2 receipt has non-exact JSON evidence type")
+
+
 _VIEW_KEYS = frozenset({
     "schema", "view_kind", "authority_scope", "query_address_id",
     "reader_partition", "depth_semantics", "rows",
@@ -172,7 +201,7 @@ def validate_fixture_observation_view_v2(view):
     properties. A real human/scientific consumer requires a separate issued
     source artifact and a reviewed, authority-bearing contract.
     """
-    value = _snapshot(view)
+    value = _view_snapshot(view)
     if type(value) is not dict or set(value) != _VIEW_KEYS:
         raise QExcludedObservationError("V2 fixture view has unknown or missing fields")
     digest = value.pop("observable_sha256")
