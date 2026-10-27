@@ -40,8 +40,15 @@ class G7ContentError(ValueError):
     """Untrusted or inconsistent evidence-rights content."""
 
 
-def _strict_json(obj):
-    """Reject polymorphic equality, ambiguous keys and nonfinite JSON."""
+def _strict_json(obj, _depth=0):
+    """Reject noncanonical JSON and excessive nesting with our own domain error.
+
+    Exact-type checks remain unchanged.  An explicit bound prevents a hostile
+    nested fixture from escaping the G7 decision boundary as RecursionError.
+    This does NOT authenticate a physical source, producer or issuer.
+    """
+    if _depth > 128:
+        raise G7ContentError("evidence JSON exceeds bounded nesting depth")
     if obj is None or type(obj) in (bool, int, str):
         if type(obj) is str:
             if any(0xD800 <= ord(c) <= 0xDFFF for c in obj):
@@ -53,14 +60,14 @@ def _strict_json(obj):
         return
     if type(obj) is list:
         for item in obj:
-            _strict_json(item)
+            _strict_json(item, _depth + 1)
         return
     if type(obj) is dict:
         for k, v in obj.items():
             if type(k) is not str:
                 raise G7ContentError("evidence JSON keys must be exact strings")
-            _strict_json(k)
-            _strict_json(v)
+            _strict_json(k, _depth + 1)
+            _strict_json(v, _depth + 1)
         return
     raise G7ContentError("evidence includes noncanonical Python type")
 
@@ -369,6 +376,17 @@ def bind_g7_terminal_inputs_e3(
     pen = _measured_counts(packages[pen_id])
     terminal = _measured_counts(packages[full_id])
     roster_units = set(_measured_counts(full_atoms))
+    # The inherited V3 decision executor uses f"{source}::{donor}" as its
+    # unit key, not an injective tuple encoding. Check collisions across the
+    # COMPLETE physical unit roster, before any receipt binds rows. Do not
+    # reject harmless punctuation or silently merge separate biological units.
+    consumer_unit_keys = {}
+    for source, donor in roster_units:
+        consumer_key = f"{source}::{donor}"
+        previous = consumer_unit_keys.get(consumer_key)
+        if previous is not None and previous != (source, donor):
+            raise G7ContentError("distinct physical units alias under the V3 consumer key")
+        consumer_unit_keys[consumer_key] = (source, donor)
     seen = set()
     for raw in rows:
         if type(raw) is not dict or set(raw) != _G7_ROW_KEYS:
@@ -415,6 +433,8 @@ def bind_g7_terminal_inputs_e3(
         "input_binding_sha256": binding,
         "evidence_content_sha256": validation["full_atoms_sha256"],
         "externally_authenticated": False,
+        "physical_atom_identity_authenticated": validation["physical_atom_identity_authenticated"],
+        "q_excluded_library_provenance_authenticated": validation["q_excluded_library_provenance_authenticated"],
         "same_code_path_authorized": False,
         "human_g7_authorized": False,
         "authority_effect": "NONE",
