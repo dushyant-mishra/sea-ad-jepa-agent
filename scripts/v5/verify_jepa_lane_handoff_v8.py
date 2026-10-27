@@ -89,7 +89,7 @@ def validate_pointer(doc, root):
     require(type(issues) is dict and set(issues)=={"461","462","463","464","465","466","467"},"new hostile reviewer roster lost")
     require(issues["461"].get("head")=="495350d477a0b7ba65c13dcab5032d443f939cd5" and issues["461"].get("ci_run")==40519155593,"Unified Task1 RED misbound")
     require(issues["462"].get("head")=="67d2336155624a8657d2ef3320c9bfff175951ee" and issues["462"].get("linux_run")==40530824776 and issues["462"].get("windows_run")==40531130624,"Task4 X1-S1/S2 RED misbound")
-    require(issues["463"].get("head_at_pointer")=="84b05952112ca405436ee3ccf35cc1c0df53c14d" and issues["463"].get("focused_ci_run")==40533382517 and "PENDING" in issues["463"].get("status",""),"historical Unified Task1 author candidate changed")
+    require(issues["463"].get("head_at_pointer")=="84b05952112ca405436ee3ccf35cc1c0df53c14d" and issues["463"].get("focused_ci_run")==40533382517 and issues["463"].get("status")=="HISTORICAL_AUTHOR_CI_GREEN__MACHA_INDEPENDENT_REJECTED_AT_PR466","historical Unified Task1 rejection changed")
     require(issues["464"].get("head_at_pointer")=="f6ee226c146c4c31d88ce5b845449ce21758cdeb"
             and issues["464"].get("mechanics_run")==40536232358
             and issues["464"].get("controlling_red_run")==40536232091
