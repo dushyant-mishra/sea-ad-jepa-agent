@@ -6,6 +6,7 @@ on:
       - 'docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_V8B_20261027.md'
       - 'docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_V8C_20261027.md'
       - 'docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_V8D_20261027.md'
+      - 'docs/agent/JEPA_SUCCESSOR_FIRST_SESSION_V8E_20261027.md'
       - 'results/target_discovery/unified_qualification_v1/JEPA_SUCCESSOR_POINTER_V8_20261027.json'
       - 'scripts/v5/verify_jepa_lane_handoff_v8.py'
       - 'tests/v5/test_verify_jepa_lane_handoff_v8.py'
