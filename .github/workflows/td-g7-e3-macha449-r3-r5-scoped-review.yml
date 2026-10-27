@@ -1,0 +1,48 @@
+name: JEPA G7 E3 Macha449 R3-R5 narrow repair (R1/R2 still RED)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/td_real_g7_content_enforcement_v1.py'
+      - 'tests/v5/test_td_real_g7_content_enforcement_v1_macha_recheck.py'
+      - 'tests/v5/test_td_real_g7_content_enforcement_v1_macha_hostile.py'
+      - 'docs/agent/JEPA_G7_E3_MACHA449_R3_R5_SCOPED_AUDIT_20261027.md'
+      - '.github/workflows/td-g7-e3-macha449-r3-r5-scoped-review.yml'
+permissions:
+  contents: read
+jobs:
+  scoped-r3-r5-and-inherited-regressions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install frozen test tool
+        run: python -m pip install pytest==9.1.1
+      - name: Run inherited original, old hostile, V3, and Macha449 R3-R5 tests
+        run: >-
+          python -m pytest -q
+          tests/v5/test_td_real_g7_content_enforcement_v1.py
+          tests/v5/test_td_real_g7_content_enforcement_v1_macha_hostile.py
+          tests/v5/test_td_real_g7_content_enforcement_v1_macha_recheck.py
+          tests/v5/test_td_real_g7_terminal_decision_v3.py
+          -k 'not test_r1_ and not test_r2_'
+      - name: Preserve R1/R2 hostile failures as explicit unresolved blockers
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/v5/test_td_real_g7_content_enforcement_v1_macha_recheck.py \
+            -k 'test_r1_ or test_r2_' > /tmp/macha449-r1-r2-red.txt 2>&1
+          result=$?
+          set -e
+          cat /tmp/macha449-r1-r2-red.txt | tail -65
+          test "$result" -ne 0
+          grep -Eq '10 failed' /tmp/macha449-r1-r2-red.txt
+          echo 'R1_R2_10_HOSTILE_RED_RETAINED__NO_PHYSICAL_OR_DEPTH_AUTHORITY'
+      - name: Publish non-promoting hostile receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: td-g7-e3-r1-r2-preserved-hostile-red
+          path: /tmp/macha449-r1-r2-red.txt
+          retention-days: 30
+          if-no-files-found: error
