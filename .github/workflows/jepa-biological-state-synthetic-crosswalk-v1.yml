@@ -1,0 +1,25 @@
+name: JEPA biology-to-synthetic evidence crosswalk V1
+on:
+  pull_request:
+    paths:
+      - 'docs/agent/JEPA_BIOLOGICAL_STATE_TO_SYNTHETIC_CROSSWALK_20261027.md'
+      - 'results/target_discovery/biology_state_synthetic_crosswalk_v1/**'
+      - 'scripts/v5/verify_biology_synthetic_crosswalk_v1.py'
+      - 'tests/v5/test_verify_biology_synthetic_crosswalk_v1.py'
+      - '.github/workflows/jepa-biological-state-synthetic-crosswalk-v1.yml'
+permissions:
+  contents: read
+jobs:
+  biology-crosswalk-nonpromotion:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install synthetic planning audit tests
+        run: python -m pip install 'pytest>=9,<10'
+      - name: Validate research evidence boundaries
+        run: python scripts/v5/verify_biology_synthetic_crosswalk_v1.py
+      - name: Hostile source and non-promotion regressions
+        run: python -m pytest -q tests/v5/test_verify_biology_synthetic_crosswalk_v1.py
