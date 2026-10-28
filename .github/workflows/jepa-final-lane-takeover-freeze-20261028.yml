@@ -3,7 +3,10 @@ on:
   pull_request:
     paths:
       - 'docs/agent/JEPA_FINAL_LANE_TAKEOVER_FREEZE_20261028.md'
+      - 'docs/agent/chat_exclusive_20261028/PASTED_TEXT_V8A_SUCCESSOR_20261027_TEXT_EXTRACT.md'
       - 'docs/agent/chat_exclusive_20261028/PASTED_TEXT_SYNTH_DOWNSTREAM_20261027_TEXT_EXTRACT.md'
+      - 'docs/agent/chat_exclusive_20261028/PASTED_SOURCES_CUSTODY_AND_SUPERSESSION.md'
+      - 'results/target_discovery/chat_exclusive_takeover_20261028/DUPLICATE_PASTED_TEXT_SOURCE_CUSTODY_V1.json'
       - 'results/target_discovery/unified_qualification_v1/JEPA_FINAL_LANE_TAKEOVER_FREEZE_20261028.json'
       - 'scripts/v5/verify_jepa_final_lane_takeover_freeze_20261028.py'
       - 'tests/v5/test_verify_jepa_final_lane_takeover_freeze_20261028.py'
