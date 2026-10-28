@@ -1,0 +1,49 @@
+name: PS Task3 Macha437 independent numeric/parameter hostility (review RED)
+on:
+  pull_request:
+    paths:
+      - 'tests/production_synthetic/test_calibration_v1_chatgpt_437_hostile_red.py'
+      - 'docs/agent/JEPA_PS_TASK3_MACHA437_INDEPENDENT_REVIEW_20261028.md'
+      - '.github/workflows/ps-task3-chatgpt-437-independent-hostile-red.yml'
+permissions:
+  contents: read
+jobs:
+  preserve-original-green:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: Run original Macha Task3 and trust-model regression suites
+        run: >-
+          python -m pytest -q
+          tests/production_synthetic/test_calibration_v1.py
+          tests/production_synthetic/test_calibration_v1_macha_hostile.py
+          tests/production_synthetic/test_calibration_v1_trust_model.py
+  pin-independent-red:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: Assert exact 3 science-contract REDs plus intact non-authority GREEN control
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/production_synthetic/test_calibration_v1_chatgpt_437_hostile_red.py > /tmp/ps3-chgpt-437-review-red.txt 2>&1
+          rc=$?
+          set -e
+          tail -85 /tmp/ps3-chgpt-437-review-red.txt
+          test "$rc" -ne 0
+          grep -Eq '3 failed, 1 passed' /tmp/ps3-chgpt-437-review-red.txt
+          echo 'PS3_R1_BINARY64_AND_R2_OBS_PREFIX_REVIEW_RED_PRESERVED__NO_CALIBRATION_AUTHORITY'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ps3-chatgpt-independent-hostile-red
+          path: /tmp/ps3-chgpt-437-review-red.txt
+          retention-days: 30
+          if-no-files-found: error
