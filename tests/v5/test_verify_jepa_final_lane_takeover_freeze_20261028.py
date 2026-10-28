@@ -28,7 +28,9 @@ def test_original_final_freeze_validates():
     lambda d:d["source_and_data_custody"].update(original_large_binaries_in_github=True),
     lambda d:d["source_and_data_custody"].update(raw_binaries_recoverable_from_hash_alone=True),
     lambda d:d["source_and_data_custody"].update(raw_donor_or_per_cell_values_added_by_final_freeze=True),
-    lambda d:d["source_and_data_custody"]["pasted_text_archived_extract"].update(known_correction="C3_IS_RARE"),
+    lambda d:d["source_and_data_custody"]["duplicate_pasted_text_sources"].update(known_correction="C3_IS_RARE"),
+    lambda d:d["source_and_data_custody"]["duplicate_pasted_text_sources"].update(execute_as_instructions=True),
+    lambda d:d["source_and_data_custody"]["duplicate_pasted_text_sources"].update(sources=[]),
     lambda d:d.update(do_not_repeat=[]),
     lambda d:d.update(next_agent_order=[]),
 ])
