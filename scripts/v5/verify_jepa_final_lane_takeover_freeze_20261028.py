@@ -20,7 +20,10 @@ PINNED={
 "results/target_discovery/unified_qualification_v1/JEPA_MACHA_V2_G7_OBSERVATION_CONTRACT_DELTA_20261028.json":"66dabe48970cda74d5843379b08853c9e10cca05",
 "docs/agent/JEPA_PS_TASK3_MACHA437_INDEPENDENT_REVIEW_20261028.md":"3ea78eed8965cd46478bf980ab2d7105a2c689f6",
 "results/production_synthetic/JEPA_TASK3_CHATGPT_INDEPENDENT_REVIEW_20261028.json":"f4da4386d948a47233f07f9c8d50fb31c0200d8e",
-"docs/agent/chat_exclusive_20261028/PASTED_TEXT_SYNTH_DOWNSTREAM_20261027_TEXT_EXTRACT.md":"bad2bd0a41b81a71607d91e61fc23a827c214acb",
+"docs/agent/chat_exclusive_20261028/PASTED_TEXT_V8A_SUCCESSOR_20261027_TEXT_EXTRACT.md":"58b4312666aae179ef0f9877c3447ab5a120ea28",
+"docs/agent/chat_exclusive_20261028/PASTED_TEXT_SYNTH_DOWNSTREAM_20261027_TEXT_EXTRACT.md":"c99e2927845bad6acbea2191b6c8378d65913333",
+"docs/agent/chat_exclusive_20261028/PASTED_SOURCES_CUSTODY_AND_SUPERSESSION.md":"e89b94d241cedbd8667a1adf77b02d9eec1110cb",
+"results/target_discovery/chat_exclusive_takeover_20261028/DUPLICATE_PASTED_TEXT_SOURCE_CUSTODY_V1.json":"bc65e56035def6e198cdcb2cc65494f05c48d83a",
 }
 def blob(raw:bytes)->str:
     return hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest()
@@ -54,10 +57,15 @@ def validate(d):
     req(custody.get("original_large_binaries_in_github") is False and
         custody.get("raw_donor_or_per_cell_values_added_by_final_freeze") is False and
         custody.get("raw_binaries_recoverable_from_hash_alone") is False,"data custody")
-    pasted=custody.get("pasted_text_archived_extract",{})
-    req(pasted.get("git_blob")=="bad2bd0a41b81a71607d91e61fc23a827c214acb" and
-        pasted.get("known_correction")=="OLD_C3_RARE_INTERPRETATION_SUPERSEDED__C3_IS_QUERY_MEASURED",
-        "pasted source correction/custody")
+    pasted=custody.get("duplicate_pasted_text_sources",{})
+    req(pasted.get("status")=="TWO_DISTINCT_ORIGINAL_FILES_WITH_SAME_BASENAME__BYTE_PRESERVED__HISTORICAL_ONLY" and
+        pasted.get("execute_as_instructions") is False and
+        pasted.get("known_correction")=="SYNTH_DOWNSTREAM_C3_RARE_WORDING_SUPERSEDED__C3_IS_QUERY_MEASURED",
+        "duplicate pasted source correction/custody")
+    src={x.get("path"):x for x in pasted.get("sources",[]) if isinstance(x,dict)}
+    req(src.get("docs/agent/chat_exclusive_20261028/PASTED_TEXT_V8A_SUCCESSOR_20261027_TEXT_EXTRACT.md",{}).get("git_blob")=="58b4312666aae179ef0f9877c3447ab5a120ea28" and
+        src.get("docs/agent/chat_exclusive_20261028/PASTED_TEXT_SYNTH_DOWNSTREAM_20261027_TEXT_EXTRACT.md",{}).get("git_blob")=="c99e2927845bad6acbea2191b6c8378d65913333",
+        "duplicate pasted source identities")
     req(len(d.get("do_not_repeat",[]))>=9,"no-repeat list")
     req(len(d.get("next_agent_order",[]))>=9,"successor order")
 def validate_root(root=ROOT):
