@@ -96,6 +96,52 @@ def test_round2_universe_keys_are_type_checked_before_any_hash_or_comparison(sid
         pytest.fail(f"escape={escaped} payload_calls={len(_KeyEq.calls)}", pytrace=False)
 
 
+def _firewall_call(protected):
+    raw = b"fixture-observation-statistics-not-real-human-data"
+    h = sha256(raw).hexdigest()
+    artifact = cal.CalibrationArtifact(
+        h, "SYNTH_ONLY", ("FAKE_FIT_A",), "CALIBRATION_FIT",
+        "OBSERVATION_DEPTH", (), "AUTHENTICATED_EMPIRICAL_CALIBRATION")
+    return lambda: cal.validate_calibration_firewall(
+        artifact, raw_bytes=raw, independently_pinned_sha256=h, expected_source_scope="SYNTH_ONLY",
+        eligible_fit_donors=("FAKE_FIT_A",), protected_partitions=protected)
+
+
+def _realism_call(metrics):
+    c = _contract(("OBS_DEPTH_SCALE",))
+    s = cal.RealismState.initial(c)
+    return lambda: cal.advance_realism_iteration(
+        c, s, version_sha256=sha256(b"round3").hexdigest(), metrics=metrics)
+
+
+def _round3(route):
+    if route == "protected_partitions":
+        roles = {"VALIDATION": ("FAKE_V",), "ORACLE": ("FAKE_O",), "RESERVED": ("FAKE_R",)}
+        roles[_KeyEq("DEVELOPMENT")] = ("FAKE_D",)
+        return _firewall_call(roles)
+    if route == "precision_targets":
+        t = cal.PrecisionTarget(epsilon=0.1, alpha=0.01)
+        return lambda: cal.derive_budget_from_precision({_KeyEq("donors"): t, "worlds": t, "nulls": t})
+    return _realism_call({_KeyEq("OBS_DEPTH"): 0.5})
+
+
+@pytest.mark.parametrize("route", ["protected_partitions", "precision_targets", "realism_metrics"])
+def test_round3_other_caller_mappings_check_key_types_before_hashing(route):
+    """Same class as round 2 on the module's other caller-keyed mappings:
+    set(mapping) hashes and compares keys before any exact-str check."""
+    call = _round3(route)
+    _KeyEq.calls.clear()
+    try:
+        call()
+        escaped = "returned"
+    except cal.CalibrationError:
+        escaped = None
+    except BaseException as exc:  # noqa: BLE001 - the escape is the finding
+        escaped = type(exc).__qualname__
+    if escaped or _KeyEq.calls:
+        pytest.fail(f"escape={escaped} payload_calls={len(_KeyEq.calls)}", pytrace=False)
+
+
 def _contract(params):
     return cal.RealismContract.frozen(
         metric_bands=(("OBS_DEPTH", (0.2, 0.8)),), adjustable_observation_parameters=params,
