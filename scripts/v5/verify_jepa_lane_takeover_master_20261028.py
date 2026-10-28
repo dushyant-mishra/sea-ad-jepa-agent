@@ -108,6 +108,43 @@ def verify(d,doc:str,blob_map:dict[str,str]):
     ("g7_q_excluded_normalization_issuer","RED_R2"),
     ("production_synthetic_t2_external_scan_issuer","RED")]:
   must(gates.get(k)==expected,"unresolved physical/source gate erased: "+k)
+ sup=d.get("current_source_supersession",{})
+ must(sup.get("original_ledger_role")==
+      "DATED_PRE_MACHA481_484_REVIEW_SNAPSHOT__NOT_LATEST_REVIEW_VERDICT",
+      "old machine ledger mislabeled as latest")
+ must(sup.get("independent_review_source_pr")==484 and
+      sup.get("independent_review_head")=="5d84ed90417fbc1be1a13657a08491e2db6feef5",
+      "Macha latest review source")
+ must(sup.get("current_source_index")=="docs/agent/JEPA_COMPLETE_LANE_TAKEOVER_FREEZE_20261028.md",
+      "new no-repeat current-index pointer")
+ recent={x.get("review_pr"):x for x in sup.get("new_reviews",[]) if type(x) is dict}
+ must(set(recent)=={481,482,483},"new independent RED count")
+ for n,target,verdict,red in [
+     (481,479,"REPAIR_REQUIRED",19),
+     (482,476,"ACCEPT_INCREMENTAL_WITH_R1_R2_BLOCKERS",18),
+     (483,477,"ACCEPT_INCREMENTAL_WITH_LIMITATIONS",8),
+ ]:
+  must(recent[n].get("target_pr")==target and
+       recent[n].get("verdict")==verdict and
+       recent[n].get("new_hostile_red")==red,
+       "latest independent reviewer findings erased")
+ repair=sup.get("recent_task3_author_repair",{})
+ must(repair.get("pr")==486 and
+      repair.get("source_review_pr")==480 and
+      repair.get("immutable_480_hostiles_pass")==4 and
+      repair.get("author_repair_tests_pass")==28 and
+      repair.get("ci_status")=="AUTHOR_GREEN_INDEPENDENT_CHATGPT_REVIEW_PENDING" and
+      repair.get("observation_parameter_semantics_bound") is False and
+      repair.get("real_calibration_authorized") is False,
+      "Macha486 author-only Task3 fix elevated to source calibration")
+ depth=sup.get("observation_depth_decision",{})
+ must(depth.get("proposal")=="D1_VISIBLE_BASE_MAPPED_SUM_V1" and
+      depth.get("status")=="PROSPECTIVE_SCIENCE_DECISION_PENDING" and
+      depth.get("g7_v2_rename_adapter_accepted_fixtures")==6 and
+      depth.get("g7_v2_rename_adapter_tested_fixtures")==200 and
+      depth.get("same_code_path_v3_authorized") is False,
+      "D1 or cross-head adapter incorrectly promoted")
+ must(sup.get("current_authority")==AUTH,"new independent review implied training")
  must(type(d.get("next_actions")) is list and len(d["next_actions"])>=5,"successor task ownership")
  for word in ("PR #314","PR #480","PR #479","R1D","2⁵³","97/97","not copied verbatim","PS Task4","NOT TESTED"):
   must(word.casefold() in doc.casefold(),"no-repeat narrative missing: "+word)
