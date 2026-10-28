@@ -20,6 +20,7 @@ PINNED={
 "results/target_discovery/unified_qualification_v1/JEPA_MACHA_V2_G7_OBSERVATION_CONTRACT_DELTA_20261028.json":"66dabe48970cda74d5843379b08853c9e10cca05",
 "docs/agent/JEPA_PS_TASK3_MACHA437_INDEPENDENT_REVIEW_20261028.md":"3ea78eed8965cd46478bf980ab2d7105a2c689f6",
 "results/production_synthetic/JEPA_TASK3_CHATGPT_INDEPENDENT_REVIEW_20261028.json":"f4da4386d948a47233f07f9c8d50fb31c0200d8e",
+"docs/agent/chat_exclusive_20261028/PASTED_TEXT_SYNTH_DOWNSTREAM_20261027_TEXT_EXTRACT.md":"bad2bd0a41b81a71607d91e61fc23a827c214acb",
 }
 def blob(raw:bytes)->str:
     return hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest()
@@ -53,6 +54,10 @@ def validate(d):
     req(custody.get("original_large_binaries_in_github") is False and
         custody.get("raw_donor_or_per_cell_values_added_by_final_freeze") is False and
         custody.get("raw_binaries_recoverable_from_hash_alone") is False,"data custody")
+    pasted=custody.get("pasted_text_archived_extract",{})
+    req(pasted.get("git_blob")=="bad2bd0a41b81a71607d91e61fc23a827c214acb" and
+        pasted.get("known_correction")=="OLD_C3_RARE_INTERPRETATION_SUPERSEDED__C3_IS_QUERY_MEASURED",
+        "pasted source correction/custody")
     req(len(d.get("do_not_repeat",[]))>=9,"no-repeat list")
     req(len(d.get("next_agent_order",[]))>=9,"successor order")
 def validate_root(root=ROOT):
