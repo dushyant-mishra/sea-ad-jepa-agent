@@ -233,12 +233,30 @@
     "historical_archive_verification": "PR471_97_OF_97_MEMBER_SHA256_MATCH",
     "raw_donor_or_per_cell_values_added_by_final_freeze": false,
     "raw_binaries_recoverable_from_hash_alone": false,
-    "pasted_text_archived_extract": {
-      "path": "docs/agent/chat_exclusive_20261028/PASTED_TEXT_SYNTH_DOWNSTREAM_20261027_TEXT_EXTRACT.md",
-      "git_blob": "bad2bd0a41b81a71607d91e61fc23a827c214acb",
-      "original_local_sha256": "d08e24d481e77a89ebf07428601fe6c54759a9050adf58346d0fa6cb5281a549",
-      "status": "TEXT_EXTRACT_ARCHIVED__HISTORICAL_SOURCE__NOT_CURRENT_AUTHORITY",
-      "known_correction": "OLD_C3_RARE_INTERPRETATION_SUPERSEDED__C3_IS_QUERY_MEASURED"
+    "duplicate_pasted_text_sources": {
+      "status": "TWO_DISTINCT_ORIGINAL_FILES_WITH_SAME_BASENAME__BYTE_PRESERVED__HISTORICAL_ONLY",
+      "custody_doc": "docs/agent/chat_exclusive_20261028/PASTED_SOURCES_CUSTODY_AND_SUPERSESSION.md",
+      "custody_doc_git_blob": "e89b94d241cedbd8667a1adf77b02d9eec1110cb",
+      "machine_receipt": "results/target_discovery/chat_exclusive_takeover_20261028/DUPLICATE_PASTED_TEXT_SOURCE_CUSTODY_V1.json",
+      "machine_receipt_git_blob": "bc65e56035def6e198cdcb2cc65494f05c48d83a",
+      "sources": [
+        {
+          "path": "docs/agent/chat_exclusive_20261028/PASTED_TEXT_V8A_SUCCESSOR_20261027_TEXT_EXTRACT.md",
+          "original_bytes": 16837,
+          "original_sha256": "bce220c5fb6adf6e3e90ba464a9d4af01195390ae04fb2d4d00135b2a3b7ccd9",
+          "git_blob": "58b4312666aae179ef0f9877c3447ab5a120ea28",
+          "role": "HISTORICAL_V8A_SUCCESSOR_SOURCE__SUPERSEDED"
+        },
+        {
+          "path": "docs/agent/chat_exclusive_20261028/PASTED_TEXT_SYNTH_DOWNSTREAM_20261027_TEXT_EXTRACT.md",
+          "original_bytes": 12541,
+          "original_sha256": "d08e24d481e77a89ebf07428601fe6c54759a9050adf58346d0fa6cb5281a549",
+          "git_blob": "c99e2927845bad6acbea2191b6c8378d65913333",
+          "role": "HISTORICAL_SYNTH_DOWNSTREAM_SOURCE__SUPERSEDED_C3_RARE"
+        }
+      ],
+      "known_correction": "SYNTH_DOWNSTREAM_C3_RARE_WORDING_SUPERSEDED__C3_IS_QUERY_MEASURED",
+      "execute_as_instructions": false
     }
   },
   "production_synthetic_blockers": [
