@@ -1,3 +1,21 @@
+# LATEST SOURCE DRIFT — this master is a PRE-#481/#484 snapshot; read newer review first
+
+**Supersession notice (2026-10-28):** The detailed record below accurately freezes the source state available before Macha's new independent #481–#484 reviews and author #486 Task3 repair. It is **not the current review verdict** for #479/#476/#477. Do not interpret its “independent review pending” labels as the latest status. Newer, independently sourced review evidence is preserved on this same audit branch as `docs/agent/JEPA_COMPLETE_LANE_TAKEOVER_FREEZE_20261028.md` with machine mirror `results/target_discovery/unified_qualification_v1/JEPA_CURRENT_SUCCESSOR_FREEZE_20261028.json`. The separate original [Macha #484](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/484) remains the controlling exact reviewer source. The old biological experiments below are not reopened.
+
+**Critical new facts to carry into any successor:**
+
+- [#481](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/481) tests-only review of #479: **REPAIR_REQUIRED**, 19 newly hostile RED / 5 characterization PASS; forged depth and unsupported base-rights context, metaclass path, empty-base refusal leak, alias cases and teacher digest side channel. Prior #479 124 author tests PASS is historical mechanics evidence, **not independent acceptance**.
+- [#482](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/482) of #476: **ACCEPT_INCREMENTAL_WITH_R1_R2_BLOCKERS**, yet 18 new hostile RED / 3 characterization PASS; R6 binder forgery closed in the tested scope, R5X exact-type/metaclass and bypass via unbound V3 remain open, R1/R1D/R2 still RED.
+- [#483](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/483) of #477: **ACCEPT_INCREMENTAL_WITH_LIMITATIONS**, 8 new hostile RED / 2 characterization PASS; `isinstance` / `__class__` and chained `__cause__` payload still open. T2-D external scan issuer RED.
+- [#486](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/486) Macha author Task3 repair after #480: 4 immutable reviewer tests PASS, 28 author repair tests PASS and platform CI GREEN, but **independent acceptance pending**; biological observation semantics still not issuer-bound.
+- Macha #484 recommends **D1 = sum of released base-visible measured counts** as a candidate depth contract, with any off-ledger residual D2 strictly optional and requiring source/alias authentication. This is a **proposal awaiting scientific decision**, not a change to legacy physical `library_size`. A cross-head G7 rename adapter reached only **6/200** synthetic fixtures and did not connect to V3; no real G7 qualification.
+
+**Do not promote any of the above:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
+## DATED PRE-NEW-REVIEW SOURCE SNAPSHOT — historically valid only at its recorded heads
+
 # JEPA target discovery and downstream handoff: authoritative no-repeat lane map (2026-10-28)
 
 **Purpose:** One source-indexed, evidence-rights-aware entry point for the next agent. This is **append-only** to the existing [audit #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322). It does not re-run corrected science or create a competing target-discovery pipeline, simulator, registry, or JEPA harness. The original independently frozen V8e audit head `a271164554076d0acda3bd0cf0b1bf957c0fdfd3` is a **historical object**; no independent acceptance automatically transfers to this new branch head.
