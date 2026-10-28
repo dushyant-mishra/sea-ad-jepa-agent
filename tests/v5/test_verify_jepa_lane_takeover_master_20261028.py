@@ -37,6 +37,14 @@ def test_original_archive_and_source_blobs_are_nonpromoting():
  lambda a:a[0]["science_gates"].update(g7_donor_specimen_independence="PASS"),
  lambda a:a[0]["science_gates"].update(production_synthetic_t2_external_scan_issuer="PASS"),
  lambda a:a[0]["science_gates"].update(production_synthetic_task4_candidate_neutral_biology="QUALIFIED"),
+ lambda a:a[0]["current_source_supersession"].update(original_ledger_role="LATEST_ACCEPTED_BIOLOGY"),
+ lambda a:a[0]["current_source_supersession"]["new_reviews"][0].update(verdict="ACCEPT"),
+ lambda a:a[0]["current_source_supersession"]["new_reviews"][1].update(new_hostile_red=0),
+ lambda a:a[0]["current_source_supersession"]["new_reviews"][2].update(verdict="FULL_PS_TASK1_2_ACCEPTED"),
+ lambda a:a[0]["current_source_supersession"]["recent_task3_author_repair"].update(ci_status="INDEPENDENT_REAL_CALIBRATION_ACCEPTED"),
+ lambda a:a[0]["current_source_supersession"]["recent_task3_author_repair"].update(observation_parameter_semantics_bound=True),
+ lambda a:a[0]["current_source_supersession"]["observation_depth_decision"].update(status="APPROVED_HUMAN_R2"),
+ lambda a:a[0]["current_source_supersession"]["observation_depth_decision"].update(same_code_path_v3_authorized=True),
  lambda a:a[0].update(next_actions=[]),
 ])
 def test_false_promotion_or_source_mutation_refused(mutate):
