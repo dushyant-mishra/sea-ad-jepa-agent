@@ -121,7 +121,8 @@ def _round3(route):
         return _firewall_call(roles)
     if route == "precision_targets":
         t = cal.PrecisionTarget(epsilon=0.1, alpha=0.01)
-        return lambda: cal.derive_budget_from_precision({_KeyEq("donors"): t, "worlds": t, "nulls": t})
+        targets = {_KeyEq("donors"): t, "worlds": t, "nulls": t}  # built (and hashed) before the call
+        return lambda: cal.derive_budget_from_precision(targets)
     return _realism_call({_KeyEq("OBS_DEPTH"): 0.5})
 
 

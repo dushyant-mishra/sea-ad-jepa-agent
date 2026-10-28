@@ -142,6 +142,12 @@ def _strtuple(items: object, *, nonempty: bool = False) -> bool:
     )
 
 
+def _exact_str_keys(mapping: object) -> bool:
+    """Exact dict whose keys are all exact str. Iterating an exact dict runs no
+    key code, whereas set(), comparison and lookup hash and compare keys."""
+    return type(mapping) is dict and all(type(k) is str for k in dict.keys(mapping))
+
+
 def _exact_str(x: object) -> bool:
     return type(x) is str and bool(x)
 
@@ -346,7 +352,7 @@ def validate_calibration_firewall(
         raise CalibrationError("calibration source, split or provenance mismatch")
     if not _strtuple(eligible_fit_donors, nonempty=True):
         raise CalibrationError("calibration donor identities require unique canonical strings")
-    if type(protected_partitions) is not dict or set(protected_partitions) != _PROTECTED_ROLES:
+    if not _exact_str_keys(protected_partitions) or set(protected_partitions) != _PROTECTED_ROLES:
         raise CalibrationError("every protected partition (validation, oracle, reserved, development) is required")
     protected: set[str] = set()
     for role in sorted(_PROTECTED_ROLES):
@@ -422,8 +428,7 @@ def validate_address_universe_agnostic(
         raise CalibrationError("explicit exact-keyed cross-universe fixtures required")
     # Iterating an exact dict runs no key code; hashing or comparing keys does,
     # so every key of both sides must be an exact str before set() or lookup.
-    if any(type(k) is not str for k in dict.keys(pilot_values)) or any(
-            type(k) is not str for k in dict.keys(full_values)):
+    if not _exact_str_keys(pilot_values) or not _exact_str_keys(full_values):
         raise CalibrationError("universe statistic keys must be exact strings")
     if not pilot_values or set(pilot_values) != set(full_values):
         raise CalibrationError("same scientific units must be inspected in both universes")
@@ -467,7 +472,7 @@ def derive_budget_from_precision(targets: Mapping[str, PrecisionTarget]) -> dict
     biological independence must be assessed by a separate qualification;
     technical thinning draws can never increase biological donor count.
     """
-    if type(targets) is not dict or set(targets) != {"donors", "worlds", "nulls"}:
+    if not _exact_str_keys(targets) or set(targets) != {"donors", "worlds", "nulls"}:
         raise CalibrationError("all three prospective precision channels are required")
     out: dict[str, int] = {}
     for name, item in targets.items():
@@ -683,7 +688,7 @@ def advance_realism_iteration(
         if len(s.versions_tested) >= frozen.max_iterations:
             raise CalibrationError("frozen realism iteration budget exhausted")
         bands = dict(frozen.metric_bands)
-        if type(metrics) is not dict or set(metrics) != set(bands):
+        if not _exact_str_keys(metrics) or set(metrics) != set(bands):
             raise CalibrationError("metric roster differs from frozen contract")
         if any(type(k) is not str for k in metrics) or not all(_finite(x) for x in dict.values(metrics)):
             raise CalibrationError("nonfinite/forged realism metric")
