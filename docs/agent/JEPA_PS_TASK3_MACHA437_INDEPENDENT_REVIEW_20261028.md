@@ -2,7 +2,7 @@
 
 **Review target:** [Macha PR #437](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/437), frozen head `fd3242ada6f77ba09ff2d8a1c7716eb9725ced11`. Reviewer branch is **tests and source-specific report only**: original `scripts/production_synthetic/calibration_v1.py` and original tests are unchanged. All adversarial inputs are synthetic, no actual human calibration or protected donor data accessed.
 
-**Provisional verdict: `REPAIR_REQUIRED__R1_NUMERIC_ALIAS__R2_OBS_PARAMETER_SPOOF`; existing source calibration authority remains `NONE`.** Finalize exact hosted CI, logs and result counts before independent reviewer signoff.
+**Independent exact-head verdict: `REPAIR_REQUIRED__R1_NUMERIC_ALIAS__R2_OBS_PARAMETER_SPOOF`; source calibration authority remains `NONE`.** [Reviewer run 40733195290](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/40733195290) SUCCESS in expected-RED recording: **3 newly authored hostile cases FAILED as predicted, 1 unpromoted control PASSED**; unchanged Macha original tests **33 PASSED**. [Full inherited calibration run 40733195258](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/40733195258) remains FAILURE **3 failed, 391 passed, 1 xfailed**, due to the new RED cases included in its broad pytest collection. This is neither a successful calibration gate nor a newly executed real source; the preserved source has not been repaired. The unchanged unified synthetic integration [run 40733195217](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/40733195217) passed its existing scope.
 
 ## What is working and must be preserved
 
