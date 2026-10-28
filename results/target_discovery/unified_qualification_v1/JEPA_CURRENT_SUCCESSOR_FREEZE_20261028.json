@@ -248,5 +248,17 @@
     "ChatGPT repair #476 exact type dispatch; design composed bind-snapshot-decide without silently modifying V3 decision law",
     "ChatGPT repair #477 exact type checks and exception chaining; retain T2-D red",
     "Deciding lane adjudicate D1,D2, versioned G7 E3; independent rights issuer and PS Task4 remain blocked"
-  ]
+  ],
+  "additional_original_text_uploads": {
+    "classification": "HISTORICAL_VERBATIM_CUSTODY_ONLY__NOT_SCIENTIFIC_QUALIFICATION",
+    "manifest": "results/target_discovery/chat_exclusive_takeover_20261028/DUPLICATE_PASTED_TEXT_SOURCE_CUSTODY_V1.json",
+    "original_count": 2,
+    "original_names_collide": true,
+    "distinct_git_blobs": [
+      "58b4312666aae179ef0f9877c3447ab5a120ea28",
+      "c99e2927845bad6acbea2191b6c8378d65913333"
+    ],
+    "scientific_correction": "OLD_C3_RARE_SUPERSEDED_BY_C3_QUERY_MEASURED",
+    "training_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  }
 }
