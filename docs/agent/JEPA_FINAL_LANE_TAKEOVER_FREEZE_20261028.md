@@ -140,6 +140,7 @@ Therefore a versioned G7 E3 content law is a deliberate contract decision, not a
 - Donor split: **104 fit / 22 validation / 23 oracle**.
 - Do not interchange metadata coverage and raw physical observations.
 - Large ZIP/NPZ/checkpoint attachments are **not hosted in GitHub**. Their SHA/byte identities are in `results/target_discovery/chat_exclusive_takeover_20261027/CHAT_LOCAL_SOURCE_SHA256_INVENTORY_V1.json`.
+- The original October 27 pasted synthetic/downstream handoff is now preserved as `docs/agent/chat_exclusive_20261028/PASTED_TEXT_SYNTH_DOWNSTREAM_20261027_TEXT_EXTRACT.md` (Git blob `bad2bd0a41b81a71607d91e61fc23a827c214acb`). It is a historical source, not current authority; its old C3=rare interpretation is explicitly superseded by C3=QUERY_MEASURED.
 - A SHA does not reconstruct missing bytes and does not authenticate an external issuer.
 - Original August historical package integrity: PR #471, 97/97 member SHA matches.
 - The final freeze commits no new donor identifiers, per-cell human values, raw matrices or checkpoint tensors.
