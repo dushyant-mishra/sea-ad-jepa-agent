@@ -1,0 +1,34 @@
+{
+  "schema": "JEPA_DUPLICATE_PASTED_TEXT_SOURCE_CUSTODY_V1",
+  "date": "2026-10-28",
+  "kind": "APPEND_ONLY_VERBATIM_USER_SOURCE_ARCHIVE_NOT_ACTIVE_SCIENCE",
+  "sources": [
+    {
+      "original_upload_name": "Pasted text.txt",
+      "original_file_id": "file_0000000023bc820d827ef0a9be6e0d71",
+      "original_bytes": 16837,
+      "original_sha256": "bce220c5fb6adf6e3e90ba464a9d4af01195390ae04fb2d4d00135b2a3b7ccd9",
+      "original_git_blob": "58b4312666aae179ef0f9877c3447ab5a120ea28",
+      "github_path": "docs/agent/chat_exclusive_20261028/PASTED_TEXT_V8A_SUCCESSOR_20261027_TEXT_EXTRACT.md",
+      "content_type": "OLDER_V8A_SUCCESSOR_HANDOFF",
+      "source_qualified": false,
+      "status": "HISTORICAL_NOT_CURRENT_SCIENTIFIC_AUTHORITY"
+    },
+    {
+      "original_upload_name": "Pasted text.txt",
+      "original_file_id": "file_00000000632081f9b6d2c9f68a4a507c",
+      "original_bytes": 12541,
+      "original_sha256": "d08e24d481e77a89ebf07428601fe6c54759a9050adf58346d0fa6cb5281a549",
+      "original_git_blob": "c99e2927845bad6acbea2191b6c8378d65913333",
+      "github_path": "docs/agent/chat_exclusive_20261028/PASTED_TEXT_SYNTH_DOWNSTREAM_20261027_TEXT_EXTRACT.md",
+      "content_type": "OLDER_SYNTHETIC_TO_DOWNSTREAM_SUPPLEMENT",
+      "source_qualified": false,
+      "status": "C3_RARE_LABEL_SUPERSEDED_BY_C3_QUERY_MEASURED__HISTORICAL_ONLY"
+    }
+  ],
+  "historical_correction": "Source text from October27 is preserved verbatim including obsolete candidate names; PR468 and the current source audit control C3=QUERY_MEASURED not rare; PR314 corrected real one-shot remains spent.",
+  "large_binary_source_custody": "HASH_ONLY__NOT_PERMANENTLY_GITHUB_HOSTED",
+  "current_audit_master": "docs/agent/JEPA_COMPLETE_LANE_TAKEOVER_FREEZE_20261028.md",
+  "current_handoff_master": "docs/agent/JEPA_SUCCESSOR_FINAL_FREEZE_20261028.md",
+  "standing": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
