@@ -80,11 +80,11 @@ class _KeyEq(str):
 
 @pytest.mark.parametrize("side", ["pilot", "full"])
 def test_round2_universe_keys_are_type_checked_before_any_hash_or_comparison(side):
-    _KeyEq.calls.clear()
     pilot, full = {"U": 1}, {"U": 1}
     target = pilot if side == "pilot" else full
     del target["U"]
-    target[_KeyEq("U")] = 1
+    target[_KeyEq("U")] = 1  # insertion itself hashes the key; count only the validator's calls
+    _KeyEq.calls.clear()
     try:
         _universe(pilot, full)
         escaped = "returned"

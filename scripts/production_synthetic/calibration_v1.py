@@ -420,6 +420,11 @@ def validate_address_universe_agnostic(
         raise CalibrationError("address-universe agnosticism has not been demonstrated")
     if type(pilot_values) is not dict or type(full_values) is not dict:
         raise CalibrationError("explicit exact-keyed cross-universe fixtures required")
+    # Iterating an exact dict runs no key code; hashing or comparing keys does,
+    # so every key of both sides must be an exact str before set() or lookup.
+    if any(type(k) is not str for k in dict.keys(pilot_values)) or any(
+            type(k) is not str for k in dict.keys(full_values)):
+        raise CalibrationError("universe statistic keys must be exact strings")
     if not pilot_values or set(pilot_values) != set(full_values):
         raise CalibrationError("same scientific units must be inspected in both universes")
     for key, value in dict.items(pilot_values):
