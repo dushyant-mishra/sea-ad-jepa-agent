@@ -61,9 +61,10 @@ def validate(d: dict) -> None:
     }
     for source,(n,verdict,failed,passed) in expected.items():
         v=ver[source]
+        red_key="new_red_failed_each_platform" if source==477 else "new_red_failed"
+        control_key="new_characterization_passed_each_platform" if source==477 else "new_characterization_passed"
         reject(v.get("review_pr")==n and v.get("verdict")==verdict and
-               v.get("new_red_failed",failed)==failed and
-               v.get("new_characterization_passed",passed)==passed,
+               v.get(red_key)==failed and v.get(control_key)==passed,
                "independent review verdict RED drift "+str(source))
     reject(ver[476].get("remaining_external_hostiles")==11,
            "R1/R1D/R2 revoked")
