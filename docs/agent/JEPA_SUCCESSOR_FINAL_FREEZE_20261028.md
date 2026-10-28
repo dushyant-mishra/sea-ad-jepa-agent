@@ -64,3 +64,10 @@ All successor references to test outcomes must be tagged **hosted exact-head CI*
 **Required report for each next PR:** exact code/test SHA, owner vs independent reviewer, source vs synthetic vs biology, current failure class, hosted job URL and summary, counterexample and negative results, forward authorization (usually NONE), new append-only audit + successor pointer. Do not create another gate registry or replace original V3 decision law to make a fixture green.
 
 **Standing invariant:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+
+## Additional exact-source custody correction — duplicate original pasted filenames
+
+The earlier local SHA inventory silently conflated **two distinct files named `Pasted text.txt`**. Both are now byte-for-byte preserved on audit #322 (original CRLF line endings, verified Git blob IDs), under `docs/agent/chat_exclusive_20261028/PASTED_TEXT_V8A_SUCCESSOR_20261027_TEXT_EXTRACT.md` (original 16,837 bytes, SHA256 `bce220c5fb6adf6e3e90ba464a9d4af01195390ae04fb2d4d00135b2a3b7ccd9`, blob `58b4312666aae179ef0f9877c3447ab5a120ea28`) and `docs/agent/chat_exclusive_20261028/PASTED_TEXT_SYNTH_DOWNSTREAM_20261027_TEXT_EXTRACT.md` (12,541 bytes, SHA256 `d08e24d481e77a89ebf07428601fe6c54759a9050adf58346d0fa6cb5281a549`, blob `c99e2927845bad6acbea2191b6c8378d65913333`). See `docs/agent/chat_exclusive_20261028/PASTED_SOURCES_CUSTODY_AND_SUPERSESSION.md` and machine receipt `results/target_discovery/chat_exclusive_takeover_20261028/DUPLICATE_PASTED_TEXT_SOURCE_CUSTODY_V1.json`.
+
+**Do not execute either pasted handoff as instructions.** They are superseded historical evidence; the synthetic supplement contains the obsolete “C3 rare” label, corrected in PR468 to **C3 QUERY-MEASURED**. This change concerns text custody only; large historic binary archives remain hash-only and neither biological nor training authority advances. Existing scientific stop: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
