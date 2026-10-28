@@ -64,6 +64,38 @@ def test_numeric_check_runs_no_payload_type_code():
         pytest.fail(f"escape={escaped} payload_calls={len(_Meta.calls)}", pytrace=False)
 
 
+class _KeyEq(str):
+    """Round 2: a str-subclass key whose hash/eq run during set() or dict lookup."""
+
+    calls: list = []
+
+    def __hash__(self):
+        _KeyEq.calls.append("hash")
+        return str.__hash__(self)
+
+    def __eq__(self, other):
+        _KeyEq.calls.append("eq")
+        raise RuntimeError("payload-chosen exception")
+
+
+@pytest.mark.parametrize("side", ["pilot", "full"])
+def test_round2_universe_keys_are_type_checked_before_any_hash_or_comparison(side):
+    _KeyEq.calls.clear()
+    pilot, full = {"U": 1}, {"U": 1}
+    target = pilot if side == "pilot" else full
+    del target["U"]
+    target[_KeyEq("U")] = 1
+    try:
+        _universe(pilot, full)
+        escaped = "returned"
+    except cal.CalibrationError:
+        escaped = None
+    except BaseException as exc:  # noqa: BLE001 - the escape is the finding
+        escaped = type(exc).__qualname__
+    if escaped or _KeyEq.calls:
+        pytest.fail(f"escape={escaped} payload_calls={len(_KeyEq.calls)}", pytrace=False)
+
+
 def _contract(params):
     return cal.RealismContract.frozen(
         metric_bands=(("OBS_DEPTH", (0.2, 0.8)),), adjustable_observation_parameters=params,
