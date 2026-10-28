@@ -285,5 +285,61 @@
       "step": "Only after stop gates, implement candidate-neutral V3.1.1 Task4 biology generator and one identifiable plus no-winner known-truth challenge through existing common scientific executors; do not make PR328 gene blocks biology"
     }
   ],
-  "standing_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  "standing_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "current_source_supersession": {
+    "original_ledger_role": "DATED_PRE_MACHA481_484_REVIEW_SNAPSHOT__NOT_LATEST_REVIEW_VERDICT",
+    "current_source_index": "docs/agent/JEPA_COMPLETE_LANE_TAKEOVER_FREEZE_20261028.md",
+    "current_machine_mirror": "results/target_discovery/unified_qualification_v1/JEPA_CURRENT_SUCCESSOR_FREEZE_20261028.json",
+    "independent_review_source_pr": 484,
+    "independent_review_head": "5d84ed90417fbc1be1a13657a08491e2db6feef5",
+    "new_reviews": [
+      {
+        "review_pr": 481,
+        "head": "957fa4a558ce2bd219b5c2dec6dad8f65dca81ab",
+        "target_pr": 479,
+        "verdict": "REPAIR_REQUIRED",
+        "new_hostile_red": 19,
+        "characterization_pass": 5,
+        "source_result": "A1_DEPTH_FORGERY_A2_BASE_RIGHTS_A3_METACLASS_A4_INHERITED_EMPTY_BASE_AND_ALIAS_DENSITY"
+      },
+      {
+        "review_pr": 482,
+        "head": "58baa4f912c791866c1aae31eab797da9dca588a",
+        "target_pr": 476,
+        "verdict": "ACCEPT_INCREMENTAL_WITH_R1_R2_BLOCKERS",
+        "new_hostile_red": 18,
+        "characterization_pass": 3,
+        "source_result": "R6_FIXTURE_FORGERY_FIXED_R5X_METACLASS_AND_V3_BINDER_BYPASS_STILL_OPEN_R1_R1D_R2_RED"
+      },
+      {
+        "review_pr": 483,
+        "head": "48ec018735a095571a0bfaa25b33f9b9deb40b39",
+        "target_pr": 477,
+        "verdict": "ACCEPT_INCREMENTAL_WITH_LIMITATIONS",
+        "new_hostile_red": 8,
+        "characterization_pass": 2,
+        "source_result": "PYTHON_ISINSTANCE___CLASS___AND_EXCEPTION___CAUSE___PAYLOAD_ROUTES_T2D_RED"
+      }
+    ],
+    "recent_task3_author_repair": {
+      "pr": 486,
+      "head": "f17080516f77e79fb6f6cb44903cbabdb2a85dd7",
+      "source_review_pr": 480,
+      "immutable_480_hostiles_pass": 4,
+      "author_repair_tests_pass": 28,
+      "ci_run": 40741905858,
+      "ci_status": "AUTHOR_GREEN_INDEPENDENT_CHATGPT_REVIEW_PENDING",
+      "observation_parameter_semantics_bound": false,
+      "real_calibration_authorized": false
+    },
+    "observation_depth_decision": {
+      "proposal": "D1_VISIBLE_BASE_MAPPED_SUM_V1",
+      "status": "PROSPECTIVE_SCIENCE_DECISION_PENDING",
+      "optional_D2": "OFF_LEDGER_RESIDUAL_NOT_DEFAULT_REQUIRES_INDEPENDENT_ALIAS_ISSUER",
+      "g7_v2_rename_adapter_accepted_fixtures": 6,
+      "g7_v2_rename_adapter_tested_fixtures": 200,
+      "same_code_path_v3_authorized": false
+    },
+    "current_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  }
 }
