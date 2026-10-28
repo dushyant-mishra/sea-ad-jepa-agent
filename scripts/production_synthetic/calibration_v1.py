@@ -84,6 +84,34 @@ _AUTHENTICATED_CALIBRATION_REGISTRY: frozenset[str] = frozenset()
 _PINNED_PILOT_UNIVERSE_SHA256: str | None = None
 _PINNED_FULL_UNIVERSE_SHA256: str | None = None
 
+# Closed registry of observation-side parameters a realism search may adjust.
+# Each family is named in the frozen V3.1.1 text, which permits calibration to
+# constrain observation/population properties only. Membership names a quantity
+# family; it does not bind any generator's operator semantics (PS Task 4 is
+# absent), so OBSERVATION_PARAMETER_SEMANTICS_BOUND stays False. Adding a name
+# is a new registry version, never a caller argument.
+_OBSERVATION_PARAMETER_SPEC = (
+    "docs/superpowers/specs/2026-10-14-lineage-composite-production-synthetic-"
+    "v3-1-consolidated-corrective-amendment.md#L78"
+)
+OBSERVATION_PARAMETER_REGISTRY_VERSION = "PS_V3_1_1_OBSERVATION_PARAMETERS_V1"
+OBSERVATION_PARAMETER_REGISTRY_ROWS = tuple(sorted(
+    (name, family, _OBSERVATION_PARAMETER_SPEC) for name, family in (
+        ("OBS_DEPTH_SCALE", "depth"),
+        ("OBS_DETECTION_SCALE", "detection"),
+        ("OBS_SUPPORT_RATE", "support"),
+        ("OBS_MISSINGNESS_RATE", "missingness"),
+        ("OBS_DONOR_OPERATOR_ALLOCATION", "donor/operator allocation"),
+        ("OBS_FRAGMENT_MULTIPLICITY", "fragment multiplicity"),
+        ("OBS_MODALITY_AVAILABILITY", "modality availability"),
+    )
+))
+OBSERVATION_PARAMETER_REGISTRY = frozenset(row[0] for row in OBSERVATION_PARAMETER_REGISTRY_ROWS)
+OBSERVATION_PARAMETER_REGISTRY_SHA256 = C.semantic_sha256([
+    {"name": n, "quantity_family": q, "spec_clause": s} for n, q, s in OBSERVATION_PARAMETER_REGISTRY_ROWS
+])
+OBSERVATION_PARAMETER_SEMANTICS_BOUND = False
+
 TRUST_MODEL = "COOPERATIVE_SAME_PROCESS_CALLERS__FIXTURE_ONLY__NO_HOSTILE_CALLER_PROTECTION"
 HOSTILE_SAME_PROCESS_PROTECTION = False
 
@@ -97,7 +125,8 @@ def _hex64(s: object) -> bool:
 
 
 def _finite(x: object) -> bool:
-    if type(x) not in (int, float):
+    kind = type(x)
+    if kind is not int and kind is not float:  # identity: no payload type code runs
         return False
     try:
         return isfinite(x)
@@ -111,6 +140,12 @@ def _strtuple(items: object, *, nonempty: bool = False) -> bool:
         and all(type(x) is str and bool(x) for x in items)
         and len(set(items)) == len(items)
     )
+
+
+def _exact_str_keys(mapping: object) -> bool:
+    """Exact dict whose keys are all exact str. Iterating an exact dict runs no
+    key code, whereas set(), comparison and lookup hash and compare keys."""
+    return type(mapping) is dict and all(type(k) is str for k in dict.keys(mapping))
 
 
 def _exact_str(x: object) -> bool:
@@ -317,7 +352,7 @@ def validate_calibration_firewall(
         raise CalibrationError("calibration source, split or provenance mismatch")
     if not _strtuple(eligible_fit_donors, nonempty=True):
         raise CalibrationError("calibration donor identities require unique canonical strings")
-    if type(protected_partitions) is not dict or set(protected_partitions) != _PROTECTED_ROLES:
+    if not _exact_str_keys(protected_partitions) or set(protected_partitions) != _PROTECTED_ROLES:
         raise CalibrationError("every protected partition (validation, oracle, reserved, development) is required")
     protected: set[str] = set()
     for role in sorted(_PROTECTED_ROLES):
@@ -391,13 +426,19 @@ def validate_address_universe_agnostic(
         raise CalibrationError("address-universe agnosticism has not been demonstrated")
     if type(pilot_values) is not dict or type(full_values) is not dict:
         raise CalibrationError("explicit exact-keyed cross-universe fixtures required")
+    # Iterating an exact dict runs no key code; hashing or comparing keys does,
+    # so every key of both sides must be an exact str before set() or lookup.
+    if not _exact_str_keys(pilot_values) or not _exact_str_keys(full_values):
+        raise CalibrationError("universe statistic keys must be exact strings")
     if not pilot_values or set(pilot_values) != set(full_values):
         raise CalibrationError("same scientific units must be inspected in both universes")
     for key, value in dict.items(pilot_values):
         if type(key) is not str or not key or not _finite(value):
             raise CalibrationError("invalid pilot universe statistic")
         other = dict.__getitem__(full_values, key)
-        if not _finite(other) or float(value) != float(other):
+        # Exact mathematical comparison: int/float `!=` is exact in Python,
+        # whereas float() first would alias 2**53 and 2**53 + 1.
+        if not _finite(other) or value != other:
             raise CalibrationError("pilot/full universe statistic is not invariant")
     return UniverseCheck(metric_name, len(pilot_values), UNIVERSE_FIXTURE_ONLY)
 
@@ -431,7 +472,7 @@ def derive_budget_from_precision(targets: Mapping[str, PrecisionTarget]) -> dict
     biological independence must be assessed by a separate qualification;
     technical thinning draws can never increase biological donor count.
     """
-    if type(targets) is not dict or set(targets) != {"donors", "worlds", "nulls"}:
+    if not _exact_str_keys(targets) or set(targets) != {"donors", "worlds", "nulls"}:
         raise CalibrationError("all three prospective precision channels are required")
     out: dict[str, int] = {}
     for name, item in targets.items():
@@ -497,8 +538,8 @@ class RealismContract:
             or not _strtuple(self.adjustable_observation_parameters, nonempty=True)
         ):
             raise CalibrationError("only frozen fixture realism contract is executable here")
-        if any(not x.startswith("OBS_") for x in self.adjustable_observation_parameters):
-            raise CalibrationError("biology parameter cannot be realism-tuned")
+        if any(x not in OBSERVATION_PARAMETER_REGISTRY for x in self.adjustable_observation_parameters):
+            raise CalibrationError("only registered observation-side parameters can be realism-tuned")
         names = []
         for entry in self.metric_bands:
             if type(entry) is not tuple or len(entry) != 2:
@@ -647,7 +688,7 @@ def advance_realism_iteration(
         if len(s.versions_tested) >= frozen.max_iterations:
             raise CalibrationError("frozen realism iteration budget exhausted")
         bands = dict(frozen.metric_bands)
-        if type(metrics) is not dict or set(metrics) != set(bands):
+        if not _exact_str_keys(metrics) or set(metrics) != set(bands):
             raise CalibrationError("metric roster differs from frozen contract")
         if any(type(k) is not str for k in metrics) or not all(_finite(x) for x in dict.values(metrics)):
             raise CalibrationError("nonfinite/forged realism metric")

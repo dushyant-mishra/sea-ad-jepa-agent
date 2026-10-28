@@ -1,0 +1,49 @@
+name: PS Task3 #437 R1/R2 repair (Macha author; independent review required; NO AUTHORITY)
+on:
+  pull_request:
+    paths:
+      - 'scripts/production_synthetic/calibration_v1.py'
+      - 'tests/production_synthetic/test_calibration_v1_macha_480_repair.py'
+      - '.github/workflows/ps-task3-437-r1-r2-repair-macha.yml'
+permissions:
+  contents: read
+jobs:
+  repair:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+            schemas
+            docs/superpowers/specs
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - shell: bash
+        run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: Unchanged #480 reviewer file (acceptance criterion; byte-identical)
+        shell: bash
+        run: python -m pytest -q -rA tests/production_synthetic/test_calibration_v1_chatgpt_437_hostile_red.py
+      - name: Original Macha Task3 suites unchanged
+        shell: bash
+        run: >-
+          python -m pytest -q
+          tests/production_synthetic/test_calibration_v1.py
+          tests/production_synthetic/test_calibration_v1_macha_hostile.py
+          tests/production_synthetic/test_calibration_v1_trust_model.py
+          tests/production_synthetic/test_calibration_v1_repair.py
+          tests/production_synthetic/test_calibration_v1_selfaudit.py
+          tests/production_synthetic/test_calibration_v1_independent_273f4a_red.py
+      - name: Macha repair self-audit cases
+        shell: bash
+        run: python -m pytest -q -rA tests/production_synthetic/test_calibration_v1_macha_480_repair.py
+      - name: Full production-synthetic suite
+        shell: bash
+        run: python -m pytest -q tests/production_synthetic
