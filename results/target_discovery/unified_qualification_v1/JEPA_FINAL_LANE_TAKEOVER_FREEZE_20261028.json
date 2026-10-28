@@ -232,7 +232,14 @@
     "source_hash_inventory": "results/target_discovery/chat_exclusive_takeover_20261027/CHAT_LOCAL_SOURCE_SHA256_INVENTORY_V1.json",
     "historical_archive_verification": "PR471_97_OF_97_MEMBER_SHA256_MATCH",
     "raw_donor_or_per_cell_values_added_by_final_freeze": false,
-    "raw_binaries_recoverable_from_hash_alone": false
+    "raw_binaries_recoverable_from_hash_alone": false,
+    "pasted_text_archived_extract": {
+      "path": "docs/agent/chat_exclusive_20261028/PASTED_TEXT_SYNTH_DOWNSTREAM_20261027_TEXT_EXTRACT.md",
+      "git_blob": "bad2bd0a41b81a71607d91e61fc23a827c214acb",
+      "original_local_sha256": "d08e24d481e77a89ebf07428601fe6c54759a9050adf58346d0fa6cb5281a549",
+      "status": "TEXT_EXTRACT_ARCHIVED__HISTORICAL_SOURCE__NOT_CURRENT_AUTHORITY",
+      "known_correction": "OLD_C3_RARE_INTERPRETATION_SUPERSEDED__C3_IS_QUERY_MEASURED"
+    }
   },
   "production_synthetic_blockers": [
     "T2D_EXTERNAL_SCAN_ISSUER_RED",
