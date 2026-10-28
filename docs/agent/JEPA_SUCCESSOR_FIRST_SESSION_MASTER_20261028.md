@@ -1,3 +1,15 @@
+# IMPORTANT: October 28 successor supersession — later Macha reviews now control
+
+This file remains an exact **pre-#481/#484** first-session snapshot, not the latest independent review. Read the newer audit document `docs/agent/JEPA_COMPLETE_LANE_TAKEOVER_FREEZE_20261028.md` and machine ledger `results/target_discovery/unified_qualification_v1/JEPA_CURRENT_SUCCESSOR_FREEZE_20261028.json` on [audit PR #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) **before** following the dated steps below. Newer [Macha #484](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/484) reviews [#481](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/481) / [#482](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/482) / [#483](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/483) found new hostile RED in author code #479 / #476 / #477. Macha author [Task3 repair #486](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/486) passed frozen #480 tests but still awaits **ChatGPT independent review**.
+
+**New actionable ordering:** independently review #486; repair #479 A1–A3 and upstream #474 A4, #476 remaining metaclass/V3 composition and #477 `__class__`/`__cause__` routes against unchanged reviewer RED; obtain deciding-science approval or rejection of proposed D1 base-visible normalization depth versus optional source-attested D2 residual. No real G7, T2-D, current TRAIN calibration issuer, V3.1.1 PS Task4 generator or selected JEPA target is qualified.
+
+**Standing:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
+## EARLIER FIRST-SESSION SNAPSHOT — preserved for its historical source links
+
 # JEPA target-discovery and downstream takeover — first session, 2026-10-28
 
 **Operational status:** This is the *current* successor entry point for the ChatGPT lane after the independent Macha #475 and ChatGPT #480 Task3 reviews. Start here; **do not redo old audits or replay frozen biological experiments**. The latest audit append has a new machine ledger, two newly preserved original G7 Markdown reports, a static custody validator and hostile tests.
