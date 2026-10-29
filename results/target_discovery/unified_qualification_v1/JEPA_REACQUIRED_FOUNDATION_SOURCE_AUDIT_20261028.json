@@ -423,5 +423,105 @@
       "TOTAL_COUNT_ASSOCIATED_FEATURES"
     ],
     "rights_effect": "NONE__NO_QUERY_RIGHTS_ISSUED"
+  },
+  "provenance_metadata_reacquisition": {
+    "historical_schema_evidence": {
+      "commit": "c2bd13e8389dd25dc61612ef2aea88dc53099029",
+      "path": "docs/history/preservation_20260902/results/v4/stage81a3_foundation_heterogeneity_reality_audit.json",
+      "values_not_required_for_this_planning_step": true
+    },
+    "HVS": {
+      "matrices_scanned": 24,
+      "fields_present_in_all_scanned_matrices": [
+        "donor_id",
+        "exp_component_name",
+        "suspension_type",
+        "tissue",
+        "Fraction mitochrondrial UMIs",
+        "Genes detected",
+        "Number of UMIs"
+      ],
+      "preferred_reacquisition": [
+        "cell_id_or_stable_row_key",
+        "donor_id",
+        "matrix_id",
+        "exp_component_name",
+        "suspension_type",
+        "tissue",
+        "Fraction mitochrondrial UMIs",
+        "Genes detected",
+        "Number of UMIs"
+      ],
+      "sample_or_specimen_field_observed": false
+    },
+    "SEA_AD": {
+      "matrices_scanned": 11,
+      "qc_fields_present_in_all_scanned_matrices": [
+        "Donor ID",
+        "Brain Region",
+        "exp_component_name",
+        "Fraction mitochondrial UMIs",
+        "Genes detected",
+        "Number of UMIs"
+      ],
+      "sample_id_matrices": 10,
+      "sample_id_missing_matrices": [
+        "sea_ad_caudate_rna_all_2025"
+      ],
+      "additional_fields_present_in_10_of_11": [
+        "cell_prep_type",
+        "method"
+      ],
+      "preferred_reacquisition": [
+        "cell_id_or_stable_row_key",
+        "Donor ID",
+        "matrix_id",
+        "sample_id_if_present",
+        "Brain Region",
+        "exp_component_name",
+        "cell_prep_type_if_present",
+        "method_if_present",
+        "Fraction mitochondrial UMIs",
+        "Genes detected",
+        "Number of UMIs"
+      ],
+      "forbidden_pathology_values_requested": false
+    },
+    "NPH52": {
+      "source_objects_scanned": 1,
+      "fields_present": [
+        "cell_id",
+        "standardized_cell_id",
+        "donor_id",
+        "source",
+        "source_dataset_id",
+        "source_object",
+        "raw_library_total"
+      ],
+      "preferred_reacquisition": [
+        "cell_id",
+        "standardized_cell_id",
+        "donor_id",
+        "source_dataset_id",
+        "source_object",
+        "raw_library_total"
+      ],
+      "sample_or_specimen_field_observed": false
+    },
+    "policy": {
+      "expression_values_required": false,
+      "pathology_values_required": false,
+      "matrix_id_may_substitute_for_specimen": false,
+      "exp_component_name_may_substitute_for_specimen": false,
+      "source_object_may_substitute_for_specimen": false,
+      "specimen_identity_status": "NOT_QUALIFIED",
+      "qc_selection_status": "PARTIALLY_RECOVERABLE_METADATA__UPSTREAM_FILTER_RULES_STILL_REQUIRED",
+      "use_of_qc_fields": "AUDIT_ONLY__MUST_EARN_ANY_MEASUREMENT_CHANNEL_ACCESS"
+    },
+    "existing_hash_pinned_living_crosswalk": {
+      "path": "results/v4/stage81a1d_living_human_donor_sample_crosswalk.csv",
+      "sha256": "a555da9623a460c17cc0e614310650899900e823248d606cc94ecaec5a39466a",
+      "limitation": "USED_FOR_OTHER_LIVING_HUMAN_STUDIES_IN_STAGE81A2__DO_NOT_ASSUME_IT_CLOSES_HVS_NPH52_SEA_AD_SPECIMEN_IDENTITY"
+    }
   }
 }
