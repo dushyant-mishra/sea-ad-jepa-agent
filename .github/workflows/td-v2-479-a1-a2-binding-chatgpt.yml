@@ -18,6 +18,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+          sparse-checkout-cone-mode: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
