@@ -255,6 +255,15 @@ def validate_fixture_observation_view_v2(view):
     query = value["query_address_id"]
     if type(query) is not str or not query or query != query.strip():
         raise QExcludedObservationError("V2 fixture query address is malformed")
+    # Preserve structural/physical-field refusal independently of whether a
+    # forged or re-signed receipt has a process-local rights binding.
+    rows = value["rows"]
+    if type(rows) is not list or not rows:
+        raise QExcludedObservationError("V2 fixture observations absent")
+    for row in rows:
+        if type(row) is not dict or set(row) != _ROW_KEYS:
+            raise QExcludedObservationError(
+                "V2 row cannot contain physical total or unknown field")
     with _VIEW_BINDINGS_LOCK:
         binding = _VIEW_BINDINGS.get(digest)
     if binding is None:
