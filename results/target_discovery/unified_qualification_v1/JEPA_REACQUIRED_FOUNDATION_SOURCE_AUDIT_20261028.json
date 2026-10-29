@@ -1,0 +1,527 @@
+{
+  "schema": "JEPA_REACQUIRED_FOUNDATION_SOURCE_AUDIT_20261028_V1",
+  "created_date": "2026-10-28",
+  "scope": "AUTHORIZED_REACQUIRED_LOCAL_BYTES__PATHOLOGY_BLIND__NO_REAL_CALIBRATION_AUTHORITY",
+  "inputs": {
+    "calibration_zip_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "expression_zip_sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+    "checkpoints_zip_sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+    "expression_outer_part001_sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+    "expression_outer_part002_sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+    "expression_outer_concatenated_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "expression_inner_npz_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "bundle_manifest_sha256": "da7c3daf507a66118131e88ae6685cf43eb14d4163539ade5e0705f6fb845cef",
+    "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "address_namespace_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "expression_audit_sha256": "c0f1f68fd3af9b95479fdc05536533481bd42710bc67a94a1c4996d4e4fe3b39",
+    "sample_freeze_csv_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+    "sample_freeze_json_sha256": "50fc39c27149ded58ea49b35d7f28dab7d540096ee5df4c2e762d872c8c7903c"
+  },
+  "custody": {
+    "bundle_manifest_rows": 97,
+    "bundle_manifest_rows_verified_exact_sha": 97,
+    "heldout_expression_read": false,
+    "dev_expression_read": false,
+    "sealed_expression_read": false,
+    "pathology_read": false
+  },
+  "expression_sample": {
+    "cells": 50000,
+    "addresses": 41238,
+    "nnz": 246702069,
+    "sources": {
+      "HVS": 10958,
+      "NPH52": 5221,
+      "SEA_AD": 33821
+    },
+    "normalization": "log1p(raw_count*10000/full_source_library)_exactly_once",
+    "integer_recovery": {
+      "nonzero_values_checked": 246702069,
+      "max_distance_to_nearest_integer": 2.1827872842550278e-11,
+      "values_error_gt_1e_6": 0
+    },
+    "residual_by_source": {
+      "HVS": {
+        "cells": 10958,
+        "physical_total": 201375438,
+        "mapped_total": 201375438,
+        "residual_total": 0,
+        "pooled_residual_fraction": 0,
+        "max_cell_fraction": 0
+      },
+      "NPH52": {
+        "cells": 5221,
+        "physical_total": 73441713,
+        "mapped_total": 72345943,
+        "residual_total": 1095770,
+        "pooled_residual_fraction": 0.014920267450733346,
+        "max_cell_fraction": 0.029801324503311258
+      },
+      "SEA_AD": {
+        "cells": 33821,
+        "physical_total": 930739228,
+        "mapped_total": 893449394,
+        "residual_total": 37289834,
+        "pooled_residual_fraction": 0.04006474947889486,
+        "max_cell_fraction": 0.07743362831858407
+      }
+    },
+    "residual_overall": {
+      "physical_total": 1205556379,
+      "mapped_total": 1167170775,
+      "residual_total": 38385604,
+      "pooled_residual_fraction": 0.03184057143129264
+    },
+    "expression_audit_shard_ledger": {
+      "listed_operator_indices": "0-34",
+      "missing_operator_indices": [
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41
+      ],
+      "listed_cells": 44779,
+      "global_cells": 50000,
+      "omitted_cells": 5221,
+      "listed_nnz": 226253925,
+      "global_nnz": 246702069,
+      "omitted_nnz": 20448144,
+      "interpretation": "AUDIT_LEDGER_INCOMPLETE_FOR_NPH52__FINAL_PAYLOAD_AND_METADATA_CONTAIN_35_41"
+    }
+  },
+  "metadata": {
+    "rows": 6351753,
+    "donors": 149,
+    "matrices": 42,
+    "operators": 42,
+    "partitions": {
+      "reader_fit": {
+        "cells": 4553407,
+        "donors": 104,
+        "matrices": 42,
+        "operators": 42
+      },
+      "reader_validation": {
+        "cells": 947031,
+        "donors": 22,
+        "matrices": 35,
+        "operators": 35
+      },
+      "reader_oracle": {
+        "cells": 851315,
+        "donors": 23,
+        "matrices": 42,
+        "operators": 42
+      }
+    },
+    "reader_fit_by_source": {
+      "HVS": {
+        "cells": 198718,
+        "donors": 41,
+        "matrices": 24
+      },
+      "NPH52": {
+        "cells": 236476,
+        "donors": 17,
+        "matrices": 7
+      },
+      "SEA_AD": {
+        "cells": 4118213,
+        "donors": 46,
+        "matrices": 11
+      }
+    },
+    "donors_in_multiple_partitions": 0,
+    "donors_in_multiple_sources": 0,
+    "matrices_in_multiple_operators": 0,
+    "matrices_in_multiple_sources": 0,
+    "specimen_or_tissue_block_column_present": false,
+    "acquisition_key_column_present": false
+  },
+  "address_namespace": {
+    "addresses": 41238,
+    "duplicate_nonempty_symbol_count": 275,
+    "mt_prefix_count": 30,
+    "rps_or_rpl_prefix_count": 130,
+    "rps_rpl_numeric_or_rplp_pattern_count": 126,
+    "MALAT1_present": true,
+    "NEAT1_present": true,
+    "query_identity_rule": "MOLECULAR_ADDRESS_ID_NOT_SYMBOL"
+  },
+  "blockers": [
+    "FULL104_EXPRESSION_STORE_NOT_PRESENT__ONLY_FROZEN_50K_READER_FIT_SAMPLE_REACQUIRED",
+    "OFF_LEDGER_SOURCE_FEATURE_VAR_METADATA_NOT_PRESENT_IN_REACQUIRED_PACKAGE__ALIAS_CLOSURE_NOT_EXECUTABLE",
+    "DEPOSITOR_QC_RULES_NOT_RECORDED__SELECTION_LEAKAGE_NOT_CLOSED",
+    "SPECIMEN_TISSUE_BLOCK_AND_ACQUISITION_KEYS_NOT_CARRIED_IN_METADATA_SQLITE",
+    "REAL_D1_ISSUER_NOT_IMPLEMENTED_OR_INDEPENDENTLY_QUALIFIED",
+    "D2_REJECTED_FROM_CURRENT_RELEASED_CONTRACT",
+    "NO_CURRENT_POST_CORRECTION_TRAIN_CALIBRATION_ISSUER"
+  ],
+  "source_work_status": "PARTIAL_PROGRESS__CUSTODY_AND_SAMPLE_RESIDUALS_QUALIFIED__ALIAS_QC_SPECIMEN_BLOCKED",
+  "forward_authorization": "SOURCE_AUDIT_AND_CONTRACT_IMPLEMENTATION_ONLY",
+  "training_authorized": false,
+  "project_stop": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "minimal_alias_reacquisition": {
+    "purpose": "PER_QUERY_PER_OPERATOR_OFF_LEDGER_AND_IN_LEDGER_ALIAS_CLOSURE__NO_EXPRESSION_REQUIRED",
+    "preferred_exact_bytes": [
+      {
+        "path": "results/v4/stage81a2r_authoritative_source_mapping_decisions_candidate.csv.gz",
+        "role": "FINAL_ROW_LEVEL_ALL_SOURCE_FEATURE_IDENTITY_DECISIONS",
+        "sha256_status": "NOT_RECOVERED_FROM_CURRENT_GITHUB_MIRROR__REQUIRE_ORIGINAL_HASH_RECEIPT_WITH_BYTES",
+        "accept_unhashed_by_filename": false
+      },
+      {
+        "path": "results/v4/stage81a2r_unresolved_identity_reclassification_candidate.csv.gz",
+        "bytes": 4790758,
+        "sha256": "ebd216a1a2a46ffec64cd170f3752f822620efff7945e6d9bc8758f19e0947e6",
+        "role": "FINAL_NPH_RECLASSIFICATION_APPLIED_BY_CLOSURE"
+      },
+      {
+        "path": "results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz",
+        "bytes": 5764358,
+        "sha256": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
+        "role": "MAPPED_SOURCE_FEATURE_TO_ADDRESS_CROSSCHECK"
+      },
+      {
+        "path": "results/v4/stage81a2r_foundation_preserved_nonuniversal_evidence_candidate.csv.gz",
+        "bytes": 142739,
+        "sha256": "3e7e8b7af6e30429a0be5a0dde335675b7339bed378e442706058b813b7b9ec2",
+        "role": "UNRESOLVED_NONUNIVERSAL_IDENTITY_CROSSCHECK"
+      },
+      {
+        "path": "results/v4/stage81a2r_foundation_molecular_address_measurement_support_candidate.csv.gz",
+        "bytes": 14663564,
+        "sha256": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa",
+        "role": "MATRIX_OPERATOR_ADDRESS_SUPPORT_CROSSCHECK"
+      }
+    ],
+    "nph_compact_feature_caches": [
+      {
+        "name": "Astro_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "83e444d0940d5ed54c80e070d3367427999ff1abd2a63807f65f58d761845047",
+        "rows": 35028
+      },
+      {
+        "name": "Endo_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "5d545ad4a1f01429bc7bc51b9e4261cbecc05acd6dac0e5d120f391eed1bd109",
+        "rows": 32373
+      },
+      {
+        "name": "ExN_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "6bbe5938ff4af74848862b6079a1d54d7c2cf9bf48c7df0fb179f5d5e5391858",
+        "rows": 37477
+      },
+      {
+        "name": "InN_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "6a7cb9c2daf1640899c9511fd13fd34a4deecb1e20871546bcdaca6539424e97",
+        "rows": 35964
+      },
+      {
+        "name": "MG_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "f87848ecc472a0c09c59290e613986f8aa36336c094dc9404187e82892019540",
+        "rows": 33441
+      },
+      {
+        "name": "OPC_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "00f1712c5b388ef9b801900e99765961dfc99b89b0a863963714ea93ef312565",
+        "rows": 33761
+      },
+      {
+        "name": "Oligo_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "f328d1ac1fff30c764b134411dd50e32748452169c06125dcbd7b46ecb6852d7",
+        "rows": 36394
+      }
+    ],
+    "feature_cache_fields": "raw_feature_id|raw_gene_symbol|source_ensembl_id|source_feature_type|source_refseq_id|source_ncbi_gene_id|source_transcript_id|source_chromosome|source_start|source_end|source_strand|source_biotype",
+    "fallback_reconstruction": {
+      "warning": "USE_ONLY_IF_FINAL_AUTHORITATIVE_DECISION_TABLE_CANNOT_BE_RECOVERED",
+      "protected_prior_source_decisions": {
+        "path": "results/v4/stage81a2r_source_mapping_decisions_candidate.csv.gz",
+        "sha256": "27331548439ebb5ed0f29187daa17bd2d127e0b16153f0f9eda374f9fc95d284"
+      },
+      "protected_prior_exact_registry": {
+        "path": "results/v4/stage81a2r_exact_canonical_gene_registry_candidate.csv",
+        "sha256": "5bafbbf7aeca7a58d3b8c8e40e4393d67601841914d97818023205eef5cb5ba0"
+      },
+      "protected_prior_measurement_support": {
+        "path": "results/v4/stage81a2r_matrix_measurement_support_candidate.csv.gz",
+        "sha256": "2bedf1d30544bebed9eb00e73af132bdb08f5f1c673ab69a7345146463fd9c1f"
+      },
+      "authoritative_generator": {
+        "path": "scripts/v4/stage81a2r_authoritative_gene_identity_recovery.py",
+        "bytes": 54185,
+        "sha256": "b35c420311a2a4a94ea0ce9e9ca04713f921608668c757932acc980f6f71f7bf"
+      },
+      "authority_manifest": {
+        "path": "docs/history/results/v4/stage81a2r_authority_manifest_candidate.json",
+        "bytes": 34076,
+        "sha256": "1b305315623361c66eaf20b860b3173431899a4bb4109474ca8bd5e553b661f4",
+        "ensembl_116_gtf_sha256": "ed992f0eac7197d9627bda618f8f831ba355c95bd5d0796af785387d462828b6",
+        "hgnc_complete_20260807_sha256": "faaeb6ae1e2a596be658b5f23ee44937c9c5379fa37d1f5ace54b94b16962b1c",
+        "hgnc_withdrawn_20260804_sha256": "77235063bba9492d09997e58387a50b6f750aed2de67a44c519c920b48f7ff87",
+        "ensembl_history_cache_semantic_sha256": "f14b94735cc46d55f04563b052a10ff902209933a5770effbbe0a4e7a79db627",
+        "ensembl_history_response_file_count": 180
+      }
+    },
+    "adjudication_rule": {
+      "query_key": "MOLECULAR_ADDRESS_ID",
+      "positive_alias": "ANY_EXACT_CURRENT_LEGACY_ALTERNATIVE_OR_LOCUS_IDENTITY_EQUIVALENT_TO_QUERY",
+      "negative_clearance": "ALL_OFF_LEDGER_FEATURES_FOR_OPERATOR_HAVE_NONQUERY_IDENTITY_ESTABLISHED",
+      "unresolved_behavior": "FAIL_CLOSED__QUERY_OPERATOR_ALIAS_CLEARANCE_NOT_QUALIFIED",
+      "symbol_only_clearance_allowed": false
+    },
+    "original_large_nph_qs_required": false
+  },
+  "mechanical_query_observability": {
+    "authority_class": "MECHANICAL_OBSERVABILITY_ONLY__NOT_SOURCE_RIGHTS",
+    "artifacts": {
+      "operator_address_state_npz": {
+        "bytes": 227532,
+        "sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+        "shape": [
+          42,
+          41238
+        ],
+        "state_names": [
+          "MEASURED_COLLISION_UNRESOLVED",
+          "MEASURED_SCALAR",
+          "STRUCTURALLY_UNMEASURED"
+        ]
+      },
+      "address_measurement_support_csv_gz": {
+        "bytes": 14663564,
+        "sha256": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa",
+        "warning": "MEASURED_ADDRESS_BOOLEAN_INCLUDES_COLLISION_UNRESOLVED__DO_NOT_USE_AS_QUERY_ELIGIBILITY"
+      },
+      "recurrence_csv": {
+        "bytes": 2517356,
+        "sha256": "8f90c91e333eba6b58c39767069addef72bb4d9d6015ad8de14e7ff383c092da"
+      },
+      "collision_ledger_csv_gz": {
+        "bytes": 1101503,
+        "sha256": "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722"
+      }
+    },
+    "query_rule": {
+      "key": "EXACT_OPERATOR_INDEX_X_MOLECULAR_ADDRESS_ID",
+      "eligible_state": "MEASURED_SCALAR",
+      "refused_states": [
+        "MEASURED_COLLISION_UNRESOLVED",
+        "STRUCTURALLY_UNMEASURED"
+      ],
+      "symbol_inference_allowed": false,
+      "cross_operator_inference_allowed": false,
+      "source_rights_inferred": false
+    },
+    "pair_counts": {
+      "total": 1731996,
+      "measured_scalar": 1061903,
+      "measured_collision_unresolved": 11449,
+      "structurally_unmeasured": 658644,
+      "measured_scalar_fraction": 0.613109382700653,
+      "measured_collision_unresolved_fraction": 0.006610290092817,
+      "structurally_unmeasured_fraction": 0.38028032720653
+    },
+    "address_counts": {
+      "total": 41238,
+      "measured_scalar_any_operator": 40949,
+      "measured_scalar_all_42_operators": 17186,
+      "collision_unresolved_any_operator": 788,
+      "measured_scalar_any_operator_fraction": 0.9929919006741365,
+      "measured_scalar_all_42_fraction": 0.4167515398418934
+    },
+    "by_source_family": {
+      "HVS": {
+        "operators": 24,
+        "scalar_pairs": 449664,
+        "scalar_pair_fraction": 0.45433823023628894,
+        "addresses_any_scalar": 18736,
+        "addresses_all_source_operators_scalar": 18736
+      },
+      "NPH52": {
+        "operators": 7,
+        "scalar_pairs": 226403,
+        "scalar_pair_fraction": 0.7843078234104908,
+        "addresses_any_scalar": 35098,
+        "addresses_all_source_operators_scalar": 29136
+      },
+      "SEA_AD": {
+        "operators": 11,
+        "scalar_pairs": 385836,
+        "scalar_pair_fraction": 0.8505747102101346,
+        "addresses_any_scalar": 35076,
+        "addresses_all_source_operators_scalar": 35076
+      }
+    },
+    "source_family_presence_patterns": {
+      "HNS": 17346,
+      "-NS": 12609,
+      "-N-": 4894,
+      "--S": 4710,
+      "H--": 730,
+      "H-S": 411,
+      "---": 289,
+      "HN-": 249
+    },
+    "by_identity_class": {
+      "current_exact": {
+        "addresses": 40422,
+        "any_scalar": 40134,
+        "all42_scalar": 17185,
+        "scalar_pairs": 1054240,
+        "collision_pairs": 11442,
+        "structurally_unmeasured_pairs": 632042
+      },
+      "legacy_exact": {
+        "addresses": 773,
+        "any_scalar": 772,
+        "all42_scalar": 1,
+        "scalar_pairs": 7444,
+        "collision_pairs": 7,
+        "structurally_unmeasured_pairs": 25015
+      },
+      "source_native_anchored": {
+        "addresses": 43,
+        "any_scalar": 43,
+        "all42_scalar": 0,
+        "scalar_pairs": 219,
+        "collision_pairs": 0,
+        "structurally_unmeasured_pairs": 1587
+      }
+    },
+    "interpretation": [
+      "UNIVERSAL_42_OPERATOR_QUERY_RESTRICTION_WOULD_DISCARD_MOST_MECHANICALLY_OBSERVABLE_ADDRESSES",
+      "QUERY_SPECIFIC_OPERATOR_OBSERVABILITY_PRESERVES_COVERAGE_WITHOUT_GRANTING_SOURCE_RIGHTS",
+      "COLLISION_UNRESOLVED_IS_MEASURED_BUT_NOT_QUERY_ELIGIBLE",
+      "MECHANICAL_OBSERVABILITY_CANNOT_SELECT_A_TARGET"
+    ]
+  },
+  "qc_selection_audit": {
+    "status": "NOT_RECOVERED__FAIL_CLOSED",
+    "package_text_members_scanned": 43,
+    "scan_scope": "TEXT_CODE_DOC_CONFIG_MEMBERS_LE_5MB_IN_REACQUIRED_CALIBRATION_BUNDLE",
+    "explicit_depositor_qc_policy_found": false,
+    "terms_with_no_policy_hits": [
+      "percent_mt_or_pct_mt_or_mitochondrial_threshold",
+      "doublet_or_scrublet_or_scdblfinder",
+      "explicit_qc_or_quality_control_filter",
+      "filter_cells_or_filter_genes"
+    ],
+    "incidental_matches_not_qc_policy": [
+      "representation_features_function_name",
+      "numpy_bincount_schedule_accounting"
+    ],
+    "inference": "ABSENCE_IN_PACKAGE_DOES_NOT_PROVE_UPSTREAM_QC_ABSENT__UPSTREAM_SELECTION_CONDITIONING_REMAINS_UNRESOLVED",
+    "query_classes_requiring_special_caution": [
+      "MT_PREFIX",
+      "RPS_RPL_PREFIX",
+      "MALAT1",
+      "NEAT1",
+      "TOTAL_COUNT_ASSOCIATED_FEATURES"
+    ],
+    "rights_effect": "NONE__NO_QUERY_RIGHTS_ISSUED"
+  },
+  "provenance_metadata_reacquisition": {
+    "historical_schema_evidence": {
+      "commit": "c2bd13e8389dd25dc61612ef2aea88dc53099029",
+      "path": "docs/history/preservation_20260902/results/v4/stage81a3_foundation_heterogeneity_reality_audit.json",
+      "values_not_required_for_this_planning_step": true
+    },
+    "HVS": {
+      "matrices_scanned": 24,
+      "fields_present_in_all_scanned_matrices": [
+        "donor_id",
+        "exp_component_name",
+        "suspension_type",
+        "tissue",
+        "Fraction mitochrondrial UMIs",
+        "Genes detected",
+        "Number of UMIs"
+      ],
+      "preferred_reacquisition": [
+        "cell_id_or_stable_row_key",
+        "donor_id",
+        "matrix_id",
+        "exp_component_name",
+        "suspension_type",
+        "tissue",
+        "Fraction mitochrondrial UMIs",
+        "Genes detected",
+        "Number of UMIs"
+      ],
+      "sample_or_specimen_field_observed": false
+    },
+    "SEA_AD": {
+      "matrices_scanned": 11,
+      "qc_fields_present_in_all_scanned_matrices": [
+        "Donor ID",
+        "Brain Region",
+        "exp_component_name",
+        "Fraction mitochondrial UMIs",
+        "Genes detected",
+        "Number of UMIs"
+      ],
+      "sample_id_matrices": 10,
+      "sample_id_missing_matrices": [
+        "sea_ad_caudate_rna_all_2025"
+      ],
+      "additional_fields_present_in_10_of_11": [
+        "cell_prep_type",
+        "method"
+      ],
+      "preferred_reacquisition": [
+        "cell_id_or_stable_row_key",
+        "Donor ID",
+        "matrix_id",
+        "sample_id_if_present",
+        "Brain Region",
+        "exp_component_name",
+        "cell_prep_type_if_present",
+        "method_if_present",
+        "Fraction mitochondrial UMIs",
+        "Genes detected",
+        "Number of UMIs"
+      ],
+      "forbidden_pathology_values_requested": false
+    },
+    "NPH52": {
+      "source_objects_scanned": 1,
+      "fields_present": [
+        "cell_id",
+        "standardized_cell_id",
+        "donor_id",
+        "source",
+        "source_dataset_id",
+        "source_object",
+        "raw_library_total"
+      ],
+      "preferred_reacquisition": [
+        "cell_id",
+        "standardized_cell_id",
+        "donor_id",
+        "source_dataset_id",
+        "source_object",
+        "raw_library_total"
+      ],
+      "sample_or_specimen_field_observed": false
+    },
+    "policy": {
+      "expression_values_required": false,
+      "pathology_values_required": false,
+      "matrix_id_may_substitute_for_specimen": false,
+      "exp_component_name_may_substitute_for_specimen": false,
+      "source_object_may_substitute_for_specimen": false,
+      "specimen_identity_status": "NOT_QUALIFIED",
+      "qc_selection_status": "PARTIALLY_RECOVERABLE_METADATA__UPSTREAM_FILTER_RULES_STILL_REQUIRED",
+      "use_of_qc_fields": "AUDIT_ONLY__MUST_EARN_ANY_MEASUREMENT_CHANNEL_ACCESS"
+    },
+    "existing_hash_pinned_living_crosswalk": {
+      "path": "results/v4/stage81a1d_living_human_donor_sample_crosswalk.csv",
+      "sha256": "a555da9623a460c17cc0e614310650899900e823248d606cc94ecaec5a39466a",
+      "limitation": "USED_FOR_OTHER_LIVING_HUMAN_STUDIES_IN_STAGE81A2__DO_NOT_ASSUME_IT_CLOSES_HVS_NPH52_SEA_AD_SPECIMEN_IDENTITY"
+    }
+  }
+}
