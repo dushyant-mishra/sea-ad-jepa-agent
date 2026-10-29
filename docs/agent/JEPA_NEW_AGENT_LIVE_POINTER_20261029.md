@@ -124,3 +124,18 @@ This appended delta supersedes *the snapshot of open repair progress*, not any f
 **Next execution:** version the #496 content contract rather than silently changing shape-only expectations; coordinate #474 A4; independently qualify G7 R1/R1D/R2 physical source/QC/alias/donor provenance and T2-D custody; link real rights to a durable issuer before biological PS Task4.
 
 The standing no-authority state is unchanged: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+
+---
+
+## Live 2026-10-29 #502 V2 content version-split execution receipt
+
+**New draft PR #502** exact head `0789247cdbbdfca671613b020865aba958dfd699` introduces a **separate fixture-only rights-bound V2 content law** alongside unchanged historical V2 shape-only validation. The D1 per-cell base-visible measured sum is checked in the new consumer, but the producer's in-process rights map is not an independent source issuer. No V1/G7 `library_size` change; D2 OFF.
+
+**Author CI on #502:** [run 40902399672](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/40902399672) PASS Linux and Windows. Each platform: 22 original V2 shape/A3 checks, 14 independent new fixture content hostiles, 23 explicitly **adapted** Macha #481 reviewer cases (A4 excluded), 106 original source/producer regressions; all six final-head workflow runs passed. Original Macha #481 reviewer source is retained byte-identically (blob `3dda6c2cc9be19d5daececfb07967e94067519f6`) in a non-auto-discovered module. This is NOT a new independent Macha review of #502; reviewer acceptance still pending. The earlier #496 compatibility-conflict RED and #502 failed intermediate runs remain historically valid.
+
+**Macha parallel assignment** documented in PR #474 comment `6500893535`: author a fresh **upstream #474 A4 zero-base refusal noninterference** repair, independently test unchanged counterfactual class+message, then review ChatGPT #502 separately in a tests-only adversarial branch. Coordinate source/ETL R1/R1D/R2 without falsely inferring physical or donor identities.
+
+Audit #322 machine custody: `results/target_discovery/unified_qualification_v1/JEPA_V2_BOUND_CONTENT_502_EXECUTION_20261029.json`, created at audit head `00aee012fd7595eb544679f5d557b0d40d60c4af`.
+
+Standing stop: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
