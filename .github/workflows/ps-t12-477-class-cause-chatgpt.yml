@@ -1,0 +1,41 @@
+name: PS #477 canonical class/cause hostile repair (T2-D remains RED)
+on:
+  pull_request:
+    paths:
+      - 'scripts/production_synthetic/canonical_v1.py'
+      - 'tests/production_synthetic/test_ps_t12_477_recheck_macha_red.py'
+      - '.github/workflows/ps-t12-477-class-cause-chatgpt.yml'
+permissions:
+  contents: read
+jobs:
+  immutable-macha483:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        numpy: ['numpy==1.26.4', 'numpy>=2,<3']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+            schemas
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - shell: bash
+        run: python -m pip install pytest==9.1.1 '${{ matrix.numpy }}'
+      - name: Entire unchanged Macha #483 hostile suite
+        shell: bash
+        run: python -m pytest -q -rA tests/production_synthetic/test_ps_t12_477_recheck_macha_red.py
+      - name: Inherited #473 portable hostile suite
+        shell: bash
+        run: python -m pytest -q tests/production_synthetic/test_ps_t12_464_recheck_macha_red.py
+      - name: Inherited #458 mechanics, preserve externally blocked T2-D
+        shell: bash
+        run: >-
+          python -m pytest -q tests/production_synthetic/test_ps_t12_repair_recheck_macha_red.py
+          -k 'not test_t2d_'
