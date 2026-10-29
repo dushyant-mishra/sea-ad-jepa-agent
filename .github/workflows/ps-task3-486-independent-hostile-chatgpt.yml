@@ -17,6 +17,13 @@ jobs:
         numpy: ['1.26.4', '2.2.6']
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+            schemas
+            docs/superpowers/specs
+          sparse-checkout-cone-mode: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
