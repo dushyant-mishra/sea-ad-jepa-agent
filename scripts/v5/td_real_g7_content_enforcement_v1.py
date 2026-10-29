@@ -49,8 +49,9 @@ def _strict_json(obj, _depth=0):
     """
     if _depth > 128:
         raise G7ContentError("evidence JSON exceeds bounded nesting depth")
-    if obj is None or type(obj) in (bool, int, str):
-        if type(obj) is str:
+    kind = type(obj)
+    if obj is None or kind is bool or kind is int or kind is str:
+        if kind is str:
             if any(0xD800 <= ord(c) <= 0xDFFF for c in obj):
                 raise G7ContentError("surrogate string is not canonical evidence")
         return
@@ -304,7 +305,8 @@ _G7_ROW_KEYS = frozenset({
 
 
 def _required_sources(values):
-    if type(values) not in (list, tuple) or not values:
+    kind = type(values)
+    if (kind is not list and kind is not tuple) or not values:
         raise G7ContentError("required-source roster is not frozen and nonempty")
     names = [_token(x, "required source") for x in values]
     if len(set(names)) != len(names):
@@ -428,7 +430,8 @@ def bind_g7_terminal_inputs_e3(
             raise G7ContentError("V3 ambiguous source::donor identity cannot be safely bound")
         dis = raw["terminal_displacement"]
         try:
-            valid_displacement = type(dis) in (int, float) and math.isfinite(dis) and dis >= 0
+            dis_kind = type(dis)
+            valid_displacement = (dis_kind is int or dis_kind is float) and math.isfinite(dis) and dis >= 0
         except (OverflowError, ValueError):
             valid_displacement = False
         if not valid_displacement:
