@@ -270,15 +270,14 @@ def validate_fixture_observation_view_v2(view):
             if row["cell_id"] in cell_depth and cell_depth[row["cell_id"]] != depth:
                 raise QExcludedObservationError("V2 base depth changes between addresses")
             cell_depth[row["cell_id"]] = depth
+            if value["view_kind"] == _STUDENT and row["address_id"] == query:
+                raise QExcludedObservationError("student view exposes queried scalar")
             if row["evidence_right"] in base_rights:
                 base_sum[row["cell_id"]] = base_sum.get(row["cell_id"], 0) + count
             elif value["view_kind"] == _STUDENT:
                 raise QExcludedObservationError("student view exposes a non-base evidence right")
         elif count is not None or depth is not None:
             raise QExcludedObservationError("V2 non-scalar row exposes count or depth")
-        if value["view_kind"] == _STUDENT and row["address_id"] == query:
-            if row["state"] == MEASURED_SCALAR:
-                raise QExcludedObservationError("student view exposes queried scalar")
     for cell_id, depth in cell_depth.items():
         if base_sum.get(cell_id, 0) != depth:
             raise QExcludedObservationError(
