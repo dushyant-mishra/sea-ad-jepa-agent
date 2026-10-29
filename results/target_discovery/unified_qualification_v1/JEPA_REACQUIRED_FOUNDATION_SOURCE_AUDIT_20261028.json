@@ -274,5 +274,154 @@
       "symbol_only_clearance_allowed": false
     },
     "original_large_nph_qs_required": false
+  },
+  "mechanical_query_observability": {
+    "authority_class": "MECHANICAL_OBSERVABILITY_ONLY__NOT_SOURCE_RIGHTS",
+    "artifacts": {
+      "operator_address_state_npz": {
+        "bytes": 227532,
+        "sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+        "shape": [
+          42,
+          41238
+        ],
+        "state_names": [
+          "MEASURED_COLLISION_UNRESOLVED",
+          "MEASURED_SCALAR",
+          "STRUCTURALLY_UNMEASURED"
+        ]
+      },
+      "address_measurement_support_csv_gz": {
+        "bytes": 14663564,
+        "sha256": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa",
+        "warning": "MEASURED_ADDRESS_BOOLEAN_INCLUDES_COLLISION_UNRESOLVED__DO_NOT_USE_AS_QUERY_ELIGIBILITY"
+      },
+      "recurrence_csv": {
+        "bytes": 2517356,
+        "sha256": "8f90c91e333eba6b58c39767069addef72bb4d9d6015ad8de14e7ff383c092da"
+      },
+      "collision_ledger_csv_gz": {
+        "bytes": 1101503,
+        "sha256": "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722"
+      }
+    },
+    "query_rule": {
+      "key": "EXACT_OPERATOR_INDEX_X_MOLECULAR_ADDRESS_ID",
+      "eligible_state": "MEASURED_SCALAR",
+      "refused_states": [
+        "MEASURED_COLLISION_UNRESOLVED",
+        "STRUCTURALLY_UNMEASURED"
+      ],
+      "symbol_inference_allowed": false,
+      "cross_operator_inference_allowed": false,
+      "source_rights_inferred": false
+    },
+    "pair_counts": {
+      "total": 1731996,
+      "measured_scalar": 1061903,
+      "measured_collision_unresolved": 11449,
+      "structurally_unmeasured": 658644,
+      "measured_scalar_fraction": 0.613109382700653,
+      "measured_collision_unresolved_fraction": 0.006610290092817,
+      "structurally_unmeasured_fraction": 0.38028032720653
+    },
+    "address_counts": {
+      "total": 41238,
+      "measured_scalar_any_operator": 40949,
+      "measured_scalar_all_42_operators": 17186,
+      "collision_unresolved_any_operator": 788,
+      "measured_scalar_any_operator_fraction": 0.9929919006741365,
+      "measured_scalar_all_42_fraction": 0.4167515398418934
+    },
+    "by_source_family": {
+      "HVS": {
+        "operators": 24,
+        "scalar_pairs": 449664,
+        "scalar_pair_fraction": 0.45433823023628894,
+        "addresses_any_scalar": 18736,
+        "addresses_all_source_operators_scalar": 18736
+      },
+      "NPH52": {
+        "operators": 7,
+        "scalar_pairs": 226403,
+        "scalar_pair_fraction": 0.7843078234104908,
+        "addresses_any_scalar": 35098,
+        "addresses_all_source_operators_scalar": 29136
+      },
+      "SEA_AD": {
+        "operators": 11,
+        "scalar_pairs": 385836,
+        "scalar_pair_fraction": 0.8505747102101346,
+        "addresses_any_scalar": 35076,
+        "addresses_all_source_operators_scalar": 35076
+      }
+    },
+    "source_family_presence_patterns": {
+      "HNS": 17346,
+      "-NS": 12609,
+      "-N-": 4894,
+      "--S": 4710,
+      "H--": 730,
+      "H-S": 411,
+      "---": 289,
+      "HN-": 249
+    },
+    "by_identity_class": {
+      "current_exact": {
+        "addresses": 40422,
+        "any_scalar": 40134,
+        "all42_scalar": 17185,
+        "scalar_pairs": 1054240,
+        "collision_pairs": 11442,
+        "structurally_unmeasured_pairs": 632042
+      },
+      "legacy_exact": {
+        "addresses": 773,
+        "any_scalar": 772,
+        "all42_scalar": 1,
+        "scalar_pairs": 7444,
+        "collision_pairs": 7,
+        "structurally_unmeasured_pairs": 25015
+      },
+      "source_native_anchored": {
+        "addresses": 43,
+        "any_scalar": 43,
+        "all42_scalar": 0,
+        "scalar_pairs": 219,
+        "collision_pairs": 0,
+        "structurally_unmeasured_pairs": 1587
+      }
+    },
+    "interpretation": [
+      "UNIVERSAL_42_OPERATOR_QUERY_RESTRICTION_WOULD_DISCARD_MOST_MECHANICALLY_OBSERVABLE_ADDRESSES",
+      "QUERY_SPECIFIC_OPERATOR_OBSERVABILITY_PRESERVES_COVERAGE_WITHOUT_GRANTING_SOURCE_RIGHTS",
+      "COLLISION_UNRESOLVED_IS_MEASURED_BUT_NOT_QUERY_ELIGIBLE",
+      "MECHANICAL_OBSERVABILITY_CANNOT_SELECT_A_TARGET"
+    ]
+  },
+  "qc_selection_audit": {
+    "status": "NOT_RECOVERED__FAIL_CLOSED",
+    "package_text_members_scanned": 43,
+    "scan_scope": "TEXT_CODE_DOC_CONFIG_MEMBERS_LE_5MB_IN_REACQUIRED_CALIBRATION_BUNDLE",
+    "explicit_depositor_qc_policy_found": false,
+    "terms_with_no_policy_hits": [
+      "percent_mt_or_pct_mt_or_mitochondrial_threshold",
+      "doublet_or_scrublet_or_scdblfinder",
+      "explicit_qc_or_quality_control_filter",
+      "filter_cells_or_filter_genes"
+    ],
+    "incidental_matches_not_qc_policy": [
+      "representation_features_function_name",
+      "numpy_bincount_schedule_accounting"
+    ],
+    "inference": "ABSENCE_IN_PACKAGE_DOES_NOT_PROVE_UPSTREAM_QC_ABSENT__UPSTREAM_SELECTION_CONDITIONING_REMAINS_UNRESOLVED",
+    "query_classes_requiring_special_caution": [
+      "MT_PREFIX",
+      "RPS_RPL_PREFIX",
+      "MALAT1",
+      "NEAT1",
+      "TOTAL_COUNT_ASSOCIATED_FEATURES"
+    ],
+    "rights_effect": "NONE__NO_QUERY_RIGHTS_ISSUED"
   }
 }
