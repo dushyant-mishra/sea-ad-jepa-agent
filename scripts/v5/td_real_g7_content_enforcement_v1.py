@@ -49,10 +49,14 @@ def _strict_json(obj, _depth=0):
     """
     if _depth > 128:
         raise G7ContentError("evidence JSON exceeds bounded nesting depth")
-    if obj is None or type(obj) in (bool, int, str):
-        if type(obj) is str:
-            if any(0xD800 <= ord(c) <= 0xDFFF for c in obj):
-                raise G7ContentError("surrogate string is not canonical evidence")
+    kind = type(obj)
+    if obj is None:
+        return
+    if kind is bool or kind is int:
+        return
+    if kind is str:
+        if any(0xD800 <= ord(c) <= 0xDFFF for c in obj):
+            raise G7ContentError("surrogate string is not canonical evidence")
         return
     if type(obj) is float:
         if not math.isfinite(obj):
@@ -304,7 +308,8 @@ _G7_ROW_KEYS = frozenset({
 
 
 def _required_sources(values):
-    if type(values) not in (list, tuple) or not values:
+    kind = type(values)
+    if (kind is not list and kind is not tuple) or not values:
         raise G7ContentError("required-source roster is not frozen and nonempty")
     names = [_token(x, "required source") for x in values]
     if len(set(names)) != len(names):
@@ -428,7 +433,8 @@ def bind_g7_terminal_inputs_e3(
             raise G7ContentError("V3 ambiguous source::donor identity cannot be safely bound")
         dis = raw["terminal_displacement"]
         try:
-            valid_displacement = type(dis) in (int, float) and math.isfinite(dis) and dis >= 0
+            kind = type(dis)
+            valid_displacement = (kind is int or kind is float) and math.isfinite(dis) and dis >= 0
         except (OverflowError, ValueError):
             valid_displacement = False
         if not valid_displacement:
@@ -460,6 +466,86 @@ def bind_g7_terminal_inputs_e3(
         "externally_authenticated": False,
         "physical_atom_identity_authenticated": validation["physical_atom_identity_authenticated"],
         "q_excluded_library_provenance_authenticated": validation["q_excluded_library_provenance_authenticated"],
+        "same_code_path_authorized": False,
+        "human_g7_authorized": False,
+        "authority_effect": "NONE",
+    }
+
+def adjudicate_fixture_g7_terminal_v3_bound(
+    *, manifest, full_atoms, levels, expected_pins,
+    required_sources, rows, reference_input_binding_sha256,
+    decision_qualification, reference_artifact, alpha=0.01,
+):
+    """Compose E3 bind -> canonical row snapshot -> unchanged V3 decision.
+
+    Fixture-only composition candidate. This function does not alter the V3
+    decision law and does not authenticate physical atoms, donors, q-excluded
+    normalization, reference custody, or source issuers. Its narrow purpose is
+    to ensure any V3 result returned here consumes the exact canonical deciding
+    rows whose digest was issued by bind_g7_terminal_inputs_e3.
+
+    All caller-controlled decision inputs are snapshotted before either binder
+    or V3 can inspect them, closing validate-then-read-later and payload-type
+    dispatch gaps inside this composed path.
+    """
+    (
+        manifest, full_atoms, levels, expected_pins,
+        required_sources, rows, reference_input_binding_sha256,
+        decision_qualification, reference_artifact, alpha,
+    ) = _snapshot(
+        [
+            manifest, full_atoms, levels, expected_pins,
+            required_sources, rows, reference_input_binding_sha256,
+            decision_qualification, reference_artifact, alpha,
+        ],
+        "G7 composed bind-snapshot-decide",
+    )
+
+    receipt = bind_g7_terminal_inputs_e3(
+        manifest=manifest,
+        full_atoms=full_atoms,
+        levels=levels,
+        expected_pins=expected_pins,
+        required_sources=required_sources,
+        rows=rows,
+        reference_input_binding_sha256=reference_input_binding_sha256,
+    )
+
+    deciding_rows_sha256 = canonical_sha256(sorted(
+        rows, key=lambda row: (row["source"], row["donor_id"])
+    ))
+    if deciding_rows_sha256 != receipt["deciding_rows_sha256"]:
+        raise G7ContentError("composed V3 rows differ from the binder-issued deciding snapshot")
+
+    # Keep the historical V3 reducer unchanged. Only this wrapper claims
+    # binder consumption; direct V3 remains a lower-level primitive.
+    from scripts.v5 import td_real_g7_terminal_decision_v3 as V3
+
+    try:
+        decision = V3.adjudicate_g7_terminal_v3(
+            rows=rows,
+            required_sources=required_sources,
+            decision_qualification=decision_qualification,
+            reference_artifact=reference_artifact,
+            alpha=alpha,
+        )
+    except V3.G7DecisionError:
+        raise G7ContentError("unchanged V3 rejected the bound canonical deciding inputs") from None
+
+    decision_binding = decision.get("input_binding_sha256")
+    if decision_binding is not None and decision_binding != receipt["input_binding_sha256"]:
+        raise G7ContentError("V3 decision binding differs from the E3 binder receipt")
+
+    return {
+        "schema": "JEPA_TD_REAL_G7_E3_BOUND_TERMINAL_DECISION_FIXTURE_V1",
+        "status": "BOUND_V3_DECISION_FIXTURE_ONLY",
+        "binder_receipt": receipt,
+        "decision": decision,
+        "deciding_rows_sha256": deciding_rows_sha256,
+        "externally_authenticated": False,
+        "physical_atom_identity_authenticated": False,
+        "donor_identity_authenticated": False,
+        "q_excluded_library_provenance_authenticated": False,
         "same_code_path_authorized": False,
         "human_g7_authorized": False,
         "authority_effect": "NONE",
