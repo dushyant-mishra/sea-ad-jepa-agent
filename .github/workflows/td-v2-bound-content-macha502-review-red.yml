@@ -1,0 +1,56 @@
+name: TD V2 bound-content Macha #502 review (tests only; RED expected)
+on:
+  pull_request:
+    paths:
+      - 'tests/v5/td_unified/test_v2_bound_content_502_macha_review_red.py'
+      - '.github/workflows/td-v2-bound-content-macha502-review-red.yml'
+permissions:
+  contents: read
+jobs:
+  inherited-502-unchanged:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install "pytest>=9,<10" "numpy>=2,<3"
+      - name: Legacy V2 shape contract differs from reviewed #479 only by the A3 dispatch line
+        shell: bash
+        run: |
+          set -euo pipefail
+          legacy=scripts/v5/td_unified/observation_normalization_view_v2_fixture.py
+          test "$(git diff --numstat ae762d7096a94ac663a0788f6f577ba404e37536 HEAD -- "$legacy")" = "1	1	$legacy"
+          git diff ae762d7096a94ac663a0788f6f577ba404e37536 HEAD -- "$legacy" | grep -q '^+    if value is None or kind is str or kind is int or kind is bool:$'
+          test "$(git rev-parse HEAD:tests/v5/td_unified/test_observation_normalization_view_v2_fixture.py)" = 61349d4a69a1ace95d7f9d714e983e4aeb0fefd7
+          test "$(git rev-parse HEAD:tests/v5/td_unified/macha481_review_source_immutable.py)" = 3dda6c2cc9be19d5daececfb07967e94067519f6
+      - name: '#502 suites, unchanged'
+        run: >-
+          python -m pytest -q -rf
+          tests/v5/td_unified/test_observation_normalization_view_v2_fixture.py
+          tests/v5/td_unified/test_observation_normalization_view_v2_479_a3_fix.py
+          tests/v5/td_unified/test_observation_normalization_v2_bound_content.py
+          tests/v5/td_unified/test_v2_bound_content_macha481_replay.py
+          tests/v5/td_unified/test_q_excluded_depth_v1.py
+          tests/v5/td_unified/test_q_excluded_depth_v1_independent_limits.py
+
+  macha502-review:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install "pytest>=9,<10" "numpy>=2,<3"
+      - name: Macha #502 hostile review (4 RED expected at 0789247c)
+        run: python -m pytest -q -rf tests/v5/td_unified/test_v2_bound_content_502_macha_review_red.py
