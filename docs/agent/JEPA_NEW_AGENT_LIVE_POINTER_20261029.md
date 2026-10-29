@@ -197,3 +197,18 @@ TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AU
 Audit #322 machine author-CI delta: `results/target_discovery/unified_qualification_v1/JEPA_507_509_V2B_510_AUTHOR_CI_DELTA_20261029.json` created at audit head `93b2368ae41d28e51b9404ad53cbeeb8d460f932`. Source decision #509 and NPH52 quarantine/no-symbol-issuance from the preceding section remain unchanged.
 
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+
+---
+
+## 2026-10-29 source-total-free D1 student projection — draft PR #511
+
+**New independent engineering increment PR #511** stacked on #510, exact head `5fe18a11b010b0adb857104d10329e840a9e7d4c`. Source `scripts/v5/td_unified/observation_d1_base_only_student_fixture_v1.py` blob `e70d84383f4011010d207623c035fbcde639d2ad`, tests blob `10dbfc11831a1c5804462b8a04cb9ffa8bbea723`. The new function accepts **already-redacted base counts and an unauthenticated expected policy only**, never full physical library total, teacher/query count or residual. It computes D1 from measured base scalars and publishes only bound-schema student rows through the new #510 student-only validator, with query measured-scalar support required for each selected operator. The historical #502/old V2 producer's physical conservation law is deliberately unchanged.
+
+**Exact-head author CI:** [run 40936357384](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/40936357384), all 4/4 Linux/Windows × NumPy1/2 matrix jobs PASS, with **114 new** source-edge cases + 13 V2B defense + 7 Macha #504 composition + 129 original producer/A4 + 14 old V2 content = **277 tests/job**. All six PR #511 workflows PASS. The result is fixture MECHANICS ONLY, with **no independent Macha acceptance** of #511 and independent #510 review pending. Counterexamples deliberately demonstrate q-alias molecules contaminating a base address and q-conditioned source-cell selection changing student bytes. Base-only arithmetic cannot repair those upstream semantic leaks. The method cannot authenticate caller-supplied counts/rights, source physical unit/donor/specimen, depositor QC or source feature alias closure.
+
+**Audit append-only mirror:** `results/target_discovery/unified_qualification_v1/JEPA_D1_BASE_ONLY_SOURCE_EDGE_511_AUTHOR_CI_20261029.json` at audit #322 head `aff351e9f08e4fef229ece2942298ebe1b326192`. No existing dataset bytes were rehashed or modified; 97/97 August archive and FULL104 historical hashed lineage were reused rather than recomputed. Macha owns independent #510 review and local metadata/source verification; do not duplicate.
+
+**Remaining source qualification:** #509 candidate 18 alias pairs and 11 at-risk query addresses, NPH52 symbol-only negative clearance blocked and quarantined reader-fit expression not authorized, depositor QC query dependence, physical nucleus/specimen/donor identity, externally trusted policy/redaction issuer, strict separate teacher/student custody and new G7 E3 V2. Old #502 public teacher oracle remains RED. No real training/Stage4/PS Task4 authority.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
