@@ -184,3 +184,16 @@ TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AU
 **New separately named student-only V2B:** ChatGPT draft PR #510 stacks on #508, original #502 unsafe public method unchanged. Its `validate_public_student_v2b` refuses every teacher view before digest or issuance lookup; uses only student-visible values and an explicitly passed frozen policy; no teacher membership lookup. Its own 13 adversarial tests per Linux/Windows NumPy1/2 passed run `40932450755` (4/4). However at head `aebe4341265302663799b8f0f50de9bfdc6909dd`, broader Task2 and Task3 repository discovery each had **1 failure / 512 passing**: an inherited adapted reviewer test encounters a shared process-local registry policy collision. A proposed fixture isolation edit was tool-blocked; **#510 cumulative CI RED, no independent reviewer acceptance**. More importantly the caller can self-supply a false policy, so no external source rights issuer or security boundary has been established. Do not deploy as authentic human-data student interface. #507 original RED remains.
 
 **State:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+
+---
+
+## Later 2026-10-29 exact-head supersession: PR #510 CI now GREEN (author mechanics only)
+
+**Supersedes only the prior paragraph's #510 CI RED snapshot**: new #510 exact head `ef51325d0c31bbac2eb0bf74bd3f770d244657f2` passes all **6/6** workflows. Dedicated [run 40932955463](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/40932955463) passed 4/4 Linux/Windows × NumPy1/2 jobs; per platform 13 new student-only attacks, 14 bound V2, 15 pair, 7 exact-source composition, 28 Macha #504 A4. Both broad Task2 and Task3 workflows passed on the final head. A process-local issuer fixture digest collision in the original new synthetic cells was resolved by namespacing **only the new test cell IDs**. No old Macha review, original #502 code or original producer source changed. Historical failed CI remains a real intermediate receipt.
+
+**Do not supersede the more important scientific RED:** Macha #507's teacher-view oracle and self-issued rights attacks on original #502 are still valid. The new versioned V2B accepts only STUDENT-role views and never queries teacher issuance, but independent issuer policy authentication, enforced student/teacher process separation, physical source provenance, specimen/donor identity and query/QC alias closure remain unqualified. A caller supplying its own `expected_policy` does NOT gain authority. #510 has **author CI only**, not independent Macha review.
+
+Audit #322 machine author-CI delta: `results/target_discovery/unified_qualification_v1/JEPA_507_509_V2B_510_AUTHOR_CI_DELTA_20261029.json` created at audit head `93b2368ae41d28e51b9404ad53cbeeb8d460f932`. Source decision #509 and NPH52 quarantine/no-symbol-issuance from the preceding section remain unchanged.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
