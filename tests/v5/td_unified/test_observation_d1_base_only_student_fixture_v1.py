@@ -94,6 +94,9 @@ def test_old_v2_rejects_nonzero_residual_new_base_only_path_accepts():
                   {"level_id":"L1","evidence_rights":["RNA:BASE","RNA:EXT","RNA:QUERY"]}],
         "query_address_id":"Q",
     }
+    # Make the collision address structurally absent in THIS old-path probe,
+    # so the observed refusal is specifically the conservation requirement.
+    old_world["operator_states"]["O"]["U"]=SU
     with pytest.raises(QExcludedDepthNotEstimable,match="unmapped or unresolved"):
         OLD.produce_fixture_student_view_v2(**old_world)
     # No unsafe 'physical total equals mapped' exception in the new D1.
