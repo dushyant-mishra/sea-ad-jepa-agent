@@ -106,3 +106,21 @@ Only after Task1–3 mechanics, calibration/source-right semantics, observation 
 `TARGET_NONE` is a valid result.
 
 **Standing authority:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+
+---
+
+## 2026-10-29 execution delta: D1/D2 ruling and PR #500/#501
+
+This appended delta supersedes *the snapshot of open repair progress*, not any frozen science. Always query live PR heads before acting.
+
+**Deciding-lane interface ruling:** the audit #322 branch now holds `docs/agent/JEPA_D1_D2_DEPTH_INTERFACE_DECISION_20261029.md` and its machine mirror `results/target_discovery/unified_qualification_v1/JEPA_D1_D2_DEPTH_INTERFACE_DECISION_20261029.json` (created through audit head `3a1f42a84a61f8a2c3b1919baab25a13aefdeb98`). D1 was **selected only as the prospective, non-promoting V2 content covariate**, using frozen visible-base measured raw counts; D2 was **rejected as default** pending authenticated residual/alias/QC evidence. No legacy `library_size` redefinition, source attestation, real training, or target selection.
+
+- **#486**, independently reviewed by ChatGPT tests-only #499: 4/4 Linux/Windows × NumPy1/2 passed at `f97af8f669752e1a34cf62a9e1e6069089b28644`, run `40895491010`. Accept incremental numeric/parameter registry fixture mechanics, not operator semantics or authenticated calibration.
+- **#495**, A3 exact-type repair, author CI green. **#496**, A1/A2 fixture bound-content proposal: unchanged Macha #481 A1–A3 targeted 23/23 pass, but cumulative red owing to contradictory historical V2 shape-only count acceptance and other inherited REDs. **Do not merge as production V2**. Split and review a genuinely versioned content consumer; keep #474 A4 RED and original reviewer tests immutable.
+- **#497**, G7 metaclass repair, retains R1/R1D/R2 hostiles RED. Stacked **#500** introduces one composed E3 binder → frozen-row check → V3 fixture path; exact head `27d9dc450f47dbf0829922d9c22a2d5df8fd93e4`, run `40898122458` passed Ubuntu/Windows. Legacy direct V3 stays callable but not qualified as this path; no source authentication.
+- **#498**, canonical exact-type/exception-cause repair, independently reviewed by tests-only **#501** exact head `abf65eb758efe98fa1f43e702d3f1f0dec82a31d`. Run `40898494819` passed all 4 Linux/Windows × NumPy1/2 jobs. Inherited `40898494798` still fails T2-D external independent-scan issuer; live generator trust unqualified.
+
+**Next execution:** version the #496 content contract rather than silently changing shape-only expectations; coordinate #474 A4; independently qualify G7 R1/R1D/R2 physical source/QC/alias/donor provenance and T2-D custody; link real rights to a durable issuer before biological PS Task4.
+
+The standing no-authority state is unchanged: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
