@@ -139,3 +139,16 @@ The standing no-authority state is unchanged: `TARGET_WINNER_NONE__REPRESENTATIO
 Audit #322 machine custody: `results/target_discovery/unified_qualification_v1/JEPA_V2_BOUND_CONTENT_502_EXECUTION_20261029.json`, created at audit head `00aee012fd7595eb544679f5d557b0d40d60c4af`.
 
 Standing stop: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+
+---
+
+## 2026-10-29 V2 private pair preflight — PR #503
+
+**New stacked draft PR #503** head `f93aa8a7132fa02fa2c7be7c7ddfca4dfec6f325`, based on unchanged #502 head `0789247cdbbdfca671613b020865aba958dfd699`. Adds `observation_v2_private_pair_coherence_v1.py` to privately snapshot and verify separate student/teacher V2 D1 views, rights/query roster, cell/source/donor/operator identity, and exact base counts without returning the teacher digest, query count, private rows, or physical total. Does not alter the prior V2 producer or consumer.
+
+**Author CI:** [run 40903779280](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/40903779280) green Linux and Windows; 15 new + 55 inherited V2 + 106 producer tests per OS, six total PR workflows PASS. Await independent reviewer. Deliberate synthetic counterexample: an independently issued student view with one hidden q count and teacher view with another can still pass the coherence check. Therefore **same physical source, feature alias closure, donor/specimen identity, source/QC independence and G7 V2 remain unqualified**. G7 V1 `library_size` cannot be replaced by D1; #500 composed V3 fixture is separately nonpromoting. D2 OFF, #474 A4 RED under Macha ownership.
+
+Machine custody mirror in audit #322: `results/target_discovery/unified_qualification_v1/JEPA_PRIVATE_V2_PAIR_COHERENCE_503_20261029.json`, created at audit head `1cfc6e47e81520cefa06f7211c379f89339de202`.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
