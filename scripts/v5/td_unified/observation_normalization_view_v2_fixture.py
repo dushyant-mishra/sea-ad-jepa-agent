@@ -35,6 +35,8 @@ _SCHEMA = "TD_OBSERVATION_NORMALIZATION_VIEW_V2_FIXTURE"
 _DEPTH_SEMANTICS = "BASE_RIGHTS_INVARIANT_NORMALIZATION_DEPTH_NOT_PHYSICAL_TOTAL"
 _STUDENT = "STUDENT_BASE_RIGHTS"
 _TEACHER = "TEACHER_RICHER_RIGHTS"
+# Fixture contract only. A real issuer must bind source-specific rights separately.
+_FIXTURE_BASE_EVIDENCE_RIGHTS = ("RNA:BASE",)
 
 
 def _make_view(*, cells, address_rights, operator_states, ladder,
@@ -58,6 +60,8 @@ def _make_view(*, cells, address_rights, operator_states, ladder,
     base = levels[0]
     if type(base) is not dict or type(base.get("evidence_rights")) is not list:
         raise QExcludedObservationError("base rights malformed")
+    if base["evidence_rights"] != list(_FIXTURE_BASE_EVIDENCE_RIGHTS):
+        raise QExcludedObservationError("fixture base rights differ from code-pinned V2 contract")
     if rights[q] in base["evidence_rights"]:
         raise QExcludedDepthNotEstimable("queried address is permitted at the student base level")
 
@@ -106,6 +110,7 @@ def _make_view(*, cells, address_rights, operator_states, ladder,
         "view_kind": view_kind,
         "authority_scope": "FIXTURE_ONLY",
         "query_address_id": q,
+        "base_evidence_rights": list(_FIXTURE_BASE_EVIDENCE_RIGHTS),
         "reader_partition": "reader_fit",
         "depth_semantics": _DEPTH_SEMANTICS,
         "rows": rows,
@@ -155,11 +160,17 @@ def _view_snapshot(value, depth=0):
     if depth > 32:
         raise QExcludedObservationError("V2 receipt exceeds bounded nesting")
     kind = type(value)
-    if value is None or kind in (str, int, bool):
-        if kind is str and any(0xD800 <= ord(c) <= 0xDFFF for c in value):
+    if value is None:
+        return None
+    if kind is str:
+        if any(0xD800 <= ord(c) <= 0xDFFF for c in value):
             raise QExcludedObservationError("V2 receipt contains unpaired Unicode surrogate")
-        if kind is int and not -(2**53) < value < (2**53):
+        return value
+    if kind is int:
+        if not -(2**53) < value < (2**53):
             raise QExcludedObservationError("V2 numeric field exceeds exact canonical domain")
+        return value
+    if kind is bool:
         return value
     if kind is list:
         return [_view_snapshot(item, depth + 1) for item in value]
@@ -175,7 +186,7 @@ def _view_snapshot(value, depth=0):
 
 _VIEW_KEYS = frozenset({
     "schema", "view_kind", "authority_scope", "query_address_id",
-    "reader_partition", "depth_semantics", "rows",
+    "base_evidence_rights", "reader_partition", "depth_semantics", "rows",
     "source_authenticated", "donor_identity_authenticated",
     "physical_measurement_identity_authenticated", "q_rights_issuer_authenticated",
     "source_feature_mapping_authenticated", "external_truth_access_authorized",
@@ -215,6 +226,9 @@ def validate_fixture_observation_view_v2(view):
             or value["authority_effect"] != "NONE"
             or value["view_kind"] not in (_STUDENT, _TEACHER)):
         raise QExcludedObservationError("V2 fixture view cannot assume real or legacy authority")
+    base_rights = value["base_evidence_rights"]
+    if type(base_rights) is not list or base_rights != list(_FIXTURE_BASE_EVIDENCE_RIGHTS):
+        raise QExcludedObservationError("V2 fixture base rights are not code-pinned")
     for key in (
         "source_authenticated", "donor_identity_authenticated",
         "physical_measurement_identity_authenticated",
@@ -230,7 +244,7 @@ def validate_fixture_observation_view_v2(view):
     rows = value["rows"]
     if type(rows) is not list or not rows:
         raise QExcludedObservationError("V2 fixture observations absent")
-    seen, hierarchy, cell_depth = set(), {}, {}
+    seen, hierarchy, cell_depth, base_sum = set(), {}, {}, {}
     for row in rows:
         if type(row) is not dict or set(row) != _ROW_KEYS:
             raise QExcludedObservationError("V2 row cannot contain physical total or unknown field")
@@ -256,11 +270,20 @@ def validate_fixture_observation_view_v2(view):
             if row["cell_id"] in cell_depth and cell_depth[row["cell_id"]] != depth:
                 raise QExcludedObservationError("V2 base depth changes between addresses")
             cell_depth[row["cell_id"]] = depth
+            if row["evidence_right"] in base_rights:
+                base_sum[row["cell_id"]] = base_sum.get(row["cell_id"], 0) + count
+            elif value["view_kind"] == _STUDENT:
+                raise QExcludedObservationError("student view exposes a non-base evidence right")
         elif count is not None or depth is not None:
             raise QExcludedObservationError("V2 non-scalar row exposes count or depth")
         if value["view_kind"] == _STUDENT and row["address_id"] == query:
             if row["state"] == MEASURED_SCALAR:
                 raise QExcludedObservationError("student view exposes queried scalar")
+    for cell_id, depth in cell_depth.items():
+        if base_sum.get(cell_id, 0) != depth:
+            raise QExcludedObservationError(
+                "V2 base depth must equal the published base-visible measured scalar sum"
+            )
     return {
         "schema": "TD_OBSERVATION_VIEW_V2_FIXTURE_VALIDATION_RECEIPT",
         "status": "V2_FIXTURE_VIEW_VALIDATED_NO_AUTHORITY",
