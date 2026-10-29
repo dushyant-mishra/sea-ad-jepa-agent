@@ -585,11 +585,11 @@ class RealismContract:
     contract_sha256: str
     metric_bands: tuple[tuple[str, tuple[float, float]], ...]
     adjustable_observation_parameters: tuple[str, ...]
-    observation_parameter_registry_version: str
-    observation_parameter_registry_sha256: str
     max_iterations: int
     version_family_sha256: str
     authority_scope: str
+    observation_parameter_registry_version: str = OBSERVATION_PARAMETER_REGISTRY_VERSION
+    observation_parameter_registry_sha256: str = OBSERVATION_PARAMETER_REGISTRY_SHA256
 
     def __post_init__(self) -> None:
         contract_sha256 = object.__getattribute__(self, "contract_sha256")
