@@ -1,0 +1,38 @@
+name: PS Task3 #486 independent ChatGPT hostiles (FIXTURE ONLY)
+on:
+  pull_request:
+    paths:
+      - 'tests/production_synthetic/test_calibration_v1_chatgpt_486_independent_hostile.py'
+      - '.github/workflows/ps-task3-486-independent-hostile-chatgpt.yml'
+      - 'scripts/production_synthetic/calibration_v1.py'
+permissions:
+  contents: read
+jobs:
+  independent-review:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        numpy: ['1.26.4', '2.2.6']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Exact dependency matrix
+        run: python -m pip install pytest==9.1.1 numpy==${{ matrix.numpy }}
+      - name: Immutable #480 reviewer suite
+        run: python -m pytest -q -rA tests/production_synthetic/test_calibration_v1_chatgpt_437_hostile_red.py
+      - name: New independent #486 attacks
+        run: python -m pytest -q -rA tests/production_synthetic/test_calibration_v1_chatgpt_486_independent_hostile.py
+      - name: Repair author test suite and source regressions
+        run: >-
+          python -m pytest -q
+          tests/production_synthetic/test_calibration_v1_macha_480_repair.py
+          tests/production_synthetic/test_calibration_v1.py
+          tests/production_synthetic/test_calibration_v1_macha_hostile.py
+          tests/production_synthetic/test_calibration_v1_trust_model.py
+          tests/production_synthetic/test_calibration_v1_repair.py
+          tests/production_synthetic/test_calibration_v1_selfaudit.py
+          tests/production_synthetic/test_calibration_v1_independent_273f4a_red.py
