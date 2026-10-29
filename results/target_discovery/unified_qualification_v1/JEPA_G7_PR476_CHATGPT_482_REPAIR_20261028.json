@@ -1,0 +1,22 @@
+{
+  "schema": "JEPA_G7_PR476_CHATGPT_482_REPAIR_20261028_V1",
+  "created_date": "2026-10-28",
+  "source_pr": 476,
+  "source_head": "26031df25b51087f2f3ec35a88eef2919d794c68",
+  "immutable_review_pr": 482,
+  "immutable_review_head": "58baa4f912c791866c1aae31eab797da9dca588a",
+  "authority_class": "FIXTURE_MECHANICS_ONLY",
+  "repairs": [
+    "STRICT_JSON_EXACT_TYPE_IDENTITY_NO_METACLASS_EQ",
+    "REQUIRED_SOURCE_AND_DISPLACEMENT_EXACT_TYPE_IDENTITY",
+    "COMPOSED_BIND_SNAPSHOT_DECIDE_ENTRY_CONSUMES_EXACT_BINDER_ROWS"
+  ],
+  "v3_decision_law_changed": false,
+  "preserved_red": [
+    "R1_PHYSICAL_ATOM_UNIT_IDENTITY",
+    "R1D_DONOR_SPECIMEN_IDENTITY",
+    "R2_Q_EXCLUDED_NORMALIZATION_PROVENANCE"
+  ],
+  "forward_authorization": "NONE",
+  "project_stop": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
