@@ -15,9 +15,11 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Allow the repository's long history paths on Windows
+      - name: Long history paths and exact LF bytes on Windows
         if: runner.os == 'Windows'
-        run: git config --global core.longpaths true
+        run: |
+          git config --global core.longpaths true
+          git config --global core.autocrlf false
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Task 0 B5 regressions diff against the controlling plan head
