@@ -69,7 +69,7 @@ def source_library_counterfactual(base_count=3, query_low=7, query_high=100):
             'base_value_changed_due_to_denominator':low!=high}
 
 
-def summarize_collision_contract(support_rows,ledger_rows,supplemental_rows,*,address_count=None,operator_count=None):
+def summarize_collision_contract(support_rows,ledger_rows,supplemental_rows,*,address_count=None,operator_count=None,expected_index_to_id=None):
     """Fail closed on structural contradictions; no claim of physical closure."""
     ledger=defaultdict(list)
     for x in ledger_rows:
@@ -92,6 +92,13 @@ def summarize_collision_contract(support_rows,ledger_rows,supplemental_rows,*,ad
     for x in support_rows:
         key=(x['matrix_id'],x['molecular_address_id'])
         if key in support_keys:raise ValueError('duplicate support matrix/address')
+        if expected_index_to_id is not None:
+            raw_index=x.get('molecular_address_index')
+            if type(raw_index) is not str or not raw_index.isascii() or not raw_index.isdigit():
+                raise ValueError('support index is not canonical decimal')
+            index=int(raw_index)
+            if str(index)!=raw_index or expected_index_to_id.get(index)!=x['molecular_address_id']:
+                raise ValueError('support index disagrees with frozen address namespace')
         support_keys.add(key)
         matrix_counts[x['matrix_id']]+=1
         flag=x['measured_address']
@@ -139,13 +146,25 @@ def run(bundle):
             blob=_bytes(z,relative)
             if _sha(blob)!=manifest[relative]['sha256'] or len(blob)!=int(manifest[relative]['bytes']):
                 raise ValueError('member digest/size mismatch: '+relative)
+        ns=list(_csv(z,'contracts/address_namespace.csv'))
+        index_to_id={}
+        for row in ns:
+            idx=row['molecular_address_index']
+            if not idx.isascii() or not idx.isdigit() or str(int(idx))!=idx:
+                raise ValueError('address namespace index is malformed')
+            if int(idx) in index_to_id:
+                raise ValueError('duplicate namespace index')
+            index_to_id[int(idx)]=row['molecular_address_id']
+        if set(index_to_id)!=set(range(status['addresses'])) or len(set(index_to_id.values()))!=len(index_to_id):
+            raise ValueError('namespace index or address identities incomplete')
         result=summarize_collision_contract(
             _csv(z,'contracts/address_measurement_support.csv.gz'),
             _csv(z,'contracts/collision_ledger.csv.gz'),
             _csv(z,'contracts/unregistered_collisions.csv'),
             address_count=status['addresses'],operator_count=status['operators'],
+            expected_index_to_id=index_to_id,
         )
-        namespace_count=sum(1 for _ in _csv(z,'contracts/address_namespace.csv'))
+        namespace_count=len(index_to_id)
         if namespace_count!=status['addresses']:
             raise ValueError('address namespace coverage mismatch')
         code=_bytes(z,'code/production_train_loader.py').decode('utf8')
