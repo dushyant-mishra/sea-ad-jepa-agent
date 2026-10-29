@@ -1,0 +1,167 @@
+{
+  "schema": "JEPA_REACQUIRED_FOUNDATION_SOURCE_AUDIT_20261028_V1",
+  "created_date": "2026-10-28",
+  "scope": "AUTHORIZED_REACQUIRED_LOCAL_BYTES__PATHOLOGY_BLIND__NO_REAL_CALIBRATION_AUTHORITY",
+  "inputs": {
+    "calibration_zip_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "expression_zip_sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+    "checkpoints_zip_sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+    "expression_outer_part001_sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+    "expression_outer_part002_sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+    "expression_outer_concatenated_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "expression_inner_npz_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "bundle_manifest_sha256": "da7c3daf507a66118131e88ae6685cf43eb14d4163539ade5e0705f6fb845cef",
+    "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "address_namespace_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "expression_audit_sha256": "c0f1f68fd3af9b95479fdc05536533481bd42710bc67a94a1c4996d4e4fe3b39",
+    "sample_freeze_csv_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+    "sample_freeze_json_sha256": "50fc39c27149ded58ea49b35d7f28dab7d540096ee5df4c2e762d872c8c7903c"
+  },
+  "custody": {
+    "bundle_manifest_rows": 97,
+    "bundle_manifest_rows_verified_exact_sha": 97,
+    "heldout_expression_read": false,
+    "dev_expression_read": false,
+    "sealed_expression_read": false,
+    "pathology_read": false
+  },
+  "expression_sample": {
+    "cells": 50000,
+    "addresses": 41238,
+    "nnz": 246702069,
+    "sources": {
+      "HVS": 10958,
+      "NPH52": 5221,
+      "SEA_AD": 33821
+    },
+    "normalization": "log1p(raw_count*10000/full_source_library)_exactly_once",
+    "integer_recovery": {
+      "nonzero_values_checked": 246702069,
+      "max_distance_to_nearest_integer": 2.1827872842550278e-11,
+      "values_error_gt_1e_6": 0
+    },
+    "residual_by_source": {
+      "HVS": {
+        "cells": 10958,
+        "physical_total": 201375438,
+        "mapped_total": 201375438,
+        "residual_total": 0,
+        "pooled_residual_fraction": 0,
+        "max_cell_fraction": 0
+      },
+      "NPH52": {
+        "cells": 5221,
+        "physical_total": 73441713,
+        "mapped_total": 72345943,
+        "residual_total": 1095770,
+        "pooled_residual_fraction": 0.014920267450733346,
+        "max_cell_fraction": 0.029801324503311258
+      },
+      "SEA_AD": {
+        "cells": 33821,
+        "physical_total": 930739228,
+        "mapped_total": 893449394,
+        "residual_total": 37289834,
+        "pooled_residual_fraction": 0.04006474947889486,
+        "max_cell_fraction": 0.07743362831858407
+      }
+    },
+    "residual_overall": {
+      "physical_total": 1205556379,
+      "mapped_total": 1167170775,
+      "residual_total": 38385604,
+      "pooled_residual_fraction": 0.03184057143129264
+    },
+    "expression_audit_shard_ledger": {
+      "listed_operator_indices": "0-34",
+      "missing_operator_indices": [
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41
+      ],
+      "listed_cells": 44779,
+      "global_cells": 50000,
+      "omitted_cells": 5221,
+      "listed_nnz": 226253925,
+      "global_nnz": 246702069,
+      "omitted_nnz": 20448144,
+      "interpretation": "AUDIT_LEDGER_INCOMPLETE_FOR_NPH52__FINAL_PAYLOAD_AND_METADATA_CONTAIN_35_41"
+    }
+  },
+  "metadata": {
+    "rows": 6351753,
+    "donors": 149,
+    "matrices": 42,
+    "operators": 42,
+    "partitions": {
+      "reader_fit": {
+        "cells": 4553407,
+        "donors": 104,
+        "matrices": 42,
+        "operators": 42
+      },
+      "reader_validation": {
+        "cells": 947031,
+        "donors": 22,
+        "matrices": 35,
+        "operators": 35
+      },
+      "reader_oracle": {
+        "cells": 851315,
+        "donors": 23,
+        "matrices": 42,
+        "operators": 42
+      }
+    },
+    "reader_fit_by_source": {
+      "HVS": {
+        "cells": 198718,
+        "donors": 41,
+        "matrices": 24
+      },
+      "NPH52": {
+        "cells": 236476,
+        "donors": 17,
+        "matrices": 7
+      },
+      "SEA_AD": {
+        "cells": 4118213,
+        "donors": 46,
+        "matrices": 11
+      }
+    },
+    "donors_in_multiple_partitions": 0,
+    "donors_in_multiple_sources": 0,
+    "matrices_in_multiple_operators": 0,
+    "matrices_in_multiple_sources": 0,
+    "specimen_or_tissue_block_column_present": false,
+    "acquisition_key_column_present": false
+  },
+  "address_namespace": {
+    "addresses": 41238,
+    "duplicate_nonempty_symbol_count": 275,
+    "mt_prefix_count": 30,
+    "rps_or_rpl_prefix_count": 130,
+    "rps_rpl_numeric_or_rplp_pattern_count": 126,
+    "MALAT1_present": true,
+    "NEAT1_present": true,
+    "query_identity_rule": "MOLECULAR_ADDRESS_ID_NOT_SYMBOL"
+  },
+  "blockers": [
+    "FULL104_EXPRESSION_STORE_NOT_PRESENT__ONLY_FROZEN_50K_READER_FIT_SAMPLE_REACQUIRED",
+    "OFF_LEDGER_SOURCE_FEATURE_VAR_METADATA_NOT_PRESENT_IN_REACQUIRED_PACKAGE__ALIAS_CLOSURE_NOT_EXECUTABLE",
+    "DEPOSITOR_QC_RULES_NOT_RECORDED__SELECTION_LEAKAGE_NOT_CLOSED",
+    "SPECIMEN_TISSUE_BLOCK_AND_ACQUISITION_KEYS_NOT_CARRIED_IN_METADATA_SQLITE",
+    "REAL_D1_ISSUER_NOT_IMPLEMENTED_OR_INDEPENDENTLY_QUALIFIED",
+    "D2_REJECTED_FROM_CURRENT_RELEASED_CONTRACT",
+    "NO_CURRENT_POST_CORRECTION_TRAIN_CALIBRATION_ISSUER"
+  ],
+  "source_work_status": "PARTIAL_PROGRESS__CUSTODY_AND_SAMPLE_RESIDUALS_QUALIFIED__ALIAS_QC_SPECIMEN_BLOCKED",
+  "forward_authorization": "SOURCE_AUDIT_AND_CONTRACT_IMPLEMENTATION_ONLY",
+  "training_authorized": false,
+  "project_stop": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
