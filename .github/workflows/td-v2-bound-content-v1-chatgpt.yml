@@ -5,7 +5,7 @@ on:
       - 'scripts/v5/td_unified/observation_normalization_view_v2_bound_content_v1.py'
       - 'tests/v5/td_unified/test_observation_normalization_v2_bound_content.py'
       - 'tests/v5/td_unified/test_v2_bound_content_macha481_replay.py'
-      - 'tests/v5/td_unified/test_observation_normalization_view_v2_macha_479_red.py'
+      - 'tests/v5/td_unified/macha481_review_source_immutable.py'
       - '.github/workflows/td-v2-bound-content-v1-chatgpt.yml'
 permissions:
   contents: read
