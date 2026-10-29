@@ -20,7 +20,12 @@ Consequences consumers must respect:
   physical-total checks such as ``count <= library_size`` or ``sum(counts) <=
   library_size`` hold at the base level (the student view) but not in general;
 - withheld mass that cannot be removed exactly (a collision-unresolved address
-  outside the base rights) or a depth of zero is NOT_ESTIMABLE, never guessed.
+  outside the base rights) or a depth of zero is NOT_ESTIMABLE, never guessed;
+- refusals are outcomes too: whether a call is refused, and with which class and
+  message, depends only on structure, base-visible counts and total minus stored
+  counts, never on withheld counts. This holds inside the declared integer domain
+  (every integer, the physical total included, below 2**53); a total pushed out of
+  that domain by withheld molecules alone is refused before any semantics.
 
 Preconditions this module cannot check from its own inputs (a source producer must
 attest them): every source feature carrying molecules of an outside-base address's
@@ -187,7 +192,11 @@ def produce_rights_ladder_observations(*, cells, address_rights, operator_states
             if type(count) is not int or count < 0:
                 raise QExcludedObservationError("counts must be nonnegative exact integers")
         total = cell["library_total"]
-        if type(total) is not int or total < 1 or total < sum(counts.values()):
+        # Refusals obey noninterference too: compare only quantities that withheld
+        # counts cannot move (total - stored counts, and the depth below). A bare
+        # ``total < 1`` refused an empty droplet as malformed but a cell holding only
+        # withheld molecules as NOT_ESTIMABLE, revealing that they exist (#481 A4).
+        if type(total) is not int or total < sum(counts.values()):
             raise QExcludedObservationError("library_total must be an exact integer covering every stored count")
         for address in outside_base:
             if op_states[address] == MEASURED_COLLISION_UNRESOLVED:
