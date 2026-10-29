@@ -153,3 +153,19 @@ This is negative package evidence only. It does **not** prove that upstream data
 
 No query rights are issued from this QC audit.
 
+## 10. Provenance/QC metadata can be reacquired without expression, but specimen identity remains open
+
+The historical pathology-firewalled schema scan at commit `c2bd13e…` shows that useful non-pathology provenance/QC columns existed upstream even though the current reader SQLite does not carry them.
+
+For all 24 HVS matrices, the scan recorded `donor_id`, `exp_component_name`, `suspension_type`, `tissue`, mitochondrial-UMI fraction, genes detected and UMI count. No sample/specimen field was recorded.
+
+For all 11 SEA-AD matrices, donor ID, brain region, `exp_component_name`, mitochondrial-UMI fraction, genes detected and UMI count were present. `sample_id` was present in 10/11 matrices; the caudate matrix lacked it in the historical scan. `cell_prep_type` and `method` were likewise present in 10/11.
+
+For NPH52, the scan retained cell/standardized-cell ID, donor ID, source dataset/object and raw library total, but no sample/specimen field.
+
+Therefore the next provenance recovery can be **metadata-only**: no expression values and no pathology values are required. It should recover stable cell keys plus the listed source/QC columns.
+
+However, `matrix_id`, `exp_component_name` and NPH `source_object` are not authorized specimen surrogates. R1D specimen identity remains `NOT_QUALIFIED` until an externally grounded specimen/tissue-block identity or an explicit source statement establishes the appropriate replication unit.
+
+A historical donor↔sample crosswalk is hash-pinned at `a555da96…`, but stage81a2 used it for other living-human studies. It must not be silently imported as HVS/NPH52/SEA-AD specimen authority.
+
