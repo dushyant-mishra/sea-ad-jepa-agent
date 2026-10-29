@@ -33,3 +33,19 @@ Reader-fit mapped-feature/alias closure, QC/selection rights, true physical unit
 - Author-CI GREEN is not independent acceptance. This branch is awaiting hosted test results and outside review.
 
 **Standing scientific authorization:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+
+## Independent inherited-suite contradiction discovered in hosted CI
+
+First exact-head Ubuntu run `40892829429` (pre-diagnostic-fix head `31d41d10259577ee3e3c5fbbc68129c266feb2ca`) executed:
+- **14/14 new A1/A2 adversarial tests PASS**.
+- **18/18 unchanged #481 A1–A3 hostile cases PASS** (six other Macha review tests intentionally not selected, including inherited A4).
+- Inherited producer/V2 regression: **126 PASS, 2 FAIL** at that code head.
+- Independent V2 base workflow `40892829271` and broader inherited workflows failed from the same V2 interface change. Do not record an all-green or independently accepted repair.
+- Windows `40892829429` job failed during `actions/checkout`, before tests; its test result is NOT_ESTIMABLE.
+
+**R-old1 — diagnostic ordering (mechanics):** `test_malicious_physical_total_field_is_not_valid_in_the_v2_consumer` expects a refusal message containing `physical total`. The new binding guard rejected the re-signed receipt before reporting the forbidden field. Follow-up commit `5a56d1cca9c33e2229bf630b143e1074c9a1c267` restores early structural/physical-field refusal. It does not relax any rights/depth law; hosted recheck required.
+
+**R-old2 — substantive contradictory acceptance law, NOT FIXED:** `test_malformed_count_depth_states_and_q_reveal_cannot_be_signed_through` asserts that replacing a base measured scalar count with `999` while leaving published normalization depth unchanged is valid because the old V2 consumer only checked types/shape. The new A1 contract requires **exact base-sum equality** and must refuse that changed count. The two expected outcomes cannot both be satisfied by one unversioned consumer. No tests have been altered. The deciding lane must explicitly decide whether to (a) version/retire the historical shape-only allowance for the strict V2 bound consumer, or (b) reject the new A1 contract and retain the #481 A1 RED. Neither option follows from author CI alone.
+
+There is **no cumulative acceptance** while this incompatibility and the inherited upstream A4 remain. Do not treat `-k` selected passes as an all-suite PASS.
