@@ -1,0 +1,940 @@
+{
+ "bound_inputs_sha256": {
+  "data/external/v4/gene_identity_authority/ensembl_116/Homo_sapiens.GRCh38.116.gtf.gz": "ed992f0eac7197d9627bda618f8f831ba355c95bd5d0796af785387d462828b6",
+  "data/external/v4/gene_identity_authority/hgnc_2026-08/hgnc_complete_set_2026-08-07.txt": "faaeb6ae1e2a596be658b5f23ee44937c9c5379fa37d1f5ace54b94b16962b1c",
+  "exports/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+  "results/v4/stage81a2r_authoritative_source_mapping_decisions_candidate.csv.gz": "e3106248ac77f8840f5ea6035dc765d8e09feeba1f6da21c830b3945d694c773",
+  "results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+  "results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51"
+ },
+ "counts": {
+  "by_classification": {
+   "AMBIGUOUS_HISTORICAL_REPLACEMENT": 2,
+   "SHARED_FEATURE_IDENTITY": 6,
+   "UNRESOLVED_NO_LEGACY_LOCUS": 4,
+   "UNSUPPORTED_EQUIVALENCE": 6
+  },
+  "by_query_action": {
+   "BLOCK_QUERY_OR_OPERATOR": 5,
+   "NO_CONSTRAINT_FROM_THIS_AUDIT": 1,
+   "SHARE_RIGHTS_CLASS": 5
+  },
+  "holders": 10,
+  "pairs": 18
+ },
+ "pairs": [
+  {
+   "all_replacements": [
+    "ENSG00000284609",
+    "ENSG00000284680"
+   ],
+   "classification": "SHARED_FEATURE_IDENTITY",
+   "current_address": "ENSG00000284609",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "11",
+    "end": 124399024,
+    "name": "OR8B3",
+    "start": 124395534,
+    "strand": "-"
+   },
+   "current_symbol": "OR8B3",
+   "hgnc_symbol_set_contains_holder_source_symbol": true,
+   "holder_loci": [
+    [
+     "11",
+     124396382,
+     124397368,
+     "-"
+    ]
+   ],
+   "holder_source_symbols": [
+    "OR8B3"
+   ],
+   "holder_sources": [
+    "NPH52"
+   ],
+   "legacy_holder": "ENSG00000196661",
+   "operators_where_both_measured_scalar": [],
+   "proposed_action": "SHARE_RIGHTS_CLASS",
+   "replacements_with_locus_support": [
+    "ENSG00000284609"
+   ]
+  },
+  {
+   "all_replacements": [
+    "ENSG00000284609",
+    "ENSG00000284680"
+   ],
+   "classification": "UNSUPPORTED_EQUIVALENCE",
+   "current_address": "ENSG00000284680",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "11",
+    "end": 124384499,
+    "name": "OR8B2",
+    "start": 124382394,
+    "strand": "-"
+   },
+   "current_symbol": "OR8B2",
+   "hgnc_symbol_set_contains_holder_source_symbol": false,
+   "holder_loci": [
+    [
+     "11",
+     124396382,
+     124397368,
+     "-"
+    ]
+   ],
+   "holder_source_symbols": [
+    "OR8B3"
+   ],
+   "holder_sources": [
+    "NPH52"
+   ],
+   "legacy_holder": "ENSG00000196661",
+   "operators_where_both_measured_scalar": [],
+   "proposed_action": "NO_SHARED_LOCUS_RECORDED",
+   "replacements_with_locus_support": [
+    "ENSG00000284609"
+   ]
+  },
+  {
+   "all_replacements": [
+    "ENSG00000288825",
+    "ENSG00000288859"
+   ],
+   "classification": "UNRESOLVED_NO_LEGACY_LOCUS",
+   "current_address": "ENSG00000288825",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "1",
+    "end": 149842750,
+    "name": "H2AC18",
+    "start": 149842218,
+    "strand": "-"
+   },
+   "current_symbol": "HIST2H2AA3",
+   "hgnc_symbol_set_contains_holder_source_symbol": true,
+   "holder_loci": [],
+   "holder_source_symbols": [
+    "HIST2H2AA3"
+   ],
+   "holder_sources": [
+    "SEA_AD_COMMON"
+   ],
+   "legacy_holder": "ENSG00000203812",
+   "operators_where_both_measured_scalar": [],
+   "proposed_action": "BLOCK_QUERY_OR_OPERATOR",
+   "replacements_with_locus_support": []
+  },
+  {
+   "all_replacements": [
+    "ENSG00000284609",
+    "ENSG00000284680"
+   ],
+   "classification": "UNSUPPORTED_EQUIVALENCE",
+   "current_address": "ENSG00000284609",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "11",
+    "end": 124399024,
+    "name": "OR8B3",
+    "start": 124395534,
+    "strand": "-"
+   },
+   "current_symbol": "OR8B3",
+   "hgnc_symbol_set_contains_holder_source_symbol": false,
+   "holder_loci": [
+    [
+     "11",
+     124382395,
+     124383362,
+     "-"
+    ]
+   ],
+   "holder_source_symbols": [
+    "OR8B2"
+   ],
+   "holder_sources": [
+    "NPH52"
+   ],
+   "legacy_holder": "ENSG00000204293",
+   "operators_where_both_measured_scalar": [],
+   "proposed_action": "NO_SHARED_LOCUS_RECORDED",
+   "replacements_with_locus_support": [
+    "ENSG00000284680"
+   ]
+  },
+  {
+   "all_replacements": [
+    "ENSG00000284609",
+    "ENSG00000284680"
+   ],
+   "classification": "SHARED_FEATURE_IDENTITY",
+   "current_address": "ENSG00000284680",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "11",
+    "end": 124384499,
+    "name": "OR8B2",
+    "start": 124382394,
+    "strand": "-"
+   },
+   "current_symbol": "OR8B2",
+   "hgnc_symbol_set_contains_holder_source_symbol": true,
+   "holder_loci": [
+    [
+     "11",
+     124382395,
+     124383362,
+     "-"
+    ]
+   ],
+   "holder_source_symbols": [
+    "OR8B2"
+   ],
+   "holder_sources": [
+    "NPH52"
+   ],
+   "legacy_holder": "ENSG00000204293",
+   "operators_where_both_measured_scalar": [],
+   "proposed_action": "SHARE_RIGHTS_CLASS",
+   "replacements_with_locus_support": [
+    "ENSG00000284680"
+   ]
+  },
+  {
+   "all_replacements": [
+    "ENSG00000173575",
+    "ENSG00000235481"
+   ],
+   "classification": "UNSUPPORTED_EQUIVALENCE",
+   "current_address": "ENSG00000173575",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "15",
+    "end": 93027996,
+    "name": "CHD2",
+    "start": 92886203,
+    "strand": "+"
+   },
+   "current_symbol": "CHD2",
+   "hgnc_symbol_set_contains_holder_source_symbol": false,
+   "holder_loci": [
+    [
+     "9",
+     33732975,
+     33738416,
+     "-"
+    ]
+   ],
+   "holder_source_symbols": [
+    "LINC01251",
+    "RP11-384P7.6"
+   ],
+   "holder_sources": [
+    "NPH52",
+    "SEA_AD_COMMON"
+   ],
+   "legacy_holder": "ENSG00000233776",
+   "operators_where_both_measured_scalar": [
+    "sea_ad_ang_rna_final_2026",
+    "sea_ad_caudate_rna_all_2025",
+    "sea_ad_fi_rna_final_2026",
+    "sea_ad_hip_rna_final_2026",
+    "sea_ad_itg_rna_final_2026",
+    "sea_ad_lec_rna_final_2026",
+    "sea_ad_mec_rna_final_2026",
+    "sea_ad_mtg_rna_final_2026",
+    "sea_ad_pfc_a9_rna_final_2026",
+    "sea_ad_stg_rna_final_2026",
+    "sea_ad_v1c_rna_final_2026",
+    "NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::Endo_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::ExN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::InN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::OPC_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::Oligo_data_arranged_updatedId_final_batches.qs"
+   ],
+   "proposed_action": "NO_SHARED_LOCUS_RECORDED",
+   "replacements_with_locus_support": [
+    "ENSG00000235481"
+   ]
+  },
+  {
+   "all_replacements": [
+    "ENSG00000173575",
+    "ENSG00000235481"
+   ],
+   "classification": "SHARED_FEATURE_IDENTITY",
+   "current_address": "ENSG00000235481",
+   "current_locus": {
+    "biotype": "lncRNA",
+    "chrom": "9",
+    "end": 33818836,
+    "name": "UBE2R2-AS1",
+    "start": 33732970,
+    "strand": "-"
+   },
+   "current_symbol": "UBE2R2-AS1",
+   "hgnc_symbol_set_contains_holder_source_symbol": true,
+   "holder_loci": [
+    [
+     "9",
+     33732975,
+     33738416,
+     "-"
+    ]
+   ],
+   "holder_source_symbols": [
+    "LINC01251",
+    "RP11-384P7.6"
+   ],
+   "holder_sources": [
+    "NPH52",
+    "SEA_AD_COMMON"
+   ],
+   "legacy_holder": "ENSG00000233776",
+   "operators_where_both_measured_scalar": [
+    "sea_ad_ang_rna_final_2026",
+    "sea_ad_caudate_rna_all_2025",
+    "sea_ad_fi_rna_final_2026",
+    "sea_ad_hip_rna_final_2026",
+    "sea_ad_itg_rna_final_2026",
+    "sea_ad_lec_rna_final_2026",
+    "sea_ad_mec_rna_final_2026",
+    "sea_ad_mtg_rna_final_2026",
+    "sea_ad_pfc_a9_rna_final_2026",
+    "sea_ad_stg_rna_final_2026",
+    "sea_ad_v1c_rna_final_2026",
+    "NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::Endo_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::ExN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::InN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::OPC_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::Oligo_data_arranged_updatedId_final_batches.qs"
+   ],
+   "proposed_action": "SHARE_RIGHTS_CLASS",
+   "replacements_with_locus_support": [
+    "ENSG00000235481"
+   ]
+  },
+  {
+   "all_replacements": [
+    "ENSG00000257612",
+    "ENSG00000257842"
+   ],
+   "classification": "AMBIGUOUS_HISTORICAL_REPLACEMENT",
+   "current_address": "ENSG00000257612",
+   "current_locus": {
+    "biotype": "lncRNA",
+    "chrom": "14",
+    "end": 27160420,
+    "name": "MIR4307HG",
+    "start": 26836728,
+    "strand": "+"
+   },
+   "current_symbol": "MIR4307HG",
+   "hgnc_symbol_set_contains_holder_source_symbol": false,
+   "holder_loci": [
+    [
+     "14",
+     26836728,
+     27160420,
+     "+"
+    ]
+   ],
+   "holder_source_symbols": [
+    "AL110292.1",
+    "RP11-384J4.2"
+   ],
+   "holder_sources": [
+    "NPH52",
+    "SEA_AD_COMMON"
+   ],
+   "legacy_holder": "ENSG00000258081",
+   "operators_where_both_measured_scalar": [
+    "sea_ad_ang_rna_final_2026",
+    "sea_ad_caudate_rna_all_2025",
+    "sea_ad_fi_rna_final_2026",
+    "sea_ad_hip_rna_final_2026",
+    "sea_ad_itg_rna_final_2026",
+    "sea_ad_lec_rna_final_2026",
+    "sea_ad_mec_rna_final_2026",
+    "sea_ad_mtg_rna_final_2026",
+    "sea_ad_pfc_a9_rna_final_2026",
+    "sea_ad_stg_rna_final_2026",
+    "sea_ad_v1c_rna_final_2026",
+    "NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::ExN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::InN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::OPC_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::Oligo_data_arranged_updatedId_final_batches.qs"
+   ],
+   "proposed_action": "BLOCK_QUERY_OR_OPERATOR",
+   "replacements_with_locus_support": [
+    "ENSG00000257612",
+    "ENSG00000257842"
+   ]
+  },
+  {
+   "all_replacements": [
+    "ENSG00000257612",
+    "ENSG00000257842"
+   ],
+   "classification": "AMBIGUOUS_HISTORICAL_REPLACEMENT",
+   "current_address": "ENSG00000257842",
+   "current_locus": {
+    "biotype": "lncRNA",
+    "chrom": "14",
+    "end": 27295516,
+    "name": "NOVA1-DT",
+    "start": 26598369,
+    "strand": "+"
+   },
+   "current_symbol": "LINC02588",
+   "hgnc_symbol_set_contains_holder_source_symbol": false,
+   "holder_loci": [
+    [
+     "14",
+     26836728,
+     27160420,
+     "+"
+    ]
+   ],
+   "holder_source_symbols": [
+    "AL110292.1",
+    "RP11-384J4.2"
+   ],
+   "holder_sources": [
+    "NPH52",
+    "SEA_AD_COMMON"
+   ],
+   "legacy_holder": "ENSG00000258081",
+   "operators_where_both_measured_scalar": [
+    "sea_ad_ang_rna_final_2026",
+    "sea_ad_caudate_rna_all_2025",
+    "sea_ad_fi_rna_final_2026",
+    "sea_ad_hip_rna_final_2026",
+    "sea_ad_itg_rna_final_2026",
+    "sea_ad_lec_rna_final_2026",
+    "sea_ad_mec_rna_final_2026",
+    "sea_ad_mtg_rna_final_2026",
+    "sea_ad_pfc_a9_rna_final_2026",
+    "sea_ad_stg_rna_final_2026",
+    "sea_ad_v1c_rna_final_2026",
+    "NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::Endo_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::ExN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::InN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::OPC_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::Oligo_data_arranged_updatedId_final_batches.qs"
+   ],
+   "proposed_action": "BLOCK_QUERY_OR_OPERATOR",
+   "replacements_with_locus_support": [
+    "ENSG00000257612",
+    "ENSG00000257842"
+   ]
+  },
+  {
+   "all_replacements": [
+    "ENSG00000288825",
+    "ENSG00000288859"
+   ],
+   "classification": "UNRESOLVED_NO_LEGACY_LOCUS",
+   "current_address": "ENSG00000288825",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "1",
+    "end": 149842750,
+    "name": "H2AC18",
+    "start": 149842218,
+    "strand": "-"
+   },
+   "current_symbol": "HIST2H2AA3",
+   "hgnc_symbol_set_contains_holder_source_symbol": false,
+   "holder_loci": [],
+   "holder_source_symbols": [
+    "HIST2H2AA4"
+   ],
+   "holder_sources": [
+    "SEA_AD_COMMON"
+   ],
+   "legacy_holder": "ENSG00000272196",
+   "operators_where_both_measured_scalar": [],
+   "proposed_action": "BLOCK_QUERY_OR_OPERATOR",
+   "replacements_with_locus_support": []
+  },
+  {
+   "all_replacements": [
+    "ENSG00000286522",
+    "ENSG00000287080"
+   ],
+   "classification": "SHARED_FEATURE_IDENTITY",
+   "current_address": "ENSG00000286522",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "6",
+    "end": 26032102,
+    "name": "H3C2",
+    "start": 26028850,
+    "strand": "-"
+   },
+   "current_symbol": "HIST1H3B",
+   "hgnc_symbol_set_contains_holder_source_symbol": true,
+   "holder_loci": [
+    [
+     "6",
+     26031650,
+     26032060,
+     "-"
+    ]
+   ],
+   "holder_source_symbols": [
+    "HIST1H3B"
+   ],
+   "holder_sources": [
+    "NPH52"
+   ],
+   "legacy_holder": "ENSG00000274267",
+   "operators_where_both_measured_scalar": [],
+   "proposed_action": "SHARE_RIGHTS_CLASS",
+   "replacements_with_locus_support": [
+    "ENSG00000286522"
+   ]
+  },
+  {
+   "all_replacements": [
+    "ENSG00000286522",
+    "ENSG00000287080"
+   ],
+   "classification": "UNSUPPORTED_EQUIVALENCE",
+   "current_address": "ENSG00000287080",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "6",
+    "end": 26045869,
+    "name": "H3C3",
+    "start": 26045384,
+    "strand": "+"
+   },
+   "current_symbol": "HIST1H3C",
+   "hgnc_symbol_set_contains_holder_source_symbol": false,
+   "holder_loci": [
+    [
+     "6",
+     26031650,
+     26032060,
+     "-"
+    ]
+   ],
+   "holder_source_symbols": [
+    "HIST1H3B"
+   ],
+   "holder_sources": [
+    "NPH52"
+   ],
+   "legacy_holder": "ENSG00000274267",
+   "operators_where_both_measured_scalar": [],
+   "proposed_action": "NO_SHARED_LOCUS_RECORDED",
+   "replacements_with_locus_support": [
+    "ENSG00000286522"
+   ]
+  },
+  {
+   "all_replacements": [
+    "ENSG00000288709",
+    "ENSG00000288722"
+   ],
+   "classification": "UNRESOLVED_NO_LEGACY_LOCUS",
+   "current_address": "ENSG00000288709",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "X",
+    "end": 155383801,
+    "name": "F8A2",
+    "start": 155382095,
+    "strand": "+"
+   },
+   "current_symbol": "F8A2",
+   "hgnc_symbol_set_contains_holder_source_symbol": true,
+   "holder_loci": [],
+   "holder_source_symbols": [
+    "F8A2"
+   ],
+   "holder_sources": [
+    "SEA_AD_COMMON"
+   ],
+   "legacy_holder": "ENSG00000274791",
+   "operators_where_both_measured_scalar": [],
+   "proposed_action": "BLOCK_QUERY_OR_OPERATOR",
+   "replacements_with_locus_support": []
+  },
+  {
+   "all_replacements": [
+    "ENSG00000288709",
+    "ENSG00000288722"
+   ],
+   "classification": "UNRESOLVED_NO_LEGACY_LOCUS",
+   "current_address": "ENSG00000288722",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "X",
+    "end": 154888061,
+    "name": "F8A1",
+    "start": 154886355,
+    "strand": "+"
+   },
+   "current_symbol": "F8A1",
+   "hgnc_symbol_set_contains_holder_source_symbol": false,
+   "holder_loci": [],
+   "holder_source_symbols": [
+    "F8A2"
+   ],
+   "holder_sources": [
+    "SEA_AD_COMMON"
+   ],
+   "legacy_holder": "ENSG00000274791",
+   "operators_where_both_measured_scalar": [],
+   "proposed_action": "BLOCK_QUERY_OR_OPERATOR",
+   "replacements_with_locus_support": []
+  },
+  {
+   "all_replacements": [
+    "ENSG00000288709",
+    "ENSG00000288722"
+   ],
+   "classification": "UNSUPPORTED_EQUIVALENCE",
+   "current_address": "ENSG00000288709",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "X",
+    "end": 155383801,
+    "name": "F8A2",
+    "start": 155382095,
+    "strand": "+"
+   },
+   "current_symbol": "F8A2",
+   "hgnc_symbol_set_contains_holder_source_symbol": false,
+   "holder_loci": [
+    [
+     "X",
+     154886349,
+     154888061,
+     "+"
+    ]
+   ],
+   "holder_source_symbols": [
+    "F8A1"
+   ],
+   "holder_sources": [
+    "NPH52",
+    "SEA_AD_COMMON"
+   ],
+   "legacy_holder": "ENSG00000277203",
+   "operators_where_both_measured_scalar": [
+    "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::Oligo_data_arranged_updatedId_final_batches.qs"
+   ],
+   "proposed_action": "NO_SHARED_LOCUS_RECORDED",
+   "replacements_with_locus_support": [
+    "ENSG00000288722"
+   ]
+  },
+  {
+   "all_replacements": [
+    "ENSG00000288709",
+    "ENSG00000288722"
+   ],
+   "classification": "SHARED_FEATURE_IDENTITY",
+   "current_address": "ENSG00000288722",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "X",
+    "end": 154888061,
+    "name": "F8A1",
+    "start": 154886355,
+    "strand": "+"
+   },
+   "current_symbol": "F8A1",
+   "hgnc_symbol_set_contains_holder_source_symbol": true,
+   "holder_loci": [
+    [
+     "X",
+     154886349,
+     154888061,
+     "+"
+    ]
+   ],
+   "holder_source_symbols": [
+    "F8A1"
+   ],
+   "holder_sources": [
+    "NPH52",
+    "SEA_AD_COMMON"
+   ],
+   "legacy_holder": "ENSG00000277203",
+   "operators_where_both_measured_scalar": [],
+   "proposed_action": "SHARE_RIGHTS_CLASS",
+   "replacements_with_locus_support": [
+    "ENSG00000288722"
+   ]
+  },
+  {
+   "all_replacements": [
+    "ENSG00000286522",
+    "ENSG00000287080"
+   ],
+   "classification": "UNSUPPORTED_EQUIVALENCE",
+   "current_address": "ENSG00000286522",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "6",
+    "end": 26032102,
+    "name": "H3C2",
+    "start": 26028850,
+    "strand": "-"
+   },
+   "current_symbol": "HIST1H3B",
+   "hgnc_symbol_set_contains_holder_source_symbol": false,
+   "holder_loci": [
+    [
+     "6",
+     26045411,
+     26045821,
+     "+"
+    ]
+   ],
+   "holder_source_symbols": [
+    "HIST1H3C"
+   ],
+   "holder_sources": [
+    "NPH52"
+   ],
+   "legacy_holder": "ENSG00000278272",
+   "operators_where_both_measured_scalar": [],
+   "proposed_action": "NO_SHARED_LOCUS_RECORDED",
+   "replacements_with_locus_support": [
+    "ENSG00000287080"
+   ]
+  },
+  {
+   "all_replacements": [
+    "ENSG00000286522",
+    "ENSG00000287080"
+   ],
+   "classification": "SHARED_FEATURE_IDENTITY",
+   "current_address": "ENSG00000287080",
+   "current_locus": {
+    "biotype": "protein_coding",
+    "chrom": "6",
+    "end": 26045869,
+    "name": "H3C3",
+    "start": 26045384,
+    "strand": "+"
+   },
+   "current_symbol": "HIST1H3C",
+   "hgnc_symbol_set_contains_holder_source_symbol": true,
+   "holder_loci": [
+    [
+     "6",
+     26045411,
+     26045821,
+     "+"
+    ]
+   ],
+   "holder_source_symbols": [
+    "HIST1H3C"
+   ],
+   "holder_sources": [
+    "NPH52"
+   ],
+   "legacy_holder": "ENSG00000278272",
+   "operators_where_both_measured_scalar": [],
+   "proposed_action": "SHARE_RIGHTS_CLASS",
+   "replacements_with_locus_support": [
+    "ENSG00000287080"
+   ]
+  }
+ ],
+ "proposed_query_rights_table": [
+  {
+   "holders": [
+    "ENSG00000233776"
+   ],
+   "operators_constrained": [],
+   "operators_constrained_count": 0,
+   "proposed_action": "NO_CONSTRAINT_FROM_THIS_AUDIT",
+   "query_address": "ENSG00000173575",
+   "symbol": "CHD2"
+  },
+  {
+   "holders": [
+    "ENSG00000233776"
+   ],
+   "operators_constrained": [
+    "NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::Endo_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::ExN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::InN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::OPC_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::Oligo_data_arranged_updatedId_final_batches.qs",
+    "sea_ad_ang_rna_final_2026",
+    "sea_ad_caudate_rna_all_2025",
+    "sea_ad_fi_rna_final_2026",
+    "sea_ad_hip_rna_final_2026",
+    "sea_ad_itg_rna_final_2026",
+    "sea_ad_lec_rna_final_2026",
+    "sea_ad_mec_rna_final_2026",
+    "sea_ad_mtg_rna_final_2026",
+    "sea_ad_pfc_a9_rna_final_2026",
+    "sea_ad_stg_rna_final_2026",
+    "sea_ad_v1c_rna_final_2026"
+   ],
+   "operators_constrained_count": 18,
+   "proposed_action": "SHARE_RIGHTS_CLASS",
+   "query_address": "ENSG00000235481",
+   "symbol": "UBE2R2-AS1"
+  },
+  {
+   "holders": [
+    "ENSG00000258081"
+   ],
+   "operators_constrained": [
+    "NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::ExN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::InN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::OPC_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::Oligo_data_arranged_updatedId_final_batches.qs",
+    "sea_ad_ang_rna_final_2026",
+    "sea_ad_caudate_rna_all_2025",
+    "sea_ad_fi_rna_final_2026",
+    "sea_ad_hip_rna_final_2026",
+    "sea_ad_itg_rna_final_2026",
+    "sea_ad_lec_rna_final_2026",
+    "sea_ad_mec_rna_final_2026",
+    "sea_ad_mtg_rna_final_2026",
+    "sea_ad_pfc_a9_rna_final_2026",
+    "sea_ad_stg_rna_final_2026",
+    "sea_ad_v1c_rna_final_2026"
+   ],
+   "operators_constrained_count": 16,
+   "proposed_action": "BLOCK_QUERY_OR_OPERATOR",
+   "query_address": "ENSG00000257612",
+   "symbol": "MIR4307HG"
+  },
+  {
+   "holders": [
+    "ENSG00000258081"
+   ],
+   "operators_constrained": [
+    "NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::Endo_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::ExN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::InN_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::OPC_data_arranged_updatedId_final_batches.qs",
+    "NPH52::matrix::Oligo_data_arranged_updatedId_final_batches.qs",
+    "sea_ad_ang_rna_final_2026",
+    "sea_ad_caudate_rna_all_2025",
+    "sea_ad_fi_rna_final_2026",
+    "sea_ad_hip_rna_final_2026",
+    "sea_ad_itg_rna_final_2026",
+    "sea_ad_lec_rna_final_2026",
+    "sea_ad_mec_rna_final_2026",
+    "sea_ad_mtg_rna_final_2026",
+    "sea_ad_pfc_a9_rna_final_2026",
+    "sea_ad_stg_rna_final_2026",
+    "sea_ad_v1c_rna_final_2026"
+   ],
+   "operators_constrained_count": 18,
+   "proposed_action": "BLOCK_QUERY_OR_OPERATOR",
+   "query_address": "ENSG00000257842",
+   "symbol": "LINC02588"
+  },
+  {
+   "holders": [
+    "ENSG00000196661",
+    "ENSG00000204293"
+   ],
+   "operators_constrained": [],
+   "operators_constrained_count": 0,
+   "proposed_action": "SHARE_RIGHTS_CLASS",
+   "query_address": "ENSG00000284609",
+   "symbol": "OR8B3"
+  },
+  {
+   "holders": [
+    "ENSG00000196661",
+    "ENSG00000204293"
+   ],
+   "operators_constrained": [],
+   "operators_constrained_count": 0,
+   "proposed_action": "SHARE_RIGHTS_CLASS",
+   "query_address": "ENSG00000284680",
+   "symbol": "OR8B2"
+  },
+  {
+   "holders": [
+    "ENSG00000274267",
+    "ENSG00000278272"
+   ],
+   "operators_constrained": [],
+   "operators_constrained_count": 0,
+   "proposed_action": "SHARE_RIGHTS_CLASS",
+   "query_address": "ENSG00000286522",
+   "symbol": "HIST1H3B"
+  },
+  {
+   "holders": [
+    "ENSG00000274267",
+    "ENSG00000278272"
+   ],
+   "operators_constrained": [],
+   "operators_constrained_count": 0,
+   "proposed_action": "SHARE_RIGHTS_CLASS",
+   "query_address": "ENSG00000287080",
+   "symbol": "HIST1H3C"
+  },
+  {
+   "holders": [
+    "ENSG00000274791",
+    "ENSG00000277203"
+   ],
+   "operators_constrained": [],
+   "operators_constrained_count": 0,
+   "proposed_action": "BLOCK_QUERY_OR_OPERATOR",
+   "query_address": "ENSG00000288709",
+   "symbol": "F8A2"
+  },
+  {
+   "holders": [
+    "ENSG00000274791",
+    "ENSG00000277203"
+   ],
+   "operators_constrained": [],
+   "operators_constrained_count": 0,
+   "proposed_action": "BLOCK_QUERY_OR_OPERATOR",
+   "query_address": "ENSG00000288722",
+   "symbol": "F8A1"
+  },
+  {
+   "holders": [
+    "ENSG00000203812",
+    "ENSG00000272196"
+   ],
+   "operators_constrained": [],
+   "operators_constrained_count": 0,
+   "proposed_action": "BLOCK_QUERY_OR_OPERATOR",
+   "query_address": "ENSG00000288825",
+   "symbol": "HIST2H2AA3"
+  }
+ ],
+ "rule": "For each legacy holder address H whose source\nfeatures have multiple current Ensembl replacements, take H's locus from the\nsource-feature coordinates (any source; the legacy ID names one gene model) and\neach replacement's locus from the pinned Ensembl 116 GTF. Same chromosome, same\nstrand and >= 1 bp overlap count as locus support. Let OV be the replacements\n(address or not) with locus support. For each pair (H, R), R a current address:\n  - H has no coordinates          -> UNRESOLVED_NO_LEGACY_LOCUS     -> BLOCK_QUERY_OR_OPERATOR\n  - R in OV and |OV| == 1         -> SHARED_FEATURE_IDENTITY        -> SHARE_RIGHTS_CLASS\n  - R in OV and |OV| >  1         -> AMBIGUOUS_HISTORICAL_REPLACEMENT -> BLOCK_QUERY_OR_OPERATOR\n  - R not in OV                   -> UNSUPPORTED_EQUIVALENCE        -> NO_SHARED_LOCUS_RECORDED\nThe constraint matters only in operators where both H and R are MEASURED_SCALAR.\nHGNC previous/alias symbol agreement is reported but is not part of the rule.",
+ "schema": "JEPA_MACHA_ALIAS_CLASS_ADJUDICATION_V1"
+}

@@ -1,0 +1,31 @@
+{
+ "schema": "JEPA_MACHA_SOURCE_QUALIFICATION_DELTA_V1",
+ "date": "2026-10-30",
+ "author_lane": "Macha",
+ "stacked_on": {"pr": 509, "head": "3e5694e2c1b959c8e21f9fc6dd50cbf694ac4013"},
+ "document": "docs/agent/JEPA_MACHA_SOURCE_QUALIFICATION_DELTA_20261030.md",
+ "probes": {
+  "etl_reuse_ledger": {"code": "scripts/v5/review_probes/macha_20261030/etl_reuse_ledger_probe.py", "output": "results/target_discovery/unified_qualification_v1/JEPA_MACHA_ETL_REUSE_LEDGER_20261030.json"},
+  "alias_class_adjudication": {"code": "scripts/v5/review_probes/macha_20261030/alias_class_adjudication_probe.py", "output": "results/target_discovery/unified_qualification_v1/JEPA_MACHA_ALIAS_CLASS_ADJUDICATION_20261030.json"},
+  "specimen_and_depositor_qc": {"code": "scripts/v5/review_probes/macha_20261030/specimen_and_depositor_qc_probe.py", "output": "results/target_discovery/unified_qualification_v1/JEPA_MACHA_SPECIMEN_AND_DEPOSITOR_QC_20261030.json"}
+ },
+ "data_read": "identity tables, state matrix, allowlisted obs columns plus Doublet score (SEA-AD) and is_primary_data (HVS) for reader_fit rows only, Level-4 per-cell library totals; no count matrices, quarantined NPH52 cells, protected partitions, DEV/SEALED, pathology or BAM/FASTQ",
+ "etl_reuse_ledger": {"rows": 322, "drifted": 0, "not_located": 0, "rehashed_bytes": 730364141,
+  "discrepancies": ["metadata adapter manifest has 50 entries, not 47", "Level-4 materialization manifest stores pre-rename _staging_expression_level4 paths; resolved by declared rename and content"],
+  "pr509_inputs": "8/8 EXACT_SHA_ALREADY_VERIFIED; correction: registry 7d61ed7b is #492's pinned address namespace"},
+ "updates_to_pr509_rows": [
+  {"id": "B2", "change": "SEA-AD sample_id is unique per nucleus (3,484,130/3,484,130); it is not a specimen key. Specimen/tissue block remains UNAVAILABLE; donor > region > [specimen] > library (566 libraries, each in one donor/region/matrix)", "class": "CONTRADICTED_DONOR_EQUALS_SPECIMEN__SPECIMEN_KEY_UNAVAILABLE"},
+  {"id": "B3", "change": "HVS: depositor publication (doi 10.1126/science.adf2359) states nuclei from a single tissue section per donor; specimen equals donor by depositor statement; 24 matrices are subclass partitions; no duplicated nuclei", "class": "AUTHENTICATED_BY_DEPOSITOR_STATEMENT_HVS__UNAVAILABLE_NPH52"},
+  {"id": "C4", "change": "18 pairs adjudicated: 6 shared identity, 2 ambiguous, 6 unsupported, 4 unresolved; binding today only for UBE2R2-AS1 (share class), MIR4307HG and LINC02588 (block)", "class": "RESOLVED_TO_PROPOSED_RIGHTS_TABLE"},
+  {"id": "D3", "change": "SEA-AD source_library equals depositor Number of UMIs for 4,118,213/4,118,213 cells; HVS source_library is median 0.915 (0.72-0.96) of depositor UMIs", "class": "AUTHENTICATED_AGAINST_DEPOSITOR_SEA_AD__CONTRADICTED_HVS"},
+  {"id": "E3", "change": "HVS hard floor genes detected >= 1000 (9 cells at floor); SEA-AD no hard floor, doublet scores to 0.98; NPH52 retained library floor 601", "class": "CONTRADICTED_HVS_WEAK__UNAVAILABLE_SEA_AD__CONTRADICTED_NPH52_IMPORTED"}
+ ],
+ "d1_eligibility_by_source": {
+  "HVS": "ELIGIBLE_AT_SOURCE_SCOPE_WITH_STATED_LIMITS",
+  "SEA_AD": "ELIGIBLE_AT_SOURCE_SCOPE_WITH_STATED_LIMITS",
+  "NPH52": "BLOCKED_FOR_REAL_QUERY_ISSUANCE"
+ },
+ "proposed_protocols_awaiting_approval": ["NPH52 quarantined selection-effect comparison (section 4); no bytes opened"],
+ "authority_effect": "NONE",
+ "standing_stop": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
