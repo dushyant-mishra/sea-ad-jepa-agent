@@ -86,6 +86,12 @@ def produce_d1_base_only_student_fixture(*, base_observations, expected_policy):
                 any(not _token(x) for x in c.values()) or
                 c["cell_id"] in cell_map or c["operator_id"] not in states):
             _reject("D1 source cell roster is malformed")
+        # #492 source observability law: exact operator x address must be a
+        # measured scalar for a query. Structural absence or unresolved
+        # collision is not a target, even if base counts are well-formed.
+        if states[c["operator_id"]][q]!=MS:
+            raise QExcludedDepthNotEstimable(
+                "queried address is not measured-scalar in the selected operator")
         cell_map[c["cell_id"]]=c
     if type(frozen["base_observations"]) is not list or not frozen["base_observations"]:
         _reject("D1 base observations absent")
