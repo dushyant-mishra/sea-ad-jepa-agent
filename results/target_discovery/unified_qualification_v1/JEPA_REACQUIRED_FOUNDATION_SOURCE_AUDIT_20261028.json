@@ -163,5 +163,116 @@
   "source_work_status": "PARTIAL_PROGRESS__CUSTODY_AND_SAMPLE_RESIDUALS_QUALIFIED__ALIAS_QC_SPECIMEN_BLOCKED",
   "forward_authorization": "SOURCE_AUDIT_AND_CONTRACT_IMPLEMENTATION_ONLY",
   "training_authorized": false,
-  "project_stop": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  "project_stop": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "minimal_alias_reacquisition": {
+    "purpose": "PER_QUERY_PER_OPERATOR_OFF_LEDGER_AND_IN_LEDGER_ALIAS_CLOSURE__NO_EXPRESSION_REQUIRED",
+    "preferred_exact_bytes": [
+      {
+        "path": "results/v4/stage81a2r_authoritative_source_mapping_decisions_candidate.csv.gz",
+        "role": "FINAL_ROW_LEVEL_ALL_SOURCE_FEATURE_IDENTITY_DECISIONS",
+        "sha256_status": "NOT_RECOVERED_FROM_CURRENT_GITHUB_MIRROR__REQUIRE_ORIGINAL_HASH_RECEIPT_WITH_BYTES",
+        "accept_unhashed_by_filename": false
+      },
+      {
+        "path": "results/v4/stage81a2r_unresolved_identity_reclassification_candidate.csv.gz",
+        "bytes": 4790758,
+        "sha256": "ebd216a1a2a46ffec64cd170f3752f822620efff7945e6d9bc8758f19e0947e6",
+        "role": "FINAL_NPH_RECLASSIFICATION_APPLIED_BY_CLOSURE"
+      },
+      {
+        "path": "results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz",
+        "bytes": 5764358,
+        "sha256": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
+        "role": "MAPPED_SOURCE_FEATURE_TO_ADDRESS_CROSSCHECK"
+      },
+      {
+        "path": "results/v4/stage81a2r_foundation_preserved_nonuniversal_evidence_candidate.csv.gz",
+        "bytes": 142739,
+        "sha256": "3e7e8b7af6e30429a0be5a0dde335675b7339bed378e442706058b813b7b9ec2",
+        "role": "UNRESOLVED_NONUNIVERSAL_IDENTITY_CROSSCHECK"
+      },
+      {
+        "path": "results/v4/stage81a2r_foundation_molecular_address_measurement_support_candidate.csv.gz",
+        "bytes": 14663564,
+        "sha256": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa",
+        "role": "MATRIX_OPERATOR_ADDRESS_SUPPORT_CROSSCHECK"
+      }
+    ],
+    "nph_compact_feature_caches": [
+      {
+        "name": "Astro_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "83e444d0940d5ed54c80e070d3367427999ff1abd2a63807f65f58d761845047",
+        "rows": 35028
+      },
+      {
+        "name": "Endo_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "5d545ad4a1f01429bc7bc51b9e4261cbecc05acd6dac0e5d120f391eed1bd109",
+        "rows": 32373
+      },
+      {
+        "name": "ExN_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "6bbe5938ff4af74848862b6079a1d54d7c2cf9bf48c7df0fb179f5d5e5391858",
+        "rows": 37477
+      },
+      {
+        "name": "InN_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "6a7cb9c2daf1640899c9511fd13fd34a4deecb1e20871546bcdaca6539424e97",
+        "rows": 35964
+      },
+      {
+        "name": "MG_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "f87848ecc472a0c09c59290e613986f8aa36336c094dc9404187e82892019540",
+        "rows": 33441
+      },
+      {
+        "name": "OPC_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "00f1712c5b388ef9b801900e99765961dfc99b89b0a863963714ea93ef312565",
+        "rows": 33761
+      },
+      {
+        "name": "Oligo_data_arranged_updatedId_final_batches.qs.features.tsv.gz",
+        "sha256": "f328d1ac1fff30c764b134411dd50e32748452169c06125dcbd7b46ecb6852d7",
+        "rows": 36394
+      }
+    ],
+    "feature_cache_fields": "raw_feature_id|raw_gene_symbol|source_ensembl_id|source_feature_type|source_refseq_id|source_ncbi_gene_id|source_transcript_id|source_chromosome|source_start|source_end|source_strand|source_biotype",
+    "fallback_reconstruction": {
+      "warning": "USE_ONLY_IF_FINAL_AUTHORITATIVE_DECISION_TABLE_CANNOT_BE_RECOVERED",
+      "protected_prior_source_decisions": {
+        "path": "results/v4/stage81a2r_source_mapping_decisions_candidate.csv.gz",
+        "sha256": "27331548439ebb5ed0f29187daa17bd2d127e0b16153f0f9eda374f9fc95d284"
+      },
+      "protected_prior_exact_registry": {
+        "path": "results/v4/stage81a2r_exact_canonical_gene_registry_candidate.csv",
+        "sha256": "5bafbbf7aeca7a58d3b8c8e40e4393d67601841914d97818023205eef5cb5ba0"
+      },
+      "protected_prior_measurement_support": {
+        "path": "results/v4/stage81a2r_matrix_measurement_support_candidate.csv.gz",
+        "sha256": "2bedf1d30544bebed9eb00e73af132bdb08f5f1c673ab69a7345146463fd9c1f"
+      },
+      "authoritative_generator": {
+        "path": "scripts/v4/stage81a2r_authoritative_gene_identity_recovery.py",
+        "bytes": 54185,
+        "sha256": "b35c420311a2a4a94ea0ce9e9ca04713f921608668c757932acc980f6f71f7bf"
+      },
+      "authority_manifest": {
+        "path": "docs/history/results/v4/stage81a2r_authority_manifest_candidate.json",
+        "bytes": 34076,
+        "sha256": "1b305315623361c66eaf20b860b3173431899a4bb4109474ca8bd5e553b661f4",
+        "ensembl_116_gtf_sha256": "ed992f0eac7197d9627bda618f8f831ba355c95bd5d0796af785387d462828b6",
+        "hgnc_complete_20260807_sha256": "faaeb6ae1e2a596be658b5f23ee44937c9c5379fa37d1f5ace54b94b16962b1c",
+        "hgnc_withdrawn_20260804_sha256": "77235063bba9492d09997e58387a50b6f750aed2de67a44c519c920b48f7ff87",
+        "ensembl_history_cache_semantic_sha256": "f14b94735cc46d55f04563b052a10ff902209933a5770effbbe0a4e7a79db627",
+        "ensembl_history_response_file_count": 180
+      }
+    },
+    "adjudication_rule": {
+      "query_key": "MOLECULAR_ADDRESS_ID",
+      "positive_alias": "ANY_EXACT_CURRENT_LEGACY_ALTERNATIVE_OR_LOCUS_IDENTITY_EQUIVALENT_TO_QUERY",
+      "negative_clearance": "ALL_OFF_LEDGER_FEATURES_FOR_OPERATOR_HAVE_NONQUERY_IDENTITY_ESTABLISHED",
+      "unresolved_behavior": "FAIL_CLOSED__QUERY_OPERATOR_ALIAS_CLEARANCE_NOT_QUALIFIED",
+      "symbol_only_clearance_allowed": false
+    },
+    "original_large_nph_qs_required": false
+  }
 }
