@@ -1,0 +1,39 @@
+name: PS #498 independent canonical hostile review (T2-D RED)
+on:
+  pull_request:
+    paths:
+      - 'tests/production_synthetic/test_ps_canonical_498_chatgpt_independent.py'
+      - '.github/workflows/ps-498-independent-canonical-chatgpt.yml'
+      - 'scripts/production_synthetic/canonical_v1.py'
+permissions:
+  contents: read
+jobs:
+  independent-canonical:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        numpy: ['1.26.4', '2.2.6']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+            schemas
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Exact dependencies
+        run: python -m pip install pytest==9.1.1 numpy==${{ matrix.numpy }}
+      - name: Original unchanged Macha #483 review
+        run: python -m pytest -q tests/production_synthetic/test_ps_t12_477_recheck_macha_red.py
+      - name: Independent class/type/exception-cause/NumPy review
+        run: python -m pytest -q -rA tests/production_synthetic/test_ps_canonical_498_chatgpt_independent.py
+      - name: Earlier Macha #473 and portable canonical regressions
+        run: >-
+          python -m pytest -q
+          tests/production_synthetic/test_ps_t12_464_recheck_macha_red.py
+          tests/production_synthetic/test_canonical_v1.py
