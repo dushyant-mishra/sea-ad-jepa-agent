@@ -58,3 +58,34 @@ def test_alias_reacquisition_contract_is_minimal_hash_bound_and_fail_closed():
     assert r["adjudication_rule"]["symbol_only_clearance_allowed"] is False
     assert r["adjudication_rule"]["unresolved_behavior"].startswith("FAIL_CLOSED")
 
+def test_mechanical_query_observability_uses_scalar_state_not_coarse_measured_boolean():
+    d = json.loads(J.read_text(encoding="utf-8"))
+    m = d["mechanical_query_observability"]
+    p = m["pair_counts"]
+    assert p["total"] == 42 * 41238
+    assert p["measured_scalar"] + p["measured_collision_unresolved"] + p["structurally_unmeasured"] == p["total"]
+    assert m["query_rule"]["eligible_state"] == "MEASURED_SCALAR"
+    assert "MEASURED_COLLISION_UNRESOLVED" in m["query_rule"]["refused_states"]
+    assert m["query_rule"]["symbol_inference_allowed"] is False
+    assert m["query_rule"]["cross_operator_inference_allowed"] is False
+    assert m["query_rule"]["source_rights_inferred"] is False
+    assert m["address_counts"]["measured_scalar_any_operator"] == 40949
+    assert m["address_counts"]["measured_scalar_all_42_operators"] == 17186
+
+
+def test_mechanical_source_family_coverage_closes_to_scalar_pair_total():
+    d = json.loads(J.read_text(encoding="utf-8"))
+    m = d["mechanical_query_observability"]
+    assert sum(x["scalar_pairs"] for x in m["by_source_family"].values()) == m["pair_counts"]["measured_scalar"]
+    assert sum(m["source_family_presence_patterns"].values()) == m["address_counts"]["total"]
+    assert sum(x["addresses"] for x in m["by_identity_class"].values()) == m["address_counts"]["total"]
+
+
+def test_qc_selection_remains_fail_closed():
+    d = json.loads(J.read_text(encoding="utf-8"))
+    q = d["qc_selection_audit"]
+    assert q["status"] == "NOT_RECOVERED__FAIL_CLOSED"
+    assert q["explicit_depositor_qc_policy_found"] is False
+    assert q["rights_effect"] == "NONE__NO_QUERY_RIGHTS_ISSUED"
+    assert "ABSENCE_IN_PACKAGE_DOES_NOT_PROVE_UPSTREAM_QC_ABSENT" in q["inference"]
+
