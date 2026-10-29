@@ -91,13 +91,16 @@ def test_a2_nonbase_scalar_refused_even_if_bound_as_original_student(address):
             row["count"] = 7 if address == "E" else 11
             row["base_rights_normalization_depth"] = 3
     forged = _resign(forged)
-    with pytest.raises(QExcludedObservationError, match="bound view rights"):
+    # Queried scalar is stopped by the inherited V2 shape guard, whereas
+    # a non-query higher-right scalar is stopped by the bound-rights law.
+    reason = "student view exposes queried scalar" if address == "Q" else "bound view rights"
+    with pytest.raises(QExcludedObservationError, match=reason):
         _check_as_bound_for_test(forged, honest)
 
 
 def test_a2_query_relabel_refused_against_bound_original_query():
     honest = V2.produce_fixture_student_view_v2_bound(**_world())
-    forged = _resign({**honest, "query_address_id": "B"})
+    forged = _resign({**honest, "query_address_id": "E"})
     with pytest.raises(QExcludedObservationError, match="query/role/rights"):
         _check_as_bound_for_test(forged, honest)
 
