@@ -1,0 +1,57 @@
+name: ChatGPT repair PR479 A1-A3 against immutable #481 (A4 preserved RED)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/td_unified/observation_normalization_view_v2_fixture.py'
+      - 'tests/v5/td_unified/test_observation_normalization_view_v2_fixture.py'
+      - 'tests/v5/td_unified/test_observation_normalization_view_v2_macha_479_red.py'
+      - 'tests/v5/td_unified/test_observation_normalization_view_v2_chatgpt_481_repair.py'
+      - '.github/workflows/td-v2-normalization-view-chatgpt-481-repair.yml'
+permissions:
+  contents: read
+jobs:
+  repair:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - shell: bash
+        run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: Original producer and V2 author suites
+        shell: bash
+        run: >-
+          python -m pytest -q
+          tests/v5/td_unified/test_q_excluded_depth_v1.py
+          tests/v5/td_unified/test_q_excluded_depth_v1_independent_limits.py
+          tests/v5/td_unified/test_observation_normalization_view_v2_fixture.py
+      - name: Immutable Macha #481 suite excluding inherited A4
+        shell: bash
+        run: >-
+          python -m pytest -q -rA
+          tests/v5/td_unified/test_observation_normalization_view_v2_macha_479_red.py
+          -k "not test_red_refusal_of_an_empty_base_cell_does_not_depend_on_withheld_mass"
+      - name: ChatGPT A1-A3 repair guards
+        shell: bash
+        run: python -m pytest -q -rA tests/v5/td_unified/test_observation_normalization_view_v2_chatgpt_481_repair.py
+      - name: Inherited A4 must remain RED until separate #474 repair
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/v5/td_unified/test_observation_normalization_view_v2_macha_479_red.py::test_red_refusal_of_an_empty_base_cell_does_not_depend_on_withheld_mass
+          rc=$?
+          set -e
+          if [ "$rc" -ne 1 ]; then
+            echo "Expected exact inherited A4 test to remain RED; got pytest rc=$rc"
+            exit 1
+          fi
