@@ -76,10 +76,27 @@ def test_student_view_is_constant_across_hidden_query_and_all_residual_mass(
     # All three are intentionally absent from input; changing their *real*
     # quantities cannot change this function's output. This does NOT certify
     # the external filter selected a q-independent roster.
-    synthetic_world={"q":q,"offledger_residual":offledger_residual,
-                     "collision_residual":collision_residual}
-    assert synthetic_world["q"]==q
-    assert produce()==produce()
+    synthetic_world={
+        "cells":[{
+            "cell_id":f"D1_ROSTER_{i}",
+            "physical_total":3+i+2+4+q+offledger_residual+collision_residual,
+            "all_source_counts":{"B":3+i,"B2":2,"E":4,"Q":q},
+            "unmapped_source_residual":offledger_residual,
+            "unresolved_collision_residual":collision_residual,
+        } for i in range(2)],
+    }
+    # This explicit helper models an upstream redactor but is NOT the
+    # authenticated upstream source producer or depositor's QC selection.
+    redacted=[
+        {"cell_id":cell["cell_id"],
+         "base_counts":{a:n for a,n in cell["all_source_counts"].items()
+                        if w()["address_rights"][a] in w()["base_evidence_rights"]}}
+        for cell in synthetic_world["cells"]
+    ]
+    assert redacted==base()
+    view=produce(o=redacted)
+    assert view==produce()
+    assert all("physical_total" not in str(row) for row in view["rows"])
 
 
 def test_old_v2_rejects_nonzero_residual_new_base_only_path_accepts():
