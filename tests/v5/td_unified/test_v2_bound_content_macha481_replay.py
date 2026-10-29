@@ -14,7 +14,7 @@ from types import SimpleNamespace
 
 from scripts.v5.td_unified import observation_normalization_view_v2_bound_content_v1 as B
 from tests.v5.td_unified import (
-    test_observation_normalization_view_v2_macha_479_red as REVIEW,
+    macha481_review_source_immutable as REVIEW,
 )
 
 REVIEW.V2 = SimpleNamespace(
