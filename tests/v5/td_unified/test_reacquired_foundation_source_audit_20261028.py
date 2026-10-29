@@ -39,3 +39,22 @@ def test_missing_nph_shards_are_recorded_not_silently_repaired():
     assert x["missing_operator_indices"] == [35, 36, 37, 38, 39, 40, 41]
     assert x["omitted_cells"] == 5221
     assert x["omitted_nnz"] == 20448144
+
+def test_alias_reacquisition_contract_is_minimal_hash_bound_and_fail_closed():
+    d = json.loads(J.read_text(encoding="utf-8"))
+    r = d["minimal_alias_reacquisition"]
+    assert r["original_large_nph_qs_required"] is False
+    assert len(r["nph_compact_feature_caches"]) == 7
+    assert all(len(x["sha256"]) == 64 for x in r["nph_compact_feature_caches"])
+    preferred = {x["path"]: x for x in r["preferred_exact_bytes"]}
+    assert preferred[
+        "results/v4/stage81a2r_unresolved_identity_reclassification_candidate.csv.gz"
+    ]["sha256"] == "ebd216a1a2a46ffec64cd170f3752f822620efff7945e6d9bc8758f19e0947e6"
+    final = preferred[
+        "results/v4/stage81a2r_authoritative_source_mapping_decisions_candidate.csv.gz"
+    ]
+    assert final["accept_unhashed_by_filename"] is False
+    assert r["adjudication_rule"]["query_key"] == "MOLECULAR_ADDRESS_ID"
+    assert r["adjudication_rule"]["symbol_only_clearance_allowed"] is False
+    assert r["adjudication_rule"]["unresolved_behavior"].startswith("FAIL_CLOSED")
+
