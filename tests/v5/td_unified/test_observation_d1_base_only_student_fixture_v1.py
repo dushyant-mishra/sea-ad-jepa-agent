@@ -227,3 +227,30 @@ def test_zero_base_refusal_is_identical_in_all_absent_hidden_worlds():
             produce(o=o)
         outputs.append((type(ex.value),ex.value.args,ex.value.__cause__))
     assert len(set(outputs))==1
+
+
+
+def test_positive_limitation_unresolved_q_alias_in_base_still_leaks():
+    # If a feature carrying q molecules is MISCLASSIFIED as a base address,
+    # upstream redaction is not actually q-excluding. This is why Macha #509
+    # candidate alias pairs must be adjudicated BEFORE any rights issuance.
+    honest=produce()
+    contaminated=base()
+    contaminated[0]["base_counts"]["B"]+=7  # hypothetical q alias mass
+    altered=produce(o=contaminated)
+    assert altered!=honest
+    assert altered["source_authenticated"] is False
+    assert altered["q_rights_issuer_authenticated"] is False
+
+
+def test_positive_limitation_query_selected_roster_is_not_q_independent():
+    # Caller can self-issue a distinct policy for an upstream q-conditioned
+    # selection. Code checks internal roster equality, NOT how QC chose rows.
+    full=produce()
+    selected_policy=w()
+    selected_policy["cell_roster"]=selected_policy["cell_roster"][:1]
+    selected_observations=base()[:1]
+    selected=produce(p=selected_policy,o=selected_observations)
+    assert selected!=full
+    assert len(selected["rows"])==len(w()["address_rights"])
+    assert selected["source_authenticated"] is False
