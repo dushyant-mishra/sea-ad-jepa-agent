@@ -491,21 +491,87 @@ def derive_budget_from_precision(targets: Mapping[str, PrecisionTarget]) -> dict
     return out
 
 
-def _contract_parts(contract: "RealismContract") -> dict[str, object]:
-    # Exact typed values: ints stay ints (arbitrary precision), floats keep their
-    # shortest round-trip repr, via the Task 1 canonical encoding. Converting with
-    # float() here would alias distinct integer bounds (2**53 vs 2**53+1).
+def _validate_realism_contract_parts(
+    *,
+    metric_bands: object,
+    adjustable_observation_parameters: object,
+    max_iterations: object,
+    version_family_sha256: object,
+    authority_scope: object,
+    observation_parameter_registry_version: object,
+    observation_parameter_registry_sha256: object,
+) -> None:
+    """Exact-type validation safe to run before canonical serialization."""
+    if (
+        type(metric_bands) is not tuple or not metric_bands
+        or type(max_iterations) is not int or max_iterations < 1
+        or type(authority_scope) is not str or authority_scope != "SYNTH_DEBUG_ONLY"
+        or not _strtuple(adjustable_observation_parameters, nonempty=True)
+        or not _hex64(version_family_sha256)
+        or type(observation_parameter_registry_version) is not str
+        or observation_parameter_registry_version != OBSERVATION_PARAMETER_REGISTRY_VERSION
+        or not _hex64(observation_parameter_registry_sha256)
+        or observation_parameter_registry_sha256 != OBSERVATION_PARAMETER_REGISTRY_SHA256
+    ):
+        raise CalibrationError("only exact frozen fixture realism contract parts are executable here")
+    if any(x not in OBSERVATION_PARAMETER_REGISTRY for x in adjustable_observation_parameters):
+        raise CalibrationError("only registered observation-side parameters can be realism-tuned")
+
+    names: list[str] = []
+    for entry in metric_bands:
+        if type(entry) is not tuple or len(entry) != 2:
+            raise CalibrationError("metric band must be exact pair")
+        name, band = entry
+        if type(name) is not str or name not in _REALISM_NAMES:
+            raise CalibrationError("candidate outcome or unlisted realism metric refused")
+        if (
+            type(band) is not tuple or len(band) != 2
+            or not _finite(band[0]) or not _finite(band[1]) or band[0] > band[1]
+        ):
+            raise CalibrationError("invalid metric acceptance band")
+        names.append(name)
+    if len(names) != len(set(names)):
+        raise CalibrationError("duplicate realism metric names")
+
+
+def _contract_parts_from_values(
+    *,
+    metric_bands: tuple,
+    adjustable_observation_parameters: tuple[str, ...],
+    max_iterations: int,
+    version_family_sha256: str,
+    authority_scope: str,
+    observation_parameter_registry_version: str,
+    observation_parameter_registry_sha256: str,
+) -> dict[str, object]:
     return {
-        "schema": "PRODUCTION_SYNTHETIC_REALISM_CONTRACT_V1",
-        "metrics": [
-            [name, [low, high]]
-            for name, (low, high) in contract.metric_bands
-        ],
-        "adjustable_observation_parameters": list(contract.adjustable_observation_parameters),
-        "max_iterations": contract.max_iterations,
-        "generator_version_family_sha256": contract.version_family_sha256,
-        "authority_scope": contract.authority_scope,
+        "schema": "PRODUCTION_SYNTHETIC_REALISM_CONTRACT_V2",
+        "metrics": [[name, [low, high]] for name, (low, high) in metric_bands],
+        "adjustable_observation_parameters": list(adjustable_observation_parameters),
+        "observation_parameter_registry_version": observation_parameter_registry_version,
+        "observation_parameter_registry_sha256": observation_parameter_registry_sha256,
+        "max_iterations": max_iterations,
+        "generator_version_family_sha256": version_family_sha256,
+        "authority_scope": authority_scope,
     }
+
+
+def _contract_parts(contract: "RealismContract") -> dict[str, object]:
+    return _contract_parts_from_values(
+        metric_bands=object.__getattribute__(contract, "metric_bands"),
+        adjustable_observation_parameters=object.__getattribute__(
+            contract, "adjustable_observation_parameters"
+        ),
+        max_iterations=object.__getattribute__(contract, "max_iterations"),
+        version_family_sha256=object.__getattribute__(contract, "version_family_sha256"),
+        authority_scope=object.__getattribute__(contract, "authority_scope"),
+        observation_parameter_registry_version=object.__getattribute__(
+            contract, "observation_parameter_registry_version"
+        ),
+        observation_parameter_registry_sha256=object.__getattribute__(
+            contract, "observation_parameter_registry_sha256"
+        ),
+    )
 
 
 def _contract_digest(contract: "RealismContract") -> str:
@@ -514,68 +580,75 @@ def _contract_digest(contract: "RealismContract") -> str:
 
 @dataclass(frozen=True)
 class RealismContract:
-    """Immutable prospective fixture criteria. Never selects biology parameters.
-
-    ``contract_sha256`` must equal the content digest of the contract itself;
-    use ``RealismContract.frozen(...)`` to compute it.
-    """
+    """Immutable prospective fixture criteria with registry-bound identity."""
 
     contract_sha256: str
     metric_bands: tuple[tuple[str, tuple[float, float]], ...]
     adjustable_observation_parameters: tuple[str, ...]
+    observation_parameter_registry_version: str
+    observation_parameter_registry_sha256: str
     max_iterations: int
     version_family_sha256: str
     authority_scope: str
 
     def __post_init__(self) -> None:
-        if not _hex64(self.contract_sha256) or not _hex64(self.version_family_sha256):
-            raise CalibrationError("realism contract requires exact frozen source identities")
-        if (
-            type(self.metric_bands) is not tuple or not self.metric_bands
-            or type(self.max_iterations) is not int or self.max_iterations < 1
-            or type(self.authority_scope) is not str
-            or self.authority_scope != "SYNTH_DEBUG_ONLY"
-            or not _strtuple(self.adjustable_observation_parameters, nonempty=True)
-        ):
-            raise CalibrationError("only frozen fixture realism contract is executable here")
-        if any(x not in OBSERVATION_PARAMETER_REGISTRY for x in self.adjustable_observation_parameters):
-            raise CalibrationError("only registered observation-side parameters can be realism-tuned")
-        names = []
-        for entry in self.metric_bands:
-            if type(entry) is not tuple or len(entry) != 2:
-                raise CalibrationError("metric band must be exact pair")
-            name, band = entry
-            if type(name) is not str or name not in _REALISM_NAMES:
-                raise CalibrationError("candidate outcome or unlisted realism metric refused")
-            if (
-                type(band) is not tuple or len(band) != 2
-                or not _finite(band[0]) or not _finite(band[1]) or band[0] > band[1]
-            ):
-                raise CalibrationError("invalid metric acceptance band")
-            names.append(name)
-        if len(names) != len(set(names)):
-            raise CalibrationError("duplicate realism metric names")
-        if self.contract_sha256 != _contract_digest(self):
+        contract_sha256 = object.__getattribute__(self, "contract_sha256")
+        if not _hex64(contract_sha256):
+            raise CalibrationError("realism contract requires an exact content identity")
+        _validate_realism_contract_parts(
+            metric_bands=object.__getattribute__(self, "metric_bands"),
+            adjustable_observation_parameters=object.__getattribute__(
+                self, "adjustable_observation_parameters"
+            ),
+            max_iterations=object.__getattribute__(self, "max_iterations"),
+            version_family_sha256=object.__getattribute__(self, "version_family_sha256"),
+            authority_scope=object.__getattribute__(self, "authority_scope"),
+            observation_parameter_registry_version=object.__getattribute__(
+                self, "observation_parameter_registry_version"
+            ),
+            observation_parameter_registry_sha256=object.__getattribute__(
+                self, "observation_parameter_registry_sha256"
+            ),
+        )
+        if contract_sha256 != _contract_digest(self):
             raise CalibrationError("realism contract identity must equal its own content digest")
 
     @classmethod
     def frozen(cls, *, metric_bands, adjustable_observation_parameters, max_iterations,
                version_family_sha256, authority_scope) -> "RealismContract":
-        probe = object.__new__(cls)
-        for key, value in dict(
+        registry_version = OBSERVATION_PARAMETER_REGISTRY_VERSION
+        registry_sha256 = OBSERVATION_PARAMETER_REGISTRY_SHA256
+        _validate_realism_contract_parts(
             metric_bands=metric_bands,
             adjustable_observation_parameters=adjustable_observation_parameters,
             max_iterations=max_iterations,
             version_family_sha256=version_family_sha256,
             authority_scope=authority_scope,
-        ).items():
-            object.__setattr__(probe, key, value)
+            observation_parameter_registry_version=registry_version,
+            observation_parameter_registry_sha256=registry_sha256,
+        )
         try:
-            digest = _contract_digest(probe)
-        except (TypeError, ValueError, OverflowError, C.CanonicalError) as exc:
-            raise CalibrationError("realism contract parts are not canonically serializable") from exc
-        return cls(digest, metric_bands, adjustable_observation_parameters, max_iterations,
-                   version_family_sha256, authority_scope)
+            digest = C.semantic_sha256(_contract_parts_from_values(
+                metric_bands=metric_bands,
+                adjustable_observation_parameters=adjustable_observation_parameters,
+                max_iterations=max_iterations,
+                version_family_sha256=version_family_sha256,
+                authority_scope=authority_scope,
+                observation_parameter_registry_version=registry_version,
+                observation_parameter_registry_sha256=registry_sha256,
+            ))
+        except (TypeError, ValueError, OverflowError, C.CanonicalError):
+            raise CalibrationError("validated realism contract could not be canonically serialized") from None
+        return cls(
+            contract_sha256=digest,
+            metric_bands=metric_bands,
+            adjustable_observation_parameters=adjustable_observation_parameters,
+            observation_parameter_registry_version=registry_version,
+            observation_parameter_registry_sha256=registry_sha256,
+            max_iterations=max_iterations,
+            version_family_sha256=version_family_sha256,
+            authority_scope=authority_scope,
+        )
 
 
 # Process-local realism custody. One contract and one search per generator family
