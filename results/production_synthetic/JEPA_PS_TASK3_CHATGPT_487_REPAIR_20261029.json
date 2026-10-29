@@ -1,0 +1,24 @@
+{
+  "schema": "JEPA_PS_TASK3_PR486_CHATGPT_487_REPAIR_20261029_V1",
+  "created_date": "2026-10-29",
+  "source_pr": 486,
+  "source_head": "f17080516f77e79fb6f6cb44903cbabdb2a85dd7",
+  "independent_review_pr": 487,
+  "independent_review_head": "e8d0bd1523bb377bc8b832bf28df45047f33a817",
+  "authority_class": "SYNTHETIC_FIXTURE_MECHANICS_ONLY",
+  "repairs": {
+    "R3": "REALISM_CONTRACT_V2_BINDS_OBSERVATION_PARAMETER_REGISTRY_VERSION_AND_SHA",
+    "R4": "EXACT_CALLER_PREVALIDATION_BEFORE_CANONICAL_SERIALIZATION"
+  },
+  "preserved": {
+    "observation_parameter_semantics_bound": false,
+    "authenticated_calibration_registry_empty": true,
+    "authority_scope": "SYNTH_DEBUG_ONLY",
+    "task4_operator_binding_absent": true
+  },
+  "forward_authorization": "INDEPENDENT_REVIEW_ONLY",
+  "real_calibration_authorized": false,
+  "stage4_authorized": false,
+  "training_authorized": false,
+  "project_stop": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
