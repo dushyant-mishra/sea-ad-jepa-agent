@@ -22,7 +22,7 @@ def make(no_support=True):
         for i in range(9):
             d = f"D{i:02d}"
             full.append(M._atom(f"core{i}", "RNA:CORE", 1, 9, donor=d))
-            full.append(M._atom(f"extra{i}", "RNA:EXTENDED", 1, 9, donor=d))
+            full.append(M._atom(f"extra{i}", "CONTEXT:LAWFUL", 1, 9, donor=d))
         m, full, levels, pins = M._honest_package(full)
         b = E3.derive_fixture_g7_e3_input_binding(m, pins, required_sources=["SEA_AD"])
         rows = [M._row(b, 1, 2, donor=f"D{i:02d}", displacement=0.0)
