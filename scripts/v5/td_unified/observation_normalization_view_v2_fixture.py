@@ -22,6 +22,8 @@ The genuine production issuer and a reviewed V2 consumer are still absent.
 """
 from __future__ import annotations
 
+from threading import Lock
+
 from scripts.v5.td_unified.q_excluded_depth_v1 import (
     MEASURED_SCALAR,
     QExcludedDepthNotEstimable,
@@ -35,6 +37,14 @@ _SCHEMA = "TD_OBSERVATION_NORMALIZATION_VIEW_V2_FIXTURE"
 _DEPTH_SEMANTICS = "BASE_RIGHTS_INVARIANT_NORMALIZATION_DEPTH_NOT_PHYSICAL_TOTAL"
 _STUDENT = "STUDENT_BASE_RIGHTS"
 _TEACHER = "TEACHER_RICHER_RIGHTS"
+
+# Cooperative, process-local fixture issuance record. The producer captures
+# the frozen rights roster before publishing a view; the consumer must never
+# accept a rights roster self-declared in the view or supplied by its verifier.
+# There are no private counts, teacher digests or physical totals in this map.
+# This is NOT a durable or authenticated real source/rights issuer.
+_VIEW_BINDINGS_LOCK = Lock()
+_VIEW_BINDINGS = {}  # published-view digest -> (query, kind, address rights, base, selected)
 
 
 def _make_view(*, cells, address_rights, operator_states, ladder,
@@ -122,7 +132,19 @@ def _make_view(*, cells, address_rights, operator_states, ladder,
     # Only hash *published observable* bytes. Hashing the private input or
     # source physical total into a student-visible receipt would create an
     # avoidable information channel, even if it looked like provenance.
-    return {**payload, "observable_sha256": canonical_sha256(payload)}
+    digest = canonical_sha256(payload)
+    binding = (
+        q, view_kind, tuple(sorted(rights.items())),
+        tuple(sorted(base["evidence_rights"])),
+        tuple(sorted(levels[0 if view_kind == _STUDENT else -1]["evidence_rights"])),
+    )
+    with _VIEW_BINDINGS_LOCK:
+        prior = _VIEW_BINDINGS.get(digest)
+        if prior is not None and prior != binding:
+            raise QExcludedObservationError(
+                "ambiguous fixture rights for identical published view")
+        _VIEW_BINDINGS[digest] = binding
+    return {**payload, "observable_sha256": digest}
 
 
 def produce_fixture_student_view_v2(*, cells, address_rights, operator_states,
@@ -200,6 +222,12 @@ def validate_fixture_observation_view_v2(view):
     Those are physical-library properties, not rights-invariant covariate
     properties. A real human/scientific consumer requires a separate issued
     source artifact and a reviewed, authority-bearing contract.
+
+    This fixture check requires a producer-issued PROCESS-LOCAL binding of the
+    exact observable digest to its base-rights roster and query. It accepts
+    a JSON roundtrip in the SAME process but refuses orphan or re-signed JSON.
+    This binding is not an external source identity, authorizes no human data,
+    and is not secure against hostile code in the same interpreter.
     """
     value = _view_snapshot(view)
     if type(value) is not dict or set(value) != _VIEW_KEYS:
@@ -227,10 +255,24 @@ def validate_fixture_observation_view_v2(view):
     query = value["query_address_id"]
     if type(query) is not str or not query or query != query.strip():
         raise QExcludedObservationError("V2 fixture query address is malformed")
+    with _VIEW_BINDINGS_LOCK:
+        binding = _VIEW_BINDINGS.get(digest)
+    if binding is None:
+        raise QExcludedObservationError(
+            "V2 rights binding missing: self-signed view is not an issuer")
+    bound_query, bound_kind, address_rights_rows, base_rows, selected_rows = binding
+    if query != bound_query or value["view_kind"] != bound_kind:
+        raise QExcludedObservationError("V2 view query or role differs from frozen binding")
+    rights = dict(address_rights_rows)
+    base_rights = frozenset(base_rows)
+    selected_rights = frozenset(selected_rows)
+    if not base_rights or not base_rights <= selected_rights or rights[query] in base_rights:
+        raise QExcludedObservationError("V2 bound base rights do not withhold query")
     rows = value["rows"]
     if type(rows) is not list or not rows:
         raise QExcludedObservationError("V2 fixture observations absent")
     seen, hierarchy, cell_depth = set(), {}, {}
+    cell_addresses, base_sums = {}, {}
     for row in rows:
         if type(row) is not dict or set(row) != _ROW_KEYS:
             raise QExcludedObservationError("V2 row cannot contain physical total or unknown field")
@@ -239,6 +281,12 @@ def validate_fixture_observation_view_v2(view):
             if type(row[k]) is not str or not row[k] or row[k] != row[k].strip():
                 raise QExcludedObservationError("V2 row noncanonical address or source")
         identity = row["cell_id"], row["address_id"]
+        cell_addresses.setdefault(row["cell_id"], set()).add(row["address_id"])
+        if row["address_id"] not in rights or row["evidence_right"] != rights[row["address_id"]]:
+            raise QExcludedObservationError(
+                "V2 address right differs from producer-side frozen roster")
+        is_base = row["evidence_right"] in base_rights
+        is_selected = row["evidence_right"] in selected_rights
         if identity in seen:
             raise QExcludedObservationError("duplicate V2 cell-address row")
         seen.add(identity)
@@ -249,6 +297,10 @@ def validate_fixture_observation_view_v2(view):
         if type(row["state"]) is not str or row["state"] not in _STATES:
             raise QExcludedObservationError("V2 state unknown")
         depth, count = row["base_rights_normalization_depth"], row["count"]
+        if row["state"] == MEASURED_SCALAR and not is_selected:
+            raise QExcludedObservationError("V2 scalar exceeds frozen view rights")
+        if row["state"] == "WITHHELD_BY_EVIDENCE_RIGHTS" and is_selected:
+            raise QExcludedObservationError("V2 view withheld a granted scalar right")
         if row["state"] == MEASURED_SCALAR:
             if (type(count) is not int or count < 0 or
                     type(depth) is not int or depth <= 0):
@@ -256,11 +308,21 @@ def validate_fixture_observation_view_v2(view):
             if row["cell_id"] in cell_depth and cell_depth[row["cell_id"]] != depth:
                 raise QExcludedObservationError("V2 base depth changes between addresses")
             cell_depth[row["cell_id"]] = depth
+            if is_base:
+                base_sums[row["cell_id"]] = base_sums.get(row["cell_id"], 0) + count
         elif count is not None or depth is not None:
             raise QExcludedObservationError("V2 non-scalar row exposes count or depth")
         if value["view_kind"] == _STUDENT and row["address_id"] == query:
             if row["state"] == MEASURED_SCALAR:
                 raise QExcludedObservationError("student view exposes queried scalar")
+    for cid, addresses in cell_addresses.items():
+        if addresses != set(rights):
+            raise QExcludedObservationError("V2 cell lacks frozen address coverage")
+        # Conservation-qualified fixture D1 equality only: this is the exact
+        # mapped BASE scalar sum, not physical total or a change to G7/V1 law.
+        if cid not in cell_depth or cell_depth[cid] != base_sums.get(cid, 0):
+            raise QExcludedObservationError(
+                "V2 normalization depth differs from visible base measured sum")
     return {
         "schema": "TD_OBSERVATION_VIEW_V2_FIXTURE_VALIDATION_RECEIPT",
         "status": "V2_FIXTURE_VIEW_VALIDATED_NO_AUTHORITY",
