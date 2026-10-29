@@ -1,0 +1,71 @@
+name: ChatGPT PS T1/T2 #477 class/cause repair; T2-D preserved RED
+on:
+  pull_request:
+    paths:
+      - 'scripts/production_synthetic/canonical_v1.py'
+      - 'tests/production_synthetic/test_ps_t12_477_recheck_macha_red.py'
+      - 'tests/production_synthetic/test_ps_t12_477_chatgpt_483_repair.py'
+      - '.github/workflows/ps-t12-477-chatgpt-483-repair.yml'
+permissions:
+  contents: read
+jobs:
+  repair-platform:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        numpy: ['numpy==1.26.4', 'numpy>=2,<3']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+            schemas
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test environment
+        shell: bash
+        run: python -m pip install pytest==9.1.1 '${{ matrix.numpy }}'
+      - name: Immutable Macha #483 review suite
+        shell: bash
+        run: python -m pytest -q -rA tests/production_synthetic/test_ps_t12_477_recheck_macha_red.py
+      - name: ChatGPT repair guards
+        shell: bash
+        run: python -m pytest -q -rA tests/production_synthetic/test_ps_t12_477_chatgpt_483_repair.py
+      - name: Preserve prior portable mechanics, excluding external T2-D issuer
+        shell: bash
+        run: >-
+          python -m pytest -q
+          tests/production_synthetic/test_ps_t12_464_recheck_macha_red.py
+          tests/production_synthetic/test_ps_t12_repair_recheck_macha_red.py
+          -k 'not test_t2d_'
+  t2d-intentionally-blocked:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+            schemas
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - shell: bash
+        run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: Assert external T2-D issuer remains RED
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/production_synthetic/test_ps_t12_repair_recheck_macha_red.py -k test_t2d_ > /tmp/ps-t2d-red.log 2>&1
+          rc=$?
+          set -e
+          tail -35 /tmp/ps-t2d-red.log
+          test "$rc" -ne 0
+          grep -Eq '1 failed' /tmp/ps-t2d-red.log
+          echo 'PS_T2D_EXTERNAL_SCAN_ISSUER_RED_PRESERVED__NO_AUTHORITY'
