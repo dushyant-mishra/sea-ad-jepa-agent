@@ -1,0 +1,44 @@
+name: TD V2 #479 A1/A2 fixture consumer binding (NO REAL AUTHORITY)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/td_unified/observation_normalization_view_v2_fixture.py'
+      - 'tests/v5/td_unified/test_observation_normalization_view_v2_479_a1_a2_binding.py'
+      - 'tests/v5/td_unified/test_observation_normalization_view_v2_macha_479_red.py'
+      - 'tests/v5/td_unified/test_observation_normalization_view_v2_479_a3_fix.py'
+      - '.github/workflows/td-v2-479-a1-a2-binding-chatgpt.yml'
+permissions:
+  contents: read
+jobs:
+  fixture-a1-a2-and-immutable-macha-a3:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependencies
+        run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: A1/A2 independent source-binding and arithmetic tests
+        run: python -m pytest -q -rA tests/v5/td_unified/test_observation_normalization_view_v2_479_a1_a2_binding.py
+      - name: Unchanged Macha #481 A1-A3 RED cases only; A4 still expected RED upstream
+        run: >-
+          python -m pytest -q -rA
+          tests/v5/td_unified/test_observation_normalization_view_v2_macha_479_red.py
+          -k red_v2_consumer
+      - name: Inherited V2, upstream producer, and independent limits
+        run: >-
+          python -m pytest -q
+          tests/v5/td_unified/test_q_excluded_depth_v1.py
+          tests/v5/td_unified/test_q_excluded_depth_v1_independent_limits.py
+          tests/v5/td_unified/test_observation_normalization_view_v2_fixture.py
+          tests/v5/td_unified/test_observation_normalization_view_v2_479_a3_fix.py
+      - name: No claimed source or training authority
+        run: >-
+          python -c "import scripts.v5.td_unified.observation_normalization_view_v2_fixture as m;
+          assert m._SCHEMA == 'TD_OBSERVATION_NORMALIZATION_VIEW_V2_FIXTURE';
+          print('FIXTURE_ONLY__NO_AUTHENTICATED_ISSUER__NO_TRAINING')"
