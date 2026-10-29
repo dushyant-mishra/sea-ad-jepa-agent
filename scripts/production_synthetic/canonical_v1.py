@@ -317,7 +317,8 @@ def raw_sha256(data: bytes) -> str:
 
 def semantic_sha256(obj: Any) -> str:
     """Domain-separated SHA-256 of the canonical serialization of ``obj``."""
-    if isinstance(obj, (bytes, bytearray, memoryview)):
+    kind = type(obj)
+    if kind is bytes or kind is bytearray or kind is memoryview:
         raise CanonicalError(
             "semantic_sha256 does not accept bytes; use semantic_text_sha256 or semantic_json_file_sha256"
         )
@@ -362,14 +363,20 @@ def _check_keys(identity_keys: Sequence[str]) -> list:
 
 def _iter_rows(rows):
     # A list/tuple subclass can override __iter__ and silently digest a
-    # different sequence from the physically stored items. Ordinary generators
-    # remain lawful, but must be treated as producer-supplied observations.
-    if isinstance(rows, (list, tuple)) and type(rows) is not list and type(rows) is not tuple:
+    # different sequence from the physically stored items. Detect that through
+    # the concrete type MRO, never through isinstance(rows, ...), which may read
+    # a payload-controlled rows.__class__. Ordinary generators remain lawful,
+    # but must be treated as producer-supplied observations.
+    kind = type(rows)
+    if kind is list or kind is tuple:
+        return iter(rows)
+    mro = type.__getattribute__(kind, "__mro__")
+    if list in mro or tuple in mro:
         raise CanonicalError("rows list/tuple must be exact built-in containers")
     try:
         return iter(rows)
-    except TypeError as exc:
-        raise CanonicalError("rows must be an iterable of mappings") from exc
+    except TypeError:
+        raise CanonicalError("rows must be an iterable of mappings") from None
 
 
 def _identity_bytes(row: Any, keys: list, pos: int) -> bytes:

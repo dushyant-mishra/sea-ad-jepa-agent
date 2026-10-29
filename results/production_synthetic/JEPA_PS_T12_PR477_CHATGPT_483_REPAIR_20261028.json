@@ -1,0 +1,28 @@
+{
+  "schema": "JEPA_PS_T12_PR477_CHATGPT_483_REPAIR_20261028_V1",
+  "created_date": "2026-10-28",
+  "source_pr": 477,
+  "source_head": "c83088de090bc4f2fc6bbee353c46070bcca7be5",
+  "immutable_review_pr": 483,
+  "immutable_review_head": "48ec018735a095571a0bfaa25b33f9b9deb40b39",
+  "authority_class": "PRODUCTION_SYNTHETIC_MECHANICS_ONLY",
+  "repairs": [
+    "SEMANTIC_SHA_EXACT_BYTES_FAMILY_TYPE_DISPATCH",
+    "ITER_ROWS_NO_PAYLOAD_ISINSTANCE_CLASS_ROUTE",
+    "ITERATOR_TYPEERROR_DOMAIN_WRAP_FROM_NONE"
+  ],
+  "preserved_limitations": [
+    "LIVE_ITERABLE_PRODUCER_CODE_TRUST_BOUNDARY"
+  ],
+  "preserved_red": [
+    "T2D_EXTERNAL_SCAN_ISSUER"
+  ],
+  "platform_matrix": [
+    "ubuntu_numpy1",
+    "ubuntu_numpy2",
+    "windows_numpy1",
+    "windows_numpy2"
+  ],
+  "forward_authorization": "NONE",
+  "project_stop": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
