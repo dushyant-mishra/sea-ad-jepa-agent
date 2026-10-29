@@ -82,3 +82,34 @@ Consequences:
 Standing stop:
 
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+## 7. Minimal reacquisition contract for alias closure
+
+The next source recovery should **not** request the original multi-GB NPH `.qs` objects merely to recover feature identity.
+
+Preferred recovery is the final row-level all-feature decision table:
+
+`results/v4/stage81a2r_authoritative_source_mapping_decisions_candidate.csv.gz`
+
+but the current GitHub history does not expose its final SHA-256. Therefore bytes with that filename are **not acceptable by name alone**; they must arrive with an original custody/hash receipt.
+
+The already hash-pinned companion artifacts are:
+
+- unresolved reclassification: `ebd216a1…` (4,790,758 bytes);
+- mapped source-feature provenance: `df0cb60f…` (5,764,358 bytes);
+- preserved nonuniversal evidence: `3e7e8b7a…` (142,739 bytes);
+- foundation measurement support: `ee5d12c1…` (14,663,564 bytes).
+
+For NPH52, seven compact feature-cache TSV.GZ files are sufficient to recover the source-native feature metadata used historically. Their exact hashes are pinned in the machine-readable receipt. They retain raw feature ID/symbol, Ensembl/RefSeq/NCBI/transcript identifiers, chromosome, start/end, strand and biotype. The original large `.qs` expression objects are therefore **not required** for this alias-only audit.
+
+If the final authoritative decision table cannot be recovered, reconstruction is allowed only from the protected precursor tables plus the exact historical generator and authority snapshot. The fallback is pinned to the prior all-feature decision SHA `27331548…`, prior exact registry `5bafbbf7…`, prior measurement support `2bedf1d3…`, generator SHA `b35c4203…`, and authority manifest SHA `1b305315…`. That manifest in turn pins Ensembl 116, the August 2026 HGNC snapshots and the 180-file Ensembl history cache.
+
+The prospective alias rule is fail-closed:
+
+- query identity is `molecular_address_id`, not symbol;
+- exact current/legacy/alternative/locus equivalence to the query is an alias;
+- an operator is negatively cleared only if **every** off-ledger feature has a non-query identity established;
+- symbol-only or otherwise unresolved features cannot produce negative clearance.
+
+This recovery is source-identity work only. It does not require or authorize expression access.
+
