@@ -21,6 +21,7 @@ Because hidden q mass and residual are absent from this function's inputs, chang
 
 - Source-total/teacher/query-count/residual keywords are impossible in the function interface. Non-base scalar inputs are refused, including zero-valued extra private entries.
 - Measured base counts must be exact nonnegative integers; missing measurement zeros become zero; D1 must be positive and below the canonical exact integer limit. Zero base yields one fixed `QExcludedDepthNotEstimable` refusal, without reading hidden mass.
+- **Operator × query observability:** every selected operator must mark the exact query molecular address as `MEASURED_SCALAR`. `STRUCTURALLY_UNMEASURED` and `MEASURED_COLLISION_UNRESOLVED` query states refuse, including for otherwise valid base D1 and mixed-operator rosters; this is mechanical eligibility only, not proof of genuine source feature identity.
 - Rows cover the complete frozen address universe for every expected cell. Missing/duplicated/foreign roster rows, unsupported source states, query-right promotion, unknown addresses and hostile Python payloads refuse.
 - A synthetic physical-total residual example is refused by the old V2 conservation gate and accepted by this **base-only fixture**; it is **not** an actual SEA-AD/NPH52 human-data acceptance.
 - A deliberate positive limitation: changing base counts while preserving their total can produce another consistent view, because the policy and sum rule are not a physical raw-count signature. The independent source producer is still missing.
