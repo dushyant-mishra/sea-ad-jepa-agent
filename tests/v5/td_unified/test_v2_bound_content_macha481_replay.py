@@ -29,5 +29,5 @@ for _name, _fn in tuple(vars(REVIEW).items()):
     if _name.startswith("test_") and _name != _A4_UPSTREAM:
         globals()[_name] = _fn
         _replayed_names.append(_name)
-assert len(_replayed_names) >= 10
+assert len(_replayed_names) == 8  # 9 original test functions minus upstream A4
 assert _A4_UPSTREAM not in _replayed_names
