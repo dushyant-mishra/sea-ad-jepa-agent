@@ -1,0 +1,51 @@
+{
+  "archive_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+  "archived_loader_code": {
+    "source_library_log1p_cp10k_in_archived_code": true,
+    "supplemental_mask_union_in_archived_code": true
+  },
+  "authority_effect": "NONE",
+  "bundle_manifest_sha256": "da7c3daf507a66118131e88ae6685cf43eb14d4163539ade5e0705f6fb845cef",
+  "collision_support": {
+    "all_blocked_pairs_present_in_support": true,
+    "all_supplemental_pairs_finally_unresolved": true,
+    "combined_collision_pairs": 11449,
+    "donor_identity_authenticated": false,
+    "final_state_counts": {
+      "MEASURED_COLLISION_UNRESOLVED": 11449,
+      "MEASURED_SCALAR": 1061903,
+      "STRUCTURALLY_UNMEASURED": 658644
+    },
+    "measured_before_collision_override": 1073352,
+    "operators": 42,
+    "physical_unit_identity_authenticated": false,
+    "registered_collision_pairs": 11435,
+    "registered_collision_source_rows": 24525,
+    "registered_supplemental_overlap_pairs": 0,
+    "source_feature_alias_closure_authenticated": false,
+    "supplemental_collision_pairs": 14,
+    "supplemental_collision_source_rows": 28,
+    "support_rows": 1731996
+  },
+  "conditional_denominator_counterfactual": {
+    "base_count_fixed": 3,
+    "base_value_changed_due_to_denominator": true,
+    "log1p_cp10k_base_high": 5.677651125314915,
+    "log1p_cp10k_base_low": 8.006700845440367,
+    "queried_count_high": 100,
+    "queried_count_low": 7
+  },
+  "evidence_class": "LOCAL_USER_UPLOADED_HISTORICAL_ARCHIVE_CONTRACTS__NOT_CURRENT_REAL_SOURCE",
+  "interpretation": {
+    "supplemental_pairs": "All supplemental collision pairs are overridden to unresolved by the archived loader contract; support measured=True alone is NOT scalar materialization.",
+    "conditional_normalizer": "If source_library includes queried molecules, the archived full-source-library CP10K transform makes unchanged base values vary when query mass changes.",
+    "not_established": "No current source alias closure, q-independent source_library, per-query cell QC roster, actual counts/shard execution, donor/physical identity, or independent source issuer authenticated."
+  },
+  "loader_code_sha256": "267fa42a5fa6f8b5f8199c68add1ffe0c8b49142095b7d980d1af27a8a31154a",
+  "namespace_addresses": 41238,
+  "real_training_authorized": false,
+  "representation_winner": "NONE",
+  "schema": "JEPA_AUG2026_BUNDLE_R2_CONTRACT_EDGE_AUDIT_V1",
+  "stage4_authorized": false,
+  "target_winner": "NONE"
+}
