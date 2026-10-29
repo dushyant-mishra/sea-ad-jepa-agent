@@ -89,3 +89,18 @@ def test_qc_selection_remains_fail_closed():
     assert q["rights_effect"] == "NONE__NO_QUERY_RIGHTS_ISSUED"
     assert "ABSENCE_IN_PACKAGE_DOES_NOT_PROVE_UPSTREAM_QC_ABSENT" in q["inference"]
 
+def test_provenance_reacquisition_does_not_invent_specimen_identity():
+    d = json.loads(J.read_text(encoding="utf-8"))
+    p = d["provenance_metadata_reacquisition"]
+    assert p["HVS"]["matrices_scanned"] == 24
+    assert p["SEA_AD"]["matrices_scanned"] == 11
+    assert p["SEA_AD"]["sample_id_matrices"] == 10
+    assert p["NPH52"]["sample_or_specimen_field_observed"] is False
+    policy = p["policy"]
+    assert policy["expression_values_required"] is False
+    assert policy["pathology_values_required"] is False
+    assert policy["matrix_id_may_substitute_for_specimen"] is False
+    assert policy["exp_component_name_may_substitute_for_specimen"] is False
+    assert policy["source_object_may_substitute_for_specimen"] is False
+    assert policy["specimen_identity_status"] == "NOT_QUALIFIED"
+
