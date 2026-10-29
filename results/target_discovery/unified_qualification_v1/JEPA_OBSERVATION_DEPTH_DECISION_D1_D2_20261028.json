@@ -1,0 +1,60 @@
+{
+  "schema": "JEPA_OBSERVATION_DEPTH_DECISION_D1_D2_20261028_V1",
+  "created_date": "2026-10-28",
+  "parent_successor_pr": 460,
+  "parent_successor_head": "da5c3909bbab0a615d88ae48e11ddab913dd3ec0",
+  "parent_audit_pr": 322,
+  "parent_audit_head": "bae9ce01ffabb7e96cd0987921d7cd979e8814a7",
+  "decision_scope": "OBSERVATION_CONTRACT_ONLY__NO_REAL_EXECUTION_AUTHORITY",
+  "D1": {
+    "status": "ACCEPTED_AS_VERSIONED_RELEASED_NORMALIZATION_DEPTH_CONTRACT",
+    "depth_rule": "VISIBLE_BASE_MAPPED_SUM_V1",
+    "field_name": "normalization_depth",
+    "law": "SUM_BASE_VISIBLE_MEASURED_SCALAR_COUNTS_PER_CELL_QUERY",
+    "student_teacher_same_value": true,
+    "rights_ladder_invariant": true,
+    "requires_private_physical_total": false,
+    "consumer_exactly_recomputable": true,
+    "real_execution_qualified": false,
+    "current_fixture_producer_is_production_issuer": false
+  },
+  "D2": {
+    "status": "REJECTED_FROM_CURRENT_RELEASED_CONTRACT",
+    "proposed_field_name": "base_excluded_physical_depth",
+    "default_allowed": false,
+    "current_version_admissible": false,
+    "consumer_exactly_recomputable": false,
+    "reopen_only_as_new_version_after": [
+      "PER_QUERY_PER_OPERATOR_RESIDUAL_DECOMPOSITION",
+      "OFF_LEDGER_ALIAS_CLOSURE",
+      "AUTHENTICATED_ISSUER_PROVENANCE",
+      "INDEPENDENT_HOSTILE_REVIEW",
+      "DEMONSTRATED_INCREMENTAL_VALUE_WITHOUT_HIDDEN_INFORMATION_CHANNEL"
+    ]
+  },
+  "physical_library_size": {
+    "semantics": "UNCHANGED_PHYSICAL_TOTAL",
+    "casebundle_v1_preserved": true,
+    "g7_e3_v1_preserved": true,
+    "d1_may_be_renamed_library_size": false
+  },
+  "required_before_real_d1_execution": [
+    "SOURCE_ROW_CANONICAL_CELL_IDENTITY",
+    "SOURCE_FEATURE_TO_ADDRESS_MAPPING",
+    "QUERY_SPECIFIC_EVIDENCE_RIGHTS",
+    "IN_LEDGER_ALIAS_CLOSURE",
+    "OPERATOR_SOURCE_SUPPORT_AND_COLLISION_STATE",
+    "QC_AND_SELECTION_LEAKAGE_AUDIT",
+    "SPECIMEN_DONOR_GROUPING_WHERE_INFERENCE_REQUIRES_REPLICATION"
+  ],
+  "g7": {
+    "v1_physical_contract_preserved": true,
+    "d1_requires_new_versioned_g7_e3_v2": true,
+    "terminal_v3_decision_law_changed": false
+  },
+  "forward_authorization": "CONTRACT_IMPLEMENTATION_AND_HOSTILE_QUALIFICATION_ONLY",
+  "real_target_qualification_authorized": false,
+  "stage4_authorized": false,
+  "training_authorized": false,
+  "project_stop": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
