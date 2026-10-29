@@ -89,3 +89,24 @@ def test_conditional_full_source_denominator_leaks_query_to_fixed_base():
 def test_synthetic_witness_refuses_malformed_counts(bad):
     with pytest.raises(ValueError):
         A.source_library_counterfactual(base_count=bad)
+
+
+def test_frozen_index_address_identity_detects_hidden_namespace_substitution():
+    s,l,u=deepcopy(source())
+    frozen={i:row["molecular_address_id"] for i,row in enumerate(s)}
+    for i,row in enumerate(s):
+        row["molecular_address_index"]=str(i)
+    result=A.summarize_collision_contract(
+        s,l,u,address_count=4,operator_count=1,expected_index_to_id=frozen)
+    assert result["combined_collision_pairs"]==2
+    bad=deepcopy(s)
+    # Maintain row count, distinct IDs and digest-free plausible shape.
+    bad[0]["molecular_address_index"]="1"
+    with pytest.raises(ValueError,match="index disagrees"):
+        A.summarize_collision_contract(
+            bad,l,u,address_count=4,operator_count=1,expected_index_to_id=frozen)
+    bad=deepcopy(s)
+    bad[0]["molecular_address_index"]="00"
+    with pytest.raises(ValueError,match="index disagrees"):
+        A.summarize_collision_contract(
+            bad,l,u,address_count=4,operator_count=1,expected_index_to_id=frozen)
