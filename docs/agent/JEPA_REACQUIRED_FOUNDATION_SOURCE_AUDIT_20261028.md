@@ -113,3 +113,43 @@ The prospective alias rule is fail-closed:
 
 This recovery is source-identity work only. It does not require or authorize expression access.
 
+## 8. Mechanical query observability is now separated from source rights
+
+The reacquired bundle contains the exact 42 × 41,238 operator-address observation-state matrix:
+
+`FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz`  
+SHA-256 `852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537`
+
+Its three states are:
+
+- `MEASURED_SCALAR`;
+- `MEASURED_COLLISION_UNRESOLVED`;
+- `STRUCTURALLY_UNMEASURED`.
+
+A consequential contract correction follows: the older `address_measurement_support.csv.gz` field `measured_address=True` is too coarse for query eligibility because it includes both scalar-measured and collision-unresolved pairs. Its 1,073,352 measured pairs decompose into 1,061,903 scalar pairs plus 11,449 collision-unresolved pairs.
+
+The prospective mechanical query rule is therefore:
+
+> A query is mechanically observable only when the **exact operator × molecular-address-ID** state is `MEASURED_SCALAR`.
+
+`MEASURED_COLLISION_UNRESOLVED` and `STRUCTURALLY_UNMEASURED` are refused. No symbol substitution and no cross-operator inference are allowed.
+
+This rule preserves broad coverage without pretending universality:
+
+- 40,949 / 41,238 addresses (99.30%) are scalar-measured in at least one operator;
+- only 17,186 / 41,238 (41.68%) are scalar-measured in all 42 operators;
+- HVS: 449,664 scalar operator-address pairs; 18,736 addresses are scalar across all 24 HVS operators;
+- NPH52: 226,403 scalar pairs; 35,098 addresses scalar somewhere and 29,136 across all 7 NPH52 operators;
+- SEA-AD: 385,836 scalar pairs; 35,076 addresses scalar across all 11 SEA-AD operators;
+- 788 addresses have at least one collision-unresolved operator state.
+
+Therefore a universal-all-operators query restriction would discard most mechanically observable addresses. The correct architecture is query-specific operator observability **plus separate source-right qualification**. Mechanical coverage must not choose a target.
+
+## 9. QC / selection leakage remains fail-closed
+
+A scan of 43 text/code/document/config members in the reacquired calibration bundle found no explicit depositor-QC policy for mitochondrial fraction, gene/count thresholds, doublet removal, `filter_cells`/`filter_genes`, Scrublet/scDblFinder, or an equivalent recorded quality-control filter. Incidental matches were ordinary function names or NumPy `bincount` schedule accounting, not QC rules.
+
+This is negative package evidence only. It does **not** prove that upstream datasets were unfiltered. Therefore upstream selection conditioning remains unresolved, especially for MT/RPS/RPL, `MALAT1`, `NEAT1` and total-count-associated queries.
+
+No query rights are issued from this QC audit.
+
