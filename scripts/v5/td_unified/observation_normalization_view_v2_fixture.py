@@ -155,7 +155,7 @@ def _view_snapshot(value, depth=0):
     if depth > 32:
         raise QExcludedObservationError("V2 receipt exceeds bounded nesting")
     kind = type(value)
-    if value is None or kind in (str, int, bool):
+    if value is None or kind is str or kind is int or kind is bool:
         if kind is str and any(0xD800 <= ord(c) <= 0xDFFF for c in value):
             raise QExcludedObservationError("V2 receipt contains unpaired Unicode surrogate")
         if kind is int and not -(2**53) < value < (2**53):
