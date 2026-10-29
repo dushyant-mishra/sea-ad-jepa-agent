@@ -152,3 +152,20 @@ Standing stop: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OF
 Machine custody mirror in audit #322: `results/target_discovery/unified_qualification_v1/JEPA_PRIVATE_V2_PAIR_COHERENCE_503_20261029.json`, created at audit head `1cfc6e47e81520cefa06f7211c379f89339de202`.
 
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+
+---
+
+## 2026-10-29 R2 uploaded archive + Macha A4 independent acceptance + V2 composition
+
+**New audited uploaded archive source:** Draft **PR #505** exact head 3eecdd464c9b43f01490c250852dba18185b3844. It is a read-only LOCAL audit of the historical August FOUNDATION_CALIBRATION_BUNDLE_20260824.zip, archive SHA-256 07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444. It checks 42 × 41,238 = 1,731,996 matrix/address support records with exact namespace crosswalk, 11,435 main collision pairs plus 14 supplemental nonoverlapping pairs, and the archived loader's override to 11,449 unresolved. It finds an archived source_library-based log1p(CP10K) normalization dependency; synthetic counterfactual proves a q-leak ONLY IF q contributes to that denominator. This is not an empirical human-cell claim or current physical feature closure. PR #505 synthetic code CI run 40907288365 Linux/Windows, 16 PASS per OS. No human expression/phenotype rows or source archive bytes committed to GitHub.
+
+**Macha #474 A4:** Macha new repair #504 source head b66c23e589249360b20103dff8cdc88b9df72a19. Independently reviewed by ChatGPT tests-only **PR #506** head 61da252cea0201d3d51f4519534322c803d9aa26; run 40907800828 passed **4/4** Linux/Windows × NumPy1/2 jobs, with 10 independent + 28 original A4 + 101 original producer tests per OS. Verdict ACCEPT_INCREMENTAL_A4_REFUSAL_NONINTERFERENCE__FIXTURE_ONLY, inside exact integer domain < 2**53. Macha #504 author Windows checkout remains a path-length error prior to test; independent scoped checkout ran successfully. Physical/source/issuer R1/R1D/R2 still RED.
+
+**New stacked combined #508:** exact head 414cee7b448c94c7479a437cddd19f4b2298af4c based on #503, carries **byte-identical** independently reviewed Macha source blob 10a02426e0b8ec079831c26bfae972586533d4f1 and original Macha A4 tests. Run 40908710258 passes 4/4 Linux/Windows × NumPy1/2 jobs; every OS ran 7 composition tests (including original #481 A4 via explicit V2-bound adapter), 28 Macha A4, 106 producer and 70 V2 shape/bound/pair/adapted hostiles. All seven PR #508 workflows green. This is synthetic mechanical composition, not independent Macha acceptance of ChatGPT #502/#503, not external source rights and not G7 E3 V2.
+
+Audit machine mirror at #322: results/target_discovery/unified_qualification_v1/JEPA_20261029_R2_ARCHIVE_A4_V2_COMPOSITION_EXECUTION_DELTA.json (appended at audit head e90011c6c06ac963ff82288b86bdb0311c4ab176).
+
+**Next nonrepeat dependency:** source-authorized raw feature/alias census; source_library and depositor QC/selected-cell invariance; physical nucleus and specimen/donor witness; durable query-rights/known-truth issuer; then independently reviewed versioned G7 E3 V2 source→student/teacher→decision. Keep D2 residual OFF and legacy physical G7 V1 library_size distinct. No Task4/Stage4/training.
+
+TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED.
