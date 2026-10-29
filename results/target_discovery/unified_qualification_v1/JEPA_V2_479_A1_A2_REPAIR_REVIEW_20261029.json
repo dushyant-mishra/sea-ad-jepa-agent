@@ -1,0 +1,47 @@
+{
+  "schema": "JEPA_V2_479_A1_A2_REPAIR_REVIEW_20261029_V1",
+  "classification": "FIXTURE_MECHANICS__HOSTED_AUTHOR_CI_PARTIAL__NO_INDEPENDENT_ACCEPTANCE",
+  "source_pr": 479,
+  "source_head": "ae762d7096a94ac663a0788f6f577ba404e37536",
+  "original_hostile_review_pr": 481,
+  "original_review_head": "957fa4a558ce2bd219b5c2dec6dad8f65dca81ab",
+  "hostile_test_git_blob": "3dda6c2cc9be19d5daececfb07967e94067519f6",
+  "repair_pr": 496,
+  "stacked_a3_pr": 495,
+  "initial_ci_head": "31d41d10259577ee3e3c5fbbc68129c266feb2ca",
+  "initial_ci_runs": {
+    "targeted": 40892829429,
+    "inherited_v2": 40892829271,
+    "inherited_task2": 40892829289,
+    "inherited_task3": 40892829384
+  },
+  "observed_ubuntu": {
+    "new_a1_a2_hostiles": {
+      "passed": 14,
+      "failed": 0
+    },
+    "immutable_macha_a1_a3": {
+      "passed": 18,
+      "failed": 0,
+      "deselected": 6
+    },
+    "inherited_tests": {
+      "passed": 126,
+      "failed": 2
+    },
+    "cumulative_success": false
+  },
+  "observed_windows": {
+    "result": "CHECKOUT_FAILED_BEFORE_TESTS",
+    "test_result": "NOT_ESTIMABLE"
+  },
+  "remaining_blockers": [
+    "OLD_TEST_DIAGNOSTIC_ORDER_REPAIRED_IN_SOURCE__RECHECK_PENDING",
+    "OLD_TEST_ACCEPTS_BASE_COUNT_999_UNCHANGED_DEPTH__CONTRADICTS_A1_EXACT_SUM__DECIDING_LANE_VERSION_DECISION_REQUIRED",
+    "UPSTREAM_PR474_A4_REFUSAL_NONINTERFERENCE_RED",
+    "FIXTURE_PROCESS_LOCAL_ROSTER_NOT_EXTERNAL_SOURCE_RIGHTS_ISSUER",
+    "REAL_G7_V2_CONTRACT_UNDECIDED__R1_R1D_R2_RED"
+  ],
+  "scientific_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "accepted_into_production": false
+}
