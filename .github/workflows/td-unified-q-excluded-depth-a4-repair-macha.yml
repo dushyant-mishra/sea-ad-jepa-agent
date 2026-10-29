@@ -1,0 +1,96 @@
+name: TD unified q-excluded depth A4 repair (Macha)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/td_unified/q_excluded_depth_v1.py'
+      - 'tests/v5/td_unified/test_q_excluded_depth_v1_a4_repair.py'
+      - '.github/workflows/td-unified-q-excluded-depth-a4-repair-macha.yml'
+permissions:
+  contents: read
+jobs:
+  producer:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Task 0 B5 regressions diff against the controlling plan head
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install "pytest>=9,<10" "numpy>=2,<3"
+      - name: A4 repair laws and self-audit rounds
+        run: python -m pytest -q -rf tests/v5/td_unified/test_q_excluded_depth_v1_a4_repair.py
+      - name: Original #474 producer laws, unchanged
+        run: python -m pytest -q -rf tests/v5/td_unified/test_q_excluded_depth_v1.py
+      - name: Whole td_unified suite
+        run: python -m pytest -q tests/v5/td_unified
+
+  # The immutable Macha #481 reviewer file, replayed through ChatGPT's own V2 code
+  # at pinned heads, first with the original #474 producer (A4 must fail), then
+  # with this head's producer (A4 must pass). Nothing in the replay tree is edited
+  # except the one producer file under test.
+  immutable-481-replay:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: pr481-at-reviewed-479
+            v2_head: 957fa4a558ce2bd219b5c2dec6dad8f65dca81ab
+            original: "19 failed, 5 passed"
+            repaired: "18 failed, 6 passed"
+          - label: pr488
+            v2_head: 0f4d8a87a0a76b3d8d3ed5ec28f129a40b0cc70e
+            original: "1 failed, 23 passed"
+            repaired: "24 passed"
+          - label: pr496
+            v2_head: ee0e6ca983a693240830a0ba361d45768bab8521
+            original: "1 failed, 23 passed"
+            repaired: "24 passed"
+    env:
+      REVIEW_FILE: tests/v5/td_unified/test_observation_normalization_view_v2_macha_479_red.py
+      REVIEW_BLOB: 3dda6c2cc9be19d5daececfb07967e94067519f6
+      ORIGINAL_PRODUCER_BLOB: 449b50a6d31599c87adb8cd5ecd1ee496a61f278
+      PRODUCER: scripts/v5/td_unified/q_excluded_depth_v1.py
+      A4: test_red_refusal_of_an_empty_base_cell_does_not_depend_on_withheld_mass
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install "pytest>=9,<10" "numpy>=2,<3"
+      - name: Assemble the pinned replay tree (${{ matrix.label }})
+        run: |
+          set -euo pipefail
+          head=${{ matrix.v2_head }}
+          test "$(git rev-parse "$head:$REVIEW_FILE")" = "$REVIEW_BLOB"
+          test "$(git rev-parse "$head:$PRODUCER")" = "$ORIGINAL_PRODUCER_BLOB"
+          mkdir -p "$RUNNER_TEMP/replay"
+          git archive "$head" conftest.py pyproject.toml scripts/v5/td_unified tests/v5/td_unified \
+            | tar -x -C "$RUNNER_TEMP/replay"
+      - name: Original producer, A4 expected RED
+        working-directory: ${{ runner.temp }}/replay
+        run: |
+          set -euo pipefail
+          python -m pytest -q -p no:cacheprovider -rf "$REVIEW_FILE" > out.txt 2>&1 || true
+          tail -n 25 out.txt
+          grep -q "^FAILED .*::$A4" out.txt
+          tail -n 1 out.txt | grep -q "^${{ matrix.original }} in "
+      - name: This head's producer, A4 expected GREEN
+        working-directory: ${{ runner.temp }}/replay
+        run: |
+          set -euo pipefail
+          cp "$GITHUB_WORKSPACE/$PRODUCER" "$PRODUCER"
+          echo "producer blob under test: $(git hash-object "$PRODUCER")"
+          python -m pytest -q -p no:cacheprovider "$REVIEW_FILE::$A4"
+          python -m pytest -q -p no:cacheprovider -rf "$REVIEW_FILE" > out.txt 2>&1 || true
+          tail -n 25 out.txt
+          if grep -q "^FAILED .*::$A4" out.txt; then echo "A4 still RED"; exit 1; fi
+          tail -n 1 out.txt | grep -q "^${{ matrix.repaired }} in "
+          test "$(git hash-object "$REVIEW_FILE")" = "$REVIEW_BLOB"

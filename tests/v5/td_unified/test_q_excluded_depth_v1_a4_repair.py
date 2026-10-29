@@ -313,6 +313,41 @@ def test_query_counts_never_reach_l0_or_l1_and_the_depth_excludes_them():
 
 
 # ---------------------------------------------------------------------------
+# Self-audit round 2: the whole refusal object, not only class and message
+# ---------------------------------------------------------------------------
+
+def test_round2_the_whole_refusal_object_is_identical_for_every_hidden_query_count():
+    """Probe added after the fix; it fails at e7635e79 through the A4 class
+    difference. Cause, context, notes and instance attributes never differed."""
+    for variant in _BASE_VARIANTS:
+        refusals = set()
+        for q in _Q_VALUES:
+            with pytest.raises(Q.QExcludedObservationError) as info:
+                Q.produce_rights_ladder_observations(**_zero_base_world(variant, q))
+            exc = info.value
+            refusals.add((type(exc), exc.args, exc.__cause__ is None, exc.__context__ is None,
+                          exc.__suppress_context__, tuple(getattr(exc, "__notes__", ())), tuple(sorted(vars(exc)))))
+        assert len(refusals) == 1, (variant, refusals)
+
+
+# ---------------------------------------------------------------------------
+# Self-audit round 3: a second A4 route found by an exhaustive old/new differential
+# ---------------------------------------------------------------------------
+
+def test_round3_zero_total_with_an_outside_base_collision_is_refused_by_the_collision_rule():
+    """Over 10,368 one-cell worlds the repair changed no accepted bytes and no
+    accept decision; 256 refusals changed, all with total 0 and nothing stored.
+    112 of them were this route: with a collision-unresolved address outside the
+    base rights, ``total < 1`` refused an empty cell as malformed while the same
+    cell holding withheld molecules was refused by the collision rule."""
+    states = {"B1": MS, "B2": MS, "E1": MCU, "Q1": MS}
+    outcomes = {q: _visible_outcome(_one_cell(_with_q({}, q), q, states), "L0") for q in _Q_VALUES}
+    assert set(outcomes.values()) == {("refused", "QExcludedDepthNotEstimable",
+                                       "collision-unresolved mass outside the base rights cannot be removed "
+                                       "from the depth")}, outcomes
+
+
+# ---------------------------------------------------------------------------
 # Declared limit, characterized (a passing characterization means it is present)
 # ---------------------------------------------------------------------------
 
