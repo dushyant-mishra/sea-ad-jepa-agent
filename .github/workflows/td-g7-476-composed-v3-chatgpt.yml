@@ -1,0 +1,36 @@
+name: TD G7 #476 composed E3 binder to V3 fixture (NO REAL AUTHORITY)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/td_real_g7_e3_v3_composed_fixture.py'
+      - 'tests/v5/test_td_g7_e3_v3_composed_fixture_chatgpt.py'
+      - 'scripts/v5/td_real_g7_content_enforcement_v1.py'
+      - '.github/workflows/td-g7-476-composed-v3-chatgpt.yml'
+permissions:
+  contents: read
+jobs:
+  composed-fixture:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+            docs/superpowers/specs
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Dependencies
+        run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: Hostile composed-path cases
+        run: python -m pytest -q -rA tests/v5/test_td_g7_e3_v3_composed_fixture_chatgpt.py
+      - name: Immutable Macha #482 metaclass and mutation review cases
+        run: python -m pytest -q tests/v5/test_td_real_g7_content_enforcement_v1_macha_476_red.py
+      - name: Existing G7 V3 decision law
+        run: python -m pytest -q tests/v5/test_td_real_g7_terminal_decision_v3.py
