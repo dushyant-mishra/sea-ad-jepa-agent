@@ -49,3 +49,10 @@ First exact-head Ubuntu run `40892829429` (pre-diagnostic-fix head `31d41d102595
 **R-old2 — substantive contradictory acceptance law, NOT FIXED:** `test_malformed_count_depth_states_and_q_reveal_cannot_be_signed_through` asserts that replacing a base measured scalar count with `999` while leaving published normalization depth unchanged is valid because the old V2 consumer only checked types/shape. The new A1 contract requires **exact base-sum equality** and must refuse that changed count. The two expected outcomes cannot both be satisfied by one unversioned consumer. No tests have been altered. The deciding lane must explicitly decide whether to (a) version/retire the historical shape-only allowance for the strict V2 bound consumer, or (b) reject the new A1 contract and retain the #481 A1 RED. Neither option follows from author CI alone.
 
 There is **no cumulative acceptance** while this incompatibility and the inherited upstream A4 remain. Do not treat `-k` selected passes as an all-suite PASS.
+
+
+## Follow-up hosted mechanical result (after diagnostic-order repair)
+
+At exact head `1576304a92e93b11eb3c32cc3ce35297accdfc72`, inherited V2 workflow `40893501158` reported **123 passed, one failed**: exclusively `test_malformed_count_depth_states_and_q_reveal_cannot_be_signed_through` with its unversioned historical `count=999` permissive expectation. The earlier physical-total diagnostic failure is absent. This confirms the surviving conflict is semantic, not a matter of changing the refusal message.
+
+The new hosted workflow is expanded to execute **the complete unchanged Macha #481 suite except upstream A4** (including the 240-world student invariance and limitation characterizations). No result for that expanded workflow can be claimed until its exact-head run completes.
