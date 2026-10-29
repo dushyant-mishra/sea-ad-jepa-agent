@@ -254,3 +254,22 @@ def test_positive_limitation_query_selected_roster_is_not_q_independent():
     assert selected!=full
     assert len(selected["rows"])==len(w()["address_rights"])
     assert selected["source_authenticated"] is False
+
+
+
+@pytest.mark.parametrize("query_state",[SU,MCU])
+def test_query_must_be_measured_scalar_in_each_selected_operator(query_state):
+    p=w()
+    p["operator_states"]["O"]["Q"]=query_state
+    with pytest.raises(QExcludedDepthNotEstimable,match="queried address is not measured-scalar"):
+        produce(p=p)
+
+
+def test_mixed_operator_query_observability_fails_closed_even_with_good_base_d1():
+    p=w()
+    second=deepcopy(p["operator_states"]["O"])
+    second["Q"]=SU
+    p["operator_states"]["OTHER_OP"]=second
+    p["cell_roster"][1]["operator_id"]="OTHER_OP"
+    with pytest.raises(QExcludedDepthNotEstimable,match="queried address is not measured-scalar"):
+        produce(p=p)
