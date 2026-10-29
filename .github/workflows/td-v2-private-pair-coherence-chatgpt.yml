@@ -1,0 +1,41 @@
+name: TD V2 private student teacher coherence preflight (NO REAL G7)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/td_unified/observation_v2_private_pair_coherence_v1.py'
+      - 'tests/v5/td_unified/test_observation_v2_private_pair_coherence_v1.py'
+      - '.github/workflows/td-v2-private-pair-coherence-chatgpt.yml'
+permissions:
+  contents: read
+jobs:
+  private-pair-fixture:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned test dependencies
+        run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: Private pair coherence and false source authentication counterexamples
+        run: python -m pytest -q -rA tests/v5/td_unified/test_observation_v2_private_pair_coherence_v1.py
+      - name: Versioned bound V2 contract, old shape, adapted Macha #481
+        run: >-
+          python -m pytest -q
+          tests/v5/td_unified/test_observation_normalization_v2_bound_content.py
+          tests/v5/td_unified/test_observation_normalization_view_v2_fixture.py
+          tests/v5/td_unified/test_v2_bound_content_macha481_replay.py
+      - name: Upstream producer regressions, not A4 hostile review
+        run: >-
+          python -m pytest -q
+          tests/v5/td_unified/test_q_excluded_depth_v1.py
+          tests/v5/td_unified/test_q_excluded_depth_v1_independent_limits.py
