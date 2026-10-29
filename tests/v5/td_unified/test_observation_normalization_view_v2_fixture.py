@@ -169,11 +169,10 @@ def test_malformed_count_depth_states_and_q_reveal_cannot_be_signed_through():
         v = student()
         v["rows"][0][key] = value
         v["observable_sha256"] = canonical_sha256({k: x for k, x in v.items() if k != "observable_sha256"})
-        if key == "count":  # count 999 is valid if the *type* is exact: no physical mass bound here
-            assert V2.validate_fixture_observation_view_v2(v)["authority_effect"] == "NONE"
-        else:
-            with pytest.raises(QExcludedObservationError):
-                V2.validate_fixture_observation_view_v2(v)
+        # A1 repair: type-valid count tampering is now rejected whenever it
+        # breaks the exact base-visible depth equality law.
+        with pytest.raises(QExcludedObservationError):
+            V2.validate_fixture_observation_view_v2(v)
     v = student()
     row(v, "Q1")["state"] = MS
     row(v, "Q1")["count"] = 5
