@@ -1,0 +1,48 @@
+name: TD V2 bound-content V1 distinct contract and Macha481 adapted replay (NO REAL AUTHORITY)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/td_unified/observation_normalization_view_v2_bound_content_v1.py'
+      - 'tests/v5/td_unified/test_observation_normalization_v2_bound_content.py'
+      - 'tests/v5/td_unified/test_v2_bound_content_macha481_replay.py'
+      - 'tests/v5/td_unified/macha481_review_source_immutable.py'
+      - '.github/workflows/td-v2-bound-content-v1-chatgpt.yml'
+permissions:
+  contents: read
+jobs:
+  versioned-fixture-content:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install synthetic test dependencies
+        run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: Preserve unmodified V2 shape-only consumer law
+        run: >-
+          python -m pytest -q
+          tests/v5/td_unified/test_observation_normalization_view_v2_fixture.py
+          tests/v5/td_unified/test_observation_normalization_view_v2_479_a3_fix.py
+      - name: Bound V2 content consumer, independent A1/A2 hostiles
+        run: >-
+          python -m pytest -q -rA
+          tests/v5/td_unified/test_observation_normalization_v2_bound_content.py
+      - name: Adapted replay of exact Macha #481 source against distinct bound API
+        run: >-
+          python -m pytest -q -rA
+          tests/v5/td_unified/test_v2_bound_content_macha481_replay.py
+      - name: Recheck inherited source-side producer law (A4 still RED upstream)
+        run: >-
+          python -m pytest -q
+          tests/v5/td_unified/test_q_excluded_depth_v1.py
+          tests/v5/td_unified/test_q_excluded_depth_v1_independent_limits.py
