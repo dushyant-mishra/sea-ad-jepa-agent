@@ -3,6 +3,8 @@ on:
   pull_request:
     paths:
       - 'scripts/production_synthetic/calibration_v1.py'
+      - 'scripts/production_synthetic/canonical_v1.py'
+      - 'tests/production_synthetic/test_calibration_v1_chatgpt_437_hostile_red.py'
       - 'tests/production_synthetic/test_calibration_v1_chatgpt_486_independent_red.py'
       - '.github/workflows/ps-task3-chatgpt-486-independent-red.yml'
       - 'docs/agent/JEPA_PS_TASK3_MACHA486_INDEPENDENT_REVIEW_20261028.md'
@@ -18,6 +20,11 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+          sparse-checkout-cone-mode: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
