@@ -1,0 +1,31 @@
+name: ChatGPT independent PR486 review RED (NO AUTHORITY)
+on:
+  pull_request:
+    paths:
+      - 'scripts/production_synthetic/calibration_v1.py'
+      - 'tests/production_synthetic/test_calibration_v1_chatgpt_486_independent_red.py'
+      - '.github/workflows/ps-task3-chatgpt-486-independent-red.yml'
+      - 'docs/agent/JEPA_PS_TASK3_MACHA486_INDEPENDENT_REVIEW_20261028.md'
+      - 'results/production_synthetic/JEPA_TASK3_MACHA486_INDEPENDENT_REVIEW_20261028.json'
+permissions:
+  contents: read
+jobs:
+  independent-review:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - shell: bash
+        run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: Immutable PR480 acceptance floor
+        shell: bash
+        run: python -m pytest -q -rA tests/production_synthetic/test_calibration_v1_chatgpt_437_hostile_red.py
+      - name: Independent PR486 attacks
+        shell: bash
+        run: python -m pytest -q -rA tests/production_synthetic/test_calibration_v1_chatgpt_486_independent_red.py
