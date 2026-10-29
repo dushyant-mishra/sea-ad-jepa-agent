@@ -21,7 +21,7 @@ LADDER=[
 
 def world(qs=(7,23)):
     return {
-        "cells":[{"cell_id":f"C{i}","donor_id":"D","source_id":"S",
+        "cells":[{"cell_id":f"V2B_C{i}","donor_id":"D","source_id":"S",
                   "operator_id":"O","library_total":9+q,
                   "counts":{"B":9,"Q":q}} for i,q in enumerate(qs)],
         "address_rights":{"B":"RNA:BASE","Q":"RNA:QUERY"},
@@ -72,7 +72,7 @@ def test_public_gate_never_looks_up_teacher_issuance_through_1024_candidates():
     # Issue an actual teacher into the old vulnerable registry; the new
     # student gate must not depend on whether this teacher is issued.
     B.produce_fixture_teacher_view_v2_bound(**w)
-    outcomes={fail(candidate(student,{"C0":q0,"C1":q1}),p)
+    outcomes={fail(candidate(student,{"V2B_C0":q0,"V2B_C1":q1}),p)
               for q0 in range(32) for q1 in range(32)}
     assert outcomes=={("QExcludedObservationError",
                        "public V2B only accepts STUDENT_BASE_RIGHTS")}
@@ -85,13 +85,13 @@ def test_public_gate_result_and_candidate_responses_independent_of_hidden_counts
         s=B.produce_fixture_student_view_v2_bound(**w)
         B.produce_fixture_teacher_view_v2_bound(**w)
         results.append((s,S.validate_public_student_v2b(student_view=s,expected_policy=policy(w)),
-                        fail(candidate(s,{"C0":7,"C1":23}),policy(w))))
+                        fail(candidate(s,{"V2B_C0":7,"V2B_C1":23}),policy(w))))
     assert all(x==results[0] for x in results)
 
 
 def substitution(mode):
     w={
-        "cells":[{"cell_id":"C0","donor_id":"D","source_id":"S","operator_id":"O",
+        "cells":[{"cell_id":"V2B_C0","donor_id":"D","source_id":"S","operator_id":"O",
                   "library_total":26,"counts":{"B":9,"E":4,"Q":11,"Z":2}}],
         "address_rights":{"B":"RNA:BASE","E":"RNA:EXT","Q":"RNA:QUERY","Z":"RNA:EXT"},
         "operator_states":{"O":dict.fromkeys(("B","E","Q","Z"),MS)},
@@ -142,17 +142,17 @@ def test_consumer_refuses_re_signed_forgeries_without_membership_allowlist(mutat
             if row["address_id"]=="Q":
                 row.update(state=MS,count=7,base_rights_normalization_depth=9)
     elif mutation=="drop_cell":
-        s["rows"]=[x for x in s["rows"] if x["cell_id"]!="C1"]
+        s["rows"]=[x for x in s["rows"] if x["cell_id"]!="V2B_C1"]
     elif mutation=="donor":
         for row in s["rows"]:
-            if row["cell_id"]=="C0":row["donor_id"]="WRONG"
+            if row["cell_id"]=="V2B_C0":row["donor_id"]="WRONG"
     elif mutation=="swap_base":
         # More than one base gene needed to swap preserving the sum; change a
         # count in this one-base fixture: D1 must detect it.
         for row in s["rows"]:
-            if row["cell_id"]=="C0" and row["address_id"]=="B":row["count"]+=1
+            if row["cell_id"]=="V2B_C0" and row["address_id"]=="B":row["count"]+=1
     elif mutation=="drop_address":
-        s["rows"]=[x for x in s["rows"] if not (x["cell_id"]=="C1" and x["address_id"]=="Q")]
+        s["rows"]=[x for x in s["rows"] if not (x["cell_id"]=="V2B_C1" and x["address_id"]=="Q")]
     assert fail(resign(s),policy(w))[0]=="QExcludedObservationError"
 
 
