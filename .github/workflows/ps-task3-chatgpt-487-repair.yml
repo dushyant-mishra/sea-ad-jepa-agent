@@ -1,0 +1,47 @@
+name: ChatGPT PS Task3 #486 R3/R4 repair against #487 (NO AUTHORITY)
+on:
+  pull_request:
+    paths:
+      - 'scripts/production_synthetic/calibration_v1.py'
+      - 'tests/production_synthetic/test_calibration_v1.py'
+      - 'tests/production_synthetic/test_calibration_v1_chatgpt_437_hostile_red.py'
+      - 'tests/production_synthetic/test_calibration_v1_macha_480_repair.py'
+      - 'tests/production_synthetic/test_calibration_v1_chatgpt_486_independent_red.py'
+      - 'tests/production_synthetic/test_calibration_v1_chatgpt_487_repair.py'
+      - '.github/workflows/ps-task3-chatgpt-487-repair.yml'
+permissions:
+  contents: read
+jobs:
+  repair:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - shell: bash
+        run: python -m pip install pytest==9.1.1 numpy==1.26.4
+      - name: Original Task3 author suite
+        shell: bash
+        run: python -m pytest -q -rA tests/production_synthetic/test_calibration_v1.py
+      - name: Immutable ChatGPT #480 acceptance floor
+        shell: bash
+        run: python -m pytest -q -rA tests/production_synthetic/test_calibration_v1_chatgpt_437_hostile_red.py
+      - name: Macha #486 repair guards
+        shell: bash
+        run: python -m pytest -q -rA tests/production_synthetic/test_calibration_v1_macha_480_repair.py
+      - name: Immutable independent #487 attacks now must pass
+        shell: bash
+        run: python -m pytest -q -rA tests/production_synthetic/test_calibration_v1_chatgpt_486_independent_red.py
+      - name: R3/R4 repair guards
+        shell: bash
+        run: python -m pytest -q -rA tests/production_synthetic/test_calibration_v1_chatgpt_487_repair.py
