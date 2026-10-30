@@ -1,0 +1,110 @@
+{
+  "schema": "JEPA_SOURCE_513_AND_SECURITY_512_DECISION_20261030_V1",
+  "date": "2026-10-30",
+  "status": "DECIDING_LANE_SCOPE_RULING__NOT_SOURCE_AUTHORIZATION",
+  "evidence": {
+    "review512": {
+      "pr": 512,
+      "head": "16b5bc6c050222c592f88c35dc65b0a256d65402",
+      "outcome": "REPAIR_REQUIRED",
+      "new_red": 10,
+      "original507_red": 4,
+      "review_run": 40936356265
+    },
+    "source513": {
+      "pr": 513,
+      "head": "0b1af4f06ba423753899e7c564d3b16ce609ac6a",
+      "probe_class": "LOCAL_METADATA_SOURCE_IDENTITY__NO_EXPRESSION"
+    }
+  },
+  "etl_custody": {
+    "checked_artifact_rows": 322,
+    "drift": 0,
+    "missing": 0,
+    "small_files_rehashed_bytes": 730364141,
+    "large_files_check": "SIZE_AGAINST_PREVIOUS_SHA_RECEIPT_ONLY",
+    "full104_blocks_present": 8915,
+    "full104_blocks_rehashed_now": 0,
+    "adapter_manifest_rows": 50,
+    "adapter_older_count": 47,
+    "discrepancy": "PRESERVE_NOT_RECONCILED",
+    "inputs_509": "8/8 previously verified",
+    "address_registry": "ALREADY_PINNED_IN_492__CORRECTION_TO_509"
+  },
+  "alias_rights": {
+    "decision": "ADOPT_PROVISIONAL_CONSERVATIVE_RESTRICTIONS__NOT_MOLECULAR_EQUIVALENCE_CERTIFICATE",
+    "source_rule": "same strand chromosome and at least one base pair overlap with pinned Ensembl116; overlap itself not final biological gene equivalence",
+    "binding_now": [
+      {
+        "address": "ENSG00000235481",
+        "symbol": "UBE2R2-AS1",
+        "legacy": "ENSG00000233776",
+        "operators": 18,
+        "action": "JOINT_WITHHOLDING_RIGHTS__IF_NOT_ENFORCEABLE_BLOCK_QUERY"
+      },
+      {
+        "address": "ENSG00000257612",
+        "symbol": "MIR4307HG",
+        "legacy": "ENSG00000258081",
+        "operators": 16,
+        "action": "BLOCK_QUERY_OR_OPERATOR"
+      },
+      {
+        "address": "ENSG00000257842",
+        "symbol": "LINC02588",
+        "legacy": "ENSG00000258081",
+        "operators": 18,
+        "action": "BLOCK_QUERY_OR_OPERATOR"
+      }
+    ],
+    "other_eight_address_candidates": "PRESERVE_AND_REEVALUATE_IF_OPERATOR_MEASUREMENT_GEOMETRY_CHANGES",
+    "nph52_real_query_issuance": "BLOCKED",
+    "source_scope_limits": "Source feature-table identity clearance != authenticated donor, physical nucleus or depositor QC"
+  },
+  "quarantined_nph52": {
+    "proposal": "PR513_SECTION4",
+    "decision": "NOT_APPROVED",
+    "reason": [
+      "query list requires external issuer eligibility and exact alias rights",
+      "depositor selection and annotation methods remain unqualified",
+      "analysis must be separately authorized before held expression opened"
+    ],
+    "quarantined_reader_fit_cells_reported": 22715,
+    "allowed_now": "existing allowlisted metadata-only QC/annotation/consent provenance",
+    "expression_read_authorized": false,
+    "prohibited": "target selection, dimension tuning, model training and Stage4"
+  },
+  "issuer": {
+    "designation": "JEPA_SOURCE_RIGHTS_ISSUER__ROLE_SPECIFICATION_ONLY",
+    "real_signing_identity": "UNPROVISIONED",
+    "real_key_id": null,
+    "real_key_generated": false,
+    "provisioning_authority": "designated project data governance/security administrator with independent authorization; not student or teacher process",
+    "required": [
+      "external institutional/data-owner authority",
+      "independently controlled private key or equivalent hardware-backed custody",
+      "pinned public trust root",
+      "signature verification on exact full policy and exact student-view digest",
+      "source/issuer roster lineage, version and revocation",
+      "runtime student/teacher isolation and capability controls"
+    ],
+    "can_issue_authenticated_data_now": false
+  },
+  "source_corrections": {
+    "sea_ad": "sample_id unique to nucleus, NOT specimen; hierarchy donor>region>unknown tissue block>library; 566 libraries",
+    "hvs": "HVS specimen=donor claim per depositor publication; 1000-gene observed floor not a verified depositor filter; 91.5% median deposited UMI fraction",
+    "nph52": "no specimen key, no quarantined expression opened",
+    "allowlist_excursions": [
+      "SEA_AD Doublet score",
+      "HVS is_primary_data"
+    ],
+    "handling": "DISCLOSED_SCOPE_EXCEPTION__NO_FURTHER_NONALLOWLIST_READS_UNTIL_ALLOWLIST_GOVERNANCE_REVIEW; no new protected values included here"
+  },
+  "security": {
+    "old502_and_510_reviewer_verdict": "REPAIR_REQUIRED__NO_STUDENT_DEPLOYMENT",
+    "proposed_new_pr": 514,
+    "new_pr_scope": "separate standalone student-only pure consistency verifier; neither a deployed OS sandbox nor issuer signature",
+    "independent_reviewer_acceptance": "NOT_YET"
+  },
+  "standing": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
