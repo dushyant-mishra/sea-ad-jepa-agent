@@ -79,7 +79,8 @@ def test_self_contained_module_has_no_teacher_issuer_import_edge():
     imports=[node for node in ast.walk(tree)
              if isinstance(node,(ast.Import,ast.ImportFrom))]
     assert len(imports)==2
-    assert {n.names[0].name for n in imports}=={"hashlib","__future__"}
+    assert {n.module if isinstance(n,ast.ImportFrom) else n.names[0].name
+            for n in imports}=={"hashlib","__future__"}
     assert not hasattr(C,"B")
     assert not hasattr(C,"_VIEW_BINDINGS")
     # Isolation is only enforceable when the deployed process doesn't have
