@@ -216,3 +216,18 @@ def test_hidden_query_in_base_alias_remains_unqualified_even_with_receipt():
     altered=C.validate_student_v2c(student_view=v,expected_policy=policy(w2))
     assert altered["validated_student_view_sha256"]!=honest["validated_student_view_sha256"]
     assert altered["source_feature_alias_closure_authenticated"] is False
+
+
+def test_nonexact_role_refusal_does_not_dispatch_user_equality():
+    class Meta(type):
+        ran=False
+        def __eq__(cls,other):
+            Meta.ran=True
+            raise RuntimeError('no')
+        __hash__=type.__hash__
+    class Foreign(metaclass=Meta):pass
+    v=issued()
+    v['view_kind']=Foreign
+    with pytest.raises(C.StudentV2CRefusal):
+        C.validate_student_v2c(student_view=v,expected_policy=policy(world()))
+    assert not Meta.ran
