@@ -212,3 +212,14 @@ Audit #322 machine author-CI delta: `results/target_discovery/unified_qualificat
 **Remaining source qualification:** #509 candidate 18 alias pairs and 11 at-risk query addresses, NPH52 symbol-only negative clearance blocked and quarantined reader-fit expression not authorized, depositor QC query dependence, physical nucleus/specimen/donor identity, externally trusted policy/redaction issuer, strict separate teacher/student custody and new G7 E3 V2. Old #502 public teacher oracle remains RED. No real training/Stage4/PS Task4 authority.
 
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+
+## Macha #512/#513 decision and V2C author result, 2026-10-30
+
+Macha #512 head 16b5bc6c050222c592f88c35dc65b0a256d65402 remains REPAIR_REQUIRED on old #510/#502, preserving ten new RED and four #507 RED. Macha #513 head 0b1af4f06ba423753899e7c564d3b16ce609ac6a reports 322 ETL artifacts checked, no drift/missing within SHA-versus-size scopes; 8,915 blocks counted not rehashed; adapter inventory is 50 (historical note 47 was not reconciled). #509's registry was already pinned by #492.
+
+Deciding-lane policy: provisional joint withholding of UBE2R2-AS1 with its legacy predecessor; MIR4307HG and LINC02588 blocked at affected operators, other eight retained. NPH52 expression-access protocol NOT approved. NPH52 query issuance remains blocked. Issuer role JEPA_SOURCE_RIGHTS_ISSUER designated only as a role, with no actual key/signature identity provisioned. HVS observed gene minimum is not a confirmed depositor rule. SEA-AD sample_id is per cell, not specimen; metadata allowlist excursions disclosed. Detailed machine decision on audit #322: JEPA_512_513_DECISION_AND_ISSUER_ROLE_20261030.json.
+
+New draft #514 head 63099f6b17b14bcfcfd92b0334bf564e9cf8376d stacks on #511, adds a standalone stdlib student-only verifier and receipt commitments to full expected policy and validated view, correcting Macha #512 mechanical receipt concerns on a NEW API. Author CI run 40997285142 4/4 OS NumPy jobs green, all six workflows green. No independent review, real issuer, process isolation or source authorization. Original #512 RED remains unchanged. No Task4, Stage4 or training.
+
+TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED.
