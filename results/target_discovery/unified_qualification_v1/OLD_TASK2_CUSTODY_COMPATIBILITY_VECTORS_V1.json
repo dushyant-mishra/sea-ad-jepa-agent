@@ -1,0 +1,80 @@
+{
+  "schema": "OLD_TASK2_CUSTODY_COMPATIBILITY_VECTORS_V1",
+  "date": "2026-10-14",
+  "authority": "ANALYSIS_ONLY__DUMMY_SECRET_COMPATIBILITY_ORACLE__NO_UNIFIED_PROMOTION",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "source_branch": "implementation/production-synthetic-v3-1-1-20261014",
+  "source_head_sha": "ff597faf2182522a320ec5322f8db9b67c9c6094",
+  "source_test_path": "tests/production_synthetic/test_custody_v1.py",
+  "source_fixture_path": "tests/production_synthetic/custody_fixtures_v1.py",
+  "source_fixture_blob_sha": "23fb531077942223f4b4169853403de380af0b89",
+  "secret_status": "ALL_VALUES_BELOW_ARE_PUBLIC_DUMMY_KNOWN_ANSWER_INPUTS_FROM_TESTS__NO_PRODUCTION_NONCE_OR_WITHHELD_SPEC",
+  "historical_domains": {
+    "commit": "JEPA-PRODUCTION-SYNTHETIC-CUSTODY-COMMIT-V1\\x00",
+    "nonce_commitment": "JEPA-PRODUCTION-SYNTHETIC-CUSTODY-NONCE-COMMIT-V1\\x00",
+    "sealed_root": "JEPA-PRODUCTION-SYNTHETIC-CUSTODY-SEALED-ROOT-V1\\x00",
+    "root_commitment": "JEPA-PRODUCTION-SYNTHETIC-CUSTODY-ROOT-COMMIT-V1\\x00",
+    "realization_id": "JEPA-PRODUCTION-SYNTHETIC-CUSTODY-REALIZATION-ID-V1\\x00",
+    "stream": "JEPA-PRODUCTION-SYNTHETIC-CUSTODY-STREAM-V1\\x00"
+  },
+  "known_answer_vectors": [
+    {
+      "vector_id": "COMMIT_SECRET_DUMMY",
+      "dummy_nonce_hex": "6465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f80818283",
+      "payload_hash_source": "sha256(utf8('payload'))",
+      "payload_hash": "239f59ed55e737c77147cf55ad0c1b030b6d7ee748a7426952f9b852d5a935e5",
+      "tag": "SYNTH_QUALIFICATION_WITHHELD",
+      "historical_commitment_sha256": "43c0a8cc5ced862bba571c3767d4d11cd3833dd72f3d0a0750972cc639966049",
+      "required_binding": "NONCE_PAYLOAD_HASH_AND_TAG_ALL_DECISION_BEARING"
+    },
+    {
+      "vector_id": "NONCE_ROOT_REALIZATION_IDS_DUMMY",
+      "dummy_nonce_hex": "0708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20212223242526",
+      "generator_hash_source": "sha256(utf8('generator'))",
+      "generator_hash": "9f53d83ec9a54e70d219cf2a58c7d68d0de5db9007f5c8f28c37b4eaf923e8a5",
+      "class_tag": "SYNTH_QUALIFICATION",
+      "budget": 4,
+      "historical_nonce_commitment_sha256": "e5c68e838ef3cd37836864824ce7c18ff323fc883805ab297f243c0b17850ecd",
+      "historical_sealed_root_hex": "1c52f055686bf887c7a95ad315367b0f5e4d62a82b96a452b87ab99cbff27693",
+      "historical_root_commitment_sha256": "a7ee1d37cd930ab883fd7cb77d1acc8db0e8e8f6796481be4d81c95b5924d95c",
+      "historical_authorized_realization_ids": [
+        "6228be4d3a4b29c92d95e819d2b0374e1482a4763e619e45f30487487691cf72",
+        "bba8515a3eb324d7766e8b8c8dcf38d72b13d90c0295c6eafddf858960b9bc20",
+        "d740fa8b0b5c305217b8788ae3f4cbcb9e00e094338d989c0367c870cc6e8aa6",
+        "5e24a8bf7250ddeb9e907f80f85b27d225048b59282c28fb7bbade4f187308be"
+      ],
+      "required_binding": "ROOT_BINDS_NONCE_GENERATOR_CLASS_AND_BUDGET__REALIZATION_IDS_BIND_ROOT_CLASS_AND_INDEX"
+    },
+    {
+      "vector_id": "STREAM_SEED_DUMMY",
+      "dummy_root_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+      "scientific_identity": {"cell_id":"c1","purpose_tag":"noise","world_id":"w0"},
+      "canonical_identity_utf8": "{\"cell_id\":\"c1\",\"purpose_tag\":\"noise\",\"world_id\":\"w0\"}",
+      "historical_stream_seed_digest_hex": "7067fecf0ad5eee694f1dbf0a99652e17eb019b8c94358847d02576b59542e63",
+      "required_binding": "STREAM_DEPENDS_ON_ROOT_AND_CANONICAL_SCIENTIFIC_IDENTITY_NOT_ARGUMENT_OR_ROW_ORDER"
+    }
+  ],
+  "state_machine_invariants": [
+    "GENERATOR_FREEZE_BEFORE_USE",
+    "QUALIFICATION_NONCE_AT_LEAST_256_BITS",
+    "COMMIT_REVEAL_MISMATCH_FAILS_CLOSED",
+    "NO_INTEGER_OFFSET_SEED_NAMESPACE",
+    "SCIENTIFIC_IDENTITY_KEY_ORDER_IRRELEVANT",
+    "ROW_STORAGE_ORDER_DOES_NOT_CHANGE_SCIENTIFIC_STREAM",
+    "REALIZATION_BUDGET_ATTESTED_EXACTLY",
+    "EXPOSURE_PRECEDES_FIT_OUTPUT_FREEZE_PRECEDES_REVEAL",
+    "POST_EXPOSURE_DEFECT_REPAIR_GETS_NEW_IDENTITY_AND_NO_QUALIFICATION_INHERITANCE",
+    "METHOD_LOCAL_AND_LINEAGE_WIDE_QUALIFICATION_DRAW_ACCOUNTING",
+    "NO_UNIQUE_PUBLIC_WITHHELD_ONLY_CODE_PATH",
+    "DUMMY_SECRET_SCAN_DOES_NOT_ECHO_SECRET_OR_MATCH_PATH"
+  ],
+  "mandatory_external_obligations": [
+    "ONE_EXTERNALLY_ANCHORED_GENESIS_LEDGER_PER_TESTBED",
+    "PUBLISH_AND_VERIFY_LEDGER_HEAD_AFTER_EVERY_ENTRY",
+    "REPORT_METHOD_LOCAL_AND_LINEAGE_WIDE_MULTIPLICITY",
+    "REGENERATE_REVEALED_REALIZATIONS_AND_VERIFY_CONTENT_DIGESTS",
+    "SCAN_FULL_EXACT_COMMITTED_TREE_ACROSS_PUBLISHED_COMMITS",
+    "INDEPENDENTLY_ADJUDICATE_GENERATOR_DEFECT_RECORDS"
+  ],
+  "unified_migration_rule": "HISTORICAL_HASH_DOMAINS_ARE_COMPATIBILITY_ORACLE_ONLY__UNIFIED_CUSTODY_MUST_BIND_UNIFIED_CANONICAL_AND_AUTHORITY_RECEIPTS__OLD_TASK2_DOES_NOT_SATISFY_UNIFIED_TASK2_MANIFEST_ACCESS_LAW"
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "INDEPENDENT_REVIEW_CUSTODY_INDEX_V1",
+  "date": "2026-10-15",
+  "reviews": [
+    {
+      "subject": "Unified Task 3 candidate 851544e8",
+      "review_head": "869ca777a498181c519ccfc04b8bf5db0f2888c7",
+      "branch": "review/macha-task0-independent-review-20261014",
+      "verdict": "REJECT_UNIFIED_TASK3",
+      "artifacts": [
+        {"path":"docs/agent/MACHA_UNIFIED_TASK3_INDEPENDENT_REVIEW_851544E8_20261015.md","blob":"3850a0ea73908f7727b7ced6ca757e68b5af4967"},
+        {"path":"results/target_discovery/unified_qualification_v1/MACHA_UNIFIED_TASK3_REVIEW_VERDICT_V1.json","blob":"3e71d08072eaaf5463ba5c3c1a493de65c39b601"},
+        {"path":"docs/agent/macha_task3_review_evidence_851544e8/task3_probe1.py","blob":"f7811887c3c4e475b666e9558449ac5f7cfe71f5"}
+      ],
+      "hostile_probe_summary": {"total":18,"expected":8,"bad":10},
+      "protected_values_opened": false
+    },
+    {
+      "subject": "Unified Task 2 focused B1-B4 recheck",
+      "review_head": "57f3496a6ba06fecf46319785af7cbe247a41519",
+      "verdict": "ACCEPT_UNIFIED_TASK2",
+      "accepted_head": "c7dfff1cee608e4a101855d42cf0af08491c2aaf"
+    },
+    {
+      "subject": "Unified Task 1 focused T1-B1-B5 recheck",
+      "review_head": "5949f1c4",
+      "verdict": "ACCEPT_UNIFIED_TASK1_T1_B1_B5_REPAIR",
+      "accepted_head": "799d2e235901dfad9ce3b305c767a1c989e362f6"
+    },
+    {
+      "subject": "Task 0 focused B5 recheck",
+      "review_head": "bc1176ac",
+      "verdict": "ACCEPT_TASK0_B1_B5_REPAIR",
+      "accepted_head": "e37a22b8059c0a4a93a789a8ca916fb7acde9fe3"
+    }
+  ],
+  "rule": "independent-review artifacts are preserved by exact commit/path/blob; later branch movement does not change their evidence identity"
+}

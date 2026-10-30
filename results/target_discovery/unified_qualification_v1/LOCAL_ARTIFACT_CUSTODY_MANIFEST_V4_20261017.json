@@ -1,0 +1,25 @@
+{
+  "schema": "LOCAL_ARTIFACT_CUSTODY_MANIFEST_V4",
+  "date": "2026-10-17",
+  "verification": "recomputed from currently mounted user-provided artifacts on 2026-10-17",
+  "policy": "Large/private binary artifacts are hash-custodied rather than copied into Git. Verify exact SHA-256 before use. Byte presence never implies authority. Connector limitations also make direct binary mirroring inappropriate here.",
+  "artifacts": [
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip","bytes":607959761,"sha256":"63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7","storage":"concatenate part001 then part002; combined hash recomputed 2026-10-17"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001","bytes":303979881,"sha256":"b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002","bytes":303979880,"sha256":"5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875"},
+    {"name":"FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv","bytes":437,"sha256":"fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356"},
+    {"name":"FOUNDATION_CALIBRATION_BUNDLE_20260824.zip","bytes":410278055,"sha256":"07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444","classification":"foundation calibration/support/metadata/truth-table bundle"},
+    {"name":"expression.zip","bytes":3599456,"sha256":"1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4","classification":"foundation discovery expression audit/sample-freeze/operator metadata archive"},
+    {"name":"checkpoints.zip","bytes":71356460,"sha256":"ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c","classification":"historical checkpoint bundle; mechanics evidence only"},
+    {"name":"t1_checkpoint_u0200.zip","bytes":233729581,"sha256":"0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c","classification":"historical checkpoint series; mechanics evidence only"},
+    {"name":"66e64913-959f-4a7c-bbfe-6ff906fb281d.npz","bytes":1531109,"sha256":"001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70","classification":"local NPZ artifact; recover semantic provenance before interpretation"},
+    {"name":"Status and Repair Plan.txt","bytes":5233,"sha256":"cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56","git_import":"docs/agent/historical_imports/STATUS_AND_REPAIR_PLAN_20260912.txt"},
+    {"name":"WSL execution issue.txt","bytes":14576,"sha256":"cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e","git_import":"docs/agent/historical_imports/WSL_EXECUTION_ISSUE_AND_FOUNDATION_DESIGN_NOTES_20260824.txt"}
+  ],
+  "note": "focused-task3-pytest.zip was present in V3 custody but is not among the currently mounted user-provided files in this conversation runtime; retain its V3 hash record as historical custody and do not infer deletion from current absence.",
+  "authority": {
+    "task3_frozen_sha": "117dd51dea827e734b299982da93991b934bdc8f",
+    "task4_status": "TASK4_SUCCESSOR4_REJECTED_BY_REGENERATION_PROVENANCE_RED__SUCCESSOR5_REPAIR_REQUIRED",
+    "global": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  }
+}

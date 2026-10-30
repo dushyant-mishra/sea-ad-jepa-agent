@@ -1,0 +1,113 @@
+{
+  "schema": "JEPA_POST_V8D_DELTA_V8E_20261027",
+  "as_of": "2026-10-27",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "append_only": true,
+  "prior_audit_head": "a4c86fa83adf0cd718105807e9d254e09c989610",
+  "prior_successor_head": "f750aa6989cabdcace7650e400a867556552d914",
+  "frozen_history": [
+    "V8",
+    "V8a",
+    "V8b",
+    "V8c",
+    "V8d"
+  ],
+  "evidence": [
+    {
+      "pr": 465,
+      "head": "3b86b9467506539776e04a6470fa8f2f7363f129",
+      "parent_review_pr": 462,
+      "parent_review_sha": "67d2336155624a8657d2ef3320c9bfff175951ee",
+      "result": "CHATGPT_INDEPENDENT_ACCEPT_INCREMENTAL_WITH_LIMITATIONS__CUMULATIVE_TASK4_BLOCKED",
+      "review_comment_id": 6447851888,
+      "ci": {
+        "task4": 40538321346,
+        "task3": 40538321445,
+        "task2": 40538321516,
+        "integration": 40538321569,
+        "workflow_policy": 40538321406
+      },
+      "test_results": "Linux focused 211 passed/10 skipped; full 402 passed/10 skipped; Windows 63 passed/7 skipped; benchmark 1 passed",
+      "limitations": [
+        "Fsync-after-failure disk persistence not independently guaranteed",
+        "Windows has no directory entry fsync",
+        "Same-length non-prefix corruption not shown automatically repairable",
+        "Independent Windows/WSL X3 and genuine external head publisher/issuer trust not qualified",
+        "Pairwise acceptance cannot replace cumulative non-author whole-lineage review"
+      ]
+    },
+    {
+      "pr": 466,
+      "head": "db69cd0a5777b4a23f0140de9f38980b3e5b95a9",
+      "source_reviewed_pr": 463,
+      "source_reviewed_sha": "84b05952112ca405436ee3ccf35cc1c0df53c14d",
+      "result": "MACHA_INDEPENDENT_REJECT_INCREMENTAL__V1_WINDOWS_NUMPY_INTC_UINTC__V2_METACLASS_STOPITERATION",
+      "ci": {
+        "hostile_red": 40541078808,
+        "integration": 40541078752
+      },
+      "test_results": "Linux 2 failed/51 passed; Windows numpy 1.26.4 and 2.x each 4 failed/49 passed",
+      "test_only": true
+    },
+    {
+      "pr": 467,
+      "head": "180b550e96b786ddfc53faa29bc81c1d3b503877",
+      "parent_review_pr": 466,
+      "parent_review_sha": "db69cd0a5777b4a23f0140de9f38980b3e5b95a9",
+      "result": "CHATGPT_AUTHOR_V1_V2_REPAIR_CI_GREEN__MACHA_INDEPENDENT_REVIEW_PENDING__HISTORICAL_RECEIPTS_NOT_REQUALIFIED",
+      "ci": {
+        "focused": 40543388869,
+        "integration": 40543388748
+      },
+      "test_results": "Linux numpy 2.x 53 passed; Windows numpy 1.26.4 53 passed; Windows numpy 2.x 53 passed",
+      "change_scope": "Add np.intc/np.uintc platform exact-type identities; remove hostile metaclass __name__ read on refusal; document frozen 4300-digit integer bound"
+    },
+    {
+      "pr": 464,
+      "head": "f6ee226c146c4c31d88ce5b845449ce21758cdeb",
+      "result": "CHATGPT_PS_MECHANICS_12_PASSED__ONE_UNCHANGED_T2D_HOSTILE_RED__MACHA_REVIEW_PENDING",
+      "ci": {
+        "mechanics": 40536232358,
+        "red": 40536232091
+      },
+      "test_results": "12 mechanical tests passed; original T2-D failed; no external authenticated scan/issuer"
+    },
+    {
+      "pr": 457,
+      "head": "5dd02b0954906618202459dd89f36a62f2f02de7",
+      "result": "PUBLIC_E2G_POSTHOC_TSS_GEOMETRY__NON_DECIDING_NONCAUSAL__NO_TF_IDENTITY_DISCRIMINATION",
+      "ci": {
+        "receipt": 40541457559,
+        "intake": 40541457592
+      },
+      "reported_evidence": "106 unique source+gene+peak+TSS comparisons, 3 >2kb from one PRDX1 peak across three external references; only 9 gene-matched motif/nonmotif pairs from 85 candidate peaks; 37/56 motif-tagged physical peaks reused across TF labels; source overlap indicators invariant to TF assignment at same gene+peak",
+      "source_limit": "Author-sourced posthoc readout, not raw-source re-verification in this audit, no direct TF occupancy or independent genome-build/Ensembl identity validation; no candidate TF ranking"
+    },
+    {
+      "pr": 459,
+      "head": "57e707149b46ca011eee096f01dc08b64aeb8f9f",
+      "result": "HISTORICAL_MA CHA_AUTHOR_CANDIDATE__INDEPENDENT_X1_SHORT_IO_RED_AT_PR462"
+    },
+    {
+      "pr": 460,
+      "head": "f750aa6989cabdcace7650e400a867556552d914",
+      "result": "PRIOR_V8D_SUCCESSOR_QUALIFIED__V8E_POINTER_UPDATE_REQUIRED"
+    }
+  ],
+  "governance": {
+    "macha_reviews": [
+      "467",
+      "464"
+    ],
+    "chatgpt_reviews": [
+      "465"
+    ],
+    "task4_cumulative_accepted": false,
+    "unified_task1_cumulative_accepted": false,
+    "production_synthetic_tasks1_2_cumulative_accepted": false,
+    "real_g7": false,
+    "stage4": false,
+    "real_training": false
+  },
+  "source_evidence_type": "GITHUB_PR_SHA_AND_CI_PLUS_REVIEWER_SOURCE_DIFF__NOT_INDEPENDENT_BIOLOGICAL_AUTHENTICATION"
+}

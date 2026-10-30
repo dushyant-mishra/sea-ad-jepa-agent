@@ -1,0 +1,78 @@
+{
+  "schema": "JEPA_PS_TASK3_CHATGPT_INDEPENDENT_437_REVIEW_DELTA_V1",
+  "date": "2026-10-28",
+  "kind": "APPEND_ONLY_HOSTILE_REVIEW__SOURCE_UNMODIFIED__NOT_CALIBRATION_ACCEPTANCE",
+  "source_pr": 437,
+  "source_head": "fd3242ada6f77ba09ff2d8a1c7716eb9725ced11",
+  "source_path": "scripts/production_synthetic/calibration_v1.py",
+  "source_git_blob": "bafd0a24536a30ca927c9808e2feddda4cb29428",
+  "review_pr": 480,
+  "review_initial_ci_head": "3635eae7ee0df5a4e311f04c16e9ab0e6d574fff",
+  "review_final_documented_head": "f39e605abc616cf59051a8bda9b0270cef5d6f09",
+  "source_unchanged": true,
+  "tests_source_git_blob": "9f2ea674b41730faacd9801a82a20745e592d9ad",
+  "archived_test_source": "docs/agent/review_probes/chatgpt_20261028/ps_task3_437_expected_red_probe.py.txt",
+  "verdict": "REPAIR_REQUIRED__R1_NUMERIC_ALIAS__R2_OBS_PARAMETER_SPOOF",
+  "findings": [
+    {
+      "id": "R1",
+      "kind": "SCOPED_FIXTURE_NUMERIC_INVARIANCE_DEFECT",
+      "test": "test_r1_distinct_large_integer_universe_statistics_must_not_alias_via_float",
+      "observed": "float(2**53)==float(2**53+1), distinct exact int inputs accepted as equal fixture witness",
+      "authority_impact": "Fixture witness falsely asserts numeric equality but remains calibration-ineligible",
+      "real_data_executed": false
+    },
+    {
+      "id": "R2A",
+      "kind": "SCOPED_FIXTURE_TUNABLE_NAME_POLICY_DEFECT",
+      "test": "test_r2_observation_prefix_cannot_make_biological_tunable_parameters_legal[OBS_DISEASE_PREVALENCE]",
+      "observed": "RealismContract.frozen accepts biology-like OBS_ parameter by prefix only",
+      "authority_impact": "Does not prove actual generator changes biological mechanism; no generator attached",
+      "real_data_executed": false
+    },
+    {
+      "id": "R2B",
+      "kind": "SCOPED_FIXTURE_TUNABLE_NAME_POLICY_DEFECT",
+      "test": "test_r2_observation_prefix_cannot_make_biological_tunable_parameters_legal[OBS_TARGET_WINNER]",
+      "observed": "RealismContract.frozen accepts target-like OBS_ parameter by prefix only",
+      "authority_impact": "No target selected; required closed source-versioned observation registry absent",
+      "real_data_executed": false
+    }
+  ],
+  "ci": {
+    "review_expected_red_run": 40733195290,
+    "review_expected_red_conclusion": "SUCCESS_EXPECTED_RED_ASSERTION",
+    "review_hostile_failed": 3,
+    "review_nonpromotion_control_passed": 1,
+    "original_macha_unchanged_tests_passed": 33,
+    "full_task3_run": 40733195258,
+    "full_task3_conclusion": "FAILURE_INCLUDES_NEW_REVIEW_TESTS",
+    "full_task3_failed": 3,
+    "full_task3_passed": 391,
+    "full_task3_xfailed": 1,
+    "unified_synthetic_run": 40733195217,
+    "unified_synthetic_conclusion": "SUCCESS",
+    "review_final_doc_only_head_ci": "VERIFY_SEPARATELY__SOURCE_TEST_BLOB_UNCHANGED"
+  },
+  "preserve_positive": [
+    "All original 33 Task3 review-selected tests passed unchanged",
+    "Authenticated calibration registry is empty, fixture SHA self-match never authenticates source",
+    "Realism custody self-declares cooperative same-process only and no durable STOP_B lease",
+    "96-to-41238 statistic witness remains calibration-ineligible",
+    "No protected human donor rows or biological target analysis used"
+  ],
+  "external_blockers": [
+    "Real TRAIN observation-statistic issuer unqualified",
+    "Physical source/donor and q-excluded rights issuer absent",
+    "V3.1.1 candidate-neutral PS Task4 generator absent",
+    "T2-D external scan issuer RED",
+    "Frozen V79/V80 evaluation selection conflict unresolved"
+  ],
+  "next_actions": [
+    "Independently repair numeric witness without lossy float collapse; preserve non-authoritative outcome",
+    "Version and pin a closed observation-only tunable parameter registry, verify generator actual semantics independently",
+    "Rerun unchanged Macha tests and independent PR480 hostile suite on repair exact head",
+    "No source calibration registry promotion before authenticated source and split firewall"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

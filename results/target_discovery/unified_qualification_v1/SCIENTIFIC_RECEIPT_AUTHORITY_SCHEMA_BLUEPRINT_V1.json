@@ -1,0 +1,130 @@
+{
+  "schema": "SCIENTIFIC_RECEIPT_AUTHORITY_SCHEMA_BLUEPRINT_V1",
+  "date": "2026-10-14",
+  "authority": "ANALYSIS_ONLY__TASK1_SCHEMA_BLUEPRINT__TASK1_NOT_STARTED",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "canonical_domain": {
+    "scientific_values": "JSON_NATIVE_ONLY",
+    "numpy_scalar_behavior_in_authority_root": "FORBIDDEN_UNLESS_EXPLICITLY_CONVERTED_AT_PRODUCER_BOUNDARY",
+    "canonical_byte_compatibility_oracle": "OLD_TASK1_CANONICAL_COMPATIBILITY_VECTORS_V1",
+    "ordered_registry_semantics": "ORDER_SENSITIVE",
+    "keyed_semantic_row_set_semantics": "STORAGE_AND_SHARD_ORDER_INVARIANT",
+    "historical_synthetic_digest_namespace_reused_as_unified_authority": false
+  },
+  "scientific_receipt_required_fields": [
+    "receipt_schema",
+    "receipt_schema_digest",
+    "receipt_payload",
+    "receipt_payload_digest",
+    "producer_code_identity",
+    "static_policy_identities",
+    "exact_input_digests",
+    "parent_receipt_digests",
+    "parent_artifact_digests",
+    "output_artifact_digest",
+    "execution_manifest_digest",
+    "qualification_registry_digest",
+    "population_access_receipt_digest",
+    "authority_record_digest",
+    "execution_identity",
+    "created_at"
+  ],
+  "authority_record_required_fields": [
+    "authority_schema",
+    "authority_identity",
+    "scientific_unit_identity",
+    "qualification_stage",
+    "active_lineage_status",
+    "authority_scope",
+    "promotion_or_registration_receipt_digest",
+    "current_manifest_digest_or_null",
+    "current_registry_digest_or_null",
+    "required_parent_authorities",
+    "revocation_or_supersession_receipt_digest_or_null"
+  ],
+  "qualification_stage_order": [
+    "SEMANTICS_ONLY",
+    "FIXTURE_SAME_INTERFACE",
+    "SAME_CODE_PATH",
+    "KNOWN_TRUTH_QUALIFIED",
+    "REAL_REFERENCE_READY",
+    "HUMAN_EXECUTABLE",
+    "HUMAN_EXECUTED",
+    "DOWNSTREAM_CERTIFIED",
+    "TRAINING_ELIGIBLE",
+    "TRAINING_AUTHORIZED"
+  ],
+  "active_lineage_status_values": [
+    "ACTIVE",
+    "SUPERSEDED",
+    "REVOKED_BY_DEFECT",
+    "REQUIRES_REQUALIFICATION"
+  ],
+  "authority_scope_examples": [
+    "UNIT:G8",
+    "UNIT:R1",
+    "PIPELINE:TD",
+    "BUNDLE:TARGET_QUALIFICATION",
+    "PIPELINE:DOWNSTREAM",
+    "PROJECT:TRAINING"
+  ],
+  "canonical_verification_algorithm": [
+    "RESOLVE_AND_VALIDATE_ALLOWED_SCHEMA_IDENTITY",
+    "CANONICALIZE_RECEIPT_PAYLOAD_FROM_BYTES_OR_JSON_NATIVE_OBJECT",
+    "RECOMPUTE_PAYLOAD_DIGEST",
+    "COMPARE_TO_DECLARED_PAYLOAD_DIGEST",
+    "RECOMPUTE_OUTPUT_ARTIFACT_DIGEST_FROM_OUTPUT_BYTES",
+    "RESOLVE_AND_RECOMPUTE_EVERY_PARENT_RECEIPT",
+    "RESOLVE_AND_RECOMPUTE_EVERY_PARENT_ARTIFACT",
+    "VERIFY_PRODUCER_CODE_AND_STATIC_POLICY_IDENTITIES",
+    "VERIFY_EXACT_INPUT_IDENTITIES",
+    "VERIFY_MANIFEST_REGISTRY_AND_ACCESS_RECEIPT_IDENTITIES",
+    "VERIFY_AUTHORITY_RECORD_STAGE_STATUS_AND_SCOPE",
+    "WALK_COMPLETE_AUTHORITY_CHAIN_TO_FROZEN_ROOT_SET",
+    "FAIL_CLOSED_ON_MISSING_BYTES_PARENT_SCHEMA_IDENTITY_OR_CONFLICT"
+  ],
+  "declared_digest_law": "DECLARED_DIGEST_IS_COMPARISON_ONLY__NEVER_AUTHENTICATION_BY_ITSELF",
+  "parent_identity_laws": [
+    "DUPLICATE_PARENT_IDENTITY_WITH_DIFFERENT_PAYLOAD_REJECTED",
+    "MISSING_PARENT_REJECTED",
+    "VALID_CHILD_WITH_INVALID_REVOKED_OR_UNVERIFIABLE_ACTIVE_PARENT_INVALID_FOR_ACTIVE_AUTHORITY",
+    "HISTORICAL_CHILD_BYTES_REMAIN_IMMUTABLE_AFTER_PARENT_REVOCATION",
+    "BRANCH_OR_PR_NAVIGATION_NEVER_SATISFIES_PARENT_IDENTITY"
+  ],
+  "stage_status_scope_laws": [
+    "PASS_GREEN_QUALIFIED_MECHANICS_QUALIFIED_ARE_NOT_STAGES",
+    "ONLY_ACTIVE_IDENTITY_MAY_ENTER_NEW_MANIFEST",
+    "UNIT_STAGE_CANNOT_IMPLY_PIPELINE_OR_PROJECT_STAGE",
+    "STAGE_HISTORICALLY_RETAINED_WHEN_ACTIVE_STATUS_CHANGES",
+    "DECISION_BEARING_CODE_POLICY_METRIC_SUPPORT_ACCESS_OR_REFERENCE_CHANGE_CREATES_NEW_IDENTITY",
+    "NO_AUTOMATIC_STAGE_INHERITANCE_TO_SUCCESSOR_IDENTITY"
+  ],
+  "revocation_receipt_required_fields": [
+    "affected_registry_identity",
+    "affected_stage",
+    "defect_class",
+    "defect_evidence_digests",
+    "revocation_status",
+    "successor_identity_or_null",
+    "required_requalification_scope",
+    "review_identity",
+    "parent_receipt_digests"
+  ],
+  "hostile_tests": [
+    "COPY_VALID_64HEX_DIGEST_TO_MUTATED_PAYLOAD_REJECTED",
+    "VALID_CHILD_STRING_WITH_MUTATED_PARENT_BYTES_REJECTED",
+    "DUPLICATE_CONFLICTING_PARENT_IDENTITY_REJECTED",
+    "UNKNOWN_RECEIPT_SCHEMA_REJECTED",
+    "MISSING_OUTPUT_BYTES_REJECTED",
+    "NON_JSON_NATIVE_SCIENTIFIC_VALUE_REJECTED",
+    "NUMPY_SCALAR_DIRECT_AT_AUTHORITY_ROOT_REJECTED",
+    "ORDERED_REGISTRY_REORDER_CHANGES_IDENTITY",
+    "KEYED_ROW_SET_STORAGE_REORDER_PRESERVES_IDENTITY",
+    "BARE_PASS_GREEN_OR_MECHANICS_QUALIFIED_REJECTED_AS_STAGE",
+    "MISSING_AUTHORITY_SCOPE_REJECTED",
+    "UNIT_SCOPE_KNOWN_TRUTH_STAGE_CANNOT_IMPLY_PROJECT_TRAINING",
+    "REVOKED_IDENTITY_CANNOT_ENTER_NEW_MANIFEST",
+    "MOVED_CODE_IDENTITY_CANNOT_INHERIT_OLD_STAGE"
+  ],
+  "terminal": "TASK1_SCIENTIFIC_RECEIPT_AUTHORITY_SCHEMA_BLUEPRINT_FROZEN__TASK1_NOT_STARTED__NO_AUTHORITY_CHANGE"
+}

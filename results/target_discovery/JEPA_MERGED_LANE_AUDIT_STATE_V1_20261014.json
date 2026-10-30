@@ -1,0 +1,102 @@
+{
+  "schema": "JEPA_MERGED_LANE_AUDIT_STATE_V1",
+  "date": "2026-10-14",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "branches": {
+    "audit": {
+      "pr": 322,
+      "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
+      "head_before_update": "9a3de06861f19b71ee3b1d7e2b1b15b85c811571"
+    },
+    "handoff": {
+      "pr": 323,
+      "branch": "handoff/jepa-lane-takeover-20261013",
+      "head_before_update": "6a514010ec9f5cb003cf8ed660e9e991b352d425"
+    },
+    "architecture": {
+      "pr": 379,
+      "head": "3064ca545f0c94859ea989cd49a04fcbd5b9a303"
+    },
+    "plan": {
+      "pr": 380,
+      "head": "5b6bf07e7d8b69b286ea430b09765a5ee4743325"
+    },
+    "task0": {
+      "pr": 381,
+      "head": "0b07550eaff5d327225693f10e7fc9cbce4dc515",
+      "independent_review": "PENDING"
+    }
+  },
+  "macha": {
+    "role": [
+      "independent_reviewer",
+      "historical_scientific_custodian"
+    ],
+    "real_td_stream": {
+      "pr314": "c6899a2910244a0352c0c57e7aea6e3026191da1",
+      "pr316": "2397ab83d8ae9d0c762a8fd5f3919edc350d137f",
+      "real_data_audit": "ccc3a08939694f5d35b3048c94ec44f44618eef4"
+    },
+    "v79_stream": {
+      "pr261": "f68c56b78b7a7f6d9590b922f94249b9f2f7f18f",
+      "v79_status": "NOT_QUALIFIED_IMMUTABLE",
+      "v80_scope": "BENCHMARK_PACKAGE_ONLY"
+    },
+    "current_instruction": "FINISH_OLD_SYNTHETIC_TASKS_1_AND_2_ONLY__THEN_STOP_FOR_AUDIT_AND_CONSOLIDATION"
+  },
+  "controlling_repairs": {
+    "G8": {"pr": 364, "head": "95dd474a02ce571722df9e8f08b42e81af2e8736"},
+    "G6": {"pr": 365, "head": "4110d4478c3353d86740dd135d62460ff7a7611f"},
+    "GEOMETRY": {"pr": 366, "head": "8d6b23a18051f64463ee9b2649f4fe5fc7123f0d"},
+    "R1": {"pr": 367, "head": "949d76ff03cb57c5a88fef9efdb79fced9154024"},
+    "G2": {"pr": 368, "head": "42df903d6190b7aa1b8eb65d810ab813cd327445"},
+    "G7": {"pr": 362, "head": "5a711f9a4ea0328445a05dadc1e011efb16a3c13"},
+    "R4_C6_C4": {"pr": 358, "head": "b7c317c640aa231a7d5ec1fa12271a39bfee86e6"},
+    "C4_REQUIRES_C6": {"pr": 351, "head": "2abcb9fe156eac340ff12adff9426ed38d929e3e"},
+    "G12": {"pr": 360, "head": "01ebdb9384b42d5cfae3de03c2adf5b6b327ee81"},
+    "SYSTEM_BATTERY": {"pr": 369, "head": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36"}
+  },
+  "superseded_duplicates": [375, 376, 377, 378],
+  "population_support": {
+    "pr": 349,
+    "head": "1ab453e5cb60efb209a8eee2aecb61c5ea0fbfc7",
+    "registry_payload_sha256": "50b29d7e1137c5a457fd0b528580030dedfbeff1b809e2b426f8f640ae38486d",
+    "rows": 6351753,
+    "donors": 149,
+    "operators": 42,
+    "sources": 3,
+    "donor_operator_strata": 2028,
+    "partitions": {"reader_fit": 104, "reader_validation": 22, "reader_oracle": 23},
+    "support_states": ["SUPPORTED", "UNSUPPORTED_STRUCTURAL", "BLOCKED_EVIDENCE_CONTRACT"]
+  },
+  "downstream": {
+    "targetportfolio_pr332": "902054ad62eede84086fc2e0a90ceb27e2191da7",
+    "c4_requires_c6_pr351": "2abcb9fe156eac340ff12adff9426ed38d929e3e",
+    "post_td_harness": "97dd73f49e1554053bbfab6c5369377a23a72ceb",
+    "historical_teacher_student_runtime": "76bf7912cc621756fdbbd82218025d8e4c00a057",
+    "rich_teacher_partial_rna_pr312": "2ca8a91a960c823cc327d3885d008d3695837e83",
+    "only_lawful_handoff": "TARGET_QUALIFICATION_BUNDLE_V1",
+    "training_authorized": false
+  },
+  "external_artifacts": {
+    "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip": {"sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444", "bytes": 410278055},
+    "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip": {"sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7", "bytes": 607959761},
+    "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001": {"sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e", "bytes": 303979881},
+    "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002": {"sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875", "bytes": 303979880},
+    "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz": {"sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70", "bytes": 1541298},
+    "checkpoints.zip": {"sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c", "bytes": 72058811, "role": "FORENSIC_ONLY"},
+    "t1_checkpoint_u0200.zip": {"sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c", "bytes": 233441922, "role": "FORENSIC_ONLY"},
+    "expression.zip": {"sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4", "bytes": 3615774}
+  },
+  "no_repeat": [
+    "DO_NOT_REDOWNLOAD_AUTHENTICATED_REAL_DATA",
+    "DO_NOT_REPEAT_GENERIC_SUPPORT_CENSUS",
+    "DO_NOT_RERUN_SPENT_PR314_CORRECTED_REPLAY",
+    "DO_NOT_RERUN_V79",
+    "DO_NOT_PROMOTE_V80_TO_ESTIMATOR_OR_HUMAN_AUTHORITY",
+    "DO_NOT_REVIVE_PRS_375_378",
+    "DO_NOT_OPEN_READER_VALIDATION_OR_ORACLE_TO_RESCUE_ESTIMABILITY",
+    "DO_NOT_GENERATE_EXPENSIVE_REAL_REFERENCES_BEFORE_OWNING_INTERFACES_QUALIFY",
+    "DO_NOT_START_UNIFIED_TASK1_BEFORE_TASK0_INDEPENDENT_ACCEPTANCE"
+  ]
+}

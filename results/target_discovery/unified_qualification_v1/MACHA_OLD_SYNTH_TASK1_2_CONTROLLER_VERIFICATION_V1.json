@@ -1,0 +1,54 @@
+{
+  "schema": "MACHA_OLD_SYNTH_TASK1_2_CONTROLLER_VERIFICATION_V1",
+  "date": "2026-10-14",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "review_scope": "controller-side verification of old PR356 synthetic Tasks 1-2 only; no independent scientific acceptance and no Task 3 authorization",
+  "source_branch": "implementation/production-synthetic-v3-1-1-20261014",
+  "source_head_sha": "ff597faf2182522a320ec5322f8db9b67c9c6094",
+  "source_head_reverified_unchanged": true,
+  "review_pr": 382,
+  "review_branch": "review/macha-old-synth-task1-2-controller-ci-20261014",
+  "review_head_sha": "416e36d142e949d8eac16dad32e2a2917a9382ae",
+  "review_merge_ref_sha": "ccf980400472d3fdc3d61bcdfdaf11c91fd9dcc6",
+  "focused_review_run": {
+    "workflow_run_id": 38644641042,
+    "job_id": 116128364543,
+    "conclusion": "success",
+    "pytest_result": "332 passed in 8.94s",
+    "tests": [
+      "tests/production_synthetic/test_canonical_v1.py",
+      "tests/production_synthetic/test_custody_v1.py",
+      "tests/production_synthetic/test_custody_v1_hostile.py"
+    ]
+  },
+  "inherited_integration_run": {
+    "workflow_run_id": 38644640881,
+    "conclusion": "success",
+    "workflow": "unified synthetic integration v1"
+  },
+  "task1": {
+    "classification": "ADAPT_AND_WRAP__DIRECT_REUSE_CANDIDATE_FOR_CANONICAL_PRIMITIVES",
+    "accepted_as_unified_task1_complete": false,
+    "reason": "canonical raw/semantic/registry/row-set identity implementation is strongly tested, but unified Task 1 additionally requires authority envelope, recursive parents, qualification stage, lineage status and scope semantics"
+  },
+  "task2": {
+    "classification": "ADAPT_AND_WRAP__SEALED_CUSTODY_RNG_SUBSTRATE",
+    "accepted_as_unified_task2_complete": false,
+    "reason": "old Task 2 implements sealed synthetic custody/RNG; unified Task 2 is TD_EXECUTION_MANIFEST_V1 plus population/access-law and producer-access receipts"
+  },
+  "mandatory_migrated_obligations": [
+    "ONE_EXTERNALLY_ANCHORED_GENESIS_LEDGER_PER_TESTBED",
+    "PUBLISH_LEDGER_HEAD_AFTER_EVERY_ENTRY_AND_VERIFY_EXPECTED_HEAD_ON_LOAD",
+    "REPORT_PER_METHOD_AND_LINEAGE_WIDE_QUALIFICATION_DRAW_MULTIPLICITY",
+    "REGENERATE_REVEALED_REALIZATIONS_AND_VERIFY_CONTENT_DIGESTS",
+    "SCAN_FULL_EXACT_COMMITTED_TREE_FOR_SECRETS_ACROSS_PUBLISHED_COMMITS",
+    "INDEPENDENT_REVIEW_OF_GENERATOR_DEFECT_RECORDS"
+  ],
+  "remaining_gate": "FRESH_INDEPENDENT_REVIEWER_ACCEPTANCE_REQUIRED_BEFORE_TASK0_FINAL_ACCEPTANCE_OR_ANY_UNIFIED_TASK1_START",
+  "old_task3_authorized": false,
+  "old_task4_authorized": false,
+  "old_tasks5_12_authorized_independently": false,
+  "candidate_outcomes_opened": false,
+  "reader_validation_opened": false,
+  "reader_oracle_opened": false
+}

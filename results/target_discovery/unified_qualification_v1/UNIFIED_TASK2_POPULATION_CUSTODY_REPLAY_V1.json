@@ -1,0 +1,34 @@
+{
+  "schema": "UNIFIED_TASK2_POPULATION_CUSTODY_REPLAY_V1",
+  "date": "2026-10-15",
+  "evidence_class": "METADATA_ONLY_CUSTODY_REPLAY",
+  "source_asset": {
+    "artifact": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+    "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "custody": "LOCAL_UPLOADED_BUNDLE__NOT_REPUBLISHED"
+  },
+  "reader_split": {
+    "raw_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+    "raw_bytes": 3589,
+    "columns": ["donor_id", "reader_partition"],
+    "rows": 149,
+    "partition_counts": {
+      "reader_fit": 104,
+      "reader_validation": 22,
+      "reader_oracle": 23
+    },
+    "donor_ids_published_in_receipt": false
+  },
+  "canonical_population_registry_sha256": "50b29d7e1137c5a457fd0b528580030dedfbeff1b809e2b426f8f640ae38486d",
+  "historical_population_lineage_head": "1ab453e5cb60efb209a8eee2aecb61c5ea0fbfc7",
+  "audit_boundaries": {
+    "expression_opened": false,
+    "candidate_outcomes_opened": false,
+    "reader_validation_biological_values_opened": false,
+    "reader_oracle_biological_values_opened": false,
+    "target_selection_performed": false,
+    "representation_selection_performed": false
+  },
+  "interpretation": "Confirms byte custody and partition metadata only. It does not constitute biological evidence, target qualification, or protected-partition access authority.",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

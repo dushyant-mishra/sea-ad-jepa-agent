@@ -1,0 +1,293 @@
+{
+  "schema": "JEPA_FINAL_LANE_TAKEOVER_FREEZE_20261028_V1",
+  "created_date": "2026-10-28",
+  "classification": "APPEND_ONLY_FINAL_NAVIGATION_AND_CUSTODY__NO_NEW_BIOLOGICAL_EXECUTION",
+  "parent_audit_head_at_freeze": "def7a42823454f2969604b03bd94642f595b06ef",
+  "parent_handoff_head_at_freeze": "0ab7b5694c836e5db49f800ad7b396f73f30334e",
+  "frozen_independently_reviewed_v8e_head": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+  "scientific_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "start_here_artifacts": [
+    {
+      "path": "docs/agent/JEPA_COMPLETE_LANE_TAKEOVER_FREEZE_20261028.md",
+      "blob": "46cee25071d6891bdb6b95e9ac3275f25ffcefa2",
+      "role": "COMPLETE_NO_REPEAT_SOURCE_INDEX"
+    },
+    {
+      "path": "docs/agent/JEPA_LANE_TAKEOVER_MASTER_20261028.md",
+      "blob": "89ad6477b801ce1f5bda3d0b1f7af383ed79235b",
+      "role": "SCIENTIFIC_AND_ENGINEERING_MASTER_TIMELINE"
+    },
+    {
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_CURRENT_SUCCESSOR_FREEZE_20261028.json",
+      "blob": "49e47fc74aceca092a3f4f2cbf25e4bb94de10b2",
+      "role": "LATEST_REVIEW_AND_REPAIR_LEDGER"
+    },
+    {
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_LANE_TAKEOVER_MASTER_20261028.json",
+      "blob": "4d8e1284b6ebcf6a0f9e706bcbae76193a6c48ee",
+      "role": "MASTER_MACHINE_MIRROR"
+    },
+    {
+      "path": "docs/agent/JEPA_MACHA_V2_G7_OBSERVATION_CONTRACT_DELTA_20261028.md",
+      "blob": "fafa64b43b56c2207963d6920df0f46d5c6ebb93",
+      "role": "INDEPENDENT_MACHA_479_476_477_REVIEW_AND_G7_CONTRACT"
+    },
+    {
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_MACHA_V2_G7_OBSERVATION_CONTRACT_DELTA_20261028.json",
+      "blob": "66dabe48970cda74d5843379b08853c9e10cca05",
+      "role": "MACHA_REVIEW_MACHINE_MIRROR"
+    },
+    {
+      "path": "docs/agent/JEPA_PS_TASK3_MACHA437_INDEPENDENT_REVIEW_20261028.md",
+      "blob": "3ea78eed8965cd46478bf980ab2d7105a2c689f6",
+      "role": "CHATGPT_INDEPENDENT_TASK3_REVIEW"
+    },
+    {
+      "path": "results/production_synthetic/JEPA_TASK3_CHATGPT_INDEPENDENT_REVIEW_20261028.json",
+      "blob": "f4da4386d948a47233f07f9c8d50fb31c0200d8e",
+      "role": "TASK3_REVIEW_MACHINE_MIRROR"
+    },
+    {
+      "path": "docs/agent/JEPA_CHAT_EXCLUSIVE_LANE_TAKEOVER_V1_20261027.md",
+      "role": "EARLIER_HUMAN_BIOLOGY_AND_CHAT_SOURCE_NO_REPEAT_INDEX"
+    },
+    {
+      "path": "results/target_discovery/chat_exclusive_takeover_20261027/CHAT_LOCAL_SOURCE_SHA256_INVENTORY_V1.json",
+      "role": "ORIGINAL_CHAT_LOCAL_FILE_HASH_AND_CUSTODY_LEDGER"
+    }
+  ],
+  "completed_science_no_repeat": [
+    {
+      "source": "PR314",
+      "head": "c6899a2910244a0352c0c57e7aea6e3026191da1",
+      "result": "TD56_PASS__TD57B_PASS__TD57C_NEAREST_THIRD_FAIL__TD59_PASS",
+      "interpretation": "C2_BROAD_MESOSCALE_ACTIVE_NOT_WINNER",
+      "repeat": false
+    },
+    {
+      "source": "R5_DEVELOPMENTAL",
+      "result": "QUERY_MEASURED_EIGHT_OTHER_GENES__HELDOUT_R2_0.4300__TECH_PLUS_Q_0.3496__Q_AGNOSTIC_0.2760__Q_COUNT_ONLY_0.1610",
+      "interpretation": "C3_QUERY_MEASURED_PRECEDENT_NOT_PRODUCTION",
+      "repeat": false
+    },
+    {
+      "source": "V44_REAL_RNA_PROXY",
+      "result": "SHARED_TRUNK_PROXY_R2_0.407823__ALTERNATIVE_A_0.402673",
+      "interpretation": "NO_QUERY_CONDITIONED_NEURAL_WINNER",
+      "repeat": false
+    },
+    {
+      "source": "STAGE69_70_RARE",
+      "interpretation": "RARE_SPECIALIST_NEGATIVE_OR_WEAK_PRIOR_NOT_C3",
+      "repeat": false
+    },
+    {
+      "source": "PR164_ATAC_SCENIC",
+      "interpretation": "SEPARATE_NUCLEI__NO_SAME_CELL_PAIRING__SHARED_ASSAY_DERIVATIVES_NOT_INDEPENDENT",
+      "repeat": false
+    },
+    {
+      "source": "PR77_CRISPR",
+      "interpretation": "MACROPHAGE_TARGET_ENGAGEMENT_NOT_ADULT_MICROGLIAL_CAUSAL_STATE",
+      "repeat": false
+    },
+    {
+      "source": "V79_V80",
+      "interpretation": "V79_NOT_QUALIFIED__V80_MECHANICS_ONLY__NO_RETROACTIVE_RELAXATION",
+      "repeat": false
+    }
+  ],
+  "existing_synthetic_and_downstream_reuse": [
+    {
+      "pr": 328,
+      "head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+      "scope": "LIMITED_SYNTHETIC_MECHANICS_FIXTURE_NOT_PRODUCTION_BIOLOGY"
+    },
+    {
+      "pr": 344,
+      "head": "847fe734b15e52f204f18903a124e1cfd3bf111d",
+      "scope": "V3_1_1_CANDIDATE_NEUTRAL_PRODUCTION_SYNTHETIC_DESIGN"
+    },
+    {
+      "pr": 379,
+      "scope": "UNIFIED_SOURCE_ARTIFACT_PRODUCER_EXECUTOR_REGISTRY_ARCHITECTURE"
+    },
+    {
+      "pr": 369,
+      "scope": "SEALED_GATE_TEST_OF_TEST_NOT_REAL_BIOLOGY"
+    },
+    {
+      "pr": 451,
+      "scope": "TASK5_FIXTURE_BRIDGE_ACCEPTED_WITH_LIMITATIONS"
+    },
+    {
+      "pr": 469,
+      "head": "7a6477244dfc817d929e210c38c1ea4b2d1a1927",
+      "scope": "432_SYNTHETIC_RNA_FIXTURE_ATOMS_TO_EXISTING_DOWNSTREAM_NOT_TQB"
+    },
+    {
+      "pr": 471,
+      "head": "7957b7578168532eabad8b2b75126bb71e6f43b7",
+      "scope": "HISTORICAL_AUGUST_ARCHIVE_97_OF_97_SHA_INTEGRITY_NOT_CURRENT_CALIBRATION"
+    }
+  ],
+  "current_independent_review_state": [
+    {
+      "source_pr": 479,
+      "source_head": "ae762d7096a94ac663a0788f6f577ba404e37536",
+      "review_pr": 481,
+      "review_head": "957fa4a558ce2bd219b5c2dec6dad8f65dca81ab",
+      "verdict": "REPAIR_REQUIRED",
+      "key_findings": [
+        "A1_DEPTH_SEMANTICS_NOT_PROVEN_BY_CONSUMER",
+        "A2_STUDENT_LABEL_SELF_DECLARED",
+        "A3_VIEW_SNAPSHOT_METACLASS_ROUTE",
+        "A4_EMPTY_BASE_REFUSAL_DEPENDS_ON_WITHHELD_MASS_INHERITED_FROM_474"
+      ],
+      "preserved_positive": "240_WORLDS_COMPLETE_STUDENT_OUTCOME_INVARIANCE"
+    },
+    {
+      "source_pr": 476,
+      "source_head": "26031df25b51087f2f3ec35a88eef2919d794c68",
+      "review_pr": 482,
+      "review_head": "58baa4f912c791866c1aae31eab797da9dca588a",
+      "verdict": "ACCEPT_INCREMENTAL_WITH_R1_R2_BLOCKERS",
+      "key_findings": [
+        "472_R5X_AND_R6_FIXED",
+        "NEW_STRICT_JSON_METACLASS_ROUTE",
+        "V3_DOES_NOT_CONSUME_BINDER_RECEIPT",
+        "R1_R1D_R2_11_EXTERNAL_HOSTILES_REMAIN"
+      ]
+    },
+    {
+      "source_pr": 477,
+      "source_head": "c83088de090bc4f2fc6bbee353c46070bcca7be5",
+      "review_pr": 483,
+      "review_head": "48ec018735a095571a0bfaa25b33f9b9deb40b39",
+      "verdict": "ACCEPT_INCREMENTAL_WITH_LIMITATIONS",
+      "key_findings": [
+        "INTC_UINTC_AND_TYPE_NAME_FIXES_HOLD",
+        "ISINSTANCE___CLASS___ROUTES",
+        "CHAINED_EXCEPTION_CAUSE_ROUTE",
+        "T2D_EXTERNAL_ISSUER_RED"
+      ]
+    },
+    {
+      "source_pr": 437,
+      "source_head": "fd3242ada6f77ba09ff2d8a1c7716eb9725ced11",
+      "review_pr": 480,
+      "review_head": "f39e605abc616cf59051a8bda9b0270cef5d6f09",
+      "verdict": "REPAIR_REQUIRED__R1_NUMERIC_ALIAS__R2_OBS_PARAMETER_SPOOF"
+    },
+    {
+      "source_pr": 486,
+      "source_head": "f17080516f77e79fb6f6cb44903cbabdb2a85dd7",
+      "role": "MACHA_TASK3_REPAIR_AGAINST_IMMUTABLE_480_TESTS",
+      "hosted_ci": "3_OF_3_WORKFLOWS_SUCCESS",
+      "claimed_fixes": [
+        "EXACT_NUMERIC_COMPARISON",
+        "CLOSED_VERSIONED_OBSERVATION_PARAMETER_REGISTRY",
+        "CALLER_STR_SUBCLASS_KEYS_REJECTED"
+      ],
+      "limitations": [
+        "OBSERVATION_PARAMETER_SEMANTICS_BOUND_FALSE",
+        "AUTHENTICATED_CALIBRATION_REGISTRY_EMPTY",
+        "COOPERATIVE_SAME_PROCESS_ONLY",
+        "NO_REAL_POST_CORRECTION_TRAIN_ISSUER"
+      ],
+      "independent_chatgpt_acceptance": false
+    }
+  ],
+  "observation_contract_decision_status": {
+    "status": "MACHA_PROPOSED__DECIDING_LANE_NOT_YET_ACCEPTED",
+    "D1": {
+      "name": "VISIBLE_BASE_MAPPED_SUM_V1",
+      "definition": "SUM_BASE_VISIBLE_MEASURED_SCALAR_COUNTS",
+      "private_input": false,
+      "consumer_law": "EXACT_EQUALITY_PER_RELEASED_CELL",
+      "recommended_default": true
+    },
+    "D2": {
+      "name": "BASE_EXCLUDED_PHYSICAL_DEPTH",
+      "definition": "D1_PLUS_AUTHENTICATED_RESIDUAL_MASS",
+      "recommended_default": false,
+      "requires": "PER_QUERY_PER_OPERATOR_OFF_LEDGER_ALIAS_AUDIT"
+    },
+    "physical_total": "PRIVATE_SOURCE_SIDE_ONLY",
+    "preserve_casebundle_v1_physical_library_semantics": true,
+    "preserve_g7_v1_count_le_library_size_for_physical_views": true,
+    "g7_cross_head": {
+      "schema_compatible": false,
+      "rename_adapter_accepted": 6,
+      "rename_adapter_worlds": 200,
+      "v3_reachable": false,
+      "physical_provenance_authenticated": false
+    }
+  },
+  "source_and_data_custody": {
+    "real_metadata_population": "6_351_753_METADATA_CELLS__149_DONORS__42_OPERATORS",
+    "historical_reader_fit_physical_scope": "4_553_407_READER_FIT_NUCLEI__8915_BLOCKS",
+    "reader_split": "104_FIT__22_VALIDATION__23_ORACLE",
+    "original_large_binaries_in_github": false,
+    "source_hash_inventory": "results/target_discovery/chat_exclusive_takeover_20261027/CHAT_LOCAL_SOURCE_SHA256_INVENTORY_V1.json",
+    "historical_archive_verification": "PR471_97_OF_97_MEMBER_SHA256_MATCH",
+    "raw_donor_or_per_cell_values_added_by_final_freeze": false,
+    "raw_binaries_recoverable_from_hash_alone": false,
+    "duplicate_pasted_text_sources": {
+      "status": "TWO_DISTINCT_ORIGINAL_FILES_WITH_SAME_BASENAME__BYTE_PRESERVED__HISTORICAL_ONLY",
+      "custody_doc": "docs/agent/chat_exclusive_20261028/PASTED_SOURCES_CUSTODY_AND_SUPERSESSION.md",
+      "custody_doc_git_blob": "e89b94d241cedbd8667a1adf77b02d9eec1110cb",
+      "machine_receipt": "results/target_discovery/chat_exclusive_takeover_20261028/DUPLICATE_PASTED_TEXT_SOURCE_CUSTODY_V1.json",
+      "machine_receipt_git_blob": "bc65e56035def6e198cdcb2cc65494f05c48d83a",
+      "sources": [
+        {
+          "path": "docs/agent/chat_exclusive_20261028/PASTED_TEXT_V8A_SUCCESSOR_20261027_TEXT_EXTRACT.md",
+          "original_bytes": 16837,
+          "original_sha256": "bce220c5fb6adf6e3e90ba464a9d4af01195390ae04fb2d4d00135b2a3b7ccd9",
+          "git_blob": "58b4312666aae179ef0f9877c3447ab5a120ea28",
+          "role": "HISTORICAL_V8A_SUCCESSOR_SOURCE__SUPERSEDED"
+        },
+        {
+          "path": "docs/agent/chat_exclusive_20261028/PASTED_TEXT_SYNTH_DOWNSTREAM_20261027_TEXT_EXTRACT.md",
+          "original_bytes": 12541,
+          "original_sha256": "d08e24d481e77a89ebf07428601fe6c54759a9050adf58346d0fa6cb5281a549",
+          "git_blob": "c99e2927845bad6acbea2191b6c8378d65913333",
+          "role": "HISTORICAL_SYNTH_DOWNSTREAM_SOURCE__SUPERSEDED_C3_RARE"
+        }
+      ],
+      "known_correction": "SYNTH_DOWNSTREAM_C3_RARE_WORDING_SUPERSEDED__C3_IS_QUERY_MEASURED",
+      "execute_as_instructions": false
+    }
+  },
+  "production_synthetic_blockers": [
+    "T2D_EXTERNAL_SCAN_ISSUER_RED",
+    "TASK3_REAL_TRAIN_OBSERVATION_CALIBRATION_ISSUER_UNQUALIFIED",
+    "G7_R1_PHYSICAL_UNIT_R1D_DONOR_AND_R2_NORMALIZATION_PROVENANCE_RED",
+    "V79_V80_EVALUATION_SELECTION_CONFLICT_UNRESOLVED",
+    "PS_TASK4_CANDIDATE_NEUTRAL_BIOLOGICAL_GENERATOR_ABSENT_IN_REVIEWED_BRANCHES",
+    "NO_SEALED_KNOWN_TRUTH_SCIENTIFIC_RUN"
+  ],
+  "next_agent_order": [
+    "READ_FINAL_HANDOFF_AND_MASTER_AUDIT; DO_NOT_RECRAWL_HISTORY",
+    "INDEPENDENTLY_REVIEW_PR486_AGAINST_IMMUTABLE_PR480_TESTS; DO_NOT_SELF_ACCEPT_MACHA_REPAIR",
+    "REPAIR_PR479_A1_A2_A3; HANDLE_A4_IN_PR474_SEPARATELY; PRESERVE_481_RED_TESTS",
+    "REPAIR_PR476_STRICT_JSON_METACLASS_AND_CREATE_COMPOSED_BIND_THEN_DECIDE_ENTRY; PRESERVE_R1_R1D_R2_RED",
+    "REPAIR_PR477_ISINSTANCE_CLASS_AND_CHAINED_CAUSE_PATHS; PRESERVE_T2D_RED",
+    "DECIDING_LANE_ACCEPT_OR_REJECT_D1_VISIBLE_BASE_MAPPED_SUM_V1; DO_NOT_SILENTLY_REDEFINE_LIBRARY_SIZE",
+    "SOURCE_ETL_DECOMPOSE_RESIDUAL_MASS_READER_FIT_ONLY_AND_QC/ALIAS_POLICY; EXTERNAL_SPECIMEN_QC_METADATA IF AUTHORIZED",
+    "ONLY_AFTER_TASKS1_3_AND_SOURCE_RIGHTS_QUALIFY, IMPLEMENT PS_TASK4_CANDIDATE_NEUTRAL_BIOLOGY_GENERATOR",
+    "THEN_RUN_ONE_IDENTIFIABLE_AND_ONE_NO_WINNER_WORLD_THROUGH_ACTUAL_COMMON_PRODUCERS/GATES/EXTERNAL_TRUTH",
+    "ONLY_THEN_REASSESS_CURRENT_C2_C3_OR_TARGET_NONE_FOR_JEPA"
+  ],
+  "do_not_repeat": [
+    "PR314_CORRECTED_ONE_SHOT",
+    "R5_DEVELOPMENTAL_QUERY_CONTEXT",
+    "V44_PROXY_TOURNAMENT",
+    "STAGE69_70_RARE",
+    "PR164_ATAC_SCENIC_SOURCE_AUDIT",
+    "PR77_CRISPR_TARGET_ENGAGEMENT",
+    "MACHAS_8915_BLOCK_RAWCOUNT_CENSUS",
+    "PR328_369_451_469_EXISTING_FIXTURE_RUNS",
+    "PR471_97_OF_97_ARCHIVE_HASHING_UNLESS_NEW_BYTES_REACQUIRED"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "schema": "DOWNSTREAM_HISTORICAL_TEST_EVIDENCE_DELTA_V1",
+  "date": "2026-10-14",
+  "authority": "HISTORICAL_TEST_EVIDENCE_ONLY__NO_CURRENT_DOWNSTREAM_OR_TRAINING_AUTHORITY",
+  "tests": [
+    {
+      "test_id": "V5_INACTIVE_UPDATE_REFERENCE_TESTS",
+      "package_ids": ["J", "L", "N"],
+      "commit": "c2bd13e8389dd25dc61612ef2aea88dc53099029",
+      "path": "tests/test_teacher_student_v5_inactive_update_reference.py",
+      "blob_sha": "68b6d265e2a5be61d352ca967fc4e21fa94f3a8f",
+      "demonstrated": [
+        "ONE_OPTIMIZER_STEP",
+        "NO_TEACHER_GRADIENTS",
+        "EXACT_EMA_EQUATION_AT_CALLER_SUPPLIED_MOMENTUM",
+        "EXECUTION_AND_TRAINING_AUTHORITY_FALSE",
+        "DETERMINISTIC_REPLAY_SAME_INITIAL_STATE",
+        "TOKEN_BUDGET_CHANGES_PARTITION_NOT_CELL_SET_OR_SCIENTIFIC_WEIGHT_MASS",
+        "CHECKPOINT_RESUME_MATCHES_UNINTERRUPTED_TWO_UPDATE_PATH",
+        "CHECKPOINT_CURSOR_OPTIMIZER_STEP_MISMATCH_FAILS_CLOSED",
+        "FLOAT_CURSOR_REJECTED"
+      ],
+      "does_not_demonstrate": [
+        "CURRENT_PRODUCTION_GPU_RUNTIME",
+        "CURRENT_PROTECTED_REGISTRY",
+        "CURRENT_TQB_BOUND_RUNTIME",
+        "PROSPECTIVELY_QUALIFIED_EMA_HALF_LIFE",
+        "TRAINING_AUTHORITY"
+      ]
+    },
+    {
+      "test_id": "V5_SCIENTIFIC_TARGET_V2_TESTS",
+      "package_ids": ["A", "F"],
+      "commit": "c2bd13e8389dd25dc61612ef2aea88dc53099029",
+      "path": "tests/test_teacher_student_v5_scientific_target_v2.py",
+      "blob_sha": "b0df4f9b26583fbf8f59172f14193ae52334273e",
+      "demonstrated": [
+        "DONOR_UNIFORM_CELL_UNIFORM_WITHIN_DONOR_BASE_TARGET",
+        "OPERATOR_DOES_NOT_SET_BASE_SCIENTIFIC_MASS",
+        "RELATIONAL_OPERATOR_IS_ADMISSIBILITY_BOUNDARY_NOT_EQUAL_MASS",
+        "RELATIONAL_GROUP_MASS_PROPORTIONAL_TO_ELIGIBLE_CELL_PREVALENCE",
+        "NO_TRIPLET_CAPACITY_WEIGHTING_BEYOND_LINEAR_ANCHOR_PREVALENCE",
+        "TD57B_TD59_TD60_HISTORICAL_QUALIFICATION_BOUNDARY_NOT_REWRITTEN",
+        "V1_EQUAL_OPERATOR_TARGET_RETAINED_AS_SUPERSEDED_HISTORY",
+        "COMMON_CORE_DATA_SUPPORT_EXISTS_WHILE_NUMERIC_STUDENT_SCHEDULE_REMAINS_UNFROZEN"
+      ],
+      "does_not_demonstrate": [
+        "EXACT_CURRENT_TQB_TARGET_SEMANTICS",
+        "CURRENT_TRAINING_PROPOSAL_Q",
+        "CURRENT_PRESENTATION_HORIZON",
+        "CURRENT_MASKING_OR_VIEW_SCHEDULE",
+        "EXECUTION_OR_TRAINING_AUTHORITY"
+      ]
+    },
+    {
+      "test_id": "HISTORICAL_TARGET_QUERY_MECHANIC_TEST",
+      "package_ids": ["D"],
+      "commit": "c2bd13e8389dd25dc61612ef2aea88dc53099029",
+      "path": "tests/v4/test_stage81a3_ipb_jepa.py",
+      "demonstrated": [
+        "BLOCK_PREDICTOR_QUERY_IS_DETERMINISTIC_FOR_GENE_IDENTITY_AND_BLOCKS",
+        "ONLINE_RECEIVES_GRADIENTS_WHILE_EMA_TARGET_RECEIVES_NONE_IN_HISTORICAL_MECHANIC"
+      ],
+      "does_not_demonstrate": [
+        "TARGET_IDENTITY_SHORTCUT_IS_ACCEPTABLE",
+        "IDENTITY_ONLY_FRACTION_IS_SMALL",
+        "FIXED_TARGET_ADDRESS_CODE_IS_QUALIFIED",
+        "CURRENT_TQB_TARGET_QUERY_AUTHORITY"
+      ]
+    }
+  ],
+  "reuse_rule": "These tests are authoritative only for the historical claims listed in demonstrated. Current changed-input packages must port/rebind the tests and add delta assertions rather than inheriting higher authority."
+}

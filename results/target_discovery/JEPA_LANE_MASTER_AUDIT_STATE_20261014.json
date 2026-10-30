@@ -1,0 +1,179 @@
+{
+  "schema": "JEPA_LANE_MASTER_AUDIT_STATE_20261014",
+  "status": "CURRENT_DURABLE_TAKEOVER_STATE__NO_HISTORICAL_REAUDIT_REQUIRED_BY_DEFAULT",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "canonical_surfaces": {
+    "audit_pr": 322,
+    "audit_branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
+    "handoff_pr": 323,
+    "handoff_branch": "handoff/jepa-lane-takeover-20261013",
+    "synthetic_historical_audit_pr": 325,
+    "synthetic_handoff_pr": 324
+  },
+  "authority": {
+    "real_td_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "production_ema_selection_authorized": false,
+    "real_training_authorized": false,
+    "terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "synthetic_td": {
+    "phase1": {
+      "status": "COMPLETED_FROZEN_AUDITED",
+      "evidence_commit": "a1aed169be5f4552208128f9d71b2d601a657393",
+      "execution_commit": "1f474a44a6baabc667dbfda726e0755426c732e7",
+      "package_sha256": "0977c30f6551df72e244423e1b37733cafa9178099bd0b9ab796beb8a52d2115",
+      "prefit_archive_sha256": "ba0fa56a49ffa009a0225606fb48d8fb30c3bd410a6a264ef905db5d4bb18803",
+      "binding_sha256": "ab29bacd07fc6697eff8dfe48461ec5f1cc1ec7d378724b10def93910f98ac44",
+      "receipt_sha256": "e67aace8dfa8b9823cf8635155a48f5a78faed0a45bf9edb6f7adcba07737684",
+      "environment": {"python": "3.11.15", "numpy": "2.4.6"},
+      "rerun": "FORBIDDEN_FOR_CONVENIENCE"
+    },
+    "phase2_repair": {
+      "pr": 330,
+      "head": "7659030cd2fc9a2662c67a9bf4d23e0e8f3f1606",
+      "status": "GREEN_MECHANICAL_REPAIR",
+      "fit_engine_files_changed": false
+    },
+    "phase2": {
+      "status": "COMPLETED_QUALIFIED_INDEPENDENTLY_AUDITED",
+      "evidence_branch": "evidence/td-synthetic-phase2-adjudication-7659030c-20261013",
+      "evidence_head": "ef95199f2350d48cd1f534c21455e3de3bbcc448",
+      "receipt_sha256": "5382034332f24b0e37954b4f8e2cefe958f21ff644e6fd1ffec150d2478aa61b",
+      "qualification": "QUALIFIED",
+      "challenge_matches": "9/9",
+      "independent_audit_pr": 336,
+      "independent_audit_head": "b92f335b53a93805a5d05330dc0d61f0479b1dcf",
+      "independent_audit_run": 38478444632,
+      "independent_audit_job": 115574841300,
+      "audit_terminal": "PASS_PHASE2_EXECUTION_AND_CUSTODY",
+      "scope": "TEST_QUALIFICATION_ONLY",
+      "rerun": "NOT_AUTHORIZED_AND_NOT_NEEDED"
+    }
+  },
+  "real_tournament": {
+    "framework_pr": 313,
+    "framework_head": "206167a1eb86f1dec5f8285db56accbcd469bce9",
+    "candidate_outcomes_opened": false,
+    "qualify_eligible": false,
+    "initial_matrix": {"rows": 198, "required": 117, "not_applicable": 81},
+    "structural_pr334": {
+      "head": "976f15fb9e3b3de4f52cb7bd4aeebbec610974e1",
+      "mechanically_qualified_required_roles": 17,
+      "unique_structural_gates": ["G1", "R2", "Q1", "Q2", "Q3"]
+    },
+    "directional_pr340": {
+      "head": "42c3af6ba6d82737a465620f801e896239849184",
+      "status": "PASS_OUTCOME_BLIND_DIRECTIONAL_STRUCTURAL_EXECUTOR_MECHANICS",
+      "executor_bundle_sha256": "aaa002aec39944b0213f505a4e271d2413419e60f6ab57efce5da6ac65deba86",
+      "mechanical_projection_required_roles_qualified_total": 66,
+      "required_roles_outside_this_qualified_surface": 51,
+      "not_applicable": 81
+    },
+    "target_portfolio_pr332": {
+      "head": "902054ad62eede84086fc2e0a90ceb27e2191da7",
+      "status": "MULTIBLOCK_CONTRACT_GREEN",
+      "rule": "C1_C2_C3_INDEPENDENT_BLOCKS__C6_C4_OPTIONAL_COMPOSITES__C5_SPECIALIST_ONLY__NO_COMPENSATION"
+    }
+  },
+  "current_gate_surfaces": {
+    "G11_G12": {
+      "pr": 342,
+      "head": "f7e90c41bab10c7ff4abb3e69446975634483656",
+      "status": "STATIC_CONTRACT_GREEN__ACTUAL_FROZEN_POPULATION_EVIDENCE_SUPPORT_REGISTRY_STILL_REQUIRED",
+      "biological_outcome_computed": false
+    },
+    "G8": {
+      "pr": 343,
+      "head": "82d17bfb1650d97a95d5424160126791f09d7494",
+      "run": 38489523630,
+      "tests_passed": 11,
+      "status": "TECHNICAL_MEASUREMENT_REFERENCE_MECHANICS_GREEN__HUMAN_TECHNICAL_CALIBRATION_ARTIFACT_REQUIRED_BEFORE_BIOLOGICAL_USE"
+    },
+    "G6": {
+      "pr": 345,
+      "head": "f16ba70f7066db2928e31f31b7785831a8fc10f2",
+      "run": 38489595232,
+      "tests_passed": 10,
+      "status": "MATCHED_RIDGE_DIAGNOSTIC_MECHANICS_GREEN__EXACT_HUMAN_TEACHER_TARGET_AND_EVIDENCE_RIGHTS_REQUIRED"
+    },
+    "G7": {
+      "pr": 346,
+      "head": "5a314bdeda9078d5f65e995e49d2ebf5274751f6",
+      "run": 38490004001,
+      "tests_passed": 9,
+      "status": "STATIC_EVIDENCE_LADDER_GREEN__TERMINAL_STABILITY_DECISION_STILL_PROSPECTIVE"
+    },
+    "R1": {
+      "pr": 347,
+      "head": "877242a6c8206ea35a73ebf111cb6b52bbe79109",
+      "run": 38490456813,
+      "tests_passed": 13,
+      "status": "REPAIRED_ADDRESS_SCALE_FREE_TRIPLET_MANIFEST_GREEN__RECURRENCE_SCALAR_NULL_SUMMARY_AND_SUBSTANTIVE_RULE_STILL_REQUIRED"
+    },
+    "G9_S1_S2": {
+      "status": "HISTORICAL_MECHANICS_REUSABLE__TARGET_GEOMETRY_SPECIFIC_ALIGNMENT_NULL_AND_REFERENCE_NOT_YET_FROZEN",
+      "forbidden_threshold_reuse": "HISTORICAL_0.50_CANONICAL_CORRELATION"
+    },
+    "G2": {
+      "status": "UNRESOLVED_MAGNITUDE_RULE",
+      "required_solution": "SAME_METRIC_INDEPENDENT_TECHNICAL_OR_NUISANCE_REFERENCE__DO_NOT_USE_DONOR_REFIT_BIOLOGICAL_VARIABILITY_AS_TECHNICAL_NOISE"
+    },
+    "R4_C6_C4": {
+      "status": "UNRESOLVED_MEANINGFUL_INCREMENT_RULES",
+      "requirements": [
+        "same_metric_independent_substantive_reference",
+        "C6_must_beat_C1_and_C3_separately",
+        "C4_compares_only_to_independently_qualified_C6",
+        "no_composite_rescue_of_failed_constituents"
+      ]
+    }
+  },
+  "synthetic_integration": {
+    "pr328": {
+      "head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+      "status": "QUALIFIED_UNIFIED_MECHANICS_INTERFACE_FIXTURE_ONLY",
+      "receipt_sha256": "0cc1bc599dd0e77ec46f603d8a7edbb7da58762020a68d703b403dc7bf0a4dad",
+      "package_sha256": "9f2f3b7a53d5862a2a08bbd23c1d42f990f0f055616fbce7a1491493cda3fb41",
+      "stat1_50k_calibration": "QUARANTINED_NOT_HARD_AUTHORITY"
+    },
+    "pr344": {
+      "head": "f10d4f62b59a35cc443302ab8863c33d51b2b1de",
+      "status": "LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_DESIGN_V2__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF"
+    },
+    "v79": {
+      "status": "SEPARATE_STATISTICAL_LANE__NOT_QUALIFIED",
+      "gate_summary": "291/292",
+      "hard_fail": "Q08_SPARSE_POSITIVE_CONVERGENCE",
+      "not_diagnosed_fits": 3
+    }
+  },
+  "post_td_harness": {
+    "source_head": "97dd73f49e1554053bbfab6c5369377a23a72ceb",
+    "run": 38448458550,
+    "job": 115472916925,
+    "tests_passed": 47,
+    "status": "IMPLEMENTATION_READINESS_ONLY"
+  },
+  "external_asset_custody": {
+    "manifest": "docs/agent/JEPA_EXTERNAL_ARTIFACT_CUSTODY_MANIFEST_20261013.csv",
+    "policy": "LARGE_PRIVATE_BINARIES_HASH_SIZE_CLASSIFICATION_ONLY__DO_NOT_PUBLIC_UPLOAD",
+    "repaired_41k_combined_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "historical_checkpoint_policy": "FORENSIC_ONLY__NEVER_RESUME"
+  },
+  "successor_work_queue": [
+    "verify canonical audit/handoff branch heads and run custody CI before editing",
+    "do not restart historical archaeology; use master audit index and no-repeat matrix",
+    "instantiate and freeze actual real population/evidence/support registry for G11/G12",
+    "finish outcome-blind scientific contracts for G2, G7 terminal stability, R1 recurrence, G9/S1/S2, R4/C6/C4",
+    "freeze exact human teacher target and teacher/student evidence matrices before G6 human use",
+    "generate lawful human technical calibration for G8 before biological robustness adjudication",
+    "keep PR344 production-synthetic implementation OFF until user review/approval",
+    "only after every required real gate is materialized/hash-bound/qualified request fresh explicit real-TD QUALIFY authority",
+    "never open real candidate outcomes to complete engineering"
+  ]
+}

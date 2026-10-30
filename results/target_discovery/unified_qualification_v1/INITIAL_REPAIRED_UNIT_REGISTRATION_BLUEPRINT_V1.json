@@ -1,0 +1,125 @@
+{
+  "schema": "INITIAL_REPAIRED_UNIT_REGISTRATION_BLUEPRINT_V1",
+  "date": "2026-10-14",
+  "authority": "ANALYSIS_ONLY__TASK6_REGISTRATION_BLUEPRINT__NO_REGISTRY_PROMOTION",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "registration_laws": [
+    "EXACT_HEAD_IS_NAVIGATION_EVIDENCE_NOT_AUTHORITY_BY_ITSELF",
+    "REGISTER_SOURCE_PAYLOAD_CODE_POLICY_IDENTITIES_NOT_PR_METADATA",
+    "NO_INITIAL_FULL_UNIT_STAGE_ABOVE_FIXTURE_SAME_INTERFACE",
+    "A7_MODE_EQUIVALENCE_REQUIRED_BEFORE_SAME_CODE_PATH",
+    "SYSTEM_BATTERY_CANNOT_PROMOTE_CONSTITUENT_UNITS",
+    "OLD_PASS_GREEN_OR_QUALIFIED_STRINGS_DO_NOT_MAP_TO_CANONICAL_STAGE",
+    "MOVED_DECISION_BEARING_IDENTITY_CREATES_NEW_REGISTRY_IDENTITY",
+    "HUMAN_OR_TRAINING_SCOPE_ABSENT_FROM_INITIAL_REGISTRATIONS"
+  ],
+  "units": [
+    {
+      "unit_id": "G8",
+      "evidence_head": "95dd474a02ce571722df9e8f08b42e81af2e8736",
+      "initial_stage_ceiling": "FIXTURE_SAME_INTERFACE",
+      "active_lineage_status": "ACTIVE",
+      "authority_scope": "UNIT:G8",
+      "demonstrated": ["observation-state-aware thinning mechanics", "conformal arithmetic boundary repair"],
+      "blocked_by": ["U_G8_REFERENCE", "U_CANDIDATE_SUPPORT_OVERLAYS", "U_A7_MODE_EQUIVALENCE"],
+      "human_authority": false
+    },
+    {
+      "unit_id": "G6",
+      "evidence_head": "4110d4478c3353d86740dd135d62460ff7a7611f",
+      "initial_stage_ceiling": "FIXTURE_SAME_INTERFACE",
+      "active_lineage_status": "ACTIVE",
+      "authority_scope": "UNIT:G6",
+      "demonstrated": ["matched multi-output diagnostic mechanics", "zero-margin human authority revoked"],
+      "blocked_by": ["U_G6_MARGIN", "U_CANDIDATE_SUPPORT_OVERLAYS", "U_A7_MODE_EQUIVALENCE"],
+      "human_authority": false
+    },
+    {
+      "unit_id": "G9_S1_S2_GEOMETRY",
+      "evidence_head": "8d6b23a18051f64463ee9b2649f4fe5fc7123f0d",
+      "initial_stage_ceiling": "FIXTURE_SAME_INTERFACE",
+      "active_lineage_status": "ACTIVE",
+      "authority_scope": "UNIT:G9_S1_S2",
+      "demonstrated": ["geometry decision mechanics repair", "caller-supplied human authority revoked"],
+      "blocked_by": ["U_GEOMETRY_PRODUCER", "U_CANDIDATE_SUPPORT_OVERLAYS", "U_A7_MODE_EQUIVALENCE"],
+      "human_authority": false
+    },
+    {
+      "unit_id": "R1",
+      "evidence_head": "949d76ff03cb57c5a88fef9efdb79fced9154024",
+      "initial_stage_ceiling": "FIXTURE_SAME_INTERFACE",
+      "active_lineage_status": "ACTIVE",
+      "authority_scope": "UNIT:R1",
+      "demonstrated": ["ruler mechanics", "depth/detection null mechanics", "known-truth diagnostic mechanics"],
+      "blocked_by": ["U_R1_NULL", "U_CANDIDATE_SUPPORT_OVERLAYS", "U_A7_MODE_EQUIVALENCE"],
+      "human_authority": false
+    },
+    {
+      "unit_id": "G2",
+      "evidence_head": "42df903d6190b7aa1b8eb65d810ab813cd327445",
+      "initial_stage_ceiling": "FIXTURE_SAME_INTERFACE",
+      "active_lineage_status": "ACTIVE",
+      "authority_scope": "UNIT:G2",
+      "demonstrated": ["status semantics repair", "one-sided alpha frozen", "caller policy/zero-margin human authority revoked"],
+      "blocked_by": ["U_G2_POLICY", "U_CANDIDATE_SUPPORT_OVERLAYS", "U_A7_MODE_EQUIVALENCE"],
+      "human_authority": false
+    },
+    {
+      "unit_id": "G7",
+      "evidence_head": "5a711f9a4ea0328445a05dadc1e011efb16a3c13",
+      "initial_stage_ceiling": "FIXTURE_SAME_INTERFACE",
+      "active_lineage_status": "ACTIVE",
+      "authority_scope": "UNIT:G7",
+      "demonstrated": ["source-aware terminal decision mechanics", "source noncompensation semantics"],
+      "blocked_by": ["U_G7_EVIDENCE_PRODUCER", "U_CANDIDATE_SUPPORT_OVERLAYS", "U_A7_MODE_EQUIVALENCE"],
+      "human_authority": false
+    },
+    {
+      "unit_id": "R4_C6_C4_INCREMENT",
+      "evidence_head": "b7c317c640aa231a7d5ec1fa12271a39bfee86e6",
+      "initial_stage_ceiling": "FIXTURE_SAME_INTERFACE",
+      "active_lineage_status": "ACTIVE",
+      "authority_scope": "UNIT:R4_C6_C4",
+      "demonstrated": ["matched increment decision mechanics", "C4 cannot bypass independently qualified C6"],
+      "blocked_by": ["U_INCREMENT_PRODUCERS", "U_CANDIDATE_SUPPORT_OVERLAYS", "U_A7_MODE_EQUIVALENCE"],
+      "human_authority": false
+    },
+    {
+      "unit_id": "G12_SCOPE_GUARD",
+      "evidence_head": "01ebdb9384b42d5cfae3de03c2adf5b6b327ee81",
+      "initial_stage_ceiling": "FIXTURE_SAME_INTERFACE",
+      "active_lineage_status": "ACTIVE",
+      "authority_scope": "UNIT:G12",
+      "demonstrated": ["runtime claim-envelope scope guard mechanics"],
+      "blocked_by": ["U_G12_HUMAN_SUPPORT", "U_CANDIDATE_SUPPORT_OVERLAYS", "U_A7_MODE_EQUIVALENCE"],
+      "human_authority": false
+    },
+    {
+      "unit_id": "TD_SYSTEM_BATTERY_V3",
+      "evidence_head": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+      "initial_stage_ceiling": "FIXTURE_SAME_INTERFACE",
+      "active_lineage_status": "ACTIVE",
+      "authority_scope": "PIPELINE:TD",
+      "demonstrated": ["system mechanics and firewall regression battery"],
+      "blocked_by": ["ALL_REQUIRED_CONSTITUENT_A7_AND_PRODUCER_PREREQUISITES"],
+      "constituent_promotion_authority": false,
+      "human_authority": false
+    }
+  ],
+  "superseded_duplicate_heads": [
+    {"pr":375,"reason":"G6 duplicate can overstate closure; #365 stricter"},
+    {"pr":376,"reason":"superseded by controlling geometry #366"},
+    {"pr":377,"reason":"superseded by controlling R1 #367"},
+    {"pr":378,"reason":"superseded by controlling G2 #368"}
+  ],
+  "required_registration_tests": [
+    "SYSTEM_BATTERY_DOES_NOT_PROMOTE_CONSTITUENTS",
+    "OLD_STATUS_STRINGS_DO_NOT_PROMOTE_STAGE",
+    "NO_INITIAL_HUMAN_OR_TRAINING_SCOPE",
+    "STAGE_CANNOT_EXCEED_FIXTURE_WITHOUT_A7_RECEIPT",
+    "MOVED_CODE_IDENTITY_REQUIRES_NEW_UNIT_IDENTITY",
+    "SOURCE_PAYLOAD_IDENTITY_RECOMPUTED_NOT_TRUSTED_FROM_PR_METADATA",
+    "SUPERSEDED_DUPLICATE_LINEAGE_CANNOT_BECOME_ACTIVE_BY_NEWER_PR_NUMBER"
+  ],
+  "terminal": "TASK6_INITIAL_REGISTRATION_BLUEPRINT_FROZEN__ALL_FULL_UNITS_CEILING_FIXTURE_SAME_INTERFACE__NO_HUMAN_AUTHORITY"
+}

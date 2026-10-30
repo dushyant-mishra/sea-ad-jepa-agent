@@ -1,0 +1,101 @@
+Started, and the working branch is being updated continuously:
+
+`planning/v5-dataset-first-production-closure-20260912`
+
+I kept the source branch `repair/v5-qualified-target-guard-20260911` untouched.
+
+So far I’ve moved the dataset-first production path forward substantially:
+
+- **Killed the TRAIN-cache → FULL104 authority loophole.** The 42 corrected TRAIN shards can no longer produce a full-reader production PASS.
+- Added **canonical artifact hashing/binding**, so receipts are tied to their exact payload and parent artifacts rather than caller-supplied SHA strings.
+- Built the explicit **FULL104 → dimension-authority interface**. It rejects fixtures/synthetic data and now pins the actual authenticated metadata SQLite hash as well as the block/contract/audit/selection hashes.
+- Wrote the exact remote FULL104 execution contract:
+  `docs/agent/V5_FULL104_REMOTE_BINDING_EXECUTION_20260912.md`
+  This uses the real 8,915-block store and returns only a compact receipt.
+- Found and fixed a pre-existing test bug that prevented an intended CUDA-evidence rejection test from actually reaching production code.
+- Implemented the previously missing:
+  `scripts/v5_anticheat/derive_full_stream_dimension_family_v1.py`
+- Fixed a substantive dimension-firewall error: it incorrectly required `D_shared == longest supported prefix`, which contradicted the frozen one-SE selection rule. A valid result can have support through rank 7 but select rank 5.
+- Added the previously omitted explicit **held-donor predictability gate** to D_shared qualification.
+- Froze an outcome-blind prospective D_private selection candidate before seeing FULL104 dimension outcomes.
+- Froze and implemented an outcome-blind D_obs rule based on held-operator reconstruction of lawful observation descriptors.
+- Removed another stale shortcut: row-identity-only closure can no longer substitute for physical FULL104 expression closure in dimension authority.
+- Added **hash-bound dimension metric and selection artifacts**. D_private metrics must additionally descend from the exact frozen D_shared selection, preventing independently fabricated private-rank tables from being substituted.
+
+One particularly useful RED→GREEN cycle found two real bugs simultaneously. GitHub Actions initially reported:
+
+`2 failed, 91 passed`
+
+The failures were exactly the missing held-donor D_shared gate and incorrect firewall equality assumption. Both root causes were then repaired. The earlier FULL104 binding/provenance stage had already reached an exact GitHub Actions result of:
+
+`85 passed`
+
+with authority-source compilation also succeeding.
+
+I also created a permanent blocker ledger:
+
+`docs/agent/V5_DIMENSION_NUMERIC_AUTHORITY_BLOCKERS_20260912.md`
+
+That document is important because it prevents anyone from mistaking all this new machinery for an actual numeric dimension result.
+
+### What remains genuinely incomplete
+
+There are now three major pieces before we can lawfully produce real `D_shared / D_private / D_total / D_obs` values.
+
+**1. Physical FULL104 closure.**  
+The >30 GB, 8,915-block store must be found on the GPU laptop/attached drive and run through the exact V4 binder. We have the command, hashes and compact return format ready, but I cannot truthfully claim that physical execution from this environment.
+
+**2. Actual full-stream metric computation.**  
+The selectors and provenance system now exist, but we still need the executors that read FULL104 and compute the rank-by-rank quantities:
+
+```text id="2d3qct"
+D_shared:
+  full-refit matched-null signal
+  donor-resampled subspace stability
+  donor-held-out cross-view prediction
+  independent-view/sketch agreement
+  measurement-shortcut increment
+
+D_private:
+  donor-held-out increment
+  operator-held-out increment
+  measurement-shortcut increment
+  same-cell technical stability
+
+D_obs:
+  held-operator reconstruction of lawful observation descriptors
+```
+
+Those must operate on FULL104, not the historical cap-4 diagnostic subset.
+
+**3. Monte-Carlo precision authority.**  
+This is another historical gap I found. The firewall correctly says null and bootstrap replicate counts must come from a prospective error budget, but there is currently **no recovered executable rule deriving those counts**. Therefore I am specifically refusing to inherit historical `256`, `999`, or `1000` merely because they appeared in old code/tests.
+
+That is now documented as:
+
+```text id="by4w2u"
+FULL104 physical closure
+        ↓
+real full-stream metric executors
+        ↓
+prospective Monte-Carlo precision authority
+        ↓
+hash-bound rank metrics
+        ↓
+D_shared
+        ↓
+D_private
+        ├── D_total = D_shared + D_private
+        ↓
+D_obs
+        ↓
+DimensionExecutionFirewall
+        ↓
+DimensionAuthorityV4
+        ↓
+still NO training authority
+```
+
+The latest work has therefore done what you emphasized: **we are not choosing a model width and forcing the dataset into it. We are building the machinery that lets FULL104 determine the lawful dimensions, with every shortcut explicitly blocked.**
+
+I have not merged anything into `main`, have not touched protected data, and have not enabled training. The successor branch is the active work ledger.

@@ -1,0 +1,157 @@
+{
+  "schema": "TARGET_QUALIFICATION_BUNDLE_SCHEMA_BLUEPRINT_V1",
+  "date": "2026-10-14",
+  "authority": "ANALYSIS_ONLY__TASK7_SCHEMA_BLUEPRINT__NO_TQB_ISSUED",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "bundle_modes": ["TARGET_NONE", "SELECTED_TARGET_OR_PORTFOLIO"],
+  "required_common_fields": [
+    "bundle_schema",
+    "bundle_identity",
+    "terminal_target_state",
+    "execution_manifest_digest",
+    "qualification_registry_digest",
+    "controller_identity",
+    "controller_receipt_digest",
+    "population_access_policy_digest",
+    "targetportfolio_identity",
+    "target_semantics_digest",
+    "relation_semantics_digest",
+    "observation_contract_digest",
+    "support_universe_digest",
+    "evidence_rights_contract_digest",
+    "normalization_library_contract_digest",
+    "estimability_scope",
+    "required_sources",
+    "required_endpoints",
+    "producer_receipts",
+    "executor_or_gate_receipts",
+    "reference_receipts",
+    "mandatory_falsifiers",
+    "negative_controls",
+    "uncertainty_semantics",
+    "known_limitations",
+    "forbidden_interpretations",
+    "downstream_regression_requirements",
+    "representation_constraints",
+    "multimodal_provenance_constraints",
+    "information_channel_constraints",
+    "parent_receipt_digests",
+    "qualification_stage",
+    "active_lineage_status",
+    "authority_scope"
+  ],
+  "target_none_requirements": [
+    "manifest_registry_controller_and_falsifier_lineage_still_required",
+    "reasons_for_no_promotion_are_machine_visible",
+    "support_and_estimability_limitations_are_not_dropped",
+    "negative_controls_and_forbidden_interpretations_are_not_dropped",
+    "representation_multimodal_and_information_channel_constraints_are_preserved",
+    "TARGET_NONE_is_not_an_error_or_empty_bundle"
+  ],
+  "selected_target_requirements": [
+    "target_or_portfolio_identity",
+    "canonical_addresses",
+    "target_or_portfolio_membership_receipt",
+    "selected_candidate_support_scope",
+    "selected_candidate_estimability_scope",
+    "required_source_noncompensation_receipts",
+    "required_endpoint_noncompensation_receipts",
+    "all_required_unit_registry_identities_active",
+    "no_required_prerequisite_revoked_or_superseded"
+  ],
+  "representation_constraints": {
+    "required_fields": [
+      "representation_scope",
+      "technology_invariance_qualified",
+      "matrix_identifiability_scope",
+      "unavailable_matrices_or_strata",
+      "source_acquisition_limitations",
+      "forbidden_axis_semantics"
+    ],
+    "current_inherited_values_where_applicable": {
+      "representation_scope": "SUBSPACE_ONLY",
+      "technology_invariance_qualified": false,
+      "canonical_broad_available_matrices": 34,
+      "canonical_broad_total_matrices": 42,
+      "nph52_available_matrices": 0,
+      "nph52_total_matrices": 7
+    },
+    "forbidden_widening": [
+      "AXIS_SEMANTICS_FROM_SUBSPACE_ONLY",
+      "UNIVERSAL_TECH_TRANSFER_FROM_PARTIAL_MATRIX_SCOPE",
+      "DROP_UNAVAILABLE_MATRICES",
+      "RELABEL_SOURCE_ACQUISITION_SIGNAL_AS_PURE_TECHNICAL_WITHOUT_QUALIFICATION"
+    ]
+  },
+  "multimodal_provenance_constraints": {
+    "required_fields": [
+      "modality",
+      "same_nucleus_vs_separate_nucleus",
+      "independent_measurement_vs_rna_derived_hypothesis",
+      "regulatory_truth_status",
+      "incomplete_stopped_regulatory_work",
+      "negative_graph_control_prior"
+    ],
+    "forbidden_interpretations": [
+      "SAME_NUCLEUS_EQ_SEPARATE_NUCLEUS",
+      "RNA_DERIVED_EDGE_EQ_INDEPENDENT_REGULATORY_TRUTH",
+      "NEAREST_GENE_EQ_CAUSAL_TARGET",
+      "INCOMPLETE_SCENIC_WORK_AS_QUALIFIED_EVIDENCE",
+      "STRUCTURALLY_IDENTICAL_GRAPH_CONTROL_AS_VALID_SPECIFICITY_CONTROL"
+    ]
+  },
+  "information_channel_constraints": {
+    "required_fields": [
+      "normalization_and_library_provenance",
+      "full_library_mass_where_decision_bearing",
+      "stored_vs_unmaterialized_mass_semantics",
+      "source_donor_operator_hierarchy",
+      "per_source_estimability",
+      "no_zero_fill_interpretation",
+      "metric_blindness_limitations",
+      "nuisance_source_channel_obligations"
+    ],
+    "required_negative_controls": [
+      "NORMALIZATION_DENOMINATOR_SOURCE_SHORTCUT",
+      "EQUAL_ADDRESS_UNEQUAL_EVIDENCE_BURDEN",
+      "SILENT_TARGET_ZERO_FILL_FALSE_EASE",
+      "WITHIN_DONOR_METRIC_BLIND_TO_SOURCE_DONOR_CHANNEL"
+    ],
+    "withdrawn_finding": "FULL104_G_WITHDRAWN__DO_NOT_RESURRECT"
+  },
+  "permanent_cross_lane_invariants": [
+    "MEASURED_ZERO_DISTINCT_FROM_UNSUPPORTED",
+    "UNSUPPORTED_DISTINCT_FROM_UNRESOLVED",
+    "NUMERICAL_FAILURE_DISTINCT_FROM_BIOLOGICAL_FAIL",
+    "COUNTS_AND_NORMALIZATION_LIBRARY_MOVE_TOGETHER",
+    "EVIDENCE_ACQUISITION_DISTINCT_FROM_MEASUREMENT_DEPTH",
+    "BIOLOGICAL_NOVELTY_DISTINCT_FROM_MEASUREMENT_OOD",
+    "SOURCE_FAILURE_CANNOT_AVERAGE_AWAY",
+    "STABLE_SUBSPACE_DOES_NOT_AUTHORIZE_AXIS_SEMANTICS",
+    "SUPPORT_AND_ESTIMABILITY_SCOPE_CANNOT_WIDEN_DOWNSTREAM"
+  ],
+  "verification_laws": [
+    "RECOMPUTE_BUNDLE_CANONICAL_DIGEST",
+    "RECOMPUTE_MANIFEST_REGISTRY_CONTROLLER_AND_PARENT_RECEIPTS",
+    "VERIFY_ALL_REQUIRED_REGISTRY_UNITS_ACTIVE",
+    "VERIFY_ACCESS_RECEIPTS_LAWFUL",
+    "VERIFY_SCOPE_NOT_WIDER_THAN_QUALIFIED_SUPPORT_AND_ESTIMABILITY",
+    "VERIFY_MANDATORY_FALSIFIERS_AND_NEGATIVE_CONTROLS_PRESENT",
+    "VERIFY_FORBIDDEN_INTERPRETATIONS_PRESENT",
+    "TARGET_NONE_AND_SELECTED_TARGET_USE_SAME_CUSTODY_STRENGTH"
+  ],
+  "hostile_tests": [
+    "TARGET_NONE_WITH_EMPTY_LINEAGE_REJECTED",
+    "SELECTED_TARGET_WITH_WIDENED_SUPPORT_REJECTED",
+    "SELECTED_TARGET_WITH_WIDENED_ESTIMABILITY_REJECTED",
+    "MOVED_CONTROLLER_OR_PARENT_RECEIPT_REJECTED",
+    "SUBSPACE_ONLY_DROPPED_OR_REPLACED_BY_AXIS_SEMANTICS_REJECTED",
+    "UNAVAILABLE_MATRIX_SCOPE_DROPPED_REJECTED",
+    "SAME_SEPARATE_NUCLEUS_PROVENANCE_ERASURE_REJECTED",
+    "RNA_HYPOTHESIS_RELABELED_AS_INDEPENDENT_TRUTH_REJECTED",
+    "NORMALIZATION_LIBRARY_PROVENANCE_DROPPED_REJECTED",
+    "NONESTIMABLE_ZERO_FILL_INTERPRETATION_REJECTED",
+    "WITHDRAWN_FULL104_G_RESURRECTED_REJECTED"
+  ],
+  "terminal": "TASK7_TQB_SCHEMA_BLUEPRINT_FROZEN__TARGET_NONE_FIRST_CLASS__F6_F7_F9_INHERITANCE_EXPLICIT__NO_TQB_ISSUED"
+}
