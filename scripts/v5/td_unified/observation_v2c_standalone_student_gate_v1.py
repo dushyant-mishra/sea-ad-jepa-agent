@@ -132,7 +132,7 @@ def validate_student_v2c(*, student_view, expected_policy):
     For any input with a nonstudent/missing role, one constant refusal occurs
     BEFORE copying or inspecting rich teacher candidate content.
     """
-    if type(student_view) is not dict or dict.get(student_view,"view_kind")!=_STUDENT:
+    if type(student_view) is not dict or type(dict.get(student_view,"view_kind")) is not str or dict.get(student_view,"view_kind")!=_STUDENT:
         _deny("V2C accepts STUDENT_BASE_RIGHTS only")
     view=_snap(student_view)
     policy=_snap(expected_policy)
