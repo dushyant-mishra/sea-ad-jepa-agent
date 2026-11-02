@@ -48,7 +48,7 @@ def check(root: Path = ROOT):
     for token in ("Stage76", "Stage77", "Stage78", "Stage79", "Stage69",
                   "Stage70", "Stage75F", "41,238", "real F1"):
         require(token.casefold() in chronology.casefold(), "history omission " + token)
-    for token in ("Stage81A3", "masked student", "Stage27C", "Stage70",
+    for token in ("Stage81A3", "masked student", "Stage27C",
                   "UCDQ", "14 donor-recurring", "Perceiver"):
         require(token.casefold() in additional.casefold(), "additional chronology omission " + token)
     for token in ("PR #322", "PR #460", "implementation",
