@@ -1,0 +1,77 @@
+name: TD V2C Macha #514 review (tests only; RED expected)
+on:
+  pull_request:
+    paths:
+      - 'tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py'
+      - 'tests/v5/td_unified/test_v2_bound_content_502_macha_review_red.py'
+      - 'tests/v5/td_unified/test_v2b_public_student_gate_510_macha_review_red.py'
+      - '.github/workflows/td-v2c-macha514-review-red.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inherited-514-unchanged:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        numpy: ['1.26.4', '2.2.6']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1 numpy==${{ matrix.numpy }}
+      - name: 'Reviewed implementation and legacy modules are the #514 bytes'
+        shell: bash
+        run: |
+          test "$(git hash-object scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py)" = 360d3bcc54142deb32f17d3dee44cfb902d62fe6
+          test "$(git hash-object scripts/v5/td_unified/observation_normalization_view_v2_bound_content_v1.py)" = 02c703d0dbf545b32460f54dcdfcf43ae1bc0529
+          test "$(git hash-object scripts/v5/td_unified/observation_v2b_public_student_gate_v1.py)" = 6955bb8e6709af0e5e25ff20db87632b55379801
+          test "$(git hash-object tests/v5/td_unified/test_observation_v2c_standalone_student_gate_v1.py)" = 0f95457613e896f6212000eaabe6413860408789
+      - name: '#514 author suites, unchanged'
+        run: >-
+          python -m pytest -q -rf
+          tests/v5/td_unified/test_observation_v2c_standalone_student_gate_v1.py
+          tests/v5/td_unified/test_observation_v2b_public_student_gate.py
+          tests/v5/td_unified/test_observation_d1_base_only_student_fixture_v1.py
+
+  macha514-review:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        numpy: ['1.26.4', '2.2.6']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1 numpy==${{ matrix.numpy }}
+      - name: 'Unchanged Macha #507 (d5981430) and #512 (1a915431) reviewer files'
+        shell: bash
+        run: |
+          test "$(git hash-object tests/v5/td_unified/test_v2_bound_content_502_macha_review_red.py)" = d59814301715bbffe3e07501fe7be305358140cc
+          test "$(git hash-object tests/v5/td_unified/test_v2b_public_student_gate_510_macha_review_red.py)" = 1a915431f871520841de551bae85729695433639
+      - name: 'Preserved #507 + #512 at the #514 head (14 RED expected: legacy #502/#510 modules unchanged)'
+        run: >-
+          python -m pytest -q -rf
+          tests/v5/td_unified/test_v2_bound_content_502_macha_review_red.py
+          tests/v5/td_unified/test_v2b_public_student_gate_510_macha_review_red.py
+      - name: 'Macha #514 V2C hostile review (4 RED expected at 63099f6b)'
+        if: ${{ !cancelled() }}
+        run: >-
+          python -m pytest -q -rf
+          tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py
