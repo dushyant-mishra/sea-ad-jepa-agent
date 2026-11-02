@@ -52,3 +52,23 @@ def test_missing_main_router_fails(tmp_path):
     root = _fixture(tmp_path)
     (root / ROUTER).unlink()
     assert any("execution map missing" in item for item in check(root))
+
+
+def test_old_pending_reviewer_status_now_refused(tmp_path):
+    root = _fixture(tmp_path)
+    p = root / POINTER
+    d = json.loads(p.read_text())
+    d["current_task_status"] = "REPAIRED_V2C_D1_CONTAINER_AUTHOR_CI_GREEN__INDEPENDENT_MACHA_RECHECK_PENDING"
+    d["current_non_authorizing_implementation"]["independent_recheck"] = "PENDING"
+    p.write_text(json.dumps(d))
+    assert check(root)
+
+
+def test_fixture_acceptance_does_not_allow_runtime_or_launcher_attestation(tmp_path):
+    root = _fixture(tmp_path)
+    p = root / POINTER
+    d = json.loads(p.read_text())
+    d["current_non_authorizing_implementation"]["runtime_attested"] = True
+    d["current_non_authorizing_implementation"]["trusted_launcher_accepted"] = True
+    p.write_text(json.dumps(d))
+    assert any("fixture authority promoted" in item for item in check(root))
