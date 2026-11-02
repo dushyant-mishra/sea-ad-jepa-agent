@@ -104,11 +104,32 @@ def test_producer_accepts_only_redacted_base_values():
 @pytest.mark.parametrize("offledger",[0,10,99999])
 @pytest.mark.parametrize("collision",[0,8,101])
 def test_hidden_q_and_residual_worlds_have_identical_student_output(q,offledger,collision):
-    # Not in the producer's input; does not test external upstream roster selection.
-    world={"q":q,"offledger":offledger,"collision":collision}
-    assert all(isinstance(v,int) for v in world.values())
-    assert build()==build()
-    assert receipt()==receipt()
+    # Explicitly construct distinct full synthetic source worlds and project
+    # only base-rights scalars. The redactor is illustrative and UNAUTHENTICATED;
+    # this proves no dependency through this function signature, not QC/alias safety.
+    source_world=[]
+    for base_row in observations():
+        source_counts=dict(base_row["base_counts"])
+        source_counts.update({"ENSG_Q":q,"ENSG_E":11})
+        physical_total=sum(source_counts.values())+offledger+collision
+        source_world.append({
+            "cell_id":base_row["cell_id"],
+            "source_counts":source_counts,
+            "physical_total":physical_total,
+            "offledger":offledger,
+            "collision":collision,
+        })
+    redacted=[
+        {"cell_id":row["cell_id"],
+         "base_counts":{a:n for a,n in row["source_counts"].items()
+                         if policy()["address_rights"][a] in policy()["base_evidence_rights"]}}
+        for row in source_world
+    ]
+    assert redacted==observations()
+    assert build(o=redacted)==build()
+    assert receipt(build(o=redacted))==receipt()
+    assert all(x["physical_total"]>sum(x["source_counts"].values())-1
+               for x in source_world)
 
 
 @pytest.mark.parametrize("fault",[
