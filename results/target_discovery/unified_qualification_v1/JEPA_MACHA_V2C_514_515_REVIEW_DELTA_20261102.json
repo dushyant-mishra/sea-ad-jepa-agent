@@ -1,0 +1,43 @@
+{
+ "schema": "JEPA_MACHA_INDEPENDENT_REVIEW_DELTA_V1",
+ "date": "2026-11-02",
+ "author_lane": "Macha",
+ "document": "docs/agent/JEPA_MACHA_V2C_514_515_REVIEW_DELTA_20261102.md",
+ "reviewed": {
+  "514": {"head": "63099f6b17b14bcfcfd92b0334bf564e9cf8376d", "implementation_blob": {"scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py": "360d3bcc54142deb32f17d3dee44cfb902d62fe6"}},
+  "515": {"head": "fa06d486d5f8a130ff545690a8f0b12773c4f85d", "implementation_blob": {"scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py": "edee1b8adc1b5c7ca660d52d3667d2020abdb417", "scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py": "360d3bcc54142deb32f17d3dee44cfb902d62fe6"}}
+ },
+ "historical_red_preserved": {
+  "507": {"head": "a4894f366b9d73df03a675d0b70383dea6a36454", "test_blob": "d59814301715bbffe3e07501fe7be305358140cc", "red_at_514": 4},
+  "512": {"head": "16b5bc6c050222c592f88c35dc65b0a256d65402", "test_blob": "1a915431f871520841de551bae85729695433639", "red_at_514": 10}
+ },
+ "head_drift_at_start": "NONE",
+ "review_prs": {
+  "516": {"base_branch": "repair/chatgpt-v2c-standalone-20261030", "head": "881194aec9d99a9d42cbf206ffcb779429c4e768",
+          "new_test_blob": {"tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py": "8647c07a893d932ffa5f05a79be50c89c3c28b53"},
+          "tool_blob": {"tests/v5/td_unified/macha_514_515_mutation_audit.py": "b57d03a0231a55e9674c4f047f375f88d7fa4d59"},
+          "workflow_blob": {".github/workflows/td-v2c-macha514-review-red.yml": "1d3b838feb5c8af04f76929248543acb173ec15d"}},
+  "518": {"base_branch": "feature/chatgpt-d1-v2c-standalone-fixture-20261102", "head": "32c0a22b9ae6220ed03fe7d6e944da753c0e4a0c",
+          "new_test_blob": {"tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py": "2a63a753081012e10a9c6cb39b80e79d16848ebe"},
+          "workflow_blob": {".github/workflows/td-d1-v2c-macha515-review.yml": "1b793e61303e9eadd3526aa6b9d2c360bee22db8"}}
+ },
+ "verdicts": {
+  "514": {"fixture_consistency": "REPAIR_REQUIRED", "student_runtime_isolation": "NOT_TESTED", "isolation_record": "STUDENT_PROCESS_ISOLATION_NOT_YET_DEMONSTRATED", "source_rights_authentication": "NOT_AUTHENTICATED", "real_human_source_issuance": "BLOCKED"},
+  "515": {"fixture_consistency": "ACCEPT_SCOPED", "fixture_consistency_scope": "composition delta (producer edee1b8a and its contract) only; head inherits #514 REPAIR_REQUIRED via V2C 360d3bcc; recheck after rebase onto repaired #514", "student_runtime_isolation": "NOT_TESTED", "isolation_record": "STUDENT_PROCESS_ISOLATION_NOT_YET_DEMONSTRATED", "source_rights_authentication": "NOT_AUTHENTICATED", "real_human_source_issuance": "BLOCKED"}
+ },
+ "contradicted_by_attack_514": [
+  {"test": "test_red_role_check_runs_attacker_equality_before_the_snapshot[raising_eq|str_subclass|poisoned_truth]", "defect": "top-level key with hash('view_kind') runs attacker __eq__ inside dict.get before _snap; raw RuntimeError/LookupError/ZeroDivisionError escapes"},
+  {"test": "test_red_receipt_is_issued_for_a_snapshot_whose_role_was_never_checked", "defect": "role read twice on live dict and never on snapshot; STUDENT_ONLY receipt issued for a TEACHER_RICHER_RIGHTS-labelled snapshot; no withheld value exposed"}
+ ],
+ "suggested_repair_514": "refuse unless every top-level key is an exact str (checked without dispatch); read role once; re-require view['view_kind']=='STUDENT_BASE_RIGHTS' on the snapshot; local mutation audit 58/58 with no GREEN regression",
+ "unqualified_boundaries": ["self-supplied policy/view consistency only", "receipts are unkeyed digests and mintable", "alias classes inexpressible; #513 provisional table unenforced (MIR4307HG accepted; UBE2R2-AS1 query recoverable from D1 when legacy holder in base)", "query-dependent roster selection leaks detection", "self-declared pseudo-address carries physical total into D1", "wrong support state turns structural absence into measured zero", "no student deployment artifact; standalone -I -S -B launch reads teacher files and imports #502"],
+ "deployment_artifact_search": {"result": "NONE", "scope": "#515 tree path patterns (Dockerfile, containerfile, devcontainer, sandbox, seccomp, apparmor, firejail, bwrap, nsjail, student runtime/deploy/service/process, isolat*) and V2C consumers on every remote branch updated since 2026-10-30", "unrelated_hits": ["docker/scenicplus/Dockerfile", "docker/scenicplus/Dockerfile.successor_pinned", "src/sea_ad_jepa/v4/teacher_student_runtime.py (2026-09-08; no V2C reference)"]},
+ "ci": {
+  "516": {"head": "881194aec9d99a9d42cbf206ffcb779429c4e768", "review_run": 41497294200, "matrix": "ubuntu/windows x numpy 1.26.4/2.2.6", "inherited": "145 passed x4", "preserved_507_512": "14 failed / 40 passed x4", "new_review": "4 failed / 54 passed x4", "sweeps": {"task2": [41497293990, "18 failed / 739 passed"], "task3": [41497293798, "18 failed / 739 passed"]}, "earlier_head_e40d207d4": [41495970138, 41495970150, 41495970053]},
+  "518": {"head": "32c0a22b9ae6220ed03fe7d6e944da753c0e4a0c", "review_run": 41497402803, "matrix": "ubuntu/windows x numpy 1.26.4/2.2.6", "inherited": "220 passed x4", "new_review": "28 passed x4", "sweeps": {"task2": [41497402680, "748 passed"], "task3": [41497402649, "748 passed"]}}
+ },
+ "local_evidence": {"windows_numpy_2_4_6": "identical", "windows_numpy_1_26_4": "identical", "wsl_linux_numpy_1_26_4": "identical", "mutation_audit": "all V2C and producer mutants killed; repair mutant 58/58"},
+ "supersedes_by_append": "JEPA_20261102_QUALIFICATION_HANDOFF_RECONCILIATION.md line 'No submitted independent PR review as of inspection' (file not edited)",
+ "authority_effect": "NONE",
+ "standing_stop": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
