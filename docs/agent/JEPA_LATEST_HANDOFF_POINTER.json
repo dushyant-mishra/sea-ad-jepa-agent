@@ -62,6 +62,7 @@
     "d1_producer_blob": "edee1b8adc1b5c7ca660d52d3667d2020abdb417",
     "independent_recheck": "PENDING",
     "source_issuer": "NOT_PROVISIONED",
-    "real_training": false
+    "real_training": false,
+    "real_training_authorized": false
   }
 }
