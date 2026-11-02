@@ -109,6 +109,44 @@
       "evidence_links": [
         "docs/agent/JEPA_CONTINUOUS_CHRONOLOGY_AND_IMPLEMENTATION_CUSTODY_20261102.md"
       ]
+    },
+    {
+      "event_id": "20261102-V2GRAPH-STAGE81A3-RECOVERY-ROUNDS17TO20",
+      "date_utc": "2026-11-02",
+      "workstream": "V2_graph_topology_V3_pathology_baselines_and_Stage81A3_scientific_history",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "results/reports/strict_shuffled_graph_ablation_predictive_representation_comparison_v1.md",
+          "blob_sha1": "85baa626edb9e3c9d699f8c3150c25ca8322120b",
+          "role": "frozen_historical_V2_graph_control"
+        },
+        {
+          "path": "results/reports/v3_primary_baseline_benchmark_suite_v1.md",
+          "blob_sha1": "eb33a437917de0ceadeefa506066b77f853aed1b",
+          "role": "frozen_historical_Stage25_baseline"
+        },
+        {
+          "path": "docs/v4/STAGE81A3_CALIBRATION_AND_SYNTHETIC_MECHANICS_READOUT.md",
+          "blob_sha1": "5fbd0689333b1c774908878fe2cf930dbcac4d10",
+          "role": "frozen_historical_science_and_data_role_readout"
+        }
+      ],
+      "change_type": "chronology_correction",
+      "what_already_existed": "Early V2 matched real/no-graph/strict shuffle ablations, V3 84-donor nine-baseline benchmark and Stage31 controls, Stage81A3 Perceiver 5000-update scientific hard stop, synthetic uncertainty/belief probes, real-TRAIN 4096-feature bridge, 14 annotation-defined rare-state pass, unsaturated data-defined rare discovery, UCDQ Slide-tags/Fang provenance",
+      "new_work_or_result": "Read original primary reports, resolve evidence scopes and name collisions, create four-round additive chronology and 27-source machine mirror; no new scientific models or tests were executed",
+      "negative_or_counterfactual_evidence": "V2 real graph beat matched neural graph controls but not module-mean baseline; Stage81A3 training mechanics passed but scientific masked-state gates failed; RBB neural value unearned; PCA diagnostic not production frozen; three rare donor-recurring de novo neighborhoods were resample-unstable; spatial context benefit not executed",
+      "test_review_scope": "Original on-repository report/document reconstruction and source-pinned custody only; CI and exact head checked separately",
+      "independent_review": "NONE_NEW__SOURCE_ARCHAEOLOGY_ONLY",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [],
+      "historical_supersession": "Historical 4096-feature/36-matrix Stage81A2 does not supersede Stage81A2R 41238-address/42-operator audit; Stage25 0.3325 not a directly comparable later locked metric; historical Stage81A3 remains unfrozen",
+      "evidence_links": [
+        "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_17_20_20261102.md",
+        "results/target_discovery/unified_qualification_v1/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.json"
+      ]
     }
   ]
 }
