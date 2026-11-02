@@ -314,3 +314,17 @@ This reduced set is the state future implementation work should start from. Ever
 # Authority boundary
 
 This ledger creates **no** target selection, TD60, Stage4, multimodal-training or JEPA-training authority. It is a navigation/supersession artifact whose purpose is to stop repeated work and repeated mistakes.
+
+---
+
+# November 2 historical source-recovery reconciliation — pre-September Graph-JEPA and F1
+
+**Append-only later audit; does not change any original October 13 decision or its effective scope.** For the original Stage27–75 V1/V2/V3 scientific history, read [`JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.md`](JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.md) and its source-pinned machine mirror `results/target_discovery/unified_qualification_v1/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.json`. This fills an early chronology coverage gap without repeating or reopening the older work.
+
+The existing ledger's Stage69–71 conclusion is unchanged **but must retain both layers**: Stage69 internal rare-auxiliary signal (+0.0324 vs its Stage27C comparator) and Stage70 exact reproduction were actually obtained; the stronger benchmark lock was subsequently rejected. Similarly, Stage35C produced a small guarded internal module-graph positive while wider topology/causal and clean external claims remained unearned. Stage39D's 0.5049 score and Stage41C's 0.3681 credible signal were not locked under the original negative-control/interval requirements.
+
+The Stage75F F5c–F8 candidate TF–region–gene and regulator tier tables were **implemented and frozen after** the older Stage75A–D readiness handoff: their motif evidence supports bounded hypotheses, not causal eRegulons or independent TF binding. The Stage36–49 candidate/assay/knowledge-dossier and manuscript/PI package are likewise completed, hypothesis-generating historical outputs.
+
+The original F1 producer/replay was an end-to-end test-executed mechanics implementation with independent replay; real F1 was not authorized. Stage81A2R already distinguished 43,248 Foundation biological identities from 41,238 universal molecular addresses, preserved 2,010 nonuniversal identities, and explained 36 historical asset entries versus 42 support operators. Do not reconstruct these from incompatible counting units.
+
+**No-repeat and authority:** Preserve all prior negative and positive findings, original historical freezes and source-role firewalls. This appendix is not a new architecture selection, scientific/independent validation, real human G7 issuance, Stage4 or training authority. `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
