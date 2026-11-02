@@ -1,0 +1,266 @@
+{
+  "schema": "JEPA_BRANCH_WIDE_AUDIT_HANDOFF_SOURCE_RECONCILIATION_V1",
+  "date_utc": "2026-11-02",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "review_class": "METADATA_COMPLETE_ALL_824_BRANCH_HEADS__SELECTED_PRIMARY_SOURCE_RECONCILIATION__NO_REAL_EXECUTION",
+  "branch_census_path": "results/target_discovery/unified_qualification_v1/JEPA_ALL_BRANCH_AUDIT_HANDOFF_HEAD_RECONCILIATION_20261102_V1.json",
+  "branch_census_git_blob_sha1": "b78cf7e9f7dba9ad17fcc3d3d5e5592f2d0ed16e",
+  "human_report_path": "docs/agent/JEPA_BRANCH_WIDE_AUDIT_HANDOFF_SOURCE_RECONCILIATION_20261102.md",
+  "human_report_git_blob_sha1": "897fcb920ff2a1b6f63d9ff53ab98cf3415954c5",
+  "main_at_read": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb",
+  "audit_before_append": "2d95657f8b709bbddaffe9d3d660cc570d493e4c",
+  "handoff_before_append": "907e8828d9202c109a777391d1c5b65ccbb0fcda",
+  "branch_enumeration": {
+    "all": 824,
+    "audit": 90,
+    "handoff": 97,
+    "name_related_outside_prefix": 40,
+    "exact_prefix_distinct_heads": 175,
+    "legacy_pr_snapshot": 519,
+    "live_branch_pr_name_matches": 506,
+    "head_drift_against_legacy_snapshot": 4
+  },
+  "reviewed_key_primary_sources": [
+    {
+      "branch": "audit/td-synthetic-historical-custody-20261013",
+      "origin_pr": 325,
+      "source_path": "docs/agent/SYNTHETIC_DATASET_LANE_HISTORICAL_AUDIT_COMPENDIUM_20261013.md",
+      "source_blob_sha1": "88736c66397bd05984dc3c839b09a7debe05373b"
+    },
+    {
+      "branch": "integration/pr328-world-to-pr451-fixture-boundary-probe-20261027",
+      "origin_pr": 469,
+      "source_path": "docs/agent/JEPA_PR328_TO_PR451_EXECUTION_EDGE_AUDIT_20261027.md",
+      "source_blob_sha1": "6e6fac8e75fc10cc87771f52d186cf388dd47d9f"
+    },
+    {
+      "branch": "audit/macha-source-qualification-delta-20261030",
+      "origin_pr": 513,
+      "source_path": "docs/agent/JEPA_MACHA_SOURCE_QUALIFICATION_DELTA_20261030.md",
+      "source_blob_sha1": "a1af1c41cf20a765f452ead7e2e95a14b447970d"
+    },
+    {
+      "branch": "audit/foundation-calibration-split-integrity-20261027",
+      "source_path": "docs/agent/JEPA_FOUNDATION_CALIBRATION_SPLIT_INTAKE_20261027.md",
+      "source_blob_sha1": "1efb4c3fc190c67415edc91eef96270cb8c21944"
+    },
+    {
+      "branch": "audit/external-e2g-compat-20261027",
+      "source_path": "docs/agent/JEPA_EXTERNAL_E2G_COMPATIBILITY_AUDIT_20261027.md",
+      "source_blob_sha1": "680997e64e7efc52de9c29769c33ae9b9da662f5"
+    },
+    {
+      "branch": "audit/production-real-synthetic-unified-no-repeat-20261026",
+      "source_path": "docs/agent/JEPA_PRODUCTION_REAL_SYNTHETIC_UNIFIED_NO_REPEAT_AUDIT_20261026.md",
+      "source_blob_sha1": "d89c4e741e9a1b3b5f3d526a36fc71365020d0e2"
+    },
+    {
+      "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
+      "source_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.md",
+      "source_blob_sha1": "4cbb451463aac3babe4c40025281c1ac4f11daa3"
+    }
+  ],
+  "lane_decisions": [
+    {
+      "lane": "early_graph_v1_v3_stage27c_stage35c",
+      "status": "HISTORICAL_INTERNAL_BIOLOGICAL_EVIDENCE_ONLY",
+      "source": "historical_chronology_rounds1_34",
+      "what_exists": "Existing internal graph/no-graph donor-OOF tests and Stage35C small graph positive; not external winner"
+    },
+    {
+      "lane": "stage36_to_49_dossier_and_manuscript",
+      "status": "COMPLETED_HISTORICAL_RESEARCH",
+      "source": "historical_chronology_rounds1_34",
+      "what_exists": "Candidate/assay dossiers and manuscript/PI packet already produced; not published validation"
+    },
+    {
+      "lane": "stage53_to_71_rare_and_graph",
+      "status": "MIXED_POSITIVE_AND_NEGATIVE_PRIORS",
+      "source": "historical_chronology_rounds1_34",
+      "what_exists": "Stage69 internal rare positive; Stage70 stronger lock refused; Stage71 graph-specificity not qualified"
+    },
+    {
+      "lane": "stage75f",
+      "status": "EXECUTED_NONCAUSAL_EVIDENCE",
+      "source": "historical_chronology_rounds1_34",
+      "what_exists": "Tier A/B/C TF-region-gene candidate evidence, not TF binding or validated eRegulon"
+    },
+    {
+      "lane": "stage81a3_and_a3r",
+      "status": "MECHANICS_ANCESTOR_AND_UNFROZEN_DIAGNOSTIC",
+      "source": "audit_PR325",
+      "what_exists": "Full mechanics architecture unfinished; reusable three-state support, global state pilot NOT FROZEN"
+    },
+    {
+      "lane": "v72_to_v75",
+      "status": "REUSABLE_COMPONENT_AND_100K_MEASUREMENT_QUALIFIED",
+      "source": "PR201_PR207",
+      "what_exists": "Coupled observation ecosystem; 100K observations PASS; 500K INDETERMINATE"
+    },
+    {
+      "lane": "s174_v77",
+      "status": "CLASS_GENERATIVE_GAP_IDENTIFIED",
+      "source": "ETL_TO_SYNTHETIC_RECONCILIATION_20261008",
+      "what_exists": "Measured broad class, absent generative class program; no outcome-adaptive rescue"
+    },
+    {
+      "lane": "v78",
+      "status": "FALSIFIED_MECHANISM_FAMILY",
+      "source": "PR242",
+      "what_exists": "No arm promoted, signed/marginal repair negatives preserved"
+    },
+    {
+      "lane": "v79",
+      "status": "FROZEN_NOT_QUALIFIED",
+      "source": "audit_PR325",
+      "what_exists": "291/292 PASS, Q08 convergence FAIL, three NOT_DIAGNOSED; never rerun or rescue"
+    },
+    {
+      "lane": "v80",
+      "status": "BENCHMARK_QUALIFIED_ESTIMATOR_NOT_QUALIFIED",
+      "source": "PR348",
+      "what_exists": "Eight worlds, custody/adjudicator qualified; no successor estimator"
+    },
+    {
+      "lane": "unified_synthetic_pr328",
+      "status": "QUALIFIED_INTERFACE_MECHANICS_ONLY",
+      "source": "PR328_PR339",
+      "what_exists": "Candidate-neutral RNA/ATAC rare/context/perturbation controller-truth fixture; no full 41K production world"
+    },
+    {
+      "lane": "production_synthetic_v3_1_1",
+      "status": "ACCEPTED_DESIGN_AND_INCREMENTAL_IMPL_ONLY",
+      "source": "PR344_PR356_PR486_PR498_PR499_PR501",
+      "what_exists": "Design, plan, Task1/2/3 code/review increments exist; cumulative issuer/calibration/Task4 STOP remain"
+    },
+    {
+      "lane": "unified_architecture_pivot",
+      "status": "ACCEPTED_DESIGN_RETIRES_PARALLEL_SYNTHETIC_GATES",
+      "source": "PR379",
+      "what_exists": "Known truth and human must share production producer/artifact/executor; synthetic Task4-12 independent lane stopped"
+    },
+    {
+      "lane": "unified_tasks0_3",
+      "status": "INDEPENDENTLY_ACCEPTED_FROZEN_IMPLEMENTATIONS",
+      "source": "PR381_PR401",
+      "what_exists": "Frozen exact Task0-3; not production synthetic Task0-3"
+    },
+    {
+      "lane": "unified_task4",
+      "status": "NOT_CUMULATIVELY_ACCEPTED",
+      "source": "PR427_PR459",
+      "what_exists": "X1 and X3 hostile/cross-domain/trust concerns; no FINAL without fresh current accepted cumulative review"
+    },
+    {
+      "lane": "task5_and_post_td",
+      "status": "FIXTURE_INTEGRATION_PARTIAL",
+      "source": "PR351_PR440_PR451",
+      "what_exists": "Existing portfolio/EMA/student evidence code; Task5 provenance-labelled fixture only"
+    },
+    {
+      "lane": "task6_to_8",
+      "status": "FIXTURE_NONE_ABSTENTION_ONLY",
+      "source": "PR447",
+      "what_exists": "No selected human TQB or authentic real NONE issuer"
+    },
+    {
+      "lane": "synthetic_to_task5_bridge",
+      "status": "CROSS_HEAD_EXECUTED_FIXTURE_ONLY",
+      "source": "PR469",
+      "what_exists": "Actual generated RNA → test-local CaseBundle → downstream planted label/NONE trace, seven-edge audit"
+    },
+    {
+      "lane": "td_phase1_phase2",
+      "status": "SPENT_QUALIFIED_KNOWN_TRUTH_TEST",
+      "source": "PR336_PR337",
+      "what_exists": "9/9 synthetic expected statuses, do not rerun or infer human real TD PASS"
+    },
+    {
+      "lane": "real_relational_corrected",
+      "status": "SPENT_CORRECTED_REAL_EVIDENCE_PATTERN_A",
+      "source": "PR314",
+      "what_exists": "TD56/57B/59 pass, TD57C fine-locality fail; C2 active no winner"
+    },
+    {
+      "lane": "r5_query_measured",
+      "status": "HISTORICAL_DEVELOPMENTAL_MEASURED_TARGET_POSITIVE",
+      "source": "TARGET_DISCOVERY_MASTER_HANDOFF_20261011",
+      "what_exists": "q-specific 0.4300 vs technical+q 0.3496, no new current C3 producer"
+    },
+    {
+      "lane": "v44_teacher_tournament",
+      "status": "EXECUTED_REAL_RNA_PROXY_NO_WINNER",
+      "source": "PR468",
+      "what_exists": "Five PCA/ridge proxies, 48 heldout donors, no frozen target"
+    },
+    {
+      "lane": "t1_f1_and_jepa_runtime",
+      "status": "ACTUAL_MECHANICS_WITH_DEFECTIVE_T1_AND_UNAUTHORIZED_REAL_F1",
+      "source": "historical_chronology_rounds1_34",
+      "what_exists": "T1 attention optimizer forensic failure; F1 producer/replay code exists; real sweep blocked"
+    },
+    {
+      "lane": "real_population_pr349",
+      "status": "QUALIFIED_OUTCOME_BLIND_SUPPORT_GEOMETRY",
+      "source": "PR349",
+      "what_exists": "6,351,753 rows, 149 donors, 42 operators, 104/22/23 split, no human target"
+    },
+    {
+      "lane": "real_td_prospective_gate_repair",
+      "status": "REPAIRED_ENGINEERING_MECHANICS_HUMAN_REFERENCES_BLOCKED",
+      "source": "PR364_PR365_PR366_PR367_PR368_PR369",
+      "what_exists": "Real G2 G6 G8 R1 geometry and cross-gate synthetic test-of-test; not human source qualification"
+    },
+    {
+      "lane": "aug_foundation_archive_integrity",
+      "status": "INDEPENDENT_PHYSICAL_CUSTODY_INTEGRITY_ONLY",
+      "source": "audit/foundation-calibration-split-integrity-20261027",
+      "what_exists": "97/97 payload hash+length, large split combined ZIP verified; historical calibration only"
+    },
+    {
+      "lane": "real_etl_alias_qc_issuer",
+      "status": "SOURCE_SCOPED_METADATA_AND_RIGHTS_AUDITED_NO_ACTOR_ISSUER",
+      "source": "PR492_PR505_PR509_PR513",
+      "what_exists": "322 artifact rows scoped reuse, 18 legacy/current pairs, 3 live restrictions, HVS/SEA-AD D1 limited, NPH52 blocked"
+    },
+    {
+      "lane": "multimodal_atac_scenic",
+      "status": "NONCAUSAL_HETEROGENEOUS_SOURCE_EVIDENCE",
+      "source": "PR164_PR175_STAGE75F",
+      "what_exists": "Separate-vs-same nucleus, cross-modal proximity not causal, exposure protected"
+    },
+    {
+      "lane": "external_e2g_compat",
+      "status": "IMPLEMENTED_ANNOTATION_GATE_NO_MODEL_EXECUTION",
+      "source": "audit/external-e2g-compat-20261027",
+      "what_exists": "96 TF-to-gene hypotheses, no source-resolved enhancer TF binding, direct scores not estimable"
+    },
+    {
+      "lane": "crispr_bulk_repro",
+      "status": "PHYSICAL_RECOMPUTATION_AND_BENCHMARK_NEGATIVE",
+      "source": "PR131_PR137",
+      "what_exists": "179384 clone-aware rounded recomputation, CRISPRbrain engagement 1/31 low concordance"
+    },
+    {
+      "lane": "post_td_red_517",
+      "status": "OPEN_SOURCE_SPECIFIC_RED",
+      "source": "PR517",
+      "what_exists": "Five expected nonfinite/digest/boolean-address counterexamples, no repair claimed"
+    },
+    {
+      "lane": "v2c_d1_student_docker",
+      "status": "MERGED_SCOPED_FIXTURE_NOT_PRODUCTION_ISOLATION",
+      "source": "PR523_PR524",
+      "what_exists": "Main 28cbe3 with independent fixture review, Docker selfcheck no runtime attestation"
+    },
+    {
+      "lane": "real_target_representation_training",
+      "status": "STOPPED_UNQUALIFIED",
+      "source": "canonical_322_460",
+      "what_exists": "No selected target, representation winner, source issuer, Stage4, real training"
+    }
+  ],
+  "ownership_and_next": "Do not re-execute closed science, regenerate V79/V80, propose a duplicate C1/C2/C3 synthetic tournament or generic source issuer. Reconcile exact current PRs for the existing #513 eight-field issuer and #469 seven-edge bridge; only code changed, unaccepted producer→CaseBundle integration on a flat main PR with independent review; Macha handles local physical/source tests. Keep #322/#460 continuously synchronized.",
+  "source_review_limits": "This is branch-wide metadata identity enumeration and source-selective review of controlling existing audits, not independent content/code execution or diff review of all 824 branches or 519 PRs. Files/private large assets not opened.",
+  "terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
