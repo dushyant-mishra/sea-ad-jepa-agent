@@ -1,0 +1,60 @@
+name: Macha original V2C/D1 review replay on repaired source (author, nonacceptance)
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/student-v2c-macha-frozen-review-replay-v1.yml"
+      - "scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py"
+      - "scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reviewer-source-replay:
+    name: Original #516/#518 assertions ${{ matrix.os }} / NumPy ${{ matrix.numpy }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        numpy: ["1.26.4", "2.2.6"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py
+            scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py
+            .github/workflows/student-v2c-macha-frozen-review-replay-v1.yml
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install "pytest>=8,<9" "numpy==${{ matrix.numpy }}"
+      - name: Retrieve unchanged exact Macha test blobs from #516 and #518
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 881194aec9d99a9d42cbf206ffcb779429c4e768 32c0a22b9ae6220ed03fe7d6e944da753c0e4a0c
+          python - <<'PY'
+          import hashlib, pathlib, subprocess
+          target=pathlib.Path("tests/v5/td_unified")
+          target.mkdir(parents=True,exist_ok=True)
+          tests=[
+            ("881194aec9d99a9d42cbf206ffcb779429c4e768","test_v2c_standalone_student_gate_514_macha_review_red.py","8647c07a893d932ffa5f05a79be50c89c3c28b53"),
+            ("32c0a22b9ae6220ed03fe7d6e944da753c0e4a0c","test_d1_v2c_composed_515_macha_review_red.py","2a63a753081012e10a9c6cb39b80e79d16848ebe"),
+          ]
+          for commit, name, expected in tests:
+              path="tests/v5/td_unified/"+name
+              data=subprocess.check_output(["git","show",commit+":"+path])
+              blob=hashlib.sha1(b"blob "+str(len(data)).encode()+b"\x00"+data).hexdigest()
+              if blob!=expected:raise RuntimeError("Reviewer original blob drift: "+name)
+              (target/name).write_bytes(data)
+              print("Exact reviewer test restored:",name,blob)
+          PY
+      - name: Run reviewer original assertions against the new repaired source
+        run: python -m pytest -q -p no:cacheprovider tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py
+      - name: Scope limitation
+        if: always()
+        run: echo "GPT author replay ONLY. Macha must independently recheck exact repaired heads. Original #507/#512 RED remain unchanged."
