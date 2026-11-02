@@ -613,6 +613,47 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/137",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/276"
       ]
+    },
+    {
+      "event_id": "20261102-MACHA-INDEPENDENT-MAIN-E4925CFF-V2C-D1-CONTAINER-REVIEW",
+      "date_utc": "2026-11-02",
+      "workstream": "independent_main_student_v2c_d1_container_security_review",
+      "implementation_pr": 523,
+      "implementation_head": "bce3a35a9cd8ec364906798738c14ab3236cc583",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_MACHA_MAIN_E4925CFF_INDEPENDENT_REVIEW_20261102.md",
+          "blob_sha1": "1f44cb6333f3e7c2c747d5a961ee7b804fbba2f1",
+          "role": "macha_independent_verdict_and_defect_table"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_MACHA_MAIN_E4925CFF_INDEPENDENT_REVIEW_20261102.json",
+          "blob_sha1": "33a1eaac0e5b373ba66800e05700b0f4793846ac",
+          "role": "machine_readable_verdict_ci_and_image_identity_receipt"
+        }
+      ],
+      "change_type": "hostile_review",
+      "what_already_existed": "Main e4925cff (PR522 squash) with repaired V2C 46b813fc, D1 edee1b8a and the deployment/student_v2c Docker fixture; immutable Macha #516/#518 and #507/#512 RED; author replay 41505805055 and Docker 41509613313; event 13 recorded the review as pending and the regression gap.",
+      "new_work_or_result": "Independent Macha verdicts: V2C ACCEPT_SCOPED (4 original #516 RED now pass; old heads keep their RED); D1 law ACCEPT_SCOPED, source NOT_AUTHENTICATED; container protections demonstrated only under documented flags, 2 defects REPAIR_REQUIRED (runtime user owns its verifier; entrypoint serves receipts under any launch); main CI insufficient (passes 75/75 against unrepaired V2C). One flat proposal PR #523 against main: byte-identical #516/#518 regression, main-native container tests (RED 6f825acd), smallest repair (bce3a35a).",
+      "negative_or_counterfactual_evidence": "CI 41517539396 container job 12 RED / 9 passed on unchanged main; repair 41517891013 21/21. Limits remain: bind mounts expose teacher canaries under all flags; default launch reaches host loopback; CPU-bound code outlives a killed client; Docker Desktop hides seccomp=unconfined; receipt attests no runtime. Alias leak, query-dependent roster, self-supplied policy and mintable receipts still reproduce.",
+      "test_review_scope": "Local Windows numpy 2.4.6/1.26.4 and WSL on Docker Desktop 4.44.2 (engine 28.3.2, cgroup v1, no AppArmor); GitHub Ubuntu 24.04.5 Docker 28.0.4 cgroup v2 AppArmor; synthetic canaries only. Not tested: breakout, kernel/VM, side channels, GPU, hostile Docker operator.",
+      "independent_review": "MACHA_INDEPENDENT_REVIEW_OF_MAIN__PR523_REPAIR_IS_MACHA_AUTHORED_AND_REQUIRES_GPT_REVIEW",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "GPT independently reviews PR #523; Macha does not accept or merge it",
+        "Owner decision: fixed launcher, image digest pin, CPU/wall-clock bounds, --ipc policy, Docker Desktop vs native Linux, GPU",
+        "External issuer/trust root, alias closure, query-independent roster/QC, donor/specimen identity and NPH52 remain blocked"
+      ],
+      "historical_supersession": "Supersedes event 13's 'Macha independent main review still pending'; preserves #516/#518/#507/#512 RED on their original heads and closed #514/#515/#521 provenance.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/523",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41517539396",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41517891013",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41517891053",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/516",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/518"
+      ]
     }
   ]
 }
