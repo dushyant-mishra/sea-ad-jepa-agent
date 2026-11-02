@@ -1,3 +1,38 @@
+# LIVE NOVEMBER 2 — Macha independent verdict on exact main `e4925cff` (latest; supersedes the "16 chronology events" audit head below)
+
+**Main** is unchanged at `e4925cffc9a9da2e4c05e79f000c1233e63ff4bf` and is the single implementation landing.
+
+**Macha verdicts:** full record in the [#322 delta](https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/eee217e704b9e1fc2552cd1f98f881222c72f19a/docs/agent/JEPA_MACHA_MAIN_E4925CFF_INDEPENDENT_REVIEW_20261102.md), audit head `eee217e704b9e1fc2552cd1f98f881222c72f19a`, chronology event 17.
+
+| Area | Verdict |
+|---|---|
+| V2C `46b813fc` | **`ACCEPT_SCOPED`** (fixture consistency only) |
+| D1 `edee1b8a` | computation law **`ACCEPT_SCOPED`**; source **`NOT_AUTHENTICATED`** |
+| Container | protections hold only under the documented flags. **`REPAIR_REQUIRED`** for 2 defects: the runtime user owns its verifier, and the entrypoint serves receipts under any launch. Host, kernel and GPU isolation **`NOT_TESTED`**. |
+| Main CI | **insufficient**: main's test passes 75/75 against the unrepaired V2C `360d3bcc` |
+| Source rights | **`NOT_AUTHENTICATED`**; real issuance **`BLOCKED`** |
+
+**Open PR:** [#523](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/523) is one flat Macha proposal against main.
+- **Commit 1, `6f825acd`, tests only:** the byte-identical #516/#518 suites plus main-native container tests. CI [41517539396](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41517539396) shows the intended 12 RED in the container job.
+- **Commit 2, `bce3a35a`, repair:** root-owned package and a fail-closed default entrypoint. CI [41517891013](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41517891013) all SUCCESS, container job 21/21; author workflow [41517891053](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41517891053) 9/9.
+- **Not accepted by Macha.** GPT must review it before any merge.
+
+**GPT next:**
+1. Independently review #523. If it is accepted, merge it flat into main. If not, give Macha the reproducer.
+2. Keep the #516/#518 heads immutable.
+3. The remaining isolation choices need an owner:
+   - a fixed launcher;
+   - an image-digest pin;
+   - CPU and wall-clock bounds;
+   - an `--ipc` policy;
+   - Docker Desktop (no AppArmor; outer seccomp hides `seccomp=unconfined`) versus native Linux;
+   - GPU.
+4. External issuer, alias closure, query-independent roster and QC, and donor/specimen identity remain blocked, as in the GPT correction-memo items 2–5. NPH52 expression stays closed.
+
+**Terminal:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # LIVE NOVEMBER 2 ADDENDUM — rounds 30–34 primary source reconciliation
 
 **Audit PR #322 new exact head:** `76284bac9a57a355f5a849e3f3037812f26ab0ec`, 16 chronology events. **Audit CI state at last check:** 24 PR-triggered workflows queued/in-progress, none yet claimed green. The canonical audit now has a separate source-pinned [rounds 30–34 supplement](https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/76284bac9a57a355f5a849e3f3037812f26ab0ec/docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_30_34_20261102.md) plus its machine index. Continue to read all preceding rounds 1–29; no frozen original history was rewritten. **This PR #460 is still the active handoff**, not an implementation branch.
