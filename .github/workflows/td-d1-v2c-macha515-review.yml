@@ -1,0 +1,64 @@
+name: TD D1->V2C Macha #515 review (tests only)
+on:
+  pull_request:
+    paths:
+      - 'tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py'
+      - '.github/workflows/td-d1-v2c-macha515-review.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inherited-515-unchanged:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        numpy: ['1.26.4', '2.2.6']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1 numpy==${{ matrix.numpy }}
+      - name: 'Reviewed implementation is the #515 bytes'
+        shell: bash
+        run: |
+          test "$(git hash-object scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py)" = edee1b8adc1b5c7ca660d52d3667d2020abdb417
+          test "$(git hash-object scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py)" = 360d3bcc54142deb32f17d3dee44cfb902d62fe6
+          test "$(git hash-object tests/v5/td_unified/test_observation_d1_v2c_composed_fixture_v1.py)" = e57aa6a716760b2cef30e7e8be562dedccd1465d
+      - name: '#515 author suites, unchanged'
+        run: >-
+          python -m pytest -q -rf
+          tests/v5/td_unified/test_observation_d1_v2c_composed_fixture_v1.py
+          tests/v5/td_unified/test_observation_v2c_standalone_student_gate_v1.py
+          tests/v5/td_unified/test_observation_v2b_public_student_gate.py
+          tests/v5/td_unified/test_observation_d1_base_only_student_fixture_v1.py
+
+  macha515-review:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        numpy: ['1.26.4', '2.2.6']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1 numpy==${{ matrix.numpy }}
+      - name: 'Macha #515 D1->V2C composition review (0 RED expected at fa06d486)'
+        run: >-
+          python -m pytest -q -rA
+          tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py
