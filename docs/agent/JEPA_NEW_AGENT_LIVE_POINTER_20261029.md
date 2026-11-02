@@ -1,3 +1,9 @@
+# November 2 qualification reconciliation — current source-pinned delta
+
+**Read this before the October 30 handoff below.** Focused audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) at `0145598fabb1fbe20fefa15c90002ba21f43b37a` adds `docs/agent/JEPA_20261102_QUALIFICATION_HANDOFF_RECONCILIATION.md` and machine `results/target_discovery/unified_qualification_v1/JEPA_20261102_QUALIFICATION_HANDOFF_RECONCILIATION_V1.json`. This records source-code evidence that #511 still calls V2B rather than V2C, #514 has author-green CI but no submitted independent review at checked head, #500 is fixture-only G7 composition, and the #513 source policy decisions remain in force. It creates **NO** new scientific, source, security, issuer or training authority. Original #507/#512 RED remains preserved. Do not repeat frozen C2, V79/V80, Stage81A3, V2 A4, or accepted unified Tasks 0–3. Separate audit/handoff ancestry is intentional; verify live heads. **The October 30 and older instructions below are historical where superseded by this newer source-pinned delta.**
+
+---
+
 # JEPA CURRENT EXECUTION POINTER — OCTOBER 30, 2026
 
 > **OPERATIVE SUPERSESSION.** The 2026-10-29 and 2026-10-28 first-session action lists preserved below are HISTORICAL and may not be executed as current instructions. This section overrides their stale queue items without altering earlier evidence. Verify live PR heads before any execution. This is custody/navigation only; no historical scientific acceptance carries forward automatically.
