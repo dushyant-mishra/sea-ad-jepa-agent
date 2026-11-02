@@ -422,6 +422,42 @@
         "docs/agent/JEPA_V2C_REPAIR_D1_REBASE_AND_STUDENT_DOCKER_DELTA_20261102.md",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41505805088"
       ]
+    },
+    {
+      "event_id": "20261102-MAIN-PR522-FLAT-V2C-D1-CONTAINER-GOVERNANCE-LANDING",
+      "date_utc": "2026-11-02",
+      "workstream": "main_canonical_landing_navigation_and_non_authorizing_student_fixture",
+      "implementation_pr": 522,
+      "implementation_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_MAIN_RECONCILIATION_AND_BRANCH_SIMPLIFICATION_20261102.md",
+          "blob_sha1": "f29f41256e2e0f1f1097c900746a82f8dd2c58f9",
+          "role": "audit_local_source_pinned_main_integration_record"
+        }
+      ],
+      "change_type": "implementation",
+      "what_already_existed": "Main historic Oct6 START_HERE and canonical V75/Stage-A current authority, audit #322 11 events, active #460, #514 repaired V2C, #515 D1, #521 student Docker, independent #516/#518 evidence",
+      "new_work_or_result": "Main PR522 squash merged as e4925cffc9a9da2e4c05e79f000c1233e63ff4bf from flat main-based sync branch, 20 changed paths: current navigation and date-advanced fail-closed authority V2, exact reused repaired V2C/D1/Docker source blobs, simple Linux/Windows D1 fixture CI and Docker CI; no historical stacked code imported.",
+      "negative_or_counterfactual_evidence": "Older Oct6 validator hardcoded current historical phase and failed before V2 upgrade; original temporary replay workflow on Windows could not restore broad legacy tree and was removed from daily main, while unchanged Macha 86-case reviewer replay remains preserved on #521 run 41505805055. No independent acceptance or real source auth.",
+      "test_review_scope": "PR522 head 5f6e81aa1cb47eb512c7786cc40d0f2fc233c764 premerge CI 41509613181, 41509613277, 41509613313 all SUCCESS (authority, 2-platform D1 fixture, restricted Docker). Main postmerge CI 41509824640 and 41509824659 were in progress on initial observation; verify independently before asserting success.",
+      "independent_review": "GPT_AUTHOR_CI_GREEN__MACHA_INDEPENDENT_MAIN_FIXTURE_AND_REPAIR_RECHECK_PENDING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Verify main exact-head postmerge CI and main branch navigation links",
+        "Macha independent recheck original repaired V2C/D1 and now main runtime fixture, preserving #516/#518 RED provenance",
+        "Close/archive old stacked implementation PRs with exact-main supersession mapping, without deleting independent reviewer branches",
+        "Source issuer, alias-class rights, q-independent roster/QC, Task4→Task8 acceptance and post-TD numeric/digest RED repairs remain blocked"
+      ],
+      "historical_supersession": "Historical October current task is superseded as live routing, but prior P1-P6 scientific contracts remain valid history. Original Macha and GPT RED evidence continues to bind.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/522",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/commit/e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41509613181",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41509613277",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41509613313"
+      ]
     }
   ]
 }
