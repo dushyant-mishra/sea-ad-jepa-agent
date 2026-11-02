@@ -254,6 +254,94 @@
       "path": "docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md",
       "blob_sha1": "58d8789a65bee0a0c50c9235c863a8107806ae8b",
       "meaning": "discarded false-positive x4 estimator; corrected operator and donor-centred cross-view results"
+    },
+    {
+      "id": "v21_morabito_frozen_encoder_external_projection",
+      "path": "results/reports/external_validation_gse174367.md",
+      "blob_sha1": "41f9d6851b1dedee862e0fe402563512efc9ab9d",
+      "meaning": "historical frozen V2.1 4126-cell 18-sample external projection; weak/non-significant tau transfer, NOT new validation",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "v21_historical_current_status_caution",
+      "path": "docs/current_status.md",
+      "blob_sha1": "8428e0d9fc19e0b918c270b7513e7781c374d836",
+      "meaning": "superseded June V2.1/2.2 status explicitly weak/negative Morabito, v2.2 mask trial; not current next action",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "v21_grubman_six_group_zero_shot",
+      "path": "results/tables/gse138852_graph_jepa_zero_shot_aligned_report.md",
+      "blob_sha1": "5c31891bd534aaf7109e8be3e29928a7c5b592fc",
+      "meaning": "completed frozen zero-shot aligned 449-cell six-group engineering smoke; high module AUC not donor-valid biology",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "stage42_external_readiness_reclassification",
+      "path": "results/reports/stage42_safe_external_support_report_v1.md",
+      "blob_sha1": "2e54b14d119ada5885252270e31b60a1e287fd59",
+      "meaning": "historical older external outputs support/readiness only; not clean validation",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "v22_external_mask_five_epoch_history",
+      "path": "results/tables/v2_2_topology_dropout_test_history.csv",
+      "blob_sha1": "41366c1ad4f7a198a12f976182e5d89e24e64f20",
+      "meaning": "executed five-epoch topology/feature dropout smoke mechanics, not qualified new representation",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "v22_rexach_olah_cellxgene_alignment",
+      "path": "results/reports/v2_2_cellxgene_alignment_stats.md",
+      "blob_sha1": "8b97d931bf8e854b423654f0f1236e0e72e2f331",
+      "meaning": "completed Rexach/Olah 2957-gene alignment adapters; not untouched independent holdouts",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "discovery_atlas_final_artifact_audit",
+      "path": "results/reports/discovery_atlas_final_state_audit.md",
+      "blob_sha1": "f9f9a9e88cb7a6f4c8383e0c5009eb756ea54c30",
+      "meaning": "38 artifact checks pass; module-mean benchmark leads old graph; mechanics only",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "discovery_atlas_targeted_45_gene_manifold_qc",
+      "path": "results/reports/discovery_targeted_manifold_audit_v1.md",
+      "blob_sha1": "82d2c6246de8ea19abaa4b44660d2880a66b9464",
+      "meaning": "45/45 sampled latent manifold QC; not biological causality",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "stage72a_morabito_processed_resource_readiness",
+      "path": "results/reports/stage72a_external_multiomic_grn_resource_eligibility_audit_report_v1.md",
+      "blob_sha1": "ebfbaf496b5f001c4d8434bf95c08937ad410257",
+      "meaning": "acquired GSE174367 processed snRNA/snATAC resources, no GRN proof",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "stage72b_morabito_541_pseudobulk_coactivity_edges",
+      "path": "results/reports/stage72b_external_morabito_micro_pvm_grn_construction_report_v1.md",
+      "blob_sha1": "a864cefccc9544b759bec0557944245093abeb8a",
+      "meaning": "541 RNA pseudobulk coactivity edges from 18 sample units, no TF-peak-gene/motif validation",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "stage74_directed_perturbation_hypothesis_audit",
+      "path": "results/reports/stage74_directed_micro_pvm_grn_in_silico_perturbation_audit_report_v1.md",
+      "blob_sha1": "894d8afc9f9b51712f744ffb66f14c50af84fd12",
+      "meaning": "in-silico regulator controls IRF8/STAT1 candidate priority; no causal validation or benchmark update",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
     }
   ],
   "milestones": {
@@ -412,6 +500,42 @@
       },
       "source_transfer_model_class_specific": true,
       "current_target_winner": false
+    },
+    "round25_early_external_cohort_tests": {
+      "executed": true,
+      "morabito_tau_spearman": 0.2237,
+      "morabito_p": 0.3723,
+      "morabito_early_late_auc": 0.6234,
+      "grubman_external_groups": 6,
+      "current_clean_benchmark_authority": false
+    },
+    "round26_old_v22_adapters": {
+      "executed": true,
+      "rexach_microglia": 21575,
+      "olah_microglia": 16099,
+      "qualifies_current_41k": false
+    },
+    "round27_discovery_manifold_qc": {
+      "executed": true,
+      "genes_passed": 45,
+      "genes_tested": 45,
+      "causal_authority": false
+    },
+    "round28_morabito_regulatory_ancestry": {
+      "executed": true,
+      "stage72b_candidate_edges": 541,
+      "stage74_in_silico_run": true,
+      "validated_regulation": false,
+      "causal_authority": false
+    },
+    "round29_source_index_reachability": {
+      "original_source_count": 41,
+      "on_main_matching": 39,
+      "audit_only_matching": 1,
+      "original_repair_branch_matching": 1,
+      "missing_git_blob_count": 0,
+      "branch_specific_source_for_pr118": "repair/pr118-audit-fixes-20260925",
+      "current_implementation_authority_effect": "NONE"
     }
   },
   "no_repeat": [
@@ -443,5 +567,6 @@
   "terminal": "HISTORICAL_CHRONOLOGY_EXTENDED__NO_SCIENTIFIC_PROMOTION__NO_REEXECUTION__TRAINING_OFF",
   "future_custody_protocol_path": "docs/agent/JEPA_CONTINUOUS_CHRONOLOGY_AND_IMPLEMENTATION_CUSTODY_20261102.md",
   "additional_recovery_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_17_20_20261102.md",
-  "latest_historical_reconciliation_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_21_24_20261102.md"
+  "latest_historical_reconciliation_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_21_24_20261102.md",
+  "additional_recovery_rounds_25_29_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md"
 }
