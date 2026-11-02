@@ -168,6 +168,36 @@
       "path": "docs/v4/STAGE81A3_CALIBRATION_AND_SYNTHETIC_MECHANICS_READOUT.md",
       "blob_sha1": "5fbd0689333b1c774908878fe2cf930dbcac4d10",
       "meaning": "3334-line original pre-freeze record: 5000-step synthetic JEPA failure, belief alternatives, TRAIN-only PCA, rare-state, context and 4096->41238 governance"
+    },
+    {
+      "id": "gene_identity_reclassification",
+      "path": "docs/agent/JEPA_GENE_IDENTITY_RECLASSIFICATION_AUDIT_20261013.md",
+      "blob_sha1": "3cc53abf5ea8655d8f283d40f235927386ba0f61",
+      "meaning": "historical 2/4/8 teacher-view optimum unbound; distinguish 4K audited, source-native, repaired-41K and mechanics"
+    },
+    {
+      "id": "nph_repaired_feature_address_producer",
+      "path": "scripts/v4/foundation_materialize_nph_discovery_sample.R",
+      "blob_sha1": "a3ff5f739751750b8dfe3ac3abb8b91bc487a6c9",
+      "meaning": "exact source feature-index to molecular-address index and collision exclusion"
+    },
+    {
+      "id": "guide_bin1_id_keyed_v2",
+      "path": "analysis/therapeutic_perturbation_etl/PR118_AUDIT_RESPONSE_20260925.md",
+      "blob_sha1": "d58d8a952d8820a46e0fb8c270e92fb4c221d7fb",
+      "meaning": "feature-ID-keyed GSE311359 V2 physically repaired 14 BIN1 invalid rows; 2434 other units parity"
+    },
+    {
+      "id": "f1_wrong_mask_repair",
+      "path": "docs/agent/F1_EA35_REPAIR_RESPONSE_20260907.md",
+      "blob_sha1": "d40e71766e994937a881505848ea74af4a905f75",
+      "meaning": "old mask had wrong gene selection and query not withheld; deterministic q-excluding repair and tests"
+    },
+    {
+      "id": "qid_wrong_query_baseline_audit",
+      "path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
+      "blob_sha1": "51f0ff52288920794b06fc383edf2e6b03fb8b21",
+      "meaning": "matched-null preserves query so wrong-query margin invalid as claimed contrast"
     }
   ],
   "milestones": {
@@ -258,6 +288,23 @@
       "real_context_benefit_executed": false,
       "frozen_4096_gene_universes_full_mask": true,
       "generalizable_to_41238": false
+    },
+    "identity_alignment_and_comparator_repair": {
+      "reconciliation": "docs/agent/JEPA_IDENTITY_ALIGNMENT_AND_COMPARATOR_FAILURE_RECONCILIATION_20261102.md",
+      "unbound_old_teacher_view_preference": "GENE_IDENTITY_PROVENANCE_UNRESOLVED",
+      "nph_source_feature_to_universal_address_explicit": true,
+      "full104_september17_row_donor_artifact": "INVALID_FOR_CURRENT_ROLE",
+      "full104_pass1_corrected_pr": 31,
+      "full104_clean_head_byte_reproduction_pr": 32,
+      "gse311359_bin1_display_name_collision_v1": true,
+      "bin1_feature_id_keyed_physical_v2_pr": 121,
+      "bin1_v1_zero_count_rows_wrong": 14,
+      "non_bin1_exact_parity_units": 2434,
+      "morabito_PAR_Y_ambiguity_repaired_pr": 175,
+      "f1_old_evidence_mask_wrong": true,
+      "f1_real_run_authorized": false,
+      "old_qid_matched_null_equals_wrong_query": false,
+      "projectwide_baseline_recompute_proven": false
     }
   },
   "no_repeat": [
@@ -269,7 +316,8 @@
     "C2 gradient forensics historical result",
     "Stage76-F9/Stage76-F10 through Stage79-F13 previous generation frozen GeneJEPA perturbation/graph-control path",
     "V2 real graph vs no graph and strict shuffle; V3 Stage25/27/31 comparator chronology and distinct threshold context",
-    "Stage81A3 original comprehensive synthetic compression/uncertainty, 149-donor TRAIN-only real bridge, 14 annotation-rare states and spatial UCDQ; original source is not production authorization"
+    "Stage81A3 original comprehensive synthetic compression/uncertainty, 149-donor TRAIN-only real bridge, 14 annotation-rare states and spatial UCDQ; original source is not production authorization",
+    "Differentiate NPH gene feature ambiguity, invalid FULL104 cell row/donor join, GSE311359 BIN1 label keying, Morabito PAR_Y mapping, and F1 wrong-query/mask comparator defects; record exact correction and original result scope"
   ],
   "excluded_from_authority": [
     "target_winner",
