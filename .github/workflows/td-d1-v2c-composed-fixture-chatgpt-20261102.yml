@@ -1,0 +1,38 @@
+name: TD D1 -> V2C composed source fixture (no real issuance)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py'
+      - 'tests/v5/td_unified/test_observation_d1_v2c_composed_fixture_v1.py'
+      - '.github/workflows/td-d1-v2c-composed-fixture-chatgpt-20261102.yml'
+      - 'docs/agent/JEPA_D1_TO_V2C_COMPOSED_FIXTURE_20261102.md'
+permissions:
+  contents: read
+jobs:
+  d1-v2c-fixture-matrix:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        numpy: ['1.26.4', '2.2.6']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned test dependencies
+        run: python -m pip install pytest==9.1.1 numpy==${{ matrix.numpy }}
+      - name: New D1 to standalone V2C integration and isolated import hostiles
+        run: python -m pytest -q -rA tests/v5/td_unified/test_observation_d1_v2c_composed_fixture_v1.py
+      - name: Inherited V2C standalone author cases
+        run: python -m pytest -q tests/v5/td_unified/test_observation_v2c_standalone_student_gate_v1.py
+      - name: Inherited D1 V2B fixture regressions (historical, not live API)
+        run: python -m pytest -q tests/v5/td_unified/test_observation_d1_base_only_student_fixture_v1.py
+      - name: Inherited V2B source regression (original reviewer RED unchanged)
+        run: python -m pytest -q tests/v5/td_unified/test_observation_v2b_public_student_gate.py
