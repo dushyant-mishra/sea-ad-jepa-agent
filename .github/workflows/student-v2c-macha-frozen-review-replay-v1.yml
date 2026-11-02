@@ -26,8 +26,7 @@ jobs:
         with:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py
-            scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py
+            scripts/v5/
             .github/workflows/student-v2c-macha-frozen-review-replay-v1.yml
       - uses: actions/setup-python@v5
         with:
