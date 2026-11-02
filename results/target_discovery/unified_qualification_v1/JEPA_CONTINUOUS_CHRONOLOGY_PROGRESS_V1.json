@@ -683,7 +683,7 @@
           "role": "unaltered_repaired_v2c"
         }
       ],
-      "change_type": "acceptance_and_implementation",
+      "change_type": "acceptance",
       "what_already_existed": "Main e4925cff PR522 landing with repaired V2C+D1 and Linux Docker author fixture; Macha #516/#518 immutable tests and new exact-main independent PR523 review event17; #523 author's original 12 RED and proposed GREEN repair",
       "new_work_or_result": "GPT independently read PR523 modified sources, adversarial tests, 11 weakened-launch checks, GitHub workflow/test identities and Macha original report, then posted ACCEPT_SCOPED review and squash-merged one flat PR #523. New main 971ec6a14a94 holds root-owned deployment code, fail-closed observable-restriction default entrypoint and durable original Macha hostile regression CI; V2C blob unchanged.",
       "negative_or_counterfactual_evidence": "Original #523 tests-only head 6f825acd captured 12 expected container RED; green repair bce3a35a 21/21 under hosted Linux. Authored guard cannot prove mount origins at whitelisted engine points or execution location; entrypoint override, Docker daemon, seccomp profile, IPC, GPU, issuer and source remain unqualified.",
