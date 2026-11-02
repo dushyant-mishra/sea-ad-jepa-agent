@@ -14,6 +14,7 @@ CHRONOLOGY = Path("docs/agent/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_2026110
 INDEX = Path("results/target_discovery/unified_qualification_v1/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.json")
 PROTOCOL = Path("docs/agent/JEPA_CONTINUOUS_CHRONOLOGY_AND_IMPLEMENTATION_CUSTODY_20261102.md")
 ADDITIONAL = Path("docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_17_20_20261102.md")
+LATER = Path("docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_21_24_20261102.md")
 AUTH = "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
 TYPES = {"scientific_experiment","implementation","hostile_review","repair",
          "acceptance","rejection","source_custody","chronology_correction",
@@ -29,6 +30,7 @@ def check(root: Path = ROOT):
     chronology = (root / CHRONOLOGY).read_text(encoding="utf-8")
     protocol = (root / PROTOCOL).read_text(encoding="utf-8")
     additional = (root / ADDITIONAL).read_text(encoding="utf-8")
+    later = (root / LATER).read_text(encoding="utf-8")
     require(data.get("schema") == "JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1", "schema")
     require(data.get("canonical_audit_pr") == 322 and
             data.get("active_handoff_pr") == 460 and
@@ -37,13 +39,16 @@ def check(root: Path = ROOT):
     require(data.get("contract_path") == str(PROTOCOL), "protocol path")
     require(index.get("schema") == "JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_V1",
             "history index schema")
-    require(len(index.get("source_evidence", [])) >= 27, "historical source coverage")
+    require(len(index.get("source_evidence", [])) >= 41, "historical source coverage")
     sources = {x.get("id") for x in index.get("source_evidence", [])}
     require({"stage35c","stage69","stage70","stage75_f8","stage81a2r",
              "f1_replay","stage76_f9","stage76_f10","stage77_f11",
              "stage78_f12","stage79_f13","v2_real_graph_vs_no_graph",
              "v2_strict_shuffle","v3_stage25_baselines",
-             "v3_stage31_residual_graph","stage81a3_complete_qualification_record"}.issubset(sources),
+             "v3_stage31_residual_graph","stage81a3_complete_qualification_record",
+             "stage81a3r_historical_freeze1","stage81a3r_freeze1_machine_contract",
+             "td19_depth_pseudostate_negative_control","stage73r_graph_prior_controls",
+             "v5_within_operator_x4_redteam"}.issubset(sources),
             "missing historical evidence")
     for token in ("Stage76", "Stage77", "Stage78", "Stage79", "Stage69",
                   "Stage70", "Stage75F", "41,238", "real F1"):
@@ -51,6 +56,13 @@ def check(root: Path = ROOT):
     for token in ("Stage81A3", "masked student", "Stage27C",
                   "UCDQ", "14 donor-recurring", "Perceiver"):
         require(token.casefold() in additional.casefold(), "additional chronology omission " + token)
+    for token in ("Stage81A3R", "Freeze1", "d_global=224", "TD19",
+                  "depth-only", "Stage73R", "x4_within"):
+        require(token.casefold() in later.casefold(), "later chronology omission " + token)
+    require(index.get("milestones", {}).get("historical_stage81a3r_freeze1", {}).get("declared") is True,
+            "historical Freeze1 declaration missing")
+    require(index["milestones"]["historical_stage81a3r_freeze1"].get("current_representation_winner") is False,
+            "historical Freeze1 must not promote current dimension")
     for token in ("PR #322", "PR #460", "implementation",
                   "independent review", "frozen", "update"):
         require(token.casefold() in protocol.casefold(), "continuity omission " + token)
