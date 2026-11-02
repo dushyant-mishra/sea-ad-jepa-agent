@@ -654,6 +654,57 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/516",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/518"
       ]
+    },
+    {
+      "event_id": "20261102-GPT-INDEPENDENT-PR523-SCOPED-ACCEPT-MAIN971EC6A",
+      "date_utc": "2026-11-02",
+      "workstream": "independent_student_container_security_pr523_scoped_acceptance_and_flat_main_integration",
+      "implementation_pr": 523,
+      "implementation_head": "971ec6a14a9435ffc9fe03b1373c3ec3f5a30687",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_GPT_INDEPENDENT_PR523_REVIEW_MAIN_MERGE_20261102.md",
+          "blob_sha1": "5258cac3f91ad3c768d62aa8b27f6ba948e76f6c",
+          "role": "independent_gpt_code_source_verdict_merging_scope_and_nonpromotion"
+        },
+        {
+          "path": "deployment/student_v2c/entrypoint_v1.py",
+          "blob_sha1": "ceb7d25ec0501b66a791463372aa2e363449bb39",
+          "role": "merged_guarded_default_entrypoint"
+        },
+        {
+          "path": "deployment/student_v2c/Dockerfile.v1",
+          "blob_sha1": "1414d02c14a62f658e82a03b962448e35bd03ecc",
+          "role": "root_owned_verifier_package"
+        },
+        {
+          "path": "scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py",
+          "blob_sha1": "46b813fcbf598e12a2a9f209ca254d01aaeba784",
+          "role": "unaltered_repaired_v2c"
+        }
+      ],
+      "change_type": "acceptance_and_implementation",
+      "what_already_existed": "Main e4925cff PR522 landing with repaired V2C+D1 and Linux Docker author fixture; Macha #516/#518 immutable tests and new exact-main independent PR523 review event17; #523 author's original 12 RED and proposed GREEN repair",
+      "new_work_or_result": "GPT independently read PR523 modified sources, adversarial tests, 11 weakened-launch checks, GitHub workflow/test identities and Macha original report, then posted ACCEPT_SCOPED review and squash-merged one flat PR #523. New main 971ec6a14a94 holds root-owned deployment code, fail-closed observable-restriction default entrypoint and durable original Macha hostile regression CI; V2C blob unchanged.",
+      "negative_or_counterfactual_evidence": "Original #523 tests-only head 6f825acd captured 12 expected container RED; green repair bce3a35a 21/21 under hosted Linux. Authored guard cannot prove mount origins at whitelisted engine points or execution location; entrypoint override, Docker daemon, seccomp profile, IPC, GPU, issuer and source remain unqualified.",
+      "test_review_scope": "Independent GPT static source-level/receipt review (no second local physical Docker/WSL execution). Hosted PR523 head workflows 41517891013/41517891053 SUCCESS; postmerge main CI at first check had zero runs returned, not asserted as success; preserve original author RED. No real expression, protected outcomes, training or historical ETL.",
+      "independent_review": "GPT_INDEPENDENT_SCOPED_CODE_ACCEPTANCE__HOSTED_AUTHOR_TESTS_NOT_SECOND_PHYSICAL_VALIDATION",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Postmerge exact-main CI results for 971ec6a and main startup current action refresh",
+        "External trusted mandatory launcher/image provenance and runtime proof; allowlisted mount origins; CPU/wall-clock/IPC/Desktop-vs-Linux/GPU",
+        "Real source issuer and trust root, alias-class closure, q-independent roster/QC, donor/specimen identity, Task4–8 and post-TD authority gaps"
+      ],
+      "historical_supersession": "Event17 review-pending #523 author repair is now independently scoped accepted and merged; original 12 RED and #516/#518/#507/#512 original-head historical results remain source-pinned. #523 remains provenance, not a second development branch.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/523",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/523#issuecomment-6589689736",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/commit/971ec6a14a9435ffc9fe03b1373c3ec3f5a30687",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41517539396",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41517891013",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41517891053"
+      ]
     }
   ]
 }
