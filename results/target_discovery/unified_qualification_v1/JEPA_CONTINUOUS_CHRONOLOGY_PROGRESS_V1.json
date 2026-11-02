@@ -1,0 +1,114 @@
+{
+  "schema": "JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1",
+  "created_date": "2026-11-02",
+  "scope": "APPEND_ONLY_IMPLEMENTATION_AND_SCIENCE_PROGRESS__NON_AUTHORIZING",
+  "canonical_audit_pr": 322,
+  "active_handoff_pr": 460,
+  "historical_handoff_pr_323_is_superseded": true,
+  "contract_path": "docs/agent/JEPA_CONTINUOUS_CHRONOLOGY_AND_IMPLEMENTATION_CUSTODY_20261102.md",
+  "history_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.md",
+  "records": [
+    {
+      "event_id": "20261102-CHRONOLOGY-GRAPH-JEPA-V3-RECOVERY",
+      "date_utc": "2026-11-02",
+      "workstream": "historical_science_and_no_repeat",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/V3_SCORECARD.md",
+          "blob_sha1": "4c43b0d4b57dd955887223d4da7a525c508bf8ed",
+          "role": "historical_internal_benchmark"
+        },
+        {
+          "path": "results/reports/stage69_rare_microglia_auxiliary_head_jepa_audit_report_v1.md",
+          "blob_sha1": "529af717e6dc4b019faaaf38a80f37422d5b6f2b",
+          "role": "historical_internal_rare_proxy"
+        }
+      ],
+      "change_type": "chronology_correction",
+      "what_already_existed": "Extensive V1/V2/V3 Graph-JEPA Stage27-75 experiments, Stage69 positive and Stage70 nonlock, Stage44 manuscript, Stage75F; historical target/implementation ledger already in audit #322",
+      "new_work_or_result": "Source-pinned additive chronology and history ledger cross-reference; original science not re-executed",
+      "negative_or_counterfactual_evidence": "Stage39D proxy-sensitivity failure; Stage41C CI nonlock; Stage63 DLPFC negative control beat branch; Stage70 no benchmark lock",
+      "test_review_scope": "GitHub source inspection and blob pinning only; current workflow checks checked separately",
+      "independent_review": "NONE_NEW__HISTORICAL_RECONCILIATION_ONLY",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [],
+      "historical_supersession": "Old PR323 is historical; new pointer is PR460; no frozen October source rewritten",
+      "evidence_links": [
+        "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.md",
+        "results/target_discovery/unified_qualification_v1/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.json"
+      ]
+    },
+    {
+      "event_id": "20261102-STAGE76-79-FROZEN-GENEJEPA-RECOVERY",
+      "date_utc": "2026-11-02",
+      "workstream": "historical_regulatory_perturbation_and_jepa_inference",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "results/reports/stage76_directionality_audit_v1.json",
+          "blob_sha1": "f3102ca0dcd167d4413bd0711f6f77034351f067",
+          "role": "historical_f9"
+        },
+        {
+          "path": "results/reports/stage77_tier_a_perturbation_mvp_v1.json",
+          "blob_sha1": "01a2d4eb3519e9dd7182ff0ed2ef263485736bbc",
+          "role": "historical_f11"
+        },
+        {
+          "path": "results/reports/stage78_jepa_latent_shift_v1.json",
+          "blob_sha1": "f1011a42c4ba4984bd8ae164eab1831c0f6df987",
+          "role": "historical_f12"
+        },
+        {
+          "path": "results/reports/stage79_graph_controls_v1.json",
+          "blob_sha1": "9ac0adaf8d6b9ce5b90efd54abf50c49b8ea484a",
+          "role": "historical_f13"
+        }
+      ],
+      "change_type": "chronology_correction",
+      "what_already_existed": "Signed coactivity directionality audit, frozen GeneJEPA 2957-feature checkpoint, one-hop Tier A perturbations, latent-shift execution, 152-graph comparative controls",
+      "new_work_or_result": "Documented executed Stage76–79 scientific/engineering chain omitted by earlier audit; distinguish from synthetic V79",
+      "negative_or_counterfactual_evidence": "Ten TF directions unresolved, global readiness false, tiny latent displacements, graph control/invariance limitations; no causal rescue",
+      "test_review_scope": "Direct inspection of archived JSON report receipts and source documentation; no model rerun",
+      "independent_review": "NONE_NEW__HISTORICAL_EVIDENCE_ONLY",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [],
+      "historical_supersession": "Stage79 F13 != synthetic V79; neither grants current real target authority",
+      "evidence_links": [
+        "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.md"
+      ]
+    },
+    {
+      "event_id": "20261102-CONTINUOUS-CHRONOLOGY-CUSTODY-CONTRACT",
+      "date_utc": "2026-11-02",
+      "workstream": "successor_workflow_and_implementation_evidence",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_ITERATIVE_OWNER_AUDIT_AND_CUSTODY_PROTOCOL_V1_20261015.md",
+          "blob_sha1": "0cfb8d575600f8e22bfaa2ad457f28a3dda21d7f",
+          "role": "preexisting_governance"
+        }
+      ],
+      "change_type": "custody_process",
+      "what_already_existed": "October15 mandatory iterative RED/GREEN/review/custody protocol referred to old PR323 successor",
+      "new_work_or_result": "Enforced explicit PR322 audit plus PR460 active handoff sequence after meaningful implementation and science cycles",
+      "negative_or_counterfactual_evidence": "Earlier attempt to modify hash-pinned Oct28 master failed frozen custody workflow; original blob 89ad6477 restored before completion",
+      "test_review_scope": "Additive contract, static scope and CI verification pending final exact head",
+      "independent_review": "NONE_NEW__PROCESS_PROTOCOL_NOT_SCIENTIFIC_ACCEPTANCE",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [],
+      "historical_supersession": "Do not rewrite frozen files or treat out-of-date PR323 actions as current",
+      "evidence_links": [
+        "docs/agent/JEPA_CONTINUOUS_CHRONOLOGY_AND_IMPLEMENTATION_CUSTODY_20261102.md"
+      ]
+    }
+  ]
+}
