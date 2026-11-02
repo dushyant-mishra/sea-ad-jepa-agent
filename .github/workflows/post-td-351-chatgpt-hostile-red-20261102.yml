@@ -20,7 +20,17 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     steps:
-      - uses: actions/checkout@v4
+      - name: Sparse checkout exact tested sources (avoid archived Windows path length)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            scripts/v5/jepa_post_td_harness_contract_v1.py
+            tests/v5/test_jepa_post_td_351_chatgpt_hostile_red_20261102.py
+            src/sea_ad_jepa/v4/teacher_student_runtime.py
+            src/sea_ad_jepa/v4/teacher_student_checkpoint.py
+            src/sea_ad_jepa/v4/ema.py
+            src/sea_ad_jepa/v4/ipb_jepa.py
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
