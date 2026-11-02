@@ -185,7 +185,9 @@
       "id": "guide_bin1_id_keyed_v2",
       "path": "analysis/therapeutic_perturbation_etl/PR118_AUDIT_RESPONSE_20260925.md",
       "blob_sha1": "d58d8a952d8820a46e0fb8c270e92fb4c221d7fb",
-      "meaning": "feature-ID-keyed GSE311359 V2 physically repaired 14 BIN1 invalid rows; 2434 other units parity"
+      "meaning": "feature-ID-keyed GSE311359 V2 physically repaired 14 BIN1 invalid rows; 2434 other units parity",
+      "repository_ref": "aaf561cfdc60ffe29c4d79094c16ce5e524f7d2d",
+      "source_location": "separate_implementation_PR121__not_present_in_audit_branch"
     },
     {
       "id": "f1_wrong_mask_repair",
