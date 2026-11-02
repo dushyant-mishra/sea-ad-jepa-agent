@@ -1,3 +1,17 @@
+# START HERE — JEPA CURRENT, NOVEMBER 2 2026
+
+**Live status:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`. This November 2 section supersedes the **October 6 current-task instructions preserved below**, not their historical science.
+
+**Read first:** [Current main execution map](docs/agent/JEPA_MAIN_CURRENT_EXECUTION_MAP_20261102.md) → [canonical cumulative historical/scientific audit #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) → [active agent handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460). Verify each branch's live SHA before acting. PR #323 is superseded.
+
+**Current engineering:** independently re-review repaired V2C #514 (`df83525b`), rebased D1→V2C #515 (`6c74ba41`) and Linux container fixture #521 (`09a5fc58`). On main these are non-authorizing fixture mechanics; upstream alias classes, query-independent roster selection, source-rights issuer, Task4–8 integration and post-TD harness RED remain open. Do not train or issue target winners. Use ONE flat PR based on main for each future accepted increment; do not construct nested branch stacks.
+
+**Custody:** always append newly completed work to #322 chronology and update #460 operational handoff; preserve Macha #516/#518 original RED and older #507/#512, all prior historical negatives and exact-source audit receipts. The main branch is the startup/landing surface, not a shortcut to independent scientific/security acceptance.
+
+---
+
+## Prior October 6 startup snapshot (historical, not live task)
+
 # START HERE — JEPA PROJECT
 
 Date: 2026-10-06

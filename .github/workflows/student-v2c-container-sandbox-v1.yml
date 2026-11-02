@@ -1,0 +1,42 @@
+name: V2C student-only restricted Docker fixture (author mechanics, no authority)
+
+on:
+  pull_request:
+    paths:
+      - "deployment/student_v2c/**"
+      - "tests/v5/td_unified/test_student_v2c_container_runtime_v1.py"
+      - ".github/workflows/student-v2c-container-sandbox-v1.yml"
+      - "scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux-container-boundary:
+    name: Linux Docker restricted V2C / exact #514 source
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            deployment/student_v2c/
+            tests/v5/td_unified/test_student_v2c_container_runtime_v1.py
+            scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py
+            scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Docker engine and unpinned base identity (record, not certify)
+        run: |
+          docker version
+          docker image inspect python:3.11-slim-bookworm --format '{{.Id}}' || true
+      - name: Build exact minimal context and execute restricted-container boundary tests
+        run: python -m unittest discover -s tests/v5/td_unified -p 'test_student_v2c_container_runtime_v1.py' -v
+      - name: Container image and exact verifier provenance
+        if: always()
+        run: |
+          docker image inspect jepa-student-v2c-fixture:test --format 'FINAL_IMAGE_ID={{.Id}} BASE={{.Parent}}' || true
+          echo "AUTHOR MECHANICS ONLY: no source-rights issuer or real training authorization"

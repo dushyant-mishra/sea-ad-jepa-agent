@@ -1,3 +1,5 @@
+> **Current as of November 2, 2026:** Read [START_HERE.md](START_HERE.md) and the [current main execution map](docs/agent/JEPA_MAIN_CURRENT_EXECUTION_MAP_20261102.md). **Canonical scientific chronology:** [audit PR #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322). **Active new-agent handoff:** [PR #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460). The historical October 5 task text preserved below is no longer the live action. Current engineering: repaired V2C/D1 student-only Docker fixture, pending independent recheck; no issuer, target winner, representation winner, real training or Stage4 authorization.
+
 # Contextual JEPA — learning biological state from partial RNA
 
 > **Can a model recover biologically meaningful cell state from incomplete RNA evidence without solving the task through gene identity, measurement artifacts, or answer leakage?**
