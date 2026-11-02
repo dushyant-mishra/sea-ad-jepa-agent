@@ -531,6 +531,44 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314",
         "docs/agent/JEPA_MACHA_TASKING_NO_DUPLICATE_CORRECTION_20261102.md"
       ]
+    },
+    {
+      "event_id": "20261102-HISTORICAL-RECOVERY-ROUNDS25-29-EXTERNAL-ATLAS-GRN-SATURATION",
+      "date_utc": "2026-11-02",
+      "workstream": "iterative_source_first_historical_recovery_early_external_tests_v22_manifold_grn",
+      "implementation_pr": 322,
+      "implementation_head": "0880e2476c613dacf033a34351234b7eb25cf36c",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md",
+          "blob_sha1": "94625689a7d7352231f0c908811763a0fcd8cb60",
+          "role": "primary_source_scoped_historical_recovery_5_targeted_rounds"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.json",
+          "blob_sha1": "0cb21542375126ca82f21160b35f89b4d5c97233",
+          "role": "machine_source_index_52_primary_source_identities"
+        }
+      ],
+      "change_type": "chronology_correction",
+      "what_already_existed": "Historical Graph-JEPA V1/V2/V3, Stage35C/69/70, Stage75F, Stage81A3R Freeze1, TD19, C2/R5, modern ETL and synthetic/TD/JEPA controls documented in prior recovery rounds 1-24, no-repeat matrix and independent reviews. Original repo includes V2 external, v2.2 and Stage72/74 primary reports not previously source-pinned in 41-record historical recovery index.",
+      "new_work_or_result": "Five targeted source-first passes recovered already executed V2.1 Morabito 4126-cell 18-sample weak external tau projection (rho .2237, p .3723, AUC .6234); Grubman 449-cell six-group limited zero-shot; V2.2 21575 Rexach and 16099 Olah microglia feature-adapter cohorts and five-epoch masking smoke; Discovery Atlas 38 artifact checks and 45/45 sampled manifold candidate QC; Stage72B 541 18-sample coactivity candidate edges and Stage74 IRF8/STAT1 in-silico controlled prioritization without causal validation. 11 original Git blobs added to machine index (41->52). 41 indexed original blob identities resolved: 39 on main, gene-identity report on audit322, PR118 response on historical repair branch. No new GPU/dataset execution. Two saturation checks found Stage81/modern synthetic/control topics already indexed.",
+      "negative_or_counterfactual_evidence": "Morabito tau rho .2237 p .3723 cannot be portrayed as robust external validation; Grubman high module AUC relies on 3+3 external groups with p .1; old V2.2 inputs cannot become current 41K source authority; 45/45 manifold QC not therapeutic causality; Stage72B lacks ATAC peak-to-gene/motif validation, Stage73R lacks graph prediction lock, Stage74 in silico not causal; PR118 path absence on main not missing Git blob.",
+      "test_review_scope": "Read-only exact original source blobs on main e4925cffc9a9da2e4c05e79f000c1233e63ff4bf; source-index tree comparison 41 primary refs 39 main exact + 1 audit exact + 1 repair branch exact; updated static chronology verifier to require 11 added primary records and nonpromotion flags. New audit CI at updated head must be checked.",
+      "independent_review": "GPT_SOURCE_PROVENANCE_RECONCILIATION_ONLY__NO_NEW_MACHA_INDEPENDENT_VERDICT__NO_BIOLOGICAL_EXECUTION",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Future Macha tasking must not repeat V2.1 external Morabito/Grubman projections, V2.2 Rexach/Olah adapters, 45-gene manifold or Stage72B/74 in-silico controls as though unexecuted",
+        "Current independent V2C security/WSL, source rights issuer and exact candidate C1/C2/C3/C6 support-to-source bindings remain pending; no new candidate outcomes",
+        "New historical investigation only on genuinely unindexed decision-bearing source, contradiction, changed bytes, question or authorized evidence, not omnibus recrawl"
+      ],
+      "historical_supersession": "Adds missing already-completed source results and corrects earlier summaries that could imply no external Graph-JEPA testing at all; does not change original old cohort outcomes, invalidate architecture solely because Morabito had been seen, or alter later Stage81/TD gates.",
+      "evidence_links": [
+        "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/e4925cffc9a9da2e4c05e79f000c1233e63ff4bf/results/reports/external_validation_gse174367.md",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/e4925cffc9a9da2e4c05e79f000c1233e63ff4bf/results/reports/stage72b_external_morabito_micro_pvm_grn_construction_report_v1.md"
+      ]
     }
   ]
 }
