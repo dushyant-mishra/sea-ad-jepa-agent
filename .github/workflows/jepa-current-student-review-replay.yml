@@ -39,9 +39,9 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import hashlib
-          p=Path("scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py")
-          data=p.read_bytes()
+          import hashlib, subprocess
+          # Read original frozen Git blob, not newline-converted Windows worktree
+          data=subprocess.check_output(["git","show","HEAD:scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py"])
           digest=hashlib.sha1(b"blob "+str(len(data)).encode()+b"\x00"+data).hexdigest()
           assert digest=="46b813fcbf598e12a2a9f209ca254d01aaeba784",digest
           Path("REPAIRED_V2C_TEST_ONLY.tmp").write_bytes(data)
