@@ -9,7 +9,7 @@ from scripts.v5 import verify_jepa_continuous_chronology_20261102 as C
 
 
 def _isolated(tmp_path: Path):
-    for p in (C.LEDGER, C.INDEX, C.CHRONOLOGY, C.PROTOCOL, C.ADDITIONAL, C.LATER):
+    for p in (C.LEDGER, C.INDEX, C.CHRONOLOGY, C.PROTOCOL, C.ADDITIONAL, C.LATER, C.NEWER):
         dst = tmp_path / p
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(C.ROOT / p, dst)
@@ -112,4 +112,32 @@ def test_refuse_dropped_depth_null_and_x4_redteam(tmp_path):
     root, data = _isolated(tmp_path)
     (root / C.LATER).write_text("Stage81A3R Freeze1 d_global=224", encoding="utf-8")
     with pytest.raises(ValueError, match="later chronology omission"):
+        C.check(root)
+
+
+def test_refuse_erasing_recovered_morabito_primary_source(tmp_path):
+    root, _ = _isolated(tmp_path)
+    idx = json.loads((root / C.INDEX).read_text())
+    idx["source_evidence"] = [x for x in idx["source_evidence"]
+                              if x["id"] != "v21_morabito_frozen_encoder_external_projection"]
+    (root / C.INDEX).write_text(json.dumps(idx), encoding="utf-8")
+    with pytest.raises(ValueError, match="missing round25-29 primary sources"):
+        C.check(root)
+
+
+def test_refuse_promoting_stage72b_coactivity_to_validated_regulation(tmp_path):
+    root, _ = _isolated(tmp_path)
+    idx = json.loads((root / C.INDEX).read_text())
+    idx["milestones"]["round28_morabito_regulatory_ancestry"]["validated_regulation"] = True
+    (root / C.INDEX).write_text(json.dumps(idx), encoding="utf-8")
+    with pytest.raises(ValueError, match="stage72 coactivity silently promoted"):
+        C.check(root)
+
+
+def test_refuse_claiming_older_external_projection_as_clean_current_benchmark(tmp_path):
+    root, _ = _isolated(tmp_path)
+    idx = json.loads((root / C.INDEX).read_text())
+    idx["milestones"]["round25_early_external_cohort_tests"]["current_clean_benchmark_authority"] = True
+    (root / C.INDEX).write_text(json.dumps(idx), encoding="utf-8")
+    with pytest.raises(ValueError, match="old external cohort silently promoted"):
         C.check(root)
