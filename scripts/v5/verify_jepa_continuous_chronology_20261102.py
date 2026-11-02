@@ -15,6 +15,7 @@ INDEX = Path("results/target_discovery/unified_qualification_v1/JEPA_HISTORICAL_
 PROTOCOL = Path("docs/agent/JEPA_CONTINUOUS_CHRONOLOGY_AND_IMPLEMENTATION_CUSTODY_20261102.md")
 ADDITIONAL = Path("docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_17_20_20261102.md")
 LATER = Path("docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_21_24_20261102.md")
+NEWER = Path("docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md")
 AUTH = "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
 TYPES = {"scientific_experiment","implementation","hostile_review","repair",
          "acceptance","rejection","source_custody","chronology_correction",
@@ -60,7 +61,7 @@ def check(root: Path = ROOT):
                   "depth-only", "Stage73R", "x4_within"):
         require(token.casefold() in later.casefold(), "later chronology omission " + token)
     # Rounds 25-29: additional already-executed external/atlas/GRN history.
-    newer_path = Path("docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md")
+    newer_path = NEWER
     newer = (root / newer_path).read_text(encoding="utf-8")
     require(index.get("additional_recovery_rounds_25_29_path") == str(newer_path),
             "newer source-index pointer")
