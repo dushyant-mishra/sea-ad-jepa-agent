@@ -1,0 +1,47 @@
+name: JEPA student V2C and D1 source fixture (no authority)
+
+on:
+  pull_request:
+    paths:
+      - "scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py"
+      - "scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py"
+      - "tests/v5/td_unified/test_observation_d1_v2c_composed_fixture_v1.py"
+      - ".github/workflows/jepa-student-v2c-d1-fixture.yml"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py"
+      - "scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py"
+      - "tests/v5/td_unified/test_observation_d1_v2c_composed_fixture_v1.py"
+      - ".github/workflows/jepa-student-v2c-d1-fixture.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  d1-v2c-fixture:
+    name: D1 base-only -> V2C / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py
+            scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py
+            tests/v5/td_unified/test_observation_d1_v2c_composed_fixture_v1.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install "pytest>=8,<9"
+      - name: Run current source-only fixture contract
+        run: python -m pytest -q -p no:cacheprovider tests/v5/td_unified/test_observation_d1_v2c_composed_fixture_v1.py
+      - name: No source/training authority
+        run: |
+          echo 'Fixture consistency only. Macha source-pinned reviewer tests remain on PRs 516/518 and reviewed replay on 521.'
+          echo 'No signed source-rights issuer; no biological target or real training.'

@@ -1,3 +1,9 @@
+# November 2, 2026 — current supersession supplement
+
+The October 5/6 scientific and premise contracts below are **preserved for history**, not the current execution task. The authoritative **main** task routing is [JEPA_MAIN_CURRENT_EXECUTION_MAP_20261102.md](JEPA_MAIN_CURRENT_EXECUTION_MAP_20261102.md), with cumulative append-only audit #322 and operational successor #460. Prior PR #323 is historical, Macha original #516/#518 remain evidence. Repaired #514/#515 and container fixture #521 are non-authorizing **author-verified, independent recheck pending**. The old #502/#510 teacher oracle remains RED. Alias rights, q-independent cell selection, source issuer, Task4–8 and matched-compute/digest gaps stay blocked. Real training and Stage4 remain unauthorized.
+
+---
+
 # CURRENT SUPERSESSION MAP — JEPA PROJECT
 
 Date: 2026-10-05

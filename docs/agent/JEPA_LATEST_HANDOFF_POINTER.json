@@ -1,9 +1,9 @@
 {
   "schema": "JEPA_LATEST_HANDOFF_POINTER_V26",
-  "date": "2026-10-06",
-  "status": "V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OFF",
-  "handoff_branch": "handoff/jepa-20261005-historical-audit-custody",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md",
+  "date": "2026-11-02",
+  "status": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "handoff_branch": "handoff/jepa-v8-clean-successor-from-audit-20261027",
+  "handoff_path": "docs/agent/JEPA_NEW_AGENT_LIVE_POINTER_20261029.md",
   "state_path": "docs/agent/JEPA_HANDOFF_STATE_20261005_TARGET_AUTHORITY_RESET.json",
   "historical_audit_path": "docs/agent/JEPA_HISTORICAL_HANDOFF_TARGET_AUTHORITY_AUDIT_20261005.md",
   "historical_runtime_recovery_path": "docs/agent/JEPA_20261006_RUNTIME_AUTHORITY_RECOVERY_LEDGER.md",
@@ -16,10 +16,10 @@
   "current_measurement_status": "PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE",
   "current_target_status": "NO_QUALIFIED_PRODUCTION_TARGET_WINNER",
   "target_lineage_status": "COMPLETE__MERGED_TO_MAIN__NO_PRODUCTION_TARGET_QUALIFIED",
-  "current_task_status": "PREMISE_QUALIFICATION_PREFREEZE_IN_PROGRESS",
-  "current_task": "Freeze the P1-P6 premise qualification, representation-family, claim-ladder, Stage-A real-RNA prefreeze, external-asset classification, and estimand-choice contracts before any deciding TRAIN-only result is opened.",
-  "current_blocker": "The Stage-A real-RNA gate is not execution authority until premise semantics, estimand, fitted-readout split rules, and justified numeric margins are prospectively frozen.",
-  "next_action": "Audit and publish the prospective premise/real-RNA governance contracts; do not reopen target-lineage reconstruction, do not train, and do not open protected validation assets. Before claiming historical runtime or audit work is missing, read the historical runtime recovery ledger and do-not-repeat guardrail on the handoff branch.",
+  "current_task_status": "REPAIRED_V2C_D1_CONTAINER_AUTHOR_CI_GREEN__INDEPENDENT_MACHA_RECHECK_PENDING",
+  "current_task": "Main-first flat student V2C/D1/container integration, independently recheck repaired #514/#515/#521 and then integrate trusted source rights/alias/roster and Tasks4-8. No production authority.",
+  "current_blocker": "Macha independent security recheck, real issuer/alias-class and q-independent roster support, source custody, Task7 selected qualification and Task8 trainer gate are not accepted",
+  "next_action": "Read main current execution map, audit PR322 and handoff PR460; independently review new V2C source and Linux isolation; advance implementation from main with small flat PRs; do not train.",
   "authority_freshness_rule": "UPDATE_CANONICAL_SURFACE_WHEN_CURRENT_TASK_CLOSES_OR_NEXT_AUTHORIZED_TASK_CHANGES",
   "governance": {
     "training": "OFF",
@@ -33,5 +33,36 @@
     "width_160": "NETWORK_TOKEN_CAPACITY_NOT_BIOLOGICAL_DIMENSION_AUTHORITY",
     "stage_a_execution_authority": "NOT_AUTHORIZED__PREFREEZE_ONLY"
   },
-  "read_me_first": "Read START_HERE.md, this pointer, the terminal target-lineage reconstruction, CURRENT_AUTHORITY_INDEX.md, then the historical runtime recovery ledger and do-not-repeat guardrail before declaring previous work absent. Older local next-action text is historical unless explicitly preserved by this current surface."
+  "read_me_first": "START_HERE.md -> docs/agent/JEPA_MAIN_CURRENT_EXECUTION_MAP_20261102.md -> audit PR322 -> active handoff PR460; previous Oct6 snapshot stored in historical_20261006_router, not active task",
+  "historical_20261006_router": {
+    "date": "2026-10-06",
+    "status": "V75_MEASUREMENT_ARCHITECTURE_QUALIFIED__TARGET_LINEAGE_RECONCILED__PREMISE_QUALIFICATION_PREFREEZE__TRAINING_OFF",
+    "handoff_branch": "handoff/jepa-20261005-historical-audit-custody",
+    "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md",
+    "current_task_status": "PREMISE_QUALIFICATION_PREFREEZE_IN_PROGRESS",
+    "current_task": "Freeze the P1-P6 premise qualification, representation-family, claim-ladder, Stage-A real-RNA prefreeze, external-asset classification, and estimand-choice contracts before any deciding TRAIN-only result is opened.",
+    "next_action": "Audit and publish the prospective premise/real-RNA governance contracts; do not reopen target-lineage reconstruction, do not train, and do not open protected validation assets. Before claiming historical runtime or audit work is missing, read the historical runtime recovery ledger and do-not-repeat guardrail on the handoff branch."
+  },
+  "canonical_main_execution_map": "docs/agent/JEPA_MAIN_CURRENT_EXECUTION_MAP_20261102.md",
+  "canonical_audit": {
+    "pr": 322,
+    "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
+    "head_at_routing": "60a135c134b1316a3a684980287db0b104ac0a2a",
+    "append_only": true
+  },
+  "active_handoff": {
+    "pr": 460,
+    "branch": "handoff/jepa-v8-clean-successor-from-audit-20261027",
+    "head_at_routing": "0fbe6bb7bba63694b00f877bf67c7d2ac1323979"
+  },
+  "current_non_authorizing_implementation": {
+    "original_pr": 521,
+    "original_head": "09a5fc58f3690bef7a8a317d92d0f4b97a267a03",
+    "student_verifier_blob": "46b813fcbf598e12a2a9f209ca254d01aaeba784",
+    "d1_producer_blob": "edee1b8adc1b5c7ca660d52d3667d2020abdb417",
+    "independent_recheck": "PENDING",
+    "source_issuer": "NOT_PROVISIONED",
+    "real_training": false,
+    "real_training_authorized": false
+  }
 }
