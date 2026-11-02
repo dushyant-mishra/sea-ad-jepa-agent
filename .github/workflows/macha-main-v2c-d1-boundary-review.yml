@@ -1,0 +1,108 @@
+name: Macha main review - V2C/D1 hostile regression and student container boundary (no authority)
+
+# Independent reviewer evidence for main e4925cff. Tests only plus one proposed repair
+# commit; GPT reviews it, Macha does not accept it. Synthetic canaries only.
+on:
+  pull_request:
+    paths:
+      - "scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py"
+      - "scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py"
+      - "deployment/student_v2c/**"
+      - "tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py"
+      - "tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py"
+      - "tests/v5/td_unified/test_student_v2c_main_boundary_macha_review.py"
+      - ".github/workflows/macha-main-v2c-d1-boundary-review.yml"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py"
+      - "scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py"
+      - "deployment/student_v2c/**"
+      - "tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py"
+      - "tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py"
+      - "tests/v5/td_unified/test_student_v2c_main_boundary_macha_review.py"
+      - ".github/workflows/macha-main-v2c-d1-boundary-review.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hostile-regression:
+    name: Byte-identical Macha #516/#518 suites on main source / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            scripts/v5/td_unified/
+            deployment/student_v2c/
+            tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py
+            tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py
+            tests/v5/td_unified/test_student_v2c_main_boundary_macha_review.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install "pytest==9.1.1"
+      - name: Immutable reviewer tests are byte-identical to #516/#518 (Git blob identity)
+        shell: bash
+        run: |
+          check() { got=$(git hash-object "$1"); [ "$got" = "$2" ] || { echo "BLOB MISMATCH $1 $got != $2"; exit 1; }; echo "ok $1 $got"; }
+          check tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py 8647c07a893d932ffa5f05a79be50c89c3c28b53
+          check tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py 2a63a753081012e10a9c6cb39b80e79d16848ebe
+          echo "V2C under test: $(git hash-object scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py)"
+          echo "D1 under test:  $(git hash-object scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py)"
+      - name: "#516/#518 suites; the two launch witnesses that import legacy #502 are deselected (main no longer has #502; they replay on the old heads)"
+        run: >
+          python -m pytest -q -p no:cacheprovider -rfE
+          tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py
+          tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py
+          --deselect tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py::test_limit_the_standalone_launch_is_not_a_student_process_boundary
+          --deselect tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py::test_limit_the_composed_path_has_no_student_process_boundary
+      - name: Main-native source boundary (no Docker; the container job covers the rest)
+        if: ${{ !cancelled() }}
+        run: >
+          python -m pytest -q -p no:cacheprovider -rfE
+          tests/v5/td_unified/test_student_v2c_main_boundary_macha_review.py::test_main_tree_excludes_the_legacy_teacher_aware_modules
+          tests/v5/td_unified/test_student_v2c_main_boundary_macha_review.py::test_limit_a_same_user_launch_of_main_v2c_still_reads_a_teacher_private_file
+
+  container-boundary:
+    name: Student container boundary on Linux Docker
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            scripts/v5/td_unified/
+            deployment/student_v2c/
+            tests/v5/td_unified/test_student_v2c_main_boundary_macha_review.py
+            tests/v5/td_unified/test_student_v2c_container_runtime_v1.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install "pytest==9.1.1"
+      - name: Engine identity (recorded, not certified)
+        run: |
+          docker version
+          docker info --format 'os={{.OperatingSystem}} kernel={{.KernelVersion}} cgroup={{.CgroupVersion}}/{{.CgroupDriver}} runtime={{.DefaultRuntime}} security={{json .SecurityOptions}}'
+      - name: Macha container boundary tests (RED is expected before the repair commit)
+        env:
+          MACHA_REQUIRE_DOCKER: "1"
+          MACHA_EVIDENCE_DIR: ${{ runner.temp }}/macha-evidence
+        run: python -m pytest -q -p no:cacheprovider -rfE tests/v5/td_unified/test_student_v2c_main_boundary_macha_review.py
+      - name: Image and base identity actually tested
+        if: ${{ !cancelled() }}
+        run: cat "${{ runner.temp }}/macha-evidence/macha_student_v2c_image_identity.json" || true
+      - name: Author container tests still pass (inherited, not Macha evidence)
+        if: ${{ !cancelled() }}
+        run: python -m unittest discover -s tests/v5/td_unified -p 'test_student_v2c_container_runtime_v1.py' -v
+      - name: No authority
+        if: ${{ !cancelled() }}
+        run: echo "Fixture and sandbox mechanics only. No source-rights issuer, no runtime attestation, no target, no training."
