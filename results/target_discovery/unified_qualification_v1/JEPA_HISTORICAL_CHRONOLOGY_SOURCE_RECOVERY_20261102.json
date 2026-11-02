@@ -200,6 +200,60 @@
       "path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
       "blob_sha1": "51f0ff52288920794b06fc383edf2e6b03fb8b21",
       "meaning": "matched-null preserves query so wrong-query margin invalid as claimed contrast"
+    },
+    {
+      "id": "stage81a3r_historical_freeze1",
+      "path": "docs/history/foundation_target_discovery_prior_20260907/stage81/docs/v4/STAGE81A3R_FREEZE1_REPRESENTATION_CONTRACT.md",
+      "blob_sha1": "2bf156f60ad5ca60fd06231c9691d371864528cb",
+      "meaning": "historical Stage81A3R Freeze1 d_global=224 declared under 149 TRAIN donors and 4726 cells; not current representation"
+    },
+    {
+      "id": "stage81a3r_freeze1_machine_contract",
+      "path": "docs/history/foundation_target_discovery_prior_20260907/stage81/results/v4/stage81a3r_freeze1_contract.json",
+      "blob_sha1": "774d641ef8f647d1c6fe5591e4694c1046f367d3",
+      "meaning": "exact old bounded freeze1 semantics, 224 selection, train-only restrictions"
+    },
+    {
+      "id": "stage81a3r_real_train_governance",
+      "path": "docs/history/foundation_target_discovery_prior_20260907/stage81/docs/v4/STAGE81A3R_REAL_TRAIN_GLOBAL_STATE_READOUT.md",
+      "blob_sha1": "007a150807ce003f964d1d4c8d97ef8bae060cf7",
+      "meaning": "range-closure audit, mixed-split transient extraction incident discarded, freeze1 qualification"
+    },
+    {
+      "id": "foundation_target_discovery_historical_import",
+      "path": "docs/history/foundation_target_discovery_prior_20260907/HISTORY_GATE.md",
+      "blob_sha1": "58fc6de917f08df721a39fa1518945af22bef1df",
+      "meaning": "old freeze1 dimension preserved as history and barred from current training authority"
+    },
+    {
+      "id": "td15_td27_decision_ledger",
+      "path": "target_discovery/iterations/TD15_TD27_DECISION_LEDGER.md",
+      "blob_sha1": "72f1432631cb33c1ddfab15bcf5fdf3f53c97dea",
+      "meaning": "real TD15-27 tests, QC pseudostate defeat, SEA-specific residual survival and measurement constraints"
+    },
+    {
+      "id": "td19_depth_pseudostate_negative_control",
+      "path": "target_discovery/iterations/td19_claude_followup/TD19_DECISION.md",
+      "blob_sha1": "bb207df987285190edf40fff6a19137cf63de0b0",
+      "meaning": "depth pseudostate 0.980-0.986 reproduces TD17/18 geometry; target withdrawn"
+    },
+    {
+      "id": "stage73r_graph_prior_controls",
+      "path": "results/reports/stage73r_context_specific_grn_control_repair_report_v1.md",
+      "blob_sha1": "b49e97016cef9af4230a58739ef0a972bfedfaee",
+      "meaning": "context graph beats no graph but loses STRING/shuffled and Stage27C; lock false"
+    },
+    {
+      "id": "stage74_directed_prior_candidate",
+      "path": "results/reports/stage74_pi_summary_v1.md",
+      "blob_sha1": "730695d07bb1238769167f012b2737b72e13b459",
+      "meaning": "directed TF-target in silico prioritization passed, causal validation false"
+    },
+    {
+      "id": "v5_within_operator_x4_redteam",
+      "path": "docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md",
+      "blob_sha1": "58d8789a65bee0a0c50c9235c863a8107806ae8b",
+      "meaning": "discarded false-positive x4 estimator; corrected operator and donor-centred cross-view results"
     }
   ],
   "milestones": {
@@ -307,6 +361,57 @@
       "f1_real_run_authorized": false,
       "old_qid_matched_null_equals_wrong_query": false,
       "projectwide_baseline_recompute_proven": false
+    },
+    "historical_stage81a3r_freeze1": {
+      "declared": true,
+      "historical_only": true,
+      "d_global": 224,
+      "d_gene_token_width": 160,
+      "universal_addresses": 41238,
+      "scalar_observable_somewhere_in_train": 40949,
+      "collision_only_scalar_unobservable": 289,
+      "train_donors": 149,
+      "phase_a_operators": 42,
+      "qualification_cells": 4726,
+      "best_prefix": 336,
+      "best_mean_r2": 0.2708166,
+      "one_se_selected": 224,
+      "donor_refit_canonical_corr": 0.9949065,
+      "donor_refit_projector_similarity": 0.860974,
+      "U_BIO_U_MEAS_calibrated": false,
+      "production_basis_fitted": false,
+      "stage81b_started": false,
+      "stage81c_started": false,
+      "mixed_split_deserialization_discarded_incident": true,
+      "accepted_lineage_protected_outcomes_accessed": false,
+      "current_representation_winner": false
+    },
+    "td19_depth_pseudostate_control": {
+      "depth_only_cross_source_geometry_r_min": 0.98,
+      "depth_only_cross_source_geometry_r_max": 0.986,
+      "td17_td18_target_status": "SUPERSEDED_AS_TARGET_EVIDENCE",
+      "sea_ad_source_conditional_subspace_survived_some_controls": true,
+      "current_target_winner": false
+    },
+    "stage73r_and_stage74": {
+      "stage73_context_graph_mean": 0.323611,
+      "stage73_no_graph_mean": 0.311254,
+      "stage73_string_graph_mean": 0.331809,
+      "stage73_target_shuffled_mean": 0.33229,
+      "stage73_prediction_lock": false,
+      "stage74_candidate_prioritization_pass": true,
+      "stage74_causal_validation_pass": false
+    },
+    "v5_x4_estimator_repair": {
+      "initial_x4_within_estimator_discarded": true,
+      "replacement_operator_null_r2": -0.0068,
+      "donor_centered_cell_heldout_r2": {
+        "HVS": 0.1906,
+        "NPH52": 0.2646,
+        "SEA_AD": 0.2487
+      },
+      "source_transfer_model_class_specific": true,
+      "current_target_winner": false
     }
   },
   "no_repeat": [
@@ -319,7 +424,11 @@
     "Stage76-F9/Stage76-F10 through Stage79-F13 previous generation frozen GeneJEPA perturbation/graph-control path",
     "V2 real graph vs no graph and strict shuffle; V3 Stage25/27/31 comparator chronology and distinct threshold context",
     "Stage81A3 original comprehensive synthetic compression/uncertainty, 149-donor TRAIN-only real bridge, 14 annotation-rare states and spatial UCDQ; original source is not production authorization",
-    "Differentiate NPH gene feature ambiguity, invalid FULL104 cell row/donor join, GSE311359 BIN1 label keying, Morabito PAR_Y mapping, and F1 wrong-query/mask comparator defects; record exact correction and original result scope"
+    "Differentiate NPH gene feature ambiguity, invalid FULL104 cell row/donor join, GSE311359 BIN1 label keying, Morabito PAR_Y mapping, and F1 wrong-query/mask comparator defects; record exact correction and original result scope",
+    "Stage81A3R historical Freeze1 d_global=224 was actually DECLARED but later historical-only for current FULL104; correct earlier 'never frozen' shorthand",
+    "TD19 depth-only pseudostate null defeated TD17/18 label-defined high cross-source geometry, while narrower SEA source-conditional pilot survived different attacks",
+    "Stage73R context graph controlled prediction failed STRING and target-shuffled controls; Stage74 prioritized hypotheses without causal proof",
+    "Discarded September V5 x4_within operator-only false-positive estimator; only corrected source-specific within-donor and operator-centred model-class reports remain"
   ],
   "excluded_from_authority": [
     "target_winner",
@@ -333,5 +442,6 @@
   ],
   "terminal": "HISTORICAL_CHRONOLOGY_EXTENDED__NO_SCIENTIFIC_PROMOTION__NO_REEXECUTION__TRAINING_OFF",
   "future_custody_protocol_path": "docs/agent/JEPA_CONTINUOUS_CHRONOLOGY_AND_IMPLEMENTATION_CUSTODY_20261102.md",
-  "additional_recovery_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_17_20_20261102.md"
+  "additional_recovery_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_17_20_20261102.md",
+  "latest_historical_reconciliation_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_21_24_20261102.md"
 }
