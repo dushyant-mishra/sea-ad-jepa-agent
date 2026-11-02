@@ -1,4 +1,4 @@
-name: JEPA current student implementation: frozen Macha review + D1 integration
+name: 'JEPA current student implementation: frozen Macha review + D1 integration'
 
 on:
   pull_request:
