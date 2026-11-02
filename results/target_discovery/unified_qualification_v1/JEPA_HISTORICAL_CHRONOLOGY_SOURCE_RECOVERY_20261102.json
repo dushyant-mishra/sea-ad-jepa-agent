@@ -1,0 +1,177 @@
+{
+  "schema": "JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_V1",
+  "prepared_as_of": "2026-11-02",
+  "classification": "historical_reconciliation_non_authorizing",
+  "audit_pr": 322,
+  "operational_handoff_pr": 460,
+  "historical_chronology_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.md",
+  "source_type": "existing_repository_primary_reports_pinned_by_blob_sha1",
+  "source_evidence": [
+    {
+      "id": "v3_scorecard",
+      "path": "docs/V3_SCORECARD.md",
+      "blob_sha1": "4c43b0d4b57dd955887223d4da7a525c508bf8ed",
+      "meaning": "v3 donor-heldout pathology scorecard; non-graph Stage27C locked; constrained Stage35C positive"
+    },
+    {
+      "id": "v3_status",
+      "path": "docs/ACTIVE_V3_STATUS.md",
+      "blob_sha1": "549a89de3e0c83972a5a39e159f2ce36e3d1cc6b",
+      "meaning": "V1/V2/V3 context and Stage26C reconnaissance"
+    },
+    {
+      "id": "stage35c",
+      "path": "results/reports/stage35c_latent_module_graph_report_v1.md",
+      "blob_sha1": "2d6e9b47505c30651761e510210e7551f40b06b4",
+      "meaning": "small guarded internal graph-positive; not external topology certification"
+    },
+    {
+      "id": "stage41c",
+      "path": "results/reports/stage41c_stability_rescue_report_v1.md",
+      "blob_sha1": "591bce393576af574ad6083081bb6948413ab672",
+      "meaning": "credible unlocked 0.3681; bootstrap lower bound 0.2604"
+    },
+    {
+      "id": "stage44",
+      "path": "results/reports/stage44_pi_review_packet_v1.md",
+      "blob_sha1": "d11a815993890ed390de333d30e26244e062f7b6",
+      "meaning": "claim-bounded manuscript/PI review packet"
+    },
+    {
+      "id": "stage47",
+      "path": "results/reports/stage47_cross_version_candidate_network_drug_synthesis_report_v1.md",
+      "blob_sha1": "1ba3fc116835ced7265d280e4ce5e96affa395a6",
+      "meaning": "model-implied candidate gene/druggability dossier; no causal claims"
+    },
+    {
+      "id": "stage49",
+      "path": "results/reports/stage49_known_experimental_evidence_concordance_report_v1.md",
+      "blob_sha1": "fd1fa7c44f33440dfc18caddc529d0f97b8e849b",
+      "meaning": "post-hoc support not independent causal validation"
+    },
+    {
+      "id": "stage63",
+      "path": "results/reports/stage63_dlpfc_signal_instability_diagnosis_report_v1.md",
+      "blob_sha1": "4bbfad59453997d94c1ac413d71b0266057dc723",
+      "meaning": "negative control stronger than real DLPFC predictor; benchmark not locked"
+    },
+    {
+      "id": "stage69",
+      "path": "results/reports/stage69_rare_microglia_auxiliary_head_jepa_audit_report_v1.md",
+      "blob_sha1": "529af717e6dc4b019faaaf38a80f37422d5b6f2b",
+      "meaning": "internal rare positive 0.3591037979"
+    },
+    {
+      "id": "stage70",
+      "path": "results/reports/stage70_rare_microglia_auxiliary_head_robustness_lock_audit_report_v1.md",
+      "blob_sha1": "529fadf0e21a50b7c6541a0266b002cbad4d4d49",
+      "meaning": "Stage69 reproduced; new benchmark lock false"
+    },
+    {
+      "id": "stage75_f5c",
+      "path": "docs/stage75f_f5c_primary_tf_region_gene_evidence.md",
+      "blob_sha1": "751123ad4723ef2fbee87f3d50713973e89df75d",
+      "meaning": "primary candidate TF-region-gene motif assembly"
+    },
+    {
+      "id": "stage75_f7",
+      "path": "docs/stage75f_f7_secondary_tf_region_gene_evidence.md",
+      "blob_sha1": "1d912a680b01845778e75e896f512450dac6f212",
+      "meaning": "secondary candidate assembly and negative tiers"
+    },
+    {
+      "id": "stage75_f8",
+      "path": "docs/stage75f_f8_integrated_regulatory_evidence.md",
+      "blob_sha1": "bb09966d8a4788bc44ee3d834dfe2e41af426481",
+      "meaning": "A/B/C TF evidence tiers; not validated regulation"
+    },
+    {
+      "id": "stage81a2r",
+      "path": "docs/v4/STAGE81A2R_CLOSURE_REPORT.md",
+      "blob_sha1": "d93b9ed442213e2eda75a5c9b4cb01c37c4c0474",
+      "meaning": "43,248 foundation identities / 41,238 addresses / 2,010 nonuniversal / 42 operators"
+    },
+    {
+      "id": "c2_t1",
+      "path": "outputs/c2_t1_gradient_forensic_20260906/C2_V3_REPRODUCTION.md",
+      "blob_sha1": "90fa1893ce2ffdf57cd4475ccbc0a6ea639f4634",
+      "meaning": "48/48 dead protected routing tensors in one CUDA/fp16 condition"
+    },
+    {
+      "id": "f1_replay",
+      "path": "docs/agent/F1_REAL_PRODUCER_REPLAY_EXTERNAL_REVIEW_HANDOFF_20260907.md",
+      "blob_sha1": "ad2ccaf3e3c4685ba5e6c455c13c3a1460222c6d",
+      "meaning": "test-executed F1 complete producer, independent replay; real F1 off"
+    }
+  ],
+  "milestones": {
+    "pre_september_graph_jepa": {
+      "official_locked_internal_model": "Stage27C module_pca_ridge",
+      "mean_oof_spearman": 0.3267024400121495,
+      "stage35c_internal_graph_positive": 0.32726536397691613,
+      "stage35c_matched_vs_no_graph_delta": 0.0005629239647666484,
+      "external_graph_truth_authorized": false
+    },
+    "rare_aux": {
+      "stage69_internal_positive": 0.3591037979163019,
+      "stage70_exact_reproduction": true,
+      "stage70_new_locked_benchmark_pass": false,
+      "stage71_graph_specific_biology_established": false
+    },
+    "manuscript_and_candidates": {
+      "stage44_pi_review_packet_completed": true,
+      "stage47_candidate_hypotheses_completed": true,
+      "causal_drug_evidence_established": false
+    },
+    "stage75f": {
+      "tier_A": [
+        "STAT1",
+        "ELF1",
+        "SPI1"
+      ],
+      "tier_B": [
+        "IRF8",
+        "BACH1",
+        "CEBPA",
+        "RELA"
+      ],
+      "tier_C": [
+        "MITF",
+        "NRF1",
+        "STAT3"
+      ],
+      "validated_egrn": false
+    },
+    "stage81a2r": {
+      "foundation_biological_identities": 43248,
+      "universal_addresses": 41238,
+      "preserved_nonuniversal": 2010,
+      "foundation_operators": 42,
+      "project_datasets": 47,
+      "project_truly_identifier_poor": 41719
+    },
+    "f1": {
+      "test_executed_producer_and_independent_replay": true,
+      "real_f1_authorized": false
+    }
+  },
+  "no_repeat": [
+    "historical Stage27-75 internal and negative results",
+    "Stage69 positive and Stage70 nonlock both remain",
+    "Stage75F F5c-F8 executed evidence tiers",
+    "Stage81A2R molecular identity and NPH operator accounting",
+    "F1 producer/replay test mechanics, not real sweep",
+    "C2 gradient forensics historical result"
+  ],
+  "excluded_from_authority": [
+    "target_winner",
+    "representation_winner",
+    "real_training",
+    "Stage4",
+    "human_issuer",
+    "independent_external_validation",
+    "causal_TF_binding",
+    "therapeutic_gene"
+  ],
+  "terminal": "HISTORICAL_CHRONOLOGY_EXTENDED__NO_SCIENTIFIC_PROMOTION__NO_REEXECUTION__TRAINING_OFF"
+}
