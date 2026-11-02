@@ -1,0 +1,12 @@
+# Fixture deployment only: no externally authenticated source issuer.
+# Build ONLY from build_context_v1.py output; never use the whole repository.
+# The base image tag is not digest-pinned; CI must report actual image identity.
+FROM python:3.11-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1
+WORKDIR /opt/student
+COPY --chown=65534:65534 student_v2c.py /opt/student/student_v2c.py
+COPY --chown=65534:65534 entrypoint.py /opt/student/entrypoint.py
+COPY --chown=65534:65534 manifest.json /opt/student/manifest.json
+USER 65534:65534
+ENTRYPOINT ["python", "-I", "-S", "-B", "/opt/student/entrypoint.py"]
