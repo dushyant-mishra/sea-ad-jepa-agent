@@ -74,3 +74,9 @@ The historical sequence explains much of the subsequent architecture and governa
 - Any prospective new design or real run must first specify the *changed scientific question/inputs*, reuse earlier experiments where valid, and pass newly applicable issuer/evidence/masking/source-rights and independent-review contracts.
 
 **Terminal:** `HISTORICAL_EXPERIMENT_GAPS_17_20_RECOVERED__NO_REEXECUTION__NO_SCIENCE_PROMOTION`.
+
+---
+
+## November 2 follow-on chronology correction (rounds 21–24)
+
+**The phrase `Stage81A3 remained unfrozen` in this early recovery applies to the *then-current* Stage81A3 microqualification and failed Perceiver candidate, not the complete subsequent Stage81A3R historical lineage.** The later, source-preserved Stage81A3R Freeze1 contract **DID DECLARE `STAGE81A3_FREEZE1_DECLARED` with `d_global=224`**, under a 149-TRAIN-donor / 42-operator / 4,726-cell bounded protocol. It remained **historical-only** after the September 7 import and supplies **no current FULL104 production dimension, biological target, Stage4 or training authority**. Read [`JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_21_24_20261102.md`](JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_21_24_20261102.md) before reusing or paraphrasing this early statement. That later audit also records TD19's depth-only pseudostate negative control, Stage73R's non-winning graph result, and the discarded V5 x4 estimator.
