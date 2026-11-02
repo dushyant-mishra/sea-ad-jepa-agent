@@ -200,6 +200,54 @@
         "docs/agent/JEPA_GENE_IDENTITY_RECLASSIFICATION_AUDIT_20261013.md",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/aaf561cfdc60ffe29c4d79094c16ce5e524f7d2d/analysis/therapeutic_perturbation_etl/PR118_AUDIT_RESPONSE_20260925.md"
       ]
+    },
+    {
+      "event_id": "20261102-A3R-FREEZE-TD19-STAGE73R-X4-RECOVERY",
+      "date_utc": "2026-11-02",
+      "workstream": "historical_Stage81A3R_representation_freeze_and_TD19_graph_x4_negative_controls",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/history/foundation_target_discovery_prior_20260907/stage81/docs/v4/STAGE81A3R_FREEZE1_REPRESENTATION_CONTRACT.md",
+          "blob_sha1": "2bf156f60ad5ca60fd06231c9691d371864528cb",
+          "role": "historical_approved_bounded_freeze_only"
+        },
+        {
+          "path": "docs/history/foundation_target_discovery_prior_20260907/HISTORY_GATE.md",
+          "blob_sha1": "58fc6de917f08df721a39fa1518945af22bef1df",
+          "role": "historical_no_repeat_supersession"
+        },
+        {
+          "path": "target_discovery/iterations/td19_claude_followup/TD19_DECISION.md",
+          "blob_sha1": "bb207df987285190edf40fff6a19137cf63de0b0",
+          "role": "false_positive_cross_source_geometry_depth_null"
+        },
+        {
+          "path": "results/reports/stage73r_context_specific_grn_control_repair_report_v1.md",
+          "blob_sha1": "b49e97016cef9af4230a58739ef0a972bfedfaee",
+          "role": "graph_prediction_control_comparison"
+        },
+        {
+          "path": "docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md",
+          "blob_sha1": "58d8789a65bee0a0c50c9235c863a8107806ae8b",
+          "role": "discarded_estimator_and_corrected_linear_baselines"
+        }
+      ],
+      "change_type": "chronology_correction",
+      "what_already_existed": "Earlier Stage81A3 no-freeze intermediate; later Stage81A3R true historical Freeze1 at 224, independent TD19 depth-only pseudo-state rejection of TD17/18, Stage73R/74 tested graph-prior and directed perturbation controls, discarded V5 x4_within and corrected cross-view estimators",
+      "new_work_or_result": "Re-read exact historic contract and decision ledgers; source-pin nine original files; correct prior oversimplified statement Stage81A3 remained unfrozen; distinguish archival d224 freeze from current D, biological representation and target authority",
+      "negative_or_counterfactual_evidence": "TD19 depth-only geometry r .980-.986 undermined TD17/18; Stage73R shuffled .332290 and STRING .331809 beat context .323611; old x4_within falsely generated cell residual on operator-only null; historical A3R extra dimension block 225-240 lacked donor support",
+      "test_review_scope": "Primary-source and source-Git-blob audit only; new CI static/hostile validation after committed event; no protected expression, new model, or independent scientific acceptance",
+      "independent_review": "NONE_NEW__HISTORICAL_RECONCILIATION_ONLY",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [],
+      "historical_supersession": "Earlier November 2 rounds17-20 Stage81A3 not frozen statement refers to early candidate/microqualification only; Stage81A3R actual later Freeze1 declared but imported Sept7 as historical evidence without current production authority",
+      "evidence_links": [
+        "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_21_24_20261102.md",
+        "docs/history/foundation_target_discovery_prior_20260907/stage81/docs/v4/STAGE81A3R_FREEZE1_REPRESENTATION_CONTRACT.md"
+      ]
     }
   ]
 }
