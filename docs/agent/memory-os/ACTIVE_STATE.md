@@ -1,6 +1,6 @@
 # November 2, 2026 — current JEPA state override
 
-**Current router:** [main execution map](../JEPA_MAIN_CURRENT_EXECUTION_MAP_20261102.md); canonical cumulative [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322); active handoff [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460). October 5 task text below is historical. Current engineering: repaired V2C #514, D1 #515 and restricted Linux #521 fixture, independent Macha recheck pending. All biological/source authority remains off: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`. New code PRs must be main-based and flat; register progress on #322 and #460.
+**Current router:** [main execution map](../JEPA_MAIN_CURRENT_EXECUTION_MAP_20261102.md); canonical cumulative [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322); active handoff [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460). October 5 task text below is historical. Current engineering: main `971ec6a` incorporates Macha's independent V2C/D1 scoped verdict and GPT's independently scoped-accepted #523 non-authorizing Docker hardening/hostile regression. Runtime attestation, issuer and biological authority remain blocked. All biological/source authority remains off: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`. New code PRs must be main-based and flat; register progress on #322 and #460.
 
 ---
 

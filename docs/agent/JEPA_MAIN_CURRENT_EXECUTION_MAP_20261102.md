@@ -2,6 +2,18 @@
 
 **This is the current router for `main`, not a scientific acceptance report.** Before this correction, `main` still advertised the 2026-10-06 premise-prefreeze task even though later work progressed. Historical Oct-6 findings remain valid *within their former scope*, but they are not the current next action.
 
+## Current post-PR523 supersession — 2026-11-02
+
+**Single active code landing:** `main` squash commit `971ec6a14a9435ffc9fe03b1373c3ec3f5a30687` from [flat PR #523](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/523). Macha independently verified repaired V2C/D1 fixture mechanics on exact preceding main; GPT independently accepted and merged #523's limited container hardening and immutable hostile regression CI. Postmerge main hostile CI [41534644702](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41534644702) **SUCCESS**. This **supersedes** the older pending-review and author-only statements elsewhere in this file. Older PR #514/#515/#521 remain historical source provenance, not the current implementation heads.
+
+**Current operator rule:** The default entrypoint checks observed process, mount, network and cgroup restrictions before receipt issuance, but it cannot attest itself, authenticate mount origin, stop entrypoint overrides, prove Docker Desktop seccomp policy, or authorize source rights. A real trusted launcher/engine decision, source rights issuer/alias/roster/QC and donor/specimen attestation, targeted Tasks4–8 integration and post-TD #517 RED are still unqualified. NPH52 protected expression remains blocked.
+
+**Current custody:** [canonical #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) has Macha main-review event 17 and GPT exact-merge event 18; [active #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) top live pointer supersedes earlier tasking. Always recheck their branch heads. New implementation PRs are flat from main; no backport to legacy stacked branches, no full ETL or historical experiment redo.
+
+**Standing:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 ## Three surfaces; no more nested development stacks
 
 | Surface | Use | Latest pinned observation |

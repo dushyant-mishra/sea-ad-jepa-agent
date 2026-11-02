@@ -37,7 +37,7 @@ def check(root: Path) -> list[str]:
         failures.append("current pointer backdated before November 2")
     if p.get("status") != TERMINAL:
         failures.append("current pointer must retain complete fail-closed terminal")
-    if p.get("current_task_status") != "REPAIRED_V2C_D1_CONTAINER_AUTHOR_CI_GREEN__INDEPENDENT_MACHA_RECHECK_PENDING":
+    if p.get("current_task_status") != "V2C_D1_FIXTURE_ACCEPT_SCOPED__CONTAINER_FIXTURE_ACCEPT_SCOPED__ISSUER_BLOCKED":
         failures.append("no current qualified repair/review state")
     if p.get("canonical_main_execution_map") != ROUTER:
         failures.append("main router drift")
@@ -53,7 +53,9 @@ def check(root: Path) -> list[str]:
     if not isinstance(impl, dict):
         failures.append("current fixture pointer absent")
     else:
-        if (impl.get("independent_recheck") != "PENDING" or
+        if (impl.get("independent_recheck") != "ACCEPT_SCOPED_FIXTURE_ONLY" or
+                impl.get("runtime_attested") is not False or
+                impl.get("trusted_launcher_accepted") is not False or
                 impl.get("source_issuer") != "NOT_PROVISIONED" or
                 impl.get("real_training_authorized") is not False):
             failures.append("fixture authority promoted without independently accepted change")
