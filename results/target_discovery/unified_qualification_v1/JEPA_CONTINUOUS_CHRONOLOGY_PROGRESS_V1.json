@@ -494,6 +494,43 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41509824659",
         "docs/agent/JEPA_MAIN_POSTMERGE_MACHA_REVIEW_READINESS_20261102.md"
       ]
+    },
+    {
+      "event_id": "20261102-MACHA-DATA-GPU-ASSIGNMENT-CORRECTION-ALREADY-COMPLETED",
+      "date_utc": "2026-11-02",
+      "workstream": "macha_parallel_work_source_scoped_no_repeat_assignment_correction",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_MACHA_TASKING_NO_DUPLICATE_CORRECTION_20261102.md",
+          "blob_sha1": "a144b35d6b164d67ccf6d1db4642461d7d76201a",
+          "role": "source_pinned_tasking_correction_audit_not_new_scientific_result"
+        }
+      ],
+      "change_type": "chronology_correction",
+      "what_already_existed": "Source/alias/QC #513, D1 decision #491, frozen 2028 population strata and 104/22/23 donor split #349, C2 corrected human replay #314, real R5 developmental measured query target, Stage75F regulatory history, V44 RNA teacher proxy, synthetic TD phases 1/2, V79 1056 fits, #328 unified synthetic and #469 432-atom bridge, canonical V5 optimizer/EMA/restart #224",
+      "new_work_or_result": "Withdrew redundant proposed Macha parallel tasks for fresh ETL integrity, generic data/candidate coverage census, unbounded SCENIC+/ATAC re-inventory and generic GPU synthetic replay. Corrected to independent main review, exact candidate evidence-rights overlay to previously frozen registry, bounded real Windows/WSL custody exception tests, conditional V3.1.1 PS Task4 readiness and prospective evidence-bound teacher target design; no new computation.",
+      "negative_or_counterfactual_evidence": "Prior assistant proposal incorrectly labeled already-performed data, source/QC, measured target and synthetic campaigns as missing work. #349 candidate-specific support remains BLOCKED_EVIDENCE_CONTRACT despite population already frozen; no external issuer or quarantined NPH52 authorization, and full PS Task4 generator differs from finished #328 fixture.",
+      "test_review_scope": "Read exact source records on audit #322 and handoff #460, PRs #513,#491,#349,#314,#328,#344,#356,#469,#224 and V79 execution-ledger. This is source/document review; no code run, new GPU data execution, independently accepted biology or physical local confirmation.",
+      "independent_review": "GPT_CORRECTION_OF_OWN_TASKING__MACHA_NOT_ASKED_TO_REAUDIT_OLD_RESULTS__NO_INDEPENDENT_SCIENCE_CLAIM",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha review main e4925cff exact student security, unchanged #516/#518 and physical WSL canary boundaries",
+        "Existing candidate-specific C1/C2/C3/C6 address/right measured-support registry overlay, block outcomes until issuer authorizes",
+        "External source issuer/trust, q-independent depositor cell roster/alias-class policy and NPH52 remain blocked",
+        "PS Task4 production generator only after prerequisite Tasks1–3 independent verdicts and scope approval; distinguish from Unified Task4",
+        "Teacher measured-target/rights construction and decision metric freezes before any new deciding real biological experiment"
+      ],
+      "historical_supersession": "Supersedes only incorrect prospective assistant data/GPU tasking, not original PR513, PR349, C2/C3, Stage75F, V79 or other experimental verdicts",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/513",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/349",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/328",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314",
+        "docs/agent/JEPA_MACHA_TASKING_NO_DUPLICATE_CORRECTION_20261102.md"
+      ]
     }
   ]
 }
