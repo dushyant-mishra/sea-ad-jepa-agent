@@ -690,6 +690,41 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41517891013",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41517891053"
       ]
+    },
+    {
+      "event_id": "20261102-MAIN-PR524-CURRENT-ROUTER-FRESHNESS-FLAT-LANDING",
+      "date_utc": "2026-11-02",
+      "workstream": "main_startup_current_governance_supersession_reviewed_pr523_status",
+      "implementation_pr": 524,
+      "implementation_head": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_MAIN_ROUTER_PR524_SUPERSESSION_GOVERNANCE_20261102.md",
+          "blob_sha1": "c70138d3410f7341424b091a6206e04a700de4a5",
+          "role": "main_scoped_review_startup_status_guard_and_exact_ci_evidence"
+        }
+      ],
+      "change_type": "implementation",
+      "what_already_existed": "GPT acceptance and flat main PR523 merged as 971ec6a (event18), old main startup surface still erroneously required the completed Macha independent main review and guard hardcoded PENDING status.",
+      "new_work_or_result": "One flat main-based governance PR524 updated seven current startup docs/pointer and existing authority-surface validator/tests; proposed head b9072905, squash merged to canonical main 28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb. Main pointer now ACCEPT_SCOPED_FIXTURE_ONLY, issuer NOT_PROVISIONED, runtime_attested=false and trusted_launcher_accepted=false. New tests refuse old PENDING and invented runtime/launcher authority.",
+      "negative_or_counterfactual_evidence": "Old guard's hardcoded PENDING requirement permitted obsolete agent tasking; updated tests reject stale old main-review state and runtime authority forgeries. Historical source/science evidence unchanged. Real issuer, genuine runtime origin, full host isolation, Task7/8 and real training remain blocked.",
+      "test_review_scope": "GitHub-hosted PR524 branch push workflow 41535575562 and PR workflow 41535636708 both SUCCESS. Postmerge main push workflow 41535736374 in progress at first read; no physical data or new model/scientific experiment. Existing historical validator and exact security tests remain separate.",
+      "independent_review": "GPT_AUTHOR_AND_CURRENT_AUTHORITY_TESTS_ONLY__NO_NEW_MACHA_INDEPENDENT_REVIEW_OR_SCIENCE_ACCEPTANCE",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Postmerge exact-main current-authority CI result",
+        "Authenticated runtime launcher/engine origin, mounts, IPC, CPU/deadline and source-issuer trust",
+        "Source rights, aliases, query-independent selection, donor/specimen physical identity, downstream tasks and biological target evidence"
+      ],
+      "historical_supersession": "Supersedes main startup Oct6 and main PR522's independent-Macha-review-pending task; preserves historical old PRs as evidence and PR523 merged as fixture-only source.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/524",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/commit/28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41535575562",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41535636708",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41535736374"
+      ]
     }
   ]
 }
