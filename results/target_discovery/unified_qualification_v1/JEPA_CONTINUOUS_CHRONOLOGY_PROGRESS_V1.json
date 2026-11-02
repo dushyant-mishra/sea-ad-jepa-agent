@@ -172,9 +172,9 @@
           "role": "repaired_source_address_materializer"
         },
         {
-          "path": "analysis/therapeutic_perturbation_etl/PR118_AUDIT_RESPONSE_20260925.md",
+          "path": "docs/agent/JEPA_IDENTITY_ALIGNMENT_AND_COMPARATOR_FAILURE_RECONCILIATION_20261102.md",
           "blob_sha1": null,
-          "role": "physically_repaired_guide_feature_identity"
+          "role": "audit_branch_source_pinned_pr121_guide_id_repair_synthesis"
         },
         {
           "path": "docs/agent/F1_EA35_REPAIR_RESPONSE_20260907.md",
@@ -197,7 +197,8 @@
       "historical_supersession": "The earlier 4K identity-audited experiments, true source-native science and semantics-free optimizer/EMA tests retain original evidence classes; bad comparators and invalid cell/donor or guide-index joins do not",
       "evidence_links": [
         "docs/agent/JEPA_IDENTITY_ALIGNMENT_AND_COMPARATOR_FAILURE_RECONCILIATION_20261102.md",
-        "docs/agent/JEPA_GENE_IDENTITY_RECLASSIFICATION_AUDIT_20261013.md"
+        "docs/agent/JEPA_GENE_IDENTITY_RECLASSIFICATION_AUDIT_20261013.md",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/aaf561cfdc60ffe29c4d79094c16ce5e524f7d2d/analysis/therapeutic_perturbation_etl/PR118_AUDIT_RESPONSE_20260925.md"
       ]
     }
   ]
