@@ -132,9 +132,18 @@ def validate_student_v2c(*, student_view, expected_policy):
     For any input with a nonstudent/missing role, one constant refusal occurs
     BEFORE copying or inspecting rich teacher candidate content.
     """
-    if type(student_view) is not dict or type(dict.get(student_view,"view_kind")) is not str or dict.get(student_view,"view_kind")!=_STUDENT:
+    # Refuse hostile top-level keys BEFORE any string-keyed dictionary lookup:
+    # otherwise their __eq__ can execute inside dict.get on the caller object.
+    if type(student_view) is not dict or any(type(k) is not str for k in dict.keys(student_view)):
+        _deny("V2C accepts STUDENT_BASE_RIGHTS only")
+    role=dict.get(student_view,"view_kind")
+    if type(role) is not str or role!=_STUDENT:
         _deny("V2C accepts STUDENT_BASE_RIGHTS only")
     view=_snap(student_view)
+    # The receipt must describe a STUDENT-labelled SNAPSHOT, not merely the
+    # mutable caller mapping observed by the preliminary role check.
+    if view["view_kind"]!=_STUDENT:
+        _deny("V2C accepts STUDENT_BASE_RIGHTS only")
     policy=_snap(expected_policy)
     if type(view) is not dict or set(view)!=_VIEW_KEYS:
         _deny("V2C student schema fields differ")
