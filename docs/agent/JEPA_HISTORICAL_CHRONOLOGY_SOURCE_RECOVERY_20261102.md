@@ -64,3 +64,9 @@ This history is distinct from the much later **synthetic V79** statistical quali
 **Explicit nomenclature collision:** `Stage79 F13 graph-control test` (the old Graph-JEPA staged perturbation program) != `V79` synthetic Bayesian campaign (1,056 fits, later NOT_QUALIFIED). Likewise Stage81A0 V4 design and Stage81A2R foundation identity closure are different program stages.
 
 **Unchanged terminal:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
+## Identity and comparator failure reconciliation (2026-11-02)
+
+The distinct gene-feature/row/guide-identity and invalid-comparator histories are documented in [`JEPA_IDENTITY_ALIGNMENT_AND_COMPARATOR_FAILURE_RECONCILIATION_20261102.md`](JEPA_IDENTITY_ALIGNMENT_AND_COMPARATOR_FAILURE_RECONCILIATION_20261102.md). **Critical no-repeat:** prior NPH/cross-source 2/4/8 teacher-view numerical preference is `GENE_IDENTITY_PROVENANCE_UNRESOLVED`; September-17 FULL104 pass1 donor join was invalid and rebuilt byte-identically in PR31/32; GSE311359 BIN1 guide-name collapse physically corrected using three distinct feature IDs in PR121; Morabito `_PAR_Y` crosswalk repaired in PR175; F1 wrong-query and evidence-mask comparator defects separately repaired at mechanics level without real F1 authorization. Gene-semantic errors, cell-row permutation and matched-null misinterpretation are **not one universal column-scramble claim**, and intact source-native or optimizer/EMA experiments must not be indiscriminately invalidated. No novel human biological result is asserted.
