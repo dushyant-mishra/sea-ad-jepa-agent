@@ -59,6 +59,28 @@ def check(root: Path = ROOT):
     for token in ("Stage81A3R", "Freeze1", "d_global=224", "TD19",
                   "depth-only", "Stage73R", "x4_within"):
         require(token.casefold() in later.casefold(), "later chronology omission " + token)
+    # Rounds 25-29: additional already-executed external/atlas/GRN history.
+    newer_path = Path("docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md")
+    newer = (root / newer_path).read_text(encoding="utf-8")
+    require(index.get("additional_recovery_rounds_25_29_path") == str(newer_path),
+            "newer source-index pointer")
+    new_ids = {"v21_morabito_frozen_encoder_external_projection",
+               "v21_grubman_six_group_zero_shot",
+               "v22_rexach_olah_cellxgene_alignment",
+               "discovery_atlas_targeted_45_gene_manifold_qc",
+               "stage72b_morabito_541_pseudobulk_coactivity_edges",
+               "stage74_directed_perturbation_hypothesis_audit"}
+    require(new_ids.issubset(sources), "missing round25-29 primary sources")
+    for token in ("Round 25", "Round 26", "Round 27", "Round 28", "Round 29",
+                  "0.2237", "0.6234", "45/45", "541", "39/41", "NO_NEW"):
+        require(token.casefold() in newer.casefold(), "newer chronology omission " + token)
+    extra = index.get("milestones", {})
+    require(extra.get("round29_source_index_reachability", {}).get("missing_git_blob_count") == 0,
+            "source blob unavailable assertion")
+    require(extra.get("round25_early_external_cohort_tests", {}).get("current_clean_benchmark_authority") is False,
+            "old external cohort silently promoted")
+    require(extra.get("round28_morabito_regulatory_ancestry", {}).get("validated_regulation") is False,
+            "stage72 coactivity silently promoted")
     require(index.get("milestones", {}).get("historical_stage81a3r_freeze1", {}).get("declared") is True,
             "historical Freeze1 declaration missing")
     require(index["milestones"]["historical_stage81a3r_freeze1"].get("current_representation_winner") is False,
