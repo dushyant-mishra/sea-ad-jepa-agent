@@ -147,6 +147,58 @@
         "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_17_20_20261102.md",
         "results/target_discovery/unified_qualification_v1/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.json"
       ]
+    },
+    {
+      "event_id": "20261102-GENE-ROW-GUIDE-COMPARATOR-RECONCILIATION",
+      "date_utc": "2026-11-02",
+      "workstream": "historical_gene_feature_cell_row_guide_identity_and_validity_of_baseline_comparators",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_GENE_IDENTITY_RECLASSIFICATION_AUDIT_20261013.md",
+          "blob_sha1": "3cc53abf5ea8655d8f283d40f235927386ba0f61",
+          "role": "historical_evidence_classification"
+        },
+        {
+          "path": "docs/v4/STAGE81A2R_CLOSURE_REPORT.md",
+          "blob_sha1": "d93b9ed442213e2eda75a5c9b4cb01c37c4c0474",
+          "role": "source_feature_identity_authority"
+        },
+        {
+          "path": "scripts/v4/foundation_materialize_nph_discovery_sample.R",
+          "blob_sha1": "a3ff5f739751750b8dfe3ac3abb8b91bc487a6c9",
+          "role": "repaired_source_address_materializer"
+        },
+        {
+          "path": "analysis/therapeutic_perturbation_etl/PR118_AUDIT_RESPONSE_20260925.md",
+          "blob_sha1": null,
+          "role": "physically_repaired_guide_feature_identity"
+        },
+        {
+          "path": "docs/agent/F1_EA35_REPAIR_RESPONSE_20260907.md",
+          "blob_sha1": null,
+          "role": "wrong_evidence_mask_and_matched_null_mechanics_repair"
+        }
+      ],
+      "what_already_existed": "October13 five-class NPH gene identity reclassification; physical Stage81A2R source feature recovery; PR31/32 FULL104 selection_row pass1 identity rebuild; PR92/118/121 BIN1 capture-ID fix; PR175 PAR_Y ambiguity repair; independent F1/QID wrong-query and evidence-mask audits",
+      "new_work_or_result": "Disambiguated gene-column/source feature identity, cell-row/donor scrambling, guide-feature display-name collision, PAR_Y mapping and erroneous matched-null/wrong-query comparator; recorded specific old baselines/comparisons withheld or repaired without conflating all gene science",
+      "negative_or_counterfactual_evidence": "Old 2/4/8 teacher-view optimum cannot be inherited; Sept17 row-order pass1 INVALID; V1 BIN1 14 impossible zero-count assignments removed; Morabito PAR_Y ambiguity 3->35; F1 original order-first mask omitted query withholding; QID matched-null is not a wrong-query intervention",
+      "test_review_scope": "Historical primary GitHub file/PR source inspection only; no rerun protected expression or production model; source/role boundaries and independently executed repairs retained according to their original review scopes",
+      "independent_review": "NONE_NEW__HISTORICAL_RECLASSIFICATION_ONLY",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Old teacher-view numerical optimum remains unreplayed and nonauthoritative",
+        "Source-specific real NPH52 hidden-query issuer remains restricted",
+        "Identity-fix does not replace independent biological benchmark qualification"
+      ],
+      "historical_supersession": "The earlier 4K identity-audited experiments, true source-native science and semantics-free optimizer/EMA tests retain original evidence classes; bad comparators and invalid cell/donor or guide-index joins do not",
+      "evidence_links": [
+        "docs/agent/JEPA_IDENTITY_ALIGNMENT_AND_COMPARATOR_FAILURE_RECONCILIATION_20261102.md",
+        "docs/agent/JEPA_GENE_IDENTITY_RECLASSIFICATION_AUDIT_20261013.md"
+      ]
     }
   ]
 }
