@@ -8,6 +8,23 @@ The host-side producer on PR #515 constructs a previously redacted D1 student vi
 
 The Docker fixture uses `--read-only --network none --cap-drop ALL --security-opt no-new-privileges --pids-limit 1 --memory 256m --user 65534:65534` with a small restricted `/tmp` tmpfs; the Python runtime uses `-I -S -B`. The stdin protocol contains **only** `student_view` and `expected_policy`, size-limited to 1 MiB; the output is a non-authorizing V2C consistency receipt or constant refusal. It does not expose exception details or open network connections.
 
+**Fail-closed entry (Macha review proposal, PR #523; requires independent GPT review).** The packaged files are root-owned, so the runtime user cannot rewrite its verifier even if `--read-only` is omitted. The default entrypoint gives the constant refusal unless the documented restrictions are observable from inside the container:
+- UID/GID 65534;
+- no capabilities and `NoNewPrivs`;
+- a seccomp filter;
+- loopback only;
+- a single visible PID;
+- a read-only root;
+- no mounts outside the engine's own paths and the `/tmp` tmpfs;
+- `pids.max = 1`;
+- memory of at most 256 MiB.
+
+This guards only against an omitted or weakened flag on the default entrypoint. It is **not an attestation**:
+- An `--entrypoint` override or a hostile Docker operator bypasses it.
+- Docker Desktop's outer filter hides `seccomp=unconfined`.
+- `--ipc host` is not detected.
+- The receipt still says nothing about where it was computed.
+
 ## CI and attack evidence
 
 `python -m unittest discover -s tests/v5/td_unified -p 'test_student_v2c_container_runtime_v1.py' -v` runs on Linux CI with Docker. Nine tests probe the exact frozen blob, a minimal image context, fixture receipt equivalence, package/import denial, filesystem write denial and no host secret paths, PID-limited child creation, outbound network denial, effective Docker flags, constant denial behavior and isolated `sys.path`. CI prints its **actual** image identity. No protected source data are used.
