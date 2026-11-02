@@ -352,6 +352,75 @@
         "docs/agent/JEPA_POST_TD_351_HOSTILE_ENGINEERING_DELTA_20261102.md",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41497548802"
       ]
+    },
+    {
+      "event_id": "20261102-MACHA-INDEPENDENT-V2C-514-D1-515-REVIEWS-516-518",
+      "date_utc": "2026-11-02",
+      "workstream": "independent_student_observation_security_and_D1_composition_review",
+      "implementation_pr": 516,
+      "implementation_head": "881194aec9d99a9d42cbf206ffcb779429c4e768",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_MACHA_V2C_514_515_REVIEW_DELTA_20261102.md",
+          "blob_sha1": "0f56a5d42f57b62c239a3da7db1562b8b17b3d7a",
+          "role": "independent_macha_review_primary_custody_merged_via_PR519"
+        }
+      ],
+      "change_type": "hostile_review",
+      "what_already_existed": "Original #502/#510 teacher-aware leak RED 507/512; #514 V2C standalone author fixture and #515 D1 -> V2C author fixture; original reviewer heads immutable",
+      "new_work_or_result": "Macha PR516 exact-head new 4 RED on top-level hostile key pre-snapshot dispatch and teacher-labelled snapshot receipting; PR518 exact head 28 PASS accepts only composition delta while inheriting #514 repair requirement. Source-pinned PR519 and PR520 merged into canonical audit and handoff.",
+      "negative_or_counterfactual_evidence": "Upstream synthetic q-alias leak UBE2R2-AS1/legacy, MIR4307HG eligibility, query-dependent roster filtering, self-supplied policy, forgeable receipt, no true isolated student process in old launch; no new real source access.",
+      "test_review_scope": "PR516 run 41497294200 (4 new+14 original RED; 145 inherited pass); PR518 run 41497402803 28 new+220 inherited pass; Linux/Windows NumPy1/2; tests-only Macha reviewer evidence.",
+      "independent_review": "MACHA_VERDICT_514_REPAIR_REQUIRED__515_ACCEPT_SCOPED_COMPOSITION_ONLY__NO_ISOLATION_OR_ISSUER_ACCEPTANCE",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Fix #514 V2C entry check and rebase #515, preserving original #516/#518 reviewer branches",
+        "Macha must independently recheck changed implementation heads and new student deployment boundary",
+        "External signed source-rights issuer, q-independent roster/alias restrictions and protected NPH52 remain unavailable"
+      ],
+      "historical_supersession": "New independent source review supersedes earlier 'not submitted' status only; original #507/#512 RED remain binding for legacy code, and author CI has no review authority",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/516",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/518",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/519",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/520"
+      ]
+    },
+    {
+      "event_id": "20261102-GPT-V2C-514-REPAIR-D1-515-REBASE-DOCKER-521",
+      "date_utc": "2026-11-02",
+      "workstream": "v2c_student_entry_guard_repair_d1_rebase_and_restricted_linux_deployment",
+      "implementation_pr": 521,
+      "implementation_head": "09a5fc58f3690bef7a8a317d92d0f4b97a267a03",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_V2C_REPAIR_D1_REBASE_AND_STUDENT_DOCKER_DELTA_20261102.md",
+          "blob_sha1": "28fe7a73435d0682fed28fc28bf0aaf673ace84b",
+          "role": "audit_local_source_pinned_forward_engineering_delta"
+        }
+      ],
+      "change_type": "repair",
+      "what_already_existed": "#514 stdlib V2C consistency verifier, #515 D1->V2C source, existing V5 runtime and Task4/5/6-8, old unisolated -I -S import demonstration, Macha PR516/518 reviews",
+      "new_work_or_result": "#514 entry guard now rejects non-string top keys before dict.get, reads role once and checks copied role; repaired V2C blob 46b813fc. #515 exact-tree rebased on new #514 parent. #521 exact-tree rebased on new #515; new minimal Docker-only student package and nine executable isolation tests with read-only filesystem, no external network, process limit and legacy module excluded.",
+      "negative_or_counterfactual_evidence": "Untrusted policy/roster/alias source still forgeable; q-dependent QC selection leaks; container is host-configured fixture, no real kernel/WSL/GPU or issuer security certification; Python base tag not digest pinned. First author reviewer replay CI failed only due absent legacy test harness source and malformed YAML note, then fixed without altering original reviewer tests.",
+      "test_review_scope": "PR514 repaired head df83525b25ac1278fcb331b078f8c59e84097404 6/6 author CI SUCCESS; PR515 rebased head 6c74ba41ef4537dc4474d36fd966538976451089 6/6 author CI SUCCESS; PR521 Linux restricted Docker run 41505630513 SUCCESS 9 tests; exact #516/#518 tests via immutable blob replay current run 41505805055 pending/completing, 86 test assertions per job when successful. Scope author mechanics only.",
+      "independent_review": "MACHA_RECHECK_OF_REPAIRED_HEADS_PENDING__AUTHOR_REPLAY_NOT_INDEPENDENT_VERDICT",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Confirm final exact-head run 41505805055 and full PR521 workflow set",
+        "Macha independent recheck repaired #514 and #515, then #521 container host/privilege attacks",
+        "Production issuer trust/rights/alias/selection, Task4/5/6/7/8 and separate trainer authorization remain blocked"
+      ],
+      "historical_supersession": "Preserves Macha #516/#518 exact source and earlier #507/#512; old source review verdicts remain valid on their frozen heads. New source must earn new acceptance; no prior RED rewritten.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/514",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/515",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/521",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41505805055",
+        "docs/agent/JEPA_V2C_REPAIR_D1_REBASE_AND_STUDENT_DOCKER_DELTA_20261102.md"
+      ]
     }
   ]
 }
