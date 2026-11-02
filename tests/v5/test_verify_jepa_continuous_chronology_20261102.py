@@ -53,7 +53,7 @@ def test_refuse_missing_early_graph_jepa_source(tmp_path):
     idx = json.loads((root / C.INDEX).read_text())
     idx["source_evidence"] = [x for x in idx["source_evidence"] if x["id"] != "stage35c"]
     (root / C.INDEX).write_text(json.dumps(idx), encoding="utf-8")
-    with pytest.raises(ValueError, match="missing historical evidence"):
+    with pytest.raises(ValueError, match="historical source coverage|missing historical evidence"):
         C.check(root)
 
 
