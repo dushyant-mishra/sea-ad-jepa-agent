@@ -80,7 +80,7 @@ def check(root: Path) -> list[str]:
         except OSError:
             failures.append("missing current startup file " + rel)
             continue
-        if rel != "README.md" and not any(s in text for s in ("November 2, 2026", "November 2 2026", "November 2, 2026".lower())):
+        if rel != "README.md" and not any(s in text.casefold() for s in ("november 2, 2026", "november 2 2026")):
             failures.append("not current " + rel)
         if rel == "README.md" and "November 2, 2026" not in text:
             failures.append("README current date missing")
