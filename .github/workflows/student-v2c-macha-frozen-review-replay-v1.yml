@@ -56,4 +56,5 @@ jobs:
         run: python -m pytest -q -p no:cacheprovider tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py
       - name: Scope limitation
         if: always()
-        run: echo "GPT author replay ONLY. Macha must independently recheck exact repaired heads. Original #507/#512 RED remain unchanged."
+        run: |
+          echo 'GPT author replay ONLY. Macha must independently recheck exact repaired heads. Original RED history unchanged.'
