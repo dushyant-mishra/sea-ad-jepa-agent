@@ -9,7 +9,7 @@ from scripts.v5 import verify_jepa_continuous_chronology_20261102 as C
 
 
 def _isolated(tmp_path: Path):
-    for p in (C.LEDGER, C.INDEX, C.CHRONOLOGY, C.PROTOCOL, C.ADDITIONAL):
+    for p in (C.LEDGER, C.INDEX, C.CHRONOLOGY, C.PROTOCOL, C.ADDITIONAL, C.LATER):
         dst = tmp_path / p
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(C.ROOT / p, dst)
@@ -29,7 +29,7 @@ def _save(root, data):
 def test_current_tree_is_structurally_valid():
     receipt = C.check()
     assert receipt["events"] >= 3
-    assert receipt["historical_sources"] >= 27
+    assert receipt["historical_sources"] >= 41
 
 
 def test_refuse_claimed_training_authority(tmp_path):
@@ -87,4 +87,29 @@ def test_refuse_erased_v2_graph_detail(tmp_path):
     root, data = _isolated(tmp_path)
     (root / C.ADDITIONAL).write_text("Stage81A3 only", encoding="utf-8")
     with pytest.raises(ValueError, match="additional chronology omission"):
+        C.check(root)
+
+
+def test_refuse_erasure_of_historical_freeze1(tmp_path):
+    root, data = _isolated(tmp_path)
+    idx = json.loads((root / C.INDEX).read_text())
+    idx["milestones"]["historical_stage81a3r_freeze1"]["declared"] = False
+    (root / C.INDEX).write_text(json.dumps(idx), encoding="utf-8")
+    with pytest.raises(ValueError, match="historical Freeze1 declaration missing"):
+        C.check(root)
+
+
+def test_refuse_promoting_historical_freeze1_to_current_winner(tmp_path):
+    root, data = _isolated(tmp_path)
+    idx = json.loads((root / C.INDEX).read_text())
+    idx["milestones"]["historical_stage81a3r_freeze1"]["current_representation_winner"] = True
+    (root / C.INDEX).write_text(json.dumps(idx), encoding="utf-8")
+    with pytest.raises(ValueError, match="must not promote current dimension"):
+        C.check(root)
+
+
+def test_refuse_dropped_depth_null_and_x4_redteam(tmp_path):
+    root, data = _isolated(tmp_path)
+    (root / C.LATER).write_text("Stage81A3R Freeze1 d_global=224", encoding="utf-8")
+    with pytest.raises(ValueError, match="later chronology omission"):
         C.check(root)
