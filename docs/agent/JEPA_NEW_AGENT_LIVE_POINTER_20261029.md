@@ -1,3 +1,21 @@
+# November 2 GPT implementation resumption — D1 to standalone V2C PR #515
+
+**ACTIVE current source-pinned GPT lane:** [new draft implementation PR #515](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/515) at **exact head `fa06d486d5f8a130ff545690a8f0b12773c4f85d`**, stacked on unmodified [#514](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/514) head `63099f6b17b14bcfcfd92b0334bf564e9cf8376d`. New `observation_d1_base_only_student_v2c_fixture_v1.py` directly composes redacted measured-base D1 with standalone V2C complete-policy-and-view validation. New tests cover 75 synthetic/hostile integration cases per job, self-consistent forgery, q-alias contamination and q-conditioned selection limitations, and a limited verifier-only isolated import launch. **No V2B or old teacher-aware #502 import on this new composed fixture call path.**
+
+**Implementation verification:** PR #515 exact head **6/6 workflows SUCCESS**, dedicated [run 41488993980](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41488993980) **4/4 Ubuntu/Windows × NumPy1.26.4/2.2.6 jobs PASS** with 75 new + 18 inherited V2C + 114 old D1 + 13 old V2B author cases = 220 passing per job. **AUTHOR fixture mechanics only.** Parent #514 still has no independent security acceptance. Original Macha #507/#512 RED and old #510/#502 defects are unchanged, not cured by new-path author tests. [Independent tests-only review request posted on #515](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/515#issuecomment-6583507709).
+
+**Canonical audit PR #322** updated to exact head `4ee62d9543b571f6e9de5a3c48f3dae345badd46`, with [dated implementation delta](https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/4ee62d9543b571f6e9de5a3c48f3dae345badd46/docs/agent/JEPA_IMPLEMENTATION_DELTA_D1_TO_STANDALONE_V2C_20261102.md) and [seven-event continuous progress ledger](https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/4ee62d9543b571f6e9de5a3c48f3dae345badd46/results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json). All **24/24 audit/custody workflows SUCCESS** at that exact head; older audit heads below are historical snapshots and must not be treated as current for navigation. Implementation production code remains exclusively on #515 and upstream source PRs; no frozen takeover files were edited.
+
+**Next lawful implementation / review sequence:**
+1. Independent Macha/tests-only review of #514 unchanged head as already assigned in #514 comment 6531188002, then a separate independent hostile review of #515 exact source head; preserve original #507/#512 attack witnesses and make no self-acceptance.
+2. Only after documented independent findings, repair new code on a fresh exact head without modifying reviewer RED. A temporary `python -I -S` file-copy demonstration is **not** OS-permission/process/service isolation; design and actually verify a restricted student runtime before any student deployment.
+3. Separate external data-governance actor must provision a real signed source-rights issuer and authenticate source counts, query/alias, measured/unmeasured states, donor/specimen identity and depositor QC. There is **no user or model authorization to fabricate a signer** or read NPH52 quarantine.
+4. Continue existing independently accepted PS Task1–3, unresolved T2-D and Unified Task4 cumulative queues in their own PRs when assigned, not as fresh inventions. Every substantive next implementation updates code owner PR -> #322 chronology and CI -> this #460 pointer and CI.
+
+**Unchanged terminal:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # Historical Stage81A3R Freeze1 and falsification-control correction — November 2, 2026
 
 **Current audited chronology PR #322 exact source head:** `551b921a0638c2272aa95ce7f663425253f3053a`, with **24/24 audit/custody workflows SUCCESS** at this head, including the chronology verifier with **11 positive/hostile tests**. This PR #460 remains the active successor. Older historical SHA references below are prior versions, not the current audited head.
