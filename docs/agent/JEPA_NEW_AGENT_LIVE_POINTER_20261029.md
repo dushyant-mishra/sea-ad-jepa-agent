@@ -1,3 +1,21 @@
+# November 2 exact-main independent Macha review instruction — latest controlling pointer
+
+**Single current implementation landing:** `main` at `e4925cffc9a9da2e4c05e79f000c1233e63ff4bf`, squash-landed from [#522](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/522). **Main postmerge checks both SUCCESS:** [41509824640](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41509824640) authority guard and [41509824659](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41509824659) Linux/Windows D1/V2C fixture. Restricted Docker CI at the premerge head [41509613313](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41509613313) SUCCESS; no claim of a postmerge Docker re-run.
+
+**Cumulative audit:** [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact source head `40aed21385e8a3171b9cb333abef4de2250a4c69`, **13 chronology events**. Latest source-pinned engineering audit `docs/agent/JEPA_MAIN_POSTMERGE_MACHA_REVIEW_READINESS_20261102.md`, documenting main source hashes, GitHub run identities, remaining non-authority and CI regression-protection loss. Its exact-head CI must be rechecked; do not claim green in advance. This #460 is still the only active handoff, **not** an alternative code implementation branch.
+
+**Macha next:** independent exact-main attack/replay only. Reuse immutable [#516](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/516) (`881194aec9d99a9d42cbf206ffcb779429c4e768`), [#518](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/518) (`32c0a22b9ae6220ed03fe7d6e944da753c0e4a0c`) and older #507/#512 negative evidence. Audit V2C Git blob `46b813fcbf598e12a2a9f209ca254d01aaeba784` and D1 blob `edee1b8adc1b5c7ca660d52d3667d2020abdb417` at exact main head. Hostile role/snapshot tests, 28-case D1 composition, legacy teacher attempts, four worlds hidden-count invariance, source alias/q-dependent-roster/issuer refusal. Independently probe Docker runtime **on Macha's actual Windows/WSL**, checking mounts/host paths, imports, network, process privileges and gaps versus hosted Linux fixture. Reject unqualified environment claims.
+
+**Observed coverage gap after cleanup:** main tests omit archived standalone V2C author suite and exact Macha #516/#518 reviewer tests; these are retained on old PRs and author replay run 41505805055, **not continually enforced on main**. Docker workflow is PR/manual, not main push. Ask Macha to recommend a minimal durable main-based regression check, no large legacy dependency restoration or new stacked PRs. Main pointer `head_at_routing` and main map contain intentionally frozen **earlier snapshots** of #322/#460; re-fetch live canonical branch heads, do not misread these as active exact authority. Future main update should reconcile navigation without cycles of documentation-only churn.
+
+**PR custody:** Closed #514/#515/#521 are superseded provenance, not independently accepted security. Keep Macha evidence immutable. Report separate independent verdict for V2C, D1 composition, container/host isolation, upstream issuer/alias/roster, and regression CI. If code/test repair justified, one **flat PR targeting main**, plus a dated new event on audit #322 and latest pointer on handoff #460. No target/representation winner, real training or Stage4 authorization.
+
+**Terminal:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
+## Previously recorded handoff snapshots (historical, not live instructions)
+
 # JEPA live handoff — main-first navigation (2026-11-02)
 
 **Single current implementation/navigation authority:** [`main`](https://github.com/dushyant-mishra/sea-ad-jepa-agent/tree/main) at **`e4925cffc9a9da2e4c05e79f000c1233e63ff4bf`**, landed via [PR #522](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/522). Read [`START_HERE.md`](https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/main/START_HERE.md) then the [one-page current execution map](https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/main/docs/agent/JEPA_MAIN_CURRENT_EXECUTION_MAP_20261102.md). **Main's postmerge authority and D1/V2C workflow checks: 2/2 SUCCESS**. Premerge Linux Docker, cross-platform D1 and authority guard checks: 3/3 SUCCESS. All are non-authorizing fixture mechanics.
