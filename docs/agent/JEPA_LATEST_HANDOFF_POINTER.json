@@ -16,10 +16,10 @@
   "current_measurement_status": "PASS__100K_MEASUREMENT_ARCHITECTURE_QUALIFIED__500K_PROMOTION_INDETERMINATE",
   "current_target_status": "NO_QUALIFIED_PRODUCTION_TARGET_WINNER",
   "target_lineage_status": "COMPLETE__MERGED_TO_MAIN__NO_PRODUCTION_TARGET_QUALIFIED",
-  "current_task_status": "REPAIRED_V2C_D1_CONTAINER_AUTHOR_CI_GREEN__INDEPENDENT_MACHA_RECHECK_PENDING",
-  "current_task": "Main-first flat student V2C/D1/container integration, independently recheck repaired #514/#515/#521 and then integrate trusted source rights/alias/roster and Tasks4-8. No production authority.",
-  "current_blocker": "Macha independent security recheck, real issuer/alias-class and q-independent roster support, source custody, Task7 selected qualification and Task8 trainer gate are not accepted",
-  "next_action": "Read main current execution map, audit PR322 and handoff PR460; independently review new V2C source and Linux isolation; advance implementation from main with small flat PRs; do not train.",
+  "current_task_status": "V2C_D1_FIXTURE_ACCEPT_SCOPED__CONTAINER_FIXTURE_ACCEPT_SCOPED__ISSUER_BLOCKED",
+  "current_task": "Current main 971ec6a: scoped accepted repaired V2C/D1, root-owned fail-closed Docker fixture and main hostile regression; upstream source issuer/trust, alias/roster/identity, trusted launcher, post-TD and Tasks4–8 remain blocked.",
+  "current_blocker": "Actual runtime-origin/launch attestation, source-rights issuer/trust, alias classes, query-independent roster and depositor QC, donor/specimen identity, C1/C2/C3/C6 candidate-specific evidence and Tasks4–8 accepted biology are absent.",
+  "next_action": "Review current main 971ec6a with original scoped PR523 receipt; plan one narrowly bounded trusted launcher/image/IPC/CPU contract and source-issuer/alias/roster evidence in existing architecture; keep #322 chronology and #460 current; do not train.",
   "authority_freshness_rule": "UPDATE_CANONICAL_SURFACE_WHEN_CURRENT_TASK_CLOSES_OR_NEXT_AUTHORIZED_TASK_CHANGES",
   "governance": {
     "training": "OFF",
@@ -47,22 +47,27 @@
   "canonical_audit": {
     "pr": 322,
     "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
-    "head_at_routing": "60a135c134b1316a3a684980287db0b104ac0a2a",
+    "head_at_routing": "d451829fe8ee05b6c7d9f25241a98f6266ca34f5",
     "append_only": true
   },
   "active_handoff": {
     "pr": 460,
     "branch": "handoff/jepa-v8-clean-successor-from-audit-20261027",
-    "head_at_routing": "0fbe6bb7bba63694b00f877bf67c7d2ac1323979"
+    "head_at_routing": "ea5e96e09878b1da9ba88057da861013826470b2"
   },
   "current_non_authorizing_implementation": {
-    "original_pr": 521,
-    "original_head": "09a5fc58f3690bef7a8a317d92d0f4b97a267a03",
+    "original_pr": 523,
+    "original_head": "bce3a35a9cd8ec364906798738c14ab3236cc583",
     "student_verifier_blob": "46b813fcbf598e12a2a9f209ca254d01aaeba784",
     "d1_producer_blob": "edee1b8adc1b5c7ca660d52d3667d2020abdb417",
-    "independent_recheck": "PENDING",
+    "independent_recheck": "ACCEPT_SCOPED_FIXTURE_ONLY",
     "source_issuer": "NOT_PROVISIONED",
     "real_training": false,
-    "real_training_authorized": false
+    "real_training_authorized": false,
+    "main_landing_sha": "971ec6a14a9435ffc9fe03b1373c3ec3f5a30687",
+    "entrypoint_blob": "ceb7d25ec0501b66a791463372aa2e363449bb39",
+    "dockerfile_blob": "1414d02c14a62f658e82a03b962448e35bd03ecc",
+    "runtime_attested": false,
+    "trusted_launcher_accepted": false
   }
 }
