@@ -396,7 +396,7 @@
       "source_inputs": [
         {
           "path": "docs/agent/JEPA_V2C_REPAIR_D1_REBASE_AND_STUDENT_DOCKER_DELTA_20261102.md",
-          "blob_sha1": "28fe7a73435d0682fed28fc28bf0aaf673ace84b",
+          "blob_sha1": "66cdbf71eb4eecd8ff4cf9447e189ce4b4a91c94",
           "role": "audit_local_source_pinned_forward_engineering_delta"
         }
       ],
@@ -404,12 +404,12 @@
       "what_already_existed": "#514 stdlib V2C consistency verifier, #515 D1->V2C source, existing V5 runtime and Task4/5/6-8, old unisolated -I -S import demonstration, Macha PR516/518 reviews",
       "new_work_or_result": "#514 entry guard now rejects non-string top keys before dict.get, reads role once and checks copied role; repaired V2C blob 46b813fc. #515 exact-tree rebased on new #514 parent. #521 exact-tree rebased on new #515; new minimal Docker-only student package and nine executable isolation tests with read-only filesystem, no external network, process limit and legacy module excluded.",
       "negative_or_counterfactual_evidence": "Untrusted policy/roster/alias source still forgeable; q-dependent QC selection leaks; container is host-configured fixture, no real kernel/WSL/GPU or issuer security certification; Python base tag not digest pinned. First author reviewer replay CI failed only due absent legacy test harness source and malformed YAML note, then fixed without altering original reviewer tests.",
-      "test_review_scope": "PR514 repaired head df83525b25ac1278fcb331b078f8c59e84097404 6/6 author CI SUCCESS; PR515 rebased head 6c74ba41ef4537dc4474d36fd966538976451089 6/6 author CI SUCCESS; PR521 Linux restricted Docker run 41505630513 SUCCESS 9 tests; exact #516/#518 tests via immutable blob replay current run 41505805055 pending/completing, 86 test assertions per job when successful. Scope author mechanics only.",
+      "test_review_scope": "PR514 exact head df83525b25ac1278fcb331b078f8c59e84097404 6/6 author CI; PR515 exact rebased head 6c74ba41ef4537dc4474d36fd966538976451089 6/6 author CI; PR521 exact head 09a5fc58f3690bef7a8a317d92d0f4b97a267a03 run 41505805055 SUCCESS 4/4 Linux/Windows x NumPy1.26.4/2.2.6 with 86 byte-identical #516/#518 reviewer cases PASS per job; run 41505805088 Linux 9/9 container boundary tests SUCCESS. These are GPT author replay, not Macha independent re-acceptance.",
       "independent_review": "MACHA_RECHECK_OF_REPAIRED_HEADS_PENDING__AUTHOR_REPLAY_NOT_INDEPENDENT_VERDICT",
       "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
       "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
       "open_specific_deltas": [
-        "Confirm final exact-head run 41505805055 and full PR521 workflow set",
+        "Obtain Macha independent exact-head verdict for repaired #514, rebased #515 and restricted-container #521",
         "Macha independent recheck repaired #514 and #515, then #521 container host/privilege attacks",
         "Production issuer trust/rights/alias/selection, Task4/5/6/7/8 and separate trainer authorization remain blocked"
       ],
@@ -419,7 +419,8 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/515",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/521",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41505805055",
-        "docs/agent/JEPA_V2C_REPAIR_D1_REBASE_AND_STUDENT_DOCKER_DELTA_20261102.md"
+        "docs/agent/JEPA_V2C_REPAIR_D1_REBASE_AND_STUDENT_DOCKER_DELTA_20261102.md",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41505805088"
       ]
     }
   ]
