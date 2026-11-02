@@ -1,3 +1,17 @@
+# LIVE NOVEMBER 2 ADDENDUM — rounds 30–34 primary source reconciliation
+
+**Audit PR #322 new exact head:** `76284bac9a57a355f5a849e3f3037812f26ab0ec`, 16 chronology events. **Audit CI state at last check:** 24 PR-triggered workflows queued/in-progress, none yet claimed green. The canonical audit now has a separate source-pinned [rounds 30–34 supplement](https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/76284bac9a57a355f5a849e3f3037812f26ab0ec/docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_30_34_20261102.md) plus its machine index. Continue to read all preceding rounds 1–29; no frozen original history was rewritten. **This PR #460 is still the active handoff**, not an implementation branch.
+
+**Newly reconciled already-executed science (do not redo):** #137 CRISPRbrain iTF/iPSC guide-paired screens FAIL benchmark-truth eligibility (1/31 joint engagement, median per-target r ~.028, same lab and guide library; threshold cutoffs POST_HOC_DESCRIPTIVE, no prospective lock); #131 GSE241858/GSE240609 independent physical bulk recomputation (179,384 stored-precision-matched rows, biology not established); #175 original full-41,238-address Morabito RNA/ATAC measurement-state crosswalk (donor/pseudobulk only, not same-cell validation); #207 hosted 100K synthetic observation/fragment mechanics SUCCESS (500K and learned representation explicitly NOT qualified); #220/#269/#276 observation-operator, evidence-depth uncertainty and representation-transfer mechanics already designed/built, with real residual source imprint and **34/42** canonical broad matrices available per #276 V2 label ledger (its older 35/42 V1 entry is superseded for that endpoint). PR inventory navigation 519 entries (418 open/49 merged/52 closed) **does not mean all 519 diffs independently verified**.
+
+**No change to forward priority:** Macha independent exact-main #522 V2C/D1/WSL Docker hostile review against unchanged #516/#518; candidate-specific C1/C2/C3/C6 evidence-right bindings from frozen #349/#513 without redoing ETL or donor census; externally provisioned issuer and q-independent roster/alias evidence; conditional real Windows/WSL Task4 custody probing and later authorized V3.1.1 Task4/teacher-target integration. Main remains `e4925cffc9a9da2e4c05e79f000c1233e63ff4bf` at the last verified read. **No winner, NPH expression access, Stage4 or real JEPA training.**
+
+**Audit/handoff syncing:** This header references the new exact audit head only. Recheck both live heads, #322 exact-head workflow conclusions and this #460 workflow results before calling the archive CI-qualified; late audit changes require another pointer update.
+
+**Terminal:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # JEPA live handoff — Nov 2: source recovery saturated, no-repeat tasking
 
 **Current code:** [`main`](https://github.com/dushyant-mishra/sea-ad-jepa-agent/tree/main) at `e4925cffc9a9da2e4c05e79f000c1233e63ff4bf`, consolidated via [#522](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/522). **Canonical historical and execution audit:** [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) at `801e11cb18a1b46d6c5ed9650caa51857d3f1184`, **15 chronological events**, including this recovery. **Active handoff:** [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) (this file). Always fetch live heads; static SHAs are exact recorded snapshots. The new audit CI must be checked at that exact head before calling it green.
