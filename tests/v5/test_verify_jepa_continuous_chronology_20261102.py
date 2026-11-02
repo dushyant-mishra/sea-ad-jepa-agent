@@ -9,7 +9,7 @@ from scripts.v5 import verify_jepa_continuous_chronology_20261102 as C
 
 
 def _isolated(tmp_path: Path):
-    for p in (C.LEDGER, C.INDEX, C.CHRONOLOGY, C.PROTOCOL):
+    for p in (C.LEDGER, C.INDEX, C.CHRONOLOGY, C.PROTOCOL, C.ADDITIONAL):
         dst = tmp_path / p
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(C.ROOT / p, dst)
@@ -29,7 +29,7 @@ def _save(root, data):
 def test_current_tree_is_structurally_valid():
     receipt = C.check()
     assert receipt["events"] >= 3
-    assert receipt["historical_sources"] >= 22
+    assert receipt["historical_sources"] >= 27
 
 
 def test_refuse_claimed_training_authority(tmp_path):
@@ -70,4 +70,21 @@ def test_refuse_wrong_current_branch_ownership(tmp_path):
     data["active_handoff_pr"] = 323
     _save(root, data)
     with pytest.raises(ValueError, match="PR322/460"):
+        C.check(root)
+
+
+def test_refuse_missing_stage81a3_qualification_source(tmp_path):
+    root, data = _isolated(tmp_path)
+    idx = json.loads((root / C.INDEX).read_text())
+    idx["source_evidence"] = [x for x in idx["source_evidence"]
+                              if x["id"] != "stage81a3_complete_qualification_record"]
+    (root / C.INDEX).write_text(json.dumps(idx), encoding="utf-8")
+    with pytest.raises(ValueError, match="historical source coverage|missing historical evidence"):
+        C.check(root)
+
+
+def test_refuse_erased_v2_graph_detail(tmp_path):
+    root, data = _isolated(tmp_path)
+    (root / C.ADDITIONAL).write_text("Stage81A3 only", encoding="utf-8")
+    with pytest.raises(ValueError, match="additional chronology omission"):
         C.check(root)
