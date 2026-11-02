@@ -15,6 +15,8 @@ from __future__ import annotations
 
 from scripts.v5.td_unified import observation_v2c_standalone_student_gate_v1 as C
 
+MS, SU, MCU, WITHHELD = C._MS, C._SU, C._MCU, C._W
+
 _SCHEMA="JEPA_D1_BASE_ONLY_STUDENT_V2C_FIXTURE_PRODUCER_V1"
 _CELL_KEYS=frozenset(("cell_id","donor_id","source_id","operator_id"))
 _OBS_KEYS=frozenset(("cell_id","base_counts"))
@@ -34,7 +36,7 @@ def produce_d1_base_only_student_v2c_fixture(*, base_observations, expected_poli
     """Only accepts already-redacted base scalar counts (omitted zero allowed).
 
     base_observations: list of {cell_id, base_counts:{address:raw_count}}.
-    expected_policy: externally *unverified* same shape as #510 V2B policy,
+    expected_policy: externally *unverified* same rights/roster schema as #514 V2C,
        with complete cell_roster, address_rights and operator_states.
 
     Cannot authenticate a caller's policy, the deposited source identity or
