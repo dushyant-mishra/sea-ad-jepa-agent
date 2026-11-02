@@ -4,6 +4,7 @@ on:
     paths:
       - 'docs/agent/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.md'
       - 'docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_17_20_20261102.md'
+      - 'docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_21_24_20261102.md'
       - 'docs/agent/JEPA_CONTINUOUS_CHRONOLOGY_AND_IMPLEMENTATION_CUSTODY_20261102.md'
       - 'results/target_discovery/unified_qualification_v1/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.json'
       - 'results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json'
