@@ -5,6 +5,8 @@ on:
     paths:
       - 'scripts/v5/jepa_post_td_harness_contract_v1.py'
       - 'tests/v5/test_jepa_post_td_517_repair_v1.py'
+      - 'tests/v5/test_jepa_post_td_527_macha_repair_v1.py'
+      - 'scripts/v5/jepa_post_td_tournament_controller_v1.py'
       - '.github/workflows/post-td-517-repair-v1.yml'
   push:
     branches:
@@ -26,10 +28,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Compile implementation and regression tests
-        run: python -m py_compile scripts/v5/jepa_post_td_harness_contract_v1.py tests/v5/test_jepa_post_td_517_repair_v1.py
+        run: python -m py_compile scripts/v5/jepa_post_td_harness_contract_v1.py tests/v5/test_jepa_post_td_517_repair_v1.py tests/v5/test_jepa_post_td_527_macha_repair_v1.py scripts/v5/jepa_post_td_tournament_controller_v1.py
       - name: Verify original post-TD and C4/C6 tests plus five repaired original failures
         run: |
           python -m unittest -v \
             tests.v5.test_jepa_post_td_harness_contract_v1 \
             tests.v5.test_jepa_post_td_c4_requires_c6_v1 \
-            tests.v5.test_jepa_post_td_517_repair_v1
+            tests.v5.test_jepa_post_td_517_repair_v1 \
+            tests.v5.test_jepa_post_td_527_macha_repair_v1
