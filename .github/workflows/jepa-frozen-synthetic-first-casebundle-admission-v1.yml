@@ -74,6 +74,8 @@ jobs:
           assert a['q_in_base_accepted_by_unauthenticated_fixture']
           assert a['rich_view_falsely_uses_student_depth_as_physical_total_and_is_refused']
           print('SYNTHETIC_FIRST_TWO_ORIGINAL_BANKS__NO_AUTHORITY__UNRESOLVED_CONTRACTS_DEMONSTRATED')
+          print('PR328_FROZEN_DIAGNOSTIC_JSON=' + json.dumps(a,sort_keys=True))
+          print('V80_FROZEN_DIAGNOSTIC_JSON=' + json.dumps(b,sort_keys=True))
           PY
       - name: Publish short diagnostic only — no large synthetic transport or controller truth
         uses: actions/upload-artifact@v4
