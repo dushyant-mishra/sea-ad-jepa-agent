@@ -196,35 +196,59 @@ class EMAScreenTests(unittest.TestCase):
 
 
 class EvidenceReducerTests(unittest.TestCase):
+    # Versioned semantic migration of two original #351 fixture tests:
+    # prior source blob 4e5ec0468f93568e4194dd6984f4c8aa00008583
+    # remains immutable on the original head. New manifest is REQUIRED so
+    # missing query gates and post-hoc nonestimability are never accepted.
+    def _manifest(self, prospective=frozenset()):
+        p = portfolio_c6()
+        arm = M.ArchitectureArm("shared", "SHARED_TYPED_HEADS", "SHARED_TYPED_HEADS", "NONE", 20_000)
+        manifest = M.build_architecture_tournament_manifest(
+            portfolio=p, arms=[arm], compute_contracts={"shared": compute_contract()},
+            rare_preservation_required=True,
+            prospective_not_estimable_block_gates=prospective,
+        )
+        results = {
+            block["block_id"]: {gate: "PASS" for gate in manifest["required_evaluator_gates"]}
+            for block in p["blocks"]
+        }
+        return manifest, results
+
     def test_failed_gate_cannot_be_rescued_by_aggregate_score(self):
+        manifest, results = self._manifest()
+        results["C3_QUERY"]["QUERY_SPECIFICITY"] = "FAIL"
         result = M.reduce_architecture_evidence(
-            arm_id="shared",
-            block_gate_results={
-                "C1_SHARED": {"HELD_DONOR_TRANSPORT": "PASS"},
-                "C3_QUERY": {"QUERY_SPECIFICITY": "FAIL", "WRONG_Q_CONTROL": "PASS"},
-            },
-            declared_not_estimable=set(),
-            aggregate_score=0.99999,
+            manifest=manifest, arm_id="shared", block_gate_results=results,
+            declared_not_estimable=set(), aggregate_score=0.99999,
         )
         self.assertEqual(result["status"], "FAIL")
         self.assertFalse(result["aggregate_score_has_authority"])
 
-    def test_only_declared_gate_can_be_not_estimable(self):
-        results = {"C3_QUERY": {"QUERY_SPECIFICITY": "NOT_ESTIMABLE"}}
-        ok = M.reduce_architecture_evidence(
-            arm_id="x",
-            block_gate_results=results,
-            declared_not_estimable={"C3_QUERY:QUERY_SPECIFICITY"},
-            aggregate_score=None,
+    def test_only_prospectively_declared_gate_can_be_not_estimable(self):
+        key = "C3_QUERY:QUERY_SPECIFICITY"
+        manifest, results = self._manifest(prospective=frozenset({key}))
+        results["C3_QUERY"]["QUERY_SPECIFICITY"] = "NOT_ESTIMABLE"
+        good = M.reduce_architecture_evidence(
+            manifest=manifest, arm_id="shared", block_gate_results=results,
+            declared_not_estimable={key}, aggregate_score=None,
         )
-        self.assertEqual(ok["status"], "PASS_WITH_DECLARED_NOT_ESTIMABLE")
+        self.assertEqual(good["status"], "PASS_WITH_DECLARED_NOT_ESTIMABLE")
+
+        undeclared_manifest, undeclared_results = self._manifest()
+        undeclared_results["C3_QUERY"]["QUERY_SPECIFICITY"] = "NOT_ESTIMABLE"
         bad = M.reduce_architecture_evidence(
-            arm_id="x",
-            block_gate_results=results,
-            declared_not_estimable=set(),
+            manifest=undeclared_manifest, arm_id="shared",
+            block_gate_results=undeclared_results, declared_not_estimable=set(),
             aggregate_score=None,
         )
         self.assertEqual(bad["status"], "FAIL")
+
+    def test_unmanifested_call_is_refused_not_legacy_pass(self):
+        with self.assertRaises(TypeError):
+            M.reduce_architecture_evidence(
+                arm_id="shared", block_gate_results={"C1_SHARED": {"HELD_DONOR_TRANSPORT": "PASS"}},
+                declared_not_estimable=set(), aggregate_score=None,
+            )
 
 
 if __name__ == "__main__":
