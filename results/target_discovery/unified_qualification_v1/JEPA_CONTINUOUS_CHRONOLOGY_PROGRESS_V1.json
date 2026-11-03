@@ -1173,6 +1173,39 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/38478444632",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525"
       ]
+    },
+    {
+      "event_id": "20261103-V79-V80-CONFIRMATORY-207-FORENSIC-85-BOUNDARY-PREFLIGHT",
+      "date_utc": "2026-11-03",
+      "workstream": "synthetic_V79_V80_terminal_selection_law_nonpromotion_exact_frozen_contract_scope",
+      "implementation_pr": 533,
+      "implementation_head": "b531b81ec4e08779a974214ec9ba9905f0498294",
+      "change_type": "hostile_review",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261103_V79_V80_207_85_TERMINAL_SELECTION_SCOPE_EXACT_PREFLIGHT.md",
+          "role": "exact original V79/V80 contract source analysis and PR533 source-preflight CI"
+        }
+      ],
+      "what_already_existed": "V79 terminal first-hard-fail rule, V79 frozen NOT_QUALIFIED, V80 qualified synthetic benchmark with binding requiring all 291 historical passing rows, accepted PR344 V3.1 section21 controller ruling that 207 confirmatory rows may bind successor selection but 85 postterminal forensic rows cannot. Macha #531 identified remaining conflict. No new estimator may run.",
+      "new_work_or_result": "Read original frozen V79 V2 292-row gate roster and V80 binding/receipt from PR348 exact e99d1f21. Determined 0-index first terminal Q08 positive convergence hard failure at gate 206, with 206 preceding rows (204 hard/2 LIMIT), one failed terminal hard, 85 postterminal (83 hard/2 LIMIT). 207 confirmatory includes failed row. Historical 291 passes are not all hard: 288 total hard 4 LIMIT. PR533 read-only strict SHA-verified source preflight always emits BLOCKED. Exact source CLI/test CI 41591521042 green 7/7 per Python 3.11 and 3.12; no selector or new authority.",
+      "negative_or_counterfactual_evidence": "Original initial PR533 CI 41591431143 failed three positive tests per Python version due to GPT digest helper bug; repaired by enumerate(rows) with original tests and historical source unchanged. Frozen V80 all-291 requirement conflicts with accepted V3.1 selection scope; 85 forensic rows cannot influence model selection. No controller outcomes, new worlds, real matrices or estimator fitting accessed.",
+      "test_review_scope": "PR533 author-produced source/hostile tests, 7/7 each on Python3.11/3.12, exact source upstream PR348 SHA+raw SHA validation; Macha independent acceptance pending, new prospective model-selection law not issued.",
+      "independent_review": "GPT_AUTHOR_SOURCE_PREFLIGHT_GREEN__MACHA_EXACT_HEAD_REVIEW_REQUESTED__POLICY_CONFLICT_BLOCKED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Independent Macha hostile review of PR533 exact b531b81... and correct hard/LIMIT segmentation",
+        "Controller and independent reviewer must prospectively freeze a new V79/V80 successor selection law before any estimator outputs; 85 postterminal results can only be non-blind forensic",
+        "Keep #525 new-head independent reviewer verdict pending and real CaseBundle source qualification separate"
+      ],
+      "historical_supersession": "No change to historical V79 or V80 frozen results or qualification. Clarifies exact source-defined row and class counts; does not replace PR344 accepted 207/85 ruling or rewrite V80 frozen 291 law.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/533",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41591521042",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41591431143",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531#issuecomment-6597249360"
+      ]
     }
   ]
 }
