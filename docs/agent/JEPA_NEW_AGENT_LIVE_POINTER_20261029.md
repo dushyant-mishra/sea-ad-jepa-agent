@@ -1,3 +1,19 @@
+# LIVE NOVEMBER 3 — RECOVERED TWO TARGET-DISCOVERY LANES (CURRENT)
+
+**Canonical historic/scientific audit:** [PR #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) at `21facb870e2d4336c6f2d9f5eb314067bd426c2f`, **39 chronology events**. **Active handoff:** [PR #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460), recheck exact head and CI after this update. Main `28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb`. Older live headings below are kept as audit history, not today's task list.
+
+**New primary-source audit:** #322 `docs/agent/JEPA_20261103_TARGET_DISCOVERY_CANDIDATE_AND_ROBUST_SOLUTION_RECOVERY.md` plus machine evidence `JEPA_TARGET_CANDIDATE_AND_RELATIONAL_SOLUTION_NO_REPEAT_20261103_V1.json`; #460 `docs/agent/JEPA_20261103_TARGET_CANDIDATES_ROBUST_OBJECTIVES_ACTIVE_HANDOFF_DELTA.md`.
+
+**Biological candidates already discovered:** Stage36–49 produced a frozen **18-gene/4-mechanism atlas**, evidence tiers, PI shortlist and validation route. Stage48 says `do_not_rerun_broad_gene_discovery`; Stage38C external support was not-testable, Stage49 known-evidence concordance was not clinical validation, Stage50 graph-topology specificity not established.
+
+**Robust JEPA target directions already designed and partially tested:** TD56 all 3 sources PASS disjoint-gene relational geometry; TD57B donor-independent scale-free triplets **24/24 PASS**; TD57C nearest-third HVS **FAIL 2/4**; TD59 fresh nearest-half **24/24 PASS, very narrow p95 margin**. Original #314 full corrected human replay spent. Existing relational EMA-teacher distance/angle/rank+anti-collapse design and R5 measured q target must be reused, not rediscovered. The **C1 shared, C2 relational, C3 measured-query, C6/C4 optional composite, C5 specialist** portfolio is already designed/partially implemented (#275/#313/#331/#332/#351); independent constituents can coexist without a composite winner. #338 still blocks 13 of 28 human gate rules. No current qualified target or training.
+
+**No-repeat first:** before any candidate, teacher, training or real source action, read the candidate audit above and the earlier 38 event history plus original PRs. Do not repeat Stage36–49, broad gene rediscovery, TD56/57B/59, R5, #314 or the C1–C6 framework. Any new work requires a named missing gate, exact source, prospective adverse null and independent authorization. Future agents append source-linked chronology/machine records to **#322**, then prepend current exact-head status to **#460**.
+
+**Standing:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # LIVE NOVEMBER 3 — DEEP ORIGINAL HISTORY VERIFIED, NO REPEATS (CURRENT)
 
 **Start here:** [canonical audit #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) source HEAD `1c637f22f08a10a6e855945cf059e62c13ca402c`, **38 append-only chronology events**; [this active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460), live HEAD must be rechecked; canonical main `28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb`. CI for the NEW heads must be verified; **do not inherit prior-head green status**. Old handoff #323 is historical.
