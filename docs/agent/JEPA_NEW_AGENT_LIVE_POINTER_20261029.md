@@ -1,3 +1,15 @@
+# LATEST EXECS — PR536 C2/C3 EXISTING REAL PRODUCER ADMISSION (2026-11-03)
+
+**Audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact HEAD `095c285bdbb50cde2e652e572aa9a5deb75353d2` — 42 append-only chronology events**; latest audit checks queued at first head check. **Active [handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460)**: verify head & checks. **New draft [PR536](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/536)** current `b723b9d522a013554a0a53cf600e6e9812c35935`, **2/2 author CI GREEN** runs `41676844864`, `41676856537`, **Macha fresh-head independent review pending**. Full science/read-free execution handoff: `docs/agent/JEPA_20261103_PR536_ACTUAL_C2_C3_EXECUTED_SOURCE_ADMISSION_HANDOFF.md`. Machine receipt and human forensic audit in canonical #322 (event 42).
+
+**Observed new execution:** original PR328 frozen hashes matched; actual PR526 measured q-other-eight C3 10/30 frozen fit-only targets, **20/30 NOT_ESTIMABLE**, synthetic NPH52-like 10 of 10 alone supported owing to scientifically invalid PR328 detection-as-structural-assay mask (not human NPH52 biology). Actual PR316 C2 gate **hard refused 48 source addresses** against **three disjoint 512-measured-feature views**; actual PR313 C3 adapter **hard refused missing student predictor**. Controller C3 mean q0 not equal to per-cell R5 non-q-eight target. No known-truth end-to-end qualified statuses, no learned student, no human values read or model training. Preserve first author caller RED and subsequent exact-head GREEN and no-authority status.
+
+**Next:** Macha independent #536 hostile review; controller prospective **C3 target-to-controller-truth equivalence and support-law** decision; do not create new C2 generator to fit 48 into 1536 — the original #318/#321/#336 512-feature relational truth test already exists and passed 9/9. Retain previous first priorities alias enforcement and #525 fresh-head independent review, and keep #534 original V80 RED as separate forensic work.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # CURRENT INTEGRATION GAP — C2/C3 MINIATURE RESULTS VS ACTUAL SYNTHETIC TRUTH (2026-11-03)
 
 **Historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322)** head `289623e49910cfeb2255c11926f7d479efb2a13c`, **41 events**; [active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460), recheck latest head and CI. Read #322 `docs/agent/JEPA_20261103_MINIATURE_C2_C3_AND_SYNTHETIC_TRUTH_INTEGRATION_STATUS.md` and #460 `docs/agent/JEPA_20261103_LIVE_MINI_C2_C3_ACTUAL_PRODUCER_TRUTH_INTEGRATION_STATUS.md` before new synthetic experiments.
