@@ -1,4 +1,4 @@
-name: Post-TD 517 narrow source repair
+name: Post-TD 517+527+530 exact-head source repair
 
 on:
   pull_request:
@@ -6,6 +6,10 @@ on:
       - 'scripts/v5/jepa_post_td_harness_contract_v1.py'
       - 'tests/v5/test_jepa_post_td_517_repair_v1.py'
       - 'tests/v5/test_jepa_post_td_527_macha_repair_v1.py'
+      - 'tests/v5/test_jepa_post_td_530_macha_repair_v1.py'
+      - 'tests/v5/test_jepa_post_td_tournament_controller_v1.py'
+      - 'tests/v5/test_jepa_post_td_presentation_ema_v1.py'
+      - 'scripts/v5/jepa_post_td_presentation_ema_v1.py'
       - 'scripts/v5/jepa_post_td_tournament_controller_v1.py'
       - '.github/workflows/post-td-517-repair-v1.yml'
   push:
@@ -14,7 +18,7 @@ on:
 
 jobs:
   inherited-and-hostile:
-    name: Python ${{ matrix.python-version }} inherited + five repaired hostile assertions
+    name: Python ${{ matrix.python-version }} inherited + Macha 527/530 hostile assertions
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -28,11 +32,14 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Compile implementation and regression tests
-        run: python -m py_compile scripts/v5/jepa_post_td_harness_contract_v1.py tests/v5/test_jepa_post_td_517_repair_v1.py tests/v5/test_jepa_post_td_527_macha_repair_v1.py scripts/v5/jepa_post_td_tournament_controller_v1.py
-      - name: Verify original post-TD and C4/C6 tests plus five repaired original failures
+        run: python -m py_compile scripts/v5/jepa_post_td_harness_contract_v1.py tests/v5/test_jepa_post_td_517_repair_v1.py tests/v5/test_jepa_post_td_527_macha_repair_v1.py tests/v5/test_jepa_post_td_530_macha_repair_v1.py tests/v5/test_jepa_post_td_tournament_controller_v1.py tests/v5/test_jepa_post_td_presentation_ema_v1.py scripts/v5/jepa_post_td_tournament_controller_v1.py scripts/v5/jepa_post_td_presentation_ema_v1.py
+      - name: Verify inherited post-TD, tournament, EMA and byte-identical Macha hostile reviews
         run: |
           python -m unittest -v \
             tests.v5.test_jepa_post_td_harness_contract_v1 \
             tests.v5.test_jepa_post_td_c4_requires_c6_v1 \
             tests.v5.test_jepa_post_td_517_repair_v1 \
-            tests.v5.test_jepa_post_td_527_macha_repair_v1
+            tests.v5.test_jepa_post_td_527_macha_repair_v1 \
+            tests.v5.test_jepa_post_td_530_macha_repair_v1 \
+            tests.v5.test_jepa_post_td_tournament_controller_v1 \
+            tests.v5.test_jepa_post_td_presentation_ema_v1
