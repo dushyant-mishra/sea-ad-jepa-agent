@@ -377,26 +377,94 @@ def ema_momentum_for_presentations(successful_presentations: int, half_life_pres
     return math.exp(math.log(0.5) * presentations / half_life)
 
 
+def verify_tournament_block_scope(manifest: Mapping) -> dict:
+    """Re-derive a tournament's block and gate roster from its embedded portfolio.
+
+    This proves *internal* consistency only. Neither a self-declared qualification
+    PASS nor a caller-constructed manifest is an independent biological or
+    precommitted selection authority.
+    """
+    if type(manifest) is not dict or manifest.get("schema") != "JEPA_POST_TD_ARCHITECTURE_TOURNAMENT_MANIFEST_V1":
+        raise PostTDContractError("tournament requires its versioned manifest")
+    lawful = verify_target_portfolio(manifest.get("portfolio"))
+    if manifest.get("portfolio_sha256") != lawful["portfolio_sha256"]:
+        raise PostTDContractError("manifest portfolio identity mismatch")
+    expected_blocks = [{"block_id": b["block_id"], "block_type": b["block_type"]}
+                       for b in lawful["blocks"]]
+    if type(manifest.get("required_blocks")) is not list or manifest["required_blocks"] != expected_blocks:
+        raise PostTDContractError("manifest block roster differs from verified portfolio")
+    rare_flag = manifest.get("rare_preservation_required")
+    if type(rare_flag) is not bool:
+        raise PostTDContractError("manifest rare gate flag must be exact boolean")
+    if any(type(b["rare_preservation_cross_cutting"]) is not bool
+           for b in lawful["blocks"]):
+        raise PostTDContractError("portfolio rare preservation flags malformed")
+    if any(b["rare_preservation_cross_cutting"] for b in lawful["blocks"]) and not rare_flag:
+        raise PostTDContractError("rare preservation gate required by verified portfolio")
+    gates = required_evaluator_gates(
+        block_types=[b["block_type"] for b in lawful["blocks"]],
+        rare_preservation_required=rare_flag,
+    )
+    if type(manifest.get("required_evaluator_gates")) is not list or manifest["required_evaluator_gates"] != list(gates):
+        raise PostTDContractError("manifest gate roster differs from verified portfolio")
+    gate_declarations = manifest.get("prospective_not_estimable_block_gates")
+    block_declarations = manifest.get("prospective_not_estimable_blocks")
+    if type(gate_declarations) is not list or type(block_declarations) is not list:
+        raise PostTDContractError("prospective gate/block declarations must be exact lists")
+    block_ids = [b["block_id"] for b in expected_blocks]
+    gate_keys = {f"{block_id}:{gate}" for block_id in block_ids for gate in gates}
+    for declared, valid, label in (
+        (gate_declarations, gate_keys, "gate"),
+        (block_declarations, set(block_ids), "block"),
+    ):
+        if (any(type(v) is not str for v in declared)
+                or len(set(declared)) != len(declared)
+                or declared != sorted(declared)
+                or not set(declared) <= valid):
+            raise PostTDContractError(f"invalid prospective {label} declarations")
+    if manifest.get("noncompensation_required") is not True:
+        raise PostTDContractError("noncompensation cannot be optional")
+    return {
+        "portfolio": lawful, "blocks": expected_blocks, "gates": gates,
+        "gate_declarations": frozenset(gate_declarations),
+        "block_declarations": frozenset(block_declarations),
+    }
+
+
 def adjudicate_noncompensation(
     *,
+    manifest: Mapping,
     block_results: Mapping[str, str],
-    allow_not_estimable: set[str],
+    allow_not_estimable: set[str] | frozenset[str],
     aggregate_score: float | None = None,
 ) -> dict:
-    allowed_statuses = {"PASS", "FAIL", "NOT_ESTIMABLE"}
+    """Block-level diagnostic only; fail closed on missing blocks or late exceptions.
+
+    This is NOT a substitute for gate-by-gate tournament evidence reduction,
+    independent qualification, or a selected-target issuer.
+    """
+    scope = verify_tournament_block_scope(manifest)
+    blocks = [b["block_id"] for b in scope["blocks"]]
+    if type(block_results) is not dict or set(block_results) != set(blocks):
+        raise PostTDContractError("every portfolio block must report a block status")
+    if (type(allow_not_estimable) not in (set, frozenset)
+            or any(type(k) is not str for k in allow_not_estimable)
+            or set(allow_not_estimable) != set(scope["block_declarations"])):
+        raise PostTDContractError("block abstention must be prospectively declared in the manifest")
     failed: list[str] = []
     declared_ne: list[str] = []
-    for block, raw_status in block_results.items():
-        status = str(raw_status).upper()
-        if status not in allowed_statuses:
-            raise PostTDContractError(f"unknown block result for {block}: {status}")
+    for block in blocks:
+        raw_status = block_results[block]
+        if type(raw_status) is not str or raw_status.upper() not in {"PASS", "FAIL", "NOT_ESTIMABLE"}:
+            raise PostTDContractError(f"unknown block result for {block}")
+        status = raw_status.upper()
         if status == "FAIL":
-            failed.append(str(block))
+            failed.append(block)
         elif status == "NOT_ESTIMABLE":
-            if block in allow_not_estimable:
-                declared_ne.append(str(block))
+            if block in scope["block_declarations"]:
+                declared_ne.append(block)
             else:
-                failed.append(str(block))
+                failed.append(block)
     if failed:
         status = "FAIL"
     elif declared_ne:
@@ -404,11 +472,15 @@ def adjudicate_noncompensation(
     else:
         status = "PASS"
     return {
+        "schema": "JEPA_POST_TD_BLOCK_STATUS_DIAGNOSTIC_V2",
         "status": status,
+        "scope": "BLOCK_STATUS_DIAGNOSTIC_ONLY__NOT_GATE_QUALIFICATION",
+        "portfolio_sha256": scope["portfolio"]["portfolio_sha256"],
         "failed_blocks": sorted(failed),
         "declared_not_estimable_blocks": sorted(declared_ne),
         "aggregate_score": aggregate_score,
         "aggregate_score_has_authority": False,
+        "authority": dict(_AUTHORITY_OFF),
     }
 
 
