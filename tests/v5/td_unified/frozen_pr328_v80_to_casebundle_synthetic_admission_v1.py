@@ -318,6 +318,24 @@ def replay_v80(root: Path, report: Path):
           and frozen["n_fits"] == 192 and frozen["status"] == "BENCHMARK_PACKAGE_ONLY__NO_ESTIMATOR_RUN",
           "original V80 frozen receipt does not match expected benchmark")
     worlds = build_sparse_positive_worlds(seed_root=41000000)
+    # Bounded no-truth diagnostic: hash ONLY fit-visible arrays to distinguish
+    # support/detection drift from continuous positive-value floating drift.
+    # Do not print controller latent arrays, gene effects or cell-level values.
+    import platform
+    fit_digests = []
+    for world in worlds:
+        fit_digests.append({
+            "family": world.family,
+            "support_digest": hashlib.sha256(world.support.tobytes()).hexdigest(),
+            "detected_digest": hashlib.sha256(world.detected.tobytes()).hexdigest(),
+            "design_digest": hashlib.sha256(world.design_matrix.tobytes()).hexdigest(),
+            "positive_value_digest": hashlib.sha256(world.positive_value.tobytes()).hexdigest(),
+        })
+    print("V80_FIT_VISIBLE_FIELD_SHA_DIAGNOSTIC=" + json.dumps({
+        "numpy": np.__version__, "python": platform.python_version(),
+        "processor": platform.processor(), "platform": platform.platform(),
+        "families": fit_digests,
+    }, sort_keys=True), flush=True)
     observed_v80_hash = benchmark_identity(worlds)
     if observed_v80_hash != V80_BENCHMARK:
         # Never retune or relax the frozen benchmark identity. Expose only digests
