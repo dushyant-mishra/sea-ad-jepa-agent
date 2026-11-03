@@ -1,3 +1,15 @@
+# LIVE NOVEMBER 3 — PUBLIC-SOURCE PROVENANCE CORRECTION FROM HISTORICAL ACQUISITION (LATEST)
+
+**Correction to Macha #528 / earlier GPT instructions:** the core analyzed SEA-AD processed, HVS and NPH52 source data were **publicly downloadable**. The original **V4 Stage81A1D** config on `main` already pins **NPH52 Zenodo record 8319719**, exact provider URL and MD5 for `organized_data.zip` and `annotations.zip`. Therefore `NPH52 accession unavailable` in recent #528 is contradicted by project history, and the owner need not furnish it. The original HVS source is [CELLxGENE collection](https://cellxgene.cziscience.com/collections/35928d1c-36fc-4f93-9a8d-0b921ab41745), which says public datasets require no extra IRB. Public **processed** SEA-AD AWS is freely downloadable; distinct raw 10x/Sage assets may be controlled-access. See original [source config](https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/main/configs/v4/stage81a1d_living_human.yaml), [Zenodo](https://zenodo.org/records/8319719), and #322 detailed `docs/agent/JEPA_PUBLIC_SOURCE_ACQUISITION_HISTORY_CORRECTION_20261103.md`. Audit head `d2a2e4ba5887b77a0f1e9b5640ab8811996a8c25`, chronology **27 events**; rerun CI before claiming green.
+
+**Important distinction:** A new owner-held offline/hardware signing key is an optional **internal agent-independence credential**, **not a provider-imposed prerequisite to download or analyze these public releases**. Correct public version/terms/citation records from source metadata rather than manufacturing legal-use blockers. NPH52's current **internal** query/teacher hold remains for unresolved gene alias, QC/selection and experimental data-leakage qualifications; do not confuse that with lack of public access. Likewise published SEA-AD `Doublet score` and HVS `is_primary_data` are public metadata; any current hold is a project-owned analytical allowlist scope, not a need for a third-party data-use license. Do not silently resume a held exact probe before scope adjudication.
+
+**Macha action:** [source correction on #528](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/528#issuecomment-6596313824), append-only erratum changing `NPH52 accession unknown` to `Zenodo public 8319719 known`, and reframe issuer R1–R3/R8 as optional independence/workflow controls, not public dataset access gates. Keep #529 two source-code RED; #525 re-derivation repair still awaiting Macha independent fresh-head review.
+
+**Whole-system still no biological training:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # LIVE NOVEMBER 3 — RECIPROCAL #525/#527 REPAIR, #528/#529 REVIEW (LATEST)
 
 **Source audit #322:** `7f61fda11d06f35ff7e0bda8e73b29d2fa58d789`, chronology **26 events**. New primary source report `docs/agent/JEPA_527_528_RECIPROCAL_SECURITY_REVIEW_AND_REPAIR_20261103.md`. Check exact-head CI on this pointer/audit before reporting green.
