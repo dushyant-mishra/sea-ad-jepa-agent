@@ -34,19 +34,22 @@ class PresentationEMAState:
     ema_updates: int = 0
 
     def __post_init__(self):
-        if int(self.half_life_presentations) <= 0:
-            raise PresentationEMAError("EMA half-life presentations must be positive")
-        if int(self.successful_presentations) < 0:
-            raise PresentationEMAError("successful presentation count cannot be negative")
-        if int(self.ema_updates) < 0:
-            raise PresentationEMAError("EMA update count cannot be negative")
-        C.ema_momentum_for_presentations(1, int(self.half_life_presentations))
+        if type(self.half_life_presentations) is not int or self.half_life_presentations <= 0:
+            raise PresentationEMAError("EMA half-life presentations must be a positive exact integer")
+        if type(self.successful_presentations) is not int or self.successful_presentations < 0:
+            raise PresentationEMAError("successful presentation count must be a nonnegative exact integer")
+        if type(self.ema_updates) is not int or self.ema_updates < 0:
+            raise PresentationEMAError("EMA update count must be a nonnegative exact integer")
+        C.ema_momentum_for_presentations(1, self.half_life_presentations)
 
 
 def validate_restart_binding(*, controller, state: PresentationEMAState) -> dict:
-    global_step = int(getattr(controller, "global_update_step"))
-    ema_count = int(getattr(controller, "ema_update_count"))
-    if global_step != ema_count or ema_count != int(state.ema_updates):
+    global_step = getattr(controller, "global_update_step")
+    ema_count = getattr(controller, "ema_update_count")
+    if (type(global_step) is not int or type(ema_count) is not int
+            or type(state) is not PresentationEMAState):
+        raise PresentationEMAError("EMA restart counters and state must use exact runtime types")
+    if global_step != ema_count or ema_count != state.ema_updates:
         raise PresentationEMAError(
             "EMA restart counter mismatch: "
             f"global_update_step={global_step} controller_ema_updates={ema_count} "
@@ -56,8 +59,8 @@ def validate_restart_binding(*, controller, state: PresentationEMAState) -> dict
         "status": "PRESENTATION_EMA_RESTART_BINDING_PASS",
         "global_update_step": global_step,
         "ema_updates": ema_count,
-        "successful_presentations": int(state.successful_presentations),
-        "half_life_presentations": int(state.half_life_presentations),
+        "successful_presentations": state.successful_presentations,
+        "half_life_presentations": state.half_life_presentations,
     }
 
 
@@ -70,16 +73,20 @@ def advance_after_proved_optimizer_step(
 ) -> tuple[PresentationEMAState, dict]:
     if proved_optimizer_advanced is not True:
         raise PresentationEMAError("presentation EMA requires a proved optimizer step")
-    count = int(successful_presentations)
+    if type(successful_presentations) is not int:
+        raise PresentationEMAError("successful presentations must be an exact integer")
+    count = successful_presentations
     if count <= 0:
         raise PresentationEMAError("successful presentations for an EMA update must be positive")
     validate_restart_binding(controller=controller, state=state)
-    before_global = int(controller.global_update_step)
-    before_ema = int(controller.ema_update_count)
+    before_global = controller.global_update_step
+    before_ema = controller.ema_update_count
     momentum = C.ema_momentum_for_presentations(count, state.half_life_presentations)
     controller.after_successful_optimizer_step(momentum=momentum)
-    after_global = int(controller.global_update_step)
-    after_ema = int(controller.ema_update_count)
+    after_global = controller.global_update_step
+    after_ema = controller.ema_update_count
+    if type(after_global) is not int or type(after_ema) is not int:
+        raise PresentationEMAError("EMA controller counters must remain exact integers")
     if after_global != before_global + 1 or after_ema != before_ema + 1 or after_global != after_ema:
         raise PresentationEMAError(
             "EMA controller did not advance exactly once after the proved optimizer step"

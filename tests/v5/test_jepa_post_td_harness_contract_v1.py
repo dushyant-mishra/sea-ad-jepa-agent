@@ -15,6 +15,34 @@ M = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = M
 SPEC.loader.exec_module(M)
 
+# The original #351 reducer expectations used caller-named blocks and late
+# NOT_ESTIMABLE. Migrated ONLY on this repair branch to the common prospective
+# portfolio/manifest law; original #351 source/test blob remains untouched.
+T_PATH = ROOT / "scripts" / "v5" / "jepa_post_td_tournament_controller_v1.py"
+T_SPEC = importlib.util.spec_from_file_location("jepa_post_td_tournament_controller_v1", T_PATH)
+assert T_SPEC and T_SPEC.loader
+T = importlib.util.module_from_spec(T_SPEC)
+sys.modules[T_SPEC.name] = T
+T_SPEC.loader.exec_module(T)
+
+
+def _bound_block_manifest(*, prospective_blocks=frozenset()):
+    portfolio = M.build_target_portfolio(
+        selected_candidate="C6",
+        qualifications={"C1": "PASS", "C3": "PASS", "C6": "PASS"},
+    )
+    arm = T.ArchitectureArm("A", "SHARED_TYPED_HEADS", "SHARED_TYPED_HEADS", "NONE", 1000)
+    compute = M.MatchedComputeContract(
+        trainable_parameters=1000, teacher_flops=100.0, student_flops=100.0,
+        cell_presentations=100, optimizer_updates=10, evaluation_exposures=4,
+        evidence_budget=0.6, mask_budget=0.4, hardware_class="fixture",
+    )
+    return T.build_architecture_tournament_manifest(
+        portfolio=portfolio, arms=[arm], compute_contracts={"A": compute},
+        rare_preservation_required=True,
+        prospective_not_estimable_blocks=set(prospective_blocks),
+    )
+
 
 class PostTDHarnessContractTests(unittest.TestCase):
     def test_independent_c1_c3_blocks_survive_c6_failure(self):
@@ -144,27 +172,48 @@ class PostTDHarnessContractTests(unittest.TestCase):
         self.assertAlmostEqual(a * b, combined, places=15)
 
     def test_noncompensation_rejects_failed_required_block(self):
+        manifest = _bound_block_manifest()
         result = M.adjudicate_noncompensation(
-            block_results={"SHARED": "PASS", "QUERY": "FAIL"},
+            manifest=manifest,
+            block_results={"C1_SHARED": "PASS", "C3_QUERY": "FAIL"},
             allow_not_estimable=set(),
             aggregate_score=0.999,
         )
         self.assertEqual(result["status"], "FAIL")
-        self.assertIn("QUERY", result["failed_blocks"])
+        self.assertIn("C3_QUERY", result["failed_blocks"])
+        self.assertFalse(result["aggregate_score_has_authority"])
 
-    def test_noncompensation_allows_only_declared_not_estimable(self):
+    def test_noncompensation_allows_only_prospective_not_estimable(self):
+        manifest = _bound_block_manifest(prospective_blocks={"C3_QUERY"})
         ok = M.adjudicate_noncompensation(
-            block_results={"SHARED": "PASS", "RELATIONAL": "NOT_ESTIMABLE"},
-            allow_not_estimable={"RELATIONAL"},
+            manifest=manifest,
+            block_results={"C1_SHARED": "PASS", "C3_QUERY": "NOT_ESTIMABLE"},
+            allow_not_estimable={"C3_QUERY"},
             aggregate_score=0.0,
         )
         self.assertEqual(ok["status"], "PASS_WITH_DECLARED_NOT_ESTIMABLE")
+        self.assertEqual(ok["scope"], "BLOCK_STATUS_DIAGNOSTIC_ONLY__NOT_GATE_QUALIFICATION")
         bad = M.adjudicate_noncompensation(
-            block_results={"SHARED": "NOT_ESTIMABLE"},
+            manifest=_bound_block_manifest(),
+            block_results={"C1_SHARED": "PASS", "C3_QUERY": "NOT_ESTIMABLE"},
             allow_not_estimable=set(),
             aggregate_score=1.0,
         )
         self.assertEqual(bad["status"], "FAIL")
+
+    def test_noncompensation_refuses_missing_block_or_posthoc_declaration(self):
+        manifest = _bound_block_manifest()
+        with self.assertRaises(M.PostTDContractError):
+            M.adjudicate_noncompensation(
+                manifest=manifest, block_results={"C1_SHARED": "PASS"},
+                allow_not_estimable=set(),
+            )
+        with self.assertRaises(M.PostTDContractError):
+            M.adjudicate_noncompensation(
+                manifest=manifest,
+                block_results={"C1_SHARED": "PASS", "C3_QUERY": "NOT_ESTIMABLE"},
+                allow_not_estimable={"C3_QUERY"},
+            )
 
     def test_matched_compute_rejects_exposure_mismatch(self):
         reference = M.MatchedComputeContract(

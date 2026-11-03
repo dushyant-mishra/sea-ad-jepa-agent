@@ -147,6 +147,90 @@ def build_target_portfolio(
     return result
 
 
+
+def _verified_json_record(payload: Mapping, digest_field: str, label: str) -> dict:
+    """Verify *internal* SHA and detach JSON. NOT external source authentication."""
+    if type(payload) is not dict:
+        raise PostTDContractError(f"{label} must be a plain JSON object")
+    try:
+        snapshot = json.loads(json.dumps(
+            payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False
+        ))
+        digest = snapshot.get(digest_field)
+        if type(digest) is not str or not _HEX64.fullmatch(digest):
+            raise PostTDContractError(f"{label} digest is missing or malformed")
+        without_digest = dict(snapshot)
+        del without_digest[digest_field]
+        if _canonical_sha256(without_digest) != digest:
+            raise PostTDContractError(f"{label} digest is not bound to its current content")
+    except (TypeError, ValueError, OverflowError, RecursionError) as exc:
+        if isinstance(exc, PostTDContractError):
+            raise
+        raise PostTDContractError(f"{label} must be canonical JSON") from exc
+    return snapshot
+
+
+def verify_target_portfolio(portfolio: Mapping) -> dict:
+    """Re-derive exact lawful portfolio, not merely its self-rehashable SHA."""
+    value = _verified_json_record(portfolio, "portfolio_sha256", "target portfolio")
+    if value.get("schema") != PORTFOLIO_SCHEMA:
+        raise PostTDContractError("invalid target portfolio schema")
+    qualifications = value.get("qualifications")
+    if type(qualifications) is not dict or any(type(k) is not str for k in qualifications):
+        raise PostTDContractError("portfolio qualifications must be a JSON object with string keys")
+    selected = value.get("selected_candidate")
+    if selected is not None and type(selected) is not str:
+        raise PostTDContractError("selected candidate must be a string or null")
+    foundation = value.get("foundation_candidates")
+    specialists = value.get("specialist_candidates")
+    if type(foundation) is not list or type(specialists) is not list:
+        raise PostTDContractError("portfolio candidate rosters must be lists")
+    if any(type(item) is not str for item in foundation + specialists):
+        raise PostTDContractError("portfolio candidate IDs must be strings")
+    try:
+        rebuilt = build_target_portfolio(
+            qualifications=qualifications,
+            selected_candidate=selected,
+            foundation_candidates=() if selected is not None else foundation,
+            specialist_candidates=specialists,
+        )
+    except (TypeError, ValueError, KeyError) as exc:
+        raise PostTDContractError("target portfolio violates its builder's scientific rules") from exc
+    if value != rebuilt:
+        raise PostTDContractError("target portfolio differs from the scientifically rebuilt record")
+    return value
+
+
+def verify_architecture_plan(architecture_plan: Mapping, *, portfolio: Mapping) -> dict:
+    """Rebuild the plan from its declared parameters WITHOUT adding evidence flags."""
+    lawful_portfolio = verify_target_portfolio(portfolio)
+    plan = _verified_json_record(architecture_plan, "architecture_sha256", "architecture plan")
+    if plan.get("schema") != ARCHITECTURE_SCHEMA:
+        raise PostTDContractError("invalid architecture plan schema")
+    ema = plan.get("ema")
+    if type(ema) is not dict:
+        raise PostTDContractError("architecture plan requires an EMA object")
+    half_life = ema.get("half_life_presentations")
+    if type(half_life) is not int:
+        raise PostTDContractError("architecture EMA half-life must be an exact integer")
+    try:
+        rebuilt = build_architecture_plan(
+            portfolio=lawful_portfolio,
+            ema_half_life_presentations=half_life,
+            teacher_topology=plan.get("teacher_topology"),
+            student_topology=plan.get("student_topology"),
+            internal_factorization=plan.get("internal_factorization"),
+            interference_established=False,
+            negative_transfer_established=False,
+            multimodal_authorized=False,
+        )
+    except (TypeError, ValueError, KeyError) as exc:
+        raise PostTDContractError("architecture plan violates its builder's scientific rules") from exc
+    if plan != rebuilt:
+        raise PostTDContractError("architecture plan differs from the scientifically rebuilt record")
+    return plan
+
+
 def allowed_teacher_policies(block_type: str) -> tuple[str, ...]:
     block = str(block_type).upper()
     if block == "QUERY":
@@ -178,16 +262,30 @@ def derive_teacher_evidence_set(
     or grant training authority.
     """
     value = str(policy).upper()
-    measured = frozenset(int(x) for x in measured_addresses)
-    student = frozenset(int(x) for x in student_visible_addresses)
-    block = frozenset(int(x) for x in target_block_addresses)
+
+    def addresses(raw: Iterable[int], label: str) -> frozenset[int]:
+        # Molecular identity must not be created by int() coercion:
+        # bool, float and strings may alias genuine measured addresses.
+        try:
+            items = tuple(raw)
+        except TypeError as exc:
+            raise PostTDContractError(f"{label} must be an iterable of integer addresses") from exc
+        if any(type(item) is not int or item < 0 for item in items):
+            raise PostTDContractError(f"{label} requires exact non-negative integer molecular addresses")
+        return frozenset(items)
+
+    measured = addresses(measured_addresses, "measured_addresses")
+    student = addresses(student_visible_addresses, "student_visible_addresses")
+    block = addresses(target_block_addresses, "target_block_addresses")
+    if query_address is not None and (type(query_address) is not int or query_address < 0):
+        raise PostTDContractError("query_address requires an exact non-negative integer molecular address")
     if not student <= measured:
         raise PostTDContractError("student-visible evidence must be a subset of measured evidence")
     if not block <= measured:
         raise PostTDContractError("target block must be a subset of measured evidence")
-    if query_address is not None and int(query_address) not in measured:
+    if query_address is not None and query_address not in measured:
         raise PostTDContractError("query address must be measured when supplied")
-    query = None if query_address is None else int(query_address)
+    query = query_address
 
     if value == "RICH_Q_VISIBLE_REFERENCE":
         if query is None:
@@ -263,8 +361,15 @@ def output_semantics_spec(semantics: str) -> dict:
 
 
 def ema_momentum_for_presentations(successful_presentations: int, half_life_presentations: int | float) -> float:
-    presentations = int(successful_presentations)
-    half_life = float(half_life_presentations)
+    if type(successful_presentations) is not int:
+        raise PostTDContractError("successful presentations must be an exact integer")
+    if type(half_life_presentations) not in (int, float):
+        raise PostTDContractError("EMA half-life must be a finite numeric value")
+    presentations = successful_presentations
+    try:
+        half_life = float(half_life_presentations)
+    except (OverflowError, ValueError) as exc:
+        raise PostTDContractError("EMA half-life must be finite and positive") from exc
     if presentations < 0:
         raise PostTDContractError("successful presentations must be non-negative")
     if not math.isfinite(half_life) or half_life <= 0:
@@ -272,26 +377,94 @@ def ema_momentum_for_presentations(successful_presentations: int, half_life_pres
     return math.exp(math.log(0.5) * presentations / half_life)
 
 
+def verify_tournament_block_scope(manifest: Mapping) -> dict:
+    """Re-derive a tournament's block and gate roster from its embedded portfolio.
+
+    This proves *internal* consistency only. Neither a self-declared qualification
+    PASS nor a caller-constructed manifest is an independent biological or
+    precommitted selection authority.
+    """
+    if type(manifest) is not dict or manifest.get("schema") != "JEPA_POST_TD_ARCHITECTURE_TOURNAMENT_MANIFEST_V1":
+        raise PostTDContractError("tournament requires its versioned manifest")
+    lawful = verify_target_portfolio(manifest.get("portfolio"))
+    if manifest.get("portfolio_sha256") != lawful["portfolio_sha256"]:
+        raise PostTDContractError("manifest portfolio identity mismatch")
+    expected_blocks = [{"block_id": b["block_id"], "block_type": b["block_type"]}
+                       for b in lawful["blocks"]]
+    if type(manifest.get("required_blocks")) is not list or manifest["required_blocks"] != expected_blocks:
+        raise PostTDContractError("manifest block roster differs from verified portfolio")
+    rare_flag = manifest.get("rare_preservation_required")
+    if type(rare_flag) is not bool:
+        raise PostTDContractError("manifest rare gate flag must be exact boolean")
+    if any(type(b["rare_preservation_cross_cutting"]) is not bool
+           for b in lawful["blocks"]):
+        raise PostTDContractError("portfolio rare preservation flags malformed")
+    if any(b["rare_preservation_cross_cutting"] for b in lawful["blocks"]) and not rare_flag:
+        raise PostTDContractError("rare preservation gate required by verified portfolio")
+    gates = required_evaluator_gates(
+        block_types=[b["block_type"] for b in lawful["blocks"]],
+        rare_preservation_required=rare_flag,
+    )
+    if type(manifest.get("required_evaluator_gates")) is not list or manifest["required_evaluator_gates"] != list(gates):
+        raise PostTDContractError("manifest gate roster differs from verified portfolio")
+    gate_declarations = manifest.get("prospective_not_estimable_block_gates")
+    block_declarations = manifest.get("prospective_not_estimable_blocks")
+    if type(gate_declarations) is not list or type(block_declarations) is not list:
+        raise PostTDContractError("prospective gate/block declarations must be exact lists")
+    block_ids = [b["block_id"] for b in expected_blocks]
+    gate_keys = {f"{block_id}:{gate}" for block_id in block_ids for gate in gates}
+    for declared, valid, label in (
+        (gate_declarations, gate_keys, "gate"),
+        (block_declarations, set(block_ids), "block"),
+    ):
+        if (any(type(v) is not str for v in declared)
+                or len(set(declared)) != len(declared)
+                or declared != sorted(declared)
+                or not set(declared) <= valid):
+            raise PostTDContractError(f"invalid prospective {label} declarations")
+    if manifest.get("noncompensation_required") is not True:
+        raise PostTDContractError("noncompensation cannot be optional")
+    return {
+        "portfolio": lawful, "blocks": expected_blocks, "gates": gates,
+        "gate_declarations": frozenset(gate_declarations),
+        "block_declarations": frozenset(block_declarations),
+    }
+
+
 def adjudicate_noncompensation(
     *,
+    manifest: Mapping,
     block_results: Mapping[str, str],
-    allow_not_estimable: set[str],
+    allow_not_estimable: set[str] | frozenset[str],
     aggregate_score: float | None = None,
 ) -> dict:
-    allowed_statuses = {"PASS", "FAIL", "NOT_ESTIMABLE"}
+    """Block-level diagnostic only; fail closed on missing blocks or late exceptions.
+
+    This is NOT a substitute for gate-by-gate tournament evidence reduction,
+    independent qualification, or a selected-target issuer.
+    """
+    scope = verify_tournament_block_scope(manifest)
+    blocks = [b["block_id"] for b in scope["blocks"]]
+    if type(block_results) is not dict or set(block_results) != set(blocks):
+        raise PostTDContractError("every portfolio block must report a block status")
+    if (type(allow_not_estimable) not in (set, frozenset)
+            or any(type(k) is not str for k in allow_not_estimable)
+            or set(allow_not_estimable) != set(scope["block_declarations"])):
+        raise PostTDContractError("block abstention must be prospectively declared in the manifest")
     failed: list[str] = []
     declared_ne: list[str] = []
-    for block, raw_status in block_results.items():
-        status = str(raw_status).upper()
-        if status not in allowed_statuses:
-            raise PostTDContractError(f"unknown block result for {block}: {status}")
+    for block in blocks:
+        raw_status = block_results[block]
+        if type(raw_status) is not str or raw_status.upper() not in {"PASS", "FAIL", "NOT_ESTIMABLE"}:
+            raise PostTDContractError(f"unknown block result for {block}")
+        status = raw_status.upper()
         if status == "FAIL":
-            failed.append(str(block))
+            failed.append(block)
         elif status == "NOT_ESTIMABLE":
-            if block in allow_not_estimable:
-                declared_ne.append(str(block))
+            if block in scope["block_declarations"]:
+                declared_ne.append(block)
             else:
-                failed.append(str(block))
+                failed.append(block)
     if failed:
         status = "FAIL"
     elif declared_ne:
@@ -299,11 +472,15 @@ def adjudicate_noncompensation(
     else:
         status = "PASS"
     return {
+        "schema": "JEPA_POST_TD_BLOCK_STATUS_DIAGNOSTIC_V2",
         "status": status,
+        "scope": "BLOCK_STATUS_DIAGNOSTIC_ONLY__NOT_GATE_QUALIFICATION",
+        "portfolio_sha256": scope["portfolio"]["portfolio_sha256"],
         "failed_blocks": sorted(failed),
         "declared_not_estimable_blocks": sorted(declared_ne),
         "aggregate_score": aggregate_score,
         "aggregate_score_has_authority": False,
+        "authority": dict(_AUTHORITY_OFF),
     }
 
 
@@ -327,10 +504,49 @@ def validate_matched_compute(
     parameter_relative_tolerance: float = 0.02,
     flop_relative_tolerance: float = 0.02,
 ) -> dict:
-    if parameter_relative_tolerance < 0 or flop_relative_tolerance < 0:
-        raise PostTDContractError("matched-compute tolerances must be non-negative")
+    for label, tolerance in (
+        ("parameter_relative_tolerance", parameter_relative_tolerance),
+        ("flop_relative_tolerance", flop_relative_tolerance),
+    ):
+        if type(tolerance) not in (int, float):
+            raise PostTDContractError(f"{label} must be finite and non-negative")
+        try:
+            finite = math.isfinite(float(tolerance))
+        except (OverflowError, ValueError) as exc:
+            raise PostTDContractError(f"{label} must be finite and non-negative") from exc
+        if not finite or tolerance < 0:
+            raise PostTDContractError(f"{label} must be finite and non-negative")
+    if type(reference) is not MatchedComputeContract or type(challenger) is not MatchedComputeContract:
+        raise PostTDContractError("matched-compute inputs must be MatchedComputeContract instances")
+
     r = asdict(reference)
     c = asdict(challenger)
+    count_fields = ("trainable_parameters", "cell_presentations", "optimizer_updates", "evaluation_exposures")
+    measured_fields = ("teacher_flops", "student_flops", "evidence_budget", "mask_budget")
+    for label, values in (("reference", r), ("challenger", c)):
+        for field in count_fields:
+            value = values[field]
+            if type(value) is not int or value < 0:
+                raise PostTDContractError(f"{label} {field} must be an exact non-negative integer")
+            try:
+                finite = math.isfinite(float(value))
+            except (OverflowError, ValueError):
+                finite = False
+            if not finite:
+                raise PostTDContractError(f"{label} {field} exceeds the finite comparison domain")
+        for field in measured_fields:
+            value = values[field]
+            if type(value) not in (int, float):
+                raise PostTDContractError(f"{label} {field} must be finite and non-negative")
+            try:
+                finite = math.isfinite(float(value))
+            except (OverflowError, ValueError):
+                finite = False
+            if not finite or value < 0:
+                raise PostTDContractError(f"{label} {field} must be finite and non-negative")
+        if type(values["hardware_class"]) is not str or not values["hardware_class"]:
+            raise PostTDContractError(f"{label} hardware_class must be a non-empty string")
+
     exact_fields = (
         "cell_presentations",
         "optimizer_updates",
@@ -344,8 +560,9 @@ def validate_matched_compute(
             raise PostTDContractError(f"matched-compute mismatch: {field}")
 
     def relative_difference(a: float, b: float) -> float:
-        denom = max(abs(float(a)), abs(float(b)), 1.0)
-        return abs(float(a) - float(b)) / denom
+        left, right = float(a), float(b)
+        denom = max(abs(left), abs(right), 1.0)
+        return abs(left - right) / denom
 
     if relative_difference(reference.trainable_parameters, challenger.trainable_parameters) > parameter_relative_tolerance:
         raise PostTDContractError("matched-compute mismatch: trainable_parameters")
@@ -408,11 +625,9 @@ def build_architecture_plan(
     negative_transfer_established: bool = False,
     multimodal_authorized: bool = False,
 ) -> dict:
-    if portfolio.get("schema") != PORTFOLIO_SCHEMA:
-        raise PostTDContractError("invalid target portfolio schema")
-    if ema_half_life_presentations is None:
-        raise PostTDContractError("explicit EMA half-life in successful presentations is required")
-    ema_half_life_presentations = int(ema_half_life_presentations)
+    portfolio = verify_target_portfolio(portfolio)
+    if type(ema_half_life_presentations) is not int:
+        raise PostTDContractError("explicit EMA half-life must be an exact integer in successful presentations")
     ema_momentum_for_presentations(1, ema_half_life_presentations)
     teacher = validate_teacher_topology(
         teacher_topology,
@@ -484,10 +699,31 @@ def build_synthetic_rehearsal_preflight(
     synthetic_package_sha256: str,
     output_root: Path | str,
 ) -> dict:
+    # Derivation catches re-hashed scientific tampering that a digest alone
+    # cannot detect. This checks internally declared qualifications only, not an
+    # independent qualification issuer or source rights.
+    portfolio = verify_target_portfolio(portfolio)
+    architecture_plan = verify_architecture_plan(architecture_plan, portfolio=portfolio)
     if portfolio.get("schema") != PORTFOLIO_SCHEMA:
         raise PostTDContractError("invalid target portfolio schema")
     if architecture_plan.get("schema") != ARCHITECTURE_SCHEMA:
         raise PostTDContractError("invalid architecture plan schema")
+    for label, payload in (("portfolio", portfolio), ("architecture", architecture_plan)):
+        authority = payload.get("authority")
+        if type(authority) is not dict or set(authority) != set(_AUTHORITY_OFF):
+            raise PostTDContractError(f"{label} contains unexpected or missing authority flags")
+        if any(type(authority[k]) is not bool or authority[k] is not False for k in _AUTHORITY_OFF):
+            raise PostTDContractError(f"{label} cannot claim authority in synthetic rehearsal")
+    if architecture_plan.get("status") != "IMPLEMENTATION_PLAN_ONLY__TRAINING_OFF":
+        raise PostTDContractError("architecture plan is not rehearsal-only")
+    semantics = architecture_plan.get("output_semantics")
+    if type(semantics) is not dict or any(
+        type(spec) is not dict
+        or spec.get("production_selection_authority") is not False
+        or spec.get("use") != "MECHANICS_REHEARSAL_PLACEHOLDER_ONLY"
+        for spec in semantics.values()
+    ):
+        raise PostTDContractError("architecture output semantics must remain rehearsal-only")
     if architecture_plan.get("portfolio_sha256") != portfolio.get("portfolio_sha256"):
         raise PostTDContractError("architecture plan is not bound to this target portfolio")
     if not isinstance(synthetic_package_sha256, str) or not _HEX64.fullmatch(synthetic_package_sha256):
