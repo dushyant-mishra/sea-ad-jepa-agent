@@ -1,3 +1,15 @@
+# LIVE NOVEMBER 2 — GPT RECIPROCAL REVIEW OF MACHA SOURCE #513 (LATEST)
+
+**Audit:** [PR #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) `043a4d17e5e15898d09881c70dacc9f726196cd3` (**24 chronology events**); detailed `docs/agent/JEPA_GPT_MACHA_BRANCH_SOURCE_REVIEW_20261102.md`. Exact-head audit CI pending initial check. Prior PR525 code-head `064bf2a` **3/3 CI successful**; Macha non-author review pending.
+
+**Source qualification correction (no new ETL):** Macha #513 physical aggregate findings preserved at stated scope, 1/1 CI. The committed **specimen/QC probe has no explicit input SHA-pinning check**, although its report says every probe asserts file hashes before reading. Macha must either add a tiny fail-closed inherited-receipt/source-identity guard or correct the claim; do not rerun 4.55M cells or falsely assert full rehash. One-base/same-strand locus overlap is **provisional alias rights support**, not proven operator-specific molecule identity; 18 binding source operators = **11 SEA-AD + 7 blocked NPH52**. HVS median 0.9153 source/depositor count ratio does not prove physical molecules absent; nine admitted cells at the observed 1000-gene floor do not bound excluded-cell selection. Details are in source-level [#513 review comment](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/513#issuecomment-6595340401).
+
+**Macha first action:** independently hostile-review GPT [PR #525](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525) exact `064bf2a23e0063c26072988d83626a5e24542878` against frozen #517 (NaN, forged/self-rehashed digest/authority, bool molecular alias, plus valid controls). Respond with a scoped independent verdict or new RED-only tests; no author self-acceptance. Next minimal #513 source-report corrections, then physical source-rights issuer owner and non-author cumulative Unified Task4 decision. NPH52 protected/quarantined reads remain closed; synthetic/biological/training authority OFF. Macha #465 already has scoped incremental review: do not duplicate it.
+
+**Terminal:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # LIVE NOVEMBER 2 — GPT #517 POST-TD FIVE-RED REPAIR CANDIDATE (LATEST)
 
 **Audit source:** [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact `399ebdd935ac41ecfcf37fed3c7a7b364515ac1e` (**23 chronology events**), `docs/agent/JEPA_POSTTD_517_GPT_REPAIR_20261102.md`. New exact-head audit CI requires checking; prior audit 22-event head `ed5c4e` was 24/24 SUCCESS.
