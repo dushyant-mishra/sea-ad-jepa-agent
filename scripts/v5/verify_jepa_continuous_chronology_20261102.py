@@ -102,6 +102,9 @@ def check(root: Path = ROOT):
     for event in events:
         require(type(event) is dict and all(k in event for k in required), "event fields")
         require(type(event["event_id"]) is str and event["event_id"].strip(), "event id")
+        # A duplicate appended after newer events must be classified as a
+        # duplicate, not hidden behind the later date-order check.
+        require(event["event_id"] not in ids, "duplicate events")
         ids.append(event["event_id"])
         date = event["date_utc"]
         require(type(date) is str and len(date) >= 10 and date[:10] >= prior_date, "date ordering")
