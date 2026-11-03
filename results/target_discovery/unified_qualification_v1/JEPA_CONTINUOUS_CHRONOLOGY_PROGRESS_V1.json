@@ -1132,6 +1132,47 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/38478444632",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531#issuecomment-6596967713"
       ]
+    },
+    {
+      "event_id": "20261103-MACHA-525-0588788F-REVIEW-531-ERRATUM-CASEBUNDLE-INVENTORY-REGISTER",
+      "date_utc": "2026-11-03",
+      "workstream": "macha_independent_review_525_fresh_head_531_erratum_source_to_casebundle_inventory_blocker_register",
+      "implementation_pr": 532,
+      "implementation_head": "ccf0239d861bab9686fdfa3d863e8c81ef14e4bf",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_MACHA_20261103B_INVENTORY_AND_BLOCKER_REGISTER.md",
+          "blob_sha1": "9d2817a30a2de6aae93e9ba37624731167d00d5e",
+          "role": "macha_second_round_deliverables_inventory_and_blocker_register"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_MACHA_20261103B_ROUND_RECEIPT.json",
+          "blob_sha1": "aa206e5d0bf858e6b12c251d406ed3fe754521f7",
+          "role": "machine_readable_commits_ci_verdicts_and_corrections"
+        }
+      ],
+      "change_type": "hostile_review",
+      "what_already_existed": "Events 29-30: GPT #525 repair at 0588788f (CI 41588603430 91/91 x2), #526 correction b7761a3e, #336 Phase-2 audit recovery; GPT source-to-CaseBundle gap note; #528 R01/R02 GPT scoped acceptance.",
+      "new_work_or_result": "#525 at 0588788f REPAIR_REQUIRED via #532 (M01 manifest roster not bound to verified portfolio, M02 caller flag drops RARE_PRESERVATION, S01 second PASS path; L06 prospective not time-bound); #531 erratum (PR336 audit already done; #526 correction reconciled; reverse-geometry overstated) and support-semantics amendment proposal; eight-field source-to-CaseBundle inventory and smallest production edge; updated blocker register.",
+      "negative_or_counterfactual_evidence": "#532 CI 41590792957: 6 RED subcases fail by design while 98/98 existing and 4/4 guards+limit pass and #527/#530 blobs are asserted unchanged. Real support authority shows HVS 18,736, SEA-AD 35,786 and NPH52 30,760-34,969 measured addresses per matrix, contradicting the earlier 'reverse geometry' wording.",
+      "test_review_scope": "Local Windows Python 3.11.15; GitHub ubuntu Python 3.11/3.12. Synthetic fixtures; code, manifests and support metadata only; no expression values; no QC-probe replay.",
+      "independent_review": "MACHA_INDEPENDENT_REVIEW_OF_GPT_525__MACHA_DOCUMENTS_REQUIRE_GPT_RECIPROCAL_REVIEW",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "GPT repairs #525 M01/M02/S01 against #532 (embed verified portfolio; rare gate from portfolio; manifest-bound noncompensation)",
+        "GPT reviews #531 erratum and the support-semantics amendment proposal",
+        "Owner: QC-only allowlist; value-read authority for Level-4 counts into a CaseBundle; #328 successor authorization"
+      ],
+      "historical_supersession": "Supersedes event-28 register entries where they conflict (alias decision exists; #523 merged; #336 audit done); preserves #527/#530/#532 RED sources and frozen PR328 V2/#526.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/532",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41590792957",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/38478444632",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525"
+      ]
     }
   ]
 }
