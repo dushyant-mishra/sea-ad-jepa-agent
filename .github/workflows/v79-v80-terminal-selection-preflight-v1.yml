@@ -1,0 +1,57 @@
+name: V79/V80 frozen terminal-lock conflict preflight (non-authorizing)
+
+on:
+  push:
+    branches:
+      - audit/v79-v80-terminal-selection-preflight-20261103
+  pull_request:
+    paths:
+      - scripts/v5/audit_v79_v80_terminal_selection_preflight_v1.py
+      - tests/v5/test_audit_v79_v80_terminal_selection_preflight_v1.py
+      - .github/workflows/v79-v80-terminal-selection-preflight-v1.yml
+
+permissions:
+  contents: read
+
+jobs:
+  exact-archive-terminal-boundary:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Fetch EXACT original V79/V80 source on frozen PR348 head (read-only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin refs/pull/348/head
+          test "$(git rev-parse FETCH_HEAD)" = e99d1f214e76a5e3911eea438c32a1e60f70754f
+          mkdir -p "$RUNNER_TEMP/v79-v80"
+          git show FETCH_HEAD:results/v79/v2_core_qualification/V79_V2_CORE_QUALIFICATION_CONTRACT_V2.json > "$RUNNER_TEMP/v79-v80/contract.json"
+          git show FETCH_HEAD:results/v80/sparse_positive/V80_V79_NONREGRESSION_BINDING_V1.json > "$RUNNER_TEMP/v79-v80/binding.json"
+          git show FETCH_HEAD:results/v80/sparse_positive/V80_SPARSE_POSITIVE_PACKAGE_RECEIPT_V1.json > "$RUNNER_TEMP/v79-v80/receipt.json"
+          {
+            echo "V79_CONTRACT_PATH=$RUNNER_TEMP/v79-v80/contract.json"
+            echo "V80_BINDING_PATH=$RUNNER_TEMP/v79-v80/binding.json"
+            echo "V80_RECEIPT_PATH=$RUNNER_TEMP/v79-v80/receipt.json"
+          } >> "$GITHUB_ENV"
+      - name: Exact historical 207+85 selection boundary and seven hostile nonpromotion checks
+        run: |
+          python -m py_compile scripts/v5/audit_v79_v80_terminal_selection_preflight_v1.py tests/v5/test_audit_v79_v80_terminal_selection_preflight_v1.py
+          python -m unittest -v tests.v5.test_audit_v79_v80_terminal_selection_preflight_v1
+      - name: Emit only non-authorizing frozen contract conflict receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/v5/audit_v79_v80_terminal_selection_preflight_v1.py \
+            --v79-contract "$V79_CONTRACT_PATH" \
+            --v80-binding "$V80_BINDING_PATH" \
+            --v80-receipt "$V80_RECEIPT_PATH" > "$RUNNER_TEMP/v79-v80/summary.json"
+          python -c "import json,os,pathlib; p=pathlib.Path(os.environ['RUNNER_TEMP'])/'v79-v80/summary.json'; x=json.loads(p.read_text()); assert x['status'].startswith('BLOCKED_EXTERNAL_') and all(v is False for v in x['authority'].values()); print(x['status'], x['frozen_terminal']['confirmatory_inclusive_boundary_row_count'], x['frozen_terminal']['post_terminal_forensic_only']['rows'])"
