@@ -1,0 +1,245 @@
+{
+  "schema": "JEPA_EXISTING_LEVEL4_TO_CASEBUNDLE_RECEIPT_COVERAGE_V1",
+  "date": "2026-11-03",
+  "purpose": "READ_FREE_RECEIPT_SCOPE_CLASSIFICATION__NO_SOURCE_OR_MODEL_EXECUTION",
+  "base_main_sha": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb",
+  "original_sources": [
+    {
+      "pr": 59,
+      "head": "1bdff2a8f12d7971652dcf92b5b81ca45c37a933",
+      "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_i/DONOR_UMI_INDEPENDENT_QUALIFICATION_V1.json",
+      "blob": "e3a0926a81a278f49f155906a11c1eb35baa95cb"
+    },
+    {
+      "pr": 69,
+      "head": "83b85382f22a7672a5beb1ef9154e5b8bf36e16f",
+      "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_i/SIX_DONOR_SUCCESSOR_QUALIFICATION_V1.json",
+      "blob": "28418462bf4e4ddab0794bc8d7c759d121b67476"
+    },
+    {
+      "pr": 492,
+      "head": "79d2f9364970c0e5b678caae94b92a803ff03623",
+      "path": "docs/agent/JEPA_SOURCE_ETL_REACQUISITION_AUDIT_20261029.md",
+      "blob": null
+    },
+    {
+      "pr": 509,
+      "head": "3e5694e2c1b959c8e21f9fc6dd50cbf694ac4013",
+      "path": "docs/agent/JEPA_MACHA_R1_R2_SOURCE_ETL_GAP_MATRIX_20261029.md",
+      "blob": null
+    },
+    {
+      "pr": 513,
+      "head": "0b1af4f06ba423753899e7c564d3b16ce609ac6a",
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_MACHA_SPECIMEN_AND_DEPOSITOR_QC_20261030.json",
+      "blob": "c60954a91898d32af75f052c0d363b3c240e99df"
+    },
+    {
+      "pr": 528,
+      "head": "1a4fda758936a3cc3868948b44d25694de216bd9",
+      "path": "docs/agent/JEPA_MACHA_SOURCE_QUALIFICATION_CORRECTION_20261103.md",
+      "blob": null
+    },
+    {
+      "pr": 451,
+      "head": "bbdf9a90973303e41cee6d8bd9d05de38e9b828a",
+      "path": "scripts/v5/td_unified/casebundle_v1.py",
+      "blob": "23bbdcfc3234b7d621beb870fa019b34822446af"
+    },
+    {
+      "pr": 511,
+      "head": "5fe18a11b010b0adb857104d10329e840a9e7d4c",
+      "path": "scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py",
+      "blob": null
+    }
+  ],
+  "status_legend": {
+    "EXISTING_PHYSICALLY_EVIDENCED": "Exact cited historical physical/metadata execution within its stated scope; not a real CaseBundle issuer",
+    "PRESENT_BUT_UNQUALIFIED": "Existing code/metadata/aggregate present, but essential source-bound, per-cell or rights verification is unproven",
+    "NOT_RETAINED_IN_OLD_RECEIPT": "Old scoped receipt lacks the per-cell value or cross-field commitment; does not mean the original source bytes are unavailable",
+    "NOT_ESTIMABLE": "No lawful proof of requested field/source/query from currently established source or a required key is unavailable"
+  },
+  "fields": [
+    {
+      "field": "level4_block_manifest_and_meta",
+      "status": "EXISTING_PHYSICALLY_EVIDENCED",
+      "evidence": "PR59 SHA verified 8,915 block metadata entries and 387 count blocks for six donor strata; 4,553,407 metadata cell identities accounted once",
+      "missing_for_real_casebundle": "Read evidence covers those exact counts/metadata, not all 8,915 raw count blocks or a CaseBundle release",
+      "source_prs": [
+        59,
+        69
+      ]
+    },
+    {
+      "field": "donor_source_assignment",
+      "status": "EXISTING_PHYSICALLY_EVIDENCED",
+      "evidence": "PR59 numeric donor results match raw reads; PR69 corrects four SEA_AD/NPH52 source labels with numeric arrays unchanged",
+      "missing_for_real_casebundle": "Six-donor raw reaggregation only; must use corrected PR69 source mapping, never original transposed labels",
+      "source_prs": [
+        59,
+        69
+      ]
+    },
+    {
+      "field": "per_cell_selection_row_and_hierarchy",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "evidence": "PR59 original script iterates metadata with selection_row, canonical_cell_id, donor_id, expression_row, primary_row_weight, source_library",
+      "missing_for_real_casebundle": "Old receipt retains aggregate cell count, not a cryptographically committed per-cell source/row->q->view pairing",
+      "source_prs": [
+        59,
+        69
+      ]
+    },
+    {
+      "field": "per_cell_physical_library_total",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "evidence": "source_library is present in PR59 block metadata and PR513 SEA_AD depositor Number of UMIs equality is observed for 4,118,213 cells",
+      "missing_for_real_casebundle": "PR59 did not attest raw q-counts to source_library per cell; same-deposit equality is internal consistency, not external authenticity; HVS depositor/full ratio differs",
+      "source_prs": [
+        59,
+        513,
+        528
+      ]
+    },
+    {
+      "field": "raw_count_per_cell_per_address",
+      "status": "NOT_RETAINED_IN_OLD_RECEIPT",
+      "evidence": "PR59 read SHA-checked raw integer count matrices for six selected donors; donor_nnz and donor_umi exactly match at 17,186 strict-core addresses",
+      "missing_for_real_casebundle": "Raw cell-address values were aggregated and not emitted in receipt; do not derive a per-cell q certificate from donor aggregates. Source blocks may remain in original custody; no read newly assigned",
+      "source_prs": [
+        59,
+        69
+      ]
+    },
+    {
+      "field": "full_molecular_address_and_feature_alias_map",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "evidence": "41,238-address namespace and PR509/513 source-feature/alias accounting are recorded; 275 duplicate gene symbols require address IDs",
+      "missing_for_real_casebundle": "Source-specific alias class actions are provisional; ambiguous and unsupported identities must fail closed; NPH52 symbol-only features remain uncleared",
+      "source_prs": [
+        492,
+        509,
+        513,
+        528
+      ]
+    },
+    {
+      "field": "operator_measurement_states",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "evidence": "Existing source-specific support/structural/collision state tables and PR513 rights inventory; measured zero is not structural unmeasurement",
+      "missing_for_real_casebundle": "No independently issued source-cell->operator support commitment in a real CaseBundle; PR328 detection-frequency-derived mask cannot substitute",
+      "source_prs": [
+        509,
+        513,
+        528
+      ]
+    },
+    {
+      "field": "query_identity_alias_rights_and_roster",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "evidence": "PR513 proposed eight-field issuer contract, alias groups, query identity by molecular_address_id, source-cell roster and evidence-rights ladder",
+      "missing_for_real_casebundle": "No independently issued time-bound query/right/roster authority. For blocked aliases or unsupported operators this query is NOT_ESTIMABLE",
+      "source_prs": [
+        509,
+        513,
+        528
+      ]
+    },
+    {
+      "field": "reader_fit_session_and_partition_binding",
+      "status": "NOT_RETAINED_IN_OLD_RECEIPT",
+      "evidence": "Existing Task2 harness session and donor-partition machinery exists",
+      "missing_for_real_casebundle": "No PR59 per-cell source payload bound to a verified Task2 session and exact access-policy receipt",
+      "source_prs": [
+        451,
+        511
+      ]
+    },
+    {
+      "field": "student_d1_q_noninterference",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "evidence": "The main-branch V2C D1 fixture producer takes already-redacted base observations and verifies D1=sum base-visible scalar counts; private library_total is not input",
+      "missing_for_real_casebundle": "Fixture inputs and policy are self-declared; source reader isolation, withheld feature aliases, QC admission and external issuer are not qualified",
+      "source_prs": [
+        511,
+        509,
+        513
+      ]
+    },
+    {
+      "field": "teacher_private_physical_vs_d1",
+      "status": "NOT_RETAINED_IN_OLD_RECEIPT",
+      "evidence": "Task5 V1 requires physical library_size while fixture-only D1 uses query-excluded base-visible depth",
+      "missing_for_real_casebundle": "Old physical total is not a public D1. No production source-bound teacher/private vs student/D1 release receipt exists; never substitute D1 for physical library_size",
+      "source_prs": [
+        451,
+        511
+      ]
+    },
+    {
+      "field": "specimen_identity_sea_ad",
+      "status": "NOT_ESTIMABLE",
+      "evidence": "PR513 shows SEA_AD sample_id unique per nucleus; tissue specimen layer unavailable, with donor and library nesting established",
+      "missing_for_real_casebundle": "No specimen-level claim. Donor-disjoint analysis can proceed without fabricating specimen identities if separately authorized",
+      "source_prs": [
+        513,
+        528
+      ]
+    },
+    {
+      "field": "nph52_query_issuance",
+      "status": "NOT_ESTIMABLE",
+      "evidence": "NPH52 per-cell-type feature sets, off-ledger symbol-only features and depositor-selection issues remain",
+      "missing_for_real_casebundle": "Source remains blocked for real query issuance; excluded expression not opened",
+      "source_prs": [
+        509,
+        513,
+        528
+      ]
+    },
+    {
+      "field": "query_independent_depositor_selection",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "evidence": "QC-only aggregate metadata already analyzed; SEA_AD no demonstrated hard floor, HVS observed retained floor, NPH52 imported selection",
+      "missing_for_real_casebundle": "Absence of observed floor does not certify query independence; excluded-cell selection effect cannot be recovered from retained-only aggregates",
+      "source_prs": [
+        513,
+        528
+      ]
+    },
+    {
+      "field": "real_casebundle_issuer_and_view_receipt",
+      "status": "NOT_RETAINED_IN_OLD_RECEIPT",
+      "evidence": "Task5 V1 validator and V2C student view exist at fixture-only scope; PR513 lists eight required release bindings",
+      "missing_for_real_casebundle": "No authenticated real source->per-cell count->rights->private total->isolated D1->view digest chain demonstrated in the inspected receipts",
+      "source_prs": [
+        451,
+        511,
+        513,
+        528
+      ]
+    }
+  ],
+  "scope_qualifiers": {
+    "pr59_raw_count_blocks_sha_checked": 387,
+    "pr59_metadata_block_hashes_checked": 8915,
+    "pr59_metadata_cells_accounted": 4553407,
+    "pr59_donors_exact_compared": 6,
+    "pr59_addresses_exact_compared": 17186,
+    "pr69_original_source_label_swaps_corrected": 4,
+    "pr513_seaad_depositor_umi_internal_matches": 4118213,
+    "pr513_hvs_depositor_umi_median_ratio": 0.9153285452871969,
+    "single_new_real_level4_read_assigned": false,
+    "new_etl_or_qualification_rerun_assigned": false,
+    "nph52_issuance_authorized": false,
+    "real_casebundle_authorized": false
+  },
+  "minimal_next_software_action": "Review exact existing physical-source per-cell trace and V2C source-edge APIs; implement source-to-rights/versioned private-public separation only with already-frozen synthetic hostile fixtures. No Level4 read until a specific unfillable field and independently reviewed read contract exist.",
+  "authority": {
+    "real_training_authorized": false,
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "stage4_authorized": false,
+    "real_casebundle_issuer_authenticated": false
+  }
+}
