@@ -1248,6 +1248,43 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41592222345",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41591521042"
       ]
+    },
+    {
+      "event_id": "20261103-OWNER-DELEGATED-QC-ALLOWLIST-ONE-SEAAD-LEVEL4-READ",
+      "date_utc": "2026-11-03",
+      "workstream": "owner_delegated_narrow_experimental_scope_decision_qc_and_source_casebundle",
+      "implementation_pr": 322,
+      "implementation_head": "535ac66728ce3bfbce3617f9679452d9c6b86052",
+      "change_type": "owner_delegated_scope_decision",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_OWNER_DELEGATED_NARROW_QC_AND_SINGLE_LEVEL4_DECISION_20261103.md",
+          "role": "human owner explicitly deferred two limited experimental scope decisions to GPT; not a digital signature"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_OWNER_DELEGATED_NARROW_QC_AND_SINGLE_LEVEL4_DECISION_V1.json",
+          "role": "machine-readable narrow allowlist and single-block read approval"
+        }
+      ],
+      "what_already_existed": "Public processed source acquisition, Macha #528 §6 QC-only allowlist proposal with replay hold, original #513 aggregate QC, source/alias/identity constraints, main D1 fixture, Task2/3 access receipt, fixture-only CaseBundle #451 and physical library separation. No source access/secret gate for public data.",
+      "new_work_or_result": "Owner in chat deferred both scope choices to GPT. GPT approves only SEA-AD Doublet score and HVS is_primary_data for QC aggregate analysis without model/outcome/filter selection; separately authorizes only one prospectively metadata-selected lexicographically first eligible SEA-AD reader_fit Level-4 block to test source/operator/query-bound CaseBundle mechanics, with private physical library provenance, source identity, alias/right checks, and separate permitted D1; no additional block.",
+      "negative_or_counterfactual_evidence": "SEA-AD deposited matrix sum equals deposited UMI column but is internal consistency, not source provenance authentication; doublet score expression-derived and unsafe as query-independent filtering; existing QC wrapper REPLAY_HOLD must not be bypassed; #451 CaseBundle V1 is fixture-only. NPH52 quarantined data and DEV/SEALED excluded.",
+      "test_review_scope": "Decision artifacts only, no numeric expression or new QC probe executed; no author or independent software qualification implied. Require narrow versioned software gate and nonauthor hostile tests before one actual read; inherited original receipts reused.",
+      "independent_review": "HUMAN_OWNER_DELEGATION_RECORDED__GPT_SCIENTIFIC_SCOPE_DECISION__NOT_INDEPENDENT_AUTHENTICATED_ISSUER",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha choose and privately precommit the single SEA-AD reader_fit Level-4 block/query from frozen metadata before numeric reading",
+        "GPT and Macha implement/review the minimal versioned source-bound real CaseBundle adapter without altering fixture-only V1",
+        "QC-only source field replay is now policy-approved, but existing #528 REPLAY_HOLD software block requires separately reviewed narrow versioned operation before any replay",
+        "No expansion to other blocks, sources, NPH52 or model training without fresh decision"
+      ],
+      "historical_supersession": "Supersedes only the pending narrow internal QC-only allowance and one Level4 source block read decision; all historical constraints, scientific negative results, and independent qualification remain unchanged.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/528",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
+      ]
     }
   ]
 }
