@@ -1,3 +1,32 @@
+# LIVE NOVEMBER 3 — MACHA ROUND: #528 ERRATUM AND REPAIR, #525 NEW-HEAD VERDICT, #526 REVIEW AND MATRIX (LATEST)
+
+**Canonical record:** audit #322 at `2d62d2b29d60e105f1a431d2cb5d5fc1fd034b85`, chronology **28 events**, `docs/agent/JEPA_MACHA_20261103_ROUND_DELTA_AND_BLOCKER_REGISTER.md`. It holds the deliverables with exact commits and CI, plus the five-class blocker register. Check exact-head CI before reporting green.
+
+| Deliverable | Identity | Verdict / status |
+|---|---|---|
+| #528 public-source erratum | `7f7dee82`; custody-audit 41586401638 | NPH52 is Zenodo 8319719 revision 2, open, CC-BY-4.0. R1/R2 are optional hardening; R3 is resolved; R8 is software readiness. The NPH52 internal restriction is **retained**. |
+| #528 admission repair (#529 R01/R02) | `1a4fda75`; CI 41586401678 ubuntu + windows **24/24** | Repaired; **awaiting GPT review**. Real-probe replay is held in code until the QC-only allowlist decision. |
+| #525 at `315c378d` | Macha [#530](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/530) `0a1310ad`; CI 41586882935 (inherited 86/86, guards/limits 8/8, 11 RED sub-cases) | **`REPAIR_REQUIRED`**. N01: the reducer passes an arm that never reported `QUERY_SPECIFICITY`/`WRONG_Q_CONTROL`. N02: not-estimable can be declared after results. N03: EMA callers coerce with `int()`. |
+| #526 synthetic | Macha [#531](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531) `db0b198d`; CI 41587988669 | **REPLICATED** (0/180, 0/150, 149/150); software ACCEPT_SCOPED; **interpretation CORRECTION_REQUIRED**. PR #328 sets `support = VISIBILITY > 0` from microglia detection fractions: a measured zero becomes structural absence, and the source geometry is the reverse of the real one. |
+
+**GPT next:**
+- review #528 at `1a4fda75` and #531;
+- repair #525 N01–N03 against #530: bind reduction to a **required** manifest; accept only not-estimable gates declared in advance; use exact-int EMA callers.
+
+**Owner decisions:**
+- the QC-only allowlist (`Doublet score`, `is_primary_data`);
+- a ruling on PR #328's support semantics before any #328-based learning test.
+
+**Also open:**
+- the independent audit of the #321 phase-2 QUALIFIED receipt `53820343`;
+- the V79 207-row versus V80 all-291 non-regression conflict, to be resolved in advance.
+
+**Preserved:** V79 `NOT_QUALIFIED`; V80 is benchmark-only.
+
+**Standing:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # LIVE NOVEMBER 3 — PUBLIC-SOURCE PROVENANCE CORRECTION FROM HISTORICAL ACQUISITION (LATEST)
 
 **Correction to Macha #528 / earlier GPT instructions:** the core analyzed SEA-AD processed, HVS and NPH52 source data were **publicly downloadable**. The original **V4 Stage81A1D** config on `main` already pins **NPH52 Zenodo record 8319719**, exact provider URL and MD5 for `organized_data.zip` and `annotations.zip`. Therefore `NPH52 accession unavailable` in recent #528 is contradicted by project history, and the owner need not furnish it. The original HVS source is [CELLxGENE collection](https://cellxgene.cziscience.com/collections/35928d1c-36fc-4f93-9a8d-0b921ab41745), which says public datasets require no extra IRB. Public **processed** SEA-AD AWS is freely downloadable; distinct raw 10x/Sage assets may be controlled-access. See original [source config](https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/main/configs/v4/stage81a1d_living_human.yaml), [Zenodo](https://zenodo.org/records/8319719), and #322 detailed `docs/agent/JEPA_PUBLIC_SOURCE_ACQUISITION_HISTORY_CORRECTION_20261103.md`. Audit head `d2a2e4ba5887b77a0f1e9b5640ab8811996a8c25`, chronology **27 events**; rerun CI before claiming green.
