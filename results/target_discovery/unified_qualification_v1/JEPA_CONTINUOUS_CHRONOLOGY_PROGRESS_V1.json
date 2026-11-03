@@ -1567,6 +1567,49 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460#issuecomment-6450069779"
       ]
+    },
+    {
+      "event_id": "20261103-PR536-ACTUAL-C2-C3-EXISTING-PRODUCER-FROZEN-SYNTHETIC-NEGATIVE-ADMISSION",
+      "date_utc": "2026-11-03",
+      "workstream": "actual_td_target_producer_source_admission_as_new_executable_boundary_test_no_biology_promotion",
+      "implementation_pr": 536,
+      "implementation_head": "b723b9d522a013554a0a53cf600e6e9812c35935",
+      "change_type": "bounded_new_source_executable_science_negative",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261103_PR536_ACTUAL_C2_C3_SOURCE_CONTRACT_EXECUTION_AUDIT.md",
+          "role": "source-specific original-executable and two-run result/limits"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_PR536_ACTUAL_C2_C3_FROZEN_PRODUCER_NEGATIVE_ADMISSION_20261103_V1.json",
+          "role": "machine identity and outcome mirror"
+        },
+        {
+          "path": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/536",
+          "role": "actual new tests/workflow and independent review entry"
+        }
+      ],
+      "what_already_existed": "Source original PR328 world 480x48, world dedd53c3 and fit fc5fa5c0 pinned; PR534 fit-only original-bank transport, PR526 measured q-other-eight source-derived actual measured-panel diagnostic (not teacher/learner), original PR316 3 disjoint 512 feature C2 observed executor, PR313 C3 candidate payload requiring query_target+query_student, PR338 13 biological gates blocked; PR336 9/9 relational known-truth test of test, PR369 isolated gates and PR469 source-to-Task5 planted bridge already completed in stated scopes. PR328 control truth maps C3 to population mean of q0 expected, not per-cell R5 8-gene vector. Macha PR531 withdrew source-specific biological support interpretation.",
+      "new_work_or_result": "Draft PR536 flat main introduced exact-head-locked script+GitHub CI calling original existing source functions, without changing their bytes. First workflow run 41676453529 replayed original PR328 world and fit exactly and then failed solely because new caller missed PR316 profile_id; fixed only caller in next head. Same-head PR536 b723b9d5 runs 41676844864 and 41676856537 both SUCCESS. PR328 fit-only 30 cells, nine donors, three synthetic labels yielded actual q-other8 10 MEASURED targets (NPH52-like 10/10, HVS-like 0/10, SEAAD-like 0/10), 20 NOT_ESTIMABLE; q scalar change did not affect measured target. Actual PR316 C2 refused 48-feature source against three disjoint 512-view geometry; actual PR313 C3 adapter rejected missing query_student rather than inventing prediction. No actual controller truth, trained recovery, candidate gate statuses or estimator was scored. 13 prospective gate rules remain blocked.",
+      "negative_or_counterfactual_evidence": "Original PR328 support uses VISIBILITY>0 detection proxy, not real human structural assay membership; the 10/30 measured rate is purely fixture, not evidence favoring NPH52 source. Actual C2 gate cannot be passed with PR328 48 feature bank without illegal padding/duplicating/inventing features, so no direct full PR328->C2 target comparison should be claimed. Original controller C3 mean(expected q0) is not per-cell R5 measured non-q eight target. PR313 candidate adapter is a firewall, not a target constructor; absent lawful student model means no C3 recovery or wrong-query biology. V80 PR534 remains independently red, unaffected. CI success validates expected fail-closed rejection only; independent Macha review pending.",
+      "test_review_scope": "PR536 original head b723b9d522a013554a0a53cf600e6e9812c35935, original initial failed author head retained, GitHub Actions runs 41676844864/41676856537 2/2 success. Frozen original world+fit hashes matched, no unauthorized source read, no synthetic tuning, no trained model, no hidden truth opened. Artifact 13251741068 aggregate-only. Independent reciprocal reviewer has not accepted new head.",
+      "independent_review": "GPT_AUTHOR_TWO_OF_TWO_CI_SUCCESS__MACHA_FRESH_HEAD_ADVERSARIAL_REVIEW_PENDING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Obtain independent Macha review PR536 exact b723b9d5, especially source-target semantics and expected refusal",
+        "Preserve PR318/#321/#336 already-qualified original 512-feature relational test; identify lawful existing compatible common source rather than pad PR328 48 features",
+        "Prospectively define any C3 per-cell oracle matching measured q-other eight (not original PR328 scalar population mean), and correct PR328 support semantics only if owner/controller authorizes a new version",
+        "Do not score C2/C3 learned student or real JEPA without separate matched-baseline and scientific gate authorization"
+      ],
+      "historical_supersession": "New scoped executable refusal adds to original #469/#534 integration but does not supersede original PR328 or PR316 qualification, original PR336 known-truth 9/9, or PR314 corrected real TD replay.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/536",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41676844864",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41676856537",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336"
+      ]
     }
   ]
 }
