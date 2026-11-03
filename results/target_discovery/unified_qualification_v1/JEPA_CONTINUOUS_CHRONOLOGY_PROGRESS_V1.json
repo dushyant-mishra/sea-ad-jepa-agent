@@ -1650,6 +1650,44 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/536"
       ]
+    },
+    {
+      "event_id": "20261103-SIX-IPB-TOKEN-PRESERVING-PLANTED-500-STEP-HISTORY-REVOKES-GENERIC-V65-V5-PILOT",
+      "date_utc": "2026-11-03",
+      "workstream": "audit_preexperiment_no_repeat_verification_discovers_prior_six_layer_ipb_and_anchors",
+      "implementation_pr": 322,
+      "implementation_head": "194ef65c72ae389eca93e0eb56e2b68f8ee9e933",
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261103_PRIOR_PLANTED_IPB_JEPA_AND_EMA_EXPERIMENT_NO_REPEAT_CORRECTION.md",
+          "role": "actual original Stage81A3 500-step model experiments and preserved six-IPB v4.1 result digest; direct duplication stop"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261103_ALREADY_TESTED_SIX_IPB_PLANTED_EMA_NO_REPEAT_V1.json",
+          "role": "machine nine-lineage status and exact original result hash"
+        }
+      ],
+      "what_already_existed": "Original Stage81A3 V4A learned model 10x500 planted factors FAIL S2-S7, 10x500 faster EMA nonrescue, final A-AP 10x500 modified logits/PCA failed. Crucially v4.1 actual six-IPB token preserving width160 with real block predictor and EMA had 2 biological fixtures, 2 seeds, ipb_jepa vs anchor_only, 500-step training, original result stage81a3_ipb_jepa_feasibility.json SHA aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308 independently observed and matched in preserved Sept2 audit and freeze manifest; original numeric report not tracked in main, thus no claim of its exact terminal PASS/FAIL. Historical Stage81B matched CURRENT/JEPA_ONLY/ANCHOR_ONLY u100/u300/u500 comparison closed anchor; V65 planted ridge and supervised EMA; V5 keyed encoder preserves same six token blocks and adds RNG/guards, not a new biological architecture. User demand was proof before proceeding.",
+      "new_work_or_result": "Before launch, exhaustive targeted code/file/PR lookups caught previously omitted source-near-exact 6x160 token-preserving IPB planted-EMA experiment and frozen terminal SHA. Revoke generic reduced-width 5200x96 V65→V5 pilot: it is a weaker near-repeat. No model training or branch created for it. Read-only source audit explicitly limits possible novel question to source-bound C2/C3 measured-target construction→actual gate→independently hidden controller truth and independently trained correct-cell/q recovery, only after original matched-hash IPB report and target-family controls reconciled.",
+      "negative_or_counterfactual_evidence": "A new 96-gene, width32/64, short-EMA pilot cannot establish an architecture newly escaping prior full-width 4096-gene 500-update planted IPB study. Low JEPA MSE already caused collapsed/erased information in Stage81A3; anchors causally hurt and must not be casually revived. Historical IPB result hash exists but original numeric classification unavailable on current tracked main; do not hallucinate its outcome. V65 shared Xr is full-library normalized before masking; simply masking features leaks hidden transcript values through visible denominators.",
+      "test_review_scope": "Read-only exact original source code scripts/v4/stage81a3_{synthetic_geometry_escape,ema_bootstrap_disambiguation,final_information_preservation_qualification,ipb_jepa_feasibility}.py, original Stage81A3 readout, preserved sha-verifying 20260902 context audit, 20260907 freeze manifest, V65 receipts, original V5 keyed runtime and tests, historical Stage81B causal decision register. No new optimizer, EMA, GPU execution, synthetic generator or controller-truth opening.",
+      "independent_review": "GPT_SOURCE_ARCHAEOLOGY__ORIGINAL_IPB_RECEIPT_MATCHED_ARCHIVED_SHA__MACHA_EXISTING_RECEIPT_EXTRACTION_PENDING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha SHA-check and extract original EXISTING stage81a3_ipb_jepa_feasibility.json numerical classification, metrics and comparisons without rerunning any experiment",
+        "Reconcile historical T0/T1/TCTX 32-step and JEPA_ONLY/ANCHOR_ONLY 500-step effects against prospective specific C2/C3 target-conditioned experiment; do not repeat closed arms",
+        "Only after near-duplicate clearance, source-design a genuinely different lawful query-conditioned teacher construct + correct-cell C2/C3 student test with independent held truth, without leaking original V65 full-library denominator"
+      ],
+      "historical_supersession": "Supersedes prior #322 event43's suggestion that generic V65 planted-biology→V5 masked teacher/student would be a uniquely novel first JEPA experiment. Preserves all event43 positive executed evidence; only next-action novelty revoked. Latest #536 original negative source-admission remains completed in scope.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/main/scripts/v4/stage81a3_ipb_jepa_feasibility.py",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/main/docs/history/preservation_20260902/results/v4/stage81a3_context_evidence_audit.json",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/main/docs/agent/archive/governance/ACTIVE_STATE_20260903_HISTORICAL.md",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/199",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/536"
+      ]
     }
   ]
 }
