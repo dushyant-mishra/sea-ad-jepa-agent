@@ -1,3 +1,15 @@
+# CURRENT NEXT ACTIONS — 2026-11-03: STOP RE-AUDITING; BEGIN CONSTRAINED IMPLEMENTATION
+
+Canonical [audit #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) at `7b77e5b0cf1f9d2256c7b6781203738aa7eef38c` — **40 append-only events**. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) (verify current HEAD and CI); main `28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb`. Most actionable full plan: this branch `docs/agent/JEPA_20261103_NOW_NEXT_ACTIONS_C2_C3_AND_SOURCE_RIGHTS.md`, #322 `docs/agent/JEPA_20261103_IMPLEMENTATION_FORWARD_ACTION_AUDIT_NO_REPEAT.md` and exact machine register `JEPA_20261103_SOURCE_PINNED_FORWARD_PRIORITY_REGISTER_V1.json`.
+
+**Do now:** GPT implement **already-adopted 3 gene-address alias rights restrictions** at existing source-edge fixture and add hostile tests; Macha independently review repaired #525 `b493efc3` (six author checks successful, independent review pending) and its L06 pre-outcome manifest; GPT/Macha concurrently pre-register the existing **C2 relational + C3 measured-query** biological decision/null/magnitude gates against PR338 (15 conditionally specified, 13 blocked). **Not yet:** real model fit, new Level4 values, NPH52 query, QC replay, Stage4. A read-free source→CaseBundle parent/identity gap review is next, using Macha's eight-field existing source inventory. #533 selection semantics and #534 V80 exact-hash failure are bounded parallel forensics, not a reason to delay alias/security/test-law work.
+
+**Do not repeat:** frozen 18-gene candidates, TD56/57B/59 real relational pilot, PR314 already spent real corrected replay, developmental R5, C1–C6 portfolio, original V72/100K/multimodal synthetic, #336 relational independent audit, main V2C/D1. Current target winner NONE; real training OFF. Every future new agent MUST update #322 chronology/machine mirror and this #460 pointer after consequential new work, with exact HEAD, CI, reviewer and negative evidence.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # LIVE NOVEMBER 3 — RECOVERED TWO TARGET-DISCOVERY LANES (CURRENT)
 
 **Canonical historic/scientific audit:** [PR #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) at `21facb870e2d4336c6f2d9f5eb314067bd426c2f`, **39 chronology events**. **Active handoff:** [PR #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460), recheck exact head and CI after this update. Main `28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb`. Older live headings below are kept as audit history, not today's task list.
