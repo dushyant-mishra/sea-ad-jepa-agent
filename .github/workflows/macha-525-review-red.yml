@@ -1,0 +1,56 @@
+name: Macha review of #525 (RED-first, tests only)
+
+on:
+  pull_request:
+    paths:
+      - 'tests/v5/test_jepa_post_td_525_macha_review_red.py'
+      - '.github/workflows/macha-525-review-red.yml'
+      - 'scripts/v5/jepa_post_td_*.py'
+  workflow_dispatch:
+
+jobs:
+  review:
+    name: Python ${{ matrix.python-version }} - #517 replay, inherited suites, Macha guards and REDs
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Record the exact source under test
+        run: |
+          git rev-parse HEAD
+          git rev-parse HEAD:scripts/v5/jepa_post_td_harness_contract_v1.py
+          git rev-parse HEAD:scripts/v5/jepa_post_td_tournament_controller_v1.py
+          git rev-parse HEAD:scripts/v5/jepa_post_td_rehearsal_preflight_v1.py
+      - name: Replay the unchanged #517 file (repaired head must give exactly five unexpected successes)
+        run: |
+          git fetch --no-tags origin +refs/pull/517/head:refs/remotes/origin/pr517
+          test "$(git rev-parse origin/pr517)" = 0bf0de060e6cb13496fb95e193deb63591258ceb
+          RED517=tests/v5/test_jepa_post_td_351_chatgpt_hostile_red_20261102.py
+          git show "origin/pr517:$RED517" > "$RED517"
+          test "$(git hash-object "$RED517")" = 76666f3e6f320792e0b292c32411e74eafa97ca6
+          set +e; python "$RED517" > red517.txt 2>&1; rc=$?; set -e
+          cat red517.txt
+          rm "$RED517"
+          test "$rc" -ne 0
+          grep -q "FAILED (unexpected successes=5)" red517.txt
+      - name: GPT inherited and repair suites (expected green)
+        run: |
+          python -m unittest -v \
+            tests.v5.test_jepa_post_td_harness_contract_v1 \
+            tests.v5.test_jepa_post_td_c4_requires_c6_v1 \
+            tests.v5.test_jepa_post_td_517_repair_v1 \
+            tests.v5.test_jepa_post_td_presentation_ema_v1 \
+            tests.v5.test_jepa_post_td_rehearsal_preflight_v1 \
+            tests.v5.test_jepa_post_td_tournament_controller_v1
+      - name: Macha guards (expected green before and after any repair)
+        run: python -m unittest -v -k test_guard tests.v5.test_jepa_post_td_525_macha_review_red
+      - name: Macha REDs (expected to FAIL at 064bf2a2 until repaired)
+        run: python -m unittest -v tests.v5.test_jepa_post_td_525_macha_review_red
