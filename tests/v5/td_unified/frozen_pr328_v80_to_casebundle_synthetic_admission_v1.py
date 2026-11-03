@@ -318,7 +318,18 @@ def replay_v80(root: Path, report: Path):
           and frozen["n_fits"] == 192 and frozen["status"] == "BENCHMARK_PACKAGE_ONLY__NO_ESTIMATOR_RUN",
           "original V80 frozen receipt does not match expected benchmark")
     worlds = build_sparse_positive_worlds(seed_root=41000000)
-    check(benchmark_identity(worlds) == V80_BENCHMARK, "V80 frozen eight-world identity mismatch")
+    observed_v80_hash = benchmark_identity(worlds)
+    if observed_v80_hash != V80_BENCHMARK:
+        # Never retune or relax the frozen benchmark identity. Expose only digests
+        # and runtime metadata, not controller truth, to diagnose host-dependent drift.
+        import platform
+        print("V80_PINNED_SHA_MISMATCH__REFUSE", json.dumps({
+            "expected": V80_BENCHMARK, "actual": observed_v80_hash,
+            "numpy": np.__version__, "python": platform.python_version(),
+            "processor": platform.processor(), "platform": platform.platform(),
+            "fit_sha256": sha(serialize_fit_transport(worlds)),
+        }, sort_keys=True), flush=True)
+        raise AssertionError("V80 frozen eight-world identity mismatch; source stays frozen")
     fit = serialize_fit_transport(worlds)
     validate_fit_transport(fit)
     check(fit["authority"] == {"estimator_qualification_authorized": False,
