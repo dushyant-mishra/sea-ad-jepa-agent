@@ -66,7 +66,7 @@ def _scope_digest(rows: list[dict]) -> str:
     view = [
         {"row_index": i, "gate": _row_id(row), "kind": row["kind"],
          "verdict_class": row["verdict_class"]}
-        for i, row in rows
+        for i, row in enumerate(rows)
     ]
     return hashlib.sha256(
         json.dumps(view, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("ascii")
