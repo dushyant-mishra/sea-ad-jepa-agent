@@ -1066,6 +1066,40 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41586882935",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41587988669"
       ]
+    },
+    {
+      "event_id": "20261103-POSTTD-530-REPAIR-531-SUPPORT-CORRECTION-528-INDEPENDENT-CLOSURE",
+      "date_utc": "2026-11-03",
+      "workstream": "posttd_reciprocal_source_to_casebundle_scientific_integration",
+      "implementation_pr": 525,
+      "implementation_head": "0588788f6e8b17b549f1674277571c5611c90253",
+      "change_type": "hostile_review",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261103_SOURCE_TO_CASEBUNDLE_EXACT_GAP_AND_RECIPROCAL_UPDATE.md",
+          "role": "exact code source and independent reciprocal review record"
+        }
+      ],
+      "what_already_existed": "Unified Task2 raw split and harness-attested producer access, main V2C/D1 fixture, source #513 8-field rights contract, #451 CaseBundle fixture, #469 7-edge synthetic interop; historical audit and handoff explicitly prohibit duplicate architecture. Macha #529 original two RED on #528 and #530 new three RED on #525, #531 scientific correction on #526.",
+      "new_work_or_result": "Source gap localized: no reviewed authentic human source/operator/q observation producer into versioned real CaseBundle; Task5 V1 fixture requires private physical library but student D1 contains only visible-base mass, and cannot be used as a substitute. #525 repaired manifest-required complete evaluator gates, prior not-estimable and EMA exact integer; original #530 RED blob copied unchanged and 91 tests each Python3.11/3.12 green. GPT scoped independently accepted Macha #528 R01/R02 repair (24 tests Ubuntu/Windows); GPT acknowledged #531's scientific support-semantic falsifier on #526, preserving arithmetic but withdrawing human source-support inference.",
+      "negative_or_counterfactual_evidence": "Macha #530 proved missing query controls could yield PASS, undeclared gate abstention could be posthoc, and EMA callers coerced numbers. Macha #531 proved synthetic detection proportions were misused as structural support; physical HVS/SEA-AD/NPH52 source estimability could not be inferred from synthetic panel. V79 Q08 remains permanently failed. No new world, training, candidate winner, issuer or physical source read.",
+      "test_review_scope": "#525 run 41588603430 91/91 per Python3.11/3.12 plus 2 inherited workflows success, but author implementation Macha new-head review pending; #528 source admission 41586401678 24/24 Ubuntu+Windows, nonauthor GPT scoped ACCEPT R01/R02, not physical data attestation; #526 correction head b7761a3e two workflows green, no new estimate; #531 source review runs successful.",
+      "independent_review": "GPT_AUTHOR_525_REPAIR_AWAITING_MACHA_FRESH_REVIEW__GPT_NONAUTHOR_528_R01_R02_ACCEPT_SCOPED__MACHA_531_SCIENTIFIC_FALSIFIER_ACCEPTED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha independent review of #525 at 0588788f6e8b17b549f1674277571c5611c90253 and gate manifest provenance limitations",
+        "Optional internal QC-only allowlist owner decision before held frozen replay; NPH52 separate scientific support/selection qualification remains",
+        "No external source/operator/q mapped CaseBundle producer qualified; compare accepted branches first, no duplicate issuer contract",
+        "New prospective source feature support semantics before any PR328-based learning; wrong-query null and C2 phase2 receipt review under existing sealed laws"
+      ],
+      "historical_supersession": "Supersedes only inaccurate source-specific interpretation of #526, original arithmetic/world/fit unchanged. #530 original reviewer RED unchanged. Two legacy #351 reducer test expectations version-migrated on #525 branch only; original source/tests remain frozen on #351. #528 original critique remains history and R01/R02 new repair is accepted at narrow scope.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/530#issuecomment-6596880268",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41588603430",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531#issuecomment-6596897081",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/528#issuecomment-6596890794"
+      ]
     }
   ]
 }
