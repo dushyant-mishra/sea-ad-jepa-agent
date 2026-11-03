@@ -1324,6 +1324,43 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/513"
       ]
+    },
+    {
+      "event_id": "20261103-SYNTHETIC-FIRST-FROZEN-PR328-V80-QRIGHTS-CASEBUNDLE-CROSSBANK",
+      "date_utc": "2026-11-03",
+      "workstream": "frozen_original_robust_synthetic_first_crossbank_casebundle_falsification_without_new_data",
+      "implementation_pr": 534,
+      "implementation_head": "e0002c51691557af0413e88e4283518f78560208",
+      "change_type": "hostile_review",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261103_SYNTHETIC_FIRST_EXISTING_ROBUST_BANK_REUSE_AND_CASEBUNDLE_GATE.md",
+          "role": "four-question synthetic-first experiment admission, exact original PR328/V80 sources and negative status"
+        },
+        {
+          "path": "docs/agent/JEPA_20261103_CASEBUNDLE_FOUR_QUESTION_EXPERIMENT_ADMISSION_AND_CODE_REUSE_AUDIT.md",
+          "role": "prior source evidence and code reuse checklist"
+        }
+      ],
+      "what_already_existed": "Robust frozen original PR328 world and fit with RNA, donor/source/perturbation/rare biology; PR469 ephemeral synthetic-to-Task5 7-edge bridge already tested, PR474 conditional rights-ladder and PR478 independent off-ledger/q-in-base/depth failure; original V80 eight sparse-positive worlds and 192 fit cases qualified as benchmark only (no estimator). Source PR59 already read 387 actual Level4 raw blocks and no new read justified.",
+      "new_work_or_result": "After user correction, new flat main-based PR534 uses immutable original PR328 V2 world 20261013 and fit 20261014 with exact original SHA verification, metadata-only deterministic 30-cell source projection, existing PR474/Task5 code to falsify source forgery, q-in-base, offledger mass, richer depth versus physical total, collision semantics and wrong-query view; replays original frozen V80 seed41000000 eight-world support/detection/estimability controls without fitting, generating or selecting models. Initial exact PR534 head e0002c51 hosted 41663329942 SUCCESS and two aggregate-only diagnostic reports, source authority all false. A second hosted check of same source head produced V80 benchmark hash mismatch; investigating numerical platform determinism without waiver, new diagnostics PR534 head may advance.",
+      "negative_or_counterfactual_evidence": "Existing source q-excluded arithmetic passes in synthetic train donor/source cases under complete mapping, yet off-ledger hidden mass still changes D1, source forgery and q-in-base remain accepted by unauthenticated fixture; Task5 RICH count can exceed projected D1 depth and is correctly refused, no real CaseBundle qualified. V80 SP05 measured zeros are not structural absence. PR328 sampled visibility support should never imply real HVS/SEAAD/NPH structural geometry. V80 exact hash mismatch on one hosted PR run at same head is a reproducibility concern to investigate before calling benchmark stable across workers.",
+      "test_review_scope": "PR534 initial head e0002c51691557af0413e88e4283518f78560208 Actions push run 41663329942 SUCCESS. Same-head PR run 41663646341 FAILURE at original V80 benchmark SHA (while PR328 and PR474 tests passed), reproducibility concern kept. No model, training, real source read, frozen world edit, generator retune or hidden truth export. Macha independent code/science review pending.",
+      "independent_review": "GPT_AUTHOR_SYNTHETIC_CROSSBANK_REPLAY_ONLY__MACHA_REVIEW_PENDING__V80_CROSS_RUN_IDENTITY_INCONSISTENCY_OPEN",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Investigate V80 cross-worker exact benchmark identity variance at same code/seed/runtime; retain both original PASS/FAIL receipts, no threshold or seed retune",
+        "Macha independent PR534 exact-head review of query/rights leakage and original SHA truth separation",
+        "Minimum source q/alias real CaseBundle contract repair only after existing synthetic falsifiers bound, no Level4 read assigned",
+        "Macha #525 and #533 existing independent reviews remain distinct tasks"
+      ],
+      "historical_supersession": "Supersedes planning assumption that the next source-to-CaseBundle step should rely chiefly on new human reads. Does not supersede frozen PR328/V80/PR474/PR478, original negative V79 or owner training prohibition.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41663329942",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41663646341"
+      ]
     }
   ]
 }
