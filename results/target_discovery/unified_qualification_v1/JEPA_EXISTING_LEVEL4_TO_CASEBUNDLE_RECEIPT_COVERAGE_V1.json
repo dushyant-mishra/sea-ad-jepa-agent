@@ -240,12 +240,92 @@
     "nph52_issuance_authorized": false,
     "real_casebundle_authorized": false
   },
-  "minimal_next_software_action": "Review exact existing physical-source per-cell trace and V2C source-edge APIs; implement source-to-rights/versioned private-public separation only with already-frozen synthetic hostile fixtures. No Level4 read until a specific unfillable field and independently reviewed read contract exist.",
+  "minimal_next_software_action": "NONE_ASSIGNED__REUSE_EXISTING_PR469_PR534_PR515_MAIN_V2C_AND_513_RIGHTS_FIRST",
   "authority": {
     "real_training_authorized": false,
     "target_selection_authorized": false,
     "representation_selection_authorized": false,
     "stage4_authorized": false,
     "real_casebundle_issuer_authenticated": false
+  },
+  "original_minimal_next_software_action_superseded": "Review exact existing physical-source per-cell trace and V2C source-edge APIs; implement source-to-rights/versioned private-public separation only with already-frozen synthetic hostile fixtures. No Level4 read until a specific unfillable field and independently reviewed read contract exist.",
+  "cross_lane_no_repeat_correction": {
+    "scope": "DOCUMENTATION_ONLY__NO_NEW_INTEGRATION_OR_EXPERIMENT_ASSIGNED",
+    "review_prior_work": [
+      {
+        "topic": "integrated_rare_multimodal",
+        "prs": [
+          311,
+          315,
+          328,
+          339,
+          344,
+          431
+        ],
+        "claim": "Existing integrated mechanics fixture and production design; synthetic support semantics corrected by #531"
+      },
+      {
+        "topic": "relational_qualification",
+        "prs": [
+          318,
+          321,
+          336
+        ],
+        "claim": "Already independently audited synthetic relational test-of-test; do not re-audit"
+      },
+      {
+        "topic": "actual_cross_component_execution",
+        "prs": [
+          369,
+          440,
+          451,
+          469,
+          474,
+          478,
+          534
+        ],
+        "claim": "Original generated-world→CaseBundle fixtures, q-depth attacks, frozen-world admission; #534 V80 identity latest RED"
+      },
+      {
+        "topic": "student_D1_isolation",
+        "prs": [
+          479,
+          491,
+          502,
+          503,
+          504,
+          508,
+          510,
+          511,
+          514,
+          515,
+          516,
+          518,
+          521,
+          522,
+          523
+        ],
+        "claim": "D1/V2C on main and scoped review; restrictions not independent issuer"
+      },
+      {
+        "topic": "physical_source_support",
+        "prs": [
+          59,
+          69,
+          349,
+          492,
+          509,
+          513,
+          528
+        ],
+        "claim": "Source reads, support registry, alias/QC and 8-field issuer contract already exist"
+      }
+    ],
+    "new_adapter_or_fixture_assigned": false,
+    "new_level4_read_assigned": false,
+    "new_model_experiment_assigned": false,
+    "v80_current_pr534_replay_identity_qualified": false,
+    "source_authentication_promoted": false,
+    "next_decision": "ONLY_IF_PRECISE_GAP_NOT_ALREADY_ADDRESSED_BY_CITED_ACCEPTED_TESTS_AND_RECEIPTS"
   }
 }
