@@ -1487,6 +1487,47 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/338"
       ]
+    },
+    {
+      "event_id": "20261103-FORWARD-IMPLEMENTATION-AND-C2-C3-NO-REPEAT-SCIENCE-PRIORITY-REGISTER",
+      "date_utc": "2026-11-03",
+      "workstream": "source_pinned_current_repo_science_forward_prioritization_after_deep_history_recovery",
+      "implementation_pr": 322,
+      "implementation_head": "cac429e7e60122e8d65fdc505912400628060204",
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261103_IMPLEMENTATION_FORWARD_ACTION_AUDIT_NO_REPEAT.md",
+          "role": "source-selected current implementation priorities, owners, tests, constraints"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261103_SOURCE_PINNED_FORWARD_PRIORITY_REGISTER_V1.json",
+          "role": "machine-readable five-item action/dependency register"
+        }
+      ],
+      "what_already_existed": "Stage36-49 eighteen biological candidates; PR314 corrected TD56/57B/59 positive and TD57C negative; historical measured R5 positive; existing C1/C2/C3/C6/C4/C5 noncompensating portfolio; main V2C/D1 accepted fixture; Macha 8-field source-to-CaseBundle inventory; Oct30 owner 3 alias restrictions adopted but not implemented; original #525 REDs and author repair; PR338 15 conditional/13 blocked real scientific gate rules; #534 original V80 benchmark mismatch.",
+      "new_work_or_result": "Current-source recheck confirms audit #322 25/25, handoff #460 2/2, PR525 author 6/6, PR533 4/4, PR534 2/2 FAILED. Establishes do-now priorities: first source-rights alias enforcement and hostile reviews on existing interfaces; parallel independent #525 acceptance with L06 pre-outcome manifest safeguard; prospective C2/C3 science discriminator with frozen margins/nulls; delta-only original real source/CaseBundle parent resolution; V80 forensic sidecar not overall blocker. This is a written plan, no code or value execution.",
+      "negative_or_counterfactual_evidence": "#525 author-green is not Macha fresh-head acceptance. #533 CI does not grant V79/V80 selection law. #534 remains RED not a reason to restart synthetic worlds. Existing alias restriction requires producer-side enforcement, not post-release student trust. Original 50K and #314 outcomes must not be used to tune new prospective thresholds. Current real Level4 CaseBundle read and NPH52 issuance remain blocked.",
+      "test_review_scope": "Read-only main/audit/handoff branch ref and same-head check-runs; PR338 V2 gate readiness; adopted alias-rule JSON; Macha #322 source implementation inventory; #535 corrected no-repeat; original TD/Candidate record. No model, code tests, raw data, source download or training performed.",
+      "independent_review": "GPT_READ_ONLY_SCIENCE_PRIORITIZATION__MACHA_ACCEPTANCE_ON_NEW_CODE_PENDING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Implement original exact address-bound UBE2R2-AS1 joint withholding and MIR4307HG/LINC02588 query/operator block via existing source-rights fixture; do not claim source equivalence",
+        "Obtain independent fresh-head PR525 b493efc3 hostile review and resolve L06 pre-outcome authority",
+        "Freeze C2/C3 prospectively meaningful biological/null/matched-compute gates (PR338 13 unresolved) before values or JEPA training",
+        "Prove source parent rights and same-session Task2 source-to-CaseBundle edge via existing code, reconcile 50 vs 47 metadata rows and QC allowlist owner decisions; no real read",
+        "Compare PR348 original V80 archived artifacts and clarify PR533 V79 selection law as nonblocking sidecars"
+      ],
+      "historical_supersession": "Priority plan supersedes any obsolete generic discovery, re-ETL, first synthetic generator, first target/CaseBundle framework, V79/V80 rerun or new training recommendation; all original chronology and science preserved.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/533",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/535"
+      ]
     }
   ]
 }
