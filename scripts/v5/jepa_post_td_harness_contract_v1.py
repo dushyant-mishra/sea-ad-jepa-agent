@@ -554,7 +554,7 @@ def build_synthetic_rehearsal_preflight(
             without_digest = dict(snapshot)
             del without_digest[digest_field]
             if _canonical_sha256(without_digest) != digest:
-                raise PostTDContractError(f"{label} digest does not match its content")
+                raise PostTDContractError(f"{label} digest is not bound to its current content")
         except (TypeError, ValueError, OverflowError, RecursionError) as exc:
             if isinstance(exc, PostTDContractError):
                 raise
