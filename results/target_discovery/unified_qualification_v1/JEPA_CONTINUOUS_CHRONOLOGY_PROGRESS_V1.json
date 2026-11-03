@@ -869,7 +869,7 @@
           "role": "exact_head_receipt_and_independent_review_gates"
         }
       ],
-      "change_type": "scoped_implementation_repair_not_biological_authority",
+      "change_type": "repair",
       "what_already_existed": "#351 post-TD code; #517 GPT-hostile tests with five deliberately expected failures; C4/C6 and inherited harness prior CI; #322 earlier 22 chronology events.",
       "new_work_or_result": "GPT created draft PR #525 based on existing #351 module with exact-type/finite compute checks, independently recomputed detached portfolio/plan digests, explicit authority-off/placeholder-only preflight, exact non-boolean gene address inputs, extended tests and CI. At exact head all 3 workflows green; dual Python 3.11/3.12 for new hostile test. Macha independent review requested.",
       "negative_or_counterfactual_evidence": "Original #517 reviewer expected RED is unchanged and remains at original source. Initial repair head failed inherited regex expectation for rejection wording; preserved failing run and corrected text without weakening code. A self-consistent digest is not a genuine external source issuer or authorization, and three green runs do not constitute Macha review or real training.",
