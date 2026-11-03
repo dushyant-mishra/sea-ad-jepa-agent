@@ -45,8 +45,8 @@ def _authority_off() -> dict:
 
 
 def build_zero_update_teacher_screen(portfolio: Mapping) -> dict:
-    if portfolio.get("schema") != C.PORTFOLIO_SCHEMA:
-        raise PostTDTournamentError("invalid target portfolio schema")
+    # A caller-generated SHA cannot authenticate scientific block semantics.
+    portfolio = C.verify_target_portfolio(portfolio)
     blocks = []
     for block in portfolio.get("blocks", ()):
         block_type = str(block.get("block_type", "")).upper()
@@ -148,8 +148,7 @@ def build_architecture_tournament_manifest(
     negative_transfer_established: bool = False,
     multimodal_authorized: bool = False,
 ) -> dict:
-    if portfolio.get("schema") != C.PORTFOLIO_SCHEMA:
-        raise PostTDTournamentError("invalid target portfolio schema")
+    portfolio = C.verify_target_portfolio(portfolio)
     arm_list = list(arms)
     if not arm_list:
         raise PostTDTournamentError("at least one architecture arm is required")
