@@ -1,3 +1,17 @@
+# LIVE NOVEMBER 2 — ACTUAL FROZEN SYNTHETIC MEASURED-TARGET REUSE (LATEST)
+
+**New scientific-mechanics execution:** GPT [PR #526](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/526), original exact PR328 code/fit/world receipts and fixed seeds. New source code blob `6b220851c6ef9cc81a058e403dd1d6ee73a70560`, five tests + aggregate-only report, [run 41579821519](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41579821519) SUCCESS and inherited PR328 [run 41579821351](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41579821351) SUCCESS. **Synthetic fixed q=0 / other-gene indices 1–8:** HVS-like **0/180** estimable, SEA-AD-like **0/150**, NPH52-like **149/150** (one positive-denominator failure). Query count changed without altering target, structural unmeasurement never treated as zero. This is **one toy panel's measurement feasibility**, not all candidate panels, not a real R5 target, not JEPA training or new biological qualification. Existing support visibility code was inspected before the panel choice, so it is NOT a blinded scientific discovery. Macha independent review [requested here](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/526#issuecomment-6595697679).
+
+**Canonical scientific record:** [audit #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) head `c397d759816c80e68d3fa20d536c90018cb424ce`, chronology **25 events**, `docs/agent/JEPA_SYNTHETIC_PR526_MEASURED_TARGET_AVAILABILITY_AUDIT_20261102.md`. Check the exact new audit/head CI before reporting success; previous 24-event audit `043a4d17` had 24/24 GREEN.
+
+**Crucial no-repeat synthetic state:** [PR #325](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/325) V79 is *permanently* `NOT_QUALIFIED` (291/292; Q08 sparse-positive hard FAIL, three NOT_DIAGNOSED). [PR #348](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/348) V80 benchmark/custody/adjudication package qualified, **not** a successor estimator. [PR #318](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/318) already packages known-truth relational null controls; [PR #469](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/469) already executes PR328 → Task5 fixture. [PR #344](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/344) accepted V3.1/V3.1.1 design and [PR #356](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/356) accepted implementation plan control distinct production synthetic. Engineering Tasks 1–3 reviews/repair must clear before production synthetic Task4, and STOP_A/B/C remain active. Do not replay older campaigns, rescue V79, build a new generator or promote toy fixtures.
+
+**Other dependencies still open:** GPT #525 code repair 3/3 GREEN requires Macha independent review; #513 source input/alias caveats and source rights external issuer remain; #465 has only incremental Unified Task4 review; real CaseBundle/teacher target and training OFF.
+
+**Standing:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # LIVE NOVEMBER 2 — GPT RECIPROCAL REVIEW OF MACHA SOURCE #513 (LATEST)
 
 **Audit:** [PR #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) `043a4d17e5e15898d09881c70dacc9f726196cd3` (**24 chronology events**); detailed `docs/agent/JEPA_GPT_MACHA_BRANCH_SOURCE_REVIEW_20261102.md`. Exact-head audit CI pending initial check. Prior PR525 code-head `064bf2a` **3/3 CI successful**; Macha non-author review pending.
