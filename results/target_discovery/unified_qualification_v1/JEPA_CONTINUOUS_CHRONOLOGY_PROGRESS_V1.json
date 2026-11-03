@@ -1285,6 +1285,45 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
       ]
+    },
+    {
+      "event_id": "20261103-PR59-PR69-PREVIOUS-LEVEL4-RAW-READ-RECOVERY-NO-REPEAT",
+      "date_utc": "2026-11-03",
+      "workstream": "historical_physical_level4_source_read_custody_recovery_and_no_repeat_plan_correction",
+      "implementation_pr": 322,
+      "implementation_head": "ad72deb74b131e163d5cea44840708a46d65f02f",
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261103_HISTORICAL_REAL_LEVEL4_READ_RECOVERY_AND_NO_REPEAT_CORRECTION.md",
+          "role": "original PR59 387 real Level4 raw-count-block read, PR69 corrected source labels, no repeat"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261103_HISTORICAL_REAL_LEVEL4_READ_RECOVERY_NO_REPEAT_V1.json",
+          "role": "machine-readable old reads with exact evidence receipt and no-repeat statuses"
+        }
+      ],
+      "what_already_existed": "PR59 2026-09-22 physically read and SHA-verified 387 raw FULL104 Level4 count blocks covering six donor strict-core count reconstructions, and all 8915 block metadata; 4553407 cells accounted once by metadata; exact donor_nnz and donor_umi equality in 17186 strict-core addresses. PR69 later corrected 4 transposed SEAAD/NPH52 source labels without changing any numeric row and explicitly ruled that re-running raw count comparison was unnecessary. PR492 50k expression read, PR314 spent real TD replay and PR513 deposit QC metadata aggregates also already done.",
+      "new_work_or_result": "Owner prompts recovery of previous physical read. Withdraw immediate assignment to select and execute an additional single SEAAD Level4 count block. Retain earlier owner-delegated ceiling as a conditional permission only, not a work order. Require first a field-by-field existing raw source/metadata/rights/per-cell-denominator coverage inspection. Any missing real CaseBundle output cannot be inferred from existing six donor aggregates; implement offline fixture adapter and reuse prior receipts before proposing any new read.",
+      "negative_or_counterfactual_evidence": "Original PR59 receipt's 4 transposed SEAAD/NPH52 source labels were scientifically erroneous, fixed by PR69. 387 count blocks is not 8915; 4553407 metadata cells is not 4553407 per-cell q count validations; six donor counts do not qualify all104. PR513 separately says no count matrices were read in its QC probe; do not reclassify that as a second full raw read.",
+      "test_review_scope": "Source PR59 frozen receipt and executable raw-count code inspected, PR69 exact correction receipt inspected, PR492/314/513/147 scopes compared; no further numeric data opened, no new GPU execution. Original PR59/69 original CI/receipts retained at their historical heads.",
+      "independent_review": "HISTORICAL_SOURCE_RECEIPT_RECOVERY__PR69_CORRECTED_PR59_SOURCE_LABELS__NEW_READ_SUSPENDED_NOT_CLAIMED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Reconcile per-cell physical source_library, per-cell q raw count, alias/operator rights, structural state, lineage/session receipt against existing evidence first",
+        "Macha must not automatically execute newly approved one SEAAD block; only if an exact indispensable field cannot be established from previous material and new read precommitted/reviewed",
+        "Maintain previous narrow QC-only scope approval but no new QC replay by default; #528 software REPLAY_HOLD stays active",
+        "Macha #525 and #533 independent exact-head reviews are separate pending work"
+      ],
+      "historical_supersession": "Supersedes immediate action of 20261103 owner-delegated plan event34 only; original user delegation scope as a ceiling unchanged. PR59/69/314/492/513 frozen scientific receipts and source evidence untouched.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/59",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/69",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/492",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/513"
+      ]
     }
   ]
 }
