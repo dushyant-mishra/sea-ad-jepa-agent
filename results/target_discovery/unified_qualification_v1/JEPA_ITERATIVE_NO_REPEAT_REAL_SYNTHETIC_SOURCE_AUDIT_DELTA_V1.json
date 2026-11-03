@@ -98,6 +98,18 @@
         460,
         535
       ]
+    },
+    {
+      "index": 6,
+      "name": "historical benchmark byte-identity precedent",
+      "finding": "RECOVERED_PR294_V79_WINDOWS_ONLY_WORLD_BYTE_AUTHORITY; PR348_V80_SAME_PROCESS_DETERMINISM_NOT_HOST_LOCKED; PR534_DRIFT_OPEN_WITH_PRECEDENT_NOT_PROVEN_CAUSE",
+      "original_refs": [
+        294,
+        297,
+        325,
+        348,
+        534
+      ]
     }
   ],
   "verified_source_specific_deltas": [
@@ -153,6 +165,26 @@
       "head_sha": "b92f335b53a93805a5d05330dc0d61f0479b1dcf",
       "independent_phase2_audit_done": true,
       "real_human_target_qualified": false
+    },
+    {
+      "subject": "V79_V80_PLATFORM_BYTE_HISTORICAL_PRECEDENT",
+      "original_v79_pr": 294,
+      "original_v79_head": "fe3aac751e2b8d2e58d5cb4d35af74ad58c823df",
+      "controller_run": 38190157910,
+      "windows_linux_engineering_digests_known_different": true,
+      "exclusive_windows_byte_authority_v79": true,
+      "original_v80_pr": 348,
+      "original_v80_producer_run": 38504094639,
+      "original_v80_producer_fit_artifact_id": 11867590706,
+      "original_v80_producer_controller_artifact_id": 11866917064,
+      "v80_workflow_pinned_python": "3.11.9",
+      "v80_workflow_pinned_numpy": "2.3.5",
+      "v80_ubuntu_latest_image_and_cpu_blas_not_pinned": true,
+      "original_v80_test_checked_same_process_only": true,
+      "current_v80_field_digest_excludes_latent_truth_fields": true,
+      "root_cause_proven": false,
+      "transfer_v79_windows_byte_authority_to_v80": false,
+      "source_doc": "docs/agent/JEPA_20261103_V80_HASH_DRIFT_RECOVERED_V79_PLATFORM_BYTE_AUTHORITY.md"
     }
   ],
   "discovery_stop": {
@@ -160,7 +192,8 @@
     "existing_indexed_lanes_examined": 33,
     "additional_unindexed_implementation_found": false,
     "changed_source_required_for_reopen": true,
-    "exhaustive_review_of_all_824_branch_diffs_claimed": false
+    "exhaustive_review_of_all_824_branch_diffs_claimed": false,
+    "preexisting_reproducibility_policy_found": true
   },
   "no_repeat": {
     "new_generator": false,
