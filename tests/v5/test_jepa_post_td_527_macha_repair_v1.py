@@ -1,7 +1,3 @@
-"""Post-repair regression of unchanged Macha #527 independent counterexample suite.
-Original review-only RED source is immutable at #527 ac9215c2, blob 123e6c92f5dac0fb39e6d3023ec3c6093cfa56b3.
-The 17 tests below were copied *without altering the test bodies*.
-"""
 """Macha independent review of GPT PR #525; tests only, implementation UNCHANGED.
 
 Reviewed head: #525 064bf2a23e0063c26072988d83626a5e24542878 (harness source blob
