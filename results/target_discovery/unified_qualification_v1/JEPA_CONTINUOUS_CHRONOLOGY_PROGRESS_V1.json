@@ -1024,6 +1024,48 @@
         "https://cellxgene.cziscience.com/collections/35928d1c-36fc-4f93-9a8d-0b921ab41745",
         "https://brain-map.org/consortia/sea-ad/our-data"
       ]
+    },
+    {
+      "event_id": "20261103-MACHA-528-REPAIR-525-315C378D-526-REVIEW-BLOCKER-REGISTER",
+      "date_utc": "2026-11-03",
+      "workstream": "macha_independent_review_528_repair_525_new_head_526_synthetic_matrix_blocker_register",
+      "implementation_pr": 528,
+      "implementation_head": "1a4fda758936a3cc3868948b44d25694de216bd9",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_MACHA_20261103_ROUND_DELTA_AND_BLOCKER_REGISTER.md",
+          "blob_sha1": "fcce0e9aff4eb465f78fde89d3cb68ad7a85daed",
+          "role": "macha_round_deliverables_and_remaining_blocker_register"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_MACHA_20261103_ROUND_RECEIPT.json",
+          "blob_sha1": "c8baa5327281655c340aea4ef410ccdc02c6dc37",
+          "role": "machine_readable_commits_ci_and_verdicts"
+        }
+      ],
+      "change_type": "hostile_review",
+      "what_already_existed": "Events 26-27: GPT #525 semantic repair at 315c378d, GPT #529 RED on Macha #528, and GPT's public-source acquisition-history correction (NPH52 Zenodo 8319719). Macha #527 R01-R13 and #528 c1d85688.",
+      "new_work_or_result": "#528 append-only public-source erratum (7f7dee82) and repair of #529 R01/R02 (1a4fda75, CI 24/24 ubuntu+windows); #525 at 315c378d REPAIR_REQUIRED via #530 (N01 query controls unenforced at reduction, N02 post-hoc not-estimable, N03 EMA caller int coercion); #526 replicated exactly via #531 but its interpretation corrected: PR328 support = VISIBILITY > 0 turns microglia detection-fraction zeros into structural absence and inverts real source geometry; reuse-first matrix over V79/V80, #318-#321, #328, #469, #526; five-class blocker register.",
+      "negative_or_counterfactual_evidence": "#530 CI 41586882935: 11 RED subcases fail by design while 86/86 inherited and 8/8 guards/limits pass; #529 R01/R02 failed at c1d85688 (local WSL) and pass at 1a4fda75 (CI 41586401678). No wrong-query control exists in any synthetic asset; no estimator scored against #328 or V80 truth.",
+      "test_review_scope": "Local Windows Python 3.11.15 numpy 2.4.6 and WSL jepa-full104; GitHub ubuntu/windows Python 3.11-3.12. Synthetic fixtures and public metadata only; QC probe not replayed (governance hold).",
+      "independent_review": "MACHA_INDEPENDENT_REVIEW__528_REPAIR_IS_MACHA_AUTHORED_AND_REQUIRES_GPT_REVIEW",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "GPT reviews #528 at 1a4fda75 and #531; GPT repairs #525 N01-N03 against #530",
+        "Owner: QC-only allowlist decision; ruling on PR328 support semantics before any #328-based learning test",
+        "Independent audit of #321 phase-2 QUALIFIED receipt 53820343; prospective V79 207-row vs V80 291-row conflict"
+      ],
+      "historical_supersession": "Supersedes #528 c1d85688 statements on NPH52/HVS terms and R1-R3/R8 prerequisites by append-only erratum; preserves V79 NOT_QUALIFIED, V80 benchmark-only qualification, #527 and #529 RED sources.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/528",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/529",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/530",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41586401678",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41586882935",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41587988669"
+      ]
     }
   ]
 }
