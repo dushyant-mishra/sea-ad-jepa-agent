@@ -1,5 +1,24 @@
 # JEPA read-free Level-4 → CaseBundle field reconciliation (2026-11-03)
 
+## Cross-lane correction — reuse supersedes proposed engineering (2026-11-03)
+
+**Correction to this document's earlier “Minimal next engineering task” section:** Do **NOT** initiate a new source-binding fixture, CaseBundle adapter, query-rights test suite, student redactor, model fit, or Level-4 read from this PR. The field matrix below describes **what older receipts individually attest**, NOT a missing implementation inventory. Its original 15 rows remain a source-specific retrospective, not authority to rebuild.
+
+Relevant work *already done*, reviewed at its own scope:
+
+- **Unified integrated biology:** #311 (real-data-matched rare), #315 (candidate-agnostic design), #328 original frozen integrated 480-cell RNA/ATAC/rare/perturbation fixture and #339 external `PASS_WITH_LIMITATIONS`; #344 production V3.1/V3.1.1 design and #431 prior cross-lane no-repeat audit. #328 is mechanics only; #531 and its erratum established that `VISIBILITY > 0` improperly conflates detection with structural support. Its old interpretation cannot be reused for real source-specific observability.
+- **Relational test-of-test:** #318/#321 qualified nine synthetic challenges, already independently audited in #336 (`53820343`; `TEST_QUALIFICATION_ONLY`). No new Phase2 audit.
+- **Previously executed synthesis→downstream:** #369 tested sealed gate mechanics; #440/#451 Task5 and downstream bridge; **#469** ran PR328-generated RNA → CaseBundle fixture → post-TD route with `TARGET_NONE` and planted C1; **#534** composed original frozen PR328/V80 with #474/Task5 hostile q-rights, q-in-BASE, source-forgery, off-ledger, collision and richer-depth cases. #534's **V80 exact benchmark identity mismatch remains RED at its latest head**; do not label the whole suite green or duplicate its tests. A mechanical right-/wrong-query **view change** is not a learned wrong-query biological recovery test.
+- **Versioned D1 and student isolation:** #474/#478/#479 proved and attacked q-excluded depth; #491 adopted D1, rejecting D2; #502/#503/#504/#508/#510/#511 evolved the fixture-only rights/content boundary, preserving #507/#512 RED; #514/#515 created V2C+D1, #516/#518 attacked it, #521 packaged a restricted verifier, #522/#523 landed **scoped, independently reviewed fixture** on `main`, as recorded in its current execution map. No second V2C/D1 producer, Docker package, or student gate is required from #535. A restricted test container is **not a trusted physical issuer/launcher**.
+- **Physical source/rights:** original #59/#69 Level-4 reads and source-label repair; #349 real support registry, #492 50k audit, #509 22-row source/ETL gap audit, #513/#528 eight-field issuer and QC/alias corrections. **Existing data are not missing** merely because #59's published donor-aggregate receipt does not contain per-cell CaseBundle rows. Preserve original source/QC rights and independence limits.
+
+**Action after this crosswalk:** #535 is **DOCUMENTATION_ONLY__NO_IMPLEMENTATION_AUTHORIZED**. Independent reviewer should inspect existing #469/#534/#515/#523/#509/#513 and #431/#531 evidence **before** claiming any untested edge. A genuinely new task is warranted only after naming a falsifiable gap absent from those implementations, the accepted original tests, and stored receipts; then it must specify the result that would change the scientific conclusion and prospective authority. No duplicate experiments proposed.
+
+**Unchanged terminal:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
+
 **Scope:** compare existing original records and source code, not physical bytes. Do not open an additional Level-4 block, rerun ETL, run a target experiment, or promote a fixture. This is an append-only, flat-`main` audit companion to the already recorded November 3 [historical read recovery](https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/16e9c0c5d2beae5ab6fc77cb7460ef96b2f97423/docs/agent/JEPA_20261103_HISTORICAL_REAL_LEVEL4_READ_RECOVERY_AND_NO_REPEAT_CORRECTION.md). It does not repeat #509's 22-row source/ETL gap matrix.
 
 **Question:** which individual source→CaseBundle fields are established *by retained receipts*? Do not confuse an existing raw source with a saved per-cell attestation. Full machine matrix: `results/target_discovery/unified_qualification_v1/JEPA_EXISTING_LEVEL4_TO_CASEBUNDLE_RECEIPT_COVERAGE_V1.json` (15 classified fields, original frozen refs with pinned Git blobs where available). Exact original path existence was checked at each source commit.
