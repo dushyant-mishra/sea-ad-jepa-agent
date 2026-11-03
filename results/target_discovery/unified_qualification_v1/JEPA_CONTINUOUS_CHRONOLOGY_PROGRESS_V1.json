@@ -1528,6 +1528,45 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/535"
       ]
+    },
+    {
+      "event_id": "20261103-MINI-C2-C3-RESULTS-VS-ACTUAL-SYNTHETIC-TRUTH-INTEGRATION-EXPLICIT-GAP",
+      "date_utc": "2026-11-03",
+      "workstream": "independent_known_truth_actual_target_producer_and_gate_integration_reconciliation_no_repeat",
+      "implementation_pr": 322,
+      "implementation_head": "314a641f883a7f90a5d4276d2e0b7bc4eb7cff4e",
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261103_MINIATURE_C2_C3_AND_SYNTHETIC_TRUTH_INTEGRATION_STATUS.md",
+          "role": "exact-head code-and-receipt audit distinguishing original miniature warnings, existing partial integration and unclosed full scientific path"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261103_MINI_C2_C3_TO_REAL_SYNTHETIC_TRUTH_INTEGRATION_STATUS_V1.json",
+          "role": "machine-readable component truth-visibility and measured-target/learned-estimator matrix"
+        }
+      ],
+      "what_already_existed": "User reported miniature C2 weak student recovery, C3 technical-shortcut and q leakage. Original executable provenance for those three miniature outcomes was not supplied with that quote, although independent original scientific/engineering evidence includes TD50S/TD55S negatives and #163/#178 leakage. #336 already independently scored nine blind synthetic relational test-of-test statuses against controller known truth; #369 isolated cross-gate sealed traps; #469 actually ran PR328 RNA fit→Task5→planted fixture portfolio, but explicitly omitted hidden truth and genuine teacher target constructor; #534 exercised exact frozen PR328 rights-ladder + Task5 hostile controls and V80 state tests without an estimator, with V80 original hash replays RED. The #460 Oct27 scientific acceptance guard explicitly demands a teacher *constructing measured target* rather than a surrogate predicting another target.",
+      "new_work_or_result": "Read original #469, #534 integration implementation and reports, #318/#321/#336 known truth controls, #369 isolated gate battery, #526/#531 measured panel/support correction, #275/#313 existing tournament, #468 science crosswalk and #460 existing source comments. Correct explicit integration status to PARTIAL; direct same-world actual measured C2/C3 producer→registered gate→independent controller truth and separate learned recovery still not demonstrated. Recorded as no-repeat acceptance criterion, not brand-new framework.",
+      "negative_or_counterfactual_evidence": "A handwritten/planted PASS through a real fixture validator is not a biological gate decision. #534 wrong-query changes the view without testing a learned teacher/student's wrong-q discrimination; original V80 identity mismatch failed at latest head. PR328 synthetic support derives from detection >0 and cannot be treated as real assay membership. #336 known-truth qualification of nine challenge statuses did not run the PR328→C2/C3 measured target constructor→post-TD chain. A fitted surrogate predicting a target is not measured privileged teacher target construction. No original miniature experiment source hashes/tests supplied in current quoted request.",
+      "test_review_scope": "Read-only GitHub file/code audit and existing exact-head CI metadata; no model fit, hidden truth unseal, source data reads, generator re-runs, target selected, biological outcome opened or new test asserted. PR469 first run 40559858670 scoped success, PR336 run 38478444632 successful, PR534 latest original V80 identity CI checks 2 failure.",
+      "independent_review": "GPT_READ_ONLY_SOURCE_AUDIT__NO_MISSING_EXPERIMENT_EXECUTED__FUTURE_EVALUATION_NEEDS_INDEPENDENT_CONTROLLER",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Link exact original miniature C2/C3/q leakage receipts before claiming numerical results as integrated",
+        "Zero-optimizer same-world actual C2/C3 measured target constructor→qualified gate→sealed controller truth compare; reuse existing #328/#318/#321/#313/#369 and existing #469/#534 admission interfaces; forbid duplicate generator",
+        "Donor/source matched wrong-cell, wrong-query, technical, null biology and q-leak cases with prospective status scoring and NOT_ESTIMABLE",
+        "Learned student recovery separately requires prospective synthetic-only authorization after source-support semantics and gate law settled"
+      ],
+      "historical_supersession": "Supersedes only overbroad claims that #469/534 constitute full known-truth C2/C3 end-to-end or that the synthetic integration challenge is wholly undone. All original positive/negative historic evidence stands.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/369",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/469",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460#issuecomment-6450069779"
+      ]
     }
   ]
 }
