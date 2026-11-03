@@ -125,6 +125,7 @@ def run(
     kwargs = {
         "source": "PR328_SYNTHETIC_NOT_REAL",
         "panel_id": "UNCHANGED_FROZEN_48_ADDRESS_SOURCE",
+        "profile_id": "PR328_48_ADDRESS_NEGATIVE_ADMISSION_ONLY",
         "z_values": counts[:, :16],
         "x_values": counts[:, 16:32],
         "y_values": counts[:, 32:48],
