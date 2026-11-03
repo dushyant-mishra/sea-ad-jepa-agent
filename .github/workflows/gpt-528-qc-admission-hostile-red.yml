@@ -1,0 +1,26 @@
+name: Independent RED review — Macha 528 QC input admission
+
+on:
+  pull_request:
+    paths:
+      - 'tests/v5/test_macha_528_gpt_admission_hostile_red.py'
+      - '.github/workflows/gpt-528-qc-admission-hostile-red.yml'
+  push:
+    branches:
+      - review/gpt-528-qc-admission-hostile-20261103
+
+permissions:
+  contents: read
+
+jobs:
+  independent-red:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original Macha fixture/guard tests must stay green
+        run: python -m unittest -v tests.v5.test_macha_specimen_qc_input_admission_v1
+      - name: Independent two-case security RED (expected fail until Macha repair)
+        run: python -m unittest -v tests.v5.test_macha_528_gpt_admission_hostile_red
