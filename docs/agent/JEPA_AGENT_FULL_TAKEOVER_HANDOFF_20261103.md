@@ -1,3 +1,15 @@
+# November 3, 2026 owner-delegated experimental scope update — NEWEST
+
+**Two internal scope decisions have been resolved by explicit owner delegation to GPT.** See audit [PR #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322): `docs/agent/JEPA_OWNER_DELEGATED_NARROW_QC_AND_SINGLE_LEVEL4_DECISION_20261103.md`, machine `results/target_discovery/unified_qualification_v1/JEPA_OWNER_DELEGATED_NARROW_QC_AND_SINGLE_LEVEL4_DECISION_V1.json`, recorded in chronology event34. This is project policy, **not** an independent digital signature or a biological qualification.
+
+1. **QC-only ALLOWLIST approved:** SEA-AD `Doublet score` and HVS `is_primary_data` may support aggregate depositor QC/selection checks. They may NOT enter a model, covariate, query-target choice, pathology join, donor split, or unqualified cell filter. Reuse original #513 aggregates first. **#528's `REPLAY_HOLD` is still present in software.** Do not bypass it; a narrowly scoped versioned and independently tested replay-gate change is needed *only if* additional replay is necessary.
+2. **ONE real-data source-read approved:** one **SEA-AD `reader_fit` Level-4 block**, selected deterministically as the first eligible block by frozen source/matrix/block order **from metadata before counts are read**. Precommit that block/query/manifest/source-identity record first. Macha executes bounded block read on GPU laptop, after source-access and adapter gates; GPT implements or reviews the narrow source-bound real CaseBundle successor, preserving physical `library_size` privately and computing student D1 separately. **No other block or post-result replacement.** Original Task5 V1 is still `FIXTURE_ONLY`, no real status silently granted.
+3. **Restrictions unchanged:** no NPH52 quarantined expression, DEV/SEALED, pathology, model training, real target/representation promotion or Stage4. No repeat acquisition or ETL; no hardware signer requirement for public processed source access. The old "owner decision pending" lines below are now **historical snapshots**, superseded only for these two specific approvals; no new broad rights inferred.
+
+**Authority:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # JEPA target discovery + downstream unified TD — NEW AGENT COMPLETE TAKEOVER HANDOFF
 **Freeze date:** November 3, 2026. **Project:** `dushyant-mishra/sea-ad-jepa-agent`. **Scope:** GPT-owned scientific/audit/integration lane paired with Macha's GPU-laptop physical execution and reciprocal source review.
 
