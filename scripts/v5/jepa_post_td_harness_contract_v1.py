@@ -147,6 +147,90 @@ def build_target_portfolio(
     return result
 
 
+
+def _verified_json_record(payload: Mapping, digest_field: str, label: str) -> dict:
+    """Verify *internal* SHA and detach JSON. NOT external source authentication."""
+    if type(payload) is not dict:
+        raise PostTDContractError(f"{label} must be a plain JSON object")
+    try:
+        snapshot = json.loads(json.dumps(
+            payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False
+        ))
+        digest = snapshot.get(digest_field)
+        if type(digest) is not str or not _HEX64.fullmatch(digest):
+            raise PostTDContractError(f"{label} digest is missing or malformed")
+        without_digest = dict(snapshot)
+        del without_digest[digest_field]
+        if _canonical_sha256(without_digest) != digest:
+            raise PostTDContractError(f"{label} digest is not bound to its current content")
+    except (TypeError, ValueError, OverflowError, RecursionError) as exc:
+        if isinstance(exc, PostTDContractError):
+            raise
+        raise PostTDContractError(f"{label} must be canonical JSON") from exc
+    return snapshot
+
+
+def verify_target_portfolio(portfolio: Mapping) -> dict:
+    """Re-derive exact lawful portfolio, not merely its self-rehashable SHA."""
+    value = _verified_json_record(portfolio, "portfolio_sha256", "target portfolio")
+    if value.get("schema") != PORTFOLIO_SCHEMA:
+        raise PostTDContractError("invalid target portfolio schema")
+    qualifications = value.get("qualifications")
+    if type(qualifications) is not dict or any(type(k) is not str for k in qualifications):
+        raise PostTDContractError("portfolio qualifications must be a JSON object with string keys")
+    selected = value.get("selected_candidate")
+    if selected is not None and type(selected) is not str:
+        raise PostTDContractError("selected candidate must be a string or null")
+    foundation = value.get("foundation_candidates")
+    specialists = value.get("specialist_candidates")
+    if type(foundation) is not list or type(specialists) is not list:
+        raise PostTDContractError("portfolio candidate rosters must be lists")
+    if any(type(item) is not str for item in foundation + specialists):
+        raise PostTDContractError("portfolio candidate IDs must be strings")
+    try:
+        rebuilt = build_target_portfolio(
+            qualifications=qualifications,
+            selected_candidate=selected,
+            foundation_candidates=foundation,
+            specialist_candidates=specialists,
+        )
+    except (TypeError, ValueError, KeyError) as exc:
+        raise PostTDContractError("target portfolio violates its builder's scientific rules") from exc
+    if value != rebuilt:
+        raise PostTDContractError("target portfolio differs from the scientifically rebuilt record")
+    return value
+
+
+def verify_architecture_plan(architecture_plan: Mapping, *, portfolio: Mapping) -> dict:
+    """Rebuild the plan from its declared parameters WITHOUT adding evidence flags."""
+    lawful_portfolio = verify_target_portfolio(portfolio)
+    plan = _verified_json_record(architecture_plan, "architecture_sha256", "architecture plan")
+    if plan.get("schema") != ARCHITECTURE_SCHEMA:
+        raise PostTDContractError("invalid architecture plan schema")
+    ema = plan.get("ema")
+    if type(ema) is not dict:
+        raise PostTDContractError("architecture plan requires an EMA object")
+    half_life = ema.get("half_life_presentations")
+    if type(half_life) is not int:
+        raise PostTDContractError("architecture EMA half-life must be an exact integer")
+    try:
+        rebuilt = build_architecture_plan(
+            portfolio=lawful_portfolio,
+            ema_half_life_presentations=half_life,
+            teacher_topology=plan.get("teacher_topology"),
+            student_topology=plan.get("student_topology"),
+            internal_factorization=plan.get("internal_factorization"),
+            interference_established=False,
+            negative_transfer_established=False,
+            multimodal_authorized=False,
+        )
+    except (TypeError, ValueError, KeyError) as exc:
+        raise PostTDContractError("architecture plan violates its builder's scientific rules") from exc
+    if plan != rebuilt:
+        raise PostTDContractError("architecture plan differs from the scientifically rebuilt record")
+    return plan
+
+
 def allowed_teacher_policies(block_type: str) -> tuple[str, ...]:
     block = str(block_type).upper()
     if block == "QUERY":
@@ -277,8 +361,15 @@ def output_semantics_spec(semantics: str) -> dict:
 
 
 def ema_momentum_for_presentations(successful_presentations: int, half_life_presentations: int | float) -> float:
-    presentations = int(successful_presentations)
-    half_life = float(half_life_presentations)
+    if type(successful_presentations) is not int:
+        raise PostTDContractError("successful presentations must be an exact integer")
+    if type(half_life_presentations) not in (int, float):
+        raise PostTDContractError("EMA half-life must be a finite numeric value")
+    presentations = successful_presentations
+    try:
+        half_life = float(half_life_presentations)
+    except (OverflowError, ValueError) as exc:
+        raise PostTDContractError("EMA half-life must be finite and positive") from exc
     if presentations < 0:
         raise PostTDContractError("successful presentations must be non-negative")
     if not math.isfinite(half_life) or half_life <= 0:
@@ -462,11 +553,9 @@ def build_architecture_plan(
     negative_transfer_established: bool = False,
     multimodal_authorized: bool = False,
 ) -> dict:
-    if portfolio.get("schema") != PORTFOLIO_SCHEMA:
-        raise PostTDContractError("invalid target portfolio schema")
-    if ema_half_life_presentations is None:
-        raise PostTDContractError("explicit EMA half-life in successful presentations is required")
-    ema_half_life_presentations = int(ema_half_life_presentations)
+    portfolio = verify_target_portfolio(portfolio)
+    if type(ema_half_life_presentations) is not int:
+        raise PostTDContractError("explicit EMA half-life must be an exact integer in successful presentations")
     ema_momentum_for_presentations(1, ema_half_life_presentations)
     teacher = validate_teacher_topology(
         teacher_topology,
@@ -538,31 +627,11 @@ def build_synthetic_rehearsal_preflight(
     synthetic_package_sha256: str,
     output_root: Path | str,
 ) -> dict:
-    # Take detached JSON snapshots before validating. Callers cannot mutate
-    # a dict between our checks and the returned rehearsal receipt. The SHA
-    # protects internal consistency only; it is NOT an external signer/issuer.
-    def verified_snapshot(payload: Mapping, digest_field: str, label: str) -> dict:
-        if type(payload) is not dict:
-            raise PostTDContractError(f"{label} must be a plain JSON object")
-        try:
-            snapshot = json.loads(json.dumps(
-                payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False,
-            ))
-            digest = snapshot.get(digest_field)
-            if type(digest) is not str or not _HEX64.fullmatch(digest):
-                raise PostTDContractError(f"{label} digest is missing or malformed")
-            without_digest = dict(snapshot)
-            del without_digest[digest_field]
-            if _canonical_sha256(without_digest) != digest:
-                raise PostTDContractError(f"{label} digest is not bound to its current content")
-        except (TypeError, ValueError, OverflowError, RecursionError) as exc:
-            if isinstance(exc, PostTDContractError):
-                raise
-            raise PostTDContractError(f"{label} must be canonical JSON") from exc
-        return snapshot
-
-    portfolio = verified_snapshot(portfolio, "portfolio_sha256", "target portfolio")
-    architecture_plan = verified_snapshot(architecture_plan, "architecture_sha256", "architecture plan")
+    # Derivation catches re-hashed scientific tampering that a digest alone
+    # cannot detect. This checks internally declared qualifications only, not an
+    # independent qualification issuer or source rights.
+    portfolio = verify_target_portfolio(portfolio)
+    architecture_plan = verify_architecture_plan(architecture_plan, portfolio=portfolio)
     if portfolio.get("schema") != PORTFOLIO_SCHEMA:
         raise PostTDContractError("invalid target portfolio schema")
     if architecture_plan.get("schema") != ARCHITECTURE_SCHEMA:
