@@ -1,0 +1,64 @@
+name: Macha #513 QC input admission (fixture)
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/review_probes/macha_20261103/**'
+      - 'tests/v5/test_macha_specimen_qc_input_admission_v1.py'
+      - 'tests/v5/test_macha_528_gpt_admission_hostile_red.py'
+      - 'tests/v5/test_macha_528_admission_repair_v1.py'
+      - '.github/workflows/macha-513-qc-input-admission.yml'
+  workflow_dispatch:
+
+jobs:
+  fixture:
+    name: ${{ matrix.os }} / Python 3.11 - admission fixture tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Long paths and exact bytes on Windows
+        if: runner.os == 'Windows'
+        run: |
+          git config --global core.longpaths true
+          git config --global core.autocrlf false
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/v5/review_probes
+            tests/v5/test_macha_specimen_qc_input_admission_v1.py
+            tests/v5/test_macha_528_gpt_admission_hostile_red.py
+            tests/v5/test_macha_528_admission_repair_v1.py
+            results/target_discovery/unified_qualification_v1
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Frozen #513 files and GPT #529 RED file unchanged
+        shell: bash
+        run: |
+          python - <<'EOF'
+          import hashlib
+          pins = {
+              "scripts/v5/review_probes/macha_20261030/specimen_and_depositor_qc_probe.py": "7e67314c80d368b7c2be12afae9ccadb7f2a200c4c96494bd5c9faa9a9f291b5",
+              "results/target_discovery/unified_qualification_v1/JEPA_MACHA_ETL_REUSE_LEDGER_20261030.json": "9b48639168cfb89d8f8ed2b6136423da66fb8ee867762a7c48ff0969a314ece9",
+              "results/target_discovery/unified_qualification_v1/JEPA_MACHA_SPECIMEN_AND_DEPOSITOR_QC_20261030.json": "952dc4c9bea7312c7d1261f616fbae0bd4f2ceacb75a4f53effdc4b3c5d9de0c",
+          }
+          for path, pin in pins.items():
+              got = hashlib.sha256(open(path, "rb").read()).hexdigest()
+              print(path, got)
+              assert got == pin, path
+          EOF
+          test "$(git hash-object tests/v5/test_macha_528_gpt_admission_hostile_red.py)" = 49a86421d478218c99001a2ba04e21f6db764b74
+          test "$(git hash-object tests/v5/test_macha_specimen_qc_input_admission_v1.py)" = 9719b532697e23fb442070c9bf54c1104d326de1
+      - name: Symlink capability of this runner
+        shell: bash
+        run: python -c "import os,tempfile; d=tempfile.mkdtemp(); os.symlink(d, d + '/l', target_is_directory=True); print('symlinks OK')"
+      - name: Original 13 + GPT #529 REDs + Macha repair regressions
+        run: >-
+          python -m unittest -v
+          tests.v5.test_macha_specimen_qc_input_admission_v1
+          tests.v5.test_macha_528_gpt_admission_hostile_red
+          tests.v5.test_macha_528_admission_repair_v1

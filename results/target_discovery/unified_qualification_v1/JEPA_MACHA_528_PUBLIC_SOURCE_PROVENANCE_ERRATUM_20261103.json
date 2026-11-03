@@ -1,0 +1,100 @@
+{
+ "amends": {
+  "edited": false,
+  "file": "docs/agent/JEPA_MACHA_SOURCE_QUALIFICATION_CORRECTION_20261103.md",
+  "head": "c1d85688a510f9729de3801c1cf2eb6e0e7068c9",
+  "pr": 528
+ },
+ "authoritative_acquisition_records": [
+  "configs/v4/stage81a1d_living_human.yaml",
+  "scripts/v4/stage81a1d_acquire_living_human.py",
+  "results/v4/stage81a1d_living_human_dataset_role_registry.csv",
+  "results/v4/stage81a1d_living_human_remote_asset_catalog.csv",
+  "results/v4/stage81a1d_living_human_download_hashes.csv"
+ ],
+ "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+ "controlled_raw_not_acquired": {
+  "access": "unresolved for all; none required; none acquired",
+  "metadata_or_processed_candidate": 23,
+  "metadata_unavailable": 1,
+  "raw_or_prohibited": 4981,
+  "synapse_objects_audited": 5005
+ },
+ "date": "2026-11-03",
+ "nph52": {
+  "internal_restriction": "RETAINED for real query issuance and quarantined-expression analysis",
+  "lift_requires": [
+   "alias closure for symbol-only features at operator scope",
+   "approved and executed #513 section 4 selection-effect protocol"
+  ],
+  "public_download": "open, CC-BY-4.0"
+ },
+ "public_metadata_snapshots_fetched_2026_11_03": {
+  "cellxgene_35928d1c.json": "55bddcd1d12da348bce5ed506299366870a6409827a06dee0dbf8780ad153860",
+  "zenodo_8319719.json": "0710e87d16dab63f77a5023b41ef4537b5dea3fbfc132af6f930d448d1b3485e"
+ },
+ "qc_only_allowlist_proposal": {
+  "columns": {
+   "HVS": [
+    "is_primary_data"
+   ],
+   "SEA_AD": [
+    "Doublet score"
+   ]
+  },
+  "decision": "PENDING_OWNER",
+  "name": "JEPA_QC_ONLY_ANALYTIC_ALLOWLIST_V1",
+  "permitted": "aggregate QC and selection characterization only",
+  "replay_hold_enforced_in_code": true
+ },
+ "requirements_reclassified": {
+  "R1": "OPTIONAL_GOVERNANCE_HARDENING",
+  "R2": "OPTIONAL_GOVERNANCE_HARDENING",
+  "R3": "SOURCE_ACCESSIBILITY_RESOLVED (citation, version and attribution obligations retained)",
+  "R4": "SCIENTIFIC_QUALIFICATION",
+  "R5": "SCIENTIFIC_QUALIFICATION",
+  "R6": "SCIENTIFIC_QUALIFICATION",
+  "R7": "DATA_INTEGRITY_SOFTWARE_READINESS",
+  "R8": "SOFTWARE_READINESS (consumer re-verification required; signature optional hardening)",
+  "R9": "SOFTWARE_READINESS_OR_OPTIONAL_GOVERNANCE_HARDENING"
+ },
+ "retracted_statements": [
+  "NPH52 release metadata not supplied / accession and terms unknown",
+  "HVS no terms record found",
+  "R1-R3 and R8 as prerequisites for using public data"
+ ],
+ "schema": "JEPA_MACHA_528_PUBLIC_SOURCE_PROVENANCE_ERRATUM_V1",
+ "sources": {
+  "HVS": {
+   "datasets": 24,
+   "doi": "10.1126/science.adf2359",
+   "download_hashes": "24/24 local SHA-256; no official checksum published",
+   "licence_in_api_payload": false,
+   "public_record": "CELLxGENE collection 35928d1c-36fc-4f93-9a8d-0b921ab41745",
+   "published_at": "2024-08-05T16:51:26+00:00",
+   "revised_at": "2026-06-11T16:53:43+00:00",
+   "visibility": "PUBLIC"
+  },
+  "NPH52": {
+   "access_right": "open",
+   "acquired": {
+    "annotations.zip": "official md5 pass; sha256 0e2038d8bdee8c662cee2cd0077c6fcb9c8a635888c3972a93e10b303de51bbb",
+    "organized_data.zip": "official md5 pass; sha256 f1d485e85bd5a6537131c9b97a2640d7b688cc128c684f8044ddc0dd77ee6b4b"
+   },
+   "files_md5": {
+    "NPH_DE_res.zip": "md5:36e55f2da169f949f9dbcb765a7dcea7",
+    "annotations.zip": "md5:0981c257713e79e9fe775e2576872f9b",
+    "organized_data.zip": "md5:3aa418e4f218ff4bfbdefbc21bc89b5a"
+   },
+   "licence": "cc-by-4.0",
+   "public_record": "Zenodo 8319719",
+   "related_doi": "10.1101/2023.06.03.543569",
+   "revision": 2
+  },
+  "SEA_AD": {
+   "catalog": "results/v4/stage81a1b_remote_asset_catalog.csv (17 open_aws, 1 local_historical)",
+   "public_record": "Allen Institute SEA-AD Open Data on AWS",
+   "terms": "Allen_Institute_Terms_of_Use_and_Citation_Policy"
+  }
+ }
+}

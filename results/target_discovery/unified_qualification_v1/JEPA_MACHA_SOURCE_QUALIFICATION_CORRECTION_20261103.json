@@ -1,0 +1,197 @@
+{
+ "amends": {
+  "head": "0b1af4f06ba423753899e7c564d3b16ce609ac6a",
+  "measurements_changed": false,
+  "original_files_changed": false,
+  "pr": 513
+ },
+ "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+ "date": "2026-11-03",
+ "f1_verification_claim": {
+  "original": "every probe asserts its input SHA-256 pins before reading",
+  "per_probe": {
+   "alias_class_adjudication_probe.py": "TRUE: explicit PINS asserted",
+   "etl_reuse_ledger_probe.py": "TRUE_IN_SUBSTANCE: it is the hasher (rehash <=256 MB, stat above)",
+   "specimen_and_depositor_qc_probe.py": "FALSE: no identity check; content/column asserts only"
+  },
+  "repair": {
+   "fixture_tests": "tests/v5/test_macha_specimen_qc_input_admission_v1.py",
+   "fixture_tests_local": "13/13 OK (Windows, Python 3.11.15)",
+   "mutation_audit_local": "11/11 safeguards killed by the fixture tests",
+   "probe_replay_local": {
+    "disclosure": "re-read SEA-AD 'Doublet score' and HVS 'is_primary_data' (already disclosed by #513) after GPT asked for governance adjudication before further reads; public QC metadata, no new column; do not use --run-probe again until adjudicated",
+    "equals_committed_513_output": true,
+    "evidence_class": "LOCAL_EXECUTION",
+    "output_sha256_lf_normalized": "4c76bd0b4ac6cba471544c0ada2464bd88d62b488d281131734f5a5b3301c1e2",
+    "output_sha256_raw": "952dc4c9bea7312c7d1261f616fbae0bd4f2ceacb75a4f53effdc4b3c5d9de0c",
+    "probe_sha256": "7e67314c80d368b7c2be12afae9ccadb7f2a200c4c96494bd5c9faa9a9f291b5",
+    "utc": "2026-11-03T04:48:22Z..04:51:26Z",
+    "wrapper_revision": "pre-commit; same admission logic; compared raw output digest"
+   },
+   "real_admission_local": {
+    "data_root": "D:/Jepa project",
+    "environment": "Windows 11, conda sea-ad-jepa-v3, Python 3.11.15",
+    "evidence_class": "LOCAL_EXECUTION",
+    "evidence_root": "files extracted from #513 0b1af4f0 (ledger, probe, output)",
+    "receipt": {
+     "matrices_admitted": 35,
+     "not_verified": "bytes of H5ADs above the re-hash limit (identity inherited from ASSET_AUTHENTICATION.csv); provenance of the receipts themselves beyond their pins; files changing after admission",
+     "probe_sources_with_h5ad_reads": [
+      "SEA_AD",
+      "HVS"
+     ],
+     "receipts": {
+      "results/target_discovery/unified_qualification_v1/JEPA_MACHA_ETL_REUSE_LEDGER_20261030.json": "9b48639168cfb89d8f8ed2b6136423da66fb8ee867762a7c48ff0969a314ece9",
+      "results/v4/stage81a2_freeze_report.json": "0d0b7a41d18f2b82755c91fdfc827534f46ea988d025f0a91fbc2b3dd688e7f1"
+     },
+     "registry_sha256_from_freeze_report": "24af817cbea5ea9da37eea851cb97c1d58bcc91bcd08682c4772fcd9c7e5c59f",
+     "rehash_limit_bytes_from_ledger": 268435456,
+     "schema": "JEPA_MACHA_SPECIMEN_QC_INPUT_ADMISSION_V1",
+     "status": "ADMITTED",
+     "verification_scope": {
+      "REHASHED": {
+       "asset_authentication": 1,
+       "asset_registry": 1,
+       "h5ad_HVS": 6,
+       "level4_block_manifest": 1,
+       "level4_block_meta": 8915,
+       "lineage_shard": 42
+      },
+      "STAT_ONLY_IDENTITY_INHERITED": {
+       "h5ad_HVS": 18,
+       "h5ad_SEA_AD": 11
+      }
+     }
+    },
+    "utc": "2026-11-03T04:52:51Z..04:53:25Z"
+   },
+   "wrapper": "scripts/v5/review_probes/macha_20261103/specimen_qc_input_admission_v1.py",
+   "wrapper_sha256": "d7c49346e2d38b0264dba6194854b1f6a92ab01d6bc22717cee8ea310b94c1be"
+  }
+ },
+ "interpretation_corrections": [
+  {
+   "claim": "SHARED_FEATURE_IDENTITY",
+   "corrected": "locus (span) support only; not count-generating feature-model identity; action kept as a provisional conservative rights restriction",
+   "id": "C1",
+   "source": "GPT F2"
+  },
+  {
+   "binding_operators": {
+    "LINC02588 ENSG00000257842": {
+     "NPH52": 7,
+     "SEA_AD": 11,
+     "current_span_bp": 697148,
+     "holder_span_bp": 323693,
+     "overlap_bp": 323693,
+     "total": 18
+    },
+    "MIR4307HG ENSG00000257612": {
+     "NPH52": 5,
+     "SEA_AD": 11,
+     "current_span_bp": 323693,
+     "holder_span_bp": 323693,
+     "overlap_bp": 323693,
+     "total": 16
+    },
+    "UBE2R2-AS1 ENSG00000235481": {
+     "NPH52": 7,
+     "SEA_AD": 11,
+     "current_span_bp": 85867,
+     "holder_span_bp": 5442,
+     "overlap_bp": 5442,
+     "total": 18
+    }
+   },
+   "corrected": "each binding constraint is live in 11 SEA-AD operators; NPH52 operators already barred",
+   "id": "C2",
+   "source": "GPT F2"
+  },
+  {
+   "claim": "HVS deposit omits ~8.5% of each nucleus's molecules",
+   "corrected": "denominator difference of unestablished cause; not evidence of missing physical molecules",
+   "id": "C3",
+   "measurement": {
+    "range": [
+     0.72,
+     0.96
+    ],
+    "source_library_over_depositor_umis_median": 0.9153
+   },
+   "source": "GPT F3"
+  },
+  {
+   "claim": "HVS floor effect small (9 of 198,718); weak quantified condition",
+   "corrected": "withdrawn; retained cells at the floor do not bound selection among unseen excluded cells; class CONTRADICTED, effect UNMEASURED, floor still inferred",
+   "id": "C4",
+   "measurement": {
+    "cells_at_floor": 9,
+    "within_1pct": 103
+   },
+   "source": "GPT F3"
+  },
+  {
+   "claim": "SEA-AD total authenticated against the depositor",
+   "corrected": "internal consistency of the same deposited files, not provenance authentication",
+   "id": "C5",
+   "measurement": {
+    "cells": 4118213,
+    "cells_equal": 4118213
+   },
+   "source": "Macha"
+  },
+  {
+   "claim": "SEA-AD no hard floor",
+   "corrected": "no floor observed; does not establish query-independent admission (rules unrecorded)",
+   "id": "C6",
+   "source": "Macha"
+  },
+  {
+   "corrected": "HVS partitions share 43 libraries; holding one out is not transfer to an independent technology or study",
+   "id": "C7",
+   "source": "GPT 6594549994"
+  },
+  {
+   "corrected": "HVS specimen = donor remains a depositor statement ('from a single tissue section', PMC11702338 main text)",
+   "id": "C8",
+   "source": "Macha"
+  },
+  {
+   "corrected": "#513 section 2D HVS limits restated per C3 and C4",
+   "id": "C9",
+   "source": "Macha"
+  }
+ ],
+ "issuer": {
+  "credentials_created": false,
+  "facts_checked_2026_11_03": {
+   "git_signing_key_configured": false,
+   "main_branch_protection": "none (HTTP 404 Branch not protected)",
+   "single_github_account_for_both_agent_lanes_and_owner": "dushyant-mishra (#513, #517, #525, #527)",
+   "source_terms": {
+    "HVS": "public CELLxGENE deposit (Johansen et al. 2023, doi 10.1126/science.adf2359); no terms record found (file names under data/external/v4 and keywords in docs/, data/, configs/, results/v4/; not exhaustive)",
+    "NPH52": "release metadata not supplied (STAGE81A2R identity audit)",
+    "SEA_AD": "recorded by reference: Allen Institute Terms of Use and Citation Policy (pinned SEA_AD_Multiregion_2026_README.md; stage81a1b_remote_asset_catalog.csv terms_or_license_reference); terms text not pinned"
+   }
+  },
+  "independent_issuer": "a human data steward (Dushyant as PI, or an institutional data steward) signing with a key no agent lane or CI can use, verifiable against a trust root agents cannot silently rewrite",
+  "requirements": {
+   "R1": "signer key outside agent/CI reach: MISSING (owner)",
+   "R2": "trust root + rotation/revocation: MISSING (owner)",
+   "R3": "pinned per-source data-use terms (SEA-AD by reference only; HVS no record found); NPH52 accession and terms: MISSING (owner)",
+   "R4": "adopt/amend alias table as provisional conservative restriction: DECISION PENDING",
+   "R5": "depositor QC methods (HVS supplement; SEA-AD rules; NPH52 selection): MISSING",
+   "R6": "specimen identity (SEA-AD tissue block; NPH52): UNAVAILABLE",
+   "R7": "input custody for every released view: PARTIAL (QC probe only)",
+   "R8": "single signed eight-item release with field-binding receipt; D1 only: SPECIFIED, NOT BUILT",
+   "R9": "privilege separation issuer/producer/student/host: OPEN"
+  }
+ },
+ "nph52": "BLOCKED_FOR_REAL_ISSUANCE; section 4 protocol NOT approved; quarantined cells read: 0",
+ "responds_to_gpt_comments": [
+  6583708392,
+  6594549994,
+  6595340401
+ ],
+ "schema": "JEPA_MACHA_SOURCE_QUALIFICATION_CORRECTION_V1"
+}
