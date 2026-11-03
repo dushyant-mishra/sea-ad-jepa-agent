@@ -150,6 +150,7 @@ def build_architecture_tournament_manifest(
     negative_transfer_established: bool = False,
     multimodal_authorized: bool = False,
     prospective_not_estimable_block_gates: frozenset[str] | set[str] = frozenset(),
+    prospective_not_estimable_blocks: frozenset[str] | set[str] = frozenset(),
 ) -> dict:
     portfolio = C.verify_target_portfolio(portfolio)
     arm_list = list(arms)
@@ -182,6 +183,8 @@ def build_architecture_tournament_manifest(
     block_types = [str(block["block_type"]) for block in portfolio.get("blocks", ())]
     if type(rare_preservation_required) is not bool:
         raise PostTDTournamentError("rare preservation gate flag must be boolean")
+    if any(block["rare_preservation_cross_cutting"] is True for block in portfolio["blocks"]) and not rare_preservation_required:
+        raise PostTDTournamentError("verified portfolio requires RARE_PRESERVATION; caller cannot disable it")
     gates = C.required_evaluator_gates(
         block_types=block_types,
         rare_preservation_required=rare_preservation_required,
@@ -197,10 +200,16 @@ def build_architecture_tournament_manifest(
     }
     if not prospective_not_estimable_block_gates <= qualified_gate_keys:
         raise PostTDTournamentError("prospective not-estimable key not in the manifest gate roster")
+    block_ids = {block["block_id"] for block in block_roster}
+    if (type(prospective_not_estimable_blocks) not in (set, frozenset)
+            or any(type(k) is not str for k in prospective_not_estimable_blocks)
+            or not prospective_not_estimable_blocks <= block_ids):
+        raise PostTDTournamentError("prospective block abstention must name manifest blocks")
     return {
         "schema": "JEPA_POST_TD_ARCHITECTURE_TOURNAMENT_MANIFEST_V1",
         "status": "READY_FOR_AUTHORIZED_SYNTHETIC_ARCHITECTURE_REHEARSAL",
         "portfolio_sha256": portfolio.get("portfolio_sha256"),
+        "portfolio": portfolio,
         "arms": validated,
         "reference_arm_id": reference_id,
         "compute_reports": compute_reports,
@@ -208,6 +217,7 @@ def build_architecture_tournament_manifest(
         "required_blocks": block_roster,
         "rare_preservation_required": rare_preservation_required,
         "prospective_not_estimable_block_gates": sorted(prospective_not_estimable_block_gates),
+        "prospective_not_estimable_blocks": sorted(prospective_not_estimable_blocks),
         "noncompensation_required": True,
         "aggregate_score_selection_authority": False,
         "authority": _authority_off(),
@@ -266,6 +276,9 @@ def reduce_architecture_evidence(
         raise PostTDTournamentError("valid prospective tournament manifest is required")
     if manifest.get("noncompensation_required") is not True or manifest.get("authority") != _authority_off():
         raise PostTDTournamentError("manifest noncompensation or authority flags invalid")
+    # Rebuild block/gate scopes from the complete embedded verified portfolio,
+    # never from a caller-mutated self-contained manifest roster (Macha #532).
+    scope = C.verify_tournament_block_scope(manifest)
     if type(arm_id) is not str or not arm_id:
         raise PostTDTournamentError("arm_id required")
     arms = manifest.get("arms")
@@ -278,6 +291,8 @@ def reduce_architecture_evidence(
     if (type(blocks) is not list or not blocks or type(gates) is not list or not gates
             or type(rare_flag) is not bool or type(prior) is not list):
         raise PostTDTournamentError("prospective block and evaluator gate roster is required")
+    if blocks != scope["blocks"] or gates != list(scope["gates"]):
+        raise PostTDTournamentError("reducer manifest differs from verified target portfolio")
     if any(type(b) is not dict or set(b) != {"block_id", "block_type"}
            or type(b["block_id"]) is not str or type(b["block_type"]) is not str
            for b in blocks):
@@ -328,6 +343,7 @@ def reduce_architecture_evidence(
     return {
         "schema": "JEPA_POST_TD_ARCHITECTURE_EVIDENCE_REDUCTION_V1",
         "arm_id": arm_id,
+        "portfolio_sha256": scope["portfolio"]["portfolio_sha256"],
         "status": status,
         "failed_block_gates": sorted(failures),
         "declared_not_estimable_block_gates": sorted(declared),
