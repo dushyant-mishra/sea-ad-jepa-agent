@@ -1,0 +1,87 @@
+{
+  "schema": "JEPA_SYNTHETIC_FROZEN_Q_OTHER_8_MEASUREMENT_REUSE_20261102_V1",
+  "date_utc": "2026-11-03",
+  "review_class": "FROZEN_FIXTURE_NONAUTHORITATIVE_MEASUREMENT_OBSERVABILITY",
+  "original_generator_pr": 328,
+  "original_generator_head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+  "world_sha256": "dedd53c3b93eecdf28b73f229574a0cda4971371a3a6282f4b9e12fa44d09e66",
+  "fit_view_sha256": "fc5fa5c071903460da8c0d4644a3b18022f45b178f2c60a727710cadc2fb350a",
+  "frozen_seeds": {
+    "biology": 20261013,
+    "observation": 20261014
+  },
+  "instrument": "PR328 synthetic source visibility; labels not human assay certification",
+  "query_index": 0,
+  "other_genes": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "measurement_law": "Strict all-eight measured support and positive sum(other 8), log1p(10000 * other_gene_count / sum(other 8)), no query scalar in denominator, no structural zero imputation.",
+  "aggregates": {
+    "HVS": {
+      "cells": 180,
+      "donors": 6,
+      "full_panel_supported": 0,
+      "target_estimable": 0,
+      "not_estimable": 180,
+      "missing_panel_gene_indices": [
+        1,
+        8
+      ]
+    },
+    "NPH52": {
+      "cells": 150,
+      "donors": 5,
+      "full_panel_supported": 150,
+      "target_estimable": 149,
+      "not_estimable": 1,
+      "missing_panel_gene_indices": []
+    },
+    "SEA_AD": {
+      "cells": 150,
+      "donors": 5,
+      "full_panel_supported": 0,
+      "target_estimable": 0,
+      "not_estimable": 150,
+      "missing_panel_gene_indices": [
+        7
+      ]
+    }
+  },
+  "query_scalar_invariance": true,
+  "controller_truth_used": false,
+  "fit_artifact_or_raw_count_exported": false,
+  "model_fitted": false,
+  "teacher_surrogate_trained": false,
+  "scientific_limitation": "Fixed arbitrary synthetic panel illustrates support geography only; does not establish human eight-gene target, gene-identity/right, any C1-C6 PASS, general non-estimability of all eight-gene panels, synthetic truth-to-human realism or an approved biological training target. NPH52 human rights remain closed.",
+  "ci": {
+    "run_id": 41579821519,
+    "workflow": "Synthetic frozen measured-panel observability (fixture only)",
+    "conclusion": "success",
+    "artifact_id": 13204914444,
+    "artifact_zip_sha256": "ee4912c035f32debb3dd03c95da07f9e6b384aeb97ee911db0af8a0673a4516b",
+    "inherited_run_id": 41579821351,
+    "inherited_conclusion": "success",
+    "source_blobs": {
+      "scripts/v79/audit_frozen_measured_panel_observability_v1.py": "6b220851c6ef9cc81a058e403dd1d6ee73a70560",
+      "tests/v79/test_frozen_measured_panel_observability_v1.py": "e3ec49bb75a743c4b627c2698fa8453afe2a6ab9",
+      ".github/workflows/jepa-frozen-measured-panel-observability-v1.yml": "9eaea8975ad5075c016cbd386775aeb1c27f43a2"
+    }
+  },
+  "authority": {
+    "target_selection_authorized": false,
+    "representation_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "training_authorized": false,
+    "real_data_authorized": false,
+    "synthetic_training_authorized": false
+  },
+  "review_status": "GPT_DIAGNOSTIC_RUN_GREEN__MACHA_SCIENTIFIC_REVIEW_PENDING"
+}
