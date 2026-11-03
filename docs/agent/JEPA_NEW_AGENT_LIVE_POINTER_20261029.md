@@ -1,3 +1,15 @@
+# CURRENT INTEGRATION GAP — C2/C3 MINIATURE RESULTS VS ACTUAL SYNTHETIC TRUTH (2026-11-03)
+
+**Historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322)** head `289623e49910cfeb2255c11926f7d479efb2a13c`, **41 events**; [active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460), recheck latest head and CI. Read #322 `docs/agent/JEPA_20261103_MINIATURE_C2_C3_AND_SYNTHETIC_TRUTH_INTEGRATION_STATUS.md` and #460 `docs/agent/JEPA_20261103_LIVE_MINI_C2_C3_ACTUAL_PRODUCER_TRUTH_INTEGRATION_STATUS.md` before new synthetic experiments.
+
+**Verdict = PARTIALLY INTEGRATED.** Nine actual relational synthetic test-of-test roles qualified in #336; PR469 original synthetic RNA→Task5→planted C1 fixture executed; PR534 frozen world q-rights/CaseBundle testing occurred but V80 original hash checks remain RED; neither produces/scored actual measured C2/C3 teacher targets against separately held latent/biological truth. Quoted mini C2 weak-student recovery, C3 technical shortcuts, q leakage were not accompanied by a source-specific original mini-experiment receipt, although original controls and leak defects are established. **Do not confuse trained student recovery with a zero-update gate test.** The old Oct27 #460 source/teacher guard already flagged that missing experiment; it is not an unexplored idea.
+
+**Next distinct step:** code-level gap audit of existing #328/318/321 fit/truth plus #313/369 actual C2/C3 target producers and judge; zero-optimizer integration of the *same fit-only world* through real measured target constructions and gates, then independent controller truth comparison with wrong-cell/wrong-q/technical/zero/abstention controls; no new generator, no repeated Phase2 test, no immediate real training. Additional learned student benchmark needs separate prefreeze authority. Existing alias/source rights and PR525 independent review actions remain live in prior pointer below.
+
+**Terminal unchanged:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # CURRENT NEXT ACTIONS — 2026-11-03: STOP RE-AUDITING; BEGIN CONSTRAINED IMPLEMENTATION
 
 Canonical [audit #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) at `7b77e5b0cf1f9d2256c7b6781203738aa7eef38c` — **40 append-only events**. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) (verify current HEAD and CI); main `28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb`. Most actionable full plan: this branch `docs/agent/JEPA_20261103_NOW_NEXT_ACTIONS_C2_C3_AND_SOURCE_RIGHTS.md`, #322 `docs/agent/JEPA_20261103_IMPLEMENTATION_FORWARD_ACTION_AUDIT_NO_REPEAT.md` and exact machine register `JEPA_20261103_SOURCE_PINNED_FORWARD_PRIORITY_REGISTER_V1.json`.
