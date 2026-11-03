@@ -1,0 +1,86 @@
+name: JEPA actual C2/C3 producer admission on frozen synthetic fit (NO authority)
+
+on:
+  push:
+    branches:
+      - audit/synthetic-actual-target-producer-contract-admission-20261103
+  pull_request:
+    paths:
+      - 'tests/v5/td_unified/test_frozen_actual_target_producer_admission_20261103.py'
+      - '.github/workflows/jepa-existing-c2-c3-actual-producer-negative-admission-20261103.yml'
+      - 'docs/agent/JEPA_PR536_ACTUAL_PRODUCER_ADMISSION_20261103.md'
+
+permissions:
+  contents: read
+
+jobs:
+  actual-target-producer-negative-admission:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.9'
+      - name: Fetch immutable existing generator, C3 measured producer, actual C2 TD gate and candidate adapter
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec
+          git fetch --no-tags origin 165447a8bbdef8b427ca9cd0d29b51c36b9c1c1a
+          git fetch --no-tags origin b7761a3e7578f51db17fea26dae607aec299c1de
+          git fetch --no-tags origin 2397ab83d8ae9d0c762a8fd5f3919edc350d137f
+          git fetch --no-tags origin 206167a1eb86f1dec5f8285db56accbcd469bce9
+          git fetch --no-tags origin 0e54de6a7212ddc85292b7bbc3774a5aabaf4ee2
+          git worktree add --detach /tmp/jepa-source-pr328 25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec
+          git worktree add --detach /tmp/jepa-existing-pr534 165447a8bbdef8b427ca9cd0d29b51c36b9c1c1a
+          git worktree add --detach /tmp/jepa-measured-pr526 b7761a3e7578f51db17fea26dae607aec299c1de
+          git worktree add --detach /tmp/jepa-relational-pr316 2397ab83d8ae9d0c762a8fd5f3919edc350d137f
+          git worktree add --detach /tmp/jepa-tournament-pr313 206167a1eb86f1dec5f8285db56accbcd469bce9
+          git worktree add --detach /tmp/jepa-design-pr338 0e54de6a7212ddc85292b7bbc3774a5aabaf4ee2
+      - name: Install pinned old PR328 synthetic runtime only
+        run: python -m pip install -r /tmp/jepa-source-pr328/requirements/unified-synthetic-integration-v1.txt
+      - name: Compile targeted source admission test without fitting a model
+        run: python -m py_compile tests/v5/td_unified/test_frozen_actual_target_producer_admission_20261103.py
+      - name: Reuse existing original-frozen PR534 PR328 fit export ONLY (not its V80 replay)
+        run: |
+          python /tmp/jepa-existing-pr534/tests/v5/td_unified/frozen_pr328_v80_to_casebundle_synthetic_admission_v1.py pr328 \
+            --source-root /tmp/jepa-source-pr328 \
+            --payload /tmp/jepa-pr328-original-fit-only.json
+      - name: Attempt actual C3 measured-target to PR313 and actual C2 PR316 gates; require scientifically valid refusal
+        run: |
+          python tests/v5/td_unified/test_frozen_actual_target_producer_admission_20261103.py \
+            --fit-payload /tmp/jepa-pr328-original-fit-only.json \
+            --source-root /tmp/jepa-source-pr328 \
+            --pr534-root /tmp/jepa-existing-pr534 \
+            --r5-root /tmp/jepa-measured-pr526 \
+            --relational-root /tmp/jepa-relational-pr316 \
+            --tournament-root /tmp/jepa-tournament-pr313 \
+            --design-root /tmp/jepa-design-pr338 \
+            --report /tmp/jepa-existing-source-actual-c2-c3-negative-admission.json
+      - name: Reject claims of solved synthetic-truth integration or model training
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/jepa-existing-source-actual-c2-c3-negative-admission.json').read_text())
+          assert r['status']=='C3_MEASURED_TARGET_CONSTRUCTED__C2_GEOMETRY_INCOMPATIBLE__C3_STUDENT_ABSENT__REAL_GATE_BLOCKED'
+          assert r['source_original_addresses']==48
+          assert r['c3_measured_targets']>0
+          assert r['c3_measured_targets']+r['c3_not_estimable']==r['n_fit_only_sampled_cells']
+          assert r['blocked_real_gate_rules']==13
+          assert not r['known_truth_decisions_scored']
+          assert not r['controllers_truth_opened']
+          assert not r['training_performed']
+          assert not any(r['authority'].values())
+          print("MEASURED_PRODUCER_ONLY__REAL_C2_CONTRACT_REFUSAL__C3_NO_STUDENT__NO_TRUTH_SCORE")
+          PY
+      - name: Publish small nonpromoting refusal receipt, no synthetic counts or hidden truth
+        uses: actions/upload-artifact@v4
+        with:
+          name: c2-c3-existing-producer-admission-no-model-no-authority
+          path: /tmp/jepa-existing-source-actual-c2-c3-negative-admission.json
+          retention-days: 30
+          if-no-files-found: error
