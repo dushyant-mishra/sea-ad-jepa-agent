@@ -8,7 +8,7 @@ on:
     paths:
       - 'tests/v5/td_unified/test_frozen_actual_target_producer_admission_20261103.py'
       - '.github/workflows/jepa-existing-c2-c3-actual-producer-negative-admission-20261103.yml'
-      - 'docs/agent/JEPA_PR536_ACTUAL_PRODUCER_ADMISSION_20261103.md'
+      - 'docs/agent/JEPA_ACTUAL_TARGET_PRODUCER_NEGATIVE_ADMISSION_20261103.md'
 
 permissions:
   contents: read
