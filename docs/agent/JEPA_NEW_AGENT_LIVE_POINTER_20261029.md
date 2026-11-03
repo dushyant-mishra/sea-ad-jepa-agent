@@ -1,3 +1,15 @@
+# OVERRIDES PRIOR 2026-11-03 V65→V5 PILOT PLAN — ACTUAL 6-IPB PLANTED TRAINING EXISTS
+
+**Audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) at `296961b4ea6f92988291d7d155ec0b66ee158310`, **44 events**. Active [handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) current HEAD/CI recheck after this edit. **READ FIRST** `docs/agent/JEPA_20261103_NO_DUPLICATE_SIX_IPB_JEPA_EMA_HISTORY_HANDOFF.md` here and canonical #322 `JEPA_20261103_PRIOR_PLANTED_IPB_JEPA_AND_EMA_EXPERIMENT_NO_REPEAT_CORRECTION.md`, plus machine `JEPA_20261103_ALREADY_TESTED_SIX_IPB_PLANTED_EMA_NO_REPEAT_V1.json`.
+
+**MANDATORY no-repeat STOP:** Source archaeology discovered *actual* historic `stage81a3_ipb_jepa_feasibility.py` six-token-preserving IPB×160 + BlockPredictor + EMA 4096-gene planted-factor study (two fixtures × two seeds × IPB+anchor/anchor-only, 500 updates, historical result SHA **aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308** matched in Sept2 original custody audit). Before that Stage81A3 V4A 10×500 planted JEPA failed, faster EMA 10×500 no rescue, A-AP 10×500 S2–S7 negative; Stage81B JEPA_ONLY vs CURRENT vs ANCHOR_ONLY at u500 was done and anchor rejected. **Do not run the previously suggested generic lower-width 5,200×96 V65→V5 EMA pilot; it is a near duplicate and potentially misleading.** Prior event43 new-work claim superseded by #322 chronology event44. V65/Xr full-RNA-library normalization leaks hidden scalar descendants if masked post-transform.
+
+**Do next:** Macha *read existing* `results/v4/stage81a3_ipb_jepa_feasibility.json` on GPU laptop, verify exact SHA and return historic numerical verdict/paired factor/geometry, **no rerun**; GPT reconcile original IPB, Stage81B anchor and T0/T1/TCTX prior target lineages, then specify only a genuinely untested authentic C2/C3 measured-target→actual gate→independent synthetic truth and learned student study. PR536 original 2/2 author green remains a negative admission, not learned target evidence. No human training/Stage4.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # 2026-11-03 PLANTED SYNTHETIC RE-REVIEW — V65/RUNTIME/KNOWN TRUTH ALREADY EXECUTED
 
 **Audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322)** exact at handoff `826012cde6f8025fba5323cb1e6c10e2f57979ff`, **43 events** (recheck current CI). [Active #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) handoff is current, older pointers retained. **Read this branch `docs/agent/JEPA_20261103_PLANTED_SYNTHETIC_V65_V77_EXISTING_RECOVERY_AND_NEXT_JEPA_JOIN_HANDOFF.md` first**, then #322 source-backed `JEPA_20261103_PLANTED_SYNTHETIC_JEPA_TEACHER_STUDENT_COMPLETE_HISTORY_AND_JOIN_PLAN.md` and machine JSON `JEPA_20261103_PLANTED_SYNTHETIC_ALREADY_EXECUTED_TEACHER_STUDENT_NO_REPEAT_V1.json`.
