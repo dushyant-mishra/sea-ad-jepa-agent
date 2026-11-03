@@ -1255,7 +1255,7 @@
       "workstream": "owner_delegated_narrow_experimental_scope_decision_qc_and_source_casebundle",
       "implementation_pr": 322,
       "implementation_head": "535ac66728ce3bfbce3617f9679452d9c6b86052",
-      "change_type": "owner_delegated_scope_decision",
+      "change_type": "custody_process",
       "source_inputs": [
         {
           "path": "docs/agent/JEPA_OWNER_DELEGATED_NARROW_QC_AND_SINGLE_LEVEL4_DECISION_20261103.md",
