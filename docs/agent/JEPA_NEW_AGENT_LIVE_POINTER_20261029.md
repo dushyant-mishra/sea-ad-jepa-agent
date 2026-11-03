@@ -1,3 +1,15 @@
+# LIVE NOVEMBER 2 — GPT #517 POST-TD FIVE-RED REPAIR CANDIDATE (LATEST)
+
+**Audit source:** [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact `536c5be188a32327d933da5c048de261a7ee6d53` (**23 chronology events**), `docs/agent/JEPA_POSTTD_517_GPT_REPAIR_20261102.md`. New exact-head audit CI requires checking; prior audit 22-event head `ed5c4e` was 24/24 SUCCESS.
+
+**Implementation:** GPT draft [#525](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525) exact `064bf2a23e0063c26072988d83626a5e24542878`. Fixes five #517 source defects: reject NaN/invalid matched compute and tolerance, preflight tampered or forged plan/portfolio/authority, and bool/string/float aliases of molecular addresses. Reuses original #517 five RED assertions as ordinary pass checks in a separate new test file; original #517 remains unchanged and historical RED. All original post-TD, C4/C6 and new hostile workflows **3/3 SUCCESS**; Python 3.11+3.12 in new workflow. This is **author repair only; independent Macha verdict PENDING** ([review request](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525#issuecomment-6595206216)). GitHub `main` unchanged; #525 stacked on #351 *only* to isolate the one historical source module absent from main. **No bulk merge; after non-author acceptance selective flat-main landing.**
+
+**Other critical gates unchanged:** external authentic source-rights issuer #513 not provisioned; cumulative Unified Task4 still NOT accepted despite #465's already granted scoped incremental `ACCEPT_INCREMENTAL_WITH_LIMITATIONS`; real source→Task5 CaseBundle not produced; prospective biological target and trainer not authorized. No synthetic tournament rerun, no fake signer.
+
+**Terminal:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # LIVE NOVEMBER 2 — DEPENDENCY-FIRST ACTION AUDIT / TASK4 SCOPED ACCEPTANCE CORRECTION (LATEST)
 
 **Exact current basis:** main `28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb`; canonical [audit #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) `ed5c4e16f54c4641b6d98e1f90702e17bb8c27be` (**22 chronology events**). Read `docs/agent/JEPA_DEPENDENCY_FIRST_ACTION_AUDIT_20261102.md` and machine `JEPA_DEPENDENCY_FIRST_ACTION_AUDIT_20261102_V1.json` on #322. **Audit exact-head CI:** 24 runs PENDING at initial query; check final head workflows before reporting them successful. Last handoff pre-update `d836667c3a469db273d4ec65a6dc12f8e963e171` was 2/2 SUCCESS; new handoff commit requires own exact-head check. All CI proves metadata/fixture correctness within scope only.
