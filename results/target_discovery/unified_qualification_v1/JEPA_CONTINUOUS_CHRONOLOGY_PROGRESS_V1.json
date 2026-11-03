@@ -1610,6 +1610,46 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336"
       ]
+    },
+    {
+      "event_id": "20261103-PLANTED-SYNTHETIC-V65-V77-RELATIONAL-QUALIFIED-HISTORY-AND-GENUINE-JEPA-JOIN-GAP",
+      "date_utc": "2026-11-03",
+      "workstream": "correct_real_vs_planted_synthetic_target_semantics_recover_executed_student_ema_and_known_truth_history",
+      "implementation_pr": 322,
+      "implementation_head": "3cd3af6979232649255b4fa031f59882f7976b27",
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261103_PLANTED_SYNTHETIC_JEPA_TEACHER_STUDENT_COMPLETE_HISTORY_AND_JOIN_PLAN.md",
+          "role": "source-by-source full prior synthetic planted recovery, EMA and actual runtime audit plus missing joint experiment"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261103_PLANTED_SYNTHETIC_ALREADY_EXECUTED_TEACHER_STUDENT_NO_REPEAT_V1.json",
+          "role": "machine comparison and exact original run identities for 13 already-completed scopes"
+        }
+      ],
+      "what_already_existed": "V65 PR199 actually trained on planted-Z synthetic with 5200 cells, 104 donors, 42 operators, 3 sources, 8 shared and 4 private factors: RNA donor-heldout shared R2 .5640, multimodal shared .6746, multimodal private .8779, RNA-private negative -.02689, technical negative -.0245. Separate V65 120 optimizer/EMA steps and donor-validation R2 .595/.699/.875 passed but EMA tracked a supervised planted-target predictor, not a measured-evidence JEPA target. V65 rank/shell/heldout/technical controls and V67 measurement/observation/anti-collapse negatives executed. V77 canonical V5 guarded real one-step EMA/checkpoint passed. V72 coupled worlds/V75 physically ran 100k synthetic measurement. PR336 qualified 9/9 synthetic relational controller truth statuses. PR328 candidate-agnostic planted biology exists, limited to 480x48 and support detection proxy; source-to-Task5 integrations PR469/534 and negative-admission PR536 already ran.",
+      "new_work_or_result": "Re-audited original PR199 numeric JSON receipts, V65 original generator and training scripts, PR224 real runtime, PR236 source-verified actual step, PR207 V75 100k receipt, PR297 V79 frozen worlds, PR315 candidate-neutral synthetic architecture, PR318/321/336 relational known-truth. Reclassifies need: synthetic oracle planted truth is deliberately known and human teacher qualification is NOT prerequisite to synthetic model experiment. The remaining genuinely new question is whether canonical V5 measured-evidence EMA teacher and its masked student recover independently sealed planted biology without oracle-label fitting, q leakage, source shortcuts or collapse; old V65 ridge/EMA-supervised arms, V77 and PR336 remain separate completed tests.",
+      "negative_or_counterfactual_evidence": "Do not confuse V65 supervised oracle-Z recovery with JEPA EMA representation learning. Don't plant candidate label as a generator coordinate just to force PASS; PR315 already corrected this bias. PR316 3x512 input constraint is local to its gate and must not become a general synthetic data requirement. PR328 original C3 controller q0 population mean is incompatible with per-cell R5 panel; PR531 withdrew detection-as-structural support; fresh C3 query specificity requires multiple prespecified q targets. No new real biological evidence or model training performed in this turn.",
+      "test_review_scope": "Source-only GitHub PR metadata and exact original V65/V67 machine receipts/code, original PR224/236 canonical runtime and original PR336 truth qualification. Existing historical CI run IDs noted, but no new model fit, generator, GPU read or oracle unseal.",
+      "independent_review": "GPT_SOURCE_LEDGER_RECONCILIATION__MACHA_FRESH_REVIEW_ON_NEXT_JOIN_PENDING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Join existing V5 encoder/predictor/EMA runtime source #224/#228/#236 to existing V65 source law via source-consistent adapter after code-level review; do not create a new EMA mechanism",
+        "Run at most one outcome-blind synthetic pilot with separately hidden planted controller labels, evaluate teacher and student distinctively against V65 shared/private truth and nuisance controls, failure/abstention permitted",
+        "Only if canonical existing source cannot support E3 q panels or PR316 exact relation gate, design controlled successor with multiple q/source true assay support; no silent retuning",
+        "After exact-head CI, demand Macha independent review and update audit/handoff; no human Stage4 or real JEPA training"
+      ],
+      "historical_supersession": "Supersedes recent suggestion that an unqualified real EMA teacher or brand new 3x512 production synthetic bank must be established BEFORE a synthetic pilot; retains original PR536 negative admission and all historical completed qualifications.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/199",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/224",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/236",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/207",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/536"
+      ]
     }
   ]
 }
