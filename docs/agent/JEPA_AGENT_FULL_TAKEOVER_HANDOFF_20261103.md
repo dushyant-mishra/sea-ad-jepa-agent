@@ -1,3 +1,17 @@
+# Final no-repeat amendment — an actual raw Level-4 read has already occurred (2026-11-03 recovery)
+
+**Do not execute another source-count block as the first action.** Audit #322 now records `docs/agent/JEPA_20261103_HISTORICAL_REAL_LEVEL4_READ_RECOVERY_AND_NO_REPEAT_CORRECTION.md` plus machine index `results/target_discovery/unified_qualification_v1/JEPA_20261103_HISTORICAL_REAL_LEVEL4_READ_RECOVERY_NO_REPEAT_V1.json` (chronology event35).
+
+- Original physical [PR #59](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/59), 2026-09-22 `1bdff2a8f12d7971652dcf92b5b81ca45c37a933`: **387 authenticated raw-count Level-4 blocks read**, six donors × 17,186 strict-core addresses independently reaggregated with exact `donor_nnz` and `donor_umi` integer equality, plus **8,915 metadata** SHA checks and 4,553,407 cell metadata coverage. **Not** an all104 raw reaggregation or a per-cell q-qualified CaseBundle.
+- Original [PR #69](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/69), `83b85382f22a7672a5beb1ef9154e5b8bf36e16f`: fixed historical **four NPH52/SEA_AD source-label transpositions**, per-array row digests show the original counts untouched, explicitly **no rerun required**. If citing #59 use **#69's canonical corrected source names**, not original receipt labels.
+- [PR #492](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/492) 50k sample expression, [PR #314](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314) spent authorized real TD replay, [PR #513](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/513) prior QC metadata/UMI checks remain completed separate source-scope work. No duplicate 50k, TD, QC or raw counts.
+- **Required next step is read-free existing evidence coverage**, not an extra count read: original source/row/private library, actual per-cell q count availability, operator structural/collision/alias/rights, Task2 access receipt and D1 redaction mapped to CaseBundle obligations. Classify `EXISTING_PHYSICALLY_EVIDENCED`, `PRESENT_BUT_UNQUALIFIED`, `NOT_RETAINED_IN_OLD_RECEIPT` or `NOT_ESTIMABLE`. Missing per-cell q authorization/CaseBundle producer may still require an **offline code** repair, not another data read.
+- Earlier owner-delegated single-block approval was a **ceiling**, not a demand to execute again; its immediate action is **superseded**. If a truly indispensable value cannot be found in existing receipts or accepted derivative, record that exact gap and precommit a new narrow plan with independent review *before* considering source-value reads. QC-only allowance remains, but do not replay #513 unless its current aggregates cannot answer a documented new question.
+
+**Standing:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # November 3, 2026 owner-delegated experimental scope update — NEWEST
 
 **Two internal scope decisions have been resolved by explicit owner delegation to GPT.** See audit [PR #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322): `docs/agent/JEPA_OWNER_DELEGATED_NARROW_QC_AND_SINGLE_LEVEL4_DECISION_20261103.md`, machine `results/target_discovery/unified_qualification_v1/JEPA_OWNER_DELEGATED_NARROW_QC_AND_SINGLE_LEVEL4_DECISION_V1.json`, recorded in chronology event34. This is project policy, **not** an independent digital signature or a biological qualification.
