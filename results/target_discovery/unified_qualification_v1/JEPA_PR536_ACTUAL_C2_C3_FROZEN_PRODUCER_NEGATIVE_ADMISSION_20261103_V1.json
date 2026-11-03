@@ -1,0 +1,95 @@
+{
+  "schema": "JEPA_PR536_ACTUAL_C2_C3_FROZEN_PRODUCER_NEGATIVE_ADMISSION_20261103_V1",
+  "date": "2026-11-03",
+  "pr": 536,
+  "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/536",
+  "exact_head": "b723b9d522a013554a0a53cf600e6e9812c35935",
+  "base_main": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb",
+  "scope": "ACTUAL_EXISTING_FIT_SOURCE_AND_PRODUCER_ADMISSION_WITH_EXPECTED_REFUSALS__NOT_FULL_CONTROLLER_TRUTH_SCORE",
+  "execution": {
+    "original_first_run_failure": {
+      "run": 41676453529,
+      "at_head": "7a894b5676f2d5ebecf1df388213901e1d60f609",
+      "source_world_and_fit_verified": true,
+      "reason": "AUTHOR_TEST_CALLER_OMITTED_PR316_PROFILE_ID__NOT_SCIENTIFIC_FAILURE"
+    },
+    "repaired_same_head_checks": [
+      {
+        "run": 41676844864,
+        "job": 126059656763,
+        "conclusion": "SUCCESS",
+        "artifact_id": 13251741068,
+        "artifact_zip_sha256": "9759f6cb243e77000377a690a72187234539ccc69873d8801f2b666661d64042"
+      },
+      {
+        "run": 41676856537,
+        "job": 126059696258,
+        "conclusion": "SUCCESS"
+      }
+    ],
+    "status": "2_OF_2_CI_SUCCESS__AUTHOR_SCOPE_ONLY",
+    "macha_independent_review": "PENDING"
+  },
+  "frozen_source_identity": {
+    "pr328_generator_head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+    "original_world_sha256": "dedd53c3b93eecdf28b73f229574a0cda4971371a3a6282f4b9e12fa44d09e66",
+    "original_fit_sha256": "fc5fa5c071903460da8c0d4644a3b18022f45b178f2c60a727710cadc2fb350a",
+    "source_export_pr534": "165447a8bbdef8b427ca9cd0d29b51c36b9c1c1a",
+    "r5_measured_source_pr526": "b7761a3e7578f51db17fea26dae607aec299c1de",
+    "actual_c2_executor_pr316": "2397ab83d8ae9d0c762a8fd5f3919edc350d137f",
+    "actual_candidate_adapter_pr313": "206167a1eb86f1dec5f8285db56accbcd469bce9",
+    "prospective_gate_design_pr338": "0e54de6a7212ddc85292b7bbc3774a5aabaf4ee2",
+    "controller_truth_file_blob": "93f340ca49735b9d8ba7049ed34e7c4c7d5f9cb9"
+  },
+  "observed_test": {
+    "original_source_cells": 480,
+    "original_source_rna_addresses": 48,
+    "fit_only_sampled_cells": 30,
+    "sampled_donors": 9,
+    "sampled_sources": [
+      "PR328_SYNTH_HVS",
+      "PR328_SYNTH_NPH52",
+      "PR328_SYNTH_SEA_AD"
+    ],
+    "measured_q_other8_targets": 10,
+    "not_estimable": 20,
+    "by_source": {
+      "PR328_SYNTH_HVS": {
+        "measured": 0,
+        "not_estimable": 10
+      },
+      "PR328_SYNTH_NPH52": {
+        "measured": 10,
+        "not_estimable": 0
+      },
+      "PR328_SYNTH_SEA_AD": {
+        "measured": 0,
+        "not_estimable": 10
+      }
+    },
+    "important_support_limit": "PR328_VISIBILITY_GT_ZERO_IS_DETECTION_PROXY_NOT_ASSAY_SUPPORT__NO_REAL_SOURCE_INTERPRETATION",
+    "q_scalar_invariance": true,
+    "c2_call": "EXISTING_PR316_ACTUAL_EXECUTOR__REFUSED_48_FEATURE_SOURCE_BECAUSE_THREE_512_MUTUALLY_DISJOINT_FEATURE_VIEWS_REQUIRED",
+    "c3_actual_source": "EXISTING_PR526_MEASURED_Q_OTHER8_DIAGNOSTIC_EIGHT_COMPONENT_TARGET__NOT_PRODUCTION_QUALIFIED",
+    "c3_adapter": "EXISTING_PR313_BUILD_CANDIDATE_PAYLOAD_REFUSED_MISSING_QUERY_STUDENT__NO_FAKE_STUDENT",
+    "c3_controller_target_mismatch": "ORIGINAL_PR328_C3_TRUTH_POPULATION_MEAN_EXPECTED_QUERY0_NOT_PER_CELL_R5_NON_Q_EIGHT_VECTOR",
+    "prospective_real_gate_rules_blocked": 13,
+    "independent_controller_truth_opened": false,
+    "known_truth_gate_decisions_scored": false,
+    "student_recovery_evaluated": false,
+    "training_performed": false,
+    "real_source_authenticated": false,
+    "authority_change": false
+  },
+  "scientific_decision": "EXECUTED_SCOPED_NEGATIVE_ADMISSION__FULL_SAME_SOURCE_C2_C3_TARGET_PRODUCER_TO_QUALIFIED_GATE_TO_HIDDEN_SYNTHETIC_TRUTH_STILL_UNCLOSED",
+  "no_repeat": [
+    "ORIGINAL_PR328_FROZEN_WORLD_AND_FIT_SHA_UNCHANGED",
+    "ORIGINAL_PR316_512_VIEW_CONTRACT_UNCHANGED",
+    "PR336_NINE_KNOWN_TRUTH_RELATIONAL_CHALLENGES_ALREADY_QUALIFIED",
+    "PR469_CASEBUNDLE_PLANTED_FIXTURE_DONE",
+    "PR534_FROZEN_V80_BENCHMARK_RED_UNCHANGED",
+    "PR526_SOURCE_SUPPORT_INTERPRETATION_WITHDRAWN_BY_MACHA_531"
+  ],
+  "next_valid_action": "MACHA_FRESH_HEAD_HOSTILE_REVIEW; OWNER_CONTROLLER_DESIGN_DECISION_ON_COMPATIBLE_ALREADY_FROZEN_512_SOURCE_AND_C3_PER_CELL_TRUTH; NO_NEW_WORLD_OR_JEPA_FIT_OR_REAL_VALUES_AUTOMATICALLY",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
