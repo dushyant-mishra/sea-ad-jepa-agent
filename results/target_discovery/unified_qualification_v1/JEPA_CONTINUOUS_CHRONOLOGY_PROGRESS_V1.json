@@ -1361,6 +1361,50 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41663329942",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41663646341"
       ]
+    },
+    {
+      "event_id": "20261103-ITERATIVE-REAL-SYNTHETIC-PR535-V80-PR294-HISTORICAL-CORRECTION",
+      "date_utc": "2026-11-03",
+      "workstream": "multi_pass_real_synthetic_source_custody_no_repeat_and_v80_platform_precedent_recovery",
+      "implementation_pr": 535,
+      "implementation_head": "af7acbcf6d2244764e17f44686b94a72199c7d9c",
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261103_ITERATIVE_NO_REPEAT_REAL_SYNTHETIC_SOURCE_AUDIT_DELTA.md",
+          "role": "six-pass original Git source and cross-lane no-repeat report"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_ITERATIVE_NO_REPEAT_REAL_SYNTHETIC_SOURCE_AUDIT_DELTA_V1.json",
+          "role": "machine mirror, exact source and review scope, no new data"
+        },
+        {
+          "path": "docs/agent/JEPA_20261103_V80_HASH_DRIFT_RECOVERED_V79_PLATFORM_BYTE_AUTHORITY.md",
+          "role": "V79 Windows-only accepted world byte identity precedent and original V80 producer constraints"
+        }
+      ],
+      "what_already_existed": "Original V79 #294 controller audit explicitly accepted Windows/Linux numeric engineering world digest difference and locked Windows byte authority; V80 #348 produced source SHA/receipt/fit/controller at run 38504094639 but only pinned Python/NumPy and same-process deterministic V80 tests. Real source #59/#69/#349/#492/#509/#513/#528, original #469/#534 cross-component synthetic, main #523 D1/V2C, relational #336 audit, #531 support correction, accepted alias restrictions decision and 33-lane historical index all predate this note.",
+      "new_work_or_result": "Six-pass source-index audit recovers prior platform-byte reproducibility precedent, distinguishes V80 original qualified receipt from current cross-run portability, and corrects new PR535 retrospective 15-field receipt inventory so it cannot trigger duplicate synthetic adapter, model or source reads. Original V80 producer fit/controller artifacts remain available until November 13, 2026; prioritize comparing them before new generation. PR533 291 pass-row tally vs normative hard nonregression wording noted as pending nonapproving review. PR525 author GREEN remains independently unaccepted.",
+      "negative_or_counterfactual_evidence": "A 'novel V80 numerical reproducibility failure' framing missed project-wide V79 platform precedent. No evidence yet pins V80 root cause to CPU, BLAS, JSON or platform. PR534 two failed runs have equal four selected per-family digests among themselves, but these do not include controller latent fields, and prior successful run emitted no like-for-like digest. Original V80 CI's test checked two builds in one process; it never established cross-run host-locked bitwise identity. Windows-only V79 byte authority is not authority to swap or relax V80 identity. PR535 does not show all CaseBundle source implementations absent.",
+      "test_review_scope": "Read-only original PR294 controller review comment and CI 38190157910; original PR348 frozen source/receipt, original producer logs 38504094639, separate test-only run 38504094661, V80 code/serializer/test/workflow; current PR534 failed forensic runs 41665045822 and 41665058401; no V80 generator invoked, no new data read, no estimator training. GitHub files and PR state inspected, new source doc/machine JSON added.",
+      "independent_review": "GPT_SOURCE_SCOPE_AUDIT__NO_INDEPENDENT_NUMERICAL_CAUSE_VERDICT__V80_ORIGINAL_BYTE_AUTHORITY_UNMODIFIED__MACHA_PR534_REVIEW_PENDING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Recover archived original V80 fit/controller artifacts first; compare original pinned transport hashes with existing current failing summaries before deciding whether new diagnostics are needed",
+        "Leave exact V80 expected benchmark digest unchanged and preserve both successful/failed CI receipts; do not infer host mathematical drift without field-level evidence",
+        "Treat PR535 as documentation-only receipt scope and withdraw redundant adapter/synthetic suite assignment; any true missing real source-binding edge must be demonstrated against Macha 20261103B inventory, #469/#534/#523 and accepted Task2",
+        "Fresh Macha independent PR525 b493efc3, PR533 b531b81e, PR534 current source review; prospective owner/controller V79/V80 selection law still blocked"
+      ],
+      "historical_supersession": "Corrects only latest V80 'unprecedented' drift interpretation, latest PR535 duplicate engineering implication, and stale Phase2/alias decision next-action wording; original frozen source, historic science, review negatives, and original 36 chronology events remain untouched.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/294",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/348",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/38504094639",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/325",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/535"
+      ]
     }
   ]
 }
