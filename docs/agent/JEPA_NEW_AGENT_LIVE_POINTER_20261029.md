@@ -1,3 +1,35 @@
+# LIVE NOVEMBER 3 (MACHA, SECOND ROUND) — #525 FRESH HEAD REPAIR_REQUIRED; SOURCE-TO-CASEBUNDLE EDGE IDENTIFIED (LATEST)
+
+**Canonical record:** audit #322 ``33befc30bc6c51b6ed6f59be193ff7231a7ca1b1``, chronology **31 events**, `docs/agent/JEPA_MACHA_20261103B_INVENTORY_AND_BLOCKER_REGISTER.md`. Check exact-head CI before reporting green.
+
+**#525 at `0588788f`: `REPAIR_REQUIRED`** ([#532](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/532) `ccf0239d`; CI 41590792957). N01–N03 are fixed, but:
+- **M01:** the reducer trusts the manifest's own block roster. Dropping or relabelling the query block, or flipping the rare flag, still gives PASS.
+- **M02:** a caller flag drops `RARE_PRESERVATION`.
+- **S01:** `adjudicate_noncompensation` is a second PASS path.
+- **L06:** prospective declarations are not time-bound.
+
+**Compatible repair:** embed the verified portfolio in the manifest. My #527 and #530 files stay green.
+
+**#531 erratum and amendment proposal** (`270bc33c`):
+- The PR #336 Phase-2 audit already exists (run 38478444632).
+- GPT's #526 correction is reconciled.
+- "Reverse geometry" was overstated: real HVS measures 18,736, SEA-AD 35,786 and NPH52 30,760–34,969 of 41,238 addresses.
+- A five-rule versioned support amendment over existing records (A3R `852cb3ec`, Stage81A2R `ee5d12c1`), with six tests to run in advance.
+
+**Source-to-CaseBundle:**
+- **Accepted:** D1 view (fixture scope); Task2 access receipt (interface).
+- **Implemented, not accepted:** raw counts, support states, identity, private `source_library`.
+- **Specified, not implemented:** alias enforcement (**the owner adopted the restrictions on 10-30, `457b689b`**); resolvable provenance.
+- **Smallest edge:** a versioned real-path CaseBundle successor validator plus a source-bound adapter over one Level-4 block. Real values are blocked by value-read authority, selection/QC decisions and alias enforcement code.
+
+**GPT next:** repair M01/M02/S01; review #531 `270bc33c`.
+
+**Owner:** the QC-only allowlist; value-read authority for Level-4 counts into a CaseBundle; whether to authorize a #328 successor.
+
+**Standing:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # LIVE NOVEMBER 3 — GPT #525 N01–N03 REPAIR; MACHA #531 SCIENTIFIC FALSIFIER; REAL CASEBUNDLE GAP (NEWEST)
 
 **Exact canonical audit:** PR [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) at `3b4695e2c4c95ab3f699e736e7e33c631cabc930`, chronology **30 events**. New source-inspected decision `docs/agent/JEPA_20261103_SOURCE_TO_CASEBUNDLE_EXACT_GAP_AND_RECIPROCAL_UPDATE.md` maps the actual Task2 producer/access law, main D1/V2C student, #513/#528 already-defined eight-field source rights, #451 fixture CaseBundle and executed #469 seven-edge adapter. **No new generator/issuer/controller**. Never substitute student-visible **D1** for private physical **library_size**. Missing real source/q/operator/assay-anchored producer into a versioned **real** CaseBundle; internal signer optional hardening, not public data-access prerequisite. The #451 V1 CaseBundle remains **FIXTURE_ONLY**. No new code until checking later accepted producer PRs against this exact gap and existing rights/evidence rules.
