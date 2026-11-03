@@ -19,7 +19,7 @@
     {
       "pr": 492,
       "head": "79d2f9364970c0e5b678caae94b92a803ff03623",
-      "path": "docs/agent/JEPA_SOURCE_ETL_REACQUISITION_AUDIT_20261029.md",
+      "path": "docs/agent/JEPA_REACQUIRED_FOUNDATION_SOURCE_AUDIT_20261028.md",
       "blob": null
     },
     {
@@ -49,8 +49,14 @@
     {
       "pr": 511,
       "head": "5fe18a11b010b0adb857104d10329e840a9e7d4c",
-      "path": "scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py",
+      "path": "scripts/v5/td_unified/observation_d1_base_only_student_fixture_v1.py",
       "blob": null
+    },
+    {
+      "pr": "MAIN_D1_V2C",
+      "head": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb",
+      "path": "scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py",
+      "blob": "edee1b8adc1b5c7ca660d52d3667d2020abdb417"
     }
   ],
   "status_legend": {
