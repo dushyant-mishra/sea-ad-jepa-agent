@@ -1,0 +1,50 @@
+{
+  "schema": "JEPA_PR526_POST_MACHA531_SCIENTIFIC_CORRECTION_V1",
+  "date": "2026-11-03",
+  "original_pr": 526,
+  "original_head": "0e1c539a8fa5aa2f5e117b6224b535980ed728cb",
+  "independent_review_pr": 531,
+  "independent_review_head": "db0b198dbd00ec13d40052324d18a8d5c3f2fdc3",
+  "synthetic_source_pr": 328,
+  "synthetic_source_head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+  "original_world_sha256": "dedd53c3b93eecdf28b73f229574a0cda4971371a3a6282f4b9e12fa44d09e66",
+  "original_fit_sha256": "fc5fa5c071903460da8c0d4644a3b18022f45b178f2c60a727710cadc2fb350a",
+  "mechanical_replication": {
+    "HVS_like": [
+      0,
+      180
+    ],
+    "SEA_AD_like": [
+      0,
+      150
+    ],
+    "NPH52_like": [
+      149,
+      150
+    ],
+    "verdict": "REPLICATED_FIXTURE_ARITHMETIC_ONLY"
+  },
+  "problem": {
+    "source_file": "scripts/v79/unified_synthetic_fit_view_v1.py",
+    "source_blob": "5a5fdd2862dc558683231ed4ef7946efc30c62f1",
+    "expression": "support = vis > 0",
+    "visibility_semantics": "TRAIN_microglia_detection_fraction_not_assayed_feature_universe",
+    "violated_invariant": "MEASURED_SCALAR_ZERO_IS_NOT_STRUCTURALLY_UNMEASURED",
+    "unsupported_inference": "source specific human target panel observability"
+  },
+  "decision": {
+    "action": "WITHDRAW_SOURCE_MEASURABILITY_INTERPRETATION",
+    "keep": "FROZEN_FIT_AND_MECHANICS_RECEIPTS",
+    "succession": "PROSPECTIVE_NEW_VERSION_REQUIRED",
+    "new_world_authorized": false,
+    "training_authorized": false
+  },
+  "future_constraints": [
+    "source_operator_feature_universe_defines_structural_support",
+    "detection_rate_is_separate_observation_process",
+    "measured_zero_distinct_from_not_measured",
+    "do_not_rewrite_pr328_v2",
+    "wrong_query_and_matched_perturb_null_are_required_falsifiers"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
