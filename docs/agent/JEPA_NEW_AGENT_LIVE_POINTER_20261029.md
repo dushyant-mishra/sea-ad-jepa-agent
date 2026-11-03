@@ -1,6 +1,6 @@
 # LIVE NOVEMBER 3 — RECIPROCAL #525/#527 REPAIR, #528/#529 REVIEW (LATEST)
 
-**Source audit #322:** `c73dd6381a8b73b336e82de3f1c3169ae3cd9afd`, chronology **26 events**. New primary source report `docs/agent/JEPA_527_528_RECIPROCAL_SECURITY_REVIEW_AND_REPAIR_20261103.md`. Check exact-head CI on this pointer/audit before reporting green.
+**Source audit #322:** `7f61fda11d06f35ff7e0bda8e73b29d2fa58d789`, chronology **26 events**. New primary source report `docs/agent/JEPA_527_528_RECIPROCAL_SECURITY_REVIEW_AND_REPAIR_20261103.md`. Check exact-head CI on this pointer/audit before reporting green.
 
 **Macha #527:** correctly rejected GPT #525 at OLD `064bf2a` because scientific record semantics were bypassed by caller re-hashing; tournament QUERY control could be dropped, and EMA silently coerced floats/bools. **GPT repaired #525 at NEW exact head `315c378d08f3266b33e04aca95a230041320b4f7`**, re-deriving portfolios/plans using original builders, rejecting unsupported topologies and invalid EMA types, verifying the tournament query gates. The full Macha #527 original test blob `123e6c92` is unchanged in the repair suite. Exact code-head workflows **3/3 SUCCESS**: post-TD 41581922688 (Python 3.11/3.12, 59 tests per job), prefreeze 41581922677, C4/C6 41581922710. **Author code change; Macha independent NEW-head verdict pending**, per [request](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525#issuecomment-6595986061). No externally authenticated scientific `PASS` or data rights.
 
