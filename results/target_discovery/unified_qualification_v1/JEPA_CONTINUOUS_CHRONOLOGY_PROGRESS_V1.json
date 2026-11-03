@@ -990,6 +990,40 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/529"
       ]
+    },
+    {
+      "event_id": "20261103-PUBLIC-NPH52-ZENODO-ORIGINAL-ACQUISITION-CORRECTION",
+      "date_utc": "2026-11-03",
+      "workstream": "public_acquisition_provenance_nph52_hvs_seaad_correction",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "change_type": "repair",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_PUBLIC_SOURCE_ACQUISITION_HISTORY_CORRECTION_20261103.md",
+          "role": "exact original public acquisition registry and source corroboration correction"
+        }
+      ],
+      "what_already_existed": "V4 Stage81A1D original acquisition source config, validated public NPH52 Zenodo 8319719 and HVS CELLxGENE source; processed SEAAD public Allen AWS data. Later #528 erroneously described NPH52 accession missing and conflated new agent-independent signature with public source permission.",
+      "new_work_or_result": "Verified original main config/source registry/acquisition catalog and public publisher pages. NPH52 source Zenodo 8319719 has organized_data.zip and annotations.zip with exact publisher MD5. HVS CELLxGENE publicly downloadable without extra IRB, processed SEAAD AWS public; raw controlled Synapse assets are distinct. Corrected requirement: public access not gated by private hardware signer or undiscovered accession; source metadata and QC versioning remain.",
+      "negative_or_counterfactual_evidence": "Zenodo license not established as specific CC license from blank web Rights field; free public download is not unlimited reuse; source QC selection, alias and internal held-out partitions still unqualified. No privileged path/protected expression accessed.",
+      "test_review_scope": "Re-reviewed existing historical GitHub source config, remote catalog, role registry and public original publisher pages; no data re-download, pipeline run, code change, training or issuer key.",
+      "independent_review": "GPT_SOURCE_HISTORY_CORRECTION_DOCUMENTED__NO_PERMISSION_GRANT",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha #528 append-only erratum to source ID R3 and optional key interpretation",
+        "Record exact release-specific reuse/citation terms where available; distinguish public processed vs separately controlled raw",
+        "Repair independent #529 QC wrapper RED; technical source/molecule/gene/query validity still open"
+      ],
+      "historical_supersession": "Supersedes only false NPH52 accession-missing/public-data-signer prerequisite statements, not prior source QC/alias research limitations or reviewer red tests.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/528#issuecomment-6596313824",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/main/configs/v4/stage81a1d_living_human.yaml",
+        "https://zenodo.org/records/8319719",
+        "https://cellxgene.cziscience.com/collections/35928d1c-36fc-4f93-9a8d-0b921ab41745",
+        "https://brain-map.org/consortia/sea-ad/our-data"
+      ]
     }
   ]
 }
