@@ -5,6 +5,8 @@ on:
     paths:
       - 'scripts/v5/review_probes/macha_20261103/**'
       - 'tests/v5/test_macha_specimen_qc_input_admission_v1.py'
+      - 'tests/v5/test_macha_528_gpt_admission_hostile_red.py'
+      - 'tests/v5/test_macha_528_admission_repair_v1.py'
       - '.github/workflows/macha-513-qc-input-admission.yml'
   workflow_dispatch:
 
@@ -27,12 +29,14 @@ jobs:
           sparse-checkout: |
             scripts/v5/review_probes
             tests/v5/test_macha_specimen_qc_input_admission_v1.py
+            tests/v5/test_macha_528_gpt_admission_hostile_red.py
+            tests/v5/test_macha_528_admission_repair_v1.py
             results/target_discovery/unified_qualification_v1
           sparse-checkout-cone-mode: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Frozen #513 files unchanged (pins the wrapper relies on)
+      - name: Frozen #513 files and GPT #529 RED file unchanged
         shell: bash
         run: |
           python - <<'EOF'
@@ -47,5 +51,14 @@ jobs:
               print(path, got)
               assert got == pin, path
           EOF
-      - name: Fixture tests
-        run: python -m unittest -v tests.v5.test_macha_specimen_qc_input_admission_v1
+          test "$(git hash-object tests/v5/test_macha_528_gpt_admission_hostile_red.py)" = 49a86421d478218c99001a2ba04e21f6db764b74
+          test "$(git hash-object tests/v5/test_macha_specimen_qc_input_admission_v1.py)" = 9719b532697e23fb442070c9bf54c1104d326de1
+      - name: Symlink capability of this runner
+        shell: bash
+        run: python -c "import os,tempfile; d=tempfile.mkdtemp(); os.symlink(d, d + '/l', target_is_directory=True); print('symlinks OK')"
+      - name: Original 13 + GPT #529 REDs + Macha repair regressions
+        run: >-
+          python -m unittest -v
+          tests.v5.test_macha_specimen_qc_input_admission_v1
+          tests.v5.test_macha_528_gpt_admission_hostile_red
+          tests.v5.test_macha_528_admission_repair_v1

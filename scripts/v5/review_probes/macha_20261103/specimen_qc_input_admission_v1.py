@@ -18,6 +18,9 @@ Verification scope, declared per file class:
   STAT_ONLY_IDENTITY_INHERITED  H5ADs above the ledger's own re-hash limit: path, size and
                              mtime_ns equal the receipt; the bytes are NOT re-hashed and their
                              identity is inherited from ASSET_AUTHENTICATION.csv.
+Every input must resolve inside its declared root (no symlinked parent, '..' or absolute escape).
+--run-probe publishes the output only when it equals the committed output; otherwise it refuses
+and keeps nothing. Replaying the real frozen probe is under a governance hold (REPLAY_HOLD).
 Any missing, extra, unreceipted or mismatching input refuses. Reads file bytes for hashing and
 the lineage (source, matrix_id) columns only; never expression, pathology, NPH52 H5ADs,
 quarantined cells, reader_validation/oracle, DEV or SEALED data.
@@ -54,6 +57,11 @@ META_GLOB = L4 + "blocks/op*/block-*.meta.csv"
 BLOCK_MANIFEST = L4 + "PHASE2_EXPRESSION_BLOCK_MANIFEST.csv"
 ASSET_AUTH = L4 + "ASSET_AUTHENTICATION.csv"
 PROBE_SOURCES = ("SEA_AD", "HVS")  # the probe opens H5ADs for these sources only
+# Governance hold (2026-11-03): the frozen probe reads SEA-AD 'Doublet score' and HVS 'is_primary_data',
+# which are outside the analytic allowlist. Replaying the real frozen probe stays refused until a
+# QC-only allowlist decision is recorded and this constant is cleared by a reviewed change.
+REPLAY_HOLD = ("governance hold: replay of the frozen #513 QC probe re-reads 'Doublet score' and "
+               "'is_primary_data'; refused until the QC-only allowlist decision is recorded")
 
 
 class AdmissionRefused(RuntimeError):
@@ -75,16 +83,28 @@ def _rel(root: Path, path: str) -> str:
         raise AdmissionRefused(f"input resolves outside the data root: {path}") from exc
 
 
+def _confined(base: Path, rel: str) -> Path:
+    """A regular, non-symlink file whose fully resolved path stays inside base.
+
+    Resolving the whole path closes escapes through a symlinked or junctioned parent
+    directory, '..' components and absolute paths (GPT #529 R01)."""
+    path = base / rel
+    if path.is_symlink() or not path.is_file():
+        raise AdmissionRefused(f"missing or symlinked input: {rel}")
+    try:
+        path.resolve(strict=True).relative_to(base)
+    except (OSError, ValueError) as exc:
+        raise AdmissionRefused(f"input resolves outside its declared root: {rel}") from exc
+    return path
+
+
 def admit(root: Path | str, *, evidence_root: Path | str | None = None, pins: dict = PINS) -> dict:
     root = Path(root).resolve()
     evidence = root if evidence_root is None else Path(evidence_root).resolve()
     reasons: list[str] = []
 
     def file(rel: str) -> Path:
-        path = (evidence if rel in (LEDGER, PROBE, PROBE_OUTPUT) else root) / rel
-        if path.is_symlink() or not path.is_file():
-            raise AdmissionRefused(f"missing or symlinked input: {rel}")
-        return path
+        return _confined(evidence if rel in (LEDGER, PROBE, PROBE_OUTPUT) else root, rel)
 
     # 1. The receipts themselves are pinned.
     for rel in (LEDGER, FREEZE_REPORT):
@@ -198,20 +218,44 @@ def admit(root: Path | str, *, evidence_root: Path | str | None = None, pins: di
 
 
 def run_probe(root: Path | str, out: Path | str, *, evidence_root: Path | str | None = None, pins: dict = PINS) -> dict:
+    """Admit, run the pinned probe, and publish its output only if it equals the committed output.
+
+    Any refusal (hold, existing output, admission, probe pin, probe failure, output mismatch)
+    raises AdmissionRefused and leaves no output file (GPT #529 R02)."""
+    if pins[PROBE] == PINS[PROBE] and REPLAY_HOLD:
+        raise AdmissionRefused(REPLAY_HOLD)  # checked before any input is read
+    out = Path(out)
+    partial = out.with_name(out.name + ".partial")
+    if out.exists() or out.is_symlink() or partial.exists() or partial.is_symlink():
+        raise AdmissionRefused(f"replay output already exists: {out}")
     root = Path(root).resolve()
     evidence = root if evidence_root is None else Path(evidence_root).resolve()
     receipt = admit(root, evidence_root=evidence, pins=pins)
-    probe = evidence / PROBE
+    probe = _confined(evidence, PROBE)
     if _sha256(probe) != pins[PROBE]:
         raise AdmissionRefused("frozen probe does not match its pin")
-    with open(out, "wb") as fh:
-        subprocess.run([sys.executable, "-I", str(probe), str(root)], stdout=fh, check=True)
-    # Windows text-mode stdout writes CRLF; compare the LF-normalized bytes and report both digests.
-    raw = Path(out).read_bytes()
-    receipt["probe_sha256"] = pins[PROBE]
-    receipt["probe_output_sha256_raw"] = hashlib.sha256(raw).hexdigest()
-    receipt["probe_output_sha256_lf"] = hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
-    receipt["probe_output_equals_committed_513_output"] = receipt["probe_output_sha256_lf"] == pins[PROBE_OUTPUT]
+    try:
+        with partial.open("xb") as fh:
+            code = subprocess.run([sys.executable, "-I", str(probe), str(root)], stdout=fh).returncode
+        if code != 0:
+            raise AdmissionRefused(f"frozen probe exited with status {code}; no output kept")
+        # Windows text-mode stdout writes CRLF; compare the LF-normalized bytes and report both digests.
+        raw = partial.read_bytes()
+        lf = hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
+        if lf != pins[PROBE_OUTPUT]:
+            raise AdmissionRefused(f"replay output (LF SHA-256 {lf}) differs from the committed #513 output; "
+                                   "no output kept")
+        partial.replace(out)
+    finally:
+        if partial.exists():
+            partial.unlink()
+    receipt.update({
+        "status": "ADMITTED_AND_REPLAY_MATCHED",
+        "probe_sha256": pins[PROBE],
+        "probe_output_sha256_raw": hashlib.sha256(raw).hexdigest(),
+        "probe_output_sha256_lf": lf,
+        "probe_output_equals_committed_513_output": True,
+    })
     return receipt
 
 
