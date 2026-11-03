@@ -1,3 +1,17 @@
+# LIVE NOVEMBER 3 — OWNER-DELEGATED SOURCE SCOPE RESOLVED; QC-ONLY AND SINGLE SEA-AD LEVEL4 (NEWEST)
+
+**Owner-delegated decision:** User explicitly delegated the two limited experimental scope decisions to GPT. Audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) now contains `docs/agent/JEPA_OWNER_DELEGATED_NARROW_QC_AND_SINGLE_LEVEL4_DECISION_20261103.md`, machine-readable `results/target_discovery/unified_qualification_v1/JEPA_OWNER_DELEGATED_NARROW_QC_AND_SINGLE_LEVEL4_DECISION_V1.json`, and chronology **event34**. This is **narrow project scope approval**, not an independent issuer signature, human biology qualification, or Stage4 authorization.
+
+**Decision 1 APPROVED:** `JEPA_QC_ONLY_ANALYTIC_ALLOWLIST_V1` adds only SEA-AD `Doublet score` and HVS `is_primary_data` to descriptive aggregate QC/selection characterization. No model/teacher/student, covariate, target/fold selection, outcome joins or query-unqualified cell filters. Reuse already generated #513 aggregates. #528's hardcoded `REPLAY_HOLD` is **still enforced** until a separately versioned, narrow, tested and independently reviewed code-path change is made if needed; never bypass the frozen probe.
+
+**Decision 2 APPROVED:** exactly **one SEA-AD reader_fit Level-4 block** for source→real CaseBundle *mechanics preflight*, chosen lexicographically first eligible from *frozen metadata without seeing counts*, then precommitted with source/operator/block/alias/manifest identity. No post-result block shopping, DEV/SEALED, pathology, NPH52 quarantined expression, other block or trained model. Physical source `library_size` remains private, **not student D1**. #451 CaseBundle V1 stays fixture-only; an explicitly versioned real-path adapter with independent review is required.
+
+**Division:** Macha precommits and executes that one source-bound block through admitted reads on GPU laptop; GPT does minimum source/q/rights CaseBundle code implementation and hostile tests; independent reciprocal review required. No further owner approval is needed **for these two constrained scopes**. Other restrictions and the entire historical 824-branch no-repeat handoff persist below.
+
+**Current scientific lock:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # LIVE NOVEMBER 3 — COMPLETE TAKEOVER FROZEN: 14-LANE ASSET INDEX, 824-BRANCH NO-REPEAT, #525 M01–S01 REPAIRED, #533 V79/V80 GATE (NEWEST)
 
 **Start new agent HERE, before historical pointers.** [Complete handoff](docs/agent/JEPA_AGENT_FULL_TAKEOVER_HANDOFF_20261103.md) on PR [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460); canonical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322), source snapshot `299d501d817e182509d781294a42698d5534471e`, chronology **33 events**. Read audit file `docs/agent/JEPA_20261103_FULL_LANE_HISTORY_CUSTODY_NO_REPEAT_AND_TAKEOVER_AUDIT.md` plus `results/target_discovery/unified_qualification_v1/JEPA_20261103_AGENT_TAKEOVER_ASSET_AND_NO_REPEAT_INDEX_V1.json`: **14 evidence groups, 10 Project-attached source/data/checkpoint files with exact byte SHA and scope**. Existing 824 branch-head index, 33 scientific lane reconciliation and archived 519-PR source inventory are already compiled: **DO NOT recrawl or redo historical audits.** Original large physical assets are in attached/GPULaptop custody, not duplicated into GitHub history.
