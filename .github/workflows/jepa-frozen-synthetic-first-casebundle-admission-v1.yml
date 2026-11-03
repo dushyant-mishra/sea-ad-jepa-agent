@@ -1,0 +1,88 @@
+name: JEPA synthetic-first existing-world CaseBundle boundary rehearsal (NO authority)
+
+on:
+  push:
+    branches:
+      - audit/synthetic-integration-20261103
+  pull_request:
+    paths:
+      - tests/v5/td_unified/frozen_pr328_v80_to_casebundle_synthetic_admission_v1.py
+      - .github/workflows/jepa-frozen-synthetic-first-casebundle-admission-v1.yml
+      - docs/agent/JEPA_SYNTHETIC_FIRST_CASEBUNDLE_REUSE_ADMISSION_20261103.md
+
+permissions:
+  contents: read
+
+jobs:
+  frozen-pr328-v80-cross-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.9'
+      - name: Resolve existing frozen PR328, PR474 and V80 PR348 exact heads only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec
+          git fetch --no-tags origin e7635e7982e950a010d181ec6f6883a18ade0db6
+          git fetch --no-tags origin e99d1f214e76a5e3911eea438c32a1e60f70754f
+          git worktree add --detach /tmp/jepa-original-pr328 25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec
+          git worktree add --detach /tmp/jepa-original-pr474 e7635e7982e950a010d181ec6f6883a18ade0db6
+          git worktree add --detach /tmp/jepa-original-v80 e99d1f214e76a5e3911eea438c32a1e60f70754f
+          test "$(git -C /tmp/jepa-original-pr328 rev-parse HEAD)" = 25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec
+          test "$(git -C /tmp/jepa-original-pr474 rev-parse HEAD)" = e7635e7982e950a010d181ec6f6883a18ade0db6
+          test "$(git -C /tmp/jepa-original-v80 rev-parse HEAD)" = e99d1f214e76a5e3911eea438c32a1e60f70754f
+          test "$(git -C /tmp/jepa-original-pr474 hash-object scripts/v5/td_unified/casebundle_v1.py)" = 23bbdcfc3234b7d621beb870fa019b34822446af
+      - name: Use original PR328 frozen synthetic dependencies, no external datasets
+        run: python -m pip install -r /tmp/jepa-original-pr328/requirements/unified-synthetic-integration-v1.txt
+      - name: Replay exact PR328 original V2 world/fit hashes and export fit-only source observations
+        run: |
+          python -m py_compile tests/v5/td_unified/frozen_pr328_v80_to_casebundle_synthetic_admission_v1.py
+          python tests/v5/td_unified/frozen_pr328_v80_to_casebundle_synthetic_admission_v1.py pr328 \
+            --source-root /tmp/jepa-original-pr328 --payload /tmp/jepa-synthetic-fit-only.json
+      - name: Cross-apply existing PR474 producer and Task5 fixture to frozen PR328 world
+        run: |
+          python tests/v5/td_unified/frozen_pr328_v80_to_casebundle_synthetic_admission_v1.py pr474 \
+            --source-root /tmp/jepa-original-pr474 \
+            --payload /tmp/jepa-synthetic-fit-only.json \
+            --report /tmp/pr328-pr474-casebundle-contract-diagnostic.json
+      - name: Replay frozen V80 eight positive/sparse/support-null families without fitting
+        run: |
+          python tests/v5/td_unified/frozen_pr328_v80_to_casebundle_synthetic_admission_v1.py v80 \
+            --source-root /tmp/jepa-original-v80 \
+            --report /tmp/v80-eight-family-support-detection-diagnostic.json
+      - name: Refuse any model/real-source authority from both synthetic diagnostics
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('/tmp/pr328-pr474-casebundle-contract-diagnostic.json').read_text())
+          b=json.loads(Path('/tmp/v80-eight-family-support-detection-diagnostic.json').read_text())
+          assert a['status']=='EXISTING_FIXTURE_MATH_PASSES__SOURCE_BINDING_AND_RICH_CASEBUNDLE_NOT_QUALIFIED'
+          assert b['status']=='EIGHT_FROZEN_STRESS_FAMILIES_REPLAYED__NO_ESTIMATOR_RUN'
+          assert all(v is False for v in a['authority'].values())
+          assert all(v is False for v in b['authority'].values())
+          assert a['original_measured_zero']>0 and a['original_structurally_unmeasured']>0
+          assert len(b['cases'])==8
+          assert a['offledger_hidden_mass_changes_student_depth']
+          assert a['source_id_forgery_accepted_by_unauthenticated_fixture']
+          assert a['q_in_base_accepted_by_unauthenticated_fixture']
+          assert a['rich_view_falsely_uses_student_depth_as_physical_total_and_is_refused']
+          print('SYNTHETIC_FIRST_TWO_ORIGINAL_BANKS__NO_AUTHORITY__UNRESOLVED_CONTRACTS_DEMONSTRATED')
+          print('PR328_FROZEN_DIAGNOSTIC_JSON=' + json.dumps(a,sort_keys=True))
+          print('V80_FROZEN_DIAGNOSTIC_JSON=' + json.dumps(b,sort_keys=True))
+          PY
+      - name: Publish short diagnostic only — no large synthetic transport or controller truth
+        uses: actions/upload-artifact@v4
+        with:
+          name: frozen-pr328-v80-synthetic-casebundle-diagnostics-NO-AUTHORITY
+          path: |
+            /tmp/pr328-pr474-casebundle-contract-diagnostic.json
+            /tmp/v80-eight-family-support-detection-diagnostic.json
+          retention-days: 30
+          if-no-files-found: error
