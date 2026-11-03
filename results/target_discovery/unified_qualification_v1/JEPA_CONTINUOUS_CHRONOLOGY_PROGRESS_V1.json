@@ -890,6 +890,40 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41576266869",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525#issuecomment-6595206216"
       ]
+    },
+    {
+      "event_id": "20261102-GPT-MACHA-PR513-PIN-GUARD-ALIAS-SOURCE-AUDIT",
+      "date_utc": "2026-11-02",
+      "workstream": "macha_source_report_code_reciprocal_audit",
+      "implementation_pr": 513,
+      "implementation_head": "0b1af4f06ba423753899e7c564d3b16ce609ac6a",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_GPT_MACHA_BRANCH_SOURCE_REVIEW_20261102.md",
+          "blob_sha1": "5d8f55bd12173283e95c4ffc71e60ab0a3de6f2f",
+          "role": "independent_exact_source_review_and_macha_instructions"
+        }
+      ],
+      "change_type": "hostile_review",
+      "what_already_existed": "Macha #513 previous metadata physical aggregate execution/322 asset ledger and 8-part issuer; prior GPT #513 science caveats; #465 scoped incremental accepted; #523 Macha security fixture merged; #525 GPT post-TD repair needs Macha review; #322 23 events.",
+      "new_work_or_result": "Exact code/source audit identified #513 QC probe lacks explicit input SHA admission despite report's blanket claim that every probe asserts hashes; 1bp locus overlap from any source promotes provisional rights grouping to source-agnostic SHARED_FEATURE_IDENTITY; HVS 0.915 count ratio is not direct proof physically absent molecules, and observed nine threshold cells cannot bound excluded-cell q-selection. Requested minimal correction and hostile small fixture plus Macha independent #525 review.",
+      "negative_or_counterfactual_evidence": "No evidence source/QC probes actually recompute all source H5AD SHA pins before reading; alias group equivalence cannot be established by 1bp overlap alone; lack of HVS excluded cell observation prevents bias bound; #465 scope not cumulative and #513 issuer not external. No physical data read or new experiment.",
+      "test_review_scope": "Read exact GitHub #513 code probes/output/doc, #465 comment and CI, merged #523 CI, #525 CI/comment. No new local physical ETL or biomolecular target. #513 1/1, #465 5/5, #523 2/2, #525 3/3 exact-head workflow successes, with review scope unchanged.",
+      "independent_review": "GPT_SOURCE_CODE_REVIEW__REPAIR_OF_REPORT_NEEDED__MACHA_PR525_NONAUTHOR_REVIEW_REQUESTED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha F1 exact receipt checking versus inherited SHA audit before QC; scope honest if source-pinned no rehash",
+        "Macha F2 alias gene identity/source-operator rights and F3 HVS 0.915 ratio/excluded selection corrections",
+        "Macha independent #525 adversarial test/review",
+        "External issuer and source rights, independent cumulative Task4 and real CaseBundle remain blocked"
+      ],
+      "historical_supersession": "No change to prior physical aggregate values or original scientific negatives; this is source/report claim-scope correction, not ETL replay, source signer, biological winner or cumulative Task4 acceptance.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/513#issuecomment-6595340401",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525#issuecomment-6595206216",
+        "docs/agent/JEPA_GPT_MACHA_BRANCH_SOURCE_REVIEW_20261102.md"
+      ]
     }
   ]
 }
