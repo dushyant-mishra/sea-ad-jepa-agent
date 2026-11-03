@@ -191,7 +191,7 @@ def verify_target_portfolio(portfolio: Mapping) -> dict:
         rebuilt = build_target_portfolio(
             qualifications=qualifications,
             selected_candidate=selected,
-            foundation_candidates=foundation,
+            foundation_candidates=() if selected is not None else foundation,
             specialist_candidates=specialists,
         )
     except (TypeError, ValueError, KeyError) as exc:
