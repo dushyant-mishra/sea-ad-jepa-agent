@@ -1,3 +1,17 @@
+# 2026-11-03 PLANTED SYNTHETIC RE-REVIEW — V65/RUNTIME/KNOWN TRUTH ALREADY EXECUTED
+
+**Audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322)** exact at handoff `826012cde6f8025fba5323cb1e6c10e2f57979ff`, **43 events** (recheck current CI). [Active #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) handoff is current, older pointers retained. **Read this branch `docs/agent/JEPA_20261103_PLANTED_SYNTHETIC_V65_V77_EXISTING_RECOVERY_AND_NEXT_JEPA_JOIN_HANDOFF.md` first**, then #322 source-backed `JEPA_20261103_PLANTED_SYNTHETIC_JEPA_TEACHER_STUDENT_COMPLETE_HISTORY_AND_JOIN_PLAN.md` and machine JSON `JEPA_20261103_PLANTED_SYNTHETIC_ALREADY_EXECUTED_TEACHER_STUDENT_NO_REPEAT_V1.json`.
+
+**User correction adopted:** synthetic latent biology is **deliberately planted** and known to an independent controller; **human teacher target qualification is not a prerequisite to running synthetic JEPA**. Already done: V65 5,200-cell shared/private planted-Z supervised student recoverability R² .564/.675/.878 with RNA-private negative (104 donors); V65 120-step supervised-EMA mechanics; V65/V67 negative/collapse/technical/uncertainty; canonical V5/V77 actual guarded EMA+checkpoint; V75 100K measurement architecture; #336 9/9 relational known-truth gate; #469/#534/#536 actual fit/rights fixture tests. **Do not rerun these** or invent a new generator simply to make PR316's 3x512 gate accept PR328's 48 genes.
+
+**Actual next novel experiment:** join existing **canonical V5 measured-evidence EMA teacher + masked student** to *existing candidate-agnostic planted* synthetic source (start V65 5,200×96), with **controller Z invisible to optimizer** and frozen donor source/technical/wrong-cell/null/anti-collapse controls; let independent controller evaluate teacher and student separately after fit. V65 prior supervised plant-Z ridge is an existing comparator, *not* JEPA. C3 requires multiple q target panels; source must have lawful measurement states not PR328 detection-as-support. Preserve real Stage4 and real training OFF.
+
+**PR536** author 2/2 green at `b723b9d5`, Macha independent pending; negative source-admission is not the objective. Audit #322 event 43 now corrects proposed sequencing.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # LATEST EXECS — PR536 C2/C3 EXISTING REAL PRODUCER ADMISSION (2026-11-03)
 
 **Audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact HEAD `095c285bdbb50cde2e652e572aa9a5deb75353d2` — 42 append-only chronology events**; latest audit checks queued at first head check. **Active [handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460)**: verify head & checks. **New draft [PR536](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/536)** current `b723b9d522a013554a0a53cf600e6e9812c35935`, **2/2 author CI GREEN** runs `41676844864`, `41676856537`, **Macha fresh-head independent review pending**. Full science/read-free execution handoff: `docs/agent/JEPA_20261103_PR536_ACTUAL_C2_C3_EXECUTED_SOURCE_ADMISSION_HANDOFF.md`. Machine receipt and human forensic audit in canonical #322 (event 42).
