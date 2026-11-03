@@ -1405,6 +1405,48 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/535"
       ]
+    },
+    {
+      "event_id": "20261103-DEEP-HISTORY-OLDER-BIOLOGY-REGULATORY-R5-100K-CUSTODY-RECOVERED",
+      "date_utc": "2026-11-03",
+      "workstream": "pre_october_real_biology_teacher_query_multimodal_perturbation_measurement_and_representations_no_repeat",
+      "implementation_pr": 322,
+      "implementation_head": "72c5e049ae3bd94a47304095b7565d3452690302",
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261103_DEEP_HISTORY_BEYOND_V79_V80_NO_REPEAT_EVIDENCE.md",
+          "role": "source-pinned older PR evidence and scientific-negative/no-duplicate execution status"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261103_DEEP_HISTORY_BEYOND_V79_V80_NO_REPEAT_V1.json",
+          "role": "machine-readable seven completed science/implementation families"
+        }
+      ],
+      "what_already_existed": "PR178 actual 104-donor aggregate count bridge, teacher-query leakage and V5 mechanics; PR163/199 prior target, privileged criticism and recoverability designs; developmental R5 measured query-conditioned R2=0.4300 vs baselines; PR77/117 source-authenticated perturbation assets and Day8 observations; PR131 179384 bulk rows independently reproduced; PR137 paired CRISPRbrain benchmark rejection; PR201 coupled RNA-ATAC-perturbation-spatial synthetic world and adversarial twins; PR207 provider 100K qualification; PR314 corrected real TD replay; PR336 independently audited synthetic relational; Stage72B/74/75F regulatory evidence; old V2.1/V2.2 cohort projections; Stage81A3R historic 224-dim freeze and TD19 depth null.",
+      "new_work_or_result": "Primary original PR metadata and source audit rechecked across pre-September/September/October work, documented seven substantive groups with exact source heads/limits and prevented repeated first-target, multimodal generator, perturbation scoring, 100K measurement, relational audit and SCENIC+ framework assignments. This is recovery into current agent action routing, not new experiments.",
+      "negative_or_counterfactual_evidence": "Old teacher had direct access to queried scalar; old tests could be forged, legacy V2.1 Morabito 0.2237 p=0.3723 weak, source-conditioned TD fine claim failed at HVS P0, CRISPRbrain target engagement 1/31, synthetic V78 mechanism arm falsified, Stage73R STRING/shuffled graphs beat proposed topology, old A3R 224D never production refit, PR328 synthetic VISIBILITY support invalid real measurability. Preserving source-specific historical positive evidence does not override these negatives.",
+      "test_review_scope": "Inspected original PR #77/#87/#117/#131/#137/#163/#178/#199/#201/#207/#242/#311/#312/#314/#318/#321/#328/#336/#339/#349/#369/#379/#401/#440/#447/#469 heads and existing source-blob-pinned #322 original chronology rounds21-34; verified no new data execution, code fit or synthetic source modifications. Original independent CI/receipts remain at original source, not rerun.",
+      "independent_review": "GPT_HISTORICAL_SOURCE_SELECTIVE_RECOVERY__ORIGINAL_SCOPED_INDEPENDENT_ACCEPTANCES_RETAINED__NOT_NEW_BIOLOGY_CERTIFICATION",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "No new general teacher target, ATAC/SCENIC, broad CRISPR, coupled synthetic, full100K, or C2 replay from this audit",
+        "Only source-bound real authenticated rights/parent resolution if precise accepted-code gap demonstrated; source physical q/private-vs-D1 must not leak",
+        "Fresh Macha review #525/#533/#534 and V80 exact identity analysis using original artifacts",
+        "Prospectively authorized learned query-vs-wrong-query with null/donor controls remains absent, distinct from software view tests"
+      ],
+      "historical_supersession": "Supersedes any current next-agent characterization of original R5 target, multimodal/ATAC, 100K synthetic measurement, perturbation ETL, real TD replay and prior controls as never performed; does NOT supersede original source result, negative prior, original model or protected data custody.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/178",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/77",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/137",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/201",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/207",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322"
+      ]
     }
   ]
 }
