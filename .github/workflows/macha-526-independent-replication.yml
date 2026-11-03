@@ -1,0 +1,51 @@
+name: Macha #526 independent replication (aggregates only)
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/v79/macha_independent_replicate_526_v1.py'
+      - 'results/v79/unified_synthetic/JEPA_MACHA_526_INDEPENDENT_REPLICATION_LOCAL_WINDOWS_20261103.json'
+      - '.github/workflows/macha-526-independent-replication.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replicate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.9'
+      - run: python -m pip install -r requirements/unified-synthetic-integration-v1.txt
+      - name: Generator, fit view and receipt unchanged since PR #328 head 25bbdbe1
+        run: |
+          git fetch --no-tags --depth=1 origin 25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec
+          git diff --exit-code 25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec HEAD -- \
+            scripts/v79/unified_synthetic_integration_v1.py scripts/v79/unified_synthetic_fit_view_v1.py \
+            scripts/v79/v79_rare_biology_generator_v1.py scripts/v79/v79_observation_operator.py \
+            scripts/v79/v79_hierarchical_biology.py \
+            results/v79/unified_synthetic/UNIFIED_SYNTHETIC_INTEGRATION_RECEIPT_V2.json
+      - name: Independent replication (does not import the #526 diagnostic)
+        run: |
+          python scripts/v79/macha_independent_replicate_526_v1.py . > replication_ci.json
+          cat replication_ci.json
+      - name: Equal to the local replication and to GPT's published aggregates
+        run: |
+          python - <<'EOF'
+          import json
+          ci = json.load(open("replication_ci.json"))
+          local = json.load(open("results/v79/unified_synthetic/JEPA_MACHA_526_INDEPENDENT_REPLICATION_LOCAL_WINDOWS_20261103.json"))
+          gpt = json.load(open("results/v79/unified_synthetic/JEPA_FROZEN_Q_OTHER_8_MEASUREMENT_REUSE_20261102_V1.json"))["aggregates"]
+          assert ci["world_sha_matches_receipt"] and ci["fit_sha_matches_receipt"]
+          drop = lambda d: {k: v for k, v in d.items() if k != "numpy"}
+          assert drop(ci) == drop(local), "CI and local replication differ"
+          for s, g in gpt.items():
+              m = ci["per_source"][s]
+              assert (m["cells"], m["full_panel_supported_cells"], m["estimable_cells_positive_denominator"]) == \
+                     (g["cells"], g["full_panel_supported"], g["target_estimable"]), s
+              assert m["panel_genes_structurally_unmeasured"] == g["missing_panel_gene_indices"], s
+          print("REPLICATED: numpy", ci["numpy"], "(CI) vs", local["numpy"], "(local)")
+          EOF

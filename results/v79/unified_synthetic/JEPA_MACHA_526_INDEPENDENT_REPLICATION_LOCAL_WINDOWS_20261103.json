@@ -1,0 +1,73 @@
+{
+ "numpy": "2.4.6",
+ "world_sha_matches_receipt": true,
+ "fit_sha_matches_receipt": true,
+ "n_cells": 480,
+ "n_genes": 48,
+ "per_source": {
+  "HVS": {
+   "cells": 180,
+   "support_is_constant_within_source": true,
+   "panel_genes_structurally_unmeasured": [
+    1,
+    8
+   ],
+   "full_panel_supported_cells": 0,
+   "estimable_cells_positive_denominator": 0,
+   "fraction_of_all_genes_structurally_measured": 0.6042,
+   "visibility_detection_fraction_at_panel": [
+    0.984375,
+    0.0,
+    0.234375,
+    0.023438,
+    0.046875,
+    0.109375,
+    0.015625,
+    0.039062,
+    0.0
+   ]
+  },
+  "NPH52": {
+   "cells": 150,
+   "support_is_constant_within_source": true,
+   "panel_genes_structurally_unmeasured": [],
+   "full_panel_supported_cells": 150,
+   "estimable_cells_positive_denominator": 149,
+   "fraction_of_all_genes_structurally_measured": 1.0,
+   "visibility_detection_fraction_at_panel": [
+    0.427632,
+    0.549342,
+    0.832237,
+    0.125,
+    0.723684,
+    0.927632,
+    0.753289,
+    0.394737,
+    0.276316
+   ]
+  },
+  "SEA_AD": {
+   "cells": 150,
+   "support_is_constant_within_source": true,
+   "panel_genes_structurally_unmeasured": [
+    7
+   ],
+   "full_panel_supported_cells": 0,
+   "estimable_cells_positive_denominator": 0,
+   "fraction_of_all_genes_structurally_measured": 0.8125,
+   "visibility_detection_fraction_at_panel": [
+    0.167382,
+    0.137339,
+    0.017167,
+    0.004292,
+    0.094421,
+    0.004292,
+    0.012876,
+    0.0,
+    0.012876
+   ]
+  }
+ },
+ "genes_measured_in_all_three_sources": 26,
+ "support_rule_in_fit_view": "support = VISIBILITY > 0 tiled by position (unified_synthetic_fit_view_v1.py:78-81)"
+}
