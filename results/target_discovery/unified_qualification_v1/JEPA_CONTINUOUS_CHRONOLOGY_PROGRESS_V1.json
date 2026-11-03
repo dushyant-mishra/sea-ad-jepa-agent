@@ -1574,7 +1574,7 @@
       "workstream": "actual_td_target_producer_source_admission_as_new_executable_boundary_test_no_biology_promotion",
       "implementation_pr": 536,
       "implementation_head": "b723b9d522a013554a0a53cf600e6e9812c35935",
-      "change_type": "bounded_new_source_executable_science_negative",
+      "change_type": "scientific_experiment",
       "source_inputs": [
         {
           "path": "docs/agent/JEPA_20261103_PR536_ACTUAL_C2_C3_SOURCE_CONTRACT_EXECUTION_AUDIT.md",
