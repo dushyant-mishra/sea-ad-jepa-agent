@@ -1447,6 +1447,46 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322"
       ]
+    },
+    {
+      "event_id": "20261103-STAGE36-49-CANDIDATES-AND-TD56-59-RELATIONAL-SOLUTIONS-RECOVERED",
+      "date_utc": "2026-11-03",
+      "workstream": "historical_biological_candidate_18_gene_atlas_and_robust_JEPA_objective_portfolio_recovery",
+      "implementation_pr": 322,
+      "implementation_head": "72972bb66678566c80b2ba53bf81c2c7df98da85",
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261103_TARGET_DISCOVERY_CANDIDATE_AND_ROBUST_SOLUTION_RECOVERY.md",
+          "role": "source-pinned original Stage36-49 biological and TD34-59 learning-objective recovery"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_TARGET_CANDIDATE_AND_RELATIONAL_SOLUTION_NO_REPEAT_20261103_V1.json",
+          "role": "machine-indexed 18 genes, four mechanisms, TD positive/negative and C1-C6 no-repeat portfolio"
+        }
+      ],
+      "what_already_existed": "Stage36C/D/E->38C->47->48->49/50 source-bounded 18-gene and four-mechanism candidate atlas, PI top-ten and Stage48 no-broad-rediscovery ruling; TD34-43 cross-source/molecular ordinal geometry, TD44-55 failures; TD56 all-three-source disjoint-gene PASS, TD57B 24/24 donor-recurrent rank PASS, TD57C nearest-third FAIL, TD59 24/24 weaker nearest-half PASS, #314 physically completed corrected replay; PR163/178 teacher-leak repairs, developmental R5 measured query target, PR275/313/331/332/351 C1-C6 independent noncompensating portfolio and PR337/338 known-truth and blocked real-gate qualification.",
+      "new_work_or_result": "Read original decision-bearing main Stage36E, Stage47 consensus, Stage48 18/18 evidence tracing and no-broad-rediscovery, Stage49/50 scope; original target_discovery/ TD56/57B/59 and falsified TD50S/55S; actual relational JEPA protocol and already implemented C1-C6 lattice. Created source-pinned historical delta and machine mirror to make these two already-completed target domains visible in current audit and active handoff. No result rerun.",
+      "negative_or_counterfactual_evidence": "Stage38C external support not_testable; Stage49 known concordance is not independent human validation; Stage50 graph topology claim unqualified; TD50S wrong-cell eval null defeats apparent coordinate transfer; TD55S NPH52 cross-source negative; TD57C HVS first-terminal failure; TD59 tight p95 margin 0.00116 and only 22/24 null-max; R5 developmental not current C3; latent EMA TD60 not performed; PR338 13/28 real biological gate rules blocked. No general gene/target/model winner.",
+      "test_review_scope": "Inspected main exact file blobs for 18-gene candidate table, Stage36E, Stage47/48/49/50 reports, TD56/57B/59 outcomes, TD50S/TD55S negative results, relational protocol and original PR275/313/331/332/337/338/351 reports. No raw data, protected label, model forward or estimator execution. Original head CI claims retained as historical scoped evidence, not rerun or independently rescored today.",
+      "independent_review": "GPT_SOURCE_SELECTIVE_ORIGINAL_RECORD_VERIFICATION__NO_NEW_BIOLOGICAL_ACCEPTANCE__NO_TRAINING_AUTHORITY",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "No new broad Stage36-49 candidate discovery/ranking unless specific new prospective PI question",
+        "Use existing C1/C2/C3 independently qualifying block design and C6/C4 conditional fusion; do not require fusion to retain valid constituents",
+        "Learned TD60-type EMA teacher relational continuity versus matched wrong-cell and partial-view controls remains unqualified, must not infer training authority",
+        "Real source/query rights, actual issuer and PR338 gate semantics remain to be qualified before any human target selection"
+      ],
+      "historical_supersession": "Supersedes generic handoff claims that candidate genes, program-level priorities, robust relational target approaches or C1-C6 portfolio solution have not yet been investigated. Original historical negative/positive statuses remain unchanged.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb/results/reports/stage48_gene_discovery_rerun_decision_v1.md",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb/results/tables/stage48_final_candidate_traceability_v1.csv",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb/target_discovery/iterations/td57b_independent_triplet_recurrence/TD57B_RESULT.md",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/275",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/338"
+      ]
     }
   ]
 }
