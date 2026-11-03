@@ -13,8 +13,14 @@
 ## Executed versus pending — explicit
 
 - Workflow `41676453529` on #536 first head `7a894b56`: compiled, installed original PR328 requirements, reproduced the exact frozen original PR328 world/fit (source output `PR328_ORIGINAL_WORLD_AND_FIT_VERIFIED__FIT_ONLY_OBSERVATIONS_READY`), then **failed** in author-written test at direct PR316 call because the required `profile_id` keyword was absent. This is a **test caller defect**, not source or scientific false-negative.
-- New code head `b723b9d5` fixes only the caller's missing `profile_id` without modifying original synthetic generator, PR316 gate, C3 measured target or gate law. Same-head CI **pending at document authoring**; check actual run results before claiming valid C2/C3 negative admission.
+- New code head `b723b9d5` fixes only the caller's missing `profile_id` without modifying original synthetic generator, PR316 gate, C3 measured target or gate law. Same-head CI **2/2 SUCCESS**, runs [41676844864](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41676844864) and [41676856537](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41676856537), with compact artifact `13251741068` (30-day retention). **Author-scoped engineering result only; independent Macha acceptance pending.**
 - PR #536 author test creates no actual hidden-truth score, no current C2/C3 learned estimator and no real source/read authorization. A passing test means the source is correctly refused, not the pipeline biologically qualified.
+
+## Exact returned synthetic diagnostic (new execution, no biological selection)
+
+The original fit-only transport selected **30 TRAIN cells, 9 donors, 3 synthetic source labels** from the unchanged original 480×48 bank. The existing PR526 measured q-other-eight function constructed **10/30 lawful synthetic targets**: HVS-like 0/10, SEA-AD-like 0/10, NPH52-like 10/10; **20/30 NOT_ESTIMABLE**. This pattern is **not human source support biology**, because original #328 `VISIBILITY>0` incorrectly replaces real structural assay membership with empirical detection (Macha #531). Query-scalar invariance passed. Original PR316 C2 executor correctly hard-refused the 48-address source against its 3×512 contract. Original PR313 C3 adapter correctly required a separately computed `query_student`, absent in this zero-optimizer test. Design gate #338 still has 13 blocked scientific rules. No controller truth was opened, no learned student was fitted, and no current target-selection/Stage4 authority changed.
+
+Machine receipt: `results/target_discovery/unified_qualification_v1/JEPA_PR536_ACTUAL_C2_C3_FROZEN_PRODUCER_NEGATIVE_ADMISSION_20261103_V1.json`. Author-green CI is **not** an independently qualified full science result.
 
 ## Consequential continuation
 
