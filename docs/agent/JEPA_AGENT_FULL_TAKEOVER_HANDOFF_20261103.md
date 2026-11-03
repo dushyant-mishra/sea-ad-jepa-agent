@@ -1,3 +1,9 @@
+# Latest CI refinement: frozen V80 hash unresolved; source-first synthetic tests still valuable (2026-11-03)
+
+Latest [draft PR #534](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534) diagnostic head `165447a8bbdef8b427ca9cd0d29b51c36b9c1c1a`. **Two subsequent hosted runs at this exact head FAIL CLOSED at the original V80 full benchmark SHA** (41665045822, 41665058401), both observing `faf80c897ab6f568ec2ca243471b1e3329950ce86e9ab69b7b5c3e3891c7b769` against original `16a08b29...` with original Git source, seed, Python and NumPy pins. Their per-family FIT-visible `support/detected/design/positive_value` binary-array hashes match each other across all 8 worlds. Earlier same-source head 63dad948 run 41664040630 passed original benchmark hash. **Cause not established; current head is NOT CI green.** Source data, seed, benchmark, old receipt and V79 law were never modified. Audit #322 forensic file `results/target_discovery/unified_qualification_v1/JEPA_V80_FROZEN_SYNTHETIC_HOST_IDENTITY_FORENSIC_V1.json` is the exact preserved evidence. Do not infer hardware/float root cause without a controlled diagnostic and independent Macha review. Existing PR328/PR474/Task5 fixed-world 30/30 fixture mechanics and negative leakage witnesses remain valid at scoped author CI; real source and biological training remain blocked.
+
+---
+
 # Final correction: SYNTHETIC BANKS FIRST, verified original source-world tests (2026-11-03)
 
 The owner identified that the GPT workstream was **underusing the robust synthetic research already completed**. It is now mandatory to answer four questions before proposing any test: (1) exact unanswered hypothesis; (2) historical experiments and negative evidence; (3) what observation would change the conclusion; (4) whether existing code/data already execute that test. Synthetic-first is **not** permission to create another simulator, retune V79/V80, rerun an exhausted comparison, or start training.
