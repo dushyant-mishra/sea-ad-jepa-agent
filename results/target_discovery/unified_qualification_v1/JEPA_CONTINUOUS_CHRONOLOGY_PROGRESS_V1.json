@@ -1100,6 +1100,38 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531#issuecomment-6596897081",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/528#issuecomment-6596890794"
       ]
+    },
+    {
+      "event_id": "20261103-INDEPENDENT-RELATIONAL-PHASE2-PR336-RECOVERED",
+      "date_utc": "2026-11-03",
+      "workstream": "source_recovery_prior_completed_independent_phase2_relational_audit_no_repeat",
+      "implementation_pr": 336,
+      "implementation_head": "b92f335b53a93805a5d05330dc0d61f0479b1dcf",
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261103_PHASE2_RELATIONAL_INDEPENDENT_AUDIT_RECOVERED.md",
+          "role": "exact independent completed audit receipt and no-repeat correction"
+        }
+      ],
+      "what_already_existed": "Original source-controlled phase2 relational known-truth audit in PR336 at b92f335b, CI run 38478444632 on that exact source head, frozen receipt SHA256 53820343. Later Macha #531 and GPT follow-up incorrectly listed this independent review as missing.",
+      "new_work_or_result": "Recovered and inspected original PR336 audit script, three independent hostile tests and GitHub Actions run with exact 2026-10-13 head success. Nine expected/observed capability statuses match; QUALIFIED at TEST_QUALIFICATION_ONLY and all real/training/Stage4 flags false. Removed redundant audit from next-action queue without rerunning phase2 or reading controller truth.",
+      "negative_or_counterfactual_evidence": "Phase2 was not unaudited. This test-only known-truth qualification does not establish actual human C2 or trained JEPA target/representation; Macha #531 detection-as-structural-support falsifier remains binding.",
+      "test_review_scope": "Original #336 source and CI confirmed, 3 tests and nine capability statuses, no current reexecution or new fit.",
+      "independent_review": "PR336_ORIGINAL_INDEPENDENT_QUALIFIED_TEST_ONLY__GPT_LATER_SOURCE_RECOVERY_NOT_NEW_ACCEPTANCE",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "No independent Phase2 rerun needed; preserve PR336 scope",
+        "Macha independent new head #525 review of GPT #530 repair remains",
+        "Source/q mapped real CaseBundle missing, PR328 support semantics remain wrong for human extrapolation, wrong-query contrast not implemented"
+      ],
+      "historical_supersession": "Supersedes only #531 and GPT November 3 assertion that no independent PR321 phase2 receipt audit was recorded; prior PR336 and phase2 evidence untouched.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/38478444632",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531#issuecomment-6596967713"
+      ]
     }
   ]
 }
