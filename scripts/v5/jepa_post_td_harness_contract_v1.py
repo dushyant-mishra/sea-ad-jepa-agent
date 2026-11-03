@@ -178,16 +178,30 @@ def derive_teacher_evidence_set(
     or grant training authority.
     """
     value = str(policy).upper()
-    measured = frozenset(int(x) for x in measured_addresses)
-    student = frozenset(int(x) for x in student_visible_addresses)
-    block = frozenset(int(x) for x in target_block_addresses)
+
+    def addresses(raw: Iterable[int], label: str) -> frozenset[int]:
+        # Molecular identity must not be created by int() coercion:
+        # bool, float and strings may alias genuine measured addresses.
+        try:
+            items = tuple(raw)
+        except TypeError as exc:
+            raise PostTDContractError(f"{label} must be an iterable of integer addresses") from exc
+        if any(type(item) is not int or item < 0 for item in items):
+            raise PostTDContractError(f"{label} requires exact non-negative integer molecular addresses")
+        return frozenset(items)
+
+    measured = addresses(measured_addresses, "measured_addresses")
+    student = addresses(student_visible_addresses, "student_visible_addresses")
+    block = addresses(target_block_addresses, "target_block_addresses")
+    if query_address is not None and (type(query_address) is not int or query_address < 0):
+        raise PostTDContractError("query_address requires an exact non-negative integer molecular address")
     if not student <= measured:
         raise PostTDContractError("student-visible evidence must be a subset of measured evidence")
     if not block <= measured:
         raise PostTDContractError("target block must be a subset of measured evidence")
-    if query_address is not None and int(query_address) not in measured:
+    if query_address is not None and query_address not in measured:
         raise PostTDContractError("query address must be measured when supplied")
-    query = None if query_address is None else int(query_address)
+    query = query_address
 
     if value == "RICH_Q_VISIBLE_REFERENCE":
         if query is None:
@@ -327,10 +341,49 @@ def validate_matched_compute(
     parameter_relative_tolerance: float = 0.02,
     flop_relative_tolerance: float = 0.02,
 ) -> dict:
-    if parameter_relative_tolerance < 0 or flop_relative_tolerance < 0:
-        raise PostTDContractError("matched-compute tolerances must be non-negative")
+    for label, tolerance in (
+        ("parameter_relative_tolerance", parameter_relative_tolerance),
+        ("flop_relative_tolerance", flop_relative_tolerance),
+    ):
+        if type(tolerance) not in (int, float):
+            raise PostTDContractError(f"{label} must be finite and non-negative")
+        try:
+            finite = math.isfinite(float(tolerance))
+        except (OverflowError, ValueError) as exc:
+            raise PostTDContractError(f"{label} must be finite and non-negative") from exc
+        if not finite or tolerance < 0:
+            raise PostTDContractError(f"{label} must be finite and non-negative")
+    if type(reference) is not MatchedComputeContract or type(challenger) is not MatchedComputeContract:
+        raise PostTDContractError("matched-compute inputs must be MatchedComputeContract instances")
+
     r = asdict(reference)
     c = asdict(challenger)
+    count_fields = ("trainable_parameters", "cell_presentations", "optimizer_updates", "evaluation_exposures")
+    measured_fields = ("teacher_flops", "student_flops", "evidence_budget", "mask_budget")
+    for label, values in (("reference", r), ("challenger", c)):
+        for field in count_fields:
+            value = values[field]
+            if type(value) is not int or value < 0:
+                raise PostTDContractError(f"{label} {field} must be an exact non-negative integer")
+            try:
+                finite = math.isfinite(float(value))
+            except (OverflowError, ValueError):
+                finite = False
+            if not finite:
+                raise PostTDContractError(f"{label} {field} exceeds the finite comparison domain")
+        for field in measured_fields:
+            value = values[field]
+            if type(value) not in (int, float):
+                raise PostTDContractError(f"{label} {field} must be finite and non-negative")
+            try:
+                finite = math.isfinite(float(value))
+            except (OverflowError, ValueError):
+                finite = False
+            if not finite or value < 0:
+                raise PostTDContractError(f"{label} {field} must be finite and non-negative")
+        if type(values["hardware_class"]) is not str or not values["hardware_class"]:
+            raise PostTDContractError(f"{label} hardware_class must be a non-empty string")
+
     exact_fields = (
         "cell_presentations",
         "optimizer_updates",
@@ -344,8 +397,9 @@ def validate_matched_compute(
             raise PostTDContractError(f"matched-compute mismatch: {field}")
 
     def relative_difference(a: float, b: float) -> float:
-        denom = max(abs(float(a)), abs(float(b)), 1.0)
-        return abs(float(a) - float(b)) / denom
+        left, right = float(a), float(b)
+        denom = max(abs(left), abs(right), 1.0)
+        return abs(left - right) / denom
 
     if relative_difference(reference.trainable_parameters, challenger.trainable_parameters) > parameter_relative_tolerance:
         raise PostTDContractError("matched-compute mismatch: trainable_parameters")
@@ -484,10 +538,51 @@ def build_synthetic_rehearsal_preflight(
     synthetic_package_sha256: str,
     output_root: Path | str,
 ) -> dict:
+    # Take detached JSON snapshots before validating. Callers cannot mutate
+    # a dict between our checks and the returned rehearsal receipt. The SHA
+    # protects internal consistency only; it is NOT an external signer/issuer.
+    def verified_snapshot(payload: Mapping, digest_field: str, label: str) -> dict:
+        if type(payload) is not dict:
+            raise PostTDContractError(f"{label} must be a plain JSON object")
+        try:
+            snapshot = json.loads(json.dumps(
+                payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False,
+            ))
+            digest = snapshot.get(digest_field)
+            if type(digest) is not str or not _HEX64.fullmatch(digest):
+                raise PostTDContractError(f"{label} digest is missing or malformed")
+            without_digest = dict(snapshot)
+            del without_digest[digest_field]
+            if _canonical_sha256(without_digest) != digest:
+                raise PostTDContractError(f"{label} digest does not match its content")
+        except (TypeError, ValueError, OverflowError, RecursionError) as exc:
+            if isinstance(exc, PostTDContractError):
+                raise
+            raise PostTDContractError(f"{label} must be canonical JSON") from exc
+        return snapshot
+
+    portfolio = verified_snapshot(portfolio, "portfolio_sha256", "target portfolio")
+    architecture_plan = verified_snapshot(architecture_plan, "architecture_sha256", "architecture plan")
     if portfolio.get("schema") != PORTFOLIO_SCHEMA:
         raise PostTDContractError("invalid target portfolio schema")
     if architecture_plan.get("schema") != ARCHITECTURE_SCHEMA:
         raise PostTDContractError("invalid architecture plan schema")
+    for label, payload in (("portfolio", portfolio), ("architecture", architecture_plan)):
+        authority = payload.get("authority")
+        if type(authority) is not dict or set(authority) != set(_AUTHORITY_OFF):
+            raise PostTDContractError(f"{label} contains unexpected or missing authority flags")
+        if any(type(authority[k]) is not bool or authority[k] is not False for k in _AUTHORITY_OFF):
+            raise PostTDContractError(f"{label} cannot claim authority in synthetic rehearsal")
+    if architecture_plan.get("status") != "IMPLEMENTATION_PLAN_ONLY__TRAINING_OFF":
+        raise PostTDContractError("architecture plan is not rehearsal-only")
+    semantics = architecture_plan.get("output_semantics")
+    if type(semantics) is not dict or any(
+        type(spec) is not dict
+        or spec.get("production_selection_authority") is not False
+        or spec.get("use") != "MECHANICS_REHEARSAL_PLACEHOLDER_ONLY"
+        for spec in semantics.values()
+    ):
+        raise PostTDContractError("architecture output semantics must remain rehearsal-only")
     if architecture_plan.get("portfolio_sha256") != portfolio.get("portfolio_sha256"):
         raise PostTDContractError("architecture plan is not bound to this target portfolio")
     if not isinstance(synthetic_package_sha256, str) or not _HEX64.fullmatch(synthetic_package_sha256):
