@@ -6,8 +6,8 @@
   "canonical_audit": {
     "pr": 322,
     "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
-    "head_at_handoff": "b9ec3f96003624e4e1549ff119e238a9b13a5543",
-    "chronology_events": 49,
+    "head_at_handoff": "29899d856c51463ce033aa536ad2bc2d24b7b304",
+    "chronology_events": 50,
     "ci": "CHECK_SAME_CURRENT_HEAD__DO_NOT_ASSUME_QUEUED_IS_GREEN",
     "master_doc": "docs/agent/JEPA_20261104_MASTER_HISTORICAL_AUDIT_AND_NO_REPEAT_TAKEOVER_V1.md",
     "master_machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
@@ -17,7 +17,12 @@
     "chronology": "results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json",
     "v9_historical_completeness_report": "docs/agent/JEPA_20261104_V9_PREVIOUS_WORK_UNDERINDEXING_CORRECTION_V1.md",
     "v9_historical_completeness_index": "results/target_discovery/unified_qualification_v1/JEPA_20261104_V9_PREVIOUS_WORK_COMPLETENESS_CROSSWALK_V1.json",
-    "v9_historical_underindexed_workstreams": 16
+    "v9_historical_underindexed_workstreams": 16,
+    "project_wide_history_report": "docs/agent/JEPA_20261104_PROJECT_WIDE_HISTORY_ACCOUNTABILITY_AND_NEXT_ACTIONS_V1.md",
+    "all_pr_metadata_register": "results/target_discovery/unified_qualification_v1/JEPA_20261104_ALL_535_PR_DESCRIPTION_DISPOSITION_REGISTER_V1.json",
+    "all_pr_source_census": "results/target_discovery/unified_qualification_v1/JEPA_20261104_COMPLETE_535_PR_AND_OPEN_ISSUE_METADATA_CENSUS_V1.json",
+    "additional_sourced_history": "results/target_discovery/unified_qualification_v1/JEPA_20261104_ADDITIONAL_PRIOR_WORK_CROSSWALK_AND_OPEN_ISSUES_V1.json",
+    "exact_next_science_decisions": "results/target_discovery/unified_qualification_v1/JEPA_20261104_FINAL_HISTORY_ACCOUNTABILITY_AND_NEXT_DECISION_REGISTER_V1.json"
   },
   "active_handoff": {
     "pr": 460,
@@ -165,5 +170,30 @@
     "no_original_experiment_repeated": true,
     "first_read_doc": "docs/agent/JEPA_20261104_V9_PREVIOUS_WORK_UNDERINDEXING_CORRECTION_V1.md",
     "source_index": "results/target_discovery/unified_qualification_v1/JEPA_20261104_V9_PREVIOUS_WORK_COMPLETENESS_CROSSWALK_V1.json"
-  }
+  },
+  "project_wide_accountability": {
+    "github_pull_requests": 535,
+    "main_tree_tracked_blobs": 4710,
+    "issues_that_are_not_pull_requests": [
+      54,
+      55,
+      494
+    ],
+    "older_pr_snapshot_preserved": 519,
+    "previous_underindexed_workstreams": 16,
+    "additional_underindexed_source_workstreams": 15,
+    "chronology_events": 50,
+    "complete_metadata_census": true,
+    "independent_full_diff_scientific_audit_for_all_prs": false,
+    "prior_science_status": "PRESERVED_ORIGINAL_SOURCES_AND_NO_REPEAT",
+    "current_ci_scope": "CHECK_EXACT_CURRENT_HEAD; AUTHOR_PASS_NOT_BIOLOGY"
+  },
+  "current_blocked_next_order": [
+    "authenticate real q/source/CaseBundle and issue494",
+    "Macha latest-head hostile review PR525 and PR538",
+    "frozen multi-q measured target scientific evaluation against correct-cell/wrong-q/technical controls",
+    "PR534 V80 frozen SHA RED, PR533 selection law held",
+    "PR537 GPU duplicate-risk HOLD",
+    "issue54 N1 and issue55 rare-tail separate guarded preflight"
+  ]
 }
