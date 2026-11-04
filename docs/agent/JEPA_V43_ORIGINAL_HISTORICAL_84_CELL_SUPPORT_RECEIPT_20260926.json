@@ -1,0 +1,64 @@
+{
+  "schema": "JEPA_V43_ORIGINAL_84_CELL_SUPPORT_PREFLIGHT_V1",
+  "date": "2026-09-26",
+  "status": "PHYSICALLY_RECOMPUTED_ON_USER_SUPPLIED_HISTORICAL_ORIGINAL_IN_CHAT__RESEARCH_ONLY",
+  "source": {
+    "filename": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+    "bytes": 410278055,
+    "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "github_bytes_uploaded": false
+  },
+  "members": {
+    "truth_npz": {
+      "suffix": "FOUNDATION_84_CELL_TRUTH_TABLE.npz",
+      "bytes": 4960396,
+      "sha256": "2aca870343b65f2deabe32fdc8e18bd26211f505e8bcb3b6f2d53cb0dc6573c3"
+    },
+    "metadata_csv": {
+      "suffix": "FOUNDATION_84_CELL_TRUTH_TABLE_METADATA.csv",
+      "bytes": 24712,
+      "sha256": "b505972bd57a034fa0805652e97e00e3ae93afc141b5aa4b16d9bd400a2d43ba"
+    }
+  },
+  "physical_measurements": {
+    "rows": 84,
+    "distinct_operators": 42,
+    "cells_per_operator": 2,
+    "canonical_gene_width": 41238,
+    "measured_addresses_per_row_min": 18736,
+    "measured_addresses_per_row_max": 35076,
+    "all_42_operator_common_measured_addresses": 17186,
+    "union_measured_addresses_any_sampled_operator": 40949,
+    "observation_state_counts_opaque_codes": {
+      "0": 1317288,
+      "1": 2123806,
+      "2": 22898
+    },
+    "observation_state_measured_counts_opaque_codes": {
+      "0": 0,
+      "1": 2123806,
+      "2": 0
+    },
+    "same_support_within_operator": true,
+    "hidden_unmeasured_entries": 0,
+    "nonzero_hidden_encoder_inputs": 0,
+    "nonhidden_encoder_input_expression_unequal_entries": 0,
+    "canonical_address_6186_measured_rows": 84,
+    "canonical_address_12469_measured_rows": 84
+  },
+  "scope": {
+    "original_data_class": "historical_84_cell_mechanics_truth_table__NOT_CURRENT_FULL104",
+    "independent_donor_heldout_qualified": false,
+    "biological_target_fidelity_established": false,
+    "rare_teacher_efficacy_established": false,
+    "real_multiteacher_trained": false,
+    "support_is_not_biological_validity": true
+  },
+  "scientific_authority": {
+    "training_authorized": false,
+    "protection_opened": false,
+    "audit_b_n1_opened": false
+  },
+  "reproducer": "scripts/agent/v43_original_84_cell_support_preflight_research.py",
+  "notes": "Source original is local and hash-authenticated. GitHub stores receipt and reproducer, not 410MB protected/unreviewed original. obs codes are reported opaque; measured_mask defines actual scalar support."
+}
