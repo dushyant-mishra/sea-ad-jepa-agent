@@ -1,0 +1,37 @@
+name: JEPA postrepair original planted biology GPU runner - source preflight only
+
+on:
+  push:
+    branches:
+      - experiment/postrepair-ipb-jepa-only-a3-original-biology-20261104
+  pull_request:
+    paths:
+      - 'scripts/v4/stage81a3_ipb_jepa_only_postrepair_rerun_20261104.py'
+      - 'tests/v4/test_stage81a3_ipb_jepa_only_postrepair_rerun_20261104.py'
+      - '.github/workflows/jepa-postrepair-ipb-planted-gpu-rerun-preflight-20261104.yml'
+      - 'docs/agent/JEPA_20261104_POSTREPAIR_SIX_IPB_JEPA_ONLY_MATCHED_SYNTHETIC_GPU_RUN.md'
+
+permissions:
+  contents: read
+
+jobs:
+  no-repeat-source-and-science-preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.9'
+      - name: Compile modified test-only launcher without CUDA or data access
+        run: |
+          python -m py_compile scripts/v4/stage81a3_ipb_jepa_only_postrepair_rerun_20261104.py
+          python -m py_compile tests/v4/test_stage81a3_ipb_jepa_only_postrepair_rerun_20261104.py
+      - name: Independent hostile tests for old source retention, masked recovery criteria and strict protected gradients
+        run: python tests/v4/test_stage81a3_ipb_jepa_only_postrepair_rerun_20261104.py -v
+      - name: Require exact original Stage81A3 scientific source identity
+        run: |
+          test "$(git rev-parse HEAD:scripts/v4/stage81a3_ipb_jepa_feasibility.py)" = "49206efd40b8f7a69891d788f657fc5d44d9f687"
+          echo "SCOPED_CPU_SOURCE_PREFLIGHT_ONLY__NO_GPU_TRAINING__NO_BIOLOGICAL_CLAIM"
