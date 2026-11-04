@@ -1,5 +1,16 @@
 # JEPA V9 — new-agent cold-start scientific, source, data and execution takeover (2026-11-04)
 
+
+## Controlling event 52: audit-to-implementation two-branch custody
+
+**2026-11-04, audit PR #322 committed head `78b5431b2c7d144b1778000ef4f4f0f19cbb4a6b`.** Before using older V9 next-action lists below, read the new source-indexed `docs/agent/JEPA_20261104_LEARNED_STUDENT_BIOLOGICAL_GAP_READONLY_DECISION_V1.md` **on PR #322**, plus the chronology's 52nd event. PR #539 was an unnecessary parallel scientific-documentation branch; its findings were transferred to #322 for ongoing custody and it is superseded as the operational history route. Do not erase completed research or repeat author-only tests.
+
+**Scientific distinction, not a run:** existing TD60 describes a learned-*teacher* continuity gate but is not a positive biology result; its original fixed-u40 biological milestone is superseded in principle by V5's full-reader scientific-exposure clock. The not-yet-demonstrated distinct claim is that a learned *student* predicts **correct-cell broad/mesoscale RNA relationships from partial lawful evidence**, beyond matched depth, operator/source/donor and wrong-cell baselines. The original R5 q-aware donor holdout and Stage81B JEPA-only have already run and cannot be relabeled untested; R5 exact primary receipt remains audit-reconciled rather than newly recovered.
+
+**Future-agent invariant:** review original evidence and exact current #322/#460 heads; keep real new implementation in its owner PR and exact-head independent review; append source-scoped outcomes, negatives, test authority and one chronology event to #322; inspect audit CI; then update this #460 first-read/pointer and machine status to the **actual new audit SHA**, verify handoff CI, and record any pending checks. Do not create a separate chronology/consolidation PR. PR537 GPU HOLD, PR534 SHA regression separate, #525/#538 incremental reviews conditional, no new physical source reads or training. `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 **CURRENT OPERATIONAL HANDOFF.** It supersedes older V8a–V8e *instructions*, not their empirical results or immutable negative evidence. The standing scientific lock is:
 
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
