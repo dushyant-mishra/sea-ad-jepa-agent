@@ -1,6 +1,6 @@
 # CURRENT 2026-11-04 — EVENT 57 OWNER RULINGS
 
-Canonical audit PR #322 exact head is now `166add8544f07f869ab585b9bd3d6cf9bcd23d5a`, **57 append-only events**. Event57 resolves the three owner decisions left in Macha's 2026-11-03 handoff:
+Canonical audit PR #322 exact head is now `a6e4fa559c0b95f541f02d099176b85d803a3111`, **57 append-only events**. Event57 resolves the three owner decisions left in Macha's 2026-11-03 handoff:
 
 - **QC metadata:** APPROVED narrowly for `SEA-AD Doublet score` and `HVS is_primary_data` as versioned QC/provenance metadata only. They are not pathology labels, expression/model features, teacher/student inputs, donor/specimen surrogates, or biological targets.
 - **Real Level-4 → CaseBundle:** **NO NEW COUNT-VALUE READ AUTHORIZED NOW.** Reuse historical PR59/69 reads/receipts. Any future real CaseBundle read requires one exact frozen decision-bearing experiment and q/alias/selection/source rights bound first.
