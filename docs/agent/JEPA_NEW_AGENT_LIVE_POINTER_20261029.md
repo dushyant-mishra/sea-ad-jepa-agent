@@ -10,7 +10,7 @@
 
 **This update is an end-to-end history reconstruction, not new scientific authorization or a next-experiment recommendation.** Original completed source/ETL and D1/V2C fixture reviews remain as already audited; original NPH52 query issuance and authentic real-source issuer have their original scoped standing. No training/GPU/test promotion. **`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.**
 
-**Permanent next-agent custody:** original implementation evidence on its actual owner PR → source/negative/decision append-only event on audit #322 → inspect exact-head audit CI → update #460 current first-read/machine pointer to that exact audit head and review its current CI. Do not create separate science-consolidation PRs. The current audit head's checks were still running at initial observation; confirm completion independently.
+**Permanent next-agent custody:** original implementation evidence on its actual owner PR → source/negative/decision append-only event on audit #322 → inspect exact-head audit CI → update #460 current first-read/machine pointer to that exact audit head and review its current CI. Do not create separate science-consolidation PRs. Audit PR #322 current pinned head `99f4cc01a2b73741c5010deb29b2a0b0fa4020e7` was subsequently checked: **24/24 workflows completed successfully**. This verifies custody/test checks, not biological model qualification. Check any later audit/hand-off heads independently.
 
 ---
 
