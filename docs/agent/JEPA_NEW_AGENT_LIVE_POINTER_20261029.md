@@ -1,3 +1,19 @@
+# READ FIRST (2026-11-04, SOL EVENT66) — K01 ACCEPTED ONLY, K02/K03 HOSTED GREEN, FROZEN TASK3 NEW RED
+
+**Canonical audit #322**: exact `0feee156c7f7e311de2424ac8ea454dd6fb1f74c`, **66 events**, current source `docs/agent/JEPA_20261104_TASK4_K02_K03_AND_FROZEN_TASK3_HISTORY_RED_EVENT66.md`, machine index key `task4_k02_k03_frozen_task3_history_red_event66_20261104`. Read this before assigning work; earlier event65 V80 original archive rescue, event64 Task4 K01, event63 original downstream implementation, event62 Macha plan are preserved below.
+
+**Macha has completed independent #543 K01 review:** [`ACCEPT_SCOPED_K01_FIX_ONLY`](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/543#issuecomment-6639527711), original exact head `7e4bffe8`. He then filed **two new latent REDs** in [test-only #544](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/544), head `b6295751`: **K02** forged exact-type history custody earns C3 PASS (4 cases); **K03** fake replay store earns C1 PERSISTENT_EXTERNAL (2 cases). Original six CI failures retained.
+
+**Sol has fixed K02/K03 on new draft [#545](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/545)**, exact `f68513aeae83aaff7eae81dfda569fed3dd8359c`. Single production file `task4_authority_barrier_v1.py`: self-asserted Task3 history can only produce `UNAUTHENTICATED_SNAPSHOT`, never authoritative C3 PASS; C1 requires exact `PersistentCustodyStore` and unbound actual replay, not a caller-created fake. Macha's six original RED tests inherited byte-identically, now **hosted exact-head CI 4/4 GREEN**: [Task4 run 41895158495](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41895158495), Linux focused 223 passed/10 skipped, full 414 passed/10 skipped, Windows 63 passed/7 skipped, 100k benchmark 1 passed. **Macha independent review of #545 is pending**; no cumulative acceptance.
+
+**New inherited upstream issue, not a Task4 fix:** Test-only [#546](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/546), exact `97594b419d31ad746402d74307bf3b0a845c22c4` branched off accepted **frozen Task3** `117dd51d`, leaves source untouched. **R1** Task3 `_require_history_custody` permits subclass overriding `validate_current`; **R2** validates a class-exact custody with overwritten HMAC head, never checking provenance. Both **hosted RED** in Task2 and Task3 workflows: exactly 2 expected failures / 192 passes each; lawful guard passes. This is a direct Task3 history validation flaw, **not proven actual successful privileged promotion**. Do not modify the accepted/frozen Task3 in place: independent nonauthor Task3 assessment plus owner-controlled corrected successor required. Do not merge test-only #546 alone.
+
+**Current action order:** Macha reviews Sol's #545, then cumulative Task4 #541 can be reconsidered as **scoped NONAUTHORIZING mechanics** only if every applicable review/limitation holds. Separate owner/reviewer disposition of Task3 #546. No Task5 promotion on green CI. Preserve L01 process-only DEVELOPMENT exposure budget, same-algorithm replay, Windows↔WSL local-only 40/40, Task1 repaired encoder outside frozen Task3 ancestry, no external C1/C3 trust and hard C5–C9 FAIL. No FINAL, training, GPU, new synthetic world, Level4 read or Stage4. Original V80 ZIP files are recovered and hash-verified (event65), but **separate owner-only controller vault escrow is still open**.
+
+**Global:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # READ FIRST (2026-11-04, SOL EVENT65) — V80 ORIGINAL ARCHIVES RECOVERED, NO REGENERATION
 
 Canonical audit #322 exact head `9d4f83a8922a69d7cd286ef5248679c52a6d7a3a` now contains **65 append-only events**. New primary custody document `docs/agent/JEPA_20261104_V80_ORIGINAL_ARTIFACT_RESCUE_AND_FIT_ONLY_PORTABILITY_TRIAGE_EVENT65.md`; machine no-repeat index key `v80_original_archive_rescue_and_fit_only_drift_event65_20261104`.
