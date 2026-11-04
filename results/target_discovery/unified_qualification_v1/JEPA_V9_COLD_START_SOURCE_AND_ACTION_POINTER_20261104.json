@@ -6,8 +6,8 @@
   "canonical_audit": {
     "pr": 322,
     "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
-    "head_at_handoff": "29899d856c51463ce033aa536ad2bc2d24b7b304",
-    "chronology_events": 50,
+    "head_at_handoff": "0d894f1f433621a79747968091988bd28da4c078",
+    "chronology_events": 51,
     "ci": "CHECK_SAME_CURRENT_HEAD__DO_NOT_ASSUME_QUEUED_IS_GREEN",
     "master_doc": "docs/agent/JEPA_20261104_MASTER_HISTORICAL_AUDIT_AND_NO_REPEAT_TAKEOVER_V1.md",
     "master_machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
@@ -22,7 +22,9 @@
     "all_pr_metadata_register": "results/target_discovery/unified_qualification_v1/JEPA_20261104_ALL_535_PR_DESCRIPTION_DISPOSITION_REGISTER_V1.json",
     "all_pr_source_census": "results/target_discovery/unified_qualification_v1/JEPA_20261104_COMPLETE_535_PR_AND_OPEN_ISSUE_METADATA_CENSUS_V1.json",
     "additional_sourced_history": "results/target_discovery/unified_qualification_v1/JEPA_20261104_ADDITIONAL_PRIOR_WORK_CROSSWALK_AND_OPEN_ISSUES_V1.json",
-    "exact_next_science_decisions": "results/target_discovery/unified_qualification_v1/JEPA_20261104_FINAL_HISTORY_ACCOUNTABILITY_AND_NEXT_DECISION_REGISTER_V1.json"
+    "exact_next_science_decisions": "results/target_discovery/unified_qualification_v1/JEPA_20261104_FINAL_HISTORY_ACCOUNTABILITY_AND_NEXT_DECISION_REGISTER_V1.json",
+    "controlling_recent_science_correction": "docs/agent/JEPA_20261104_RECENT_TWO_WEEK_SCIENCE_RESOLUTIONS_AND_CORRECTED_NEXT_WORK_V1.md",
+    "recent_108_pr_precedence_index": "results/target_discovery/unified_qualification_v1/JEPA_20261104_LAST_14_DAYS_108_PR_RESULT_PRECEDENCE_AND_NO_REPEAT_V1.json"
   },
   "active_handoff": {
     "pr": 460,
@@ -189,11 +191,35 @@
     "current_ci_scope": "CHECK_EXACT_CURRENT_HEAD; AUTHOR_PASS_NOT_BIOLOGY"
   },
   "current_blocked_next_order": [
-    "authenticate real q/source/CaseBundle and issue494",
-    "Macha latest-head hostile review PR525 and PR538",
-    "frozen multi-q measured target scientific evaluation against correct-cell/wrong-q/technical controls",
-    "PR534 V80 frozen SHA RED, PR533 selection law held",
-    "PR537 GPU duplicate-risk HOLD",
-    "issue54 N1 and issue55 rare-tail separate guarded preflight"
-  ]
+    "PREVIOUS_LIST_SUPERSEDED_BY_CORRECTED_SOURCE_PRECEDENCE__DO_NOT_EXECUTE_OLD_ACTIONS"
+  ],
+  "controlling_recent_source_precedence_20261104": {
+    "status": "CORRECTED_AFTER_108_RECENT_PR_AND_LATER_ERRATA_READ",
+    "audit_head": "0d894f1f433621a79747968091988bd28da4c078",
+    "chronology_events": 51,
+    "pr_count_recent": 108,
+    "read_first": "docs/agent/JEPA_20261104_RECENT_TWO_WEEK_SCIENCE_RESOLUTIONS_AND_CORRECTED_NEXT_WORK_V1.md",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_LAST_14_DAYS_108_PR_RESULT_PRECEDENCE_AND_NO_REPEAT_V1.json",
+    "already_done": [
+      "Sept2 final source mapping, HVS SEA off-ledger aliases, zero ETL drift",
+      "public access+terms for SEA HVS NPH; signer optional",
+      "main D1 V2C Docker scoped independently accepted #522-524",
+      "phase2 independent #336 exact nine-case audit",
+      "existing #469 and #536 C3/CaseBundle/negative C2 fixture tests",
+      "rare-tail readfree/Windows fixed #60/#70",
+      "six-donor donor_umi and corrected full104 derivative #59/#69/#74",
+      "original Stage81B JEPA_ONLY and real #314 relational replay",
+      "executed original public E2G seven-track survey"
+    ],
+    "current_next": "READ_ONLY_IDENTIFY_ONE_UNANSWERED_MEASURED_LEARNED_STUDENT_BIOLOGICAL_QUESTION_FROM_EXISTING_TD19_PR314_R5_STAGE81B_AND_CONTROL_RESULTS",
+    "dont_repeat": [
+      "CaseBundle D1 V2C source fixture #535 explicit withdrawal",
+      "Phase2 #336 audit",
+      "Source final mapping reacquisition",
+      "New synthesis synthetic worlds before proving distinct gap",
+      "Original N1/rare preflights, physical reads, V79/V80, Stage81B"
+    ],
+    "additional_scoped_limits": "NPH52 real issuance restricted; independent latest-head code review only for incremental #525/#538 adoption; PR534 SHA failure isolated and PR537 GPU run held",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  }
 }
