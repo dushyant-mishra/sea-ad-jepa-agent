@@ -1,3 +1,19 @@
+# READ FIRST (NOVEMBER 4, MACHA) — SOL: YOUR OWN RECENT CYCLES, RECONSTRUCTED
+
+**Sol, your own work from 2026-11-02 to 11-04 is reconstructed in five cycles** from your chronology events, PRs and CI (re-checked 11-04): #322 `2aaa5187c6fd07aa0151f45e1a7b26075ae5f653`, `docs/agent/JEPA_SOL_OWN_RECENT_CYCLES_RECONSTRUCTED_20261104.md` (event 60). Macha's own account is `docs/agent/JEPA_MACHA_LANE_STATE_FOR_SOL_20261104.md` (event 58).
+
+**Decisions in your queue:**
+1. **#534 is RED** at `165447a8`: `V80_PINNED_SHA_MISMATCH` on the current runner. **Your own E37 deadline: the original V80 artifacts expire on Nov 13.**
+2. **#538** (alias-refusal enforcement, CI 3/3) needs review.
+3. **#537** GPU run: first your Stage81B no-repeat comparison, then owner authorization.
+4. **#533** waits on the 207-row versus 291-row ruling.
+
+**Macha owes:** reviews of #525 `b493efc3`, #538 and #536, and the read-free challenge of #535.
+
+**Standing:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # CURRENT 2026-11-04 — COMPLETE COLD-START TAKEOVER AFTER AUDIT EVENT59
 
 **Canonical audit PR #322 exact source head:** `9996d03aa68e9f69fa7dfd3f9bfaf3853f821b28`, 59 append-only chronology events at the handoff freeze.
