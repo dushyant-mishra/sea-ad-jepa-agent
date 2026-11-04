@@ -57,6 +57,21 @@ def geometry_diagnostic(states: np.ndarray) -> GeometryReport:
     if not np.any(centered):
         raise CollapseStop("exactly constant CELL state (old collapse mode)")
     std = np.std(a, axis=0, ddof=0)
+    # Two-cell U0 is mathematically rank <= 1 by construction. Reporting
+    # "effective rank 1" as collapse would be scientifically misleading.
+    # Eight is a descriptive telemetry reporting minimum, NOT a pass criterion.
+    if len(a) < 8:
+        energy = float(np.sum(centered * centered))
+        return GeometryReport(
+            status="NOT_ESTIMABLE_TOO_FEW_CELLS_FOR_GEOMETRY",
+            cells=len(a), dimensions=a.shape[1], finite=True,
+            exactly_constant_across_cells=False,
+            centered_energy=energy, cell_state_effective_rank=None,
+            top_singular_energy_fraction=None,
+            per_dimension_std_median=float(np.median(std)),
+            median_pairwise_distance=None,
+            interpretation="U0_ONLY__GEOMETRY_RANK_NOT_IDENTIFIABLE__NO_PASS",
+        )
     spectrum = np.linalg.svd(centered, compute_uv=False)
     squared = spectrum * spectrum
     energy = float(np.sum(squared))
