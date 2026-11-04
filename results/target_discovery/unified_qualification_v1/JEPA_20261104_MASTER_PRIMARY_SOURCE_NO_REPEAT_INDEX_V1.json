@@ -824,5 +824,67 @@
     "open_science": "real source-to-CaseBundle issuer and lawful physical total; trained student on original synthetic known truth is absent",
     "current_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
     "no_new_executions": "No training, new synthetic worlds, PR537 GPU, or Level4 read without separate authorization"
+  },
+  "original_downstream_implementation_and_exact_joins_event63_20261104": {
+    "chronology_event": 63,
+    "source_doc": "docs/agent/JEPA_20261104_ORIGINAL_DOWNSTREAM_IMPLEMENTATION_RECOVERY_AND_EXACT_NEXT_JOINS_V1.md",
+    "status": "READ_ONLY_ORIGINAL_EXECUTION_RECOVERY__SOURCE_VERIFIED_NO_IMPLEMENTATION",
+    "source_verified_PR_heads": {
+      "V5_40step_Phase1A_147": "9f7818472bdf515680b85eddbbf761eae2208020",
+      "canonical_V5_runtime_224": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+      "V5_qualification_226": "e83bb8d90bbabefdfe6bfa7c5dfff994d7a41005",
+      "TargetPortfolio_332": "902054ad62eede84086fc2e0a90ceb27e2191da7",
+      "postTD_C4C6_351": "2abcb9fe156eac340ff12adff9426ed38d929e3e",
+      "postTD_517_527_530_532_repair_525": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "postTD_fixture_bridge_451": "bbdf9a90973303e41cee6d8bd9d05de38e9b828a",
+      "actually_executed_fixture_469": "7a6477244dfc817d929e210c38c1ea4b2d1a1927",
+      "Task6_8_fixture_447": "729a0b4c67694baa25b46badce476df7a4c98a7d",
+      "Task4_cumulative_candidate_541": "3b86b9467506539776e04a6470fa8f2f7363f129",
+      "main_scoped_student_V2C_D1": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb"
+    },
+    "already_physically_executed": [
+      "#147 bounded 40-update synthetic V5 optimizer/EMA/checkpoint; Phase1A 104/104 donor metadata",
+      "Historical Stage81A3/six-IPB/Stage81B synthetic learned JEPA trajectories; not a selected current target",
+      "#314 corrected real relational replay broad/mesoscale + fine-local negative",
+      "#336 independent nine-case known-truth test-of-test",
+      "#369 seven-head cross-gate synthetic battery",
+      "#469 PR328 actual observed-RNA to Task5 and existing post-TD fixture"
+    ],
+    "already_implemented_tests": [
+      "#224/#226 canonical V5 guarded mutation, type-safe continuation and provenance",
+      "#332/#351 multi-block TargetPortfolio + C4 requires independent C6 + teacher/student policy, topology, compute, EMA, architecture tournament and rehearsal",
+      "#525 adversarially repaired post-TD tournament, nested portfolio/manifest, correct wrong-q/rare gate and EMA; author CI 3/3, independent current-head review pending",
+      "#447 53-test fixture none/registration/abstention suite",
+      "#522-524 main scoped D1/V2C fixture/Docker student isolation; #538 incremental alias refusal pending review",
+      "#535 source-to-CaseBundle 15-field evidence mapping; no new adapter now"
+    ],
+    "do_not_rebuild": [
+      "entire downstream TargetPortfolio or post-TD tournament",
+      "teacher/student model or V4/V5 guarded runtime",
+      "presentation-normalized EMA clock or checkpoint/resume",
+      "V2C D1 student-fixture/redaction or Docker",
+      "new Task6 PR-head inventory or Task7 NONE fixture",
+      "generic wrong-query evaluator (controls already exist)",
+      "PR328 or V80 frozen synthetic worlds; original Stage81B/TD314/#336/#469 runs",
+      "original #59/#69 physical reads, source/ETL, 41K mapping or #535 read-free assessment"
+    ],
+    "actual_unproven_joins": [
+      "#541 independent cumulative Task4 verdict; current replay is nonauthoritative",
+      "Task5 truly independently certified A7, evidence-bound NEXT: existing #451 NONE vs #447 digest-bound NONE",
+      "Task6 active per-unit authenticated producer/executor/metric/reference and Task3 registry stage",
+      "Task7 selected/none support-bound verified target bundle and Task8 source-faithful selected consumer, C4 vs separate C6",
+      "source-rights student input derivation from real observation states without teacher/q leakage; L04 owner rule",
+      "active trainer-entry requiring verified Task7, certified Task8 and separate deciding-lane training grant",
+      "formal registered A-I known-truth families and genuine current Task10 rehearsal, then Task11/12 whole-lineage signoff",
+      "new scientific current-source learned student biological recovery over matched nuisance/wrong-cell/wrong-query; only after separately authorized exact new contrast"
+    ],
+    "v80_preservation_deadline_utc": "2026-11-13T03:02:00Z",
+    "original_v80_artifact_ids": {
+      "fit": 11867590706,
+      "controller": 11866917064,
+      "receipt": 11867366245
+    },
+    "original_v80_preservation_verified": false,
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
