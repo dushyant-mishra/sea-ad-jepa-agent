@@ -406,9 +406,10 @@
     "checked_unique_sources": 27,
     "corrected_truncated_blob_ids": 3,
     "corrected_historical_ref_to_original_PR131_head": 1,
-    "sha_matched_sources": 27,
+    "sha_matched_sources": 25,
     "missing_sources": 0,
-    "method": "GitHub fetch_file at exact stated source ref; source content was not modified",
-    "new_results": false
+    "method": "All 27 unique source paths fetched at exact GitHub refs; 25 full Git SHA1 blob identities compared and match; 2 new audit documents exist but have no prior frozen blob pin; no source bytes modified",
+    "new_results": false,
+    "existing_unpinned_audit_source_paths": 2
   }
 }
