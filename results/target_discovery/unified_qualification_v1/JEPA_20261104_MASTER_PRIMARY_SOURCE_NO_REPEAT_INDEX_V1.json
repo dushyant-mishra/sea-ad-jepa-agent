@@ -1232,5 +1232,36 @@
     "owner_selection_assumed_single_winner": false,
     "training_authorized": false,
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "synthetic_first_all_C_event72_20261104": {
+    "chronology_event": 72,
+    "human": "docs/agent/JEPA_20261104_EVENT72_SYNTHETIC_FIRST_ALL_C_TARGET_PREQUALIFICATION_REUSE.md",
+    "original_unified_design_pr": 315,
+    "original_frozen_fixture_pr": 328,
+    "frozen_fixture_size": {
+      "cells": 480,
+      "addresses": 48,
+      "donors": 16
+    },
+    "frozen_C_truth": "ALL_SIX_DERIVED_CONTROLLER_SIDE__NO_RECOVERABILITY_QUALIFIED",
+    "original_C2_test_of_test_pr": 336,
+    "original_C2_challenges": "9_OF_9_EXPECTED_STATUSES_MATCHED__TEST_QUALIFICATION_ONLY",
+    "original_cross_gate_mechanics_pr": 369,
+    "original_V80_benchmark_pr": 348,
+    "original_V80_estimator_status": "NOT_QUALIFIED",
+    "original_support_semantics_correction_pr": 531,
+    "original_actual_producer_negative_pr": 536,
+    "current_common_world_synthetic_all_C_learner_status": "NOT_EXECUTED_NOT_QUALIFIED",
+    "known_gaps": [
+      "C2_3X512_NOT_PR328_48",
+      "C3_PER_CELL_Q_OTHER8_NOT_PR328_Q_POPULATION_MEAN",
+      "C4_C6_INCREMENT_NOT_MEASURED",
+      "DETECTION_SUPPORT_CONFLATION",
+      "NO_LEARNED_JEPA_CANDIDATE_RECOVERABILITY",
+      "REAL_TD_13_GATE_RULES_PROSPECTIVELY_BLOCKED"
+    ],
+    "required_first_step": "EXACT_FROZEN_ASSET_REUSE_FEASIBILITY_BEFORE_ANY_NEW_WORLD",
+    "no_world_generation_no_model_training_no_sealed_open": true,
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
