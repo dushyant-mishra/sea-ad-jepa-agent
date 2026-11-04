@@ -1,3 +1,19 @@
+# READ FIRST (2026-11-04, SOL EVENT65) — V80 ORIGINAL ARCHIVES RECOVERED, NO REGENERATION
+
+Canonical audit #322 exact head `9d4f83a8922a69d7cd286ef5248679c52a6d7a3a` now contains **65 append-only events**. New primary custody document `docs/agent/JEPA_20261104_V80_ORIGINAL_ARTIFACT_RESCUE_AND_FIT_ONLY_PORTABILITY_TRIAGE_EVENT65.md`; machine no-repeat index key `v80_original_archive_rescue_and_fit_only_drift_event65_20261104`.
+
+**Deadline action actually performed, not just planned:** downloaded the **original** run `38504094639` GitHub Actions FIT (`11867590706`), CONTROLLER (`11866917064`) and receipt (`11867366245`) archive ZIPs to the owner conversation file sandbox and independently verified all **three raw ZIP SHA-256 hashes byte-for-byte match the frozen #348 receipt**; original fit inner transport SHA `77f89e83...` and package receipt inner SHA `346407af...` also verified. **The original CONTROLLER ZIP was NOT opened, extracted, parsed, passed to a fit/student, or uploaded to Git**; it was hashed as an opaque ZIP only. The owner conversation file custody manifest is `V80-original-artifacts-custody-receipt.json`. Original GitHub archive expiry still **2026-11-13 around 03:02 UTC**.
+
+**Safety-important remaining action:** conversation copies do not prove independent persistent secure custody; owner custodian must deposit **CONTROLLER** original ZIP into access-controlled controller-only durable storage and **FIT+receipt** into a separate appropriate permitted archive and verify archive retrieval/sha. Do not treat this chat sandbox as a validated independent controller trust issuer or let any fit-side process access the controller.
+
+**#534 true current status:** still **`V80_PINNED_SHA_MISMATCH__REFUSE`** on the regenerated #534 runner (actual `faf80c89...`, frozen `16a08b29...`); original and #534 runner both pinned Python 3.11.9 and NumPy 2.3.5, so “pin NumPy” is NOT the fix. **8/8 support array hashes and 8/8 design-matrix array hashes from original FIT match #534 CI diagnostics**, but later numerical/observed outcome identity differs; root cause unproven. Do not loosen SHA, rerun world as a substitute, or open controller truth.
+
+**Parallel Task4 #543 Macha review remains distinct.** Previous READ FIRST event64 and event63 are retained immediately below and govern Task4/review and original downstream no-repeat. Original V79 NOT_QUALIFIED and V80 benchmark-package-only/no-estimator/authority-off remain.
+
+**Global authority:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # READ FIRST (2026-11-04, SOL EVENT64) — TASK 4 MACHA HOLD, K01 SOL FIX HOSTED GREEN, RECIPROCAL HUNK REVIEW DONE
 
 **Canonical audit #322:** exact head `9193f745ca9d667e25d8724ca948c8cf48aabb25`, **64 append-only events**; source custody `docs/agent/JEPA_20261104_TASK4_K01_SOL_REPAIR_AND_RECIPROCAL_REVIEW_EVENT64.md`; event64 in `JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json`; machine audit index `JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json` key `task4_k01_macha_cumulative_reciprocal_sol_repair_event64_20261104`. **Audit #322 new exact-head CI status must be checked independently; do not inherit 24/24 from old event63 SHA.**
