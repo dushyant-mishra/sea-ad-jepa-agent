@@ -461,7 +461,7 @@
     "N1 issue54 future precision result-consumer and rare-tail issue55 old runner bypass are separate deferred lane-gates with original preflight/source repair DONE; not current JEPA biological next steps"
   ],
   "status": "MAJOR_SOURCE_BOUND_HISTORY_CONSOLIDATED_WITH_CLOSED_G7_S174_LEVEL4__OTHER_NARROW_MISSING_EDGES_EXPLICIT__NO_534_PR_LINE_BY_LINE_CERTIFICATE",
-  "future_agent_rule": "Read live PR460 pointer and this index; check exact GitHub head before any work; use source PR pointers not stale PR-body opening text. The 2026-11-04 audit append-only record advances with new evidence; do not start from uncurated chronological PR crawl.",
+  "future_agent_rule": "Read latest live PR322 AND PR460 exact heads. For every implementation/scientific decision publish evidence at owner PR, then append event to PR322 and update PR460 live handoff after audit check; do not create duplicate history-only PRs. Source-prior experimental negatives remain binding; do not treat historical 535/108 PR snapshots as live current census.",
   "reconciliation_update_20261104": {
     "status": "THREE_PRIOR_MISTAKEN_OPEN_GAPS_CLOSED_BY_SOURCE__NO_REPEAT__NARROW_PHYSICAL_METRIC_AND_REVIEW_GAPS_LEFT",
     "report": "docs/agent/JEPA_20261104_RESOLVED_HISTORICAL_G7_S174_LEVEL4_AND_REMAINING_GAPS_V1.md",
@@ -617,5 +617,24 @@
     "provenance": "Original prior categories preserved for audit but replaced as *current next-work candidates* by #509/#528/#524/#535/#531 et al.",
     "current_read_first": "docs/agent/JEPA_20261104_RECENT_TWO_WEEK_SCIENCE_RESOLUTIONS_AND_CORRECTED_NEXT_WORK_V1.md",
     "history_events": 51
+  },
+  "post_recent_second_pass_20261104": {
+    "status": "READ_ONLY_GAP_IDENTIFIED__TWO_CANONICAL_BRANCHES_ONLY__NO_NEW_EXECUTION_AUTHORITY",
+    "event_number": 52,
+    "source_doc": "docs/agent/JEPA_20261104_LEARNED_STUDENT_BIOLOGICAL_GAP_READONLY_DECISION_V1.md",
+    "original_memo_pr_539": "SUPERSEDED_DOCUMENTATION_ONLY__CONTENT_COPIED_TO_PR322",
+    "already_tested": [
+      "TD19 depth-only confounding",
+      "real PR314 broad/mesoscale and fine-locality negative",
+      "original R5 per-cell query-aware donor holdout",
+      "original Stage81B JEPA_ONLY and harmful anchor",
+      "independently audited PR336 synthetic test-of-test",
+      "PR469 and PR536 scoped admission tests"
+    ],
+    "already_designed_not_run": "TD60 48-case learned teacher continuity; fixed-u40 biological checkpoint subject to later V5 full-exposure guidance",
+    "unanswered": "Lawful learned student correct-cell partial-RNA broad/mesoscale order beyond matched depth/operator/source/donor/wrong-cell controls, after qualified learned EMA teacher",
+    "not_newly_verified": "Original R5 primary receipt locator remains audit-reconciled",
+    "permanent_handoff_rule": "Implementation PR holds executable changes; PR322 gets append-only science and implementation chronology with frozen scope; PR460 live pointer and machine handoff updated after verified audit head; verify exact-head CI; never recreate historical-consolidation PRs.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
