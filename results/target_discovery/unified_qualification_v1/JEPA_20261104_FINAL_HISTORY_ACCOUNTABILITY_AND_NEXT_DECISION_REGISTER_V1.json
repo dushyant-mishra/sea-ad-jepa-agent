@@ -1,0 +1,178 @@
+{
+  "schema": "JEPA_20261104_FINAL_HISTORY_ACCOUNTABILITY_AND_NEXT_DECISION_REGISTER_V1",
+  "date": "2026-11-04",
+  "status": "FULL_GITHUB_PR_METADATA_ACCOUNTED__PRIOR_SOURCE_READS_REUSED__MATERIAL_GAPS_EXPLICIT__NO_TRAINING",
+  "scope": {
+    "git_pr_metadata": 535,
+    "git_pr_num_range": [
+      1,
+      538
+    ],
+    "non_pr_numbers_are_open_issues": [
+      54,
+      55,
+      494
+    ],
+    "main_tree_tracked_blobs": 4710,
+    "early_39_scoped_original_source_ids": "Use 52-ID original source recovery; not replaced",
+    "prior_explicit_science_crosswalk_areas": 16,
+    "additional_sourced_original_work_areas": 15,
+    "old_chronology_events_preserved": 49,
+    "full_independent_scientific_audit_of_535_pr_diff_and_4710_blobs": false,
+    "scientific_completeness_claim": "RECONCILIATION_ACCOUNTABLE_BY_SOURCE_LOCATOR_AND_OUTSTANDING_BLOCKERS__NOT_UNIVERSAL_INDEPENDENT_READ",
+    "crosswalks": [
+      "results/target_discovery/unified_qualification_v1/JEPA_20261104_COMPLETE_535_PR_AND_OPEN_ISSUE_METADATA_CENSUS_V1.json",
+      "results/target_discovery/unified_qualification_v1/JEPA_20261104_ALL_535_PR_DESCRIPTION_DISPOSITION_REGISTER_V1.json",
+      "results/target_discovery/unified_qualification_v1/JEPA_20261104_V9_PREVIOUS_WORK_COMPLETENESS_CROSSWALK_V1.json",
+      "results/target_discovery/unified_qualification_v1/JEPA_20261104_ADDITIONAL_PRIOR_WORK_CROSSWALK_AND_OPEN_ISSUES_V1.json"
+    ]
+  },
+  "current_critical_pr_ci": [
+    {
+      "pr": 513,
+      "head": "0b1af4f06ba423753899e7c564d3b16ce609ac6a",
+      "ci": "1/1 source CI",
+      "authority": "source/alias report, no real issuer"
+    },
+    {
+      "pr": 525,
+      "head": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "ci": "6/6 author",
+      "authority": "independent Macha latest-head review required"
+    },
+    {
+      "pr": 528,
+      "head": "1a4fda758936a3cc3868948b44d25694de216bd9",
+      "ci": "3/3",
+      "authority": "source/QC only"
+    },
+    {
+      "pr": 533,
+      "head": "b531b81ec4e08779a974214ec9ba9905f0498294",
+      "ci": "4/4",
+      "authority": "V79/V80 selection policy BLOCKED"
+    },
+    {
+      "pr": 534,
+      "head": "165447a8bbdef8b427ca9cd0d29b51c36b9c1c1a",
+      "ci": "0/2 FAILURE",
+      "authority": "frozen V80 eight-world source SHA mismatch, do not adapt or rekey silently"
+    },
+    {
+      "pr": 535,
+      "head": "af7acbcf6d2244764e17f44686b94a72199c7d9c",
+      "ci": "0 checks observed",
+      "authority": "read-free source field inventory, no real CaseBundle qualification"
+    },
+    {
+      "pr": 536,
+      "head": "b723b9d522a013554a0a53cf600e6e9812c35935",
+      "ci": "2/2 author",
+      "authority": "actual source-measured C3 q-other8 10/30 synthetic fit; C2 48 feature refusal"
+    },
+    {
+      "pr": 537,
+      "head": "7e8ff44120fd7acda9046d0f509fab504b4f73f3",
+      "ci": "2/2 CPU only",
+      "authority": "NO GPU test authorized before original Stage81B overlap check"
+    },
+    {
+      "pr": 538,
+      "head": "b901d3fe25857a09f7e0cbc48d4e75d75d9ca3e0",
+      "ci": "6/6 author",
+      "authority": "5 query IDs reject at D1/V2C; external alias/issuer not closed, Macha review required"
+    }
+  ],
+  "next_actions": [
+    {
+      "id": "G01",
+      "priority": 1,
+      "topic": "Real source provenance and query rights",
+      "state": "BLOCKED",
+      "scope": "Issue #494; Macha PR513/528/535; GPT PR538",
+      "do": "Reconcile already-held final mapping SHA, source aliases/off-ledger features, donor/specimen/QC and 50-vs-47 adapter rows. Prove external original parent issuer and q-excluded base normalization; keep NPH52 off where unresolved. No wholesale source read.",
+      "pass": "Original source SHA→full address/rights→cell & specimen/donor provenance→authentic per-cell CaseBundle, matched forged-parent/alias wrong-q controls",
+      "not_pass": "Hardcoded five blocked q IDs, rehashed in-memory JSON, D1 fixture, original count aggregates or platform CI"
+    },
+    {
+      "id": "G02",
+      "priority": 2,
+      "topic": "Independent hostile code review",
+      "state": "AWAITING_REVIEW",
+      "scope": "PR525 b493efc, PR538 b901d3f; Macha original REDs #527 #530 #532",
+      "do": "Macha inspect exact current source heads and attack manifest/block/rare noncompensation, wrong q/operator/alias, mixed physical parent and rehashed self-consistent student views.",
+      "pass": "Independent exact-head positive/negative receipts plus no hidden bypass and no weakened prior hostile tests",
+      "not_pass": "Author green 6/6 alone"
+    },
+    {
+      "id": "G03",
+      "priority": 3,
+      "topic": "C2/C3 prospective biological discriminant",
+      "state": "BIOLOGY_NOT_YET_ESTIMABLE",
+      "scope": "Original TD19 depth null, TD56/57B/59 broad/meso PASS TD57C fine FAIL; original R5 q-aware 0.430 vs controls; PR336 9/9 synthetic test of test; PR338 13 human gates blocked; PR536 48 genes cannot satisfy PR316 3x512",
+      "do": "Specify measured multi-q q-other target from authorized richer evidence; donor/source heldout student with matched correct-cell/wrong-cell/wrong-q, technical, q-agnostic, depth/operator and collapse controls. Freeze all eligibility BEFORE outcomes. Only qualified source-gate inputs.",
+      "pass": "Original measured target and lawful student, independent controller truth, per-donor reproducibility, noncompensating gates",
+      "not_pass": "Supervised planted Z, synthetic 9/9, a one-query toy, source-conditioned q leakage or arbitrary 48→1536 padding"
+    },
+    {
+      "id": "G04",
+      "priority": 4,
+      "topic": "Frozen synthetic V79/V80 and PR534 identity",
+      "state": "BLOCKED_RED",
+      "scope": "PR533 4/4 BLOCKED; PR534 2 failures: actual V80 eight-world digest faf80c... differs expected 16a08b...; original frozen Q08 terminal and 85 forensic later",
+      "do": "Inspect exact serialization, platform/fit inputs and immutable frozen source before changing only a new test implementation; preserve original world and 207-including-Q08 vs postterminal 85 rule. Independently freeze any successor selection law.",
+      "pass": "Exact frozen SHA identity and preterminal selection rule accepted by independent reviewer",
+      "not_pass": "Reseeding worlds, overwriting digest, treating 85 forensic rows as confirmatory or retrofitting pass"
+    },
+    {
+      "id": "G05",
+      "priority": 5,
+      "topic": "PR537 potential repeated GPU JEPA experiment",
+      "state": "HOLD",
+      "scope": "Prior six-IPB 3/8 early, later Stage81B CURRENT/JEPA_ONLY/ANCHOR_ONLY u100/300/500 already executed",
+      "do": "Review original same-world/seed/masks/objective/cell readout/gradient against proposed 2 world×2 seed×500 before any Macha GPU run; if identical close new PR. No human training.",
+      "pass": "Document genuinely new outcome-blind scientific contrast + independent nonduplicate approval",
+      "not_pass": "2/2 CPU preflight, change in script name, model-loss/EMA stability without biological gain"
+    },
+    {
+      "id": "G06",
+      "priority": 6,
+      "topic": "Other physically scoped gates that remain open",
+      "state": "TRACKED_NOT_COMMANDED",
+      "scope": "Issues #54 N1 authenticated precision receipt; #55 rare-tail execution contract; #494 QC/identity; PR535 no CI; original FULL104 D numeric receipt not located",
+      "do": "For each, first find its existing source/GPU receipt, then only repair the missing binding or precision calculation. Do not re-run 8,915 blocks, 387 Level4 or old TD G7/S174.",
+      "pass": "Independent source- and outcome-bound receipt with original scientific gate, no new data rights",
+      "not_pass": "Author claim of a result, or a static format validator"
+    },
+    {
+      "id": "G07",
+      "priority": 7,
+      "topic": "Target/mechanism selection and external confirmation",
+      "state": "NO_WINNER",
+      "scope": "18 Stage36–49 candidate dossiers, original 103-resource/770 annotation PI corpus; actual public E2G seven-track noncausal and scoped CRISPR/SCENIC+",
+      "do": "Use existing gene dossiers and original evidence/exposure protocol; only plan truly independent validation once a source/query/teacher target earns qualified biological content.",
+      "pass": "Prospective independent endpoint with true replicate and exposure accounting",
+      "not_pass": "Peak proximity/symbol coincidence, in-silico perturbation, retrospective external projection, early candidate rank"
+    }
+  ],
+  "history_control": {
+    "no_repeat": [
+      "Graph JEPA V1-3",
+      "Stage53-70 rare/DLPFC",
+      "Stage72-79 archived GeneJEPA/SCENIC",
+      "physical 105553 metadata sample",
+      "179384 clone-aware bulk rows",
+      "15-arm V44 RNA proxy",
+      "PR59 387 physical raw blocks/PR69 label fix",
+      "PR314 corrected TD physical replay",
+      "G7 original NOT_ESTIMABLE once",
+      "V79 original worlds/Q08/85 forensic",
+      "V65 supervised and EMA controls",
+      "Stage81B JEPA_ONLY/anchor",
+      "V80 benchmark source",
+      "Stage81A3R historical d_global224"
+    ],
+    "scientific_lock": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+    "review_rule": "Macha GPU physical original source execution and independent adversary, GPT scientific/control design and reciprocal source review. No unconditional audit PASS from author CI."
+  }
+}
