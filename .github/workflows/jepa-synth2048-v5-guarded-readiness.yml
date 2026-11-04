@@ -96,6 +96,9 @@ jobs:
           assert z['historical_mandatory_48_registry']['count']==48
           assert z['u0_student_cell_geometry']['qualified_biological_representation'] is False
           assert z['u0_teacher_cell_geometry']['qualified_biological_representation'] is False
+          assert z['u0_student_gene_token_geometry']['exact_token_collapsed_cells']==0
+          assert z['u0_teacher_gene_token_geometry']['exact_token_collapsed_cells']==0
+          assert z['u0_student_gene_token_geometry']['qualified_biological_representation'] is False
           print("V5_U0_MECHANICS_ONLY__NO_TRAINING__NO_C1_TO_C6_PASS")
           PY
       - name: Publish non-authorizing U0 readiness and exact source receipt
