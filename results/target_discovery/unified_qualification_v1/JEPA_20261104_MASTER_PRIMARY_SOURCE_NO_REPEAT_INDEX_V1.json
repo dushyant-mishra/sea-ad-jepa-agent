@@ -246,6 +246,14 @@
         528
       ],
       "state": "PR59_PHYSICALLY_READ_387_COUNTS_BLOCKS_8915_META_BLOCKS_6_DONORS_17186_ADDRESSES_EXACT_MATCH_PR69_SOURCE_LABEL_FIX_NO_NEW_COUNT_READ__LATER_SOURCE_ETL_AUDITS_DONE"
+    },
+    {
+      "phase": "STAGE81B_MOLECULAR_RARE_CONTEXT_AND_TARGET_INFORMATION",
+      "paths": [
+        "docs/history/docs/v4/CURRENT_STATE_HANDOFF.md",
+        "docs/agent/archive/governance/ACTIVE_STATE_20260903_HISTORICAL.md"
+      ],
+      "state": "JEPA_ONLY_AT_U500_EXPERIMENT_DONE__ANCHOR_REJECTED_7p618X__T0_T1_TCTX_3_SEED_32_STEP_NO_WINNER__14_ANNOTATED_RARE_BOUNDED_OK__THREE_UNSTABLE_DATADEFINED__UCDQ_21_DATASETS_234_SAMPLES_NO_PARTIAL_NO"
     }
   ],
   "code_data_result_registry": [
@@ -414,6 +422,12 @@
       "path": "docs/agent/JEPA_20261104_RESOLVED_HISTORICAL_G7_S174_LEVEL4_AND_REMAINING_GAPS_V1.md",
       "ref": "current_audit_pr322",
       "role": "nov4 exact source scope and remaining narrow gaps"
+    },
+    {
+      "kind": "result",
+      "path": "docs/agent/JEPA_20261104_STAGE81B_INTRINSIC_RARE_CONTEXT_AND_TARGET_LEARNABILITY_NO_REPEAT.md",
+      "ref": "current_audit_pr322",
+      "role": "Original Stage81B JEPA_ONLY, T0/T1/TCTX, rare-state, RLC and 21-dataset context lineage; nonrepeat classification"
     }
   ],
   "known_scientific_errors_do_not_repeat": [
@@ -494,6 +508,23 @@
       "PR533_207_85_PROSPECTIVE_SELECTION_RULE_AND_PR534_ORIGINAL_HASH_MISMATCH",
       "SOURCE_CASEBUNDLE_ACCEPTED_PARENT_ISSUER_AND_3_ALIAS_RIGHTS",
       "PR525_CURRENT_HEAD_MACHA_REVIEW"
-    ]
+    ],
+    "original_v4_stage81b_readout": {
+      "source": "main:docs/agent/archive/governance/ACTIVE_STATE_20260903_HISTORICAL.md",
+      "historical_original_handoff": "main:docs/history/docs/v4/CURRENT_STATE_HANDOFF.md",
+      "appendix": "docs/agent/JEPA_20261104_STAGE81B_INTRINSIC_RARE_CONTEXT_AND_TARGET_LEARNABILITY_NO_REPEAT.md",
+      "jepa_only_vs_anchor_at_u500": "EXECUTED__ANCHOR_ONLY_7p618_X_GENE_ID_MOVEMENT_VS_JEPA_ONLY",
+      "coordinate_rotation": "DEMONSTRATED_AS_PART_OF_APPARENT_PARTIAL_H_LOSS",
+      "targets": [
+        "T0",
+        "T1",
+        "TCTX"
+      ],
+      "short_target_runs": "3_SEEDS_32_UPDATES_EACH_NO_WINNER",
+      "rare_annotated": "14_RECURRING_ANNOTATION_STATES_BOUNDED_PCA160_NO_CRITICAL_LOSS",
+      "rare_datadriven": "3_DONOR_RECURRENT_NEIGHBORHOODS_FAILED_4_RESAMPLE_STABILITY",
+      "context": "21_DATASETS_234_SAMPLES_UCDQ_NO_PARTIAL_TARGETED_ONLY_NO",
+      "pr537_exact_same_world": "NOT_ESTABLISHED_DO_NOT_AUTORUN_GPU"
+    }
   }
 }
