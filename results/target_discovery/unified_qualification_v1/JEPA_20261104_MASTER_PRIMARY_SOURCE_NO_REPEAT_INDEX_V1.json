@@ -186,13 +186,16 @@
         349,
         492,
         505,
+        509,
         513,
         523,
         524,
         526,
-        531
+        528,
+        531,
+        535
       ],
-      "state": "104-donor FULL104/42 operators source, 50K 246702069 counts inverted, collision/alias rights unresolved, query library denominator leak, support!=detection, D1 only fixture accepted"
+      "state": "50K/41K physical source audit, 97/97 archive, 246702069 inverted counts and 11449 conservative collision pairs DONE; exact Sept2 17MB mapping bound in GitHub; HVS and SEA-AD 0 off-ledger feature accounting DONE (#509); NPH52 off-ledger/selection scientifically restricted (#513/#528); 322 source ETL ledger rows no drift (#513); public HVS SEA NPH access/terms RESOLVED (#528 erratum); real CaseBundle release attestation distinct from accepted D1 V2C main fixture (#522-524)."
     },
     {
       "phase": "FULL104_DIMENSION_REAL",
@@ -221,12 +224,16 @@
         451,
         469,
         474,
+        522,
+        523,
+        524,
         525,
         528,
+        531,
         535,
         536
       ],
-      "state": "candidate C1-C6, 28 gate scientific design, Task0-12 and CaseBundle true source righted producer–consumer bridges at respective scoped synthetic levels; no biological winner"
+      "state": "C1-C6 design and original TD/Phase2 tests previously executed (#314/#336); actual PR328 RNA→Task5 fixture #469 and measured C3 / C2 48-feature refusal #536 already executed; #535 withdrew new adapter request; main D1 V2C Docker ACCEPT_SCOPED_FIXTURE_ONLY by #522/#523/#524, not authenticated real source issuer; teacher/learned student biological authority unearned."
     },
     {
       "phase": "NEW_NOV4_GPU_CANDIDATE",
@@ -446,11 +453,12 @@
     "V79 S174 masked physical development already ran PR288, reduced inflated detection source effect; do not rerun PR285 or PR288 to qualify old V3."
   ],
   "still_unresolved_by_current_work": [
-    "Original full FULL104 8,915-block physical closure and numeric dimension receipt if already performed by Macha",
-    "Stage81B JEPA_ONLY comparator exact same fixture/seed/objective vs PR537 before GPU dispatch",
-    "Upstream 3 source-authorized alias-right restrictions plus physical source parent provenance to real CaseBundle",
-    "PR525 latest independent Macha review and PR533 207/85 prospective successor law",
-    "C2/C3 matched original teacher-target independent synthetic truth/heldout learnability and 13 blocked substantive real design gates"
+    "Read-only source-grounded biological comparison of TD19, real corrected #314, original query-aware R5 and Stage81B to identify a single truly untested learned teacher->student biological discriminant; original relational and Phase2 tests already executed",
+    "NPH52 real query issuance scientifically restricted for off-ledger symbols and selection effect; HVS and SEA-AD original deposited feature negative-alias accounting DONE; public source access and licence already established",
+    "Conditional only when chosen real human experiment requires it: original physical per-cell CaseBundle issuer/rights and source QC/specimen witness; D1 V2C fixture and Docker already accepted on main, no duplicate builder",
+    "PR525 and PR538 author-scoped incremental latest-head independent review ONLY IF adopted, not a first-time review of main #522-524 fixture",
+    "PR534 cross-contract V80 identity SHA RED is isolated new compatibility regression, not an unrun V80 experiment; PR537 proposed GPU run HOLD for original Stage81B comparison, no new GPU dispatch",
+    "N1 issue54 future precision result-consumer and rare-tail issue55 old runner bypass are separate deferred lane-gates with original preflight/source repair DONE; not current JEPA biological next steps"
   ],
   "status": "MAJOR_SOURCE_BOUND_HISTORY_CONSOLIDATED_WITH_CLOSED_G7_S174_LEVEL4__OTHER_NARROW_MISSING_EDGES_EXPLICIT__NO_534_PR_LINE_BY_LINE_CERTIFICATE",
   "future_agent_rule": "Read live PR460 pointer and this index; check exact GitHub head before any work; use source PR pointers not stale PR-body opening text. The 2026-11-04 audit append-only record advances with new evidence; do not start from uncurated chronological PR crawl.",
@@ -597,5 +605,17 @@
       "PR525_PR538_LATEST_INCREMENTAL_NONAUTHOR_REVIEW_IF_ADOPTED"
     ],
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "recent_108_pr_machine_primary_source_state_correction": {
+    "prior_still_unresolved_by_current_work": [
+      "Original full FULL104 8,915-block physical closure and numeric dimension receipt if already performed by Macha",
+      "Stage81B JEPA_ONLY comparator exact same fixture/seed/objective vs PR537 before GPU dispatch",
+      "Upstream 3 source-authorized alias-right restrictions plus physical source parent provenance to real CaseBundle",
+      "PR525 latest independent Macha review and PR533 207/85 prospective successor law",
+      "C2/C3 matched original teacher-target independent synthetic truth/heldout learnability and 13 blocked substantive real design gates"
+    ],
+    "provenance": "Original prior categories preserved for audit but replaced as *current next-work candidates* by #509/#528/#524/#535/#531 et al.",
+    "current_read_first": "docs/agent/JEPA_20261104_RECENT_TWO_WEEK_SCIENCE_RESOLUTIONS_AND_CORRECTED_NEXT_WORK_V1.md",
+    "history_events": 51
   }
 }
