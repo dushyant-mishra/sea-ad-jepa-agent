@@ -97,7 +97,7 @@
         },
         {
           "path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md",
-          "blob_sha1": "94625689a7d7352231f0c908811763a0fcd8cb",
+          "blob_sha1": "94625689a7d7352231f0c908811763a0fcd8cb60",
           "ref": "PR322"
         }
       ],
@@ -121,7 +121,7 @@
         },
         {
           "path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md",
-          "blob_sha1": "94625689a7d7352231f0c908811763a0fcd8cb",
+          "blob_sha1": "94625689a7d7352231f0c908811763a0fcd8cb60",
           "ref": "PR322"
         }
       ],
@@ -221,7 +221,7 @@
       "sources": [
         {
           "path": "docs/agent/JEPA_IDENTITY_ALIGNMENT_AND_COMPARATOR_FAILURE_RECONCILIATION_20261102.md",
-          "blob_sha1": "4d34906b5f321e54efa15044fdfb4b6b06a75e5",
+          "blob_sha1": "4d34906b5f321e54efa15044fdfb4b6b06a75e5b",
           "ref": "PR322"
         }
       ],
@@ -258,7 +258,7 @@
       "sources": [
         {
           "path": "target_discovery/iterations/td19_claude_followup/TD19_DECISION.md",
-          "blob_sha1": "bb207df987285190edf40fff6a19137cf63de0b",
+          "blob_sha1": "bb207df987285190edf40fff6a19137cf63de0b0",
           "ref": "main"
         },
         {
@@ -307,7 +307,7 @@
         {
           "path": "analysis/therapeutic_perturbation_etl/P1_6_BULK_INDEPENDENT_RECOMPUTE_20260925.md",
           "blob_sha1": "dfae152d639606713a3384ed2bfd89c142fc161b",
-          "ref": "main"
+          "ref": "8647d21174c5e7eab2ad01fc6b9251b069ba0e03"
         },
         {
           "path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_30_34_20261102.md",
@@ -401,5 +401,14 @@
     "Never turn source/fixture/model/CI pass into human biological effect",
     "Historical 2,957/4,096/41,238 gene universes, 160 gene ledger, 224 historical global and FULL104 current dimensions must not be conflated"
   ],
-  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "source_locator_verification_20261104": {
+    "checked_unique_sources": 27,
+    "corrected_truncated_blob_ids": 3,
+    "corrected_historical_ref_to_original_PR131_head": 1,
+    "sha_matched_sources": 27,
+    "missing_sources": 0,
+    "method": "GitHub fetch_file at exact stated source ref; source content was not modified",
+    "new_results": false
+  }
 }
