@@ -2397,6 +2397,59 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/532",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525"
       ]
+    },
+    {
+      "event_id": "20261104-GPT-LANE-COMPLETE-COLD-START-TAKEOVER-CUSTODY-V1",
+      "date_utc": "2026-11-04",
+      "workstream": "complete_gpt_lane_historical_no_repeat_cold_start_custody_and_macha_event58_reconciliation",
+      "implementation_pr": 322,
+      "implementation_head": null,
+      "change_type": "custody_process",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261104_GPT_LANE_COMPLETE_COLD_START_TAKEOVER_AND_NO_REPEAT_V1.md",
+          "role": "complete human cold-start handoff and no-repeat map"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_GPT_LANE_COMPLETE_COLD_START_TAKEOVER_V1.json",
+          "role": "machine cold-start source/action pointer"
+        },
+        {
+          "path": "docs/agent/JEPA_MACHA_LANE_STATE_FOR_SOL_20261104.md",
+          "role": "Macha complete self-account, seven retractions and exact remaining queue"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_PROJECT_LOCAL_ASSET_SHA256_CUSTODY_V1.json",
+          "role": "large/local asset hashes and normalized transcript custody"
+        },
+        {
+          "path": "docs/agent/archive/user_supplied_evidence_20261104/MACHA_EXECUTION_REVIEW_TRANSCRIPT_PASTED_TEXT_20261104_NORMALIZED.txt",
+          "role": "normalized searchable custody copy of user-supplied Macha transcript; original SHA held separately"
+        }
+      ],
+      "what_already_existed": "Events1-58 already reconstructed the full AD microglia/Graph-JEPA/rare/regulatory/ATAC/SCENIC+/perturbation/spatial/foundation/teacher-student/target-discovery/synthetic/downstream history, corrected stale next tasks, restored underindexed Stage39-41/FULL104/V29/C5/V63 evidence, recorded owner event57 rulings, and added Macha event58 with exact work identities and seven retractions. Project-local large assets were already SHA-custodied rather than Git-duplicated.",
+      "new_work_or_result": "Added one complete GPT-lane human cold-start takeover, one machine-readable source/action pointer, preserved the full user-supplied Macha execution/review transcript as a normalized searchable Git copy while retaining the original upload SHA as byte authority, and added that upload to the project asset custody ledger. Reconciled Macha event58 into the handoff, including the exact open queue and the accidental PR460 branch deletion/restoration incident. No science, model, source ETL or large data was rerun.",
+      "negative_or_counterfactual_evidence": "A future agent must not infer missing work from stale handoffs, must not reassign Macha work before searching Macha/Claude/GPU/experiment branches, must not treat author-green #525 as independent acceptance, and must not run PR537 without explicit owner authorization. Normalized transcript custody is not claimed byte-identical to the original uploaded file.",
+      "test_review_scope": "Documentation, source-index, checksum custody and GitHub-state reconciliation only. No web browsing, raw data read, synthetic generation, estimator fit, GPU training or protected controller outcome access.",
+      "independent_review": "GPT_CUSTODY_SYNTHESIS__MACHA_EVENT58_SELF_ACCOUNT_PRESERVED__FUTURE_AGENT_MUST_REVIEW_NEW_EXECUTION_INDEPENDENTLY",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha independent fresh-head #525 review at b493efc3 if still not completed by a later branch/comment",
+        "Macha no-read PR535 classification challenge if still useful; do not perform new Level4 read",
+        "PR537 remains HOLD and requires explicit owner authorization plus nonduplication proof before any GPU execution",
+        "Keep the learned-teacher then lawful partial-student biological discriminator as the scientific frontier; TD60 already designed and V5 checkpoint semantics must be reconciled before execution",
+        "Update PR322 chronology/no-repeat index and PR460 pointer after each substantive future implementation, review or scientific result"
+      ],
+      "historical_supersession": "Supersedes fragmented chat-only lane state and older handoffs as the first operational cold-start package. It does not replace original primary receipts or Macha event58; it points to them and preserves their scopes.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/535",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/537"
+      ]
     }
   ]
 }
