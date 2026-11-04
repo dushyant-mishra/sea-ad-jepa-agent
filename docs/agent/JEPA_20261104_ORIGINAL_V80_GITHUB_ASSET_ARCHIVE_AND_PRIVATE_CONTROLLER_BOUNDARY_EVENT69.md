@@ -8,8 +8,8 @@ Public repository `dushyant-mishra/sea-ad-jepa-agent`; archive source GitHub Act
 
 | Role | GitHub path | ZIP bytes | ZIP SHA-256 | Git blob SHA-1 |
 |---|---|---:|---|---|
-| FIT | [artifacts/v80/original/V80-original-fit-transport-artifact.zip](../artifacts/v80/original/V80-original-fit-transport-artifact.zip) | 660,628 | `4cec8966cff7bdddb3640903f4525328d23ed3482e2b232ead1bc440993fca71` | `8b81742b66dfd7d2d40940933c7775a515e0610d` |
-| ORIGINAL PACKAGE RECEIPT | [artifacts/v80/original/V80-original-receipt-artifact.zip](../artifacts/v80/original/V80-original-receipt-artifact.zip) | 1,274 | `97e264cfe76709f5098b346e56130716640e6c8ce8562974d6ab126ac82a47fe` | `4ec0e2eed6eba099645638232f3962482ae2dc26` |
+| FIT | [artifacts/v80/original/V80-original-fit-transport-artifact.zip](../../artifacts/v80/original/V80-original-fit-transport-artifact.zip) | 660,628 | `4cec8966cff7bdddb3640903f4525328d23ed3482e2b232ead1bc440993fca71` | `8b81742b66dfd7d2d40940933c7775a515e0610d` |
+| ORIGINAL PACKAGE RECEIPT | [artifacts/v80/original/V80-original-receipt-artifact.zip](../../artifacts/v80/original/V80-original-receipt-artifact.zip) | 1,274 | `97e264cfe76709f5098b346e56130716640e6c8ce8562974d6ab126ac82a47fe` | `4ec0e2eed6eba099645638232f3962482ae2dc26` |
 
 **Absolute links on the canonical branch:**
 - https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/science/jepa-robust-pipeline-post-jepa-anything-audit-20261013/artifacts/v80/original/V80-original-fit-transport-artifact.zip
