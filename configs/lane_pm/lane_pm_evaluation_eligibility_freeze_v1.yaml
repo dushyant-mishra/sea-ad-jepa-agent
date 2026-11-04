@@ -1,0 +1,194 @@
+# Lane PM — frozen evaluation eligibility for paired-multiome candidates
+# Frozen 2026-09-26 at base c49b13bd, BEFORE any biological comparison.
+# No outcome was inspected in setting any threshold here.
+#
+# States are distinct and non-interchangeable:
+#   DISQUALIFIED          - cannot be used; evidence-backed refusal recorded
+#   NEEDS_AUTHENTICATION  - blocked on a named, obtainable missing fact
+#   CONDITIONAL           - usable for named tests under named exclusions
+#   QUALIFIED             - all readiness gates satisfied (NONE are, here)
+
+freeze_version: 1
+frozen_at_base_commit: c49b13bd75c2d23716c777336db8fbfc78c09cd0
+training: OFF
+outcomes_inspected: false
+
+power_convention:
+  test: two_sample_t
+  alpha: 0.05
+  sided: 2
+  power: 0.80
+  statistic: minimum_detectable_cohens_d
+  note: >-
+    Cells improve the measurement of the donor representation X. They never
+    increase the independent sample size of a donor-level outcome Y. Every n
+    below is a count of PEOPLE.
+
+datasets:
+
+  GSE214637:
+    role: SUPERSERIES_CONTAINER
+    state: NOT_A_DATASET
+    holds_own_data: false
+    evidence: >-
+      Declares 'SuperSeries of: GSE214911' and 'SuperSeries of: GSE214979'.
+      Its supplementary directory returns HTTP 404. All 40 of its multiome GSMs
+      also carry Sample_series_id = GSE214979.
+    rule: >-
+      MUST NOT be counted as a cohort separate from GSE214979. Doing so
+      double-counts the same 105,332 nuclei and the same 15 donors.
+
+  GSE214979:
+    state: CONDITIONAL
+    equals_accession: GSE214637   # same cohort, two accession numbers
+    donors_total: 15
+    donors_by_group: {AD: 7, Ctrl: 8}
+    nuclei_total: 105332
+    microglia_total: 3179
+    min_microglia_per_donor_observed: 17
+    min_microglia_donor: "4313"
+    pairing: VERIFIED_PAIRED
+    pairing_verified_against: [series_cell_metadata, depositor_statement, file_format]
+    pairing_verified_against_primary_matrix: false
+    pairing_caveat: >-
+      The cell metadata is a derived Seurat export; if built by joining the two
+      modalities on barcode, per-row co-presence is partly circular. Confirm
+      against the shared barcode index in the filtered h5 to close this.
+    pairing_negative_control: NOT_EXECUTED
+    pairing_fraction: 1.0
+    gem_lanes: 17
+    pooled_lanes_with_two_donors: ["5", "6", "7"]
+    donors_with_replicate_libraries: ["1224", "1238", "3586", "4481", "4627"]
+    donor_assignment_method: genotype_demultiplexing_cellSNP_vireo
+    donor_assignment_is_inferred: true
+
+    frozen_exclusions:
+      exclude_donors_identity_conflict: ["HCT17HEX", "HCTZZT"]
+      identity_conflict_reason: >-
+        Sex and age are transposed between the GEO sample records and the series
+        cell metadata for this pair; both occupy pooled GEM lane 6.
+      min_microglia_per_donor: 50
+      resulting_donors: 12
+      resulting_donors_by_group: {AD: 6, Ctrl: 6}
+      resulting_nuclei: 92957
+      resulting_microglia: 2872
+      derived_by: scripts/lane_pm/lane_pm_paired_multiome_census_v1.py
+
+    eligible_tests:
+      - id: cell_level_paired_modality
+        eligible: true
+        unit: nucleus
+        n_units: 92957
+        n_donors: 12
+        requirement: >-
+          Donor must enter as a grouping factor; the three pooled lanes must be
+          carried as a covariate. This is the only test class in the project
+          that can be run on same-nucleus RNA+ATAC.
+      - id: donor_level_ad_control
+        eligible: true
+        underpowered: true
+        n_donors: 12
+        min_detectable_cohens_d: 1.80
+        requirement: pre-registered only; MUST NOT be used for discovery
+      - id: replication_of_morabito_finding
+        eligible: conditional
+        blocker: unresolved_uci_donor_overlap
+
+  GSE272082:
+    state: NEEDS_AUTHENTICATION
+    donors_total: 9
+    donors_by_group: {sEOAD: 4, Control: 5}
+    effective_independent_n: 9
+    region_libraries_total: 21
+    region_library_counts: {prefrontal_cortex: 9, entorhinal_cortex: 6, hippocampus: 6}
+    nuclei_total_qc: 76173
+    nuclei_source: publication_PMC12710691
+    microglia_total: NOT_STATED_IN_DEPOSIT
+    microglia_per_donor: NOT_STATED_IN_DEPOSIT
+    pairing: PAIRED_BY_CONSTRUCTION_UNVERIFIED
+    donor_reconstruction_is_inferred: true
+
+    region_trap_rule: >-
+      Region samples from one person are NOT independent units. Six donors
+      contributed three regions each; three contributed one. The independent n
+      is 9, never 21 and never 27. Region must enter as a within-donor repeated
+      measure.
+
+    deposit_defects:
+      - id: stale_design_text
+        detail: >-
+          Series_overall_design states HIP n=5 (total 20). The file inventory and
+          the publication both give HIP n=6 (total 21). NIH30 was added
+          2025-11-14 and the design prose was never updated.
+      - id: disease_label_conflict
+        affected_libraries: ["UT04", "UT09"]
+        affected_gsms: [GSM8392671, GSM8392672, GSM8392691, GSM8392692]
+        detail: >-
+          Sample TITLE says sEOAD; disease-state CHARACTERISTIC says Control.
+          The characteristics field is authoritative - only it yields the
+          4 sEOAD / 5 control split stated by both the summary and the paper.
+        binding_rule: use_characteristics_field_never_title
+
+    authentication_gate:
+      blocked_on: microglia_census
+      acquisition_required:
+        files: 21 filtered_feature_bc_matrix.h5
+        bytes: 832041774
+        fraction_of_archive: 0.0219
+        note: >-
+          GEO serves per-sample supplementary files individually; the 35.46 GiB
+          RAW tar never needs to be transferred.
+      steps:
+        - count microglia per RECONSTRUCTED DONOR, not per library
+        - apply the same min_microglia_per_donor = 50 floor
+        - verify same-nucleus pairing from the shared barcode list in each h5
+        - record the UT04/UT09 label resolution
+      if_cleared:
+        eligible_test: donor_level_region_stratified
+        n_donors: 9
+        min_detectable_cohens_d: 2.19
+        caveat: >-
+          Unbalanced by construction - 3 of 9 donors contribute PFC only.
+
+  GSE174367:
+    state: CONDITIONAL
+    reauthenticated_by_this_lane: false
+    authority: PR_164
+    pairing: SEPARATE_NUCLEI
+    donors: 18
+    note: Donor-level evaluation only. Five of six readiness gates remain unsatisfied.
+
+cross_dataset_rules:
+
+  - id: full104_independence
+    determination: INDEPENDENT
+    basis: disjoint_brain_banks_and_disjoint_id_namespaces
+    limit: >-
+      Person-level non-overlap is INFERRED, not proved. Neither deposit
+      publishes a crosswalk to a common identifier.
+
+  - id: gse214979_vs_gse272082
+    determination: INDEPENDENT
+    basis: different banks, different regions, different AD onset class
+
+  - id: gse214979_vs_gse174367
+    determination: UNDETERMINED
+    risk: possible_donor_overlap
+    detail: >-
+      GSE214979 draws donors 1224, 1230 and 1238 from repository UCI; GSE174367
+      is a UC Irvine dataset whose donors are deposited under pseudonyms
+      (Sample-N), so no crosswalk is possible from either deposit.
+    binding_rule: >-
+      Each dataset may be used independently. Any claim resting on AGREEMENT
+      between them must either exclude donors 1224, 1230 and 1238, or carry this
+      caveat explicitly.
+
+prior_exposure:
+  search_surfaces: [git_grep_origin_main, git_log_all_S_full_history, recursive_grep_full_working_tree_incl_untracked_and_gitignored]
+  GSE214637: UNEXPOSED
+  GSE214979: UNEXPOSED
+  GSE272082: UNEXPOSED
+  GSE174367: HEAVILY_EXPOSED
+
+promotions_granted: []
+promotion_note: No dataset is promoted to QUALIFIED by this lane.

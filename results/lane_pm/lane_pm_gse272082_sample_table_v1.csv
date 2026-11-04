@@ -1,0 +1,43 @@
+gsm,library,assay,region,disease_state_from_characteristics,disease_state_from_title,sex,age_at_death,pmi_hours
+GSM8392654,NIH01,ATAC-seq,Prefrontal cortex,Control,control,M,61,22.4
+GSM8392655,NIH02,ATAC-seq,Entorhinal cortex,Control,control,M,61,22.4
+GSM8392656,NIH03,ATAC-seq,Hippocampus,Control,control,M,61,22.4
+GSM8392657,NIH04,ATAC-seq,Prefrontal cortex,Control,control,M,62,12.5
+GSM8392658,NIH05,ATAC-seq,Entorhinal cortex,Control,control,M,62,12.5
+GSM8392659,NIH06,ATAC-seq,Hippocampus,Control,control,M,62,12.5
+GSM8392660,NIH10,ATAC-seq,Prefrontal cortex,sEOAD,sEOAD,F,61,24.2
+GSM8392661,NIH11,ATAC-seq,Entorhinal cortex,sEOAD,sEOAD,F,61,24.2
+GSM8392662,NIH12,ATAC-seq,Hippocampus,sEOAD,sEOAD,F,61,24.2
+GSM8392663,NIH13,ATAC-seq,Prefrontal cortex,sEOAD,sEOAD,F,64,24.3
+GSM8392664,NIH14,ATAC-seq,Entorhinal cortex,sEOAD,sEOAD,F,64,24.3
+GSM8392665,NIH15,ATAC-seq,Hippocampus,sEOAD,sEOAD,F,64,24.3
+GSM8392666,NIH16,ATAC-seq,Prefrontal cortex,sEOAD,sEOAD,M,62,20.5
+GSM8392667,NIH17,ATAC-seq,Entorhinal cortex,sEOAD,sEOAD,M,62,20.5
+GSM8392668,NIH18,ATAC-seq,Hippocampus,sEOAD,sEOAD,M,62,20.5
+GSM8392669,NIH28,ATAC-seq,Prefrontal cortex,Control,control,F,62,18.9
+GSM8392670,NIH29,ATAC-seq,Entorhinal cortex,Control,control,F,62,18.9
+GSM8392671,UT04,ATAC-seq,Prefrontal cortex,Control,sEOAD,M,62,48
+GSM8392672,UT09,ATAC-seq,Prefrontal cortex,Control,sEOAD,M,65,24
+GSM8392673,UT2105,ATAC-seq,Prefrontal cortex,sEOAD,sEOAD,M,59,68
+GSM8392674,NIH01,RNA-Seq,Prefrontal cortex,Control,control,M,61,22.4
+GSM8392675,NIH02,RNA-Seq,Entorhinal cortex,Control,control,M,61,22.4
+GSM8392676,NIH03,RNA-Seq,Hippocampus,Control,control,M,61,22.4
+GSM8392677,NIH04,RNA-Seq,Prefrontal cortex,Control,control,M,62,12.5
+GSM8392678,NIH05,RNA-Seq,Entorhinal cortex,Control,control,M,62,12.5
+GSM8392679,NIH06,RNA-Seq,Hippocampus,Control,control,M,62,12.5
+GSM8392680,NIH10,RNA-Seq,Prefrontal cortex,sEOAD,sEOAD,F,61,24.2
+GSM8392681,NIH11,RNA-Seq,Entorhinal cortex,sEOAD,sEOAD,F,61,24.2
+GSM8392682,NIH12,RNA-Seq,Hippocampus,sEOAD,sEOAD,F,61,24.2
+GSM8392683,NIH13,RNA-Seq,Prefrontal cortex,sEOAD,sEOAD,F,64,24.3
+GSM8392684,NIH14,RNA-Seq,Entorhinal cortex,sEOAD,sEOAD,F,64,24.3
+GSM8392685,NIH15,RNA-Seq,Hippocampus,sEOAD,sEOAD,F,64,24.3
+GSM8392686,NIH16,RNA-Seq,Prefrontal cortex,sEOAD,sEOAD,M,62,20.5
+GSM8392687,NIH17,RNA-Seq,Entorhinal cortex,sEOAD,sEOAD,M,62,20.5
+GSM8392688,NIH18,RNA-Seq,Hippocampus,sEOAD,sEOAD,M,62,20.5
+GSM8392689,NIH28,RNA-Seq,Prefrontal cortex,Control,control,F,62,18.9
+GSM8392690,NIH29,RNA-Seq,Entorhinal cortex,Control,control,F,62,18.9
+GSM8392691,UT04,RNA-Seq,Prefrontal cortex,Control,sEOAD,M,62,48
+GSM8392692,UT09,RNA-Seq,Prefrontal cortex,Control,sEOAD,M,65,24
+GSM8392693,UT2105,RNA-Seq,Prefrontal cortex,sEOAD,sEOAD,M,59,68
+GSM9294031,NIH30,RNA-Seq,Hippocampus,Control,control,F,62,18.9
+GSM9294032,NIH30,ATAC-seq,Hippocampus,Control,control,F,62,18.9

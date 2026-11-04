@@ -1,0 +1,49 @@
+{
+  "series": "GSE272082",
+  "source_file": "GSE272082_gsm_full.txt",
+  "source_sha256": "e7c1b32959f4778198607a13f93938a5cb23c3ed0eda0b7f5086414670c84f9c",
+  "n_gsm_records": 42,
+  "n_libraries": 21,
+  "n_donors_reconstructed": 9,
+  "donor_reconstruction_method": "INFERRED by grouping libraries on (sex, age at death, PMI, disease state). GEO does not deposit an explicit donor key for this series; the grouping is an inference, not a deposited fact.",
+  "region_sample_counts": {
+    "Prefrontal cortex": 9,
+    "Entorhinal cortex": 6,
+    "Hippocampus": 6
+  },
+  "donors_per_group": {
+    "Control": 5,
+    "sEOAD": 4
+  },
+  "n_disease_label_conflicts": 4,
+  "disease_label_conflicts": [
+    {
+      "gsm": "GSM8392671",
+      "library": "UT04",
+      "disease_state_from_title": "sEOAD",
+      "disease_state_from_characteristics": "Control"
+    },
+    {
+      "gsm": "GSM8392672",
+      "library": "UT09",
+      "disease_state_from_title": "sEOAD",
+      "disease_state_from_characteristics": "Control"
+    },
+    {
+      "gsm": "GSM8392691",
+      "library": "UT04",
+      "disease_state_from_title": "sEOAD",
+      "disease_state_from_characteristics": "Control"
+    },
+    {
+      "gsm": "GSM8392692",
+      "library": "UT09",
+      "disease_state_from_title": "sEOAD",
+      "disease_state_from_characteristics": "Control"
+    }
+  ],
+  "microglia_counts": "NOT_STATED_IN_DEPOSIT",
+  "microglia_counts_note": "No cell-type annotation, cell metadata, or per-cell-type count is deposited for this series, and the publication does not break microglia down per donor or per region. Not estimated.",
+  "effective_independent_n": 9,
+  "effective_n_note": "Region samples from one person are NOT independent units. The independent n is the donor count, not the region-sample count."
+}

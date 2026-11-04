@@ -1,0 +1,12 @@
+series,file,bytes,size_source,needed_for_evaluation,retrieved,sha256,note
+GSE214979,GSE214979_cell_metadata.csv.gz,8820297,http_content_length,REQUIRED,yes,8ce4e0c78747cfa6fb2a556468893df0d378e3f53085e52955f3ecdcc944394b,donor and cell-type census source; byte length matches server Content-Length
+GSE214979,GSE214979_filtered_feature_bc_matrix.h5,1369492123,http_content_length,REQUIRED,no,NOT_COMPUTED_NOT_DOWNLOADED,10x ARC HDF5 carrying GEX+Peaks over one barcode list
+GSE214979,GSE214979_unfiltered_feature_bc_matrix.h5,1558740382,http_content_length,OPTIONAL_QC_ONLY,no,NOT_COMPUTED_NOT_DOWNLOADED,
+GSE214979,GSE214979_atac_fragments.tsv.gz,63641120882,http_content_length,ONLY_FOR_PEAK_RECALL,no,NOT_COMPUTED_NOT_DOWNLOADED,59.27 GiB; 46x the processed matrix
+GSE214979,GSE214979_atac_fragments.tsv.gz.tbi.gz,6719411,http_content_length,WITH_FRAGMENTS_ONLY,no,NOT_COMPUTED_NOT_DOWNLOADED,
+GSE214637,(no supplementary directory),0,http_404,NOT_APPLICABLE,no,NOT_APPLICABLE,SuperSeries container holds no data of its own
+GSE272082,GSE272082_RAW.tar,38076518400,geo_filelist,PARTIAL_EXTRACT_ONLY,no,NOT_COMPUTED_NOT_DOWNLOADED,35.46 GiB archive; contents enumerated without download
+GSE272082,21x *_filtered_feature_bc_matrix.h5,832041774,geo_filelist,REQUIRED,no,NOT_COMPUTED_NOT_DOWNLOADED,0.77 GiB; 2.2% of archive; the full acquisition plan
+GSE272082,21x *_raw_feature_bc_matrix.h5,1507078266,geo_filelist,NOT_NEEDED,no,NOT_COMPUTED_NOT_DOWNLOADED,
+GSE272082,21x *_atac_fragments.tsv.gz,35715709589,geo_filelist,ONLY_FOR_PEAK_RECALL,no,NOT_COMPUTED_NOT_DOWNLOADED,33.26 GiB; dominates the archive
+GSE272082,21x *_atac_fragments.tsv.gz.tbi.gz,21617514,geo_filelist,WITH_FRAGMENTS_ONLY,no,NOT_COMPUTED_NOT_DOWNLOADED,
