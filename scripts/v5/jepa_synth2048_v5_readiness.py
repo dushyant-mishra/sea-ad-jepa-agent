@@ -224,6 +224,10 @@ def run_zero_update_model_probe(full: np.ndarray, support: np.ndarray,
         betas=(0.9, 0.999), eps=1e-8, weight_decay=0.01,
         init_seed=8113002,
     )
+    from scripts.v5.jepa_synth2048_collapse_sentinel_v1 import (
+        check_encoder_gradient_registry, geometry_diagnostic,
+    )
+    mandatory_registry = check_encoder_gradient_registry(modules.online)
     modules.online.eval()
     modules.predictor.eval()
     modules.teacher.eval()
@@ -269,6 +273,8 @@ def run_zero_update_model_probe(full: np.ndarray, support: np.ndarray,
            "zero-update probe mutated network parameters")
     insist(len(modules.optimizer.state) == 0, "optimizer state exists at zero updates")
     insist(all(p.grad is None for p in modules.teacher.parameters()), "teacher gradient appeared")
+    teacher_geometry = geometry_diagnostic(t.cell_state.detach().cpu().numpy())
+    student_geometry = geometry_diagnostic(s.cell_state.detach().cpu().numpy())
     return {
         "status": "ACTUAL_V5_SIX_BLOCK_U0_FORWARD_PASS__NO_LEARNING",
         "actor": "KeyedIPBEncoderV2Reference+BlockPredictor",
@@ -277,6 +283,9 @@ def run_zero_update_model_probe(full: np.ndarray, support: np.ndarray,
         "measured_addresses_per_cell": [int(x) for x in mask.sum(dim=1)],
         "visible_addresses_per_cell": [int(x) for x in visible.sum(dim=1)],
         "target_block_count": 16,
+        "historical_mandatory_48_registry": mandatory_registry,
+        "u0_teacher_cell_geometry": teacher_geometry.__dict__,
+        "u0_student_cell_geometry": student_geometry.__dict__,
         "u0_jepa_mse_mechanics_only": float(loss),
         "optimizer_updates": 0, "ema_updates": 0, "teacher_grads": 0,
         "training_authorized": False, "target_qualified": False,
