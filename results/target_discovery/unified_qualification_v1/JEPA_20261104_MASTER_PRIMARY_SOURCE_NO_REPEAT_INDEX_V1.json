@@ -886,5 +886,66 @@
     },
     "original_v80_preservation_verified": false,
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "task4_k01_macha_cumulative_reciprocal_sol_repair_event64_20261104": {
+    "chronology_event": 64,
+    "source_doc": "docs/agent/JEPA_20261104_TASK4_K01_SOL_REPAIR_AND_RECIPROCAL_REVIEW_EVENT64.md",
+    "scope": "SOL_EXACT_HEAD_K01_REPAIR__NONAUTHOR_SCOPED_MACHA_HUNK_REVIEW__NO_TASK4_AUTHORITY",
+    "macha_original_review": {
+      "pr": 541,
+      "head": "3b86b9467506539776e04a6470fa8f2f7363f129",
+      "verdict": "HOLD_NEEDS_EVIDENCE",
+      "comment_url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/541#issuecomment-6638218339"
+    },
+    "k01_retained_test": {
+      "pr": 542,
+      "head": "8422e2ecc29af07e56088d823eef2976b55caf3d",
+      "path": "tests/v5/td_unified/test_task4_cumulative_541_macha_review.py",
+      "blob": "57c5794a135c7ddd3c3b3777021721adeefc590a",
+      "original_red_verified": true,
+      "changed_in_sol_pr": false
+    },
+    "sol_repair": {
+      "pr": 543,
+      "head": "7e4bffe8f75f65452e41304108c2d62b14e14cf5",
+      "source_path": "scripts/v5/td_unified/task4_registry_adapter_v1.py",
+      "source_blob": "b859b5a743b167305a809a206a515ea0ec98f6ae",
+      "change": "EXACT_HISTORY_CUSTODY_TYPE_PLUS_UNBOUND_VALIDATE_CURRENT",
+      "frozen_task3_source_changed": false
+    },
+    "exact_ci": {
+      "run": 41884259338,
+      "linux_focused_pass": 216,
+      "linux_focused_skip": 10,
+      "linux_full_pass": 407,
+      "linux_full_skip": 10,
+      "linux_benchmark_pass": 1,
+      "windows_pass": 63,
+      "windows_skip": 7,
+      "workflows_success": 4,
+      "workflows_failed": 0
+    },
+    "sol_nonauthor_macha_hunk_verdicts": {
+      "review_url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/541#issuecomment-6638320128",
+      "d8a3171c": "ACCEPT_SCOPED_LOCAL_HANDLE_HARDENING",
+      "399c4a6a": "ACCEPT_SCOPED_REVERT_AND_ERRATUM",
+      "efd77956": "ACCEPT_SCOPED_PROCESS_LOCAL_MUTATION_REFUSAL",
+      "57e70714": "ACCEPT_SCOPED_X1_TRANSACTION_AND_REVIEWED_TEST_ACTIVATION",
+      "3b86b946": "ACCEPT_SCOPED_X1_SHORT_IO_DEFENSE",
+      "combined": "ACCEPT_SCOPED_NONAUTHORIZING_MACHA_PATCH_MECHANICS_WITH_LIMITATIONS",
+      "xfail_decorators_removed": 2,
+      "xfail_test_assertion_bodies_changed": false,
+      "pr445_code_author": "SOL"
+    },
+    "accepted_limitations": [
+      "L01 finite-exam budget in-process DEVELOPMENT only; cross-process uniqueness NOT enforced; no exposure_ledger producer",
+      "Reference and optimized replay call identical _replay_semantic(); benchmark not independently equivalent",
+      "Three Windows+WSL tests local-only 40/40 by Macha, no cross-host hosted CI",
+      "Task1 encoder #461/#467 not present transitively in frozen Task3 lineage",
+      "Registry C3 does not use unused resolver parameters, not complete actor/dependency authority",
+      "Task4 replay authoritative=False, C5-C9 hard FAIL, no FINAL or Task5 authorization"
+    ],
+    "next": "Macha independent review #543 K01 exact-head + decide only scoped cumulative Task4 mechanics; no Task5 promotion",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
