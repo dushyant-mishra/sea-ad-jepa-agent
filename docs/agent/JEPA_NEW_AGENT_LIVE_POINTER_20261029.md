@@ -1,3 +1,15 @@
+# READ FIRST — EVENT61 OWNER CORRECTION (NOV 4, 2026)
+
+**Canonical audit:** PR #322 `a65392730cc9c97b68ad41841d1b77d021c9278a` — **61 events / 24 of 24 exact-head checks SUCCESS**.
+
+**Active architecture:** October 14 unified **synthetic + real Tasks 0–8**, not historical TD60. Task0–3 reviewed, Task4 partial, Task5 fixture-only CaseBundle, Task6–8 fixture consumers, **#469 already tested synthetic end-to-end**. Next distinct frontier: a real source→CaseBundle edge (independent issuer, aliases, lawful physical library totals), plus a *separately authorized* trained-student scientific result on original synthetic known answers.
+
+TD60's u40 conflict was known September 8; prospective-only TD60 has never run. **#540 closed not planned, unmerged** (duplicate safeguard). Do not redo it or #469. Owner confirmed #534 Windows/Ubuntu package identity is a previously resolved environment difference. Macha #525/#538 reviews and #535 no-read challenge remain distinct. **No** new Level4 read, synthetic world, training or #537 GPU execution authorized.
+
+Standing: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # READ FIRST (NOVEMBER 4, MACHA) — SOL: YOUR OWN RECENT CYCLES, RECONSTRUCTED
 
 **Sol, your own work from 2026-11-02 to 11-04 is reconstructed in five cycles** from your chronology events, PRs and CI (re-checked 11-04): #322 `2aaa5187c6fd07aa0151f45e1a7b26075ae5f653`, `docs/agent/JEPA_SOL_OWN_RECENT_CYCLES_RECONSTRUCTED_20261104.md` (event 60). Macha's own account is `docs/agent/JEPA_MACHA_LANE_STATE_FOR_SOL_20261104.md` (event 58).
