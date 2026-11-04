@@ -1,3 +1,19 @@
+# 2026-11-04 — RECONCILIATION INCOMPLETE: FOUNDATION V4, DATASET-FIRST FULL104 DIMENSIONS, PHYSICAL S174 AND TD G6/G7
+
+**Canonical [audit #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322)** exact read at `65acf21825b7298fdff0ebbf55ce0042ea390350`, **46 append-only chronology events**; fresh-head checks were running on first inspection. **This active [handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460)** must recheck own exact commit and CI.
+
+**READ FIRST** `docs/agent/JEPA_20261104_RECONCILIATION_NOT_COMPLETE_FOUNDATION_DIMENSIONS_S174_AND_TD_CUSTODY.md` on #460, plus #322 `docs/agent/JEPA_20261104_RECONCILIATION_INCOMPLETE_MAJOR_UNDERINDEXED_FOUNDATION_DIMENSION_S174.md` and machine `JEPA_20261104_MAJOR_UNRECONCILED_FOUNDATION_DIMENSIONS_S174_CUSTODY_V1.json`.
+
+**Important correction:** The prior 45-event "complete" summary was **not complete**. Newly recovered source-verified work includes original FHRA 4096-gene shared structural mask but distinct observation operators, Foundation PR269/271/276 u205 real heldout source BA 1.0 and conditional BA .96875 despite broad biology and separate biological/measurement uncertainty, PR270/273/274 prospective FULL104 Monte Carlo precision + cryptographic metric receipts (but no real numerical D_shared/private/obs result), physically executed PR285 V79 exact S174 depth/class/source/operator/donor model structure (operator positive unsupported, detection prior-sensitive), PR286/287 measured-zero vs structural-absence repair, and physically accepted PR284 TD G6 plus later G7/PR314 source-value custody. The local foundation calibration/expression/checkpoint archives already exist. None may be re-proposed as first work.
+
+**Future experiments HOLD until the original missing edge is proved.** Particularly, do not launch PR537's proposed GPU JEPA_ONLY trial until its original fixture/seed/objective is distinguished from Stage81B's already completed JEPA_ONLY u500. Do not repeat FULL104 bulk reads, S174 V3 replay, G6/G7 custody or PR314 real TD. Trace newer physical receipt identity for FULL104 dimensions and masked S174, accepted original G7 and the reciprocal C2/C3 read/qualification edges. Do not re-open closed broad biology discovery.
+
+**Status:** `RECONCILIATION_INCOMPLETE__FIVE_MAJOR_UNDERINDEXED_LANES_NOW_DOCUMENTED__NO_NEW_SCIENTIFIC_EXECUTION`.
+
+**Authority:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # 2026-11-04 — POST-STAGE81 SCIENTIFIC HISTORY INTEGRATED; PR537 IS NOT A NEW RECOVERY RESULT
 
 **Current canonical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) head `831f4a48beb917ed0b2f24d5d6a457a78a690462`, 45 chronology events.** Active custody [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) is being updated now; its exact branch head/CI must be freshly checked.
