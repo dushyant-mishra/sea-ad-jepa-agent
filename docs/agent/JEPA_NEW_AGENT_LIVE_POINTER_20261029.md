@@ -1,3 +1,17 @@
+# READ FIRST (2026-11-04, SOL EVENT72) — SYNTHETIC-FIRST ALL-C BIOLOGICAL PREQUALIFICATION: REUSE EXISTING RESULTS, DO NOT CLAIM SIX PASSES
+
+**Owner's correct research opportunity:** All C1–C6 biological information types may coexist. Original [PR315 design](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/315) already explicitly defines one neutral shared synthetic biology for all candidates, complementary target heads, fusion, specialist, interference and controller-separated learning. No new simulator should be proposed until exact frozen-source feasibility is checked.
+
+**Done at its true scope:** PR328 frozen 480×48 common/rare/RNA+ATAC mechanics fixture contains controller C1–C6 *definitions*, but its original `recoverability` is **UNASSESSED for all six**; PR336 independently validated **9/9 C2 relational *test-of-test* cases**, not a learned C2 outcome; PR369 gate mechanics, PR348 V80 estimator-independent 8-world/192-fit package (no estimator), PR469 source→Task5 fixture, PR526/531/536 q-specific measurement/negative admission, PR438 biological-vs-nuisance tests all already exist.
+
+**Exact discrepancies preventing fake initial PASS:** PR328 48-feature world cannot serve original C2's **3×512** views; its C3 controller truth `expected[:,0].mean()` is a *population mean*, unlike R5's **per-cell q-excluded eight-other-gene** target; C4/C6 component descriptors do not establish nonlinear increment; original synthetic support `VISIBILITY>0` incorrectly treats detection rate as structural measurement (#531). Preserve old V2 and old sealed worlds; no world regeneration/learning without separate owner authorization.
+
+**Latest source:** [Event72 original synthetic reuse and candidate-closure audit](JEPA_20261104_EVENT72_SYNTHETIC_FIRST_ALL_C_TARGET_PREQUALIFICATION_REUSE.md) on both audit #322 and handoff #460. #322 contains **72 append-only events** and machine-index key `synthetic_first_all_C_event72_20261104`; exact audit head when indexed `6793b4a2590cefa78da588d685a078b4ca83fa60` (recheck hosted CI). Event71 coexistence rule remains controlling. Macha #545/#546 review pending, Task4 #541 HOLD, #534 SHA RED unresolved. Do not conflate synthetic initial model gate outcome, mechanics test PASS, human biological qualification, or training authority.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST (2026-11-04, SOL EVENT71) — ALL C1–C6 TARGET FAMILIES CAN COEXIST; NO ZERO-SUM BIOLOGICAL WINNER RULE
 
 **Owner scientific correction:** The real objective is *multiple complementary, transferable cellular biological information types*, not missing-gene prediction or eliminating all Cs but one. C1 shared, C2 relational, C3 query-local and C5 regulatory specialist may all coexist when independently qualified. C6 = C1+C3; C4 = C1+C3+C2 with meaningful relational increment **versus independently qualified C6**. The original #275 routing and convergence permit multiple eligible/incomparable qualified targets; head-to-head is a comparison/confirmation procedure, not proof biology can carry only one target.
