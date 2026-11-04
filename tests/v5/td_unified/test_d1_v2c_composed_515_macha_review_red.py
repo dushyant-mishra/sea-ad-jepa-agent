@@ -409,30 +409,22 @@ def test_the_composed_entry_never_dispatches_caller_objects(where):
 
 # ---------------------------------------------------- unresolved boundaries (synthetic)
 
-def test_limit_a_query_alias_inside_a_base_feature_leaks_the_query_through_d1():
-    """UBE2R2-AS1 (ENSG00000235481) is the query; its legacy holder
-    ENSG00000233776 is a base feature whose deposited count also contains the
-    query's molecules. Across 64 hidden query values, the student recovers the
-    query exactly from D1, while every receipt has identical non-digest fields
-    and only the constant source_feature_alias_closure_authenticated=False
-    marks the threat. MIR4307HG (ENSG00000257612, proposed BLOCK) is accepted
-    as the query. Synthetic counts only."""
-    base = _rename(_rename(_fixed_world(), "ENSG_Q", "ENSG00000235481"), "ENSG_A", "ENSG00000233776")
-    reference = None
-    for q in range(64):
+def test_known_query_alias_d1_leak_is_refused_before_receipt():
+    """#518 historical witness demonstrated q molecules leaking through D1.
+    The original frozen source/negative evidence remains unchanged. The adopted
+    conservative rule now refuses the affected query, rather than claiming to
+    separate two source features without a trusted issuer."""
+    base = _rename(_rename(_fixed_world(), "ENSG_Q", "ENSG00000235481"),
+                   "ENSG_A", "ENSG00000233776")
+    for q in (0, 1, 31, 63):
         w = deepcopy(base)
         for cell in w["roster"]:
             w["full"][cell["cell_id"]]["ENSG00000235481"] = q
-            w["full"][cell["cell_id"]]["ENSG00000233776"] += q  # alias contamination upstream
-        view, receipt = _view_and_receipt(w)
-        d1 = next(r["base_rights_normalization_depth"] for r in view["rows"] if r["cell_id"] == "M515_C0"
-                  and r["state"] == MS)
-        reference = d1 if reference is None else reference
-        assert d1 - reference == q
-        assert receipt["source_feature_alias_closure_authenticated"] is False
-        assert _undigested(receipt) == _undigested(_view_and_receipt(base)[1])
-    blocked = _rename(_fixed_world(), "ENSG_Q", "ENSG00000257612")
-    assert _view_and_receipt(blocked)[1]["status"] == STATUS
+            w["full"][cell["cell_id"]]["ENSG00000233776"] += q
+        assert _outcome(_redact(w), _policy(w))[0] == "refused"
+    for blocked_id in ("ENSG00000257612", "ENSG00000257842", "ENSG00000258081"):
+        w = _rename(_fixed_world(), "ENSG_Q", blocked_id)
+        assert _outcome(_redact(w), _policy(w))[0] == "refused"
 
 
 def _selection_world(q_floor_cell):
