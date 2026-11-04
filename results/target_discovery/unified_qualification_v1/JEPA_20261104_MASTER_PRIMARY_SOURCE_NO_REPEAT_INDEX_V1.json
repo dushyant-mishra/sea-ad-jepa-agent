@@ -947,5 +947,67 @@
     ],
     "next": "Macha independent review #543 K01 exact-head + decide only scoped cumulative Task4 mechanics; no Task5 promotion",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v80_original_archive_rescue_and_fit_only_drift_event65_20261104": {
+    "chronology_event": 65,
+    "source_doc": "docs/agent/JEPA_20261104_V80_ORIGINAL_ARTIFACT_RESCUE_AND_FIT_ONLY_PORTABILITY_TRIAGE_EVENT65.md",
+    "original_github_run_id": 38504094639,
+    "retrieved_to": "owner_conversation_files_only",
+    "original_zip_sha_exact": true,
+    "controller_truth_opened": false,
+    "artifact_custody": [
+      {
+        "role": "FIT",
+        "id": 11867590706,
+        "filename": "V80-original-fit-transport-artifact.zip",
+        "size": 660628,
+        "sha256": "4cec8966cff7bdddb3640903f4525328d23ed3482e2b232ead1bc440993fca71",
+        "content_sha256": "77f89e8336ec2a2d0184abbd81bfd7d6ff04f2dc57aa80891b6d8021869737b3",
+        "expires_at": "2026-11-13T03:01:56Z"
+      },
+      {
+        "role": "CONTROLLER_SEALED",
+        "id": 11866917064,
+        "filename": "V80-original-controller-transport-SEALED.zip",
+        "size": 6844053,
+        "sha256": "184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46",
+        "contents_opened": false,
+        "expires_at": "2026-11-13T03:01:58Z"
+      },
+      {
+        "role": "RECEIPT",
+        "id": 11867366245,
+        "filename": "V80-original-receipt-artifact.zip",
+        "size": 1274,
+        "sha256": "97e264cfe76709f5098b346e56130716640e6c8ce8562974d6ab126ac82a47fe",
+        "content_sha256": "346407af801a7fabc5dbd27136dcf5c9abe61e87d438018b98da192333eb9c32",
+        "expires_at": "2026-11-13T03:02:00Z"
+      }
+    ],
+    "manifest_local_name": "V80-original-artifacts-custody-receipt.json",
+    "original_runtime": {
+      "python": "3.11.9",
+      "numpy": "2.3.5"
+    },
+    "failed_current_runner": {
+      "pr": 534,
+      "run_id": 41665058401,
+      "python": "3.11.9",
+      "numpy": "2.3.5",
+      "reported_benchmark_sha256": "faf80c897ab6f568ec2ca243471b1e3329950ce86e9ab69b7b5c3e3891c7b769",
+      "original_benchmark_sha256": "16a08b29c7e083377f4dde6e16ac6d55a3358ed45475c74161fbaba29a4afc38",
+      "portability_status": "RED_REFUSE__NO_EXPECTED_SHA_UPDATE"
+    },
+    "fit_only_diagnostic": {
+      "support_sha_match_count": 8,
+      "design_matrix_sha_match_count": 8,
+      "families": 8,
+      "observed_outcome_parity_claim": false,
+      "root_cause_proven": false
+    },
+    "independent_durable_controller_escrow_verified": false,
+    "no_controller_truth_in_repository": true,
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+    "next_owner_action": "Move unchanged verified controller ZIP to separate access-controlled controller vault, fit+receipt to fit-permitted archive, independently re-read SHA; conversation sandbox storage alone is not durable access isolation."
   }
 }
