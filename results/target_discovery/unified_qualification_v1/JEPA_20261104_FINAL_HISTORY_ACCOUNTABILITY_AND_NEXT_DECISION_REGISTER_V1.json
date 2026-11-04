@@ -174,5 +174,31 @@
     ],
     "scientific_lock": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
     "review_rule": "Macha GPU physical original source execution and independent adversary, GPT scientific/control design and reciprocal source review. No unconditional audit PASS from author CI."
+  },
+  "corrective_precedence_20261104": {
+    "STATUS": "SUPERSEDED_AS_CURRENT_NEXT_ACTION_PLAN_BY_LATE_SOURCE_PRECEDENCE_AUDIT__HISTORICAL_ORIGINAL_ROWS_PRESERVED",
+    "controlling_report": "docs/agent/JEPA_20261104_RECENT_TWO_WEEK_SCIENCE_RESOLUTIONS_AND_CORRECTED_NEXT_WORK_V1.md",
+    "full_recent_pr_register": "results/target_discovery/unified_qualification_v1/JEPA_20261104_LAST_14_DAYS_108_PR_RESULT_PRECEDENCE_AND_NO_REPEAT_V1.json",
+    "closed_not_next": [
+      "Original Sept2 final source mapping exists in git; HVS & SEA-AD source alias-negative accounting done (#509)",
+      "HVS/SEA-AD/NPH52 public accession and terms acquired; signer optional (#528 Nov3 erratum)",
+      "Existing CaseBundle fixture, D1 V2C redactor and Docker acceptance main #522/#523/#524; #535 withdrew new fixture request",
+      "Phase2 independent relational 9-case audit #336 done; #531 erratum",
+      "Original RNA→CaseBundle fixture #469, C3 measured producer and 48-feature C2 rejection #536 done",
+      "Original rare-tail readonly preflight and native Windows fsync #57/#60/#61/#65/#66/#70 completed",
+      "Original six-donor donor_umi physical work and corrected derivative + N1 adapter #59/#69/#74/#83 completed",
+      "Stage81B JEPA_ONLY/CURRENT/ANCHOR_ONLY and 32-update teacher-target experiments already done; proposed PR537 is not a required next run",
+      "Public E2G seven-track survey #457 completed",
+      "Original V79/V80 benchmarks and terminal completed; PR534 is only a failed NEW cross-contract SHA replay"
+    ],
+    "next_priority_order": [
+      "Read-only synthesis of the original *biological* TD19 / one-shot #314 / R5 / Stage81B results, name a single falsifiable new learned teacher→student question absent from those experiments",
+      "Only after specifying this new scientific contrast, choose a prospective outcome-blind existing-source experiment with donor/source, wrong-query, wrong-cell and technical baselines; avoid new world/ETL by default",
+      "Treat remaining real-source issuer/QC/specimen/alias restrictions only if required for that selected human experiment; NPH52 remains scientifically restricted; HVS and SEA-AD source feature accounting already complete",
+      "Review PR525/538 exact proposed increments only before adopting them; PR534 cross-contract SHA error is isolated CI work; PR537 remains hold",
+      "Defer unrelated N1 issue54 precision result-consumer and rare-tail issue55 old-runner bypass; no re-preflight or run"
+    ],
+    "superseded_prior_seven_action_gates": "Original G01..G07 entries are retained as dated historical provisional assessments, not current task authority",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
