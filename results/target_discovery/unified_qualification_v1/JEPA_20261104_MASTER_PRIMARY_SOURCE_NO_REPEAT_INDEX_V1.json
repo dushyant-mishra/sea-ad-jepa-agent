@@ -1210,5 +1210,27 @@
     },
     "v80_cross_host_sha_status": "PR534_PINNED_BENCHMARK_MISMATCH_RED",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "target_candidate_coexistence_event71_20261104": {
+    "chronology_event": 71,
+    "human": "docs/agent/JEPA_20261104_EVENT71_COEXISTING_BIOLOGICAL_TARGETS_AND_CANDIDATE_READINESS.md",
+    "correction": "ALL_C1_C2_C3_C4_C5_C6_MAY_COEXIST_WHEN_INDEPENDENTLY_QUALIFIED",
+    "original_target_routing_pr": 275,
+    "original_multi_block_pr": 525,
+    "original_gates_pr": 338,
+    "original_28_gates": {
+      "partly_specified_not_executed": 15,
+      "prospectively_blocked": 13
+    },
+    "multi_block_source_fact": "C1_C2_C3_FOUNDATION_PLUS_OPTIONAL_C5_SPECIALIST_SUPPORTED_BY_BUILDER_WITH_PASS_METADATA",
+    "composites": {
+      "C6": "C1+C3",
+      "C4": "C1+C3+C2_WITH_INDEPENDENT_C6_COMPARATOR"
+    },
+    "current_builder_limit": "SINGLE_SELECTED_FUSED_CANDIDATE_SLOT__ALL_SIX_SIMULTANEOUS_PRODUCTION_NOT_DEMONSTRATED",
+    "scientific_prior": "C2_MEASURED_BROAD_MESO_VIABLE__C3_HISTORIC_R5_RECONCILED_NOT_PRIMARY_RECOVERED",
+    "owner_selection_assumed_single_winner": false,
+    "training_authorized": false,
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
