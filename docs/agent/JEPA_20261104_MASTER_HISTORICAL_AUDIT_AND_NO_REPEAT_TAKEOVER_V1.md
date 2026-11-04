@@ -1,6 +1,17 @@
 # JEPA 2026-11-04 — Master historical audit, primary evidence custody and no-repeat takeover V1
 
 
+## CONTROLLING PROJECT NARRATIVE — JUNE–NOVEMBER 2026, AUDIT EVENT 54
+
+**Read this before narrowing the project to a candidate, dataset or code issue:** [complete original biological/architecture narrative](JEPA_20261104_END_TO_END_SCIENTIFIC_NARRATIVE_AND_DECISION_LINEAGE_V1.md) now lives **on this existing PR #322**, with 54 append-only chronology events. The new first-read restores the original Alzheimer’s microglia and pathology discovery mission; V1 flat prediction; V2/V3 Graph-JEPA and failed graph-specificity/clean external locks; rare-cell Stage53–70, 18-gene AD mechanistic review, executed original Stage72–79 SCENIC+/ATAC/frozen GeneJEPA perturbations; source/identity/assay-operator FULL104 evolution; per-gene vs global/structured representation, rare/context uncertainty, biological content versus student predictability, and all C1/C2/C3/C6/C4 foundation hypotheses plus C5 regulatory specialist. It also distinguishes **five original synthetic roles**, actual old teacher/student failures, validated controller tests and new admission refusals without pretending a learned JEPA target exists.
+
+**Scope correction:** The preceding event 53 two-month audit is valuable but its old C2-vs-C3 selection wording was **too narrow**; its later additive six-candidate correction is preserved. This *end-to-end* narrative takes precedence for scientific intent and hypothesis ownership. The original project is a hypothesis-driven bridge from human RNA states to pathology and **independent** regulatory, spatial, perturbational and ultimately mechanistic evidence—not an RNA-only reconstruction benchmark or a target-learning contest detached from Alzheimer’s biology. No new experiment or training permission arises. Previous positive/negative original receipts remain authoritative at their limited scopes, including original Stage81B, TD19/57B/59, original R5, real #314, V79/V80, PR #336 and PR #536.
+
+**Permanent custodial rule:** future agents inherit this narrative, the source crosswalks and the full chronology; implement real source/code only on its owner PR, append scoped outcomes to **#322**, then update **#460** first-read and machine pointer to the verified current audit head. Never create a separate historical decision PR. The scientific terminal remains `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
+
 ## Controlling two-month scientific synthesis — audit event 53
 
 **Nov 4 retrospective reconciliation of original September 4–November 4 science and engineering**, separate from original experiment execution dates. Read [two-month evidence and implementation decision V1](JEPA_20261104_SEP_NOV_TWO_MONTH_SCIENCE_ENGINEERING_AUDIT_AND_DECISION_V1.md) and machine companion `results/target_discovery/unified_qualification_v1/JEPA_20261104_SEP_NOV_TWO_MONTH_DECISION_MAP_V1.json`. The append-only chronology now has **53 events** (52 prior records intact). This is a source-scoped audit of original TD19, TD57B/59, TD60/V5, #314/#336/#338, original R5/Stage81B, V79/V80, FULL104, source/issuer and student/handoff histories—not a new two-month experimental result, new 535-PR code audit, or model training.
