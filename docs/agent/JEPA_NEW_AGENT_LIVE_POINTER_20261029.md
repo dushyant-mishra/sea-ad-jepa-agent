@@ -1,3 +1,17 @@
+# 2026-11-04 — POST-STAGE81 SCIENTIFIC HISTORY INTEGRATED; PR537 IS NOT A NEW RECOVERY RESULT
+
+**Current canonical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) head `831f4a48beb917ed0b2f24d5d6a457a78a690462`, 45 chronology events.** Active custody [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) is being updated now; its exact branch head/CI must be freshly checked.
+
+**FIRST READ:** `docs/agent/JEPA_20261104_POST_STAGE81_COMPLETED_SCIENCE_AND_PR537_STATUS_HANDOFF.md` on #460, plus #322 `docs/agent/JEPA_20261104_PR537_POSTREPAIR_SIX_IPB_BRANCH_SYNC_AND_RESULTS_STATUS.md` and machine mirror `JEPA_20261104_PR537_POST_STAGE81_EVIDENCE_RECONCILIATION_V1.json`. Prior STOP note about a generic smaller V65/V5 rerun remains valid; do not misinterpret it to erase substantial post-Stage81 executed science.
+
+**Reconciled existing science:** Stage81B matched JEPA_ONLY vs CURRENT vs ANCHOR_ONLY causal u500 and anchor rejection; Stage81A3R molecular/224D scoped global-state work; T0/T1/TCTX and R5 measured query/identity controls; PROD41K/T1 48 dead gradients and F1-B repaired-gradient synthetic mechanics; V65/V67 planted shared/private heldout and technical controls; TD56/57B/59 corrected human broad/meso-scale positives, TD57C fine negative, #336 9/9 independent relational test-of-test. **These have already been done**; do not call a new generic teacher–student training experiment the first test, and do not repeatedly audit all old ETL.
+
+**PR537 head `7e8ff44120fd7acda9046d0f509fab504b4f73f3`: 2/2 CPU preflight checks green; NO submitted 4×500 GPU biological recovery receipt or independent Macha review**. Before a novel GPU rerun, match its original-world JEPA_ONLY seeds, fixture, architecture and R² readout to completed Stage81B JEPA_ONLY. If previously answered, skip. Subsequent gradients repaired in PROD41K are not automatically evidence of corrected original IPB CELL biology. Historical partial IPB receipt completed 3/8 planned arms, not an eight-arm terminal verdict. The rest of the forward work (alias rights, PR525 exact-head audit and C2/C3 conditional biology) remains live.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # OVERRIDES PRIOR 2026-11-03 V65→V5 PILOT PLAN — ACTUAL 6-IPB PLANTED TRAINING EXISTS
 
 **Audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) at `296961b4ea6f92988291d7d155ec0b66ee158310`, **44 events**. Active [handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) current HEAD/CI recheck after this edit. **READ FIRST** `docs/agent/JEPA_20261103_NO_DUPLICATE_SIX_IPB_JEPA_EMA_HISTORY_HANDOFF.md` here and canonical #322 `JEPA_20261103_PRIOR_PLANTED_IPB_JEPA_AND_EMA_EXPERIMENT_NO_REPEAT_CORRECTION.md`, plus machine `JEPA_20261103_ALREADY_TESTED_SIX_IPB_PLANTED_EMA_NO_REPEAT_V1.json`.
