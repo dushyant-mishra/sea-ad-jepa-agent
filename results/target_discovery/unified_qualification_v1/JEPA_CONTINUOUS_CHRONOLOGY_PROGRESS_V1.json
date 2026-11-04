@@ -2316,7 +2316,7 @@
       "workstream": "owner_decision_qc_metadata_casebundle_read_and_corrected_synthetic_support_semantics",
       "implementation_pr": 322,
       "implementation_head": null,
-      "change_type": "owner_decision",
+      "change_type": "chronology_correction",
       "source_inputs": [
         {
           "path": "docs/agent/JEPA_MACHA_528_PUBLIC_SOURCE_PROVENANCE_ERRATUM_20261103.md",
