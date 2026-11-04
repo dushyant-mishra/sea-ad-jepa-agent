@@ -1,3 +1,15 @@
+# READ FIRST (2026-11-04, SOL EVENT71) — ALL C1–C6 TARGET FAMILIES CAN COEXIST; NO ZERO-SUM BIOLOGICAL WINNER RULE
+
+**Owner scientific correction:** The real objective is *multiple complementary, transferable cellular biological information types*, not missing-gene prediction or eliminating all Cs but one. C1 shared, C2 relational, C3 query-local and C5 regulatory specialist may all coexist when independently qualified. C6 = C1+C3; C4 = C1+C3+C2 with meaningful relational increment **versus independently qualified C6**. The original #275 routing and convergence permit multiple eligible/incomparable qualified targets; head-to-head is a comparison/confirmation procedure, not proof biology can carry only one target.
+
+**Exact code boundary:** #525's post-TD portfolio builder already permits C1+C2+C3 plus optional C5 as simultaneous blocks with PASS metadata and separately expands C4 or C6; it has **one selected `fused_candidate` slot**, not a proven all-six concurrent production portfolio. Existing caller PASS strings are not authenticated external evidence. Do not implement a new multi-head trainer or run anything to satisfy the documentary correction.
+
+**New read-first source:** [Event71 candidate coexistence and evidence matrix](JEPA_20261104_EVENT71_COEXISTING_BIOLOGICAL_TARGETS_AND_CANDIDATE_READINESS.md), mirrored on #322/#460. Canonical audit #322 **71 append-only events**; machine index `target_candidate_coexistence_event71_20261104`. Exact audit head after index commit `00ed0ce0566331866702d75a82090068777305dd` (check hosted CI at that exact commit). Prior Event70 original sealed-controller owner download and Sol reciprocal K02/K03 test-review remain as below; Macha #545/#546 pending, #541 HOLD. PR338 still 15 partly specified/13 blocked scientific gates. **No selected target, no model training or Stage4.**
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST (2026-11-04, SOL EVENT70) — ORIGINAL SEALED CONTROLLER OWNER DOWNLOAD, NO PRIVATE ESCROW; RECIPROCAL K02/K03 TEST REVIEW COMPLETE
 
 **Latest verified custody (opaque only):** Original V80 sealed controller GitHub Actions archive #11866917064 (6,844,053 bytes; SHA-256 `184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46`) was retrieved again as an **unopened ZIP** into the owner conversation, verified by direct file-size/SHA-256 calculation, and linked directly to the owner for download. **No confirmation exists that the owner saved a separate copy or that any independent PRIVATE controller-only repository/vault now holds it.** Do NOT upload it to the public FIT repository, open its contents, or treat chat attachment as independently durable escrow. Original Actions expiry **2026-11-13T03:01:58Z**. Original FIT+receipt are still Git binary blobs in #322/#460 as Event69 establishes.
