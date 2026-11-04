@@ -1284,5 +1284,40 @@
     "learned_joint_C1_to_C6": "NOT_EXECUTED_OR_QUALIFIED_IN_VERIFIED_SOURCES",
     "no_new_data_or_training": true,
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "synthetic_dev2048_generated_event74_20261104": {
+    "chronology_event": 74,
+    "human": "docs/agent/JEPA_20261104_EVENT74_EXPANDED_SYNTHETIC_DEVELOPMENT_FIT_2048_SHA_CUSTODY.md",
+    "development_pr": 547,
+    "source_parent_frozen_pr328": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+    "development_head": "4bc7f9f31eaf1a7ccac49fdf45df7db9b0eef569",
+    "author_ci": {
+      "expanded": 41912111013,
+      "parent_nonregression": 41912111007,
+      "conclusion": "BOTH_SUCCESS"
+    },
+    "initial_failed_harness_run": 41911945739,
+    "data_dimensions": {
+      "cells": 1440,
+      "genes": 2048,
+      "donors": 36,
+      "source_count": 3
+    },
+    "views": "THREE_DISJOINT_SHARED_MEASURED_512_ADDRESS_R1_FEASIBILITY_ONLY",
+    "multiquery": "FOUR_QUERY_IDENTITIES_OTHER8_DISJOINT_QEXCLUDED_STUDENT_BASE",
+    "support": "SYNTHETIC_PROSPECTIVE_FIXED_STRUCTURAL_SUPPORT_INDEPENDENT_OF_DETECTION__NO_HUMAN_CALIBRATION",
+    "world_sha256": "30073c84b32f57ef65cbb5749e6a7ebdf79d95ad8837d25c9898cbd0e35c1eb5",
+    "fit_observed_csr_sha256": "818047eb8b959fe87d51926e4bcd5a51e889dafb702eaa3ae576aabd542bb14f",
+    "github_artifact_id": 13364085153,
+    "github_artifact_expiration_utc": "2026-12-04T21:02:06Z",
+    "owner_conversation_zip_size_bytes": 25023562,
+    "owner_conversation_zip_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+    "members_sha_verified": true,
+    "controller_truth_exported": false,
+    "C1_C2_C3_C4_C5_C6_learned_pass": "ALL_UNASSESSED",
+    "reciprocal_reviewer": "MACHA_PENDING",
+    "stop_a_b_c": "NOT_CROSSED",
+    "preserves_original_v80_private_controller": true,
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
