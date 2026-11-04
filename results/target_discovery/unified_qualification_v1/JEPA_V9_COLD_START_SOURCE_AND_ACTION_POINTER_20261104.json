@@ -6,7 +6,7 @@
   "canonical_audit": {
     "pr": 322,
     "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
-    "head_at_handoff": "0d894f1f433621a79747968091988bd28da4c078",
+    "head_at_handoff": "08a1b0df1003872367a4d637ec1adf5f668a0ac9",
     "chronology_events": 51,
     "ci": "CHECK_SAME_CURRENT_HEAD__DO_NOT_ASSUME_QUEUED_IS_GREEN",
     "master_doc": "docs/agent/JEPA_20261104_MASTER_HISTORICAL_AUDIT_AND_NO_REPEAT_TAKEOVER_V1.md",
@@ -195,7 +195,7 @@
   ],
   "controlling_recent_source_precedence_20261104": {
     "status": "CORRECTED_AFTER_108_RECENT_PR_AND_LATER_ERRATA_READ",
-    "audit_head": "0d894f1f433621a79747968091988bd28da4c078",
+    "audit_head": "08a1b0df1003872367a4d637ec1adf5f668a0ac9",
     "chronology_events": 51,
     "pr_count_recent": 108,
     "read_first": "docs/agent/JEPA_20261104_RECENT_TWO_WEEK_SCIENCE_RESOLUTIONS_AND_CORRECTED_NEXT_WORK_V1.md",
