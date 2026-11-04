@@ -2232,35 +2232,11 @@
         },
         {
           "path": "results/tables/v3_scorecard_status_v1.csv",
-          "ref": "main",
           "role": "pre-Stage81 executed V3 scorecard"
         },
         {
-          "pr": 33,
-          "role": "FULL104 information-channel audit"
-        },
-        {
-          "pr": 36,
-          "role": "FULL104 evidence-geometry/blocker clearance"
-        },
-        {
-          "pr": 158,
-          "role": "GSE289721 perturbation candidacy"
-        },
-        {
-          "pr": 163,
-          "role": "teacher-target leakage/control study"
-        },
-        {
-          "prs": [
-            191,
-            192,
-            193,
-            194,
-            198,
-            249
-          ],
-          "role": "regulatory specificity, hidden-quality and Bayesian negative results"
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
+          "role": "canonical source/no-repeat index with event55 locator"
         }
       ],
       "what_already_existed": "Canonical event54 restored the broad biological narrative and the 535-PR/108-recent-PR indexes corrected many stale next tasks. Earlier source work also contained additional executed Stage39-41 context/model-rescue results, FULL104 source-estimability geometry, V29 teacher leakage/control findings, V53-57 regulatory synthetic specificity failures, V63 hidden-quality bounds, GSE289721 perturbation qualification design, and a prospectively terminated Bayesian TD formulation.",
