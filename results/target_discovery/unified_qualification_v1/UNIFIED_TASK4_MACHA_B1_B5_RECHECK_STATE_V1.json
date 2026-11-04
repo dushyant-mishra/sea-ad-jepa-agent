@@ -1,0 +1,51 @@
+{
+  "schema": "UNIFIED_TASK4_MACHA_B1_B5_RECHECK_STATE_V1",
+  "date": "2026-10-17",
+  "status": "RECHECK_READY__INDEPENDENT_ACCEPTANCE_ABSENT",
+  "rejected_candidate": "36e3b46f1ca44465864a11872b459b5d108d6a67",
+  "review_verdict": "REJECT_TASK4_CUSTODY_CANDIDATE",
+  "macha_review_head": "d4d9ef94",
+  "successor6_base": "211375de57cc1f70d46c6eb3a4860d61a1aba0a6",
+  "defects": {
+    "B1": "EXACT_TYPES_AND_CLASS_BOUND_FINGERPRINTS_REPAIRED_PROSPECTIVELY",
+    "B2": "EXACT_HARNESS_AND_CLASS_BOUND_GENUINE_STATUS_REPAIRED_PROSPECTIVELY",
+    "B3": "ALREADY_ADDRESSED_IN_SUCCESSOR6_IN_PROCESS_ONLY",
+    "B4": "THREE_WORKFLOWS_INSTALL_NUMPY_1_26_4_AND_PASS",
+    "B5": "WRITABLE_FSYNC_AND_POSIX_DIR_SYNC_PATCHED; REAL_WINDOWS_RECHECK_REQUIRED"
+  },
+  "red": [
+    {
+      "run": 39091118650,
+      "job": 117567897946,
+      "result": "4 failed 129 passed 1 skipped"
+    },
+    {
+      "run": 39091241599,
+      "job": 117568264331,
+      "result": "1 failed 133 passed 1 skipped"
+    }
+  ],
+  "last_green_code_tests_sha": "fba240661e7bd2cea4dd5b9cf512f5b37dcc6ede",
+  "ci": {
+    "task4": {
+      "run": 39091336589,
+      "job": 117568560592,
+      "focused": "135 passed 1 skipped",
+      "projected100k": "1 passed",
+      "full": "326 passed 1 skipped"
+    },
+    "task0_migration": 39091336493,
+    "task0_B1_B5": 39091336567,
+    "task3_B6": 39091336417,
+    "task1": 39091336440,
+    "task2": 39091336401,
+    "task3_registry": 39091336423,
+    "synthetic": 39091336377
+  },
+  "review_candidate_sha": "PENDING_IMMUTABLE_PIN",
+  "macha_recheck": "ABSENT",
+  "windows_local_recheck": "ABSENT",
+  "final_external_authority": "FAIL_CLOSED",
+  "frozen_task3_sha": "117dd51dea827e734b299982da93991b934bdc8f",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "UNIFIED_TASK4_SUCCESSOR6_CANDIDATE_STATE_V1",
+  "date": "2026-10-17",
+  "status": "CANDIDATE_ONLY__FINAL_EXACT_HEAD_AND_INDEPENDENT_REVIEW_REQUIRED",
+  "frozen_task3_sha": "117dd51dea827e734b299982da93991b934bdc8f",
+  "rejected_current_predecessor": "36e3b46f1ca44465864a11872b459b5d108d6a67",
+  "public_duplicate_remint_red": {
+    "pr": 422,
+    "run_id": 39084356745,
+    "job_id": 117547707249,
+    "head": "44efece214439a166b9d5c518a5b465e0c7f5994",
+    "finding": "create_campaign remints identical campaign identity with zero spent exposures"
+  },
+  "concurrent_spend_red": {
+    "pr": 424,
+    "run_id": 39084723524,
+    "job_id": 117548785850,
+    "head": "574c5521e382a91ab450b962ab43c673022cc1b6",
+    "finding": "two parallel issue_exposure calls both return ordinal 1"
+  },
+  "repair": {
+    "pr": 423,
+    "first_red_port": "870d614d6eac7845e13232c196c82179f20cfab1",
+    "second_red_port": "3f68ae905a4c22b4098a73320d346167446a028f",
+    "last_verified_code_test_sha": "671447eecb49cd2b91db109016e38753c52e573f",
+    "task4_run_id": 39084780439,
+    "task4_job_id": 117548950260,
+    "focused": "128 passed, 1 skipped",
+    "projected_100k": "1 passed",
+    "full_unified": "319 passed, 1 skipped",
+    "task2_run": 39084780493,
+    "task3_registry_run": 39084780483,
+    "synthetic_integration_run": 39084780506
+  },
+  "rejected_predecessors": [
+    "b31371d62f3270c965d321e61c35898ca6be3721",
+    "c537db4e7b5b916cb3ddee1872fd4afa623a9b33",
+    "b5ed724cbc6a39d4f2cd68103c5367c2cfafcff3",
+    "d41720be93db27801fdac1ae62cfd608084dce25",
+    "068880822bca8036e605e3c5264770ce89057fee",
+    "36e3b46f1ca44465864a11872b459b5d108d6a67"
+  ],
+  "superseded_pin": "56b864e2b944956746771fb5d26040835d093dd5",
+  "mechanics_scope": "PROCESS_LOCAL_DEVELOPMENT_ONLY",
+  "cross_process_uniqueness_authorized": false,
+  "external_authority_wired": false,
+  "independent_review_verdict": "ABSENT",
+  "final_review_sha": "PIN_AFTER_EXACT_HEAD_GREEN",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
