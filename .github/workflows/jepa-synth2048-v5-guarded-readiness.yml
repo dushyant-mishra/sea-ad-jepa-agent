@@ -8,6 +8,7 @@ on:
       - scripts/v5/jepa_synth2048_collapse_sentinel_v1.py
       - .github/workflows/jepa-synth2048-v5-guarded-readiness.yml
       - docs/agent/JEPA_20261104_SYNTH2048_EXACT_LATEST_MODEL_RUNTIME_AUDIT.md
+      - docs/agent/JEPA_20261104_SYNTH2048_HISTORICAL_COLLAPSE_PREVENTION_AND_V5_EXECUTION_GATE.md
   workflow_dispatch:
 
 permissions:
