@@ -2213,6 +2213,83 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/275",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/338"
       ]
+    },
+    {
+      "event_id": "20261104-ITERATIVE-PROJECT-WIDE-HISTORY-SATURATION-AND-CORRECTED-FRONTIER-V1",
+      "date_utc": "2026-11-04",
+      "workstream": "iterative_full_project_history_saturation_underindexed_science_and_true_frontier",
+      "implementation_pr": 322,
+      "implementation_head": "097da02bb645a3511ac2fdc787a5536b599317f3",
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261104_ITERATIVE_PROJECT_WIDE_HISTORY_SATURATION_AND_NEXT_FRONTIER_V1.md",
+          "role": "human project-wide saturation audit"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_ITERATIVE_HISTORY_SATURATION_AND_FRONTIER_V1.json",
+          "role": "machine findings and corrected frontier"
+        },
+        {
+          "path": "results/tables/v3_scorecard_status_v1.csv",
+          "ref": "main",
+          "role": "pre-Stage81 executed V3 scorecard"
+        },
+        {
+          "pr": 33,
+          "role": "FULL104 information-channel audit"
+        },
+        {
+          "pr": 36,
+          "role": "FULL104 evidence-geometry/blocker clearance"
+        },
+        {
+          "pr": 158,
+          "role": "GSE289721 perturbation candidacy"
+        },
+        {
+          "pr": 163,
+          "role": "teacher-target leakage/control study"
+        },
+        {
+          "prs": [
+            191,
+            192,
+            193,
+            194,
+            198,
+            249
+          ],
+          "role": "regulatory specificity, hidden-quality and Bayesian negative results"
+        }
+      ],
+      "what_already_existed": "Canonical event54 restored the broad biological narrative and the 535-PR/108-recent-PR indexes corrected many stale next tasks. Earlier source work also contained additional executed Stage39-41 context/model-rescue results, FULL104 source-estimability geometry, V29 teacher leakage/control findings, V53-57 regulatory synthetic specificity failures, V63 hidden-quality bounds, GSE289721 perturbation qualification design, and a prospectively terminated Bayesian TD formulation.",
+      "new_work_or_result": "Iterative read-only passes across both governing branches, project PR metadata, primary result files, V3 scorecard and latest open PR/issue precedence recovered these underindexed results. Saturation searches found no hidden candidate-specific learned C1/C2/C3/C6/C4/C5 student result, no current FULL104 numerical D_shared/D_private/D_obs primary receipt, and no submitted PR537 GPU biology result. The next frontier is therefore execution using the already-unified pipeline, not more integration.",
+      "negative_or_counterfactual_evidence": "Stage39-41 point-estimate improvements did not earn robust lock; FULL104 has source-specific non-estimability/vacuous guardrails; V29 global-context-only control was inadequate and query-exchangeability stronger; V53-57 regulatory specificity remained RED; V63 specificity collapses under sufficient hidden quality; Bayesian TD spike was SAMPLER_NOT_ESTIMABLE and stopped prospectively.",
+      "test_review_scope": "Read-only GitHub/project source audit only. No web browsing, model fit, raw-data replay, protected outcome access, synthetic regeneration, Stage4 or training.",
+      "independent_review": "GPT_ITERATIVE_SOURCE_SATURATION__MACHA_REVIEW_OF_NEXT_EXECUTION_CONTRACT_REQUIRED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Read-only recover exact R5 primary deciding receipt if available and reconcile Stage81B JEPA_ONLY against PR537 before any GPU dispatch",
+        "Execute existing unified synthetic/real + canonical teacher/student/EMA machinery for an outcome-blind learned comparison of atomic foundation roots C1, C2 and C3, with C6/C4 only after constituent qualification and C5 separate",
+        "Use q-excluded D1 plus wrong-q/query-exchangeability for query candidates and source/operator/measurement-state estimability for all candidates",
+        "Only after synthetic learned survival freeze the smallest real human counterpart; close source issuer/specimen/QC only if that exact experiment requires it",
+        "Qualify GSE289721 under its already-prespecified engagement/assignment/control protocol as a downstream perturbation benchmark candidate",
+        "Defer PR534, PR537, issues54/55 and optional FULL104 numeric-dimension recovery unless they become dependencies"
+      ],
+      "historical_supersession": "Supersedes any remaining advice to rebuild synthetic-real integration, teacher/student/EMA, CaseBundle, Tasks0-8, generic architecture rescue or generic C5 synthetic tuning. It adds underindexed evidence without changing original experiment outcomes.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/33",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/36",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/158",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/163",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/194",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/198",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/249"
+      ]
     }
   ]
 }
