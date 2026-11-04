@@ -99,6 +99,33 @@ def geometry_diagnostic(states: np.ndarray) -> GeometryReport:
     )
 
 
+
+def token_geometry_diagnostic(states: np.ndarray) -> dict[str, object]:
+    """Raw gene-token diversity; CELL diversity alone can hide token collapse.
+
+    Mirrors the historical distinction between CELL and slot/token collapse.
+    This does not select a token-variance loss or a numerical cutoff.
+    """
+    x = np.asarray(states)
+    if x.ndim != 3 or min(x.shape) < 2 or x.dtype.kind not in "fiu":
+        raise CollapseStop("gene-token geometry requires numeric [cells,tokens,width]")
+    a = x.astype(np.float64, copy=False)
+    if not np.isfinite(a).all():
+        raise CollapseStop("nonfinite gene-token state")
+    row_collapse = np.all(a == a[:, :1, :], axis=(1, 2))
+    if np.any(row_collapse):
+        raise CollapseStop("exactly identical gene-token states within a cell")
+    within_std = np.std(a, axis=1, ddof=0)
+    return {
+        "status": "UNQUALIFIED_TOKEN_GEOMETRY_TELEMETRY_ONLY",
+        "cells": int(a.shape[0]), "tokens_per_cell": int(a.shape[1]),
+        "width": int(a.shape[2]),
+        "within_cell_feature_std_median": float(np.median(within_std)),
+        "exact_token_collapsed_cells": 0,
+        "qualified_biological_representation": False,
+    }
+
+
 def check_encoder_gradient_registry(online: object) -> dict:
     """Reuse exactly the accepted C2 48-mandatory-tensor registry, not a new norm gate."""
     from scripts.v4.c2_mandatory_gradient_gate_v1 import enforce_registry
