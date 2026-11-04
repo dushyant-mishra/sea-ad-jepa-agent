@@ -225,7 +225,7 @@ def run_zero_update_model_probe(full: np.ndarray, support: np.ndarray,
         init_seed=8113002,
     )
     from scripts.v5.jepa_synth2048_collapse_sentinel_v1 import (
-        check_encoder_gradient_registry, geometry_diagnostic,
+        check_encoder_gradient_registry, geometry_diagnostic, token_geometry_diagnostic,
     )
     mandatory_registry = check_encoder_gradient_registry(modules.online)
     modules.online.eval()
@@ -275,6 +275,8 @@ def run_zero_update_model_probe(full: np.ndarray, support: np.ndarray,
     insist(all(p.grad is None for p in modules.teacher.parameters()), "teacher gradient appeared")
     teacher_geometry = geometry_diagnostic(t.cell_state.detach().cpu().numpy())
     student_geometry = geometry_diagnostic(s.cell_state.detach().cpu().numpy())
+    teacher_token_geometry = token_geometry_diagnostic(t.gene_states.detach().cpu().numpy())
+    student_token_geometry = token_geometry_diagnostic(s.gene_states.detach().cpu().numpy())
     return {
         "status": "ACTUAL_V5_SIX_BLOCK_U0_FORWARD_PASS__NO_LEARNING",
         "actor": "KeyedIPBEncoderV2Reference+BlockPredictor",
@@ -286,6 +288,8 @@ def run_zero_update_model_probe(full: np.ndarray, support: np.ndarray,
         "historical_mandatory_48_registry": mandatory_registry,
         "u0_teacher_cell_geometry": teacher_geometry.__dict__,
         "u0_student_cell_geometry": student_geometry.__dict__,
+        "u0_teacher_gene_token_geometry": teacher_token_geometry,
+        "u0_student_gene_token_geometry": student_token_geometry,
         "u0_jepa_mse_mechanics_only": float(loss),
         "optimizer_updates": 0, "ema_updates": 0, "teacher_grads": 0,
         "training_authorized": False, "target_qualified": False,
