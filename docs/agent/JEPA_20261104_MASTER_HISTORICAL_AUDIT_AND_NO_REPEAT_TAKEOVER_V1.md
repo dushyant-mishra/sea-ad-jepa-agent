@@ -74,7 +74,9 @@ The source/implementation review takes place on GitHub; Macha owns physically la
 5. **FULL104 dimensions:** inspect **newer exact physical** source binder and metric receipt first; old selector/precision engineering already qualified, no repetitive 8,915-block operation. 50K ZIP is not the 4.55M full store.
 6. **PR537:** paused pending original Stage81B JEPA_ONLY source/fixture/seed/measure equivalence; if duplicate, close without running another GPU experiment.
 
-**Acknowledged coverage gaps** (do not silently declare final completion): exact original G7 terminal accepted receipt; post-PR287 actual physically masked S174 outcome; post-#274 FULL104 physical dimension return, if any; original Stage81B specific readouts vs PR537; on-main vs stacked PR source/righted issuer implementation. Trace only these or newly changed inputs, not everything from scratch.
+**Historical gaps now closed by original documents:** G7 was physically executed **once** and returned `NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP` because the S174 T1-fit and Sample-A non-T1 populations are genuinely disjoint (PR #304 original audit); the V79 structurally masked S174 physical V4 development replay **ran** (PR #288 original result) and reduced mean source detection gain +0.0226→+0.0090 while preserving A–H constrained conclusions; PR #59 already physically read 387 Level-4 blocks with six donors exact 17,186-address integer match, PR #69 repaired four source labels without repeating the count read. See `JEPA_20261104_RESOLVED_HISTORICAL_G7_S174_LEVEL4_AND_REMAINING_GAPS_V1.md`. **Do not rerun any of these.**
+
+**Acknowledged narrow remaining gaps** (do not silently assert all 534 PRs audited): post-#274 FULL104 full-stream numerical dimension receipt *if any* on GPU laptop; original Stage81B JEPA_ONLY exact same-world readouts vs PR537; current trusted physical source→CaseBundle parent/issuer and alias rights; prospective V79/V80 selection-law + hash identity; latest PR525 independent reviewer. Source-gated questions only, not another historical re-audit.
 
 ## GitHub custody procedure for every future action
 
@@ -83,3 +85,7 @@ Keep two branches distinct. For every new substantive source execution or audit,
 **Current standing:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
 
 **Status of this master:** `HISTORICAL_EVIDENCE_NAVIGATION_READY__SOURCE_AUDITS_NOT_RERUN__UPSTREAM_CUSTODY_PRESERVED__GAPS_EXPLICIT`. This is a pragmatic **takeover-ready source index**, not an assertion that all 534 historic PRs have been line-by-line reaudited.
+
+## Verbatim exclusive source and real-count no-repeat closure
+
+`docs/agent/archive/user_supplied_evidence_20261104/ORIGINAL_CONVERSATION_NEXT_ACTIONS_AND_REAL_LEVEL4_NO_REPEAT_20261103.md` now contains the exact 142-line user-supplied historical conversation note (original SHA-256 `9f3059039a0afca8a135a353ed6f0acf2606a88c5b68a76663c35ded3071e1e7`, GitHub text-roundtrip verified). It preserves the previously approved **limited** SEA-AD QC-only and one possible eligible Level-4 block scope **and the later correction**: real Level-4 raw counts had already been inspected in PR59 and source-label corrected without a new read in PR69, so **no immediate additional read is assigned**. This original-source closure prevents a new agent from wrongly asking the owner for repeated authorization or re-reading physical data. The path is available under the audit branch, not automatically in `main`.
