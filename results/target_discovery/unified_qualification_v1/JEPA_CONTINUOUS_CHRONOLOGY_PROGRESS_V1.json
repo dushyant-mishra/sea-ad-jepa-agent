@@ -1728,6 +1728,51 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/main/docs/agent/archive/governance/ACTIVE_STATE_20260903_HISTORICAL.md"
       ]
+    },
+    {
+      "event_id": "20261104-RECONCILIATION-INCOMPLETE-FHRA-FOUNDATIONV4-FULL104-DIMENSIONS-V79S174-TDG6G7",
+      "date_utc": "2026-11-04",
+      "workstream": "historical_coverage_remains_incomplete_newly_found_major_original_real_heterogeneity_foundation_dimensions_bayesian_observation_and_td_custody",
+      "implementation_pr": 322,
+      "implementation_head": "006b4d2253ddc5cee25740af58a77ad2c28e6cbf",
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261104_RECONCILIATION_INCOMPLETE_MAJOR_UNDERINDEXED_FOUNDATION_DIMENSION_S174.md",
+          "role": "independently source-audited missing-major-lane report with explicit unclosed later-branch edges"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MAJOR_UNRECONCILED_FOUNDATION_DIMENSIONS_S174_CUSTODY_V1.json",
+          "role": "machine-readable five-lineage source heads, actual executed outcomes and remaining unresolved cross-lane edges"
+        }
+      ],
+      "what_already_existed": "FHRA frozen 4096-gene audit 13 datasets/36 matrices/149 TRAIN donors/6,351,753 TRAIN matrix entries showed one common 4096 structural support mask but distinct measurement processes, no directly paired higher-evidence teacher. Foundation PR269/271/276 V4 implemented stable subspace-only axis policy, biological-vs-measurement uncertainty/OOD and transfer, physical u205 held-TRAIN donor source BA1.0, operator BA .763206 and support count R2 .999800; independent 84-cell/42-matrix chunk transfer gave HVS-vs-SEA source BA .96875 after broad-class residualization, 34/42 canonical broad endpoint scorable, technology invariance NOT qualified. September12 dataset-first V5 dimensions authority planning branch included full-reader/anti-cache, held-donor and metric provenance; subsequent PR270/273/274 prospectively implemented and independently audited Hoeffding-Bonferroni Monte Carlo precision and hash-bound FULL104 metric receipt, with numerical D_shared/D_private/D_obs pending physical FULL104 closure. V79 S174 PR279/280/283/285 physically executed 4,726-cell/149-donor 200-gene 3-fold nested source/depth/class/operator analysis, operator positive fixed-effect NOT_SUPPORTED and detection PRIOR_SENSITIVE, donor residual supported; PR286/287 identified structural-unmeasurement-as-zero 5.76% and implemented masked source correction, later V79 Q08 NOT_QUALIFIED. Real TD PR284 completed and externally accepted G6 25,000-row source-integrity reread, while PR296/298/304 handled later G7 and PR314 completed one real corrected TD replay. These workstreams had not been accurately indexed in the recent 45-event top-level synthesis.",
+      "new_work_or_result": "Located original FHRA JSON and code, original later PR269/271/276 current-transfer result and V2 label identifiability matrix SHA, original Sept12 user-shared dataset-first FULL104 repair report and surviving GitHub planning branch, later PR270/273/274 statistical/receipt closed engineering, original source V79 S174 PR279/280/283/285 real execution and PR287 masked correctness repair, PR284 G6 actual source read and PR314 spent real replay, plus mounted project asset manifests/checkpoint sequence. Compared five major missing workstream names against existing #322 45-event chronology and dominant source index; prior implied COMPLETE is withdrawn. Added explicit source-status matrix and identified later subbranches needing inspection without repeating old operations. Neither source-specific science nor mathematical dimensions promoted.",
+      "negative_or_counterfactual_evidence": "FHRA's same 4096 feature support across 36 matrices is NOT an assertion of identical 41238 address support or identical observation operators. High conditional source BA under u205 does not by itself prove causal technology differences; transfer and invariance not qualified. PR270 prospective replicate law engineering SUCCESS does NOT mean FULL104 real numerical dimension selection done; old September12 'no precision rule' status was superseded. Physical PR285 source-structure result predates measured structural support correction PR287 and is development not confirmation. G6 physical read is custody, not target biology; last G7 exact receipt still needs cross-check. Sept25/Nov4 compact project archives are not the physical 4.55M FULL104 binding. PR537 is a postrepair CPU 2/2 preflight only; Stage81B JEPA_ONLY needs original exact fixture comparison before GPU.",
+      "test_review_scope": "Read-only GitHub original heads and source reports PR269/271/276/270/273/274/279/280/283/285/286/287/284/296/298/304/314; inspected mounted user's FHRA/Sept12 plain text and compressed file manifests without loading full massive expression/checkpoint tensors or running model. No new training, real value read, synthetic regeneration or physical FULL104 metric computation. Coverage explicitly INCOMPLETE.",
+      "independent_review": "GPT_NEW_LANES_SOURCE_VERIFIED__CROSS_LANE_RECONCILIATION_INCOMPLETE__MACHA_PHYSICAL_SOURCE_LATER_RECEIPT_CHECK_NOT_YET_PERFORMED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Reconcile post-PR287 structurally corrected S174 physical replay and V79 V2_CORE/Q08 selection descendants without restaging old worlds",
+        "Reconcile exact physical last G7 receipt/accepted predecessor against PR284 G6 and one spent PR314",
+        "Reconcile original PR269/276 measured u205 transfer and FHRA operator semantics into future learned teacher/partial student C2-C3 nuisance/assay support gates",
+        "Reconcile later FULL104 binder/precision-metric execution returns on Macha's canonical data machine without repeated 8915-block read",
+        "Verify exact prior Stage81B JEPA_ONLY seeds/world/objective and factor R2 before another PR537 GPU run",
+        "Continue source-pin coverage beyond five newly indexed major lineages: overall project history NOT complete"
+      ],
+      "historical_supersession": "Supersedes earlier Oct/Nov 'full historical assimilation complete' claim as overly broad. Does not supersede completed prior per-lane audits or reset biological results; appends an explicit coverage gap and concrete primary-source evidence.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/269",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/276",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/270",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/273",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/274",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/285",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/287",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/284",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314"
+      ]
     }
   ]
 }
