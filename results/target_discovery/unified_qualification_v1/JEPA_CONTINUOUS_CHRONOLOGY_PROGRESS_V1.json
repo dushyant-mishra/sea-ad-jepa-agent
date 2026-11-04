@@ -2927,6 +2927,44 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
       ]
+    },
+    {
+      "event_id": "20261104-OWNER-ALL-C-TARGETS-COEXIST-NONEXCLUSIVE-SCIENTIFIC-CORRECTION-V1",
+      "date_utc": "2026-11-04",
+      "workstream": "target_candidate_coexistence_and_nonzero_sum_scientific_objective_correction",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261104_EVENT71_COEXISTING_BIOLOGICAL_TARGETS_AND_CANDIDATE_READINESS.md",
+          "blob_sha1": "a0767ecce3ff823cf82ad4e2eadda397a0f8b92c",
+          "role": "Original PR275 and PR525 source-bound correction: nonexclusive C1-C6 targets, multi-block portfolio, graded evidence and exact missing gates"
+        }
+      ],
+      "change_type": "chronology_correction",
+      "what_already_existed": "Original PR275 prospective C1/C2/C3/C6/C4 plus C5 specialist, protected no-forced-winner survivor law, PR338 15 partly specified and 13 blocked prospective gates, PR525 actual multi-block TargetPortfolio with C1/C2/C3+optional C5 and single selected-composite slot, TD57B/TD59/#314 measured broad/meso relation, historic R5 reconciled q-specific result, Event54 biological trajectory and Event70 source custody/review.",
+      "new_work_or_result": "Owner corrected an overly zero-sum target-discovery explanation. Directly reread original PR275 routing/convergence scripts, PR275 C6 design, PR338 real-gate V2 readiness, and PR525 TargetPortfolio code. Published Event71 read-only six-family evidence/closure matrix explicitly allowing all biologically valid C families to coexist, respecting dependency chains C6=C1+C3 and C4=C1+C3+C2 and the independent C4 vs qualified C6 increment; C5 optional specialist. Distinguished scientific coexistence from current code limitation of one fused_candidate slot; no future implementation or values opened.",
+      "negative_or_counterfactual_evidence": "Head-to-head/comparison procedure is not a mandate to erase useful orthogonal target heads; at most one protected finalist in existing convergence code does not imply that only one C can exist biologically. No all-six concurrent production interface claimed or qualified. Historic R5 numeric values remain audit-reconciled without original deciding receipt. No candidate selected; measured relational PASS does not prove learned teacher/student; all 13 blocked prospective scientific rules remain blocked and their effect margins were not guessed.",
+      "test_review_scope": "Read only original exact GitHub text source PR275 routing/convergence, C6 design and PR525 portfolio builder, PR338 V2 readiness and original TD19/TD57B/TD59/#314 and Event54/learned-student status. No source/fit/CI scientific experiment, no new reviewer verdict, no controller truth.",
+      "independent_review": "SOL_ORIGINAL_SOURCE_READONLY_SYNTHESIS__OWNER_CORRECTION__NO_NONAUTHOR_ACCEPTANCE_OR_AUTHORITY",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Continue outcome-blind prospective G2/G6/G7/G8/G9/G11/G12/S1/S2/R1/R4/C6/C4 scientific rule definition; preserve 15 specified/13 blocked distinction and no data read",
+        "L04 shared teacher q visibility owner ruling before C3/C6/C4 student view binding; no full-cell denominator leakage",
+        "Macha independent review #545 and #546; cumulative Task4 #541 HOLD",
+        "Any future all-six multi-head production portfolio is not established by current one-fusion-slot source, requiring separate owner/reviewer scope before software change",
+        "No target/representation/training/Stage4 authority"
+      ],
+      "historical_supersession": "Corrects any earlier Event71 draft or assistant phrasing implying scientific selection must narrow to one C family. Adds to Event70 without changing any of the first 70 event records or their science; preserves historical multiple-survivor convergence and independent constituent qualification.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/275",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/338",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
+      ]
     }
   ]
 }
