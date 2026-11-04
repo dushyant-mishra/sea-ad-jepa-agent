@@ -1,6 +1,19 @@
 # JEPA V9 — new-agent cold-start scientific, source, data and execution takeover (2026-11-04)
 
 
+## Controlling November 4 two-month source synthesis — event 53
+
+**Canonical audit PR #322 exact committed head `f1751413ac020e6932ef618fead8e12317211643`** and 53-event append-only chronology now contain the source-pinned *September 4–November 4* scientific/engineering review: `docs/agent/JEPA_20261104_SEP_NOV_TWO_MONTH_SCIENCE_ENGINEERING_AUDIT_AND_DECISION_V1.md` and JSON machine decision map (same filename stem, under `results/target_discovery/unified_qualification_v1/`). **Read both on PR322 before launching implementation; this #460 branch remains the live handoff, not a second source-of-truth copy.** CI at the new head must be rechecked; earlier 24/24 or 25/25 checks apply only to earlier heads.
+
+**Decision:** Original TD19 depth-only falsification; TD57B/TD59 broad/mesoscale 24/24 *measured* donor recurrence; PR314 one-shot corrected replay; original R5 q-aware eight-other-gene donor-heldout result; original Stage81B JEPA_ONLY/anchor/T0/T1/TCTX; independent #336 known truth audit; original PR469/#536 synthetic admission; FULL104 old dimensions, source/ETL, D1/V2C/main fixture and E2G executed evidence are closed within their own scopes. New target/representation/learned-student winner is **not** established. C2 broad/meso is a leading candidate, **not selected**; C3 wrong-q/control-sensitive measured target is a separate candidate. Do not label completed experiments unrun or jump to model training.
+
+**New action-defining conflicts:** TD60's design-only 48-case u40 learned-EMA teacher criterion conflicts with later V5 full-reader biological-exposure guidance; direct 160D `cell_state` would test only one candidate; NPH52 new query issuance restricted whereas TD60 old design includes all three sources; PR338 real target tournament has 13/28 rules still blocked. TD57B matched wrong-cell null *already controls donor/operator/depth/detection*, but a novel learned teacher/student needs explicit technical/depth-only and correct-cell controls. R5 primary numerical receipt remains audit-reconciled rather than newly opened. No silent pre/post outcome modification of frozen panels, gates, source scopes or 48/48.
+
+**Next program:** GPT defines one candidate-specific outcome-blind comparison and frozen control/precision/rights criteria, Macha independently challenges scientific and implementation claims; real issuer narrowly qualified only if needed; separate approval for target → learned teacher → partial-RNA student. PR537 GPU HOLD, PR533/534 benchmark debt separate, latest-head review PR525/#538 conditional, #54/#55 retained future lanes. Existing #322 and #460 are updated continuously after new implementations; don't create another history-only PR. `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
+
 ## Controlling event 52: audit-to-implementation two-branch custody
 
 **2026-11-04, audit PR #322 committed head `78b5431b2c7d144b1778000ef4f4f0f19cbb4a6b`.** Before using older V9 next-action lists below, read the new source-indexed `docs/agent/JEPA_20261104_LEARNED_STUDENT_BIOLOGICAL_GAP_READONLY_DECISION_V1.md` **on PR #322**, plus the chronology's 52nd event. PR #539 was an unnecessary parallel scientific-documentation branch; its findings were transferred to #322 for ongoing custody and it is superseded as the operational history route. Do not erase completed research or repeat author-only tests.
