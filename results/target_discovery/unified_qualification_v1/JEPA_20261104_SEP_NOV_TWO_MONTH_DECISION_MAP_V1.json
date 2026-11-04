@@ -108,7 +108,7 @@
     {
       "claim": "scoped V2C D1 main land and review",
       "pr": 523,
-      "head": "bce3a35a9c",
+      "head": "bce3a35a9cd8ec364906798738c14ab3236cc583",
       "result": "ACCEPT_SCOPED_FIXTURE_ONLY__NO_AUTHENTIC_SOURCE_ISSUER",
       "grade": "MAIN_LANDING_AND_AUDIT_RECONCILED"
     },
