@@ -2655,6 +2655,46 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/541#issuecomment-6638320128",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41884259338"
       ]
+    },
+    {
+      "event_id": "20261104-SOL-V80-ORIGINAL-ARTIFACT-RETRIEVAL-SHA-CUSTODY-AND-FIT-DIAGNOSTIC-V1",
+      "date_utc": "2026-11-04",
+      "workstream": "v80_original_archive_preservation_fit_only_mismatch_triage",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261104_V80_ORIGINAL_ARTIFACT_RESCUE_AND_FIT_ONLY_PORTABILITY_TRIAGE_EVENT65.md",
+          "blob_sha1": "fe9f3975573bb5a998b43563351dcd2164788dbf",
+          "role": "owner-conversation original V80 fit/controller/receipt archive SHA rescue and segregated-retention limitation"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_ORIGINAL_DOWNSTREAM_IMPLEMENTATION_RECOVERY_AND_EXACT_NEXT_JOINS_V1.md",
+          "blob_sha1": "64782b3326505daddf3aad3d0ce2bf625ae69b3b",
+          "role": "prior event63 original pipeline no-repeat, V80 artifact time limit"
+        }
+      ],
+      "change_type": "source_custody",
+      "what_already_existed": "#348 original V80 8-world/192-fit qualified benchmark-package-only run 38504094639, ZIP artifact SHA identities and November 13 expiry; original #348 in-Git package receipt; #534 synthetic-first cross-world CI failed V80 pinned SHA mismatch with numpy2.3.5 on Linux; no qualified successor estimator. PR #534 frozen PR328/PR474 fixture test already covered separate synthetic source support.",
+      "new_work_or_result": "Downloaded original V80 GitHub Actions fit ZIP (660628 bytes SHA 4cec8966...), controller ZIP (6844053 bytes SHA 184d58c6...), receipt ZIP (1274 bytes SHA 97e264cf...) into owner conversation files, exact archive SHA matched all #348 frozen receipts; verified fit inner transport 8935002 bytes SHA 77f89e83... and receipt inner 1922 bytes SHA 346407af...; controller ZIP SHA only, no extraction/open/read. Created machine-readable custody receipt in conversation sandbox. Directly compared original fit-only support+design_matrix array hashes vs #534 CI diagnostics and verified 8/8 support and 8/8 design SHA matches. Original and failed runner both Python3.11.9/NumPy2.3.5: pinning NumPy alone not the fix.",
+      "negative_or_counterfactual_evidence": "#534 current generated benchmark SHA faf80c89... still differs from frozen original 16a08b29...; current generated fit SHA b33e72a6... differs from original fit 77f89e83..., no portable replay PASS; cause of later stochastic/numeric differences not proven. Conversation ZIP copies lack independently access-controlled separated owner controller vault and durable external storage verification; do not claim that complete. Controller truth never opened or used in fit. No new world, estimate or training, no new source rights.",
+      "test_review_scope": "Original ZIP bytes independently hashed using local container; fit and original receipt inner-member SHA checked; controller ZIP raw bytes SHA checked only; source-read #348 frozen workflow/receipt and #534 CI actual job logs; bounded fit-only array hash comparison 8 of 8 design and support; no new CI, producer or scientific model execution.",
+      "independent_review": "SOL_ORIGINAL_BYTES_SHA_VERIFIED__MACHINE_COMPARISON_ONLY__CONTROLLER_LONGTERM_SEPARATE_CUSTODY_NOT_YET_VERIFIED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Owner transfer ORIGINAL controller ZIP (unopened) to access-controlled controller-only durable escrow; fit and receipt to suitable noncontroller store, verify independent custody and re-download SHA before GitHub Nov13 expiry",
+        "Keep #534 V80 original hash mismatch RED; do not simply update expected hash or assume NumPy version fix; CPU root cause unknown",
+        "No controller truth use in fit/student process; no replay/reseed/new estimator selection; preserve V79 NOT_QUALIFIED",
+        "Task4 separate Macha #543 review and Task5 authority holds, no training"
+      ],
+      "historical_supersession": "Updates event64/event63 time-critical archive task from original files not preserved to original ZIP retrieved and SHA verified in owner conversation; independent long-term controller escrow remains open. Does not change #348 scientific outcome or #534 failed runner result.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/348",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/38504094639",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41665058401"
+      ]
     }
   ]
 }
