@@ -1,6 +1,19 @@
 # JEPA V9 — new-agent cold-start scientific, source, data and execution takeover (2026-11-04)
 
 
+## CONTROLLING COMPLETE ORIGINAL JEPA NARRATIVE — AUDIT EVENT 54
+
+**Before accepting the next-action sections below, read `docs/agent/JEPA_20261104_END_TO_END_SCIENTIFIC_NARRATIVE_AND_DECISION_LINEAGE_V1.md` on canonical [PR #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322), committed audit head `99f4cc01a2b73741c5010deb29b2a0b0fa4020e7`, event54.** This is the project's biological story, not another proposed target or synthetic experiment.
+
+The project starts with SEA-AD Alzheimer’s microglia, pathology, mechanistic gene-network hypotheses and donor-held-out validation. Historical V1 flat JEPA, Graph-JEPA V2/V3, rare microglia, original AD 18-gene program, SCENIC+/ATAC/Stage76–79 frozen GeneJEPA perturbations, spatial/context and external cohorts remain integral. Graph-specificity/rare benchmark failures and technical/source confounding explain the later expansion to heterogeneous human 41,238 molecular-address foundation, measured/structural support, assay observation operators, accountable per-gene molecular ledger, global/gene-local/program/structured state and teacher-private vs student-partial information. These original lines are *not* merely old background or studies to rerun.
+
+The target program has **C1,C2,C3,C6,C4** foundation and **C5 regulatory specialist**, each with distinct biological claims, dependencies and original falsifiers. Historic TD19 vs TD57B/59/57C/PR314 source evidence cannot pick C2 over all others; original R5 C3 results are developmental, and original Stage81B plus T0/T1/TCTX/EMA, belief, gradient and RLC negative findings cannot be erased. V79 and V80 are statistical/observation synthetic programs distinct from Stage79 GeneJEPA, V65/V67 planted recoverability and PR328 RNA+ATAC/rare/perturbation fixture; PR336/469/536 synthetic integration/known-truth scope differs from learned real human biology. Read entire source narrative before recommending any new code, data access or model run.
+
+**Authority remains OFF**: no qualified C1–C6 target or production biological representation, no biologically qualified learned EMA teacher/student, no validated causal regulatory/perturbational effect, no Stage4 or real training. This narrative makes no new execution recommendation. Future agents maintain original implementation evidence at its owner PR and update append-only #322, then operational #460 after the verified audit head. Earlier C2/C3-first priority text below is **superseded where it contradicts the full six-candidate scientific narrative**.
+
+---
+
+
 ## Controlling November 4 two-month source synthesis — event 53
 
 **Canonical audit PR #322 exact committed head `f1751413ac020e6932ef618fead8e12317211643`** and 53-event append-only chronology now contain the source-pinned *September 4–November 4* scientific/engineering review: `docs/agent/JEPA_20261104_SEP_NOV_TWO_MONTH_SCIENCE_ENGINEERING_AUDIT_AND_DECISION_V1.md` and JSON machine decision map (same filename stem, under `results/target_discovery/unified_qualification_v1/`). **Read both on PR322 before launching implementation; this #460 branch remains the live handoff, not a second source-of-truth copy.** CI at the new head must be rechecked; earlier 24/24 or 25/25 checks apply only to earlier heads.
