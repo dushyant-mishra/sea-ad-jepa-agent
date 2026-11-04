@@ -90,6 +90,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-dir", type=Path, default=Path("."))
     parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument("--resume", action="store_true",
+                        help="resume only completed, identity-verified fixture arms")
     return parser.parse_args()
 
 
@@ -1184,41 +1186,95 @@ def postrepair_gate(runs: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def code_identity() -> dict[str, str]:
+    """Reject dirty or wrong-head source rather than trust pasted metadata."""
+    here = "scripts/v4/stage81a3_ipb_jepa_only_postrepair_rerun_20261104.py"
+    original = "scripts/v4/stage81a3_ipb_jepa_feasibility.py"
+    def git(*args: str) -> str:
+        return subprocess.check_output(["git", *args], text=True).strip()
+    original_blob = git("rev-parse", "HEAD:" + original)
+    if original_blob != "49206efd40b8f7a69891d788f657fc5d44d9f687":
+        raise RuntimeError("original frozen science source git blob changed")
+    implementation_blob = git("rev-parse", "HEAD:" + here)
+    if git("hash-object", here) != implementation_blob:
+        raise RuntimeError("GPU local worktree differs from committed rerun source")
+    return {
+        "git_head": git("rev-parse", "HEAD"),
+        "original_blob": original_blob,
+        "implementation_blob": implementation_blob,
+    }
+
+
 def main() -> int:
     args = parse_args()
     project = args.project_dir.resolve()
     os.chdir(project)
+    identity = code_identity()
     if not torch.cuda.is_available():
-        raise RuntimeError("CUDA is required for the original 4,096-gene full benchmark")
-    if args.overwrite or OUTPUT_JSON.exists():
-        raise RuntimeError("never overwrite a historical or already-executed output")
+        raise RuntimeError("CUDA is required for original 4,096-gene full benchmark")
+    if args.overwrite:
+        raise RuntimeError("never overwrite historical or newer synthetic outcomes")
+    if OUTPUT_JSON.exists():
+        if not args.resume:
+            raise RuntimeError("existing receipt; use --resume only for incomplete arms")
+        payload = json.loads(OUTPUT_JSON.read_text(encoding="utf-8"))
+        if (payload.get("schema") !=
+                "STAGE81A3_SIX_IPB_JEPA_ONLY_POSTREPAIR_SYNTHETIC_RERUN_V1"
+                or payload.get("config_sha256") != config_hash()
+                or payload.get("code_identity") != identity
+                or payload.get("classification") is not None):
+            raise RuntimeError("resume refused: changed code, science or completed result")
+    else:
+        if args.resume:
+            raise RuntimeError("resume refused: original run receipt absent")
+        payload = {
+            "schema": "STAGE81A3_SIX_IPB_JEPA_ONLY_POSTREPAIR_SYNTHETIC_RERUN_V1",
+            "frozen_parent": "scripts/v4/stage81a3_ipb_jepa_feasibility.py",
+            "frozen_partial_result_sha256":
+                "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+            "parent_execution": "STOPPED_AFTER_THREE_COMPLETED_TRAJECTORIES",
+            "source_biology": "ORIGINAL_TWO_CANDIDATE_AGNOSTIC_8192x4096_PLANTED_FACTOR_WORLDS",
+            "config": config_payload(), "config_sha256": config_hash(),
+            "code_identity": identity,
+            "runs": [], "planted_factors_in_optimizer": False,
+            "no_hidden_gene_anchor": True, "real_rna_accessed": False,
+            "human_real_training_authorized": False,
+            "production_target_selected": False, "stage4_authorized": False,
+        }
+    expected = {(f, z) for f in FIXTURES for z in SEEDS}
+    completed = set()
+    for old in payload["runs"]:
+        key = (old["fixture"], old["seed"])
+        if key in completed or key not in expected or old.get("condition") != "jepa_only":
+            raise RuntimeError("resume rejected duplicate, invalid or off-schedule arm")
+        t = old["training"]
+        if t["optimizer_updates"] != STEPS or t["ema_updates"] != STEPS:
+            raise RuntimeError("resume rejected partial or forged step-count arm")
+        if any(t[k] for k in ("nonfinite_loss_events", "nonfinite_gradient_events",
+                              "target_gradient_events", "gradscaler_skips", "cuda_oom_events")):
+            raise RuntimeError("resume rejected past invalid mechanics")
+        completed.add(key)
     device = torch.device("cuda")
-    payload = {
-        "schema": "STAGE81A3_SIX_IPB_JEPA_ONLY_POSTREPAIR_SYNTHETIC_RERUN_V1",
-        "frozen_parent": "scripts/v4/stage81a3_ipb_jepa_feasibility.py",
-        "frozen_partial_result_sha256":
-            "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
-        "parent_execution": "STOPPED_AFTER_THREE_COMPLETED_TRAJECTORIES",
-        "source_biology": "ORIGINAL_TWO_CANDIDATE_AGNOSTIC_8192x4096_PLANTED_FACTOR_WORLDS",
-        "config": config_payload(), "config_sha256": config_hash(),
-        "runs": [], "planted_factors_in_optimizer": False,
-        "no_hidden_gene_anchor": True, "real_rna_accessed": False,
-        "human_real_training_authorized": False,
-        "production_target_selected": False, "stage4_authorized": False,
-    }
     for fixture in FIXTURES:
+        if all((fixture, seed) in completed for seed in SEEDS):
+            continue
         expression, factors, metadata = base.synthetic_fixture(fixture, smoke=False)
         graph = graph_for_fixture(expression, device)
         for seed in SEEDS:
+            if (fixture, seed) in completed:
+                print("REUSED_COMPLETE_MATCHING_ARM", fixture, seed, flush=True)
+                continue
             print("POSTREPAIR JEPA_ONLY", fixture, seed, flush=True)
             run, gene_rows, kept = train_run(
                 fixture, seed, "jepa_only", expression, factors, graph, device
             )
             if gene_rows:
-                raise RuntimeError("decoder was incorrectly evaluated as trained")
+                raise RuntimeError("decoder incorrectly evaluated as trained")
             run["fixture_metadata"] = metadata
             payload["runs"].append(run)
+            completed.add((fixture, seed))
             atomic_json(OUTPUT_JSON, payload)
+            del kept
             torch.cuda.empty_cache()
     payload["gate"] = postrepair_gate(payload["runs"])
     payload["classification"] = payload["gate"]["classification"]
@@ -1233,7 +1289,7 @@ def main() -> int:
         "trajectories": len(payload["runs"]),
         "optimizer_updates": payload["total_optimizer_updates"],
         "ema_updates": payload["total_ema_updates"],
-        "receipt": str(OUTPUT_JSON),
+        "receipt": str(OUTPUT_JSON), "code_identity": identity,
     }, sort_keys=True), flush=True)
     return 0
 
