@@ -6,9 +6,9 @@
   "canonical_audit": {
     "pr": 322,
     "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
-    "head_at_handoff": "78b5431b2c7d144b1778000ef4f4f0f19cbb4a6b",
-    "chronology_events": 52,
-    "ci": "VERIFIED_CURRENT_HEAD_24_OF_24_WORKFLOWS_COMPLETED_SUCCESS_AT_78b5431b",
+    "head_at_handoff": "f1751413ac020e6932ef618fead8e12317211643",
+    "chronology_events": 53,
+    "ci": "CURRENT_EXACT_HEAD_QUEUED_AT_INITIAL_OBSERVATION__CHECK_LIVE_BEFORE_GREEN",
     "master_doc": "docs/agent/JEPA_20261104_MASTER_HISTORICAL_AUDIT_AND_NO_REPEAT_TAKEOVER_V1.md",
     "master_machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
     "project_assets": "results/target_discovery/unified_qualification_v1/JEPA_20261104_PROJECT_LOCAL_ASSET_SHA256_CUSTODY_V1.json",
@@ -25,7 +25,9 @@
     "exact_next_science_decisions": "results/target_discovery/unified_qualification_v1/JEPA_20261104_FINAL_HISTORY_ACCOUNTABILITY_AND_NEXT_DECISION_REGISTER_V1.json",
     "controlling_recent_science_correction": "docs/agent/JEPA_20261104_RECENT_TWO_WEEK_SCIENCE_RESOLUTIONS_AND_CORRECTED_NEXT_WORK_V1.md",
     "recent_108_pr_precedence_index": "results/target_discovery/unified_qualification_v1/JEPA_20261104_LAST_14_DAYS_108_PR_RESULT_PRECEDENCE_AND_NO_REPEAT_V1.json",
-    "current_second_pass_doc": "docs/agent/JEPA_20261104_LEARNED_STUDENT_BIOLOGICAL_GAP_READONLY_DECISION_V1.md"
+    "current_second_pass_doc": "docs/agent/JEPA_20261104_LEARNED_STUDENT_BIOLOGICAL_GAP_READONLY_DECISION_V1.md",
+    "two_month_original_science_human": "docs/agent/JEPA_20261104_SEP_NOV_TWO_MONTH_SCIENCE_ENGINEERING_AUDIT_AND_DECISION_V1.md",
+    "two_month_original_science_machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_SEP_NOV_TWO_MONTH_DECISION_MAP_V1.json"
   },
   "active_handoff": {
     "pr": 460,
@@ -196,8 +198,8 @@
   ],
   "controlling_recent_source_precedence_20261104": {
     "status": "CORRECTED_AFTER_108_RECENT_PR_AND_LATER_ERRATA_READ",
-    "audit_head": "78b5431b2c7d144b1778000ef4f4f0f19cbb4a6b",
-    "chronology_events": 52,
+    "audit_head": "f1751413ac020e6932ef618fead8e12317211643",
+    "chronology_events": 53,
     "pr_count_recent": 108,
     "read_first": "docs/agent/JEPA_20261104_LEARNED_STUDENT_BIOLOGICAL_GAP_READONLY_DECISION_V1.md",
     "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_LAST_14_DAYS_108_PR_RESULT_PRECEDENCE_AND_NO_REPEAT_V1.json",
@@ -243,9 +245,54 @@
     "still_open": "LEARNED_PARTIAL_RNA_STUDENT_CORRECT_CELL_BROAD_MESOSCALE_RELATIONAL_INCREMENT_OVER_DEPTH_TECHNICAL_SOURCE_OPERATOR_DONOR_WRONG_CELL",
     "source_evidence_grade": "R5_PRIMARY_RECEIPT_NOT_NEWLY_REOPENED__AUDIT_RECONCILED",
     "remaining_engineering": "PR525_PR538_INDEPENDENT_REVIEW_IF_ADOPTED__PR534_V80_SHA_REGRESSION_ISOLATED__PR537_GPU_HOLD__PHYSICAL_ISSUER_IF_SPECIFIC_REAL_EXPERIMENT_REQUIRES",
-    "audit_ci_observed": "VERIFIED_CURRENT_HEAD_24_OF_24_WORKFLOWS_COMPLETED_SUCCESS_AT_78b5431b",
+    "audit_ci_observed": "PRIOR_EVENT52_24_OF_24_PASS_AT_78b5431__EVENT53_NEW_HEAD_PENDING_INITIAL_CI",
     "permanent_two_branch_rule": "All future implementation/experiment work lives in its owner PR; append chronology, original primary science, source negatives and exact review scope to PR322; verify exact head; update PR460 top live pointer and machine status to that same audit head; verify handoff exact head, disclose pending checks; do not create duplicate history-only/science-consolidation PR",
     "never_modify": "FROZEN_535_PR_AND_108_RECENT_PR_TIME_SCOPED_SNAPSHOTS_OR_ORIGINAL_NEGATIVE_RESULTS",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "current_two_month_original_source_audit_20261104": {
+    "status": "EVENT53_SOURCE_SCOPED_REVIEW__NO_NEW_EXPERIMENT__NO_TRAINING_AUTHORITY",
+    "window": "2026-09-04..2026-11-04",
+    "audit_pr": 322,
+    "audit_head": "f1751413ac020e6932ef618fead8e12317211643",
+    "chronology_events": 53,
+    "human_report": "docs/agent/JEPA_20261104_SEP_NOV_TWO_MONTH_SCIENCE_ENGINEERING_AUDIT_AND_DECISION_V1.md",
+    "machine_map": "results/target_discovery/unified_qualification_v1/JEPA_20261104_SEP_NOV_TWO_MONTH_DECISION_MAP_V1.json",
+    "original_primary_claims": [
+      "TD19_DEPTH_SOURCE_SHORTCUT",
+      "TD57B_24OF24_DONOR_MATCHED_RELATIONAL_PASS",
+      "TD59_24OF24_P95_MESO_PASS__FINE_TD57C_FAIL",
+      "PR314_ONE_SPENT_CORRECTED_REPLAY",
+      "STAGE81B_JEPA_ONLY_COMPLETED_ANCHOR_REJECTED",
+      "PR336_TEST_OF_TEST_9OF9",
+      "V79_NOT_QUALIFIED_V80_BENCHMARK_ONLY",
+      "REAL_SOURCE_ALIAS_MAPPING_DONE_HVS_SEA__NPH_Q_ISSUANCE_BLOCKED",
+      "MAIN_V2C_D1_FIXTURE_SCOPED_ACCEPTANCE"
+    ],
+    "unestablished": [
+      "TD60_FULL_READER_EXPOSURE_CLOCK_PROSPECTIVE_RECONCILIATION",
+      "160D_CELL_STATE_ONLY_CANDIDATE",
+      "NPH52_NEW_QUERY_SCOPE_VS_OLD_TD60_ALL_SOURCE_DESIGN",
+      "C2_C3_CANDIDATE_SPECIFIC_LEARNED_TEACHER_STUDENT_DEPTH_CONTROLLED_RECOVERY",
+      "PR338_13_BLOCKED_OF_28_REAL_SCIENCE_RULES",
+      "R5_PRIMARY_RECORD_NOT_REOPENED"
+    ],
+    "next_priority": [
+      "GPT_ONE_OUTCOME_BLIND_C2_VS_C3_SPECIFICATION_ON_EXISTING_ORIGINAL_EVIDENCE",
+      "MACHA_INDEPENDENT_SCIENTIFIC_CHALLENGE_NOT_AUTOMATIC_ACCEPTANCE",
+      "MINIMAL_RIGHTED_REAL_ISSUER_ONLY_IF_SELECTED_PROTOCOL_NEEDS",
+      "TARGET_THEN_LEARNED_TEACHER_THEN_STUDENT_WITH_SEPARATE_APPROVAL"
+    ],
+    "defer": [
+      "PR537_GPU_HOLD",
+      "PR533_534_V79_V80_IF_SELECTED",
+      "PR525_538_IF_ADOPTED",
+      "ISSUES54_55_FUTURE"
+    ],
+    "dated_snapshots": "535_PR_AND_108_RECENT_PR_METADATA_REGISTERS_RETAIN_ORIGINAL_NOV4_SNAPSHOT_NOT_LIVE_COUNT",
+    "auditing_limit": "NOT_ALL_PRS_OR_CODE_INDEPENDENTLY_REAUDITED__R5_R2_HISTORICALLY_RECONCILED",
+    "ci_at_pointer": "AUDIT_EXACT_HEAD_QUEUED_AT_FIRST_LOOK__VERIFY_NOW",
+    "persistent_custody": "Implementation PR exact review/source => PR322 dated event and current science => verify audit CI => PR460 top handoff and machine pointer exact audit SHA => verify handoff CI",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
