@@ -461,7 +461,7 @@
     "N1 issue54 future precision result-consumer and rare-tail issue55 old runner bypass are separate deferred lane-gates with original preflight/source repair DONE; not current JEPA biological next steps"
   ],
   "status": "MAJOR_SOURCE_BOUND_HISTORY_CONSOLIDATED_WITH_CLOSED_G7_S174_LEVEL4__OTHER_NARROW_MISSING_EDGES_EXPLICIT__NO_534_PR_LINE_BY_LINE_CERTIFICATE",
-  "future_agent_rule": "Read latest live PR322 AND PR460 exact heads. For every implementation/scientific decision publish evidence at owner PR, then append event to PR322 and update PR460 live handoff after audit check; do not create duplicate history-only PRs. Source-prior experimental negatives remain binding; do not treat historical 535/108 PR snapshots as live current census.",
+  "future_agent_rule": "Read live exact PR322/#460 and event53 Sept-Nov two-month evidence map first. Original historic PR evidence has scoped positive and negative verdicts. Do targeted prospective C2/C3 biology design first, Macha independently attacks, no unconditional GPU. Implement in owner PR; append science/engineering event to PR322 and verify same-head CI; then update PR460 top/machine exact audit SHA and verify CI. Do not create parallel handoff or repeat experiments.",
   "reconciliation_update_20261104": {
     "status": "THREE_PRIOR_MISTAKEN_OPEN_GAPS_CLOSED_BY_SOURCE__NO_REPEAT__NARROW_PHYSICAL_METRIC_AND_REVIEW_GAPS_LEFT",
     "report": "docs/agent/JEPA_20261104_RESOLVED_HISTORICAL_G7_S174_LEVEL4_AND_REMAINING_GAPS_V1.md",
@@ -636,5 +636,29 @@
     "not_newly_verified": "Original R5 primary receipt locator remains audit-reconciled",
     "permanent_handoff_rule": "Implementation PR holds executable changes; PR322 gets append-only science and implementation chronology with frozen scope; PR460 live pointer and machine handoff updated after verified audit head; verify exact-head CI; never recreate historical-consolidation PRs.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "two_month_original_science_and_execution_decision_20261104": {
+    "status": "EVENT53_ORIGINAL_SEP_NOV_EVIDENCE_AUDITED_SCOPE_ONLY__NO_NEW_TRAINING",
+    "event_number": 53,
+    "human_report": "docs/agent/JEPA_20261104_SEP_NOV_TWO_MONTH_SCIENCE_ENGINEERING_AUDIT_AND_DECISION_V1.md",
+    "machine_report": "results/target_discovery/unified_qualification_v1/JEPA_20261104_SEP_NOV_TWO_MONTH_DECISION_MAP_V1.json",
+    "scientific_disposition": "C2_BROAD_MESO_MEASURED_SIGNAL__LEARNED_TEACHER_NOT_ESTABLISHED__PARTIAL_RNA_STUDENT_NOT_ESTABLISHED__C3_R5_DISTINCT",
+    "blocked_priorities": [
+      "TD60_u40_vs_V5_exposure_clock_reconciliation",
+      "PR338_13_blocked_real_science_gate_rules",
+      "R5_original_primary_receipt_locator_if_decision_bearing",
+      "TD60_frozen_3source_48case_vs_NPH52_new_real_issuer",
+      "Original_depth_only_wrong_cell_source_controls_for_learned_teacher_student",
+      "Auth_source_issuer_only_after_candidate_selected"
+    ],
+    "no_repeat": [
+      "real_PR314_replay",
+      "Phase2_PR336",
+      "Stage81B_JEPA_ONLY",
+      "new_D1_V2C_generic_fixture",
+      "V79_V80_original_worlds",
+      "Full_LEVEL4_ETL"
+    ],
+    "status_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
