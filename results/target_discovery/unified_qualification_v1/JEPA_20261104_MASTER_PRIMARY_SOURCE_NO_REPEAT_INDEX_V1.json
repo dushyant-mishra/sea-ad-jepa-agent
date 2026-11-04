@@ -784,5 +784,31 @@
       "PR536 review only if requested"
     ],
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "td60_v5_exposure_checkpoint_interlock_20261104": {
+    "chronology_event": 61,
+    "implementation_pr": 540,
+    "implementation_head": "9cdc6c6843572df9e1525a1775f852862bcecfa2",
+    "source": "scripts/v5_anticheat/td60_v5_checkpoint_eligibility_preflight_v1.py",
+    "tests": "tests/v5_anticheat/test_td60_v5_checkpoint_eligibility_preflight_v1.py",
+    "exact_head_author_ci": {
+      "run": 41875765048,
+      "conclusion": "SUCCESS",
+      "test_scope": "SIX_NEGATIVE_TESTS_SOURCE_ONLY"
+    },
+    "scientific_status": "TD60_48_CASE_FROZEN_DESIGN__V5_MECHANICS_Q40_NOT_BIOLOGY__FULL_EXPOSURE_UNFROZEN__EXECUTION_HOLD",
+    "do_not_repeat": [
+      "do not treat Q40 mechanical PASS as learned biological checkpoint",
+      "do not reopen historical TD60 panels/triplets/nulls or lower the 48-case test",
+      "do not mistake PR540 author-only fail-closed source preflight for independent reviewer, issuer or biological evidence",
+      "do not revive PR534 V80 cross-platform SHA issue as novel biology; owner states Windows/Ubuntu package mismatch already explained"
+    ],
+    "still_requires": [
+      "separately prospective V5 scientific-exposure checkpoint authority and independently attested freeze",
+      "source/teacher access authorization; no training or TD60 run now",
+      "Macha fresh-head independent reviews of #525 and #538 unless already completed",
+      "explicit owner approval before any #537 GPU work"
+    ],
+    "invariant": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
