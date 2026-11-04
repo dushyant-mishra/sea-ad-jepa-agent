@@ -146,7 +146,7 @@ def test_report_is_original_source_bound_and_roles_unchanged_by_counts(fixture):
 
 
 def test_fail_closed_projection_and_no_overwrite(tmp_path: Path, fixture):
-    with pytest.raises(ValueError, match="query"):
+    with pytest.raises(ValueError, match="invalid frozen queries"):
         dev.student_projection(
             fixture[0]["teacher_measured.npz"]["rna_counts"],
             fixture[0]["teacher_measured.npz"]["rna_support"],
