@@ -49,6 +49,30 @@ def _deny(message):
     raise StudentV2CRefusal(message)
 
 
+# Conservative SOURCE-ADDRESS eligibility only, based on Macha's frozen PR #513
+# Ensembl-116 / depositor mapping adjudication. Locus overlap alone does NOT
+# authenticate identical molecular features or establish a trusted issuer.
+# UBE2R2-AS1 / legacy LINC01251 require joint withholding; until an independently
+# sourced, rights-bound alias policy exists, refuse either as query. The two
+# ambiguous chr14 replacements and their shared legacy holder cannot serve as
+# query targets on any operator. This is a QUERY refusal, not a claim that every
+# other feature or whole operator is biologically invalid.
+_CONSERVATIVE_QUERY_BLOCK_IDS = frozenset((
+    "ENSG00000235481",  # UBE2R2-AS1: unresolved joint-withhold class
+    "ENSG00000233776",  # legacy LINC01251/RP11-384P7.6 holder
+    "ENSG00000257612",  # MIR4307HG: ambiguous replacement
+    "ENSG00000257842",  # LINC02588/NOVA1-DT: ambiguous replacement
+    "ENSG00000258081",  # shared ambiguous chr14 legacy holder
+))
+
+
+def _enforce_conservative_query_rights(query_address_id):
+    # A versioned Ensembl ID is not a way around the unversioned source address
+    # prohibition. All other unverified mappings still remain non-authoritative.
+    if type(query_address_id) is str and query_address_id.split(".", 1)[0] in _CONSERVATIVE_QUERY_BLOCK_IDS:
+        _deny("V2C queried source address has unresolved alias/operator rights")
+
+
 def _snap(x, depth=0):
     """Strict snapshot before any potentially attacker-controlled dispatch."""
     if depth > 32: _deny("V2C evidence nesting exceeds declared limit")
@@ -166,6 +190,7 @@ def validate_student_v2c(*, student_view, expected_policy):
     if type(policy) is not dict or set(policy)!=_POLICY_KEYS:
         _deny("V2C requires exact independently specified source policy")
     q=policy["query_address_id"]
+    _enforce_conservative_query_rights(q)
     rights=policy["address_rights"]
     base=policy["base_evidence_rights"]
     states=policy["operator_states"]

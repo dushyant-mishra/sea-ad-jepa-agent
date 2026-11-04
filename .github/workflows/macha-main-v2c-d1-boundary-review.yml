@@ -10,6 +10,7 @@ on:
       - "deployment/student_v2c/**"
       - "tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py"
       - "tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py"
+      - "tests/v5/td_unified/test_conservative_query_address_rights_20261104.py"
       - "tests/v5/td_unified/test_student_v2c_main_boundary_macha_review.py"
       - ".github/workflows/macha-main-v2c-d1-boundary-review.yml"
   push:
@@ -20,6 +21,7 @@ on:
       - "deployment/student_v2c/**"
       - "tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py"
       - "tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py"
+      - "tests/v5/td_unified/test_conservative_query_address_rights_20261104.py"
       - "tests/v5/td_unified/test_student_v2c_main_boundary_macha_review.py"
       - ".github/workflows/macha-main-v2c-d1-boundary-review.yml"
   workflow_dispatch:
@@ -44,6 +46,7 @@ jobs:
             deployment/student_v2c/
             tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py
             tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py
+            tests/v5/td_unified/test_conservative_query_address_rights_20261104.py
             tests/v5/td_unified/test_student_v2c_main_boundary_macha_review.py
       - uses: actions/setup-python@v5
         with:
@@ -57,13 +60,24 @@ jobs:
           check tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py 2a63a753081012e10a9c6cb39b80e79d16848ebe
           echo "V2C under test: $(git hash-object scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py)"
           echo "D1 under test:  $(git hash-object scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py)"
-      - name: "#516/#518 suites; the two launch witnesses that import legacy #502 are deselected (main no longer has #502; they replay on the old heads)"
+      # The original #516/#518 source files remain SHA-identical above. Exactly
+      # two alias-PASS limit witnesses are now obsolete when the V9 hard block
+      # is enabled: their old source/negative results remain in Git; the new
+      # test below must prove refusal at both producer and student gate.
+      # This selection is a scoped migration, not a historical rewrite.
+      - name: "#516/#518 suites, except superseded alias limits and unavailable legacy-import launch probes"
         run: >
           python -m pytest -q -p no:cacheprovider -rfE
           tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py
           tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py
           --deselect tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py::test_limit_the_standalone_launch_is_not_a_student_process_boundary
           --deselect tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py::test_limit_the_composed_path_has_no_student_process_boundary
+          --deselect tests/v5/td_unified/test_v2c_standalone_student_gate_514_macha_review_red.py::test_limit_alias_classes_cannot_be_expressed_or_enforced
+          --deselect tests/v5/td_unified/test_d1_v2c_composed_515_macha_review_red.py::test_limit_a_query_alias_inside_a_base_feature_leaks_the_query_through_d1
+      - name: Closure of the two immutable historical alias-leak witnesses (strict current-law tests)
+        run: >
+          python -m pytest -q -p no:cacheprovider -rfE
+          tests/v5/td_unified/test_conservative_query_address_rights_20261104.py
       - name: Main-native source boundary (no Docker; the container job covers the rest)
         if: ${{ !cancelled() }}
         run: >

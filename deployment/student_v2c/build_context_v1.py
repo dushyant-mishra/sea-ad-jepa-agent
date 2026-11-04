@@ -1,7 +1,8 @@
-"""Prepare a strict V2C-only Docker build context from the frozen PR #514 file.
+"""Prepare a strict V2C-only Docker build context pinned to reviewed source bytes.
 
-This is a deployment experiment, not a source-rights issuer or a validation
-of #514/#515 security. Never give Docker the repository as its build context.
+This is an author-only deployment experiment, not a source-rights issuer or an
+independent validation. The historical original #514 blob remains unchanged;
+this V9 branch re-pins the candidate new source. Never give Docker the full repo.
 """
 from __future__ import annotations
 
@@ -14,7 +15,7 @@ import shutil
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py"
 HERE = Path(__file__).resolve().parent
-EXPECTED_BLOB = "46b813fcbf598e12a2a9f209ca254d01aaeba784"
+EXPECTED_BLOB = "3470ad2ad17f7cea72b9238f7b7f675a27614b70"
 SCHEMA = "JEPA_STUDENT_V2C_ISOLATED_BUILD_CONTEXT_V1"
 FILES = {
     "student_v2c.py": SOURCE,
@@ -32,7 +33,7 @@ def produce_context(out: Path) -> dict:
         raise ValueError("build context must be absent or empty")
     raw = SOURCE.read_bytes()
     if git_blob_sha1(raw) != EXPECTED_BLOB:
-        raise ValueError("V2C verifier bytes differ from frozen #514 source blob")
+        raise ValueError("V2C verifier bytes differ from exact V9 source pin")
     out.mkdir(parents=True, exist_ok=True)
     evidence = {}
     for name, source in FILES.items():
@@ -41,7 +42,8 @@ def produce_context(out: Path) -> dict:
         evidence[name] = hashlib.sha256(data).hexdigest()
     manifest = {
         "schema": SCHEMA,
-        "source_pr": 514,
+        "source_pr": 538,
+        "historical_source_pr": 514,
         "source_blob_sha1": EXPECTED_BLOB,
         "student_verifier_sha256": evidence["student_v2c.py"],
         "build_context_files_sha256": evidence,
