@@ -2112,6 +2112,53 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336"
       ]
+    },
+    {
+      "event_id": "20261104-SEP-NOV-ORIGINAL-SCIENCE-ENGINEERING-TWO-MONTH-SYNTHESIS-DECISION-CONFLICTS",
+      "date_utc": "2026-11-04",
+      "workstream": "source_pinned_september_november_two_month_scientific_implementation_decision_reconciliation",
+      "implementation_pr": 322,
+      "implementation_head": null,
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261104_SEP_NOV_TWO_MONTH_SCIENCE_ENGINEERING_AUDIT_AND_DECISION_V1.md",
+          "role": "new source-scoped two-month science and engineering synthesis with independent decision gap check"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_SEP_NOV_TWO_MONTH_DECISION_MAP_V1.json",
+          "role": "machine-readable original PR and source-to-next-action outcome map"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_LEARNED_STUDENT_BIOLOGICAL_GAP_READONLY_DECISION_V1.md",
+          "role": "previous audited event52 learned-student novelty and canonical custody boundary"
+        }
+      ],
+      "what_already_existed": "Historical September real TD19 depth-only falsifier, TD57B/59 24/24 qualified measured-scale and fine TD57C failure, Stage81B JEPA_ONLY and anchor rejection, historical A3R bounded 224D, FULL104 shared-D negative scope, prior R5 query-aware donor-heldout audit reconciled result, V5 u40-vs-full-reader science clock recommendation and TD60 48-case teacher design existed. Original Oct PR314 one spent real relational replay, PR336 independently audited Phase2 nine-case synthetic test-of-test, PR338 28 real gate designs/13 blocked rules, V79 frozen failure/V80 qualified benchmark, actual Task0-3 and main D1/V2C fixture controls, #509/#513 source mapping/QC, #469/#536 actual synthetic admissions, source E2G seven-track and donor_umi all existed. 52 Nov2-4 retrospective source chronology events, 535-PR metadata snapshot, dated 108 recent-PR snapshot and existing event52 student gap memo already preserved.",
+      "new_work_or_result": "Additional multi-pass *read-only*, source-pinned review of Sept4-Nov4 reconciled historical biology, teacher/target/model results, real/source semantics, synthetic benchmark scope and security/implementation qualifications into one time-window audit and JSON map (17 primary/secondary source anchors). Identified precise cross-document conflicts: TD60 old decision-bearing u40 vs later V5 full-exposure guidance, TD60 160D candidate vs no representation winner, frozen 48/48 all-source design vs NPH52 new real query-rights restrictions, needed explicit learned-teacher/student depth-only controls beyond TD57B already-matched wrong-cell evidence, 13 PR338 real gate rules not specified, R5 original primary receipt only audit-reconciled, and Nov date of retrospective audit events not original execution dates. Ranked bounded scientific design, narrow issuer if needed and future staged learned-teacher/student qualification; no generic new program.",
+      "negative_or_counterfactual_evidence": "TD19 r .980-.986 depth-only falsifier persists, fine TD57C HVS failure, original real TD314 source heterogeneity unresolved, Stage81B anchor harmful and limited T0/T1/TCTX effects, FULL104 TEACHER_BIOLOGY_LIMIT scoped negative, V79 Q08 terminal FAIL with 85 forensic rows, V80 benchmark without estimator, PR531 detected-as-structural support source-ranking correction, #536 48-feature world fails true 3x512 C2 admission, independent acceptance not inherited from author-green #525/#538. TD57B has donor/operator/depth/detection matched wrong-cell controls and must not be mischaracterized as wholly depth-uncontrolled. No target, learned teacher or student selected.",
+      "test_review_scope": "Read primary main TD19/TD57B/TD59/TD60/V5/Oct5 target lineage and Stage81B original-audit appendix; exact PR314/336/338/348/525/533/534/537/538/509/513/531/536 and current historical master machine/text custody; no new model, real expression or source data, synthetic world, experiment, GPU, protected data or training. Existing 535-PR metadata census reused, not repeated as 535 independent full diffs. Exact-head validators/CI must be observed after commit.",
+      "independent_review": "GPT_SCOPED_ORIGINAL_SOURCE_AND_LATER_CORRECTED_AUDIT_REVIEW__MACHINE_LEDGER_ONLY__NO_INDEPENDENT_MACHA_SCIENTIFIC_ACCEPTANCE",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Formal prospective TD60 checkpoint biological-exposure amendment; 160D cell_state candidate-scoped not a representation winner",
+        "C2/C3 exact primary source/target definitions and original R5 primary deciding receipt if that claim is selected",
+        "PR338 candidate-specific blocked 13/28 real scientific gate rules; one outcome-blind plan subject to independent Macha challenge",
+        "Deep source vs NPH52 new query-issuer restrictions, conditional original HVS/SEA physical producer, no new large ETL",
+        "Qualified learned teacher before partial-RNA student; correct-cell vs matched wrong-cell, depth-only/operator/source/donor and C3 wrong-q baselines",
+        "PR525/538 independent reviewer only if their code adopted; PR533/534 V79/V80 technical regressions conditional; PR537 GPU hold; issues54/55 future specific gates",
+        "Publish any future actual implementation on owner PR then update both canonical PR322 and PR460 on exact committed heads"
+      ],
+      "historical_supersession": "Append 53rd November audit event, preserving previous 52 chronology records and all original September/October experiment receipts. Original historical dates are not inferred from Nov2-4 recovery dates. No reclassification of original V79, FULL104, Stage81B, R5, G7 or C2 scientific verdicts. Supersedes old priority lists recommending blanket data/fixture rebuilds.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/338",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/348"
+      ]
     }
   ]
 }
