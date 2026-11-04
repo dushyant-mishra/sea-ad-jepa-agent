@@ -172,11 +172,12 @@
     }
   ],
   "next_order": [
-    "READ_ONLY_C2_C3_CANDIDATE_SPECIFIC_ADMISSIBILITY_AND_TD60_CLOCK_GATES",
-    "ONE_OUTCOME_BLIND_MCHA_CHALLENGED_PROSPECTIVE_FALSIFIER",
-    "CONDITIONAL_ORIGINAL_SOURCE_ISSUER_AND_IF_ADOPTED_PR525_PR538_INDEPENDENT_CODE_REVIEW",
-    "SEPARATELY_AUTHORIZED_TARGET_THEN_LEARNED_TEACHER_THEN_PARTIAL_STUDENT_STAGED_EXECUTION",
-    "DEFER_PR533_534_SHA_SELECTION_PR537_GPU_ISSUES_54_55_UNLESS_SELECTED"
+    "READ_ONLY_FULL_C1_C2_C3_C6_C4_C5_EVIDENCE_AND_KNOWN_TRUTH_MATRIX",
+    "VERIFY_SOURCE_SHAPES_AND_CANDIDATE_INDEPENDENT_FALSIFIERS_BEFORE_CHOOSING_ANY_TEST",
+    "INDEPENDENT_MACHA_REVIEW_OF_FIRST_UNRESOLVED_DECIDING_COMPARISON",
+    "REUSE_FROZEN_SYNTHETIC_AND_REAL_PRIMARY_RECEIPTS__ONLY_NOVEL_TEST_IF_SEPARATELY_AUTHORIZED",
+    "AFTER_CANDIDATE_SELECTION__LAWFUL_MEASURED_TEACHER_AND_STUDENT_QUALIFICATION",
+    "DEFER_ORTHOGONAL_PR533_534_537_AND_ISSUES_54_55"
   ],
   "no_repeat": [
     "FULL_4p55M_ETL",
@@ -189,5 +190,107 @@
     "NEW_D1_V2C_FIXTURE",
     "PUBLIC_E2G_7TRACK"
   ],
-  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "full_candidate_lattice_corrected_20261104": {
+    "status": "ALL_FIVE_FOUNDATION_PLUS_ONE_SPECIALIST_IN_SCOPE__NO_WINNER__NO_EXECUTION",
+    "source_pr_275": "816f480d5af5074b5b570c91b13e887fe8064b9c",
+    "candidate_routes": [
+      {
+        "id": "C1_SHARED_EMERGENT",
+        "role": "foundation",
+        "scientific_claim": "shared emergent biological state",
+        "dependency": [],
+        "relational_screen": "INDEPENDENT"
+      },
+      {
+        "id": "C2_RELATIONAL_SHARED",
+        "role": "foundation",
+        "scientific_claim": "shared relational state",
+        "dependency": [],
+        "relational_screen": "APPLIES"
+      },
+      {
+        "id": "C3_QUERY_MEASURED",
+        "role": "foundation",
+        "scientific_claim": "query conditioned measured other-gene context",
+        "dependency": [],
+        "relational_screen": "INDEPENDENT"
+      },
+      {
+        "id": "C6_SHARED_QUERY_COMPOSITE",
+        "role": "foundation",
+        "scientific_claim": "shared plus query",
+        "dependency": [
+          "C1_SHARED_EMERGENT",
+          "C3_QUERY_MEASURED"
+        ],
+        "relational_screen": "INDEPENDENT"
+      },
+      {
+        "id": "C4_STRUCTURED_COMPOSITE",
+        "role": "foundation",
+        "scientific_claim": "shared plus relation plus query",
+        "dependency": [
+          "C2_RELATIONAL_SHARED",
+          "C3_QUERY_MEASURED"
+        ],
+        "increment_reference": "C6_SHARED_QUERY_COMPOSITE_INDEPENDENTLY_QUALIFIED_REQUIRED",
+        "relational_screen": "APPLIES"
+      },
+      {
+        "id": "C5_REGULATORY_SPECIALIST",
+        "role": "specialist",
+        "scientific_claim": "regulatory measured evidence",
+        "dependency": [],
+        "status": "CANNOT_RESCUE_FOUNDATION_FAILURE"
+      }
+    ],
+    "selection_law": "ZERO_ONE_MULTI_UNRESOLVED_SURVIVOR_RULES__PROTECTED_HEAD_TO_HEAD_OR_CONFIRMATION_AND_OWNER_DECISION_REQUIRED",
+    "real_gate_status": "PR338_28_UNIQUE_RULES_15_SPECIFIED_FOR_FUTURE_PLAN_13_BLOCKED",
+    "current_prioritization": "ALL_CANDIDATE_SOURCE_AND_STUDENT_INPUTS_COMPARED_BEFORE_SELECTION__NO_C2_C3_PREFAVORED",
+    "synthetic_evidence": [
+      {
+        "id": "V79_Q00_Q11",
+        "scope": "12 frozen realized statistical/mechanism worlds; Q08 convergence FAIL",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "V80_PR348",
+        "scope": "8 frozen estimator-independent benchmark worlds / 192 fits; NOT estimator qualification",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "PR328",
+        "scope": "480 cells x 48 addresses candidate-agnostic mechanics fixture with RNA/ATAC/rare/perturbation and controller separated truth",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "PR336",
+        "scope": "9/9 independent known-truth test-of-test",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "PR469",
+        "scope": "actual generated RNA to Task5 fixture execution",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "PR526_PR531",
+        "scope": "measured q-other8 toy producer source-ranking withdrawn detection-not-structural-support",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "PR536",
+        "scope": "actual q-other8 synthetic target producer; 48-feature source refused C2 three 512 panels; missing student refused",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "HISTORIC_STAGE81B",
+        "scope": "synthetic JEPA_ONLY/CURRENT/ANCHOR_ONLY and T0/T1/TCTX executed; no target winner",
+        "learned_c1_c6_winner": false
+      }
+    ],
+    "what_current_agent_executed": "GITHUB_READ_ONLY_SOURCE_ANALYSIS_AND_DOC_CUSTODY_ONLY__NO_NEW_SYNTH_WORLD_FIT_OR_LEARNER_EXECUTION",
+    "next": "MAKE_C1_C2_C3_C6_C4_C5_BY_FROZEN_DATA_BY_REAL_GATE_BY_LEARNER_EVIDENCE_COVERAGE_TABLE__MATCH_SYNTHETIC_INPUT_SHAPE__INDEPENDENT_SCIENTIFIC_REVIEW__NO_AUTO_GENERATOR_OR_GPU_RUN"
+  }
 }
