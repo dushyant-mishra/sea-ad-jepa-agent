@@ -1,3 +1,16 @@
+# EVENT59 COMPLETE COLD-START SUPERSESSION — 2026-11-04
+
+This older takeover remains useful for provenance, but **new agents must start instead at**:
+
+- `docs/agent/JEPA_20261104_COMPLETE_NEW_AGENT_TAKEOVER_AFTER_EVENT59.md`
+- `results/target_discovery/unified_qualification_v1/JEPA_20261104_COMPLETE_NEW_AGENT_TAKEOVER_AFTER_EVENT59_V1.json`
+
+Canonical audit source is PR #322 at `9996d03aa68e9f69fa7dfd3f9bfaf3853f821b28` with event59. The new package incorporates the full historical no-repeat audit, event57 owner rulings, Macha event58 complete lane account and seven retractions, the user-supplied Macha transcript checksum/custody, current PR525 state, and PR537 explicit-owner HOLD.
+
+Do not use older “next actions” below without checking whether event59 supersedes them.
+
+---
+
 # JEPA V9 — new-agent cold-start scientific, source, data and execution takeover (2026-11-04)
 
 
