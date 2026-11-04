@@ -235,6 +235,17 @@
       ],
       "head": "7e8ff44120fd7acda9046d0f509fab504b4f73f3",
       "state": "2_OF_2_AUTHOR_CPU_PREFLIGHT_SUCCESS__NO_SUBMITTED_GPU_RECOVERY__PAUSE_BEFORE_DUPLICATE_OF_STAGE81B"
+    },
+    {
+      "phase": "PRIOR_REAL_LEVEL4_PHYSICAL_CUSTODY",
+      "prs": [
+        59,
+        69,
+        492,
+        513,
+        528
+      ],
+      "state": "PR59_PHYSICALLY_READ_387_COUNTS_BLOCKS_8915_META_BLOCKS_6_DONORS_17186_ADDRESSES_EXACT_MATCH_PR69_SOURCE_LABEL_FIX_NO_NEW_COUNT_READ__LATER_SOURCE_ETL_AUDITS_DONE"
     }
   ],
   "code_data_result_registry": [
@@ -378,6 +389,31 @@
       "path": "checkpoints.zip and t1_checkpoint_u0200.zip",
       "ref": "JEPA_project_attachment",
       "role": "old checkpoint source evidence; not production learned teacher"
+    },
+    {
+      "kind": "result",
+      "path": "docs/agent/TARGET_DISCOVERY_NEW_AGENT_HANDOFF_20261012.md",
+      "ref": "PR304@188b86386660e43513ba494e60bd2d3cd736232e",
+      "role": "Original G7 physical once NOT_ESTIMABLE natural cell sets disjoint, never rerun"
+    },
+    {
+      "kind": "result",
+      "path": "docs/agent/V79_S174_STRUCTURE_REPLAY_V4_MASKED_RESULT_20261011.md",
+      "ref": "PR288@c3cf9ad7472541bfb5ad632465c626c437f9a69c",
+      "role": "Original physical V4 S174 corrected structural-support 5.76% and A–H result, completed development"
+    },
+    {
+      "kind": "result",
+      "path": "docs/agent/archive/user_supplied_evidence_20261104/ORIGINAL_CONVERSATION_NEXT_ACTIONS_AND_REAL_LEVEL4_NO_REPEAT_20261103.md",
+      "ref": "current_audit_pr322",
+      "sha256": "9f3059039a0afca8a135a353ed6f0acf2606a88c5b68a76663c35ded3071e1e7",
+      "role": "exclusive user note with corrected PR59+69 real-read no repeat; original text roundtrip"
+    },
+    {
+      "kind": "result",
+      "path": "docs/agent/JEPA_20261104_RESOLVED_HISTORICAL_G7_S174_LEVEL4_AND_REMAINING_GAPS_V1.md",
+      "ref": "current_audit_pr322",
+      "role": "nov4 exact source scope and remaining narrow gaps"
     }
   ],
   "known_scientific_errors_do_not_repeat": [
@@ -390,17 +426,74 @@
     "PR328 480x48 synthetic truth C3 population mean q0 is not R5 per-cell 8-other-gene; C2 PR316 requires 3 disjoint 512",
     "Original V79 failed at Q08; postterminal 85 forensic not 292 prior qualified; V80 source hash cross-replay PR534 RED",
     "Never infer source → CaseBundle authenticity from a fixture producer or Python type shape",
-    "Do not rerun original PR314, PR336, PR469, V79 realized worlds or already qualified V65 donor-heldout recovery"
+    "Do not rerun original PR314, PR336, PR469, V79 realized worlds or already qualified V65 donor-heldout recovery",
+    "PR59 already physically consumed 387 Level-4 count blocks and 8915 metadata blocks on 6 donors; PR69 corrected four source labels and 33 of 35 arrays stayed unchanged. Do not order new exploratory Level4 read because data were assumed unread.",
+    "G7 completed once as NOT_ESTIMABLE due to structural disjoint S174 T1 fit vs Sample A; never rerun or call a PASS.",
+    "V79 S174 masked physical development already ran PR288, reduced inflated detection source effect; do not rerun PR285 or PR288 to qualify old V3."
   ],
   "still_unresolved_by_current_work": [
-    "Original G7 last terminal exact receipt and authorized sequence to PR314",
-    "Post-PR287 physically masked S174 subsequent comparison result and V79/V80 current selection law",
     "Original full FULL104 8,915-block physical closure and numeric dimension receipt if already performed by Macha",
     "Stage81B JEPA_ONLY comparator exact same fixture/seed/objective vs PR537 before GPU dispatch",
     "Upstream 3 source-authorized alias-right restrictions plus physical source parent provenance to real CaseBundle",
     "PR525 latest independent Macha review and PR533 207/85 prospective successor law",
     "C2/C3 matched original teacher-target independent synthetic truth/heldout learnability and 13 blocked substantive real design gates"
   ],
-  "status": "SYNTHESIZED_NOT_ALL_534_PRS_INDEPENDENTLY_REVIEWED__AUDIT_DELTA_ONLY",
-  "future_agent_rule": "Read live PR460 pointer and this index; check exact GitHub head before any work; use source PR pointers not stale PR-body opening text. The 2026-11-04 audit append-only record advances with new evidence; do not start from uncurated chronological PR crawl."
+  "status": "MAJOR_SOURCE_BOUND_HISTORY_CONSOLIDATED_WITH_CLOSED_G7_S174_LEVEL4__OTHER_NARROW_MISSING_EDGES_EXPLICIT__NO_534_PR_LINE_BY_LINE_CERTIFICATE",
+  "future_agent_rule": "Read live PR460 pointer and this index; check exact GitHub head before any work; use source PR pointers not stale PR-body opening text. The 2026-11-04 audit append-only record advances with new evidence; do not start from uncurated chronological PR crawl.",
+  "reconciliation_update_20261104": {
+    "status": "THREE_PRIOR_MISTAKEN_OPEN_GAPS_CLOSED_BY_SOURCE__NO_REPEAT__NARROW_PHYSICAL_METRIC_AND_REVIEW_GAPS_LEFT",
+    "report": "docs/agent/JEPA_20261104_RESOLVED_HISTORICAL_G7_S174_LEVEL4_AND_REMAINING_GAPS_V1.md",
+    "g7": {
+      "outcome": "NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP",
+      "execution": "ONCE_COMPLETED_NO_RERUN",
+      "source_pr": 304,
+      "head": "188b86386660e43513ba494e60bd2d3cd736232e",
+      "source_path": "docs/agent/TARGET_DISCOVERY_NEW_AGENT_HANDOFF_20261012.md",
+      "reason": "S174_T1_ENCODER_FIT_CELLS_DISJOINT_FROM_DISCOVERY_SAMPLE_A_EXCLUDES_T1",
+      "not_biology_pass": true
+    },
+    "s174_masked": {
+      "outcome": "MASK_CORRECTED_EXACT_S174_REPLAY_COMPLETE__DEVELOPMENT_ONLY",
+      "source_pr": 288,
+      "head": "c3cf9ad7472541bfb5ad632465c626c437f9a69c",
+      "source_path": "docs/agent/V79_S174_STRUCTURE_REPLAY_V4_MASKED_RESULT_20261011.md",
+      "excluded_structural_zero_fraction": 0.0576,
+      "detection_source_gain_mean_before": 0.0226,
+      "after": 0.009,
+      "operator_detection": "PRIOR_SENSITIVE_UNRESOLVED",
+      "operator_positive": "NOT_SUPPORTED",
+      "world_generation_authorized": false
+    },
+    "real_level4_prior_reads": {
+      "source_prs": [
+        59,
+        69
+      ],
+      "heads": {
+        "59": "1bdff2a8f12d7971652dcf92b5b81ca45c37a933",
+        "69": "83b85382f22a7672a5beb1ef9154e5b8bf36e16f"
+      },
+      "count_blocks_read": 387,
+      "metadata_blocks_verified": 8915,
+      "cells_accounted": 4553407,
+      "donors_checked": 6,
+      "addresses_exact_reaggregated": 17186,
+      "source_label_correction_33_of_35_arrays_identical": true,
+      "new_read_assigned": false
+    },
+    "user_exclusive_history": {
+      "path": "docs/agent/archive/user_supplied_evidence_20261104/ORIGINAL_CONVERSATION_NEXT_ACTIONS_AND_REAL_LEVEL4_NO_REPEAT_20261103.md",
+      "original_sha256": "9f3059039a0afca8a135a353ed6f0acf2606a88c5b68a76663c35ded3071e1e7",
+      "status": "ORIGINAL_PROJECT_NOTE_COPIED_EXACT_TEXT_AND_ROUNDTRIP_VERIFIED",
+      "previous_approval": "QC_ONLY_FIELDS_PLUS_ONE_ELIGIBLE_SEA_AD_READER_FIT_LEVEL4_BLOCK_NARROW_SCOPE",
+      "later_decision": "NO_IMMEDIATE_NEW_LEVEL4_READ_AFTER_HISTORICAL_PR59_69_RECOVERY"
+    },
+    "remaining_not_closed": [
+      "FULL104_FULLSTREAM_NUMERICAL_D_SHARED_PRIVATE_OBS_RETURNED_RECEIPT_NOT_FOUND_IN_GITHUB",
+      "STAGE81B_JEPA_ONLY_EXACT_SAME_WORLD_SEED_OBJECTIVE_VS_PR537_UNPROVEN",
+      "PR533_207_85_PROSPECTIVE_SELECTION_RULE_AND_PR534_ORIGINAL_HASH_MISMATCH",
+      "SOURCE_CASEBUNDLE_ACCEPTED_PARENT_ISSUER_AND_3_ALIAS_RIGHTS",
+      "PR525_CURRENT_HEAD_MACHA_REVIEW"
+    ]
+  }
 }
