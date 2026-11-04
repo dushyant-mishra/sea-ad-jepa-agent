@@ -142,7 +142,6 @@ def test_duplicate_relational_view_or_wrong_query_fails(fit):
         v5.audit_fit(mutated, student, roster)
 
 
-@pytest.mark.slow
 def test_actual_six_block_full_address_u0_without_training(fit):
     receipt, student, roster = fit
     full, rights, _ = v5.audit_fit(receipt, student, roster)
