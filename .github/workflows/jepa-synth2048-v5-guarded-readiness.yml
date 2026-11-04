@@ -1,0 +1,112 @@
+name: JEPA synth2048 V5 verified-readiness (U0, NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - scripts/v5/jepa_synth2048_v5_readiness.py
+      - tests/test_jepa_synth2048_v5_readiness.py
+      - tests/test_jepa_synth2048_collapse_sentinel_v1.py
+      - scripts/v5/jepa_synth2048_collapse_sentinel_v1.py
+      - .github/workflows/jepa-synth2048-v5-guarded-readiness.yml
+      - docs/agent/JEPA_20261104_SYNTH2048_EXACT_LATEST_MODEL_RUNTIME_AUDIT.md
+      - docs/agent/JEPA_20261104_SYNTH2048_HISTORICAL_COLLAPSE_PREVENTION_AND_V5_EXECUTION_GATE.md
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  exact-v5-and-synthetic-u0:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned CPU actor test runtime
+        run: |
+          python -m pip install --disable-pip-version-check numpy==2.3.5 pytest==9.0.2
+          python -m pip install --disable-pip-version-check torch==2.7.0 --index-url https://download.pytorch.org/whl/cpu
+          python - <<'PY'
+          import sys,torch,numpy,pytest
+          assert sys.version_info[:2] == (3,12)
+          assert torch.__version__.split('+')[0] == "2.7.0", torch.__version__
+          assert numpy.__version__ == "2.3.5" and pytest.__version__ == "9.0.2"
+          assert not torch.cuda.is_available()
+          print("pinned V5 CPU reference environment",torch.__version__)
+          PY
+      - name: Fetch exact public FIT-only PR547 artifact (no truth/controller)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JEPA_SYNTH2048_DEV_ZIP: /tmp/jepa_synth2048_original_fit.zip
+        run: |
+          gh api "repos/${{ github.repository }}/actions/artifacts/13364085153/zip" > "$JEPA_SYNTH2048_DEV_ZIP"
+          echo "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f  $JEPA_SYNTH2048_DEV_ZIP" | sha256sum --check -
+      - name: Re-run original V5 guarded runtime and hostile provenance tests
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python -m pytest -q \
+            tests/test_v5_prefreeze_runtime_authority_reconciliation.py \
+            tests/test_v5_prefreeze_runtime_authority_redteam.py \
+            tests/test_v5_prefreeze_runtime_torch_integration.py \
+            tests/test_v5_canonical_runtime_convergence_red.py \
+            tests/test_v5_inactive_runtime_step_guard_v1.py \
+            tests/test_v5_prefreeze_checkpoint_binding_v1.py \
+            tests/test_teacher_student_v5_inactive_update_reference.py \
+            tests/test_v5_durable_checkpoint_completion_v1.py \
+            tests/test_v5_ema_configuration_binding_red.py \
+            tests/test_v5_ema_presentation_successor_red.py \
+            tests/test_v5_ema_canonicalization_red.py \
+            tests/test_v5_ema_completed_update_proof_red.py \
+            tests/test_v5_ema_presentation_cursor_red.py \
+            tests/test_v5_ema_persisted_continuation_red.py \
+            tests/test_v5_ema_continuation_canonicalization_red.py \
+            tests/test_v5_mechanics_loss_not_target_authority_red.py
+      - name: Hostile exact-artifact and source mapping tests
+        env:
+          PYTHONPATH: src:.
+          JEPA_SYNTH2048_DEV_ZIP: /tmp/jepa_synth2048_original_fit.zip
+          OMP_NUM_THREADS: "2"
+          MKL_NUM_THREADS: "2"
+        run: |
+          python -m pytest -q tests/test_jepa_synth2048_v5_readiness.py tests/test_jepa_synth2048_collapse_sentinel_v1.py
+      - name: Independent CLI exact FIT/source preflight and six-block U0
+        env:
+          PYTHONPATH: src:.
+          OMP_NUM_THREADS: "2"
+          MKL_NUM_THREADS: "2"
+        run: |
+          python scripts/v5/jepa_synth2048_v5_readiness.py \
+            --fit-zip /tmp/jepa_synth2048_original_fit.zip \
+            --mode preflight --report /tmp/v5_synth2048_preflight.json
+          python scripts/v5/jepa_synth2048_v5_readiness.py \
+            --fit-zip /tmp/jepa_synth2048_original_fit.zip \
+            --mode u0 --report /tmp/v5_synth2048_u0.json
+          python - <<'PY'
+          import json
+          p=json.load(open('/tmp/v5_synth2048_u0.json'))
+          assert p['actual_optimizer_updates']==p['actual_ema_updates']==0
+          assert p['training_authorized'] is False
+          assert p['zero_update_model_probe']['optimizer_updates']==0
+          assert p['zero_update_model_probe']['ema_updates']==0
+          assert p['all_C1_to_C6']=='UNASSESSED'
+          z=p['zero_update_model_probe']
+          assert z['historical_mandatory_48_registry']['count']==48
+          assert z['u0_student_cell_geometry']['qualified_biological_representation'] is False
+          assert z['u0_teacher_cell_geometry']['qualified_biological_representation'] is False
+          assert z['u0_student_gene_token_geometry']['exact_token_collapsed_cells']==0
+          assert z['u0_teacher_gene_token_geometry']['exact_token_collapsed_cells']==0
+          assert z['u0_student_gene_token_geometry']['qualified_biological_representation'] is False
+          print("V5_U0_MECHANICS_ONLY__NO_TRAINING__NO_C1_TO_C6_PASS")
+          PY
+      - name: Publish non-authorizing U0 readiness and exact source receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: v5-guarded-synth2048-u0-readiness-only
+          path: |
+            /tmp/v5_synth2048_preflight.json
+            /tmp/v5_synth2048_u0.json
+          if-no-files-found: error
+          retention-days: 30
