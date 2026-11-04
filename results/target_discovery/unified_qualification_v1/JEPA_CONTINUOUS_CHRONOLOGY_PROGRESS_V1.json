@@ -1830,6 +1830,56 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/314",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/537"
       ]
+    },
+    {
+      "event_id": "20261104-HISTORICAL-PRIMARY-RECEIPT-G7-S174-LEVEL4-AND-STAGE81B-RECONCILIATION-CLOSED",
+      "date_utc": "2026-11-04",
+      "workstream": "source_original_result_graph_correction_g7_s174_real_387_block_and_stage81b_rare_context_target_causal_evidence",
+      "implementation_pr": 322,
+      "implementation_head": "ac364f5674379c229e7f871ce39249cb5005f332",
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261104_RESOLVED_HISTORICAL_G7_S174_LEVEL4_AND_REMAINING_GAPS_V1.md",
+          "role": "original G7 exact one-run NOT_ESTIMABLE, PR288 real masked V79 S174 result, PR59 physical 387 Level4 and PR69 source-only fix, owner narrow decision"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_STAGE81B_INTRINSIC_RARE_CONTEXT_AND_TARGET_LEARNABILITY_NO_REPEAT.md",
+          "role": "original Stage81B at u500, T0/T1/TCTX 32 updates, RLC rotation, rare-state and UCDQ science beyond initial Stage81A3 failure"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
+          "role": "master machine original source locator amended to mark G7/S174/Level4 closed, Stage81B rare/context no-repeat"
+        },
+        {
+          "path": "docs/agent/archive/user_supplied_evidence_20261104/ORIGINAL_CONVERSATION_NEXT_ACTIONS_AND_REAL_LEVEL4_NO_REPEAT_20261103.md",
+          "role": "verbatim user-exclusive original note SHA 9f305903 showing previous QC/one-block scope superseded by already spent real read evidence"
+        }
+      ],
+      "what_already_existed": "PR304 target discovery takeover original documents physically executed G7 exactly once as NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP, not pending or a PASS, because S174 T1 encoder-fit cells and Sample A non-T1 cells are disjoint; independent exact diagnostic 0b50938e. PR288 V79 S174 structurally masked physical development replay completed with 5.76% entries unmeasured, source-detection mean increment reduced +.0226 to +.0090, previously inflated old V3 result, A-H constrained model statuses preserved, no new qualification worlds. PR59 physically SHA-read 387 Level4 count blocks, metadata verified 8915 and exact six donors ×17,186 address donor_umi/nnz, 4553407 cells accounted; PR69 corrected NPH52/SEA labels across 4354689 affected cells with 33/35 arrays identical and no count reread. Stage81B JEPA_ONLY/CURRENT/ANCHOR_ONLY u100/300/500 observed with 7.618x anchor shared-gene movement, original RLC rotation issue, rare states 14 annotated bounded adequately by PCA160 but three data-defined recurring neighborhoods failed four-resample stability, 21-dataset/234-sample UCDQ NO/PARTIAL_TARGETED_ONLY/NO, three-seed no-anchor T0/T1/TCTX 32-update negative-target comparisons.",
+      "new_work_or_result": "Recovered original exact primary sources PR304/G7 and PR288 V79 V4 masked physical result from historical preserved audits rather than rerunning, found and archived original user exclusive Pasted markdown 12832-byte note SHA9f305903... and text roundtrip, re-read original PR59, PR69, PR513, PR528 source-specific scopes to correct earlier statement that real Level4 sample needed a first read. Updated machine master source index and human master chronology to mark three prior false-open gaps CLOSED, add source-right/QC scope nonpromoting and Stage81B/RLC/rare/context program. Focused future work to truly missing physical numeric dimension receipt if any, Stage81B vs PR537 exact same-world comparison, PR533/534 selection and source parent issuer, not whole-history archaeology.",
+      "negative_or_counterfactual_evidence": "G7 structural disjointness does not refute cellular relational biology; no rerun or overlap fabrication. V79 old source-detection effect substantially inflated by treating 5.76% structural unmeasurement as zeros; V3 cannot be scientific authority over masked development. PR59's six-donor exact reaggregation does not prove per-cell full CaseBundle for all donors and neither authorizes new real reads; PR69 source label repair doesn't change 33/35 numerical members. Stage81B anchor rejection cannot be reinterpreted as current JEPA learned teacher pass; T0/T1/TCTX no winner, bounded rare annotated states not general data-defined rare stability. User's original narrow QC approval/one SEA_AD block had an explicit later no-repeat correction. PR537 author CPU preflight green still no GPU biology.",
+      "test_review_scope": "Original GitHub PR304 full read-first handoff, PR288 full physical masked S174 A–H result, original PR59/69 numeric and SHA receipts, PR513/528 source/QC, main Stage81B original closed findings and Stage81A3 source, user-uploaded Pasted markdown exact SHA+text roundtrip. No large data rerun, no new counts or model training. Source-lane navigation materially improved, individual ~534 PR audit claims excluded.",
+      "independent_review": "GPT_SOURCE_ORIGINAL_RECONCILIATION__ORIGINAL_PRIOR_INDEPENDENT_AUDITS_PRESERVED__REMAINING_NEW_HEAD_REVIEW_AS_NEEDED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Check only whether a newer FULL104 physical full-stream numeric D_shared/D_private/D_obs receipt exists in Macha's local authoritative store; no bulk data reread by default",
+        "Distinguish Stage81B u500 JEPA_ONLY exact model/fixture/seed/objective and readouts from PR537 before GPU",
+        "Resolve source issuer and 3 alias rights in existing producer-to-CaseBundle code, not fresh real source ETL",
+        "Confirm PR525 latest head independent hostile review and PR533/534 V80 207/85 selection+original identity",
+        "Outcome-blind C2/C3 source/righted actual teacher target and lawful student recovery vs technical/wrong-cell/query matched controls remains unqualified"
+      ],
+      "historical_supersession": "Supersedes prior #322 event46 source gap labels that G7 terminal and post-PR287 masked S174 physical run were unknown. They were already executed, source established and no repeat. Event47 master index still valid but now updated no-repeat with previously overlooked PR59/69 and Stage81B.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/304",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/288",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/59",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/69",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/513",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/528",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/537"
+      ]
     }
   ]
 }
