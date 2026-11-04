@@ -1,3 +1,17 @@
+# READ FIRST (2026-11-04, SOL EVENT70) — ORIGINAL SEALED CONTROLLER OWNER DOWNLOAD, NO PRIVATE ESCROW; RECIPROCAL K02/K03 TEST REVIEW COMPLETE
+
+**Latest verified custody (opaque only):** Original V80 sealed controller GitHub Actions archive #11866917064 (6,844,053 bytes; SHA-256 `184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46`) was retrieved again as an **unopened ZIP** into the owner conversation, verified by direct file-size/SHA-256 calculation, and linked directly to the owner for download. **No confirmation exists that the owner saved a separate copy or that any independent PRIVATE controller-only repository/vault now holds it.** Do NOT upload it to the public FIT repository, open its contents, or treat chat attachment as independently durable escrow. Original Actions expiry **2026-11-13T03:01:58Z**. Original FIT+receipt are still Git binary blobs in #322/#460 as Event69 establishes.
+
+**New reciprocal code-review evidence:** Sol read Macha-authored original [#544](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/544) K02/K03 hostile test patches and #545 repair diff, independently verified unchanged test blobs `b0707adb...` / `7639bbaa...` across both exact heads, and posted [`ACCEPT_SCOPED_K02_K03_HOSTILE_TEST_VALIDITY_ONLY`](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/544#issuecomment-6641302430). This is **test-validity-only**, NOT review/acceptance of Sol's #545 repair. **Macha** still independently reviews Sol [#545](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/545) (author CI 4/4 green) and Sol [#546](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/546) (test-only Task3 R1/R2 intentional RED). #541 remains `HOLD_NEEDS_EVIDENCE`. #534 original V80 benchmark SHA mismatch RED unchanged.
+
+**Exact new source:** [Event70 owner controller-copy and reciprocal test audit](JEPA_20261104_EVENT70_CONTROLLER_OWNER_COPY_AND_RECIPROCAL_K02_K03_TEST_AUDIT.md) is mirrored on #322/#460. Canonical #322 chronology **70 events**; machine master index key `v80_original_controller_owner_copy_and_reciprocal_review_event70_20261104`. Prior CI was 25/25 on #322 `8bc50996...` and 2/2 on #460 `21db9e26...` **before** event70 documentary commits. Recheck newest exact-head CI; never transplant prior CI verdict to new commit.
+
+**Continue without duplicate work:** Read event68 detailed scientific successor handoff + 60-entry source locator, event69 original binary asset custody and newest #460 pointer. No broad 535-PR audit repeat; no fresh Level4 reads, synthetic world/fit/model training/GPU, Task5/Stage4, biological target or representation selection.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST (2026-11-04, SOL EVENT69) — ORIGINAL ACTIONS ASSETS PHYSICALLY GIT-ARCHIVED, DETAILED FUTURE AGENT HANDOFF READY
 
 **Owner correction fulfilled for the FIT-SAFE original assets:** The repository is **PUBLIC**. The **ORIGINAL V80 FIT and original package RECEIPT ZIP bytes are now physically committed** to *both* the canonical audit **#322** and this live handoff **#460** branch as the **same Git blobs**, not merely expiring GitHub Actions references.
