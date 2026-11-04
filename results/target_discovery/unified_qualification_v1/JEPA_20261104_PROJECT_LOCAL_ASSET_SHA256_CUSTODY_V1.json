@@ -1,0 +1,129 @@
+{
+  "schema": "JEPA_20261104_PROJECT_LOCAL_ASSET_SHA256_CUSTODY_V1",
+  "created_utc": "2026-11-04",
+  "scope": "USER_UPLOADED_PROJECT_ASSETS__EXACT_SHA256_AND_ZIP_CENTRAL_DIRECTORY_ONLY__NO_NEW_BIOLOGICAL_ANALYSIS",
+  "access": "Project attachments in JEPA project; container mount /mnt/data is session-local, not permanent. Future agent finds files by exact project attachment name and checks hash. No original large binary bytes committed to Git.",
+  "hash_algorithm": "sha256",
+  "entries": [
+    {
+      "filename": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "archive_members": 60,
+      "uncompressed_bytes": 2777579957,
+      "role": "Aug 2026 calibration/provenance/teacher shortcut/measurement operator original archive",
+      "source_authority": "Archive status declares 50,000 expression cells, 6,351,753 metadata cells, 41,238 addresses, 42 operators, no dev/sealed expression or pathology; archive manifest status says 97 underlying custody members, NOT 60 physical zip entries.",
+      "existing_audits": [
+        "PR492",
+        "PR505",
+        "FHRA",
+        "Stage81A3/teacher shortcut"
+      ]
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+      "role": "Frozen split user upload, preserve byte order and checksum; not standalone training authority"
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+      "role": "Frozen split user upload; ZIP central directory exposes original 619,411,556-byte NPZ; never infer 4.55M physical FULL104 store"
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "bytes": 437,
+      "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+      "role": "Original frozen multipart-hash ledger; verify before reconstruction"
+    },
+    {
+      "filename": "expression.zip",
+      "bytes": 3599456,
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+      "archive_members": 48,
+      "uncompressed_bytes": 18880200,
+      "role": "Small original 50K discovery sample freeze, audit, 42 operator metadata; not full counts"
+    },
+    {
+      "filename": "checkpoints.zip",
+      "bytes": 71356460,
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+      "archive_members": 4,
+      "uncompressed_bytes": 81350745,
+      "role": "Historical checkpoint manifest plus u0000 and u0205 checkpoint tensors; not current qualified EMA biology"
+    },
+    {
+      "filename": "t1_checkpoint_u0200.zip",
+      "bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+      "archive_members": 5,
+      "uncompressed_bytes": 272585065,
+      "role": "Historical T1 step 10,25,50,100,200 checkpoint sequence; source metrics and known gradient defect must be honored"
+    },
+    {
+      "filename": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "bytes": 1531109,
+      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+      "archive_members": 21,
+      "uncompressed_bytes": 4331971,
+      "role": "Source-labeled molecular address and ten-program raw/L2 numerical matrix archive; 21 numpy members. Its identity/biological interpretation not inferred beyond member names."
+    },
+    {
+      "filename": "WSL execution issue.txt",
+      "bytes": 14576,
+      "sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e",
+      "role": "User-supplied historical scientific proposal: technology as observation operator; do not misclassify as executed result"
+    },
+    {
+      "filename": "Status and Repair Plan.txt",
+      "bytes": 5233,
+      "sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56",
+      "role": "User-supplied historical 2026-09-12 V5 dataset-first full-stream dimension repair log; later PR270/273/274 supersede its old pending precision rule"
+    },
+    {
+      "filename": "Pasted markdown.md",
+      "bytes": 12832,
+      "sha256": "9f3059039a0afca8a135a353ed6f0acf2606a88c5b68a76663c35ded3071e1e7",
+      "role": "User-provided prior work-status and source/CaseBundle priority text. Statements require original GitHub head and receipt corroboration before independent promotion"
+    }
+  ],
+  "observed_archive_receipts": {
+    "foundation_calibration_status": {
+      "schema": "foundation-calibration-bundle-v1",
+      "declared_files": 97,
+      "manifest_sha256": "da7c3daf507a66118131e88ae6685cf43eb14d4163539ade5e0705f6fb845cef",
+      "dev_sealed_expression_included": false,
+      "pathology_fields_included": false,
+      "expression_cells": 50000,
+      "metadata_cells": 6351753,
+      "addresses": 41238,
+      "operators": 42
+    },
+    "foundation_teacher_shortcut_atlas": {
+      "original_text_member": "calibration/FOUNDATION_TEACHER_SHORTCUT_ATLAS.md",
+      "u0_to_u205_source_operator_support_median_change": 0,
+      "u0_to_u205_continuous_biology_median_change": -0.0002308,
+      "scientific_limit": "Description only; no teacher target or production qualification"
+    },
+    "balanced_empirical_500_update": {
+      "original_text_member": "calibration/SYNTH_BALANCED_VS_EMPIRICAL_ADJUDICATION.md",
+      "classification": "MECHANISM_STRESS_ONLY_NOT_PRODUCTION_TRAINING",
+      "empirical_minus_balanced": {
+        "biology_factor_r2": -0.024886980652809088,
+        "source_balanced_accuracy": 0,
+        "operator_balanced_accuracy": 0.18132440476190478,
+        "support_count_r2": -0.001728355884552002
+      },
+      "biology_change_from_u0": {
+        "balanced_reference": 0.0012166947126388827,
+        "empirical_heterogeneous": 0.02086216211318978
+      },
+      "scientific_limit": "Historical fixed 500-step mechanism stress, not new production-transfer biology"
+    }
+  },
+  "not_committed_to_git_reason": "Binary bulk artifacts and checkpoints are existing project/GPU custody, can be very large, and are not source-reviewed or authoritative when stripped of original physical receipt. A GitHub-indexed checksum/locator is useful without duplicating storage or creating a false new training source.",
+  "no_new_training": true,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
