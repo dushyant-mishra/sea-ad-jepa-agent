@@ -30,15 +30,16 @@ import pandas as pd
 import torch
 import torch.nn.functional as F
 from scipy.stats import spearmanr
-from scripts.v4.f1b_c3_training_successor_v2 import (
-    enforce_unscaled_gradients, enforce_adam_moments,
-    protected_parameter_names, _optimizer_step_value,
-)
 from sklearn.metrics import average_precision_score, roc_auc_score
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
+
+from scripts.v4.f1b_c3_training_successor_v2 import (
+    enforce_unscaled_gradients, enforce_adam_moments,
+    protected_parameter_names, _optimizer_step_value,
+)
 
 from scripts.v4 import stage81a3_forensic_failed_trajectory_replay as forensic  # noqa: E402
 from scripts.v4 import stage81a3_real_rna_forward_smoke as real_smoke  # noqa: E402
