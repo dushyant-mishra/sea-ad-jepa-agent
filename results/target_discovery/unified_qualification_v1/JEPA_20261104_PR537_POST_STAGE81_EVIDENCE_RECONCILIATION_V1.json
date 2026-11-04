@@ -1,0 +1,82 @@
+{
+  "schema": "JEPA_20261104_PR537_POST_STAGE81_EVIDENCE_RECONCILIATION_V1",
+  "date_utc": "2026-11-04",
+  "claim": "MANY_POST_STAGE81_RESULTS_ALREADY_EXECUTED__PR537_IS_A_SCOPED_ADDITIONAL_ARM_NOT_A_GLOBAL_REPAIR_VALIDATION",
+  "source_report": "docs/agent/JEPA_20261104_PR537_POSTREPAIR_SIX_IPB_BRANCH_SYNC_AND_RESULTS_STATUS.md",
+  "branch_heads_at_review": {
+    "main": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb",
+    "audit322_before": "296961b4ea6f92988291d7d155ec0b66ee158310",
+    "handoff460_before": "d6ba3c1020ec911b073658cdc1b279f9f49d13c4",
+    "new_pr537": "7e8ff44120fd7acda9046d0f509fab504b4f73f3"
+  },
+  "evidence_reconciled": [
+    {
+      "program": "Stage81A3 V4A",
+      "status": "EXECUTED_NEGATIVE_10x500_MASKED_FACTOR_RECOVERY_DESPITE_LOSS_DECREASE",
+      "role": "HISTORICAL_FAILURE_SPECIFIC_TO_OLD_ARCHITECTURE"
+    },
+    {
+      "program": "Stage81A3 six-IPB",
+      "status": "THREE_COMPLETED_500_STEP_TRAJECTORIES_STOPPED_BEFORE_8_RUN_VERDICT",
+      "sha256": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "role": "DO_NOT_CALL_EIGHT_ARM_FINAL_OR_RESTART_HISTORIC"
+    },
+    {
+      "program": "Stage81B",
+      "status": "JEPA_ONLY_VS_CURRENT_VS_ANCHOR_ONLY_MATCHED_UP_TO_500__ANCHOR_REJECTED",
+      "role": "PREEXISTING_CAUSAL_REPAIR_NOT_REPEAT"
+    },
+    {
+      "program": "Stage81A3R",
+      "status": "GLOBAL_STATE_INFORMATION_AND_STABILITY_FOLLOWON_DONE_HISTORICAL_224D_SCOPED",
+      "role": "DO_NOT_PROMOTE_AS_CURRENT_REPRESENTATION"
+    },
+    {
+      "program": "T0_T1_TCTX_R5",
+      "status": "TARGET_AND_IDENTITY_VS_CONTEXT_QUERY_CONTROLS_DONE_NO_PRODUCTION_WINNER",
+      "role": "CANDIDATE_SPECIFIC_NOT_GENERIC_EMA"
+    },
+    {
+      "program": "PROD41K_T1_F1B",
+      "status": "HISTORICAL_48_GRADIENT_DEFECT_FOUND_AND_SYNTHETIC_LEARNING_MECHANICS_REPAIRED",
+      "role": "DIFFERENT_MECHANICAL_FAILURE_FROM_STAGE81A3_IPB_UNLESS_CAUSALLY_LINKED"
+    },
+    {
+      "program": "V65_V67",
+      "status": "DONOR_HELDOUT_PLANTED_SHARED_PRIVATE_RECOVERY_AND_MASK_UNCERTAINTY_TESTS_COMPLETED",
+      "role": "SUPERVISED_OR_MECHANICS_SCOPE_NOT_CANONICAL_EMA_TARGET_WIN"
+    },
+    {
+      "program": "TD56_TD57B_TD59_PR314",
+      "status": "ORIGINAL_HUMAN_RELATIONAL_REPLAYS_BROAD_MESOSCALE_POSITIVE_AND_FINE_NEGATIVE",
+      "role": "PAST_AUTHOR_SCOPE_RETAIN"
+    },
+    {
+      "program": "PR336",
+      "status": "9_OF_9_SEALED_RELATIONAL_TEST_OF_TEST_COMPLETED",
+      "role": "DO_NOT_REPEAT"
+    },
+    {
+      "program": "PR469_PR534_PR536",
+      "status": "ACTUAL_SYNTHETIC_SOURCE_CASEBUNDLE_AND_C3_NEGATIVE_ADMISSION_PARTIAL",
+      "role": "NOT_FULL_LEARNED_STUDENT"
+    },
+    {
+      "program": "PR537",
+      "status": "EXACT_HEAD_2_OF_2_CPU_PREFLIGHT_SUCCESS_ONLY__NO_SUBMITTED_GPU_VERDICT",
+      "head": "7e8ff44120fd7acda9046d0f509fab504b4f73f3",
+      "ci_runs": [
+        41780024555,
+        41780019162
+      ],
+      "role": "ADDITIONAL_SCOPED_JEPA_ONLY_COUNTERFACTUAL__NOT_GLOBAL_REPAIR_OR_CURRENT_TARGET_QUALIFICATION"
+    }
+  ],
+  "scientific_outstanding": "A direct scoped comparison of the existing Stage81B JEPA_ONLY fixture/seed/objective and exact PR537 original Stage81A3 IPB fixture must precede any assertion that PR537 is a necessary or novel GPU rerun. No submitted GPU biological recovery receipt. Missing C2/C3 same-world actual learned teacher/student gate/controller truth remains distinct.",
+  "branch_custody": "AUDIT_PR322_AND_HANDOFF_PR460_HAD_NOT_RECORDED_PR537_ON_NOVEMBER_4__NOW_SYNCHRONIZED_BY_NEW_EVENT_AND_POINTER",
+  "new_human_qualification": false,
+  "real_training_authorized": false,
+  "target_or_representation_winner": false,
+  "stage4_authorized": false,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
