@@ -6,9 +6,9 @@
   "canonical_audit": {
     "pr": 322,
     "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
-    "head_at_handoff": "08a1b0df1003872367a4d637ec1adf5f668a0ac9",
-    "chronology_events": 51,
-    "ci": "CHECK_SAME_CURRENT_HEAD__DO_NOT_ASSUME_QUEUED_IS_GREEN",
+    "head_at_handoff": "78b5431b2c7d144b1778000ef4f4f0f19cbb4a6b",
+    "chronology_events": 52,
+    "ci": "CURRENT_HEAD_WORKFLOWS_QUEUED__VERIFY_BEFORE_CLAIMING_GREEN",
     "master_doc": "docs/agent/JEPA_20261104_MASTER_HISTORICAL_AUDIT_AND_NO_REPEAT_TAKEOVER_V1.md",
     "master_machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
     "project_assets": "results/target_discovery/unified_qualification_v1/JEPA_20261104_PROJECT_LOCAL_ASSET_SHA256_CUSTODY_V1.json",
@@ -24,7 +24,8 @@
     "additional_sourced_history": "results/target_discovery/unified_qualification_v1/JEPA_20261104_ADDITIONAL_PRIOR_WORK_CROSSWALK_AND_OPEN_ISSUES_V1.json",
     "exact_next_science_decisions": "results/target_discovery/unified_qualification_v1/JEPA_20261104_FINAL_HISTORY_ACCOUNTABILITY_AND_NEXT_DECISION_REGISTER_V1.json",
     "controlling_recent_science_correction": "docs/agent/JEPA_20261104_RECENT_TWO_WEEK_SCIENCE_RESOLUTIONS_AND_CORRECTED_NEXT_WORK_V1.md",
-    "recent_108_pr_precedence_index": "results/target_discovery/unified_qualification_v1/JEPA_20261104_LAST_14_DAYS_108_PR_RESULT_PRECEDENCE_AND_NO_REPEAT_V1.json"
+    "recent_108_pr_precedence_index": "results/target_discovery/unified_qualification_v1/JEPA_20261104_LAST_14_DAYS_108_PR_RESULT_PRECEDENCE_AND_NO_REPEAT_V1.json",
+    "current_second_pass_doc": "docs/agent/JEPA_20261104_LEARNED_STUDENT_BIOLOGICAL_GAP_READONLY_DECISION_V1.md"
   },
   "active_handoff": {
     "pr": 460,
@@ -195,10 +196,10 @@
   ],
   "controlling_recent_source_precedence_20261104": {
     "status": "CORRECTED_AFTER_108_RECENT_PR_AND_LATER_ERRATA_READ",
-    "audit_head": "08a1b0df1003872367a4d637ec1adf5f668a0ac9",
-    "chronology_events": 51,
+    "audit_head": "78b5431b2c7d144b1778000ef4f4f0f19cbb4a6b",
+    "chronology_events": 52,
     "pr_count_recent": 108,
-    "read_first": "docs/agent/JEPA_20261104_RECENT_TWO_WEEK_SCIENCE_RESOLUTIONS_AND_CORRECTED_NEXT_WORK_V1.md",
+    "read_first": "docs/agent/JEPA_20261104_LEARNED_STUDENT_BIOLOGICAL_GAP_READONLY_DECISION_V1.md",
     "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_LAST_14_DAYS_108_PR_RESULT_PRECEDENCE_AND_NO_REPEAT_V1.json",
     "already_done": [
       "Sept2 final source mapping, HVS SEA off-ledger aliases, zero ETL drift",
@@ -211,7 +212,7 @@
       "original Stage81B JEPA_ONLY and real #314 relational replay",
       "executed original public E2G seven-track survey"
     ],
-    "current_next": "READ_ONLY_IDENTIFY_ONE_UNANSWERED_MEASURED_LEARNED_STUDENT_BIOLOGICAL_QUESTION_FROM_EXISTING_TD19_PR314_R5_STAGE81B_AND_CONTROL_RESULTS",
+    "current_next": "SOURCE_READ_ONLY_GAP_IDENTIFIED_IN_PR322_EVENT52__NO_NEW_RUN__INDEPENDENT_FALSIFIER_REVIEW_BEFORE_CHOSEN_IMPLEMENTATION",
     "dont_repeat": [
       "CaseBundle D1 V2C source fixture #535 explicit withdrawal",
       "Phase2 #336 audit",
@@ -220,6 +221,31 @@
       "Original N1/rare preflights, physical reads, V79/V80, Stage81B"
     ],
     "additional_scoped_limits": "NPH52 real issuance restricted; independent latest-head code review only for incremental #525/#538 adoption; PR534 SHA failure isolated and PR537 GPU run held",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "current_second_pass_20261104": {
+    "status": "AUDIT_EVENT52_SYNCED__NO_BIOLOGY_OR_EXECUTION_PROMOTION",
+    "audit_pr": 322,
+    "audit_head": "78b5431b2c7d144b1778000ef4f4f0f19cbb4a6b",
+    "audit_events": 52,
+    "owner_handoff_pr": 460,
+    "content_migrated_from_pr539": "RETIRED_SEPARATE_SCIENTIFIC_CONSOLIDATION_BRANCH__AUDIT_MEMO_ADOPTED",
+    "read_first": "docs/agent/JEPA_20261104_LEARNED_STUDENT_BIOLOGICAL_GAP_READONLY_DECISION_V1.md",
+    "established_not_repeat": [
+      "TD19_DEPTH_ONLY",
+      "PR314_MEASURED_BROAD_MESO_RELATIONAL",
+      "R5_ORIGINAL_QUERY_AWARE_DONOR_HELDOUT_AUDIT_RECONCILED",
+      "STAGE81B_JEPA_ONLY_AND_ANCHOR",
+      "PR336_INDEPENDENT_PHASE2_TEST_OF_TEST",
+      "PR469_PR536_SCOPED_SYNTHETIC_ADMISSION"
+    ],
+    "existing_design_not_result": "TD60_TEACHER_48_CASE_CONTINUITY__V5_FULL_EXPOSURE_CLOCK_SUPERSEDES_U40_BIOLOGICAL_INTERPRETATION",
+    "still_open": "LEARNED_PARTIAL_RNA_STUDENT_CORRECT_CELL_BROAD_MESOSCALE_RELATIONAL_INCREMENT_OVER_DEPTH_TECHNICAL_SOURCE_OPERATOR_DONOR_WRONG_CELL",
+    "source_evidence_grade": "R5_PRIMARY_RECEIPT_NOT_NEWLY_REOPENED__AUDIT_RECONCILED",
+    "remaining_engineering": "PR525_PR538_INDEPENDENT_REVIEW_IF_ADOPTED__PR534_V80_SHA_REGRESSION_ISOLATED__PR537_GPU_HOLD__PHYSICAL_ISSUER_IF_SPECIFIC_REAL_EXPERIMENT_REQUIRES",
+    "audit_ci_observed": "QUEUED_ON_EXACT_HEAD_AT_POINTER_UPDATE__RECHECK",
+    "permanent_two_branch_rule": "All future implementation/experiment work lives in its owner PR; append chronology, original primary science, source negatives and exact review scope to PR322; verify exact head; update PR460 top live pointer and machine status to that same audit head; verify handoff exact head, disclose pending checks; do not create duplicate history-only/science-consolidation PR",
+    "never_modify": "FROZEN_535_PR_AND_108_RECENT_PR_TIME_SCOPED_SNAPSHOTS_OR_ORIGINAL_NEGATIVE_RESULTS",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
