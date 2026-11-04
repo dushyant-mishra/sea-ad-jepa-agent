@@ -87,6 +87,20 @@
       "bytes": 12832,
       "sha256": "9f3059039a0afca8a135a353ed6f0acf2606a88c5b68a76663c35ded3071e1e7",
       "role": "User-provided prior work-status and source/CaseBundle priority text. Statements require original GitHub head and receipt corroboration before independent promotion"
+    },
+    {
+      "filename": "Pasted text.txt",
+      "bytes": 374129,
+      "sha256": "2eaea727bcf2ca33b6d22f7c78e6677855ae4bf76d52df5dcbff2af8cb140c67",
+      "role": "User-supplied Macha execution/review transcript and handoff state through 2026-11-04; controls over older summaries where it gives later Macha corrections. Original upload byte identity; normalized Git custody copy stored separately.",
+      "normalized_git_copy": "docs/agent/archive/user_supplied_evidence_20261104/MACHA_EXECUTION_REVIEW_TRANSCRIPT_PASTED_TEXT_20261104_NORMALIZED.txt",
+      "normalized_git_blob_sha1": "58fa5b56ad617c14598c399066219a5bcf399cdb",
+      "normalized_copy_byte_identical": false,
+      "existing_audits": [
+        "PR322 event58 Macha lane state",
+        "PR322 event57 owner rulings",
+        "GPT cold-start takeover V1"
+      ]
     }
   ],
   "observed_archive_receipts": {
