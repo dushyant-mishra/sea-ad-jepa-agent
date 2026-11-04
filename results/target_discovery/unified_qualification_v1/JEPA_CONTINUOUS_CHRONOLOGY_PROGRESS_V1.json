@@ -2494,7 +2494,7 @@
       "workstream": "td60_v5_mechanics_vs_biological_exposure_checkpoint_source_only_preflight",
       "implementation_pr": 540,
       "implementation_head": "9cdc6c6843572df9e1525a1775f852862bcecfa2",
-      "change_type": "source_only_implementation",
+      "change_type": "implementation",
       "source_inputs": [
         {
           "path": "target_discovery/iterations/td60_learned_teacher_continuity/TD60_PROSPECTIVE_SCREEN.md",
@@ -2507,32 +2507,24 @@
         {
           "path": "docs/agent/TEACHER_STUDENT_V5_DATA_FIRST_AUTHORITY_CANDIDATE.json",
           "role": "existing unfrozen V5 source-candidate state; no execution authority"
-        },
-        {
-          "path": "scripts/v5_anticheat/td60_v5_checkpoint_eligibility_preflight_v1.py",
-          "role": "PR540 source-only fail-closed checkpoint readiness diagnostic"
-        },
-        {
-          "path": "tests/v5_anticheat/test_td60_v5_checkpoint_eligibility_preflight_v1.py",
-          "role": "PR540 six negative controls of eligibility and no authority"
         }
       ],
       "what_already_existed": "TD60 had frozen its global/mesoscale 48-case design; V5 later separated mechanics Q40 from scientific full-reader exposure but no scientific exposure milestone, EMA half-life, source issuer or TD60 release exists. Audit event59 and event60 already identify the problem; source-only checkpoint telemetry guard already exists for different optimizer/biology-shortcut checks.",
-      "new_work_or_result": "Focused draft PR540 implements an independent read-only candidate preflight, not a TD60 evaluator or new experiment. It rejects u40-as-biology; reports unfrozen proposal, evidence, kernel, presentation horizon and EMA half-life; always refuses a self-supplied release, and keeps the 48-case test unchanged. Six negative tests and actual repository candidate exercise completed in exact-head author workflow 41875765048 SUCCESS.",
-      "negative_or_counterfactual_evidence": "Even a forged self-declared fully frozen V5 source candidate cannot make the preflight select a checkpoint or grant TD60 authority. True authority flags, invalid schema, bool/float horizons, or malformed digest are rejected. Existing candidate is HOLD. A source-only author test proves no learned biological property or independent review.",
+      "new_work_or_result": "Draft PR540 added a source-only HOLD diagnostic against the historically known TD60-u40/V5 conflict and author CI succeeded. On owner correction it was identified as near-duplicate historical safeguard work, CLOSED NOT PLANNED without merging; it is not the current architecture or priority. The current integrated synthetic-plus-real Tasks0–8 pipeline remains controlling.",
+      "negative_or_counterfactual_evidence": "The u40/V5 issue was already explicitly documented September 8; this newly authored safeguard is nonessential and did not produce biological information. Audit event61's initial unverified append caused chronology CI failure because it used an unrecognized change_type and referenced paths present only in the focused PR. This event's metadata was repaired before a successful exact-head freeze; the failing CI receipt remains preserved. No scientific authority was changed.",
       "test_review_scope": "Source JSON plus Python unit tests only. No expression/Level4 read, GPU/optimizer/EMA step, checkpoint load, synthetic generation, learned teacher/student evaluation, TD60 outcome or model selection.",
-      "independent_review": "AUTHOR_CI_SUCCESS__INDEPENDENT_EXACT_HEAD_REVIEW_PENDING__NO_BIOLOGICAL_PASS",
+      "independent_review": "AUTHOR_CI_SUCCESS__OWNER_PRIORITY_REJECTION__CLOSED_NOT_PLANNED__NO_INDEPENDENT_SCIENCE",
       "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
       "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
       "open_specific_deltas": [
-        "PR540 independent review of negative-only source preflight; it is NOT an issued exposure checkpoint",
-        "TD60 still requires prospectively frozen V5 full-reader scientific exposure milestones and teacher/student authority before any 48-case execution",
-        "Macha's #525/#538 independent reviews and #535 read-free challenge remain separate",
-        "PR537 GPU remains HOLD; Stage81B causal anchor decision is already complete",
-        "Owner correction: #534 V80 Windows/Ubuntu/package mismatch is historical environment reproducibility, not a new scientific experiment or first priority",
-        "PR533 V79/V80 207-versus-291 policy ruling remains separate"
+        "Do not continue PR540/TD60 now: historical prospective-only gate; PR540 closed not planned",
+        "Actual current pipeline is Unified Tasks0–8, integrated synthetic plus real; Tasks0–3 and synthetic end-to-end #469 already completed",
+        "Execution frontier: existing real source-to-CaseBundle issuer/physical totals edge and an authorized learned-student result against original known-truth synthetic controls",
+        "Previous owner ruling: no new Level4 reads, new synthetic world, training or PR537 GPU without separate explicit authorization",
+        "Macha independent review of #525/#538 and no-read #535 challenge remains distinct",
+        "PR533 V79/V80 207-versus-291 policy remains separate; #534 Windows/Ubuntu environment difference known"
       ],
-      "historical_supersession": "No old TD60/V5 files mutated and no frozen results reinterpreted. The new preflight is a narrow execution-eligibility interlock for future use, not an authority substitute.",
+      "historical_supersession": "Priority correction to the newly appended unverified event61: owner clarified this was known September guidance, not a newly discovered blocker. PR540 closed not planned. Original TD60/V5, event60, and source scientific receipts remain unchanged.",
       "evidence_links": [
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/540",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41875765048",
