@@ -80,6 +80,37 @@ def test_real_one_factor_biology_cannot_be_automatically_killed_as_collapse():
     assert r.top_singular_energy_fraction == pytest.approx(1.0)
 
 
+
+def test_real_token_diversity_is_unqualified_not_a_fabricated_C_pass():
+    rng = np.random.default_rng(812)
+    tokens = rng.normal(size=(6, 12, 16))
+    report = guard.token_geometry_diagnostic(tokens)
+    assert report["exact_token_collapsed_cells"] == 0
+    assert report["qualified_biological_representation"] is False
+    assert report["within_cell_feature_std_median"] > 0
+
+
+def test_gene_token_collapse_stops_even_when_cell_embeddings_differ():
+    # Cell token can vary while every molecular token within a cell is identical.
+    across_cells = np.random.default_rng(813).normal(size=(6, 16))
+    all_tokens_equal_per_cell = np.broadcast_to(
+        across_cells[:, None, :], (6, 12, 16)
+    ).copy()
+    with pytest.raises(guard.CollapseStop, match="identical gene-token"):
+        guard.token_geometry_diagnostic(all_tokens_equal_per_cell)
+    altered = np.random.default_rng(813).normal(size=(6, 12, 16))
+    altered[3, :, :] = 7.0
+    with pytest.raises(guard.CollapseStop, match="identical gene-token"):
+        guard.token_geometry_diagnostic(altered)
+
+
+def test_nonfinite_gene_token_stops():
+    tokens = np.random.default_rng(814).normal(size=(6, 12, 16))
+    tokens[0, 0, 0] = float("inf")
+    with pytest.raises(guard.CollapseStop, match="nonfinite gene-token"):
+        guard.token_geometry_diagnostic(tokens)
+
+
 def test_original_48_protected_names_on_actual_six_block_encoder():
     modules = _modules(6)
     receipt = guard.check_encoder_gradient_registry(modules.online)
