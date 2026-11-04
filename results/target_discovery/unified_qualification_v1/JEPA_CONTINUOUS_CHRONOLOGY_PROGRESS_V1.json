@@ -2531,6 +2531,44 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/537"
       ]
+    },
+    {
+      "event_id": "20261104-MACHA-UNIFIED-LANE-CHRONOLOGY-AND-NEXT-ACTIONS-V1",
+      "date_utc": "2026-11-04",
+      "workstream": "macha_unified_lane_chronology_and_next_actions_for_sol",
+      "implementation_pr": 380,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_UNIFIED_LANE_CHRONOLOGY_AND_NEXT_ACTIONS_20261104.md",
+          "blob_sha1": "2d71cc8fd80c86bda99c140f723c06311aba6c94",
+          "role": "unified lane (plan #380, Tasks 0-12) chronology, feeding streams, planned downstream route and next actions"
+        }
+      ],
+      "change_type": "chronology_correction",
+      "what_already_existed": "Plan #380 (Tasks 0-12, STOP U1-U5) on accepted #379 architecture; accepted Tasks 0-3 (e37a22b8, 799d2e23, c7dfff1c, 117dd51d); Task 4 and Task 5 incremental acceptances; #447 downstream prerequisites mapping 2026-10-27.",
+      "new_work_or_result": "Traced the unified lane task by task with PRs, heads and verdicts re-read 2026-11-04: Tasks 0-3 accepted; Task 4 and Task 5 accepted only incrementally; Tasks 6-12 not started beyond fixture stubs. Mapped feeding streams (post-TD #525, D1/V2C main, G7 E3, source qualification, PS V3.1.1, synthetic diagnostics) and restated the #447 seven-property downstream route updated by owner rulings (consumer re-verification instead of a mandatory signer; no new Level-4 read; #531 contract). Ordered next actions by owner and authority need.",
+      "negative_or_counterfactual_evidence": "No cumulative Task 4 acceptance; Task 5 fixture-only (externally_authenticated=False); all Task 6 units NOT_REGISTERED; no wrong-query challenge family; recent TD60 work (#540) was off the spine and is closed.",
+      "test_review_scope": "Documentary; PR metadata, plan text and verdict comments re-read 2026-11-04; no execution or data access.",
+      "independent_review": "MACHA_DOCUMENTARY_TRACE__SOL_TO_CONFIRM_AND_EXECUTE_PLANNED_TASKS",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Sol: assemble cumulative Task 4 candidate; Macha reviews",
+        "Macha: review #525 b493efc3, #538, #536",
+        "Sol: decide #534 V80 portability before 2026-11-13; then full Task 5 / NONE unification and Task 6 registration",
+        "Sol+owner: L04 teacher query-exposure policy for Task 8 student-input constructor"
+      ],
+      "historical_supersession": "None; trace only. Plan #380 and its accepted amendments remain controlling.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/380",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/401",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/465",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/451",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/447",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/469",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525"
+      ]
     }
   ]
 }
