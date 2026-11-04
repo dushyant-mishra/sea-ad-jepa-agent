@@ -1136,14 +1136,34 @@ def postrepair_gate(runs: list[dict[str, Any]]) -> dict[str, Any]:
             "student_information_pass": bool(student_ok),
             "token_information_pass": bool(token_ok),
         })
-    passed = all(r["teacher_information_pass"] and r["student_information_pass"]
-                 and r["token_information_pass"] for r in rows)
+    fixture_medians = {}
+    for fixture in FIXTURES:
+        selected = [x for x in rows if x["fixture"] == fixture]
+        fixture_medians[fixture] = {
+            "token_encoder_retention": float(np.median(
+                [x["token_encoder_retention"] for x in selected])),
+            "cell_retention": float(np.median(
+                [x["cell_retention"] for x in selected])),
+        }
+    # Original Stage81A3 classifier: medians >=.95/.90 per fixture;
+    # per-run token/cell >=.90/.80 and per-run masked >=.80.
+    median_gates_pass = all(
+        x["token_encoder_retention"] >= .95 and x["cell_retention"] >= .90
+        for x in fixture_medians.values()
+    )
+    passed = median_gates_pass and all(
+        r["teacher_information_pass"] and r["student_information_pass"]
+        and r["token_information_pass"] for r in rows
+    )
     return {
         "preexisting_gate_thresholds": {
-            "token_retention": .90, "cell_retention": .80,
+            "token_retention_each": .90, "token_retention_fixture_median": .95,
+            "cell_retention_each": .80, "cell_retention_fixture_median": .90,
             "masked_to_full": .80, "student_minus_visible_raw": 0.0,
         },
         "per_trajectory": rows,
+        "per_fixture_medians": fixture_medians,
+        "per_fixture_median_gates_pass": bool(median_gates_pass),
         "classification": (
             "SYNTHETIC_ONLY_JEPA_ONLY_INFORMATION_RECOVERY_PASS"
             if passed else "SYNTHETIC_ONLY_JEPA_ONLY_INFORMATION_RECOVERY_FAIL"
