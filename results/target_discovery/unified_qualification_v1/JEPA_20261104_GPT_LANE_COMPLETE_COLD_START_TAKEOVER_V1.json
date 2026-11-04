@@ -162,7 +162,8 @@
     "files_renderer_lines": 4841,
     "original_sha256": "2eaea727bcf2ca33b6d22f7c78e6677855ae4bf76d52df5dcbff2af8cb140c67",
     "normalized_git_path": "docs/agent/archive/user_supplied_evidence_20261104/MACHA_EXECUTION_REVIEW_TRANSCRIPT_PASTED_TEXT_20261104_NORMALIZED.txt",
-    "normalized_copy_byte_identity": "NOT_CLAIMED"
+    "normalized_copy_byte_identity": "NOT_CLAIMED",
+    "normalized_git_blob_sha1": "58fa5b56ad617c14598c399066219a5bcf399cdb"
   },
   "no_repeat": [
     "Do not broadly reaudit history before reading canonical files.",
@@ -182,5 +183,51 @@
     "verify PR322 exact-head CI",
     "update PR460 live pointer to exact PR322 state",
     "verify PR460 exact-head CI"
-  ]
+  ],
+  "macha_event58": {
+    "source": "docs/agent/JEPA_MACHA_LANE_STATE_FOR_SOL_20261104.md",
+    "precedence": "CONTROLS_OVER_OLDER_SUMMARIES_OF_MACHA_WORK",
+    "seven_retractions": [
+      "NPH52 accession/terms unknown -> false; Zenodo 8319719 rev2 CC-BY-4.0",
+      "hardware/offline signing key prerequisite -> false; optional governance hardening",
+      "Phase2 independent audit missing -> false; PR336 already did it",
+      "synthetic sources reversed relative to real -> overstated; defect is support mechanism and NPH52 gaps",
+      "alias-right owner decision pending -> false; owner adopted 2026-10-30; enforcement code missing",
+      "no Level4 count read existed -> incomplete; PR59/69 already read/corrected",
+      "Macha replayed #513 QC probe once before adjudication; disclosed governance breach, byte-identical public metadata output"
+    ],
+    "actual_open_queue": [
+      {
+        "item": "PR525 fresh-head independent review",
+        "head": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+        "owner": "Macha",
+        "auto_assign": false
+      },
+      {
+        "item": "PR535 no-read field-classification challenge",
+        "head": "af7acbcf6d2244764e17f44686b94a72199c7d9c",
+        "owner": "Macha",
+        "auto_assign": false
+      },
+      {
+        "item": "PR537 GPU JEPA-only run",
+        "head": "7e8ff44120fd7acda9046d0f509fab504b4f73f3",
+        "owner": "Macha",
+        "status": "HOLD_REQUIRES_EXPLICIT_OWNER_AUTHORIZATION"
+      },
+      {
+        "item": "PR536 review",
+        "head": "b723b9d522a013554a0a53cf600e6e9812c35935",
+        "owner": "Macha",
+        "status": "ONLY_IF_REQUESTED"
+      }
+    ],
+    "pr460_incident": {
+      "branch_accidentally_deleted": true,
+      "restored_exact_commit": "d5732fe690dc3a6ef89ebaaaf25c98d23fa65493",
+      "pr_auto_closed": true,
+      "pr_reopened_by_sol": true,
+      "content_loss": false
+    }
+  }
 }
