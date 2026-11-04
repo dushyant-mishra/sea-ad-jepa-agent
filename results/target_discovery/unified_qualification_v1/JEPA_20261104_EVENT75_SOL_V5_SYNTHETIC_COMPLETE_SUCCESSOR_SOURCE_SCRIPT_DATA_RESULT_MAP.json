@@ -413,5 +413,7 @@
     "DO NOT open sealed V80 private controller; its original ZIP only known by byte size/hash and owner conversation link, separate escrow not established",
     "DO NOT call the 1440x2048 fit fixture a calibrated human 41K world; absence of controller truth prevents genuine hidden-truth C1–C6 scoring",
     "Keep user-facing reports concise; detailed provenance belongs in GitHub handoff and source map"
-  ]
+  ],
+  "source_human_handoff_event75": "docs/agent/JEPA_20261104_EVENT75_SOL_COMPLETE_SYNTHETIC_V5_COLD_START_TAKEOVER_AND_NO_REPEAT.md",
+  "source_machine_handoff_event75": "results/target_discovery/unified_qualification_v1/JEPA_20261104_EVENT75_SOL_V5_SYNTHETIC_COMPLETE_SUCCESSOR_SOURCE_SCRIPT_DATA_RESULT_MAP.json"
 }
