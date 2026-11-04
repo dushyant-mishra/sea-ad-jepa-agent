@@ -1,3 +1,29 @@
+# READ FIRST (2026-11-04, SOL EVENT63) — THE DOWNSTREAM JEPA WORK WAS ALREADY BUILT; DO NOT RESTART IT
+
+**Authoritative source:** canonical audit **#322** at `67fcbb21dc567b9deca0dd8b03f5da59c29efd31`, **63 append-only events**; new human source map `docs/agent/JEPA_20261104_ORIGINAL_DOWNSTREAM_IMPLEMENTATION_RECOVERY_AND_EXACT_NEXT_JOINS_V1.md`; original evidence index `results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json` (new `original_downstream_implementation_and_exact_joins_event63_20261104` key). **New audit commit CI is pending/verify on exact head; never inherit the previous head's 24/24 green.** Original Macha event62 document and Task0–12 status remain intact below.
+
+**Critical correction after user-driven source audit:** The October unified Task0–12 plan is a *qualification/custody plan*, not the start of downstream model construction. Original post-TD and real runtime work **already implemented or executed**:
+- **#147** bounded 40-update synthetic V5 optimizer/EMA/checkpoint diagnostic, 104/104 donor metadata bridge (not real training or biology).
+- **#224/#226** canonical guarded V5 runtime, typed source-bound optimizer/EMA/checkpoint and qualification adapters; exact-head workflows previously green.
+- **#332/#351** multi-block C1/C2/C3 TargetPortfolio, C4 requires independent C6, C5 specialist, teacher evidence policies, student/teacher topologies, output semantics, matched-compute, architecture/EMA tournament and synthetic rehearsal CLI.
+- **#525** (current `b493efc35af20bcf2adee29c47376e1dbf4b6dcd`) repairs #517/#527/#530/#532 hostile RED: exact manifest/portfolio, QUERY_SPECIFICITY, WRONG_Q_CONTROL, rare controls, prospective NE and exact integer EMA. **Author 3/3 CI green; Macha's fresh independent acceptance still due.**
+- **#444/#451/#469** actual synthetic PR328 observable RNA→Task5 CaseBundle→existing post-TD fixture integration; #451's incremental bridge mechanics independently accepted. Not genuine A7 or a learned student.
+- **#447** Task6 9-unit existing inventory, content-bound `TARGET=NONE`, strict Task8 no-target abstention, 53 fixture tests. All production selected-bundle/unit authority still REFUSED.
+- **main #522–#524** independently accepted scoped D1/V2C and student Docker fixture; **#538** extends alias denial, independent review due.
+- Historical Stage81A3/six-IPB/Stage81B learned JEPA synthetic attempts, #314 corrected real relational replay, #336 sealed nine-case independent audit, #369 cross-gate tests and R5 measured developmental query result **already exist**. Never report these as experiments that were never run.
+
+**Next work, not duplicate work:** Macha independently reviews **#541 cumulative Task4** (already opened at exact existing #465 SHA `3b86b946`), **#525, #538, #536**; Sol does the reciprocal Macha-authored patch review. Separately, **before 2026-11-13 03:02 UTC**, verify durable separate authorized preservation of original **V80** fit/controller artifact IDs `11867590706`, `11866917064` (GitHub run `38504094639`) and digest/environment receipts. **Original preservation NOT YET VERIFIED by Sol; do not upload controller truth to Git.** #534 cross-host SHA replay RED is distinct from original V80 benchmark qualification.
+
+**Only after the upstream independent acceptances:** reuse existing #451/#447/#525 code at the *specific* Task5 A7 / first-class NONE handoff; register Task6 exact units at demonstrated authority; independently verify Task7 and Task8 exact bundles, per-block support/rights, C4 over separate C6, query-safe D1 student consumption; enforce trainer entry against verified Task7 + certified Task8 + **separate owner authorization**; reuse #321/#336/#328/V80/#469 and existing #525 wrong-query controls for formal Task9/10, then Tasks11/12. Do not build a new post-TD harness, EMA, V2C/D1, CaseBundle fixture, Task6 PR-head list, or synthetic world. #535 15-field source map explicitly assigns **no new human adapter or Level4 read** now.
+
+**Open owner decisions:** L04 whether SHARED teacher may see q in a query presentation; #533 207-confirmatory (including Q08 failure) vs 85 post-terminal forensic ruling; #537 duplicate-vs-novel GPU proposal and explicit training decision; U1 before any sealed final, U2–U5 at corresponding stages. Original model experiment question is a *new qualified current-source partial-evidence student biological increment*, not a first JEPA run.
+
+**Original science goal remains:** Alzheimer microglia biology under uneven measurement, not optimization loss; read event54 full narrative `docs/agent/JEPA_20261104_END_TO_END_SCIENTIFIC_NARRATIVE_AND_DECISION_LINEAGE_V1.md`. For operational source navigation read event63 source map **before** any new task, followed by event62 Macha chronology and #380 plan. Prior embedded handoff snapshots below are historical and may contain superseded action requests.
+
+**Authority:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # READ FIRST (NOVEMBER 4, MACHA) — UNIFIED LANE: WHERE WE ARE AND WHAT TO DO NEXT
 
 **Sol: the unified lane is mid-way through its own plan.** Plan #380 runs from Task 0 to Task 12, with owner stops U1–U5. The full task-by-task chronology and next actions are in #322 `5fd93042b22e31bf4b832112ff9f4ad255c664cc`, `docs/agent/JEPA_UNIFIED_LANE_CHRONOLOGY_AND_NEXT_ACTIONS_20261104.md` (event 62).
