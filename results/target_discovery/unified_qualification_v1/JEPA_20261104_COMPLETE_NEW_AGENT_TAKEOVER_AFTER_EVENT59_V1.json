@@ -2,7 +2,7 @@
   "schema": "JEPA_COMPLETE_NEW_AGENT_TAKEOVER_AFTER_EVENT59_V1",
   "date_utc": "2026-11-04",
   "audit_pr": 322,
-  "audit_head": "9996d03aa68e9f69fa7dfd3f9bfaf3853f821b28",
+  "audit_head": "a65392730cc9c97b68ad41841d1b77d021c9278a",
   "handoff_pr": 460,
   "handoff_branch": "handoff/jepa-v8-clean-successor-from-audit-20261027",
   "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
@@ -31,7 +31,7 @@
     "seven_retractions": "MUST_READ_ACCOUNT_SECTION_3"
   },
   "science_frontier": "LEARNED_EMA_TEACHER_BROAD_MESOSCALE_ORDERING_THEN_LAWFUL_PARTIAL_RNA_STUDENT_INCREMENT_BEYOND_MATCHED_TECHNICAL_AND_WRONG_CELL_CONTROLS__C3_SEPARATE",
-  "td60": "ALREADY_DESIGNED__DO_NOT_REDESIGN__RECONCILE_FIXED_U40_WITH_V5_EXPOSURE_CLOCK_BEFORE_EXECUTION",
+  "td60": "HISTORICAL_SEPT8_PROSPECTIVE_ONLY__NO_TRAINED_TEACHER__PR540_CLOSED_NOT_PLANNED",
   "no_repeat": [
     "broad historical audit",
     "PR59/69 Level4 reads",
@@ -55,5 +55,20 @@
     "verify exact #322 CI",
     "update #460 live pointer to exact #322 head",
     "verify exact #460 CI"
-  ]
+  ],
+  "current_audit_event": 61,
+  "read_first_event61_owner_priority_correction": {
+    "title": "Unified synthetic+real Tasks0-8 is current; TD60 is older prospective-only",
+    "event": 61,
+    "audit_head": "a65392730cc9c97b68ad41841d1b77d021c9278a",
+    "audit_ci": "24/24 exact-head SUCCESS",
+    "pr540": "CLOSED_NOT_PLANNED_UNMERGED_HISTORY_DUPLICATE",
+    "current_execution_frontier": [
+      "real physical source -> authenticated CaseBundle producer (issuer, aliases, private library totals)",
+      "actual learned-student performance on original existing synthetic known answers only if separately authorized"
+    ],
+    "prior_work": "Task0-3 accepted in pieces; Task4 partial; Task5 fixtures; Tasks6-8 fixture consumers; PR469 synthetic end-to-end already done",
+    "no_repeat": "Do not redo #469 or TD60/u40; #534 Windows/Ubuntu environment issue known",
+    "owner_limits": "no new Level4 read, synthetic world, GPU/training, or #537 without explicit owner authorization"
+  }
 }
