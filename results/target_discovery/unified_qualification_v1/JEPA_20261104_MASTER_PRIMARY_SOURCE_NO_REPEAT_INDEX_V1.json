@@ -1079,5 +1079,29 @@
     ],
     "cumulative_task4_status": "HOLD_NEEDS_EVIDENCE",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "exactly_two_reciprocal_reviewers_owner_correction_event67_20261104": {
+    "chronology_event": 67,
+    "source_doc": "docs/agent/JEPA_20261104_TWO_REVIEWER_ONLY_CORRECTION_EVENT67.md",
+    "reviewers": [
+      "SOL_GPT",
+      "MACHA"
+    ],
+    "third_independent_reviewer_exists": false,
+    "assignment": {
+      "sol": "independent review of Macha-authored patches and tests",
+      "macha": "independent review of Sol-authored patches and tests",
+      "owner": "scientific deciding lane and authorization; NOT third code reviewer"
+    },
+    "current_prs": {
+      "541": "cumulative HOLD until reciprocal exact-head limitations and defects reconciled",
+      "544": "Macha-authored Task4 RED-only tests; Sol independent review",
+      "545": "Sol-authored Task4 K02/K03 repair; Macha independent review",
+      "546": "Sol-authored frozen Task3 RED-only tests; Macha independent review"
+    },
+    "supersedes": "Generic third-party independent Task3 reviewer references in older audit/handoff; no recruitment",
+    "no_self_acceptance": true,
+    "cumulative_authority": "HOLD_NEEDS_EVIDENCE",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
