@@ -1132,5 +1132,51 @@
       "actions_original_expiry_utc": "2026-11-13T03:02:00Z"
     },
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v80_original_exact_zip_binary_git_archive_both_branches_event69_20261104": {
+    "chronology_event": 69,
+    "human": "docs/agent/JEPA_20261104_ORIGINAL_V80_GITHUB_ASSET_ARCHIVE_AND_PRIVATE_CONTROLLER_BOUNDARY_EVENT69.md",
+    "manifest": "artifacts/v80/original/V80_ORIGINAL_PUBLIC_FIT_ASSET_MANIFEST_V1.json",
+    "retrieval_readme": "artifacts/v80/original/README.md",
+    "public_archive_workflow": ".github/workflows/jepa-v80-original-public-fit-archive-once.yml",
+    "hosted_archive_workflow_run_id": 41900549918,
+    "hosted_archive_workflow_conclusion": "SUCCESS",
+    "original_actions_run_id": 38504094639,
+    "original_zip_assets_physically_on_audit_branch": true,
+    "original_zip_assets_physically_on_active_handoff_branch": true,
+    "public_branch_blob_identity_verified": true,
+    "git_blob_manifest": [
+      {
+        "role": "FIT",
+        "path": "artifacts/v80/original/V80-original-fit-transport-artifact.zip",
+        "size": 660628,
+        "sha256": "4cec8966cff7bdddb3640903f4525328d23ed3482e2b232ead1bc440993fca71",
+        "git_blob_sha1": "8b81742b66dfd7d2d40940933c7775a515e0610d",
+        "fit_json_sha256": "77f89e8336ec2a2d0184abbd81bfd7d6ff04f2dc57aa80891b6d8021869737b3"
+      },
+      {
+        "role": "RECEIPT",
+        "path": "artifacts/v80/original/V80-original-receipt-artifact.zip",
+        "size": 1274,
+        "sha256": "97e264cfe76709f5098b346e56130716640e6c8ce8562974d6ab126ac82a47fe",
+        "git_blob_sha1": "4ec0e2eed6eba099645638232f3962482ae2dc26",
+        "receipt_json_sha256": "346407af801a7fabc5dbd27136dcf5c9abe61e87d438018b98da192333eb9c32"
+      }
+    ],
+    "original_controller": {
+      "artifact_id": 11866917064,
+      "size": 6844053,
+      "zip_sha256": "184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46",
+      "public_repo_is_safe_destination": false,
+      "public_repo_blob_present": false,
+      "owner_conversation_original_zip_sha_verified": true,
+      "separate_access_controlled_private_github_or_vault_verified": false,
+      "deadline": "2026-11-13T03:01:58Z",
+      "next_action": "Owner chooses independent controller-only PRIVATE GitHub repository or vault; preserve unchanged ZIP and validate SHA after retrieval."
+    },
+    "frozen_original_benchmark_sha256": "16a08b29c7e083377f4dde6e16ac6d55a3358ed45475c74161fbaba29a4afc38",
+    "portability_status": "PR534_SHA_MISMATCH_RED__ORIGINAL_PIN_UNCHANGED",
+    "no_authority_from_archival": true,
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
