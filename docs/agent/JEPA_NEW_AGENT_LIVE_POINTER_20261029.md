@@ -1,3 +1,13 @@
+# CURRENT 2026-11-04 — EVENT 57 OWNER RULINGS
+
+Canonical audit PR #322 exact head is now `166add8544f07f869ab585b9bd3d6cf9bcd23d5a`, **57 append-only events**. Event57 resolves the three owner decisions left in Macha's 2026-11-03 handoff:
+
+- **QC metadata:** APPROVED narrowly for `SEA-AD Doublet score` and `HVS is_primary_data` as versioned QC/provenance metadata only. They are not pathology labels, expression/model features, teacher/student inputs, donor/specimen surrogates, or biological targets.
+- **Real Level-4 → CaseBundle:** **NO NEW COUNT-VALUE READ AUTHORIZED NOW.** Reuse historical PR59/69 reads/receipts. Any future real CaseBundle read requires one exact frozen decision-bearing experiment and q/alias/selection/source rights bound first.
+- **Corrected synthetic support world:** Macha #531's five-rule support-semantics amendment is accepted as the prerequisite contract for any future successor observation world, but **no corrected synthetic world generation, fit, or training is authorized now**. PR328 V2 remains frozen. Metadata-only pre-generation consistency checks are permissible if they instantiate no new world.
+
+This also preserves Event56: search Macha/Claude/GPU/experiment branches before assigning Macha anything; completed review/execution work must not be reassigned.
+
 # CURRENT 2026-11-04 — EVENT 56 MACHA BRANCH COMPLETION CORRECTION
 
 Canonical audit PR #322 exact head is now `9e6cfeeefd855461423b2a372e5bb1775fc01625`, **56 append-only events**. Event56 supersedes event55 division-of-labor wording that reassigned Macha review/recovery work already completed on Macha/Claude/GPU branches. Before assigning Macha anything, inspect those branches and latest review comments first.
