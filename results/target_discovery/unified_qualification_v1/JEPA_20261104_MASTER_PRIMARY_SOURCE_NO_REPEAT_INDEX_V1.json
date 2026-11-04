@@ -149,7 +149,7 @@
         338,
         369
       ],
-      "state": "original repaired G6 physical PASS, original G7 follow-on needs exact terminal check, corrected single TD56-57B-57C-59 physically spent; 57B/59 broad/meso+, fine 57C negative; 9/9 sealed synthetic C2 gate test-of-test, not learned student"
+      "state": "original repaired G6 physical PASS, original G7 executed once NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP; never rerun, corrected single TD56-57B-57C-59 physically spent; 57B/59 broad/meso+, fine 57C negative; 9/9 sealed synthetic C2 gate test-of-test, not learned student"
     },
     {
       "phase": "SYNTH_V79_V80",
@@ -526,5 +526,14 @@
       "context": "21_DATASETS_234_SAMPLES_UCDQ_NO_PARTIAL_TARGETED_ONLY_NO",
       "pr537_exact_same_world": "NOT_ESTABLISHED_DO_NOT_AUTORUN_GPU"
     }
+  },
+  "v9_earlier_science_completeness_crosswalk_20261104": {
+    "status": "SOURCE_REUSE_ONLY__ADDITIVE_FIRST_READ_COVERAGE_NOT_NEW_EXPERIMENT",
+    "report": "docs/agent/JEPA_20261104_V9_PREVIOUS_WORK_UNDERINDEXING_CORRECTION_V1.md",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_V9_PREVIOUS_WORK_COMPLETENESS_CROSSWALK_V1.json",
+    "underindexed_original_workstreams": 16,
+    "includes": "V1/V2/V3 graph, rare microglia, gene/PI, external cohorts, Stage72-79 TF/SCENIC+/frozen GeneJEPA, 224D A3R Freeze1, TD19-27 negatives/conditional signals, source identity, actual CRISPR/bulk, spatial/context and more",
+    "historical_source_records_retain_scope": true,
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
