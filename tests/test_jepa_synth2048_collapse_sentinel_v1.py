@@ -40,6 +40,16 @@ def test_healthy_init_is_only_unqualified_telemetry():
     assert r.qualified_biological_representation is False
 
 
+
+def test_two_cell_u0_is_not_misreported_as_real_rank_one_collapse():
+    tiny = np.vstack([np.arange(8), np.arange(8) + 0.2])
+    report = guard.geometry_diagnostic(tiny)
+    assert report.status == "NOT_ESTIMABLE_TOO_FEW_CELLS_FOR_GEOMETRY"
+    assert report.cell_state_effective_rank is None
+    assert report.top_singular_energy_fraction is None
+    assert report.qualified_biological_representation is False
+
+
 def test_identical_cell_states_stop_even_if_loss_decreases():
     collapsed = np.repeat(np.arange(8, dtype=float)[None, :], 16, axis=0)
     with pytest.raises(guard.CollapseStop, match="exactly constant"):
