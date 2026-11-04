@@ -2487,6 +2487,58 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/533",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525"
       ]
+    },
+    {
+      "event_id": "20261104-TD60-V5-Q40-NONBIOLOGICAL-CHECKPOINT-PREFLIGHT-PR540-V1",
+      "date_utc": "2026-11-04",
+      "workstream": "td60_v5_mechanics_vs_biological_exposure_checkpoint_source_only_preflight",
+      "implementation_pr": 540,
+      "implementation_head": "9cdc6c6843572df9e1525a1775f852862bcecfa2",
+      "change_type": "source_only_implementation",
+      "source_inputs": [
+        {
+          "path": "target_discovery/iterations/td60_learned_teacher_continuity/TD60_PROSPECTIVE_SCREEN.md",
+          "role": "original frozen 48-case TD60 biology design; historical u40 clause not edited"
+        },
+        {
+          "path": "docs/agent/TEACHER_STUDENT_V5_CONVERGENCE_RECOMMENDATION_20260908.md",
+          "role": "later recommendation separating Q40 mechanical qualification from full-reader biological exposure"
+        },
+        {
+          "path": "docs/agent/TEACHER_STUDENT_V5_DATA_FIRST_AUTHORITY_CANDIDATE.json",
+          "role": "existing unfrozen V5 source-candidate state; no execution authority"
+        },
+        {
+          "path": "scripts/v5_anticheat/td60_v5_checkpoint_eligibility_preflight_v1.py",
+          "role": "PR540 source-only fail-closed checkpoint readiness diagnostic"
+        },
+        {
+          "path": "tests/v5_anticheat/test_td60_v5_checkpoint_eligibility_preflight_v1.py",
+          "role": "PR540 six negative controls of eligibility and no authority"
+        }
+      ],
+      "what_already_existed": "TD60 had frozen its global/mesoscale 48-case design; V5 later separated mechanics Q40 from scientific full-reader exposure but no scientific exposure milestone, EMA half-life, source issuer or TD60 release exists. Audit event59 and event60 already identify the problem; source-only checkpoint telemetry guard already exists for different optimizer/biology-shortcut checks.",
+      "new_work_or_result": "Focused draft PR540 implements an independent read-only candidate preflight, not a TD60 evaluator or new experiment. It rejects u40-as-biology; reports unfrozen proposal, evidence, kernel, presentation horizon and EMA half-life; always refuses a self-supplied release, and keeps the 48-case test unchanged. Six negative tests and actual repository candidate exercise completed in exact-head author workflow 41875765048 SUCCESS.",
+      "negative_or_counterfactual_evidence": "Even a forged self-declared fully frozen V5 source candidate cannot make the preflight select a checkpoint or grant TD60 authority. True authority flags, invalid schema, bool/float horizons, or malformed digest are rejected. Existing candidate is HOLD. A source-only author test proves no learned biological property or independent review.",
+      "test_review_scope": "Source JSON plus Python unit tests only. No expression/Level4 read, GPU/optimizer/EMA step, checkpoint load, synthetic generation, learned teacher/student evaluation, TD60 outcome or model selection.",
+      "independent_review": "AUTHOR_CI_SUCCESS__INDEPENDENT_EXACT_HEAD_REVIEW_PENDING__NO_BIOLOGICAL_PASS",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "PR540 independent review of negative-only source preflight; it is NOT an issued exposure checkpoint",
+        "TD60 still requires prospectively frozen V5 full-reader scientific exposure milestones and teacher/student authority before any 48-case execution",
+        "Macha's #525/#538 independent reviews and #535 read-free challenge remain separate",
+        "PR537 GPU remains HOLD; Stage81B causal anchor decision is already complete",
+        "Owner correction: #534 V80 Windows/Ubuntu/package mismatch is historical environment reproducibility, not a new scientific experiment or first priority",
+        "PR533 V79/V80 207-versus-291 policy ruling remains separate"
+      ],
+      "historical_supersession": "No old TD60/V5 files mutated and no frozen results reinterpreted. The new preflight is a narrow execution-eligibility interlock for future use, not an authority substitute.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/540",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41875765048",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/537"
+      ]
     }
   ]
 }
