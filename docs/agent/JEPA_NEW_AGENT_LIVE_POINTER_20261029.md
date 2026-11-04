@@ -1,3 +1,17 @@
+# READ FIRST (2026-11-04, OWNER EVENT67) — EXACTLY TWO REVIEWERS, SOL + MACHA, NO THIRD
+
+**Owner correction:** Sol/GPT and Macha are the **only two code reviewers**. No outside third reviewer is required or available. **Macha reviews Sol-authored code/tests; Sol reviews Macha-authored code/tests. Neither independently accepts its own patch.** The owner remains the deciding/authorization lane but **is NOT a third code reviewer**. A joint/cumulative verdict must disclose authorship, reciprocal per-patch reviews, applicable REDs and scope/limits; pair review is not itself external scientific/authenticated authority.
+
+**Action assignment now:** Macha independently reviews Sol [#545](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/545) K02/K03 code head `f68513ae` and Sol [#546](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/546) Task3 frozen-code **test-only RED** head `97594b41`. Sol independently reviews Macha's [#544](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/544) K02/K03 tests, and any next Macha-authored source change. Sol already reviewed Macha's #428/#459/#465 patches on #541. Do **not** assign an unnamed "independent Task3 reviewer": for Sol-authored #546 that reviewer is **Macha**. If Task3 must be repaired, preserve accepted freeze, create a separately owned reviewed successor; owner decides scope/authorization, not source acceptance.
+
+**Canonical audit #322:** exact head `8ec4a5545b29def5edfdb48b18501c41b355d744`, **67 append-only events**, source `docs/agent/JEPA_20261104_TWO_REVIEWER_ONLY_CORRECTION_EVENT67.md`, machine index key `exactly_two_reciprocal_reviewers_owner_correction_event67_20261104`. Follow the event66 instructions below for live defect/test/CI status and retained event65 archive, event64 K01, event63 downstream and event62 Macha chronology. New audit head CI must be rechecked; do not inherit prior pass totals.
+
+**Task4 cumulative #541 stays HOLD_NEEDS_EVIDENCE; Task3 #546 is test-only RED.** No external authority, Task5 promotion, training, synthetic world rerun, Level4 read or Stage4 authorization.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST (2026-11-04, SOL EVENT66) — K01 ACCEPTED ONLY, K02/K03 HOSTED GREEN, FROZEN TASK3 NEW RED
 
 **Canonical audit #322**: exact `0feee156c7f7e311de2424ac8ea454dd6fb1f74c`, **66 events**, current source `docs/agent/JEPA_20261104_TASK4_K02_K03_AND_FROZEN_TASK3_HISTORY_RED_EVENT66.md`, machine index key `task4_k02_k03_frozen_task3_history_red_event66_20261104`. Read this before assigning work; earlier event65 V80 original archive rescue, event64 Task4 K01, event63 original downstream implementation, event62 Macha plan are preserved below.
