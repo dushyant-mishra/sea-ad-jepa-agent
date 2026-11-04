@@ -52,6 +52,7 @@ def produce_d1_base_only_student_v2c_fixture(*, base_observations, expected_poli
         _reject("D1 producer requires an exact independently supplied policy")
     rights, base, states = pol["address_rights"],pol["base_evidence_rights"],pol["operator_states"]
     roster,q=pol["cell_roster"],pol["query_address_id"]
+    C._enforce_conservative_query_rights(q)
     if (not _token(q) or type(rights) is not dict or not rights or
             type(base) is not list or not base or
             any(not _token(x) for x in base) or len(set(base))!=len(base) or
