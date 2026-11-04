@@ -794,21 +794,35 @@
     "exact_head_author_ci": {
       "run": 41875765048,
       "conclusion": "SUCCESS",
-      "test_scope": "SIX_NEGATIVE_TESTS_SOURCE_ONLY"
+      "scope": "source-only negative unit tests; not independent review or biological data"
     },
-    "scientific_status": "TD60_48_CASE_FROZEN_DESIGN__V5_MECHANICS_Q40_NOT_BIOLOGY__FULL_EXPOSURE_UNFROZEN__EXECUTION_HOLD",
+    "scientific_status": "TD60_HISTORICAL_SEPTEMBER_PROSPECTIVE_ONLY__KNOWN_U40_V5_CONFLICT__PR540_CLOSED_NOT_PLANNED",
     "do_not_repeat": [
       "do not treat Q40 mechanical PASS as learned biological checkpoint",
       "do not reopen historical TD60 panels/triplets/nulls or lower the 48-case test",
       "do not mistake PR540 author-only fail-closed source preflight for independent reviewer, issuer or biological evidence",
-      "do not revive PR534 V80 cross-platform SHA issue as novel biology; owner states Windows/Ubuntu package mismatch already explained"
+      "do not revive PR534 V80 cross-platform SHA issue as novel biology; owner states Windows/Ubuntu package mismatch already explained",
+      "Do not reopen PR540; it was source-only and closed not planned",
+      "Do not rebuild unified Tasks0–8 or rerun #469 synthetic end-to-end",
+      "Do not re-prioritize cross-platform #534 known issue"
     ],
     "still_requires": [
-      "separately prospective V5 scientific-exposure checkpoint authority and independently attested freeze",
-      "source/teacher access authorization; no training or TD60 run now",
-      "Macha fresh-head independent reviews of #525 and #538 unless already completed",
-      "explicit owner approval before any #537 GPU work"
+      "Macha #525/#538 source review and #535 no-read challenge where needed",
+      "real source issuer/alias, private physical library totals and CaseBundle source binding; no Level4 read authorized",
+      "specific owner authorization before synthetic GPU/training; #537 remains HOLD",
+      "not TD60 u40 or another duplicate integration"
     ],
-    "invariant": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+    "invariant": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+    "implementation_pr_status": "CLOSED_NOT_PLANNED_UNMERGED_AFTER_OWNER_CORRECTION",
+    "current_architecture": "OCTOBER14_UNIFIED_SYNTHETIC_AND_REAL_TASKS0_TO8__PR469_SYNTHETIC_END_TO_END_EXISTS",
+    "next_action": "focus on existing unified pipeline: real source-to-CaseBundle gap and only separately authorized trained-student synthetic known-answer result"
+  },
+  "active_unified_pipeline_frontier_owner_correction_20261104": {
+    "chronology_event": 61,
+    "correction": "PR540 closed unmerged; historical TD60 not current execution priority",
+    "current_architecture": "Unified Tasks0-8 from October 14; Tasks0-3 scoped accepted, Task4 partial, Task5 fixture CaseBundle, Tasks6-8 fixture consumers, PR469 ran synthetic end-to-end",
+    "open_science": "real source-to-CaseBundle issuer and lawful physical total; trained student on original synthetic known truth is absent",
+    "current_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+    "no_new_executions": "No training, new synthetic worlds, PR537 GPU, or Level4 read without separate authorization"
   }
 }
