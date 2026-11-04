@@ -12,13 +12,8 @@
     "last": 538,
     "threads": 13,
     "multi_thread_related_pr_count": 6,
-    "not_thread_assigned": [
-      {
-        "n": 442,
-        "title": "Macha independent hostile RED: frozen JEPA quality diagnostic at 034cb8ab (tests only)"
-      }
-    ],
-    "note": "PR description metadata indexed; thread findings derive from fetched original reports/PR review/errata. No claim 108 complete diffs independently source-audited."
+    "not_thread_assigned": [],
+    "note": "PR description metadata indexed; thread findings derive from fetched original reports/PR review/errata. No claim 108 complete diffs independently source-audited. PR442 frozen-JEPA-quality hostile review is subsumed under original synthetic Task3 diagnostics by topic only; its actual findings remain at original PR442."
   },
   "threads": [
     {
@@ -32,6 +27,7 @@
         437,
         438,
         439,
+        442,
         480,
         486,
         487,
@@ -526,7 +522,7 @@
       "merged": false,
       "status": "open",
       "threads": [
-        "T14_OTHER_SINGLE_PR_REVIEW"
+        "T01"
       ],
       "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
       "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/442"
