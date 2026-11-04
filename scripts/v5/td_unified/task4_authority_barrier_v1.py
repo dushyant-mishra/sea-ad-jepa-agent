@@ -69,17 +69,18 @@ def evaluate_task4_preauthority_barrier(
 ) -> Task4BarrierStatus:
     """Evaluate current preauthority conditions without calling registry promotion.
 
-    A plain mapping is permitted to carry the already-verifiable Task 3
-    history-custody object, but mapping fields are never accepted as evidence
-    for actor credentials, policy currency, construction law, or process
-    isolation. Those authority-bearing C5-C9 facts require a separately
-    authenticated external context object; until one is supplied they fail
-    closed.
+    The history-custody object in a caller-provided mapping is only a
+    diagnostic: even an exact Task 3 class can carry fabricated internal
+    history state. No mapping-carried snapshot can earn C3 PASS without
+    separately authenticated provenance. A caller-provided custody store
+    likewise cannot assert external C1 authority. C5-C9 remain hard FAIL.
+    This V1 barrier cannot authorize FINAL or promote a registry unit.
     """
     from .task4_registry_adapter_v1 import validate_registry_snapshot_for_task4
+    from .task4_custody_store_v1 import CustodyReplayResult, PersistentCustodyStore
 
     checks: dict[str, str] = {}
-    history_custody = actor_context.get("history_custody") if isinstance(actor_context, Mapping) else None
+    history_custody = dict.get(actor_context, "history_custody") if type(actor_context) is dict else None
     try:
         validate_registry_snapshot_for_task4(
             registry,
@@ -87,13 +88,22 @@ def evaluate_task4_preauthority_barrier(
             authority_object_resolver=authority_object_resolver,
             dependency_verifier=dependency_verifier,
         )
-        checks["C3_CURRENT_REGISTRY"] = "PASS"
+        # A genuine snapshot and a forged exact-type object are indistinguishable
+        # without a separately anchored provenance verifier. This is NOT C3 PASS.
+        checks["C3_CURRENT_REGISTRY"] = "UNAUTHENTICATED_SNAPSHOT"
     except Exception:
         checks["C3_CURRENT_REGISTRY"] = "FAIL"
 
     try:
-        replay = custody_store.replay()
-        checks["C1_PERSISTENT_REVOCATION"] = "PERSISTENT_EXTERNAL" if replay.authoritative and replay.head == expected_head else "FAIL"
+        # No duck-typed store or overridden instance replay may assert C1.
+        if type(custody_store) is not PersistentCustodyStore:
+            raise Task4BarrierError("exact Task4 persistent custody store required")
+        replay = PersistentCustodyStore.replay(custody_store)
+        if type(replay) is not CustodyReplayResult:
+            raise Task4BarrierError("exact custody replay result required")
+        checks["C1_PERSISTENT_REVOCATION"] = (
+            "PERSISTENT_EXTERNAL" if replay.authoritative and replay.head == expected_head else "FAIL"
+        )
     except Exception:
         checks["C1_PERSISTENT_REVOCATION"] = "FAIL"
 
