@@ -1,3 +1,17 @@
+# READ FIRST — owner correction / audit event61 (2026-11-04)
+
+**Controlling #322 exact head:** `a65392730cc9c97b68ad41841d1b77d021c9278a` — 61 events, **24/24 exact-head CI SUCCESS**.
+
+**Current architecture and priority:** Unified synthetic-plus-real **Tasks 0–8** (integrated October 14), not historical TD60. Tasks 0–3 accepted after independent reviews; Task 4 partial; Task 5 fixture CaseBundle; Tasks 6–8 fixture consumers; **#469 already exercised synthetic end-to-end**. The remaining real-source input edge requires authenticated issuer/aliases and lawful private physical library totals. No actual trained-student success on the existing original synthetic known answers has been established.
+
+**Historical TD60:** September 8 prospective-only 48-case teacher test, never run; V5 already documented the u40/exposure issue then. PR **#540 closed without merging**, as redundant safeguard/incorrect priority. Do not reopen it. #534 cross-platform SHA mismatch is a previously known Windows/Ubuntu package issue, not a biological frontier.
+
+**Owner limits:** No Level-4 read, new synthetic world, training, or #537 GPU execution without explicit separate approval. Macha #525/#538 reviews and #535 no-read challenge remain separately pending. Preserve every historical result, negative, and prior review.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # JEPA complete new-agent takeover after audit event59 — 2026-11-04
 
 **Active operational handoff:** PR #460  
