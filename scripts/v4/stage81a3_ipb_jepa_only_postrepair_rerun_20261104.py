@@ -32,6 +32,7 @@ import torch.nn.functional as F
 from scipy.stats import spearmanr
 from scripts.v4.f1b_c3_training_successor_v2 import (
     enforce_unscaled_gradients, enforce_adam_moments,
+    protected_parameter_names, _optimizer_step_value,
 )
 from sklearn.metrics import average_precision_score, roc_auc_score
 
@@ -387,6 +388,12 @@ def train_run(
     optimizer = torch.optim.AdamW(parameters, lr=1e-4, weight_decay=0.01)
     scaler = torch.amp.GradScaler("cuda")
     controller = EMAOptimizerStepController(online, target)
+    backbone_names, predictor_names = protected_parameter_names(online, predictor)
+    online_map = dict(online.named_parameters())
+    predictor_map = dict(predictor.named_parameters())
+    protected = [online_map[n] for n in backbone_names] + [
+        predictor_map[n] for n in predictor_names
+    ]
     selection_generator = torch.Generator().manual_seed(seed + 901_000)
     mean, std, gene_variance, detection_frequency = training_statistics(expression)
     mean = mean.to(device); std = std.to(device)
@@ -466,9 +473,13 @@ def train_run(
         telemetry["online_gradient_norm"].append(gradient_norm(online.parameters()))
         telemetry["predictor_gradient_norm"].append(gradient_norm(predictor.parameters()))
         before_scale = scaler.get_scale()
+        step_before = [_optimizer_step_value(optimizer, p) for p in protected]
         scaler.step(optimizer); scaler.update()
         if scaler.get_scale() < before_scale:
             raise RuntimeError("skipped optimizer step in exact synthetic run")
+        if any(_optimizer_step_value(optimizer, p) != prior + 1
+               for p, prior in zip(protected, step_before)):
+            raise RuntimeError("protected optimizer step did not advance exactly once")
         enforce_adam_moments(optimizer, online, predictor)
         controller.after_successful_optimizer_step(momentum=EMA)
         telemetry["gene_loss"].append(update_gene)
