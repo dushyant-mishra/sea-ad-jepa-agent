@@ -2309,6 +2309,58 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/451"
       ]
+    },
+    {
+      "event_id": "20261104-OWNER-RULINGS-QC-ALLOWLIST-NO-NEW-LEVEL4-READ-SYNTHETIC-SEMANTICS-HOLD-V1",
+      "date_utc": "2026-11-04",
+      "workstream": "owner_decision_qc_metadata_casebundle_read_and_corrected_synthetic_support_semantics",
+      "implementation_pr": 322,
+      "implementation_head": null,
+      "change_type": "owner_decision",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_MACHA_528_PUBLIC_SOURCE_PROVENANCE_ERRATUM_20261103.md",
+          "role": "public-source and QC-only scope correction"
+        },
+        {
+          "path": "docs/agent/JEPA_MACHA_SUPPORT_SEMANTICS_AMENDMENT_PROPOSAL_20261103.md",
+          "role": "five-rule successor observation-semantics proposal"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_RESOLVED_HISTORICAL_G7_S174_LEVEL4_AND_REMAINING_GAPS_V1.md",
+          "role": "historical Level4 reads recovered; no-repeat boundary"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_LEARNED_STUDENT_BIOLOGICAL_GAP_READONLY_DECISION_V1.md",
+          "role": "current science frontier and conditional source-issuer rule"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_END_TO_END_SCIENTIFIC_NARRATIVE_AND_DECISION_LINEAGE_V1.md",
+          "role": "controlling biological narrative"
+        }
+      ],
+      "what_already_existed": "Macha #528/#531 established that SEA-AD Doublet score and HVS is_primary_data are public QC metadata but were under an internal hold; #531 separated structural support, measured zero, detection probability, collision state and rights withholding. Historical PR59/69 had already physically consumed 387 Level-4 count blocks and corrected source labels; later Nov4 source reconciliation explicitly retired a new exploratory Level4 read. Current science decision isolates the untested learned-student biological claim and makes real source issuance conditional on a selected experiment.",
+      "new_work_or_result": "OWNER RULINGS: (1) APPROVE a narrow versioned QC-only allowlist for SEA-AD Doublet score and HVS is_primary_data as metadata-only inputs for source/QC eligibility and provenance checks; they must not become pathology labels, expression features, target variables, donor surrogates, or student/teacher inputs. (2) DO NOT AUTHORIZE any new Level-4 count-value read into a real CaseBundle at this stage. Existing historical reads and receipts are reused; a new real CaseBundle read requires a separately frozen experiment that demonstrably needs it, with q/alias/selection rights bound first. (3) ACCEPT Macha #531 five-rule support-semantics amendment as the required contract for any future successor synthetic observation world, but DO NOT AUTHORIZE generation of a corrected synthetic world, new synthetic fit, or training now. PR328 V2 remains frozen; pre-generation metadata-only consistency checks may be used when they do not instantiate a new world.",
+      "negative_or_counterfactual_evidence": "QC metadata approval is not permission to read expression or pathology. Public accessibility is not biological qualification. A new Level4 CaseBundle now would repeat source work before a decision-bearing biological experiment is fixed. Regenerating PR328 merely to correct support semantics could create a new synthetic lane without a demonstrated decision need and risks post-hoc target/world tuning.",
+      "test_review_scope": "Read-only owner adjudication over existing PR528/531 and Nov4 canonical audit evidence. No new raw counts, expression, GPU run, synthetic generation, target scoring or model training.",
+      "independent_review": "OWNER_DECISION_RECORDED_BY_GPT__MACHA_COMPLETED_BRANCH_EVIDENCE_PRESERVED__NO_NEW_MACHA_EXECUTION_ASSIGNED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Implement or reuse only metadata-level QC allowlist enforcement when a concrete consumer requires it; no expression read is implied.",
+        "Do not build or run a real Level4-to-CaseBundle adapter until one exact frozen real experiment requires it and source/q/alias/selection rights are bound.",
+        "Do not instantiate a corrected PR328 successor world by default; #531 semantics are a future prerequisite, not a current execution order.",
+        "Continue from the exact unanswered learned-student biological discriminator and existing completed Macha/Claude branches; no duplicate review or GPU work."
+      ],
+      "historical_supersession": "Supersedes the 2026-11-03 handoff's request for owner authorization of an immediate Level4 CaseBundle read and immediate corrected synthetic-world realization. Retains its narrow QC-only column proposal and #531 semantics as scoped design inputs.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/528",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/535",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/539",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
+      ]
     }
   ]
 }
