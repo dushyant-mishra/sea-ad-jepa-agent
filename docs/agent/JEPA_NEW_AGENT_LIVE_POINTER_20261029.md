@@ -1,3 +1,28 @@
+# CURRENT 2026-11-04 — COMPLETE COLD-START TAKEOVER AFTER AUDIT EVENT59
+
+**Canonical audit PR #322 exact source head:** `9996d03aa68e9f69fa7dfd3f9bfaf3853f821b28`, 59 append-only chronology events at the handoff freeze.
+
+**Start here:** `docs/agent/JEPA_20261104_COMPLETE_NEW_AGENT_TAKEOVER_AFTER_EVENT59.md` and machine pointer `results/target_discovery/unified_qualification_v1/JEPA_20261104_COMPLETE_NEW_AGENT_TAKEOVER_AFTER_EVENT59_V1.json`.
+
+Then read on #322:
+- `docs/agent/JEPA_20261104_GPT_LANE_COMPLETE_COLD_START_TAKEOVER_AND_NO_REPEAT_V1.md`
+- `docs/agent/JEPA_MACHA_LANE_STATE_FOR_SOL_20261104.md`
+- `results/target_discovery/unified_qualification_v1/JEPA_20261104_GPT_LANE_COMPLETE_COLD_START_TAKEOVER_V1.json`
+- `results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json`
+- `results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json`
+
+**No-repeat rule:** do not start another broad historical audit, synthetic/real integration project, teacher/student/EMA rebuild, CaseBundle/Tasks0–8 rebuild, Level-4 reread, or Macha review reassignment before reading these sources and checking latest Macha/Claude/GPU branches.
+
+**Owner event57 rulings:** QC-only allowlist approved narrowly; no new Level-4 count→CaseBundle read now; #531 five-rule support semantics accepted for future successor worlds; no corrected world generation now.
+
+**Macha event58:** read the complete Macha lane account and seven retractions. Macha's event58 queue is #525 fresh-head review, #535 no-read challenge, #537 GPU HOLD requiring explicit owner authorization, and #536 review only if requested. Always check later branches/comments before treating these as still open.
+
+**Current science frontier:** a qualified learned EMA teacher preserving broad/mesoscale correct-cell biological ordering, followed only then by lawful partial-RNA student recovery above matched depth/operator/source/donor/wrong-cell controls. C3/R5 is separate. TD60 already exists; reconcile its old u40 checkpoint with V5 exposure-based semantics before any execution.
+
+**Standing:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # CURRENT 2026-11-04 — EVENT 57 OWNER RULINGS
 
 Canonical audit PR #322 exact head is now `a6e4fa559c0b95f541f02d099176b85d803a3111`, **57 append-only events**. Event57 resolves the three owner decisions left in Macha's 2026-11-03 handoff:
