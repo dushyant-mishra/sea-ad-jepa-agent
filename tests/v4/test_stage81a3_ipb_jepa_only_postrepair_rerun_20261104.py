@@ -112,6 +112,8 @@ class FrozenRerunContractTests(unittest.TestCase):
         self.assertNotIn("decoder(", s)
         self.assertIn("enforce_unscaled_gradients(online, predictor)", s)
         self.assertIn("enforce_adam_moments(optimizer, online, predictor)", s)
+        self.assertIn("protected optimizer step did not advance exactly once", s)
+        self.assertIn("_optimizer_step_value(optimizer, p)", s)
         self.assertIn("scaler.scale(loss / ACCUMULATION).backward()", s)
         self.assertIn("controller.after_successful_optimizer_step(momentum=EMA)", s)
         self.assertNotIn("evaluate_final_molecular_information(", s)
