@@ -73,10 +73,10 @@ def validate_registry_snapshot_for_task4(
     authority_object_resolver=None,
     dependency_verifier=None,
 ) -> None:
-    if not isinstance(history_custody, registry.RegistryHistoryCustody):
-        raise Task4RegistryAdapterError("Task 4 registry snapshot requires current Task 3 history custody")
+    if type(history_custody) is not registry.RegistryHistoryCustody:
+        raise Task4RegistryAdapterError("Task 4 registry snapshot requires exact Task 3 history custody")
     try:
-        history_custody.validate_current(registry_snapshot)
+        registry.RegistryHistoryCustody.validate_current(history_custody, registry_snapshot)
     except Exception as exc:
         raise Task4RegistryAdapterError(f"Task 3 history custody validation failed: {exc}") from exc
 
