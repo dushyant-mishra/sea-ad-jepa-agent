@@ -698,19 +698,23 @@ def test_limit_a_receipt_can_be_minted_without_running_v2c():
     assert set(minted) == set(template) and minted["status"] == STATUS
 
 
-def test_limit_alias_classes_cannot_be_expressed_or_enforced():
-    """The policy has no alias-class field (adding one is refused), so the #513
-    proposed table cannot be represented: MIR4307HG (ENSG00000257612,
-    BLOCK_QUERY_OR_OPERATOR) is accepted as the query, and UBE2R2-AS1
-    (ENSG00000235481) is accepted as the query while its legacy holder
-    ENSG00000233776 sits in the base right. Synthetic counts only."""
+def test_known_unresolved_query_address_aliases_are_conservatively_refused():
+    """The historical #514/#516 source still records the pre-2026-11-04
+    positive alias-leak witness. This main-branch regression requires refusal
+    after the adopted #513 rights restriction, without inventing an issuer."""
     w = _world()
     policy = _policy(w)
     policy["alias_classes"] = [["Q", "A"]]
     assert _outcome(_view(w), policy)[0] == "refused"
-    for query, holder in (("ENSG00000257612", "A"), ("ENSG00000235481", "ENSG00000233776")):
+    for query, holder in (
+        ("ENSG00000257612", "A"),        # MIR4307HG
+        ("ENSG00000257842", "A"),        # LINC02588
+        ("ENSG00000258081", "A"),        # ambiguous legacy chr14
+        ("ENSG00000235481", "ENSG00000233776"),  # UBE2R2-AS1/legacy
+        ("ENSG00000233776", "ENSG00000235481"),  # reciprocal alias query
+    ):
         w = _rename(_rename(_world(), "Q", query), "A", holder)
-        assert _receipt(_view(w), _policy(w))["status"] == STATUS
+        assert _outcome(_view(w), _policy(w))[0] == "refused"
 
 
 def test_limit_unicode_lookalike_identities_are_distinct_but_unauthenticated():
