@@ -1,3 +1,37 @@
+# CURRENT ADDENDUM — MACHA EVENT58 AND PR460 RECOVERY
+
+Before using the rest of this handoff, also read:
+`docs/agent/JEPA_MACHA_LANE_STATE_FOR_SOL_20261104.md`.
+
+That file is Macha's complete self-account for 2026-11-02 through 2026-11-04 and controls over older summaries of Macha's own work. It records exact heads, CI, verdicts, seven retracted/overstated claims, and his actual remaining queue.
+
+### Seven Macha claims that must not be propagated
+
+1. NPH52 accession/terms were not unknown: Zenodo 8319719 rev2, CC-BY-4.0.
+2. Hardware/offline signing key is optional governance hardening, not a prerequisite.
+3. PR #336 already independently audited the Phase-2 9/9 receipt.
+4. Synthetic-vs-real source geometry was not simply reversed; the real defect is support semantics and NPH52 gaps.
+5. The owner alias-right decision was already made; enforcement code is the missing piece.
+6. Level-4 count reads were already done in PR59/69; do not claim none existed.
+7. Macha disclosed one 11-03 replay of the #513 QC probe before adjudication; output was byte-identical and the subsequent hold is enforced in code.
+
+### Macha's actual open queue
+
+- Independent fresh-head review of PR #525 at `b493efc35af20bcf2adee29c47376e1dbf4b6dcd`.
+- No-read challenge of PR #535 field classifications.
+- PR #537 GPU run is **not authorized**. Macha will only execute it with explicit owner authorization. The current owner/audit decision remains HOLD/nonduplication-first.
+- PR #536 review only if specifically requested.
+
+Do not turn this queue into automatic assignments. Check whether a later comment/branch has already completed an item before assigning it.
+
+### PR #460 branch incident
+
+Macha accidentally deleted the #460 branch while attempting to post a pointer, immediately restored it to exact prior commit `d5732fe690dc3a6ef89ebaaaf25c98d23fa65493`, but GitHub auto-closed the PR. GPT/Sol reopened PR #460 without changing its restored content. This incident caused no content loss.
+
+Macha also repaired the #322 chronology source-availability failure by adding the two event57-cited Macha documents byte-identically to #322. Treat the event58 branch/account as the correction source for that custody issue.
+
+---
+
 # JEPA GPT lane complete cold-start takeover and no-repeat handoff — 2026-11-04
 
 **Purpose:** allow a future GPT/agent to continue the JEPA target-discovery/downstream lane without recrawling the project, repeating already executed science, re-running source ETL, or rediscovering Macha/Claude review work.
