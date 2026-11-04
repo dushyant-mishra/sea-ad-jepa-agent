@@ -2823,6 +2823,67 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/545",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/546"
       ]
+    },
+    {
+      "event_id": "20261104-SOL-ORIGINAL-V80-FIT-RECEIPT-ARCHIVES-IN-BOTH-GITHUB-BRANCHES-CONTROLLER-PRIVATE-V1",
+      "date_utc": "2026-11-04",
+      "workstream": "v80_frozen_original_github_binary_custody_and_private_controller_segregation",
+      "implementation_pr": 322,
+      "implementation_head": "b49af44",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261104_ORIGINAL_V80_GITHUB_ASSET_ARCHIVE_AND_PRIVATE_CONTROLLER_BOUNDARY_EVENT69.md",
+          "blob_sha1": "61c637428948eae04b52c58ebc600d4ea506de02",
+          "role": "Event69 source explanation"
+        },
+        {
+          "path": "artifacts/v80/original/V80_ORIGINAL_PUBLIC_FIT_ASSET_MANIFEST_V1.json",
+          "blob_sha1": "2aa02de3c914718860c1f4af985c79fb8cf3a5ff",
+          "role": "Public FIT/receipt immutable source manifest"
+        },
+        {
+          "path": "artifacts/v80/original/README.md",
+          "blob_sha1": "4c20dc37322d09f229e2b62926eef42b632fc707",
+          "role": "GitHub ZIP retrieval and SHA verification guide"
+        },
+        {
+          "path": ".github/workflows/jepa-v80-original-public-fit-archive-once.yml",
+          "blob_sha1": "005021a5bd382bfc2b5aecea4072ce3c4f5059a3",
+          "role": "Original Actions identity and SHA-gated public archival workflow"
+        },
+        {
+          "path": "artifacts/v80/original/V80-original-fit-transport-artifact.zip",
+          "blob_sha1": "8b81742b66dfd7d2d40940933c7775a515e0610d",
+          "role": "Git-committed exact original FIT ZIP, 660628 bytes SHA256 4cec8966..."
+        },
+        {
+          "path": "artifacts/v80/original/V80-original-receipt-artifact.zip",
+          "blob_sha1": "4ec0e2eed6eba099645638232f3962482ae2dc26",
+          "role": "Git-committed exact original receipt ZIP, 1274 bytes SHA256 97e264cf..."
+        }
+      ],
+      "change_type": "source_custody",
+      "what_already_existed": "Event65 original GitHub Actions ZIPs had been downloaded into owner conversation files and SHA verified, but originals would expire Nov13 and could not be relied on as durable GitHub custody. Original #348 benchmark SHA frozen; #534 numeric replay RED. Public repo and controller hidden truth require strict separation.",
+      "new_work_or_result": "Created one-time source-SHA-verifying GitHub Actions workflow on audit #322; hosted run 41900549918 SUCCESS retrieved exact source artifact IDs 11867590706 FIT and 11867366245 receipt, verified raw ZIP SHA, ZIP sizes, sole member and interior JSON SHA, and committed raw FIT and receipt ZIP as binary Git objects 8b81742b... and 4ec0e2ee... on audit branch. Mirrored exact same Git blobs into active #460 handoff through Git tree commit ea22e82cc854929bfea3791a955ad990305bbf02, preserving immutable byte identity; added JSON manifest and README to both. No archive regeneration. Controller artifact ID 11866917064 deliberately never downloaded in archival CI or included in public Git: its original opaque ZIP SHA remains known, private external escrow not verified.",
+      "negative_or_counterfactual_evidence": "Public GitHub repo is not acceptable for sealed controller truth. Do not upload original controller ZIP as plaintext or as a public Actions artifact/PR issue attachment. Conversation copy of controller does not confer independently access-controlled durable controller custody; owner must select a separate private repo/vault and record exact re-download SHA. This is original benchmark preservation only, not estimator training, biological model or source trust promotion. #534 cross-host SHA RED remains.",
+      "test_review_scope": "Hosted one-time GitHub Actions archival workflow run 41900549918 SUCCESS; source FIT ZIP original SHA 4cec8966... and receipt 97e264cf... and inner JSON hashes verified. Git REST exact tree checked binary blobs size 660628/1274 and blob IDs. #460 direct Git tree mirrored same exact Git blobs. No scientific experiment or human source read.",
+      "independent_review": "SOL_SOURCE_ASSET_CUSTODY_SHA_VERIFIED_ONLY__NO_SCIENTIFIC_OR_TRAINING_PROMOTION",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Owner: separate access-controlled PRIVATE controller-only GitHub repository or vault for unchanged original controller ZIP; re-download and verify SHA184d58c6..., before Nov13 Actions expiry",
+        "Keep V80 original FIT+receipt Git blobs reachable through #322 and #460 even if original Actions expire",
+        "No fit/student/CI access to controller truth; existing #534 portability mismatch RED remains",
+        "Macha review Sol #545/#546; Sol review Macha #544; Task4 cumulative HOLD",
+        "No new world, source read, model training, target or Stage4 permission"
+      ],
+      "historical_supersession": "Updates event65 original V80 rescue: FIT and RECEIPT now also physically committed as SHA-verified Git binary blobs to both current branches. Controller external private escrow remains unresolved. Event68 source navigator remains valid; subsequent #460 READ FIRST must point to this new custody state.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41900549918",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/38504094639"
+      ]
     }
   ]
 }
