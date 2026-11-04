@@ -721,5 +721,34 @@
     "planning_rule": "SEARCH_MACHA_CLAUDE_GPU_EXPERIMENT_BRANCHES_BEFORE_ANY_NEW_MACHA_ASSIGNMENT",
     "supersedes": "EVENT55_DIVISION_OF_LABOR_DUPLICATE_MACHA_RECOVERY_REVIEW_TASKS",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "owner_rulings_20261104_event57": {
+    "status": "QC_METADATA_ALLOWLIST_APPROVED__NEW_LEVEL4_CASEBUNDLE_READ_NOT_AUTHORIZED__PR531_SUPPORT_SEMANTICS_ACCEPTED_FOR_FUTURE_ONLY",
+    "chronology_event": 57,
+    "qc_only_allowlist": {
+      "SEA_AD": "Doublet score",
+      "HVS": "is_primary_data",
+      "scope": "METADATA_QC_ELIGIBILITY_AND_PROVENANCE_ONLY",
+      "forbidden": [
+        "pathology/diagnosis target",
+        "expression feature",
+        "teacher/student input",
+        "donor/specimen surrogate",
+        "source outcome label"
+      ]
+    },
+    "real_casebundle_level4": {
+      "status": "NO_NEW_READ_NOW",
+      "reason": "historical PR59/69 reads already recovered; real issuer only after an exact frozen experiment requires it",
+      "prerequisite": "bind q/alias/selection/source rights before any future read"
+    },
+    "corrected_synthetic_world": {
+      "support_semantics": "#531 five-rule amendment accepted as future prerequisite",
+      "world_generation": "NOT_AUTHORIZED_NOW",
+      "pr328_v2": "FROZEN_UNCHANGED",
+      "allowed_now": "metadata-only pre-generation consistency checks that do not instantiate a new world"
+    },
+    "planning_rule": "NO_DUPLICATE_MACHA_WORK__NO_NEW_SOURCE_OR_SYNTHETIC_EXECUTION_WITHOUT_DECISION_BEARING_DELTA",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
