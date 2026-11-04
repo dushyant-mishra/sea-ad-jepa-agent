@@ -1,6 +1,17 @@
 # JEPA 2026-11-04 — Master historical audit, primary evidence custody and no-repeat takeover V1
 
 
+## Controlling two-month scientific synthesis — audit event 53
+
+**Nov 4 retrospective reconciliation of original September 4–November 4 science and engineering**, separate from original experiment execution dates. Read [two-month evidence and implementation decision V1](JEPA_20261104_SEP_NOV_TWO_MONTH_SCIENCE_ENGINEERING_AUDIT_AND_DECISION_V1.md) and machine companion `results/target_discovery/unified_qualification_v1/JEPA_20261104_SEP_NOV_TWO_MONTH_DECISION_MAP_V1.json`. The append-only chronology now has **53 events** (52 prior records intact). This is a source-scoped audit of original TD19, TD57B/59, TD60/V5, #314/#336/#338, original R5/Stage81B, V79/V80, FULL104, source/issuer and student/handoff histories—not a new two-month experimental result, new 535-PR code audit, or model training.
+
+**New decision-bearing conflict register:** (1) TD60's original u40 learned-biology clock conflicts with V5 full-reader exposure guidance and needs explicit prospective reconciliation; (2) TD60's 160D cell_state tests one candidate, not an already selected representation family; (3) historical frozen 48/48 three-source TD60 design cannot silently be weakened around NPH52's restricted *new query issuance*; (4) TD57B already matched depth/detection in wrong-cell nulls but learned teacher/student must still beat explicit technical/depth-only controls; (5) #338 retains **13/28 blocked real scientific gate rules**; (6) original R5 q-aware scores are secondary audited receipt until the decisive primary locator is recovered; (7) all Nov chronology dates are *audit-entry dates*, not original Sept/Oct execution dates. **Priority is one candidate-specific, outcome-blind target/teacher/student falsifier and independent reviewer challenge; not another ETL, fixture, benchmark or unconditional GPU run.** Conditional source issuer only when needed for that candidate. PR537 GPU HOLD, no target/representation winner, real training OFF.
+
+**Implementation continuity:** real code in owner PR → append original-scoped results and negative controls to this audit #322 → inspect exact-head checks → update first-read + machine pointer on #460 to exact #322 head → verify #460 checks. Do not open a third scientific audit/handoff PR. All previous results/negative verdicts and source-custody original hashes remain authoritative in their bounded scope.
+
+---
+
+
 ## Current second-pass science and two-branch custody — event 52
 
 **Controlling update (2026-11-04; scientific interpretation, not a new model run).** The new read-only [learned-student gap memo](JEPA_20261104_LEARNED_STUDENT_BIOLOGICAL_GAP_READONLY_DECISION_V1.md) has been assimilated directly into **this audit PR #322**. A separate documentation-only draft (#539) was created unnecessarily; its useful source-backed content belongs here, and its operational state is superseded. Chronology **event 52** records this correction without changing previous 51 events or the frozen 535/108-PR time-scoped inventories.
