@@ -100,8 +100,17 @@ class FrozenRerunContractTests(unittest.TestCase):
         main = function_text(DERIVED, "main")
         self.assertNotIn("run_real_forward_smoke(", main)
         self.assertNotIn("append_documentation(", main)
-        self.assertIn("if args.overwrite or OUTPUT_JSON.exists()", main)
+        self.assertIn("if OUTPUT_JSON.exists():", main)
+        self.assertIn("if not args.resume:", main)
+        self.assertIn("resume rejected duplicate, invalid or off-schedule arm", main)
+        self.assertIn("code_identity()", main)
         self.assertIn("torch.cuda.is_available()", main)
+        self.assertIn("del kept", main)
+        self.assertIn("atomic_json(OUTPUT_JSON, payload)", main)
+        self.assertLess(
+            derived.index('sys.path.insert(0, str(ROOT / "src"))'),
+            derived.index('from scripts.v4.f1b_c3_training_successor_v2 import')
+        )
 
     def test_model_gradient_and_ema_proof_not_removed(self):
         s = function_text(DERIVED, "train_run")
@@ -114,6 +123,7 @@ class FrozenRerunContractTests(unittest.TestCase):
         self.assertIn("enforce_adam_moments(optimizer, online, predictor)", s)
         self.assertIn("protected optimizer step did not advance exactly once", s)
         self.assertIn("_optimizer_step_value(optimizer, p)", s)
+        self.assertIn("enforce_unscaled_gradients(online, predictor)", s)
         self.assertIn("scaler.scale(loss / ACCUMULATION).backward()", s)
         self.assertIn("controller.after_successful_optimizer_step(momentum=EMA)", s)
         self.assertNotIn("evaluate_final_molecular_information(", s)
