@@ -6,6 +6,16 @@
 
 **Machine source index:** `results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json`. **Project-attachment SHA-256 index:** `results/target_discovery/unified_qualification_v1/JEPA_20261104_PROJECT_LOCAL_ASSET_SHA256_CUSTODY_V1.json`. **Full event log:** `results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json`. **Prior history corrections:** `JEPA_20261104_RECONCILIATION_INCOMPLETE_MAJOR_UNDERINDEXED_FOUNDATION_DIMENSION_S174.md`, `JEPA_20261104_ADDITIONAL_MISSING_PREMISE_BELIEF_AND_SOURCE_NORMALIZATION_HISTORY.md`, `JEPA_20261103_PLANTED_SYNTHETIC_JEPA_TEACHER_STUDENT_COMPLETE_HISTORY_AND_JOIN_PLAN.md`, and `JEPA_20261103_PRIOR_PLANTED_IPB_JEPA_AND_EMA_EXPERIMENT_NO_REPEAT_CORRECTION.md`.
 
+## November 4 project-wide history closure: 535 PR records plus source-scoped science
+
+**Required new first read:** [Project-wide source/history accountability and decision priorities](JEPA_20261104_PROJECT_WIDE_HISTORY_ACCOUNTABILITY_AND_NEXT_ACTIONS_V1.md), machine `JEPA_20261104_COMPLETE_535_PR_AND_OPEN_ISSUE_METADATA_CENSUS_V1.json`, `JEPA_20261104_ALL_535_PR_DESCRIPTION_DISPOSITION_REGISTER_V1.json`, `JEPA_20261104_ADDITIONAL_PRIOR_WORK_CROSSWALK_AND_OPEN_ISSUES_V1.json`, and `JEPA_20261104_FINAL_HISTORY_ACCOUNTABILITY_AND_NEXT_DECISION_REGISTER_V1.json` in `results/target_discovery/unified_qualification_v1/`.
+
+**Census:** **535 actual PRs**, numbers 1–538; the missing PR numbers **54, 55 and 494 are existing open issues**, not lost PRs. All 535 live PR titles/bodies/heads/statuses are indexed. The 519-PR older source snapshot and 49 preceding chronology events are preserved; append-only event **50** records this pass. Original **4,710 main-tree Git blobs** are indexed by exact main Git tree SHA, not falsely claimed individually read. An additional **15** scoped prior-work source/issue crosswalk entries cover existing executed/draft/negative programs omitted by the earlier V9 16-workstream supplement.
+
+**Critical qualification:** **Full PR metadata accountability does not mean 535 independent PR diff/experiment audits.** Current original scientific results retain the scopes proved in their primary sources. No blanket claim that all project files, offline GPU receipts, or biological experiments have been newly validated. No fresh 8,915-block read, 535-source reimplementation, model run or original-world regeneration.
+
+**Near-term decision order:** original source→CaseBundle external physical issuer/q rights and issue #494; independent Macha latest-head review #525/#538; genuine multi-query measured C2/C3 teacher/student content against already-proven depth/wrong-q/technical nulls; V79/V80 frozen SHA/selection RED #533/#534; pause PR537 duplicate-risk GPU test; issues #54/#55 and FULL104 numerical dimension receipt as separately gated. PR534 current 0/2 red is an **exact V80 world SHA mismatch**, not a biology result. No target, representation or Stage4 authority.
+
 ## Read order and source hierarchy
 
 1. **Current branch refs and CI:** fetch PR #322 and #460 exact branch HEAD (do not assume PR description's originally frozen October head is today's head); read #460 live pointer, then this document and machine index.
