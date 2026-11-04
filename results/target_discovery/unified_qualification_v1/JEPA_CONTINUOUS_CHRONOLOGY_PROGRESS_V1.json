@@ -1887,7 +1887,7 @@
       "workstream": "historical_primary_work_original_scientific_coverage_first_read_v9_underindex_repair",
       "implementation_pr": 322,
       "implementation_head": null,
-      "change_type": "append_only_scientific_navigation_and_source_provenance_reconciliation",
+      "change_type": "chronology_correction",
       "source_inputs": [
         {
           "path": "docs/V3_SCORECARD.md",
