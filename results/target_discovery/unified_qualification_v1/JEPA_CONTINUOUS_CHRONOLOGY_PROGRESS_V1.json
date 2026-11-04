@@ -2569,6 +2569,50 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/469",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525"
       ]
+    },
+    {
+      "event_id": "20261104-SOL-ORIGINAL-DOWNSTREAM-EXECUTED-LINEAGE-AND-NO-REBUILD-JOINS-V1",
+      "date_utc": "2026-11-04",
+      "workstream": "original_executed_downstream_and_exact_join_recovery",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261104_ORIGINAL_DOWNSTREAM_IMPLEMENTATION_RECOVERY_AND_EXACT_NEXT_JOINS_V1.md",
+          "blob_sha1": "64782b3326505daddf3aad3d0ce2bf625ae69b3b",
+          "role": "source-pinned original downstream/JEPA code, synthetic experiment and no-repeat join analysis"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_END_TO_END_SCIENTIFIC_NARRATIVE_AND_DECISION_LINEAGE_V1.md",
+          "blob_sha1": "67e58755cde72e0fc9447a42422510dae793fb79",
+          "role": "existing full Alzheimer microglia-to-regulatory scientific project narrative"
+        }
+      ],
+      "change_type": "chronology_correction",
+      "what_already_existed": "Original physical bounded V5 synthetic 40-update/EMA/checkpoint experiment #147, guarded canonical V5 runtime #224/#226; independent multi-block TargetPortfolio/teacher/student architecture/compute/rehearsal/EMA contracts #332/#351 with reviewer-repaired #525; original Stage81A3/Stage81B synthetic learned JEPA attempts; real TD #314, nine-case #336 and cross-gate #369; #451/#469 actually connected synthetic CaseBundle and post-TD; #447 Task6–8 fixture consumers, main #522–524 D1/V2C fixture and #535 15-field no-new-adapter mapping.",
+      "new_work_or_result": "Read original source files and exact PR heads/CI for the overlooked *implemented downstream control plane*: #525 harness 749 lines/tournament 354 lines/EMA 144 lines with Macha hostile fixes, V4 runtime/EMA/checkpoints, and canonical V5 bound runtime. Established no-repeat correction: tasks 9–12 formal qualification are open but post-TD and training mechanics are NOT unstarted; completed older learned synthetic JEPA runs are not proof of current qualified partial-RNA biological recovery. Produced one source-pinned read-first exact-join map, not new engineering.",
+      "negative_or_counterfactual_evidence": "No selected real Task7 bundle/Task8 certified production consumption, no cumulative Task4 acceptance, no true A7, no registered Task6 units or trainer entry triad; #525 author-green but independent latest-head pending; existing #525 wrong-query controls not sealed registered Task9 family; #147 synthetic mechanics loss not biological recovery; #536 correct C2 48→512/missing learned student refusal; #534 V80 cross-host original SHA refusal remains separate from completed original V80 benchmark. No repeated synthetic world or source read.",
+      "test_review_scope": "Read-only exact GitHub PR metadata, executable Python files, current CI and original source/negative receipts; no code/test execution for this event; current audit CI revalidated separately.",
+      "independent_review": "SOL_DOCUMENTARY_SOURCE_AUDIT_ONLY__NOT_A_NONAUTHOR_ACCEPTANCE_OF_SOL_OR_MACHA_IMPLEMENTATION",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha independent full-lineage review #541 (Task4) and latest-head #525/#538/#536; Sol reciprocal Macha-patch verification; do not self-accept",
+        "Preserve separately original V80 original fit/controller GitHub Actions artifacts before 2026-11-13 03:02 UTC; verify actual preserved copy, SHA and custody; do not upload controller truth to Git",
+        "After accepted upstream, reuse #451/#447/#525 main student runtime to enforce actual evidence-parent/registry/revocation A7, distinct first-class NONE, C4 over C6 and strict D1 teacher/student rights; no new generic adapter without tested unmet delta",
+        "Owner L04 teacher query visibility and #533 V79/V80 prospective 207/85 selection-law decision; independent training authorization remains separate",
+        "Only later a nonduplicative, separately authorized current-source trained partial-RNA biological falsifier experiment"
+      ],
+      "historical_supersession": "Supersedes assistant's incorrect 'downstream mostly not started / new EMA and student builds' tasking. Does not change Macha event62 formal Tasks0–12 statuses, earlier source conclusions or #535 documentation-only/no implementation ruling.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/147",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/224",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/226",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/351",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/447",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/541"
+      ]
     }
   ]
 }
