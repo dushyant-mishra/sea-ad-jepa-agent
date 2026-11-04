@@ -1,3 +1,22 @@
+# READ FIRST (2026-11-04, SOL EVENT69) — ORIGINAL ACTIONS ASSETS PHYSICALLY GIT-ARCHIVED, DETAILED FUTURE AGENT HANDOFF READY
+
+**Owner correction fulfilled for the FIT-SAFE original assets:** The repository is **PUBLIC**. The **ORIGINAL V80 FIT and original package RECEIPT ZIP bytes are now physically committed** to *both* the canonical audit **#322** and this live handoff **#460** branch as the **same Git blobs**, not merely expiring GitHub Actions references.
+
+- [FIT original ZIP, 660,628 bytes](https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/science/jepa-robust-pipeline-post-jepa-anything-audit-20261013/artifacts/v80/original/V80-original-fit-transport-artifact.zip): SHA-256 `4cec8966cff7bdddb3640903f4525328d23ed3482e2b232ead1bc440993fca71`, Git blob `8b81742b66dfd7d2d40940933c7775a515e0610d`.
+- [Original package receipt ZIP, 1,274 bytes](https://github.com/dushyant-mishra/sea-ad-jepa-agent/blob/science/jepa-robust-pipeline-post-jepa-anything-audit-20261013/artifacts/v80/original/V80-original-receipt-artifact.zip): SHA-256 `97e264cfe76709f5098b346e56130716640e6c8ce8562974d6ab126ac82a47fe`, blob `4ec0e2eed6eba099645638232f3962482ae2dc26`.
+- **GitHub asset manifest:** `artifacts/v80/original/V80_ORIGINAL_PUBLIC_FIT_ASSET_MANIFEST_V1.json` on both branches; **README** alongside original binaries; [source SHA-verifying archival workflow run](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41900549918) SUCCESS. Originals from run `38504094639` / PR348. FIT inner transport `77f89e83...`; receipt inner JSON `346407af...`. The assets no longer depend on the original Actions expiry **while these Git branches/blob history are preserved**.
+- **SEALED CONTROLLER ZIP explicitly NOT in PUBLIC GitHub**: original artifact `11866917064` SHA-256 `184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46`. Original ZIP was opaque-SHA-verified in owner conversation but **PRIVATE access-controlled controller-only GitHub repository/vault remains REQUIRED**, before original Actions expiration **2026-11-13 03:01:58 UTC**. Do not leak controller truth to fit/student or public Git; no secure external escrow is yet verified.
+
+**Canonical audit #322 at exact head `66477ff4ebad47b4d917a1f4fa1b8ce761a40509` has 69 append-only events**, including the new event69 Git asset record `docs/agent/JEPA_20261104_ORIGINAL_V80_GITHUB_ASSET_ARCHIVE_AND_PRIVATE_CONTROLLER_BOUNDARY_EVENT69.md` and machine index key `v80_original_exact_zip_binary_git_archive_both_branches_event69_20261104`. **Re-read current GitHub exact head/CI; do not inherit older GREEN counts.**
+
+**For a future Sol agent, DO NOT RECONSTRUCT months of history again.** Detailed original biological and implementation handoff **exists on both branches**: `docs/agent/JEPA_20261104_SOL_LANE_SUCCESSOR_DETAILED_OPERATIONAL_HANDOFF_EVENT68.md` plus machine source/script/data/result locator `results/target_discovery/unified_qualification_v1/JEPA_20261104_SOL_LANE_SUCCESSOR_SOURCE_SCRIPT_DATA_RESULT_LOCATOR_EVENT68.json` (**60 entries**). Earlier audit already reconciled 535 PR metadata, 108 recent PRs, original Stage81B/TD/G7/Level4/V79/V80, original downstream #332/#351/#525 and V4/V5 training runtime; use source map and recent corrections instead of new broad audits.
+
+**Active code queue unchanged:** Macha independently reviews Sol #545 K02/K03 and Sol #546 Task3 tests; Sol independently reviews Macha #544. **Only two reviewers**. K02/K03 author-CI green but Macha acceptance pending; #546 has two deliberate frozen Task3 REDs; cumulative #541 HOLD. #525/#538/#536 latest-head independent Macha checks pending if no newer verdict. No new source reads, synthetic worlds, GPU, training, selected target, Task5 authority or Stage4. #534 original benchmark cross-host SHA RED persists.
+
+**Global:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST (2026-11-04, OWNER EVENT67) — EXACTLY TWO REVIEWERS, SOL + MACHA, NO THIRD
 
 **Owner correction:** Sol/GPT and Macha are the **only two code reviewers**. No outside third reviewer is required or available. **Macha reviews Sol-authored code/tests; Sol reviews Macha-authored code/tests. Neither independently accepts its own patch.** The owner remains the deciding/authorization lane but **is NOT a third code reviewer**. A joint/cumulative verdict must disclose authorship, reciprocal per-patch reviews, applicable REDs and scope/limits; pair review is not itself external scientific/authenticated authority.
