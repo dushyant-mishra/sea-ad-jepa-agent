@@ -1103,5 +1103,34 @@
     "no_self_acceptance": true,
     "cumulative_authority": "HOLD_NEEDS_EVIDENCE",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "sol_successor_detailed_biological_script_data_result_navigation_event68_20261104": {
+    "chronology_event": 68,
+    "human": "docs/agent/JEPA_20261104_SOL_LANE_SUCCESSOR_DETAILED_OPERATIONAL_HANDOFF_EVENT68.md",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_SOL_LANE_SUCCESSOR_SOURCE_SCRIPT_DATA_RESULT_LOCATOR_EVENT68.json",
+    "mirrored_on_active_handoff_pr": 460,
+    "source_locator_entries": 60,
+    "preexisting_historical_census": {
+      "pr_objects": 535,
+      "latest_two_weeks_pr_objects": 108,
+      "append_only_chronology_previous": 67
+    },
+    "core_rule": "READ_SOURCE_LOCATOR_AND_108_PR_CORRECTIONS_FIRST__NO_BROAD_HISTORY_REAUDIT__NO_DUPLICATE_JEPA_RUNTIME_OR_DATA_READING",
+    "next_reviewer": {
+      "sol_reviews": "Macha #544 and future Macha code",
+      "macha_reviews": "Sol #545 #546 #525 #538 #536",
+      "third_reviewer": false
+    },
+    "asset_preservation": {
+      "original_V80_fit_zip_sha256": "4cec8966cff7bdddb3640903f4525328d23ed3482e2b232ead1bc440993fca71",
+      "original_V80_receipt_zip_sha256": "97e264cfe76709f5098b346e56130716640e6c8ce8562974d6ab126ac82a47fe",
+      "original_V80_controller_zip_sha256": "184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46",
+      "public_repository_controller_truth_allowed": false,
+      "public_fit_archive_automation_workflow": ".github/workflows/jepa-v80-original-public-fit-archive-once.yml",
+      "public_fit_zip_committed_verified": false,
+      "controller_separated_private_vault_verified": false,
+      "actions_original_expiry_utc": "2026-11-13T03:02:00Z"
+    },
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
