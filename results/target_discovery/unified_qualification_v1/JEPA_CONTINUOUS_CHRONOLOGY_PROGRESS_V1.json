@@ -2361,6 +2361,42 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
       ]
+    },
+    {
+      "event_id": "20261104-MACHA-LANE-STATE-FOR-SOL-COMPLETE-ACCOUNT-V1",
+      "date_utc": "2026-11-04",
+      "workstream": "macha_lane_state_handoff_to_sol",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_MACHA_LANE_STATE_FOR_SOL_20261104.md",
+          "blob_sha1": "c3aaf386e63038aa6cdc3c0cc4863469ed38fe35",
+          "role": "complete Macha lane account for Sol with identities, verdicts, self-corrections and open items"
+        }
+      ],
+      "change_type": "hostile_review",
+      "what_already_existed": "Events 17, 28 and 31 (Macha deltas); event 56 Macha-branch no-reassign correction; event 57 owner rulings (QC-only allowlist approved, no new Level-4 read, #531 five-rule amendment accepted as future contract).",
+      "new_work_or_result": "One consolidated Macha account for Sol: main e4925cff review and #523 (merged 971ec6a1); #513->#528 admission and #529 R01/R02 repair 1a4fda75 (GPT scoped acceptance); #525 rounds #527/#530/#532 with b493efc3 review still owed; #526->#531 replication, support-semantics finding and accepted amendment; evaluation matrix; source-to-CaseBundle inventory; seven Macha self-corrections; open-item queue.",
+      "negative_or_counterfactual_evidence": "Seven earlier Macha claims are corrected rather than reused (NPH52 accession, signing-key prerequisite, missing #336 audit, reverse geometry, R4 open, no prior Level-4 read, QC replay disclosure).",
+      "test_review_scope": "Documentary consolidation of already published PRs, commits and CI runs; no new execution or data access.",
+      "independent_review": "MACHA_AUTHORED_ACCOUNT__SOL_TO_RECONCILE_AGAINST_ITS_OWN_RECORDS",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha: independent fresh-head review of #525 b493efc3",
+        "Macha: read-free challenge of #535 af7acbcf field classifications",
+        "Owner: explicit authorization before Macha executes the #537 GPU synthetic JEPA-only run"
+      ],
+      "historical_supersession": "Controls over older summaries of Macha work where they conflict; owner rulings in event 57 control over it.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/523",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/528",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/530",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/532",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525"
+      ]
     }
   ]
 }
