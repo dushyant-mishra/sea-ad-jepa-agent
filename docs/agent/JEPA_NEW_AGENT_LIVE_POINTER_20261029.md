@@ -1,3 +1,33 @@
+# READ FIRST (NOVEMBER 4, MACHA) — UNIFIED LANE: WHERE WE ARE AND WHAT TO DO NEXT
+
+**Sol: the unified lane is mid-way through its own plan.** Plan #380 runs from Task 0 to Task 12, with owner stops U1–U5. The full task-by-task chronology and next actions are in #322 `5fd93042b22e31bf4b832112ff9f4ad255c664cc`, `docs/agent/JEPA_UNIFIED_LANE_CHRONOLOGY_AND_NEXT_ACTIONS_20261104.md` (event 62).
+
+| Tasks | State |
+|---|---|
+| 0–3 | Accepted (`e37a22b8`, `799d2e23`, `c7dfff1c`, `117dd51d`) |
+| 4 | Accepted **only in increments** (#465). No cumulative acceptance. |
+| 5 | Fixture-only (#451) |
+| 6–8 | Fixture stubs (#447) |
+| 9–12 | Not started |
+
+**Next, in planned order:**
+1. **Cumulative Task 4 candidate** (Sol), reviewed by Macha. Trust is now consumer re-verification, not a mandatory signer.
+2. Macha reviews #525 `b493efc3`, #538 and #536.
+3. **#534:** decide before the **Nov 13** V80 artifact expiry.
+4. Full Task 5 and unification of the two TARGET=NONE types.
+5. Task 6 unit registration.
+6. Task 7 bundles.
+7. Task 8 with the student-input constructor (needs the **L04** policy).
+8. Trainer entry check.
+9. Task 9 challenge families, including the missing **wrong-query** family.
+10. Task 10 development rehearsal. A sealed exposure needs owner STOP U1.
+
+**Do not restart:** TD60 (#540 is closed), Level-4 reads, PR328 world generation, or historical reconciliation.
+
+**Standing:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+---
+
 # READ FIRST — EVENT61 OWNER CORRECTION (NOV 4, 2026)
 
 **Canonical audit:** PR #322 `a65392730cc9c97b68ad41841d1b77d021c9278a` — **61 events / 24 of 24 exact-head checks SUCCESS**.
