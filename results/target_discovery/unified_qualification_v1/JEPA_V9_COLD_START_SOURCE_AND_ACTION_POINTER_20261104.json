@@ -8,7 +8,7 @@
     "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
     "head_at_handoff": "78b5431b2c7d144b1778000ef4f4f0f19cbb4a6b",
     "chronology_events": 52,
-    "ci": "CURRENT_HEAD_WORKFLOWS_QUEUED__VERIFY_BEFORE_CLAIMING_GREEN",
+    "ci": "VERIFIED_CURRENT_HEAD_24_OF_24_WORKFLOWS_COMPLETED_SUCCESS_AT_78b5431b",
     "master_doc": "docs/agent/JEPA_20261104_MASTER_HISTORICAL_AUDIT_AND_NO_REPEAT_TAKEOVER_V1.md",
     "master_machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
     "project_assets": "results/target_discovery/unified_qualification_v1/JEPA_20261104_PROJECT_LOCAL_ASSET_SHA256_CUSTODY_V1.json",
@@ -243,7 +243,7 @@
     "still_open": "LEARNED_PARTIAL_RNA_STUDENT_CORRECT_CELL_BROAD_MESOSCALE_RELATIONAL_INCREMENT_OVER_DEPTH_TECHNICAL_SOURCE_OPERATOR_DONOR_WRONG_CELL",
     "source_evidence_grade": "R5_PRIMARY_RECEIPT_NOT_NEWLY_REOPENED__AUDIT_RECONCILED",
     "remaining_engineering": "PR525_PR538_INDEPENDENT_REVIEW_IF_ADOPTED__PR534_V80_SHA_REGRESSION_ISOLATED__PR537_GPU_HOLD__PHYSICAL_ISSUER_IF_SPECIFIC_REAL_EXPERIMENT_REQUIRES",
-    "audit_ci_observed": "QUEUED_ON_EXACT_HEAD_AT_POINTER_UPDATE__RECHECK",
+    "audit_ci_observed": "VERIFIED_CURRENT_HEAD_24_OF_24_WORKFLOWS_COMPLETED_SUCCESS_AT_78b5431b",
     "permanent_two_branch_rule": "All future implementation/experiment work lives in its owner PR; append chronology, original primary science, source negatives and exact review scope to PR322; verify exact head; update PR460 top live pointer and machine status to that same audit head; verify handoff exact head, disclose pending checks; do not create duplicate history-only/science-consolidation PR",
     "never_modify": "FROZEN_535_PR_AND_108_RECENT_PR_TIME_SCOPED_SNAPSHOTS_OR_ORIGINAL_NEGATIVE_RESULTS",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
