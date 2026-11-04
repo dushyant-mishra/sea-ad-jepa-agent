@@ -1,0 +1,36 @@
+name: JEPA E2G seven-track descriptive survey
+on:
+  push:
+    branches: [audit/external-e2g-compat-20261027]
+    paths:
+      - scripts/regulatory/survey_e2g_public_7tracks_v1.py
+      - tests/regulatory/test_e2g_public_7tracks_v1.py
+      - .github/workflows/jepa-e2g-seven-track-survey.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  survey-public-regulatory-reference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install pytest
+      - name: Hostile tests and frozen Stage75 identity
+        run: |
+          python -m py_compile scripts/regulatory/survey_e2g_public_7tracks_v1.py
+          python -m pytest -q tests/regulatory/test_e2g_public_7tracks_v1.py
+      - name: Source-bounded descriptive public survey only
+        run: |
+          python scripts/regulatory/survey_e2g_public_7tracks_v1.py \
+            results/v4/stage81a1b_existing_regulatory_evidence_integration.csv \
+            "$RUNNER_TEMP/e2g_public_7tracks_symbol_only.json"
+      - name: Save detailed receipt (not raw genomic data)
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2g-public-seven-track-provisional-symbol-survey
+          path: ${{ runner.temp }}/e2g_public_7tracks_symbol_only.json
+          retention-days: 14

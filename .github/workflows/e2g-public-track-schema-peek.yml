@@ -1,0 +1,21 @@
+name: E2G public track schema peek
+on:
+  push:
+    branches: [audit/external-e2g-compat-20261027]
+    paths:
+      - scripts/regulatory/peek_e2g_track_schema_v1.py
+      - .github/workflows/e2g-public-track-schema-peek.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bounded-range:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m py_compile scripts/regulatory/peek_e2g_track_schema_v1.py
+      - run: python scripts/regulatory/peek_e2g_track_schema_v1.py

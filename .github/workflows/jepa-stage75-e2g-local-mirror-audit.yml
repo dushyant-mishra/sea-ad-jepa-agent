@@ -1,0 +1,25 @@
+name: Local Stage75 x E2G compact mirror custody
+on:
+  push:
+    branches: [audit/external-e2g-compat-20261027]
+    paths:
+      - results/regulatory/stage75_e2g_149_peak_7context_recurrence_v1_20261027.csv
+      - results/regulatory/stage75_e2g_7context_coordinate_summary_v1_20261027.csv
+      - scripts/regulatory/validate_local_stage75_e2g_compact_mirror_v1.py
+      - .github/workflows/jepa-stage75-e2g-local-mirror-audit.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  no-training-no-raw-input:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate local uploaded-evidence result mirrors against frozen 96-pair summary
+        run: |
+          python -m py_compile scripts/regulatory/validate_local_stage75_e2g_compact_mirror_v1.py
+          python scripts/regulatory/validate_local_stage75_e2g_compact_mirror_v1.py

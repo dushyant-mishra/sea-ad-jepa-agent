@@ -1,0 +1,42 @@
+name: Stage75 E2G midpoint TSS and geometry mirror audit
+on:
+  push:
+    branches:
+      - audit/external-e2g-compat-20261027
+    paths:
+      - scripts/regulatory/validate_e2g_stage75_posthoc_tss_geometry_mirrors_v1.py
+      - results/regulatory/stage75_e2g_r50_266_source_element_matches_v1_20261027.csv
+      - results/regulatory/stage75_e2g_85_scaffold_peak_recurrence_controls_v1_20261027.csv
+      - results/regulatory/e2g_stage75_tss_106_unique_source_peak_comparisons_v1_20261027.csv
+      - results/regulatory/e2g_stage75_9_within_gene_geometry_matched_peaks_v1_20261027.csv
+      - .github/workflows/jepa-e2g-posthoc-tss-geometry-audit.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-bound-posthoc-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate 106 source TSS units, 9 caliper pairs and TF invariance
+        run: |
+          python -m py_compile scripts/regulatory/validate_e2g_stage75_posthoc_tss_geometry_mirrors_v1.py
+          python scripts/regulatory/validate_e2g_stage75_posthoc_tss_geometry_mirrors_v1.py
+      - name: Verify byte tampering fails closed
+        run: |
+          mkdir -p "$RUNNER_TEMP/fixture"
+          cp results/regulatory/stage75_e2g_r50_266_source_element_matches_v1_20261027.csv "$RUNNER_TEMP/fixture/"
+          cp results/regulatory/stage75_e2g_149_peak_7context_recurrence_v1_20261027.csv "$RUNNER_TEMP/fixture/"
+          cp results/regulatory/stage75_e2g_85_scaffold_peak_recurrence_controls_v1_20261027.csv "$RUNNER_TEMP/fixture/"
+          cp results/regulatory/e2g_stage75_tss_106_unique_source_peak_comparisons_v1_20261027.csv "$RUNNER_TEMP/fixture/"
+          cp results/regulatory/e2g_stage75_9_within_gene_geometry_matched_peaks_v1_20261027.csv "$RUNNER_TEMP/fixture/"
+          printf 'tampered' >> "$RUNNER_TEMP/fixture/e2g_stage75_tss_106_unique_source_peak_comparisons_v1_20261027.csv"
+          if python scripts/regulatory/validate_e2g_stage75_posthoc_tss_geometry_mirrors_v1.py --root "$RUNNER_TEMP/fixture"; then
+            echo "FAIL: modified TSS receipt unexpectedly accepted"
+            exit 1
+          fi
+          echo "PASS: changed source bytes rejected"

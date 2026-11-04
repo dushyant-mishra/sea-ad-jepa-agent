@@ -1,0 +1,132 @@
+{
+  "schema": "JEPA_PUBLIC_E2G_TRACK_ACCESS_RECEIPT_V1",
+  "date": "2026-10-27",
+  "status": "SEVEN_PUBLIC_TRACKS_HEAD200__SCHEMA_PEEK_PASS__NO_BILLABLE_GCS",
+  "metadata_context_inventory": {
+    "workflow_run": 40514855479,
+    "rows_total": 1604,
+    "relevant_context_rows": 72,
+    "explicit_microglia": 0,
+    "model_counts": {
+      "ENCODE-rE2G": 1458,
+      "scE2G": 146
+    }
+  },
+  "metadata_origin": {
+    "portal_frontend": "kundajelab/e2g-frontend@886f02865c1b23da8ff7e6d84ddee5688d6104b1",
+    "graphql_endpoint": "https://e2g.stanford.edu/graphql",
+    "source_query": "getDataTracks"
+  },
+  "access_probe": {
+    "workflow_run": 40515252744,
+    "workflow_job": 122227417791,
+    "method": "HEAD",
+    "http_status": 200,
+    "allowed_host": "storage.googleapis.com",
+    "redirect_policy": "safe hostname only"
+  },
+  "schema_peek": {
+    "workflow_run": 40515620226,
+    "workflow_job": 122228697670,
+    "method": "HTTP GET Range 0-32767",
+    "status": 206,
+    "bounded": true,
+    "columns": [
+      "enh_chr",
+      "enh_start",
+      "enh_end",
+      "target_chr",
+      "target_tss_start",
+      "target_tss_end",
+      "gene_and_enhancer_label",
+      "model_score",
+      "annotation_9",
+      "annotation_10"
+    ],
+    "header_present_in_peek": false,
+    "rE2G_gene_label_example": "FAM41C|chr1:778482-778982",
+    "scE2G_gene_label_example": "LINC00115_intergenic|chr1:778512-779012"
+  },
+  "sources": [
+    {
+      "cell_type_id": "inflammatory_macrophage_ENCSR593WXK",
+      "model": "ENCODE-rE2G",
+      "public_label": "inflammatory macrophage, treatment unspecified",
+      "content_length_bytes": 2035476,
+      "basename": "encode_e2g_predictions_inflammatory_macrophage_ENCSR593WXK_thresholded_predictions.bedpe.gz",
+      "HTTP_HEAD": 200,
+      "allow_ranges": true,
+      "biological_claim": "REFERENCE_CONTEXT_ONLY"
+    },
+    {
+      "cell_type_id": "inflammatory_macrophage_ENCSR643ZGR",
+      "model": "ENCODE-rE2G",
+      "public_label": "inflammatory macrophage LPS 1 hour",
+      "content_length_bytes": 2063501,
+      "basename": "encode_e2g_predictions_inflammatory_macrophage_ENCSR643ZGR_thresholded_predictions.bedpe.gz",
+      "HTTP_HEAD": 200,
+      "allow_ranges": true,
+      "biological_claim": "REFERENCE_CONTEXT_ONLY"
+    },
+    {
+      "cell_type_id": "inflammatory_macrophage_ENCSR226JLK",
+      "model": "ENCODE-rE2G",
+      "public_label": "inflammatory macrophage LPS 4 hours",
+      "content_length_bytes": 2024583,
+      "basename": "encode_e2g_predictions_inflammatory_macrophage_ENCSR226JLK_thresholded_predictions.bedpe.gz",
+      "HTTP_HEAD": 200,
+      "allow_ranges": true,
+      "biological_claim": "REFERENCE_CONTEXT_ONLY"
+    },
+    {
+      "cell_type_id": "Macrophage",
+      "model": "scE2G",
+      "public_label": "Macrophages 3",
+      "content_length_bytes": 5753037,
+      "basename": "Macrophage_encode_e2g_predictions_threshold0.173.bedpe",
+      "HTTP_HEAD": 200,
+      "allow_ranges": true,
+      "biological_claim": "REFERENCE_CONTEXT_ONLY"
+    },
+    {
+      "cell_type_id": "Immune_monocyte_1",
+      "model": "scE2G",
+      "public_label": "Macrophages 1 (portal label)",
+      "content_length_bytes": 6255242,
+      "basename": "Immune_monocyte_1_encode_e2g_predictions_threshold0.173.bedpe",
+      "HTTP_HEAD": 200,
+      "allow_ranges": true,
+      "biological_claim": "REFERENCE_CONTEXT_ONLY"
+    },
+    {
+      "cell_type_id": "brain_ENCSR344FLH",
+      "model": "ENCODE-rE2G",
+      "public_label": "brain, unspecific tissue mixture",
+      "content_length_bytes": 1574654,
+      "basename": "encode_e2g_predictions_brain_ENCSR344FLH_thresholded_predictions.bedpe.gz",
+      "HTTP_HEAD": 200,
+      "allow_ranges": true,
+      "biological_claim": "REFERENCE_CONTEXT_ONLY"
+    },
+    {
+      "cell_type_id": "Stitziel_hCA_Myeloid",
+      "model": "scE2G",
+      "public_label": "coronary artery myeloid",
+      "content_length_bytes": 7767277,
+      "basename": "encode_e2g_predictions_threshold0.177.bedpe",
+      "HTTP_HEAD": 200,
+      "allow_ranges": true,
+      "biological_claim": "REFERENCE_CONTEXT_ONLY"
+    }
+  ],
+  "scientific_boundaries": {
+    "target_identifiers": "source BEDPE labels gene symbols, not Ensembl",
+    "tf_gene_validation": null,
+    "biological_replication_validation": null,
+    "trajectory_claim": false,
+    "causal_validation": false,
+    "target_selection": false,
+    "training_authorized": false
+  },
+  "source_manifest_note": "GCS e2g bulk Parquet is requester-pays; these are separate, publicly HTTP-readable IGV track objects. Do not infer general billable-bucket accessibility."
+}

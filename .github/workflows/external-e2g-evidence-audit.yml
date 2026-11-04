@@ -1,0 +1,47 @@
+name: External E2G evidence intake audit
+
+on:
+  pull_request:
+    paths:
+      - "scripts/regulatory/e2g_external_evidence_gate_v1.py"
+      - "tests/regulatory/test_e2g_external_evidence_gate_v1.py"
+      - "results/regulatory/external_e2g_compatibility_audit_v1_20261027.json"
+      - "docs/agent/JEPA_EXTERNAL_E2G_COMPATIBILITY_AUDIT_20261027.md"
+      - ".github/workflows/external-e2g-evidence-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-evidence-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install test runner only
+        run: python -m pip install pytest
+      - name: Compile and hostile tests
+        run: |
+          python -m py_compile scripts/regulatory/e2g_external_evidence_gate_v1.py
+          python -m pytest -q tests/regulatory/test_e2g_external_evidence_gate_v1.py
+      - name: Run read-only Stage75 audit and check no authority
+        run: |
+          python scripts/regulatory/e2g_external_evidence_gate_v1.py \
+            --stage75 results/v4/stage81a1b_existing_regulatory_evidence_integration.csv \
+            --output "$RUNNER_TEMP/e2g_stage75_receipt.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          receipt = json.loads((Path(os.environ["RUNNER_TEMP"]) /
+                               "e2g_stage75_receipt.json").read_text())
+          assert receipt["stage75"]["candidate_tf_gene_rows"] == 96
+          assert receipt["stage75"]["target_gene_count"] == 27
+          assert receipt["stage75"]["tf_count"] == 7
+          assert receipt["e2g"]["status"] == "NOT_RUN_NO_EXTERNAL_PREDICTIONS"
+          assert receipt["e2g"]["tf_target_edge_validation_count"] is None
+          assert not any(receipt["authority"].values())
+          print("PASS: structure only; no regulatory-edge or training authority")
+          PY

@@ -1,0 +1,49 @@
+name: E2G targeted reference-context inventory
+
+on:
+  push:
+    branches:
+      - audit/external-e2g-compat-20261027
+    paths:
+      - "scripts/regulatory/audit_e2g_public_reference_tracks_v1.py"
+      - "tests/regulatory/test_e2g_public_reference_tracks_v1.py"
+      - ".github/workflows/e2g-public-reference-inventory.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-metadata-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install pytest
+      - name: Read-only unit and adversarial tests
+        run: |
+          python -m py_compile scripts/regulatory/audit_e2g_public_reference_tracks_v1.py
+          python -m pytest -q tests/regulatory/test_e2g_public_reference_tracks_v1.py
+      - name: Obtain public E2G metadata ONLY (no raw files or billable GCS)
+        run: |
+          python scripts/regulatory/audit_e2g_public_reference_tracks_v1.py \
+            --output "$RUNNER_TEMP/e2g_reference_context_inventory.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          data=json.loads((Path(os.environ["RUNNER_TEMP"]) /
+                         "e2g_reference_context_inventory.json").read_text())
+          assert data["total_track_rows"] > 0
+          assert len(data["selected_rows"]) < 100
+          assert not any(data["source_context_authority"].values())
+          print("PASS: contextual track metadata only, authority false")
+          PY
+      - name: Upload sanitized context inventory (not raw tracks)
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2g-public-reference-contexts
+          path: ${{ runner.temp }}/e2g_reference_context_inventory.json
+          retention-days: 14
