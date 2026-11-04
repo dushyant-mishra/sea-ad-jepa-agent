@@ -6,7 +6,7 @@
   "canonical_audit": {
     "pr": 322,
     "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
-    "head_at_handoff": "a3cea307fd4c7a211be68f738fff023d7dbb0808",
+    "head_at_handoff": "47af1bba1dd7a844de282720ef06fced63e46b10",
     "chronology_events": 49,
     "ci": "CHECK_SAME_CURRENT_HEAD__DO_NOT_ASSUME_QUEUED_IS_GREEN",
     "master_doc": "docs/agent/JEPA_20261104_MASTER_HISTORICAL_AUDIT_AND_NO_REPEAT_TAKEOVER_V1.md",
