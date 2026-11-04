@@ -54,14 +54,14 @@ Each entry below names pinned original sources or a previous source-audited reco
 
 - `main:results/reports/external_validation_gse174367.md` — Git blob `41f9d6851b1dedee862e0fe402563512efc9ab9d`
 - `main:results/reports/v2_2_cellxgene_alignment_stats.md` — Git blob `8b97d931bf8e854b423654f0f1236e0e72e2f331`
-- `PR322:docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md` — Git blob `94625689a7d7352231f0c908811763a0fcd8cb`
+- `PR322:docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md` — Git blob `94625689a7d7352231f0c908811763a0fcd8cb60`
 
 **Original chronology events:** #15, #38. **Operational next-use rule:** Reuse prior exposures correctly, do not count as clean unseen validation or rerun acquisition.
 
 ### 5. Discovery Atlas full candidate audit and 45/45 sampled manifold QC
 
 - `main:results/reports/discovery_targeted_manifold_audit_v1.md` — Git blob `82d2c6246de8ea19abaa4b44660d2880a66b9464`
-- `PR322:docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md` — Git blob `94625689a7d7352231f0c908811763a0fcd8cb`
+- `PR322:docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md` — Git blob `94625689a7d7352231f0c908811763a0fcd8cb60`
 
 **Original chronology events:** #15. **Operational next-use rule:** No duplicate manifold scan on the same original claim.
 
@@ -90,7 +90,7 @@ Each entry below names pinned original sources or a previous source-audited reco
 
 ### 9. Separately resolved gene/row/guide/PAR_Y and comparator errors
 
-- `PR322:docs/agent/JEPA_IDENTITY_ALIGNMENT_AND_COMPARATOR_FAILURE_RECONCILIATION_20261102.md` — Git blob `4d34906b5f321e54efa15044fdfb4b6b06a75e5`
+- `PR322:docs/agent/JEPA_IDENTITY_ALIGNMENT_AND_COMPARATOR_FAILURE_RECONCILIATION_20261102.md` — Git blob `4d34906b5f321e54efa15044fdfb4b6b06a75e5b`
 
 **Original chronology events:** #5. **Operational next-use rule:** Trace affected estimands/receipts individually; do not disqualify unrelated successful original work.
 
@@ -102,7 +102,7 @@ Each entry below names pinned original sources or a previous source-audited reco
 
 ### 11. TD15–27 universal relational failure and conditional residual positives
 
-- `main:target_discovery/iterations/td19_claude_followup/TD19_DECISION.md` — Git blob `bb207df987285190edf40fff6a19137cf63de0b`
+- `main:target_discovery/iterations/td19_claude_followup/TD19_DECISION.md` — Git blob `bb207df987285190edf40fff6a19137cf63de0b0`
 - `PR322:docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_21_24_20261102.md` — Git blob `126c1ff43a1ba684f2ae78557540afbd55612569`
 
 **Original chronology events:** #6, #38. **Operational next-use rule:** Use original depth and wrong-cell controls before interpreting TD56–59, do not redo already-spent TD19.
@@ -116,7 +116,7 @@ Each entry below names pinned original sources or a previous source-audited reco
 
 ### 13. Original perturbation/CRISPRbrain physical ETL and clone-aware bulk validation
 
-- `main:analysis/therapeutic_perturbation_etl/P1_6_BULK_INDEPENDENT_RECOMPUTE_20260925.md` — Git blob `dfae152d639606713a3384ed2bfd89c142fc161b`
+- `8647d21174c5e7eab2ad01fc6b9251b069ba0e03:analysis/therapeutic_perturbation_etl/P1_6_BULK_INDEPENDENT_RECOMPUTE_20260925.md` — Git blob `dfae152d639606713a3384ed2bfd89c142fc161b`
 - `PR322:docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_30_34_20261102.md` — Git blob `1caf23b0060c04e90da1c90614ed7fef9849c1d3`
 
 **Original chronology events:** #16, #38. **Operational next-use rule:** Reuse failed/corrected original perturbation eligibility, no new generic perturbation ETL.
@@ -172,3 +172,8 @@ Each entry below names pinned original sources or a previous source-audited reco
 4. Synchronize #322 append-only chronology, #460 first-read pointer, and CI **only after** each source change; neither audit success nor source navigation can authorize biological training.
 
 **Root authority:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
+
+
+## November 4 original-file locator verification correction
+
+All **27 unique** first-read source paths in the machine companion were fetched at their stated GitHub refs, and available Git blob identities compared. Three initially shortened SHA-1 locators were corrected to their full 40-character hashes. The clone-aware bulk recomputation `P1_6_BULK_INDEPENDENT_RECOMPUTE_20260925.md` is **not present on main**: it was successfully fetched at PR #131 exact original head `8647d21174c5e7eab2ad01fc6b9251b069ba0e03` (Git blob `dfae152d639606713a3384ed2bfd89c142fc161b`). The machine mirror and this document now point to that original immutable commit. This is a **source-reference correction**, not a new biological result or re-execution.
