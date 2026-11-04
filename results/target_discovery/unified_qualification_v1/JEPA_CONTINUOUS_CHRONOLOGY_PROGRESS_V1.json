@@ -2008,6 +2008,65 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/issues/55",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534"
       ]
+    },
+    {
+      "event_id": "20261104-RECENT-108-PR-SCIENCE-AND-REPAIR-TERMINAL-PRECEDENCE-RETIRE-STALE-NEXT-TASKS",
+      "date_utc": "2026-11-04",
+      "workstream": "late_october_to_november_original_science_execution_revision_source_corrections_and_stop_redundant_next_tasks",
+      "implementation_pr": 322,
+      "implementation_head": null,
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261104_RECENT_TWO_WEEK_SCIENCE_RESOLUTIONS_AND_CORRECTED_NEXT_WORK_V1.md",
+          "role": "controlling human original-source and later-erratum scientific correction"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_LAST_14_DAYS_108_PR_RESULT_PRECEDENCE_AND_NO_REPEAT_V1.json",
+          "role": "all 108 recent PR metadata with 13 lineage and result-precedence threads"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_PROJECT_WIDE_HISTORY_ACCOUNTABILITY_AND_NEXT_ACTIONS_V1.md",
+          "role": "previous V9 plan now explicitly superseded at top"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_FINAL_HISTORY_ACCOUNTABILITY_AND_NEXT_DECISION_REGISTER_V1.json",
+          "role": "dated original seven next-action rows retained but overridden by late evidence"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_MASTER_HISTORICAL_AUDIT_AND_NO_REPEAT_TAKEOVER_V1.md",
+          "role": "canonical main science audit front door"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_ADDITIONAL_MISSING_PREMISE_BELIEF_AND_SOURCE_NORMALIZATION_HISTORY.md",
+          "role": "older no-repeat premise and normalization context"
+        }
+      ],
+      "what_already_existed": "108 PRs created Oct24-Nov4 with original source audit/repair branches, original final source mapping SHA/file from Sept2, 97/97 calibration archive, ETL 322 rows zero drift, HVS/SEA-AD deposited-feature alias-negative closure #509, public source access/terms #528 erratum, D1 V2C main scoped independent review #522-#524, original #336 Phase2 9/9 independent audit, #469 source→Task5 synthetic route, #526/#531 source-measurability interpretation retraction, #536 measured q-other8 synthetic and C2 48 feature hard refusal, original Stage81B JEPA_ONLY u500, actual rare-tail readonly preflight and native Windows fix, real six-donor donor_umi check and corrected derivative, original public seven-track E2G.",
+      "new_work_or_result": "Read original late errata (#509, #513, #528 both versions, #531 erratum, #535 explicit withdrawal, main #524), compared all 108 PR metadata and their source/repair genealogies, and corrected my earlier seven-item next-task recommendations. Published one detailed human correction and one 108-PR machine source-precedence crosswalk. Existing PR534 failed newly composed V80 SHA replay remains isolated CI RED, not unexecuted original V80 science. Added truthful issue-specific comments on #494/#54/#55 marking completed components, keeping narrow still-open questions. Prior 50 chronology events retained unaltered.",
+      "negative_or_counterfactual_evidence": "Previous audit wrongly asserted the Sept2 final source mapping missing, required HVS/SEA alias audit anew, treated public NPH accession/terms and a hardware signer as missing prerequisites, told agents to create new source-binding fixture and D1 V2C gate despite #535 explicit no-duplicate correction, called Phase2 independent audit missing despite #336, called old rare-tail preflight/Windows fix and raw donor-UMI preparation new next work, and presumed Stage81B JEPA_ONLY had not run. Corrections disallow these repetitions. NPH52 alias and selection remain restricted; externally issued real human CaseBundle and biological learned student claim not earned, no training.",
+      "test_review_scope": "Scoped GitHub primary-source read and exact-source erratum precedence, dated PR metadata 108/108, main START_HERE and Macha independent PR522/523/524 scope, original issue bodies; no 108 complete code-diff line audits, no raw data reruns, no new model or controller outcome.",
+      "independent_review": "GPT_SOURCE_READ_AND_PRECEDENCE_CORRECTION__ORIGINAL_MACHA_REVIEWS_PRESERVED__NO_NEW_NONAUTHOR_EXPERIMENTAL_VERDICT",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Read-only synthesis of original real #314 and R5 and TD19 to isolate one truly unanswered learned biological target→student discrimination, only then freeze protocol",
+        "NPH52 feature alias and query-dependent cell-selection remain restricted; access/licensing already resolved",
+        "If and only if actual real human experiment needs it, narrow authenticated per-cell source issuer and tissue-block/selection uncertainties; no duplicate producer",
+        "PR525/538 author-scoped increments need independent review only if adopted; existing main V2C/D1 Docker already ACCEPT_SCOPED",
+        "PR534 new V80 cross-contract regression PIN mismatch isolated, original worlds done; PR537 GPU test on HOLD pending exact prior Stage81B duplicate check",
+        "N1 future precision consumer and rare-tail old-runner bypass are separate historically scoped issues, not priority next biology"
+      ],
+      "historical_supersession": "This event supersedes GPT's provisional Nov4 seven-item action order (now marked dated/not current), does not rewrite source experiments or the previous 50 events. 535 all-PR metadata census remains valid but neither 535/535 nor 108/108 implies full individual experimental acceptance.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/509",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/528",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/535",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/524"
+      ]
     }
   ]
 }
