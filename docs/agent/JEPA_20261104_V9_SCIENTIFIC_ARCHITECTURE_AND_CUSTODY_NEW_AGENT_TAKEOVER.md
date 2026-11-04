@@ -4,7 +4,7 @@
 
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
 
-**Read source first, not the old PR description.** This is the live entry point [handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460). Its source-backed audit is [PR #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) **exact head `47af1bba1dd7a844de282720ef06fced63e46b10`**, 49 append-only chronology events. At creation, #322's 25 CI checks were running; new agent must check the **same current head** before claiming fully green. Main was `28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb` (Nov2), distinct from live draft PR source branches.
+**Read source first, not the old PR description.** This is the live entry point [handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460). Its source-backed audit is [PR #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) **exact head `b9ec3f96003624e4e1549ff119e238a9b13a5543`**, 49 append-only chronology events. At creation, #322's 25 CI checks were running; new agent must check the **same current head** before claiming fully green. Main was `28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb` (Nov2), distinct from live draft PR source branches.
 
 **The master reconciliation is now an actionable, source-pinned custody index, NOT a claim every one of ~534 accessible PRs was individually reaudited.** Original source results have been reconciled at the major scientific-lane/no-repeat level, two wrongly-open historical execution gaps have been closed, and remaining specific unpublished execution/custody deltas are named. **Do not start with another complete GitHub history search.**
 
