@@ -2266,6 +2266,49 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/198",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/249"
       ]
+    },
+    {
+      "event_id": "20261104-MACHA-BRANCH-COMPLETION-CORRECTION-NO-REASSIGN-V1",
+      "date_utc": "2026-11-04",
+      "workstream": "macha_completed_work_branch_audit_and_no_duplicate_assignment",
+      "implementation_pr": 322,
+      "implementation_head": null,
+      "change_type": "chronology_correction",
+      "source_inputs": [
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
+          "role": "canonical no-repeat index"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_ITERATIVE_PROJECT_WIDE_HISTORY_SATURATION_AND_NEXT_FRONTIER_V1.md",
+          "role": "event55 audit being corrected"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_END_TO_END_SCIENTIFIC_NARRATIVE_AND_DECISION_LINEAGE_V1.md",
+          "role": "controlling scientific narrative"
+        }
+      ],
+      "what_already_existed": "Macha/Claude GPU-laptop branches already contain substantial independent review, repair and execution work that event55's proposed division of labor partially reassigned. Verified branch heads include source qualification 0b1af4f0, source-admission repair 1a4fda75, D1-to-V2C review 32c0a22b and delta bc788e9b, main V2C/D1 hostile repair proposal bce3a35a later accepted scoped on main, post-TD bridge review/repair 1621c6aa/bbdf9a90, PR526 independent measurement review and erratum 270bc33c, plus earlier Task0-4 and production-synthetic hostile review branches. Macha also explicitly corrected his own #531 claim by re-verifying that PR336 already independently audited the phase-2 9/9 receipt.",
+      "new_work_or_result": "Branch audit confirms that these Macha tasks are completed in their stated scopes and must not be reassigned. The prior event55 action wording assigning Macha to repeat source/receipt/review work is superseded. Future planning must start from Macha branch outputs and ask only for a demonstrably new GPU/data experiment after exact branch/receipt comparison.",
+      "negative_or_counterfactual_evidence": "Macha reviews frequently returned REPAIR_REQUIRED rather than acceptance; completed review does not imply system authorization. Examples include successive #525 hostile reviews and source/QC admission REDs. The correction is about avoiding duplicate work, not promoting authority.",
+      "test_review_scope": "Read-only GitHub branch-head and commit-message/source review. No web, no data rerun, no GPU execution, no protected outcome access.",
+      "independent_review": "GPT_BRANCH_LEVEL_RECONCILIATION_OF_MACHA_OUTPUTS__NO_NEW_MACHA_ASSIGNMENT",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Before assigning Macha any task, search Macha/Claude/GPU/experiment branch families and latest PR comments for existing execution/review evidence.",
+        "Do not reassign source qualification, D1/V2C composition review, main student-boundary hostile review, post-TD compatibility/bridge review, PR526 measurement review/support-semantics correction, or PR336 phase-2 audit.",
+        "Any future GPU assignment must identify one exact scientific contrast not already answered by Stage81, V65/V67, V75/V77/V79/V80, PR314, PR336, PR451, PR469, PR513, PR518, PR523, PR531 or their Macha/Claude branches."
+      ],
+      "historical_supersession": "Supersedes event55 division-of-labor language that told Macha to recover/review work already present on his branches. Event55's recovered scientific findings remain valid; only duplicate assignment wording is corrected.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/513",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/518",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/523",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/451"
+      ]
     }
   ]
 }
