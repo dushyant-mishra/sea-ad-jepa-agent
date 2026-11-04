@@ -1,0 +1,41 @@
+name: TD60 V5 checkpoint eligibility preflight (no authority)
+on:
+  push:
+    branches:
+      - fix/td60-v5-biological-checkpoint-no-u40-preflight-20261104
+    paths:
+      - "scripts/v5_anticheat/td60_v5_checkpoint_eligibility_preflight_v1.py"
+      - "tests/v5_anticheat/test_td60_v5_checkpoint_eligibility_preflight_v1.py"
+      - "docs/agent/TEACHER_STUDENT_V5_DATA_FIRST_AUTHORITY_CANDIDATE.json"
+      - ".github/workflows/td60-v5-checkpoint-preflight-v1.yml"
+  pull_request:
+    paths:
+      - "scripts/v5_anticheat/td60_v5_checkpoint_eligibility_preflight_v1.py"
+      - "tests/v5_anticheat/test_td60_v5_checkpoint_eligibility_preflight_v1.py"
+      - "docs/agent/TEACHER_STUDENT_V5_DATA_FIRST_AUTHORITY_CANDIDATE.json"
+      - ".github/workflows/td60-v5-checkpoint-preflight-v1.yml"
+  workflow_dispatch:
+
+jobs:
+  source-only-stop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Six hostile source-only preflight tests
+        run: python -m unittest discover -s tests/v5_anticheat -p 'test_td60_v5_checkpoint_eligibility_preflight_v1.py' -v
+      - name: Actual V5 source candidate MUST remain TD60 hold
+        run: |
+          python scripts/v5_anticheat/td60_v5_checkpoint_eligibility_preflight_v1.py --project-dir . > /tmp/td60-preflight.json
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/td60-preflight.json'))
+          assert x['status']=='HOLD_NO_LAWFUL_V5_BIOLOGICAL_CHECKPOINT__TD60_NOT_AUTHORIZED'
+          assert x['td60_evaluable_cases_if_separately_authorized']==48
+          assert x['checkpoint_selected'] is None
+          assert x['external_issuer_authenticated'] is False
+          assert all(v is False for v in x['authority'].values())
+          print('TD60_V5_SOURCE_ONLY_FAIL_CLOSED__NO_TRAINING__NO_BIOLOGICAL_OUTCOME')
+          PY
