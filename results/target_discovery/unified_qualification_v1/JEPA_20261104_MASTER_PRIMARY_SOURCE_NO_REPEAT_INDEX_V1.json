@@ -1319,5 +1319,70 @@
     "stop_a_b_c": "NOT_CROSSED",
     "preserves_original_v80_private_controller": true,
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "sol_v5_synth_complete_cold_start_handoff_event75_20261104": {
+    "chronology_event": 75,
+    "human": "docs/agent/JEPA_20261104_EVENT75_SOL_COMPLETE_SYNTHETIC_V5_COLD_START_TAKEOVER_AND_NO_REPEAT.md",
+    "human_blob_sha1": "4bee556908802fa1e0a6e946ac5ca716cba3b3b6",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_EVENT75_SOL_V5_SYNTHETIC_COMPLETE_SUCCESSOR_SOURCE_SCRIPT_DATA_RESULT_MAP.json",
+    "machine_blob_sha1": "c2a20921362f858fbf968c85f0189553d3164811",
+    "historical_read_first": "EXISTING_EVENT68_DETAILED_HANDOFF__535_PR_METADATA_AND_108_PR_SUPERSESSION__DO_NOT_REAUDIT",
+    "pr547_data": {
+      "head": "4bc7f9f31eaf1a7ccac49fdf45df7db9b0eef569",
+      "ci": "2_OF_2_SUCCESS",
+      "fit_zip_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+      "actual_cells": 1440,
+      "artificial_genes": 2048,
+      "donors": 36,
+      "three_C2_views_of_512": true,
+      "four_q_other8": true,
+      "review": "MACHA_PENDING",
+      "biology": "C1_TO_C6_UNASSESSED"
+    },
+    "pr548_neural": {
+      "head": "cde03f738c758694aa66211b5021603af943675b",
+      "base_pr": 224,
+      "ci_run": 41919004065,
+      "exact_head": "SUCCESS",
+      "v5_original_guarded_tests": 103,
+      "new_hostile_tests": 41,
+      "actual_six_block_u0_jepa_loss": 2.069324493408203,
+      "optimizer_updates": 0,
+      "ema_updates": 0,
+      "gpu_run": false,
+      "artifact_id": 13365264230,
+      "artifact_sha256": "2d8f9845f3e12b70d9f14ac43e95acc70998b5fb250fd621cc0379bf3d6226a6",
+      "review": "MACHA_PENDING",
+      "biology": "UNASSESSED",
+      "training_ready": false
+    },
+    "latest_macha_pr525": {
+      "exact_head": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "review_url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525#issuecomment-6642956092",
+      "verdict": "ACCEPT_SCOPED_INCREMENTAL_WITH_LIMITATIONS",
+      "selection_blockers": [
+        "P01_CALLER_SELF_DECLARED_PORTFOLIO_SHA",
+        "L06_PROSPECTIVE_DECLARATION_EXTERNAL_COMMIT_POINT"
+      ],
+      "must_bind": "EXTERNAL_TD_ISSUED_EXPECTED_PORTFOLIO_SHA256"
+    },
+    "carry_forward_historical_negative": [
+      "Stage81A3_V4A_10x500_FALLING_LOSS_FAILED_PLANTED_BIOLOGY",
+      "SIX_IPB_3_COMPLETED_500_UPDATE_ARMS_FAILED_CELL",
+      "STAGE81B_ANCHOR_HURT_GENE_IDENTITY_7p618x",
+      "T1_128x8_FP16_BACKWARD_IN_AUTOCAST_EXACT_ZERO_48_ATTENTION_GRADIENTS",
+      "RAW_CELL_VS_GENE_TOKEN_COLLAPSE",
+      "V79_Q08_RED_V80_NO_ESTIMATOR_AND_PORTABILITY_RED",
+      "REAL_TD314_SPENT"
+    ],
+    "cross_lanes": [
+      "PR541_HOLD",
+      "PR545_MACHA_REVIEW_PENDING",
+      "PR546_MACHA_REVIEW_PENDING",
+      "PR534_V80_SHA_RED",
+      "ORIGINAL_PRIVATE_V80_CONTROLLER_NOT_OPENED"
+    ],
+    "next": "INDEPENDENT_SOURCE_REVIEW_THEN_SCOPED_MULTIUPDATE_V5_GPU_PARITY_C1_C6_BIOLOGICAL_TESTS_WITH_OWNER_SCOPE",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
