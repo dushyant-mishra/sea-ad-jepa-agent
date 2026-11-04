@@ -1009,5 +1009,75 @@
     "no_controller_truth_in_repository": true,
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
     "next_owner_action": "Move unchanged verified controller ZIP to separate access-controlled controller vault, fit+receipt to fit-permitted archive, independently re-read SHA; conversation sandbox storage alone is not durable access isolation."
+  },
+  "task4_k02_k03_frozen_task3_history_red_event66_20261104": {
+    "chronology_event": 66,
+    "source_doc": "docs/agent/JEPA_20261104_TASK4_K02_K03_AND_FROZEN_TASK3_HISTORY_RED_EVENT66.md",
+    "k01_macha_review": {
+      "pr": 543,
+      "head": "7e4bffe8f75f65452e41304108c2d62b14e14cf5",
+      "verdict": "ACCEPT_SCOPED_K01_FIX_ONLY",
+      "comment_id": 6639527711
+    },
+    "k02_k03_original_red": {
+      "pr": 544,
+      "head": "b6295751246da82f823712c7c91dc71d86dc34d4",
+      "k02_sha": "b0707adb5fbe9a19954cdd45bab602d8ab29c0ea",
+      "k03_sha": "7639bbaa17362f16892aaafe674563915a544b65",
+      "expected_red_fails": 6
+    },
+    "sol_repair": {
+      "pr": 545,
+      "head": "f68513aeae83aaff7eae81dfda569fed3dd8359c",
+      "source": "scripts/v5/td_unified/task4_authority_barrier_v1.py",
+      "blob": "fd4329db645e708afc7467648a176e3213a3efbe",
+      "changes": [
+        "C3 mapping-carried self-consistency cannot grant PASS, diagnostic UNAUTHENTICATED_SNAPSHOT only",
+        "C1 exact PersistentCustodyStore, unbound replay, exact CustodyReplayResult only"
+      ],
+      "tests_unchanged": true,
+      "CI": {
+        "workflows_success": 4,
+        "focused_pass": 223,
+        "focused_skip": 10,
+        "full_pass": 414,
+        "full_skip": 10,
+        "windows_pass": 63,
+        "windows_skip": 7,
+        "benchmark_pass": 1,
+        "run_id": 41895158495
+      },
+      "nonauthor_review": "PENDING_MACHA"
+    },
+    "task3_direct_test_only": {
+      "pr": 546,
+      "head": "97594b419d31ad746402d74307bf3b0a845c22c4",
+      "base": "117dd51dea827e734b299982da93991b934bdc8f",
+      "test_file": "tests/v5/td_unified/test_task3_frozen_history_custody_provenance_sol_red.py",
+      "red_cases": [
+        "R1 subclass overrides validate_current; _require_history_custody accepts nonregistry",
+        "R2 exact-class history HMAC head overwritten; _require_history_custody accepts"
+      ],
+      "positive_guard": "lawful empty registry/custody accepted",
+      "CI": {
+        "task2_run": 41895678957,
+        "task3_run": 41895678959,
+        "passed_each": 192,
+        "failed_expected_each": 2,
+        "synthetic_integration": "SUCCESS"
+      },
+      "source_changed": false,
+      "owner_decision": "REQUIRES_SEPARATE_INDEPENDENT_TASK3_REVIEW_AND_VERSIONED_REPAIR",
+      "unqualified_claim": "does not prove real unit promoted"
+    },
+    "no_repeat": [
+      "Do not clone Macha #544 tests or weaken them",
+      "Do not modify accepted frozen Task3 in Task4 repair",
+      "Do not treat C1/C3 mechanical local checks as externally authenticated authority",
+      "Keep Task4 L01 process-only DEVELOPMENT budget and shared replay algorithm and local-only Windows/WSL",
+      "Do not rebuild historical post-TD, student runtime, EMA, synthetic worlds, #534 positive transport"
+    ],
+    "cumulative_task4_status": "HOLD_NEEDS_EVIDENCE",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
