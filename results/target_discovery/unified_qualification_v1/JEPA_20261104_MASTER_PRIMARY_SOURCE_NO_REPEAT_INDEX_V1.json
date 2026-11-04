@@ -1,0 +1,406 @@
+{
+  "schema": "JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1",
+  "date": "2026-11-04",
+  "coverage": "CURATED_SOURCE_ANCHOR_AND_DELTA_INDEX__NOT_CLAIM_OF_LINE_BY_LINE_534_PR_REVIEW",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "root_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "principle": "Prefer original primary receipt/script/hash/reviewer and original lane-level audit; only reopen an old audit if source bytes changed, an independently reproduced contradiction or new evidence changes its limited claim.",
+  "lane_audits": [
+    {
+      "id": "JEPA_MASTER",
+      "pr": 322,
+      "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
+      "role": "append-only historical chronology, negative lineage, current independent audit",
+      "primary": "results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json"
+    },
+    {
+      "id": "JEPA_LIVE_HANDOFF",
+      "pr": 460,
+      "branch": "handoff/jepa-v8-clean-successor-from-audit-20261027",
+      "role": "always-on first-read latest work and next actions",
+      "primary": "docs/agent/JEPA_NEW_AGENT_LIVE_POINTER_20261029.md"
+    },
+    {
+      "id": "JEPA_HISTORIC_HANDOFF",
+      "pr": 323,
+      "role": "HISTORICAL_ONLY; never treat as live work"
+    },
+    {
+      "id": "V79_AUDIT",
+      "pr": 302,
+      "head": "414cac96a6491855f06e3382c59fefbd63a9a547",
+      "role": "V79 realization and estimator history, immutable failures",
+      "primary": "results/v79/synthetic_lane_audit/V79_SYNTHETIC_LANE_AUDIT_INDEX_V1.json"
+    },
+    {
+      "id": "V79_COLD_START",
+      "pr": 309,
+      "head": "93ca7ffc689c86fb7fcd4f77e44a668af41b39c8",
+      "role": "historical V79 audit caretaker handoff"
+    },
+    {
+      "id": "SYNTH_NO_REPEAT",
+      "pr": 325,
+      "head": "bfeb2b868aa84cb94594869ef5cb196af286db90",
+      "role": "entire synthetic dataset V79/V80 negative/no-repeat and correction index",
+      "primary": "docs/agent/SYNTHETIC_DATASET_LANE_HISTORICAL_AUDIT_COMPENDIUM_20261013.md"
+    },
+    {
+      "id": "TD_FULL_DESIGN",
+      "pr": 338,
+      "head": "0e54de6a7212ddc85292b7bbc3774a5aabaf4ee2",
+      "role": "28 real gates, 15 structural conditional, 13 missing substantive prospective rules",
+      "primary": "results/target_discovery/TD_REAL_GATE_DESIGN_READINESS_V2.json"
+    },
+    {
+      "id": "TD_SINGLE_CORRECTED_REPLAY",
+      "pr": 314,
+      "head": "c6899a2910244a0352c0c57e7aea6e3026191da1",
+      "role": "one spent real TD replay, broad/mesoscale pass fine locality fail; no rerun"
+    },
+    {
+      "id": "PRIOR_FHRA",
+      "path": "docs/history/preservation_20260902/results/v4/stage81a3_foundation_heterogeneity_reality_audit.json",
+      "ref": "main",
+      "role": "real source observation operator and 4096 structural support"
+    },
+    {
+      "id": "LOCAL_SOURCE_EVIDENCE",
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_PROJECT_LOCAL_ASSET_SHA256_CUSTODY_V1.json",
+      "role": "project/user attachment exact hashes, archive-read-only receipts, no duplicate upload"
+    }
+  ],
+  "science_milestones": [
+    {
+      "phase": "AD_DISCOVERY_STAGE36_TO_STAGE49",
+      "prs": [
+        77,
+        87,
+        117,
+        131,
+        137
+      ],
+      "state": "18_gene_four_mechanism_traceable_priority__NO_CAUSAL_OR_DRUG_TARGET_WINNER",
+      "do_not": "Stage48 do_not_rerun_broad_gene_discovery; Stage50 graph negative, PR137 CRISPRbrain 1/31 engagement rejected"
+    },
+    {
+      "phase": "ORIGINAL_JEPA_V4A_AND_STAGE81",
+      "paths": [
+        "scripts/v4/stage81a3_synthetic_geometry_escape.py",
+        "scripts/v4/stage81a3_ema_bootstrap_disambiguation.py",
+        "scripts/v4/stage81a3_ipb_jepa_feasibility.py",
+        "scripts/v4/stage81a3_rlc_causal_fast_probe.py",
+        "docs/v4/STAGE81A3_CALIBRATION_AND_SYNTHETIC_MECHANICS_READOUT.md"
+      ],
+      "state": "10x500 V4A biology FAIL; faster EMA nonrescue; 6-IPB planned 8 but only 3 completed; Stage81B causal JEPA_ONLY vs anchor done; do not infer PR537 fixes biology"
+    },
+    {
+      "phase": "REAL_FOUNDATION_HETEROGENEITY",
+      "prs": [
+        220,
+        269,
+        271,
+        276
+      ],
+      "state": "Source/measurement and stability protocols predesigned, FHRA real assay operator; u205 source BA1.0 and residual .96875, no earned invariance",
+      "primary": "docs/agent/FOUNDATION_CURRENT_TRANSFER_REPLAY_AND_MATRIX_V2_AUDIT_20261011.md"
+    },
+    {
+      "phase": "PLANTED_SUPERVISED_AND_EMA_MECHANICS",
+      "prs": [
+        163,
+        178,
+        199,
+        201,
+        207,
+        224,
+        228,
+        236,
+        438
+      ],
+      "state": "5200-cell supervised recoverability, 120-step supervised EMA, canonical 6-IPB guarded runtime, 100K source measurement, negative learned RBB; not novel JEPA teacher recovered"
+    },
+    {
+      "phase": "MULTIMODAL_REGULATORY_PERTURBATIONS",
+      "prs": [
+        77,
+        87,
+        117,
+        131,
+        137,
+        201,
+        207,
+        312
+      ],
+      "state": "actual RNA+ATAC/SCENIC+-related regulatory, 16 perturbation assets, spatial and negative controls; not causal gene/teacher acceptance"
+    },
+    {
+      "phase": "REAL_RELATIONAL_TD",
+      "prs": [
+        284,
+        296,
+        298,
+        304,
+        314,
+        316,
+        318,
+        321,
+        336,
+        338,
+        369
+      ],
+      "state": "original repaired G6 physical PASS, original G7 follow-on needs exact terminal check, corrected single TD56-57B-57C-59 physically spent; 57B/59 broad/meso+, fine 57C negative; 9/9 sealed synthetic C2 gate test-of-test, not learned student"
+    },
+    {
+      "phase": "SYNTH_V79_V80",
+      "prs": [
+        279,
+        280,
+        283,
+        285,
+        286,
+        287,
+        291,
+        294,
+        295,
+        297,
+        299,
+        300,
+        301,
+        302,
+        305,
+        306,
+        308,
+        309,
+        325,
+        328,
+        348,
+        533,
+        534
+      ],
+      "state": "S174 physically characterized, structural support correction; V79 12 frozen worlds Q08 terminal NOT_QUALIFIED, V80 benchmark qualified but no estimator; 207 prior 85 postterminal split, V80 identity RED PR534; do not rerun worlds"
+    },
+    {
+      "phase": "SOURCE_ETL_RIGHTS",
+      "prs": [
+        349,
+        492,
+        505,
+        513,
+        523,
+        524,
+        526,
+        531
+      ],
+      "state": "104-donor FULL104/42 operators source, 50K 246702069 counts inverted, collision/alias rights unresolved, query library denominator leak, support!=detection, D1 only fixture accepted"
+    },
+    {
+      "phase": "FULL104_DIMENSION_REAL",
+      "prs": [
+        270,
+        273,
+        274
+      ],
+      "state": "Hoeffding-Bonferroni precision and authenticated metric receipt + fixed D_shared/private/obs selection engineered; no numerical full stream dimensions qualified",
+      "primary": "docs/agent/V5_FULL104_DIMENSION_PRECISION_HANDOFF_20261011.md"
+    },
+    {
+      "phase": "UNIFIED_TARGET_DOWNSTREAM",
+      "prs": [
+        275,
+        313,
+        315,
+        328,
+        338,
+        351,
+        369,
+        379,
+        380,
+        438,
+        440,
+        451,
+        469,
+        474,
+        525,
+        528,
+        535,
+        536
+      ],
+      "state": "candidate C1-C6, 28 gate scientific design, Task0-12 and CaseBundle true source righted producer–consumer bridges at respective scoped synthetic levels; no biological winner"
+    },
+    {
+      "phase": "NEW_NOV4_GPU_CANDIDATE",
+      "prs": [
+        537
+      ],
+      "head": "7e8ff44120fd7acda9046d0f509fab504b4f73f3",
+      "state": "2_OF_2_AUTHOR_CPU_PREFLIGHT_SUCCESS__NO_SUBMITTED_GPU_RECOVERY__PAUSE_BEFORE_DUPLICATE_OF_STAGE81B"
+    }
+  ],
+  "code_data_result_registry": [
+    {
+      "kind": "script",
+      "path": "scripts/v4/stage81a3_ipb_jepa_feasibility.py",
+      "ref": "main",
+      "role": "ORIGINAL stopped 6-IPB GPU model trainer and 3 completed arms; no rerun source modification"
+    },
+    {
+      "kind": "script",
+      "path": "scripts/v4/stage81a3_rlc_causal_fast_probe.py",
+      "ref": "main",
+      "role": "Original stop-and-bottleneck diagnostic, completed_runs=3"
+    },
+    {
+      "kind": "script",
+      "path": "scripts/v4/f1b_c3_training_successor_v2.py",
+      "ref": "main",
+      "role": "mandatory 48 tensors gradient/Adam countermeasures, distinct cause from old IPB"
+    },
+    {
+      "kind": "script",
+      "path": "scripts/v4/materialize_full104_phase2_expression.py",
+      "ref": "main",
+      "role": "real 4.55M cell expression producer, implemented_not_accepted for final CaseBundle"
+    },
+    {
+      "kind": "script",
+      "path": "scripts/v4/build_full104_production_adapter_metadata.py",
+      "ref": "main",
+      "role": "real metadata generator, 50 vs47 adapter rows still unreconciled"
+    },
+    {
+      "kind": "script",
+      "path": "scripts/v5_anticheat/bind_full104_expression_blocks_v4.py",
+      "ref": "PR274",
+      "role": "FULL104 exact 8915-block binder and 4.55M source identity terminal"
+    },
+    {
+      "kind": "script",
+      "path": "scripts/v5_anticheat/derive_full_stream_dimension_family_v1.py",
+      "ref": "PR270",
+      "role": "existing D_shared/D_private/D_obs selection authority, not current numeric result"
+    },
+    {
+      "kind": "script",
+      "path": "src/sea_ad_jepa/v4/foundation_qualification_v4.py",
+      "ref": "PR269",
+      "role": "two-axis OOD and subspace-only stability"
+    },
+    {
+      "kind": "script",
+      "path": "scripts/v79/run_v79_s174_structure_replay.py",
+      "ref": "PR283",
+      "role": "original physical V3 S174 model with fixed operator lambda"
+    },
+    {
+      "kind": "script",
+      "path": "scripts/v79/run_v79_s174_structure_replay_masked.py",
+      "ref": "PR287",
+      "role": "successor measured-zero != structurally absent, follow-on physical result to reconcile"
+    },
+    {
+      "kind": "script",
+      "path": "scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py",
+      "ref": "main",
+      "role": "accepted synthetic/fixture-only base-righted student depth, not private source library"
+    },
+    {
+      "kind": "script",
+      "path": "tests/v4/test_stage81a3_ipb_jepa_only_postrepair_rerun_20261104.py",
+      "ref": "PR537",
+      "role": "CPU hostile preflight only, NOT biology"
+    },
+    {
+      "kind": "script",
+      "path": "scripts/v4/stage81a3_ipb_jepa_only_postrepair_rerun_20261104.py",
+      "ref": "PR537",
+      "role": "pending 4x500 exact source synthetic JEPA_ONLY GPU candidate, no submitted result"
+    },
+    {
+      "kind": "script",
+      "path": "tests/v5/td_unified/test_frozen_actual_target_producer_admission_20261103.py",
+      "ref": "PR536",
+      "role": "actual 30 synthetic fit cells source-admission test; 10 measured q-other8, 20 NE, C2 original rejects 48"
+    },
+    {
+      "kind": "result",
+      "path": "docs/agent/TD_CORRECTED_REPLAY_OUTCOME_7819aabd_20261012/TD_CORRECTED_REPLAY_OUTCOME.md",
+      "ref": "PR314",
+      "role": "single spent real TD corrected replay outcome"
+    },
+    {
+      "kind": "result",
+      "path": "results/v79/development/s174_structure_replay_v3/V79_S174_STRUCTURE_REPLAY_DEVELOPMENT_V3.json",
+      "ref": "PR285",
+      "role": "exact-S174 original physical statistical model, development only"
+    },
+    {
+      "kind": "result",
+      "path": "results/v79/v2_core_realization_audit_freeze_v1/REALIZED_WORLDS_V1_COMPLETE_SHA256_LEDGER.tsv",
+      "ref": "PR297",
+      "role": "498-file Windows authoritative V79 fixed world ledger, no regeneration"
+    },
+    {
+      "kind": "result",
+      "path": "results/v4/FOUNDATION_MATRIX_LABEL_IDENTIFIABILITY_V2.csv",
+      "ref": "PR276",
+      "sha256": "9938144a00f7bad209506c809ff3fa54747dde10c34373358df7a89defe3f3e3",
+      "role": "34/42 broad ontology available"
+    },
+    {
+      "kind": "result",
+      "path": "results/v4/stage81a3_ipb_jepa_feasibility.json",
+      "ref": "GPU_local_original_report_not_main",
+      "sha256": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "role": "old 3 arm partial; never invent missing eight-arm classification"
+    },
+    {
+      "kind": "result",
+      "path": "results/synthetic/stage81a3_ipb_jepa_only_postrepair_20261104/RECEIPT.json",
+      "ref": "PR537_local_GPU_if_executed",
+      "role": "not submitted; missing result is not proof no local run"
+    },
+    {
+      "kind": "asset",
+      "path": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "ref": "JEPA_project_attachment",
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "role": "source and teacher shortcut audit, no repeat"
+    },
+    {
+      "kind": "asset",
+      "path": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001+part002",
+      "ref": "JEPA_project_attachment",
+      "role": "50K discovery expression not full4.55M stream"
+    },
+    {
+      "kind": "asset",
+      "path": "checkpoints.zip and t1_checkpoint_u0200.zip",
+      "ref": "JEPA_project_attachment",
+      "role": "old checkpoint source evidence; not production learned teacher"
+    }
+  ],
+  "known_scientific_errors_do_not_repeat": [
+    "Teacher target q scalar and source whole-cell library denominator leak; use complement-only D1 and independent counts if appropriate, PR178/505",
+    "Structural assay support != empirical detection != measured zero, PR531 and S174 PR287",
+    "Overlapping legacy gene annotations are conservative withholding/blocking rights, not biological alias equality; PR512/513 three adopted restrictions need implementation",
+    "Source/donor confounding and annotation ontology: 34/42 broad-class available, u205 residual source can dominate",
+    "Low JEPA/student loss and EMA updates are not measured biological recovery; original Stage81A3, RBB and V65",
+    "Do not invent production dimension from 5/96/160/224/320/512 historical provisional widths",
+    "PR328 480x48 synthetic truth C3 population mean q0 is not R5 per-cell 8-other-gene; C2 PR316 requires 3 disjoint 512",
+    "Original V79 failed at Q08; postterminal 85 forensic not 292 prior qualified; V80 source hash cross-replay PR534 RED",
+    "Never infer source → CaseBundle authenticity from a fixture producer or Python type shape",
+    "Do not rerun original PR314, PR336, PR469, V79 realized worlds or already qualified V65 donor-heldout recovery"
+  ],
+  "still_unresolved_by_current_work": [
+    "Original G7 last terminal exact receipt and authorized sequence to PR314",
+    "Post-PR287 physically masked S174 subsequent comparison result and V79/V80 current selection law",
+    "Original full FULL104 8,915-block physical closure and numeric dimension receipt if already performed by Macha",
+    "Stage81B JEPA_ONLY comparator exact same fixture/seed/objective vs PR537 before GPU dispatch",
+    "Upstream 3 source-authorized alias-right restrictions plus physical source parent provenance to real CaseBundle",
+    "PR525 latest independent Macha review and PR533 207/85 prospective successor law",
+    "C2/C3 matched original teacher-target independent synthetic truth/heldout learnability and 13 blocked substantive real design gates"
+  ],
+  "status": "SYNTHESIZED_NOT_ALL_534_PRS_INDEPENDENTLY_REVIEWED__AUDIT_DELTA_ONLY",
+  "future_agent_rule": "Read live PR460 pointer and this index; check exact GitHub head before any work; use source PR pointers not stale PR-body opening text. The 2026-11-04 audit append-only record advances with new evidence; do not start from uncurated chronological PR crawl."
+}
