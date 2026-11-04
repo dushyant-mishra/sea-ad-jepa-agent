@@ -1880,6 +1880,79 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/528",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/537"
       ]
+    },
+    {
+      "event_id": "20261104-V9-ORIGINAL-SCIENCE-COVERAGE-CROSSWALK-16-WORKSTREAMS",
+      "date_utc": "2026-11-04",
+      "workstream": "historical_primary_work_original_scientific_coverage_first_read_v9_underindex_repair",
+      "implementation_pr": 322,
+      "implementation_head": null,
+      "change_type": "append_only_scientific_navigation_and_source_provenance_reconciliation",
+      "source_inputs": [
+        {
+          "path": "docs/V3_SCORECARD.md",
+          "blob_sha1": "4c43b0d4b57dd955887223d4da7a525c508bf8ed",
+          "role": "original V3 official pathology benchmark and graph-specificity rule"
+        },
+        {
+          "path": "results/reports/stage63_dlpfc_signal_instability_diagnosis_report_v1.md",
+          "blob_sha1": "4bbfad59453997d94c1ac413d71b0266057dc723",
+          "role": "original DLPFC repeated negative"
+        },
+        {
+          "path": "results/reports/stage69_rare_microglia_auxiliary_head_jepa_audit_report_v1.md",
+          "blob_sha1": "529af717e6dc4b019faaaf38a80f37422d5b6f2b",
+          "role": "original positive scoped rare-auxiliary proxy"
+        },
+        {
+          "path": "results/reports/stage79_graph_controls_v1.json",
+          "blob_sha1": "9ac0adaf8d6b9ce5b90efd54abf50c49b8ea484a",
+          "role": "original 152 graph-control executed physics"
+        },
+        {
+          "path": "target_discovery/iterations/td19_claude_followup/TD19_DECISION.md",
+          "blob_sha1": "bb207df987285190edf40fff6a19137cf63de0b",
+          "role": "original depth-only relational falsification"
+        },
+        {
+          "path": "docs/history/foundation_target_discovery_prior_20260907/stage81/docs/v4/STAGE81A3R_FREEZE1_REPRESENTATION_CONTRACT.md",
+          "blob_sha1": "2bf156f60ad5ca60fd06231c9691d371864528cb",
+          "role": "historical d_global224 bounded freeze, not current production"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_V9_PREVIOUS_WORK_UNDERINDEXING_CORRECTION_V1.md",
+          "role": "new first-read human crosswalk"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_V9_PREVIOUS_WORK_COMPLETENESS_CROSSWALK_V1.json",
+          "role": "new 16-workstream machine original-source and negative custody"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
+          "role": "old G7 navigation error corrected, original result untouched"
+        }
+      ],
+      "what_already_existed": "Forty-eight append-only chronology events already source-pinned older V1/V2/V3 Graph-JEPA, external 2957-gene cohort tests, Stage53-70 rare and negative graph lock, 103-resource/770-annotation Stage36-49 gene/PI artifacts, Stage72-79 RNA/ATAC/SCENIC+ frozen GeneJEPA perturbation and 152 graph-controls, Stage81A3R historical 224D Freeze1, TD19 depth-only falsification and later conditional residual, feature/row/guide/PAR_Y comparator errors, clone-aware perturbation recompute, UCDQ context governance and older premise/RBB. V9 first-read collapsed these into 13 broad phases /28 source locators.",
+      "new_work_or_result": "New source-indexed V9 completeness companion with 16 concrete older scientific workstreams and original primary source paths/Git blob identities or prior source-audited locators. Fixed stale REAL_RELATIONAL_TD G7 'terminal check needed' index wording to one-run NOT_ESTIMABLE. Preserved all 48 old chronology entries unchanged and added this event; did not execute old science or source ETL.",
+      "negative_or_counterfactual_evidence": "V3 graph prediction is not graph-specificity; DLPFC shuffled donor null outperformed, Stage79 F13 passes only model-control mechanics, Stage75 regulatory is noncausal; TD19 depth-only r .980-.986 defeats generic cross-source geometry; historic d_global224 not current full104 dimension; source gene identity errors are incident-specific; weak external cohorts are not pristine independent validation; gene discovery original no-repeat remains; 179384 bulk rows reproduced numerically not biologically validated; original G7 terminal closed NOT_ESTIMABLE.",
+      "test_review_scope": "Source-pinned read-only audit of original V3 scorecard, Stage63/69/75F/76–79 outputs, TD19, A3R Freeze1, Stage48 and prior rounds 1–34 historical source recovery/audits. No GPU run, no physical source read, no novel estimator, no authority claim. Exact postcommit audit CI must be checked.",
+      "independent_review": "GPT_ORIGINAL_SOURCE_AND_PRIOR_AUDIT_READ__MACHINE_NAVIGATION_ONLY__NONAUTHOR_SCIENTIFIC_REVIEW_NOT_CLAIMED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "PR538 source-query block author CI 6/6 at b901d3fe but independent latest-head Macha review and real source issuer are distinct",
+        "Original true source→CaseBundle righted parent/issuer and q-independent roster still missing",
+        "C2/C3 prospective true learned student and biologically informative vs technical/wrong-q/wrong-cell controls pending",
+        "PR537 GPU prior Stage81B equivalence remains hold; no forced run",
+        "V79/V80 Q08 and original cross-host SHA remain distinct custody blockers"
+      ],
+      "historical_supersession": "Corrects V9 first-read compression and stale machine-index G7 sentence; does not supersede or erase any of 48 prior events, original sources, negative decisions, old 224D historical Freeze1 or prior tool receipts.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/304",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/538"
+      ]
     }
   ]
 }
