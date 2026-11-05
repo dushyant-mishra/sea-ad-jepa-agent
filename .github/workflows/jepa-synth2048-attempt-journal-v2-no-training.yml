@@ -1,0 +1,61 @@
+name: V5 proposed every-attempt journal V2 fake-byte smoke (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - scripts/v5/jepa_synth2048_attempt_journal_v2.py
+      - scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py
+      - scripts/v5/jepa_synth2048_atomic_checkpoint_bytes_v1.py
+      - tests/test_jepa_synth2048_attempt_journal_v2.py
+      - tests/test_jepa_synth2048_collapse_state_vs_attempt_macha_red.py
+      - tests/test_jepa_synth2048_last_healthy_recoverability_macha_red.py
+      - docs/agent/JEPA_20261105_V5_PROSPECTIVE_ATTEMPT_JOURNAL_V2_NO_TRAINING.md
+      - .github/workflows/jepa-synth2048-attempt-journal-v2-no-training.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  no-model-posix-journal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Minimal pytest only, NO torch/CUDA/neural training
+        run: python -m pip install --disable-pip-version-check pytest==9.0.2
+      - name: Full original Macha #557/#560/#561/#566/#567 plus V2 file/journal smoke
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/test_jepa_synth2048_checkpoint_capture_prefreeze_v1.py \
+            tests/test_jepa_synth2048_checkpoint_failed_attempt_macha_red.py \
+            tests/test_jepa_synth2048_failed_onset_repair_sol_v1.py \
+            tests/test_jepa_synth2048_failed_onset_cause_macha_red.py \
+            tests/test_jepa_synth2048_failed_onset_cause_successor_v1.py \
+            tests/test_jepa_synth2048_collapse_state_vs_attempt_macha_red.py \
+            tests/test_jepa_synth2048_collapse_state_after_step_successor_v2.py \
+            tests/test_jepa_synth2048_atomic_checkpoint_bytes_v1.py \
+            tests/test_jepa_synth2048_failed_onset_atomic_journal_v1.py \
+            tests/test_jepa_synth2048_failed_onset_journal_macha_red.py \
+            tests/test_jepa_synth2048_forensic_prefix_e2_successor_v1.py \
+            tests/test_jepa_synth2048_write_intent_e1_scoped_v1.py \
+            tests/test_jepa_synth2048_last_healthy_recoverability_macha_red.py \
+            tests/test_jepa_synth2048_typed_onset_disk_integration_v2.py \
+            tests/test_jepa_synth2048_attempt_journal_v2.py
+      - name: Fail if this source advertises training or model resume
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from scripts.v5 import jepa_synth2048_attempt_journal_v2 as v
+          assert v.AUTHORITY.endswith("REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED")
+          assert "training" in v.__doc__.lower()
+          assert not hasattr(v, "resume_model")
+          assert not hasattr(v, "train")
+          print("FAKE_OPAQUE_BYTES_ONLY__NO_ACTUAL_NEURAL_MODEL_OR_OPTIMIZER")
+          PY
