@@ -3797,6 +3797,59 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41912111013",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/38504094639"
       ]
+    },
+    {
+      "event_id": "20261105-SOL-V5-STRUCTURED-CPU-ADAM-CHECKPOINT-PREFLIGHT-TO-FAKE-JOURNAL-EVENT91",
+      "date_utc": "2026-11-05",
+      "workstream": "v5_readonly_cpu_all_adam_teacher_value_encoder_to_optimized_v2_synthetic_checkpoint_before_write",
+      "implementation_pr": 575,
+      "implementation_head": "41e7c556e61e313253b7e839e948328b47ab88dc",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT91_READONLY_CPU_FULL_ADAM_STRUCTURED_JOURNAL_BRIDGE_NO_TRAINING.md",
+          "blob_sha1": "6219be538642ed3b15a895e2ce2e6bd14ce1eb35",
+          "role": "Event91 mirrored human full-state-to-V2 synthetic implementation, tests and limits"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT91_V5_STRUCTURED_STATE_JOURNAL_SOURCE_MAP.json",
+          "blob_sha1": "94c8b31e1c5e186091cc928eaf8a209ff3e72572",
+          "role": "Event91 mirrored machine exact PR sources, CI, immutable original Macha test blobs and no authority"
+        },
+        {
+          "path": "scripts/v5/jepa_v5_structured_journal_preflight_v1.py",
+          "blob_sha1": "da0ea17f57e8160ae79cf1ceb7e045d895a750bf",
+          "role": "Actual PR575 implementation read-only complete Adam/teacher expression encoder before fake journal outcome"
+        },
+        {
+          "path": "tests/test_jepa_v5_structured_journal_preflight_v1.py",
+          "blob_sha1": "d1feb114824bdb0b8525fd2eac7c9e14074a3813",
+          "role": "Adversarial synthetic CPU fake-Adam/probe/metadata/PID no-write tests"
+        }
+      ],
+      "change_type": "implementation",
+      "what_already_existed": "Event90 #322/#460 full biological/history/source/data/results takeover with 90 immutable events, 55 no-repeat keys and one known stale canonical runtime locator. Event88 #570 prospective opaque V2 journal, Macha #572 fixes first collapse and crash, Sol #573 PID fork guard, Sol #574 incremental I/O under Macha review. Event89 #571 separate read-only CPU Adam/online/teacher/predictor and all-supplied-gradient checker (28 tests x2). No full neural checkpoint, physically sourced panel probes or optimizer authorization.",
+      "new_work_or_result": "Draft PR575 stacked on PR574 head 42cb0efe89882b066d9e123523ecfc5f9b2a9d85. Ported byte-identical read-only model/Adam validator fea600306364adb4d23f333b61e45f622686b3b1 and its original PR571 tests 3247a0de6e33f49d708d82422c254211b6d18ac5, adding synthetic V2 preflight module da0ea17f57e8160ae79cf1ceb7e045d895a750bf. Validates safe SHA bound weights_only CPU snapshot, every named Adam moment incl. online value_encoder, exact update and EMA count, matching online/teacher names/shapes/dtypes, configured run/panel/rights/gene/source/Philox/seed, plus state-bound caller-reported noncollapsed probe BEFORE u0 open or reported success disk publication. Rejects malformed Adam/teacher/rights/probes without writing state/telemetry; process-local opening contract detects drift and V2 PID-bound writer prevents fork continuation. Read-only stored forensic state structure reinspection, no executable model restore. Exact-head hosted run 42088900620: Python3.11.9 55 passed integration plus original read-only and 57 passed V2 crash/Macha/fork/IO regressions; Python3.12.7 same 55+57; 2/2 jobs SUCCESS. No optimizer, model forward/backward or teacher EMA steps executed.",
+      "negative_or_counterfactual_evidence": "Adam slots are manually populated from tiny synthetic CPU fixture modules, not proof of an optimizer step. Reported probes are supplied by test caller; not actual fixed TRAIN panel physical readings, learned representation or biological healthy-state certification. V2 on-disk run.lock lacks independent gene-axis/source/Philox/seed sealing; bridge binds caller expected and opening-process-only memory, not independently owned source trust. Snapshot omits full V5 live Python/NumPy/CUDA/masking RNG, AMP scaler, exact data iterator, authenticated rights/content, true teacher EMA arithmetic and exact fresh process RT1–RT8. No real RNA/GPU or optimizer steps, no source-specific C1–C6 qualification. Source PR574 still awaits Macha performance review and actual laptop benchmark; PR575 author CI not Macha verdict.",
+      "test_review_scope": "New integration test blob d1feb114824bdb0b8525fd2eac7c9e14074a3813, original #571 read-only tests blob 3247a0de6e33f49d708d82422c254211b6d18ac5 unchanged. Re-ran Macha #572 original RED and controls, Sol #573 fork and #574 incremental I/O: 57 each Python version. Original independent Macha #557 bfa5345775570205def66eb19a98efc207d28d90, #560 3ab6c208206251728116debda1edb226cb5b647a, #561 be259ab4cdcf035d7bf05134f68b6fe8d09f8833, #566 60a16378c22b35ec5d52837c7c641cf6a59e0935, #567 c513693fa11b2c0ef72b68601ca83dcd5a0a5b2f not modified. Hosted run 42088900620 exact PR575 41e7c556: all 112 assertions tests passed per Python version. Macha independent #575 review requested/pending.",
+      "independent_review": "PR575_AUTHOR_55_PLUS_57_X2_CI_GREEN__MACHA_INDEPENDENT_REVIEW_PENDING__NO_TRAINING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha review and direct independent repair of #574 disk I/O and #575 synthetic structural preflight, preserving original RED source blobs.",
+        "Complete physically measured state-hash-bound gradients for every online/predictor tensor, teacher EMA and fixed TRAIN panel CELL/gene-token variation plus identity-only/shuffled-expression/teacher-variance controls.",
+        "Versioned complete real V5 model execution snapshot with Python/NumPy/CUDA/masking RNG, AMP scaler, source rights/manifest, gene axis, config and code identity sealed in durable run contract.",
+        "Actual next-update fresh-process RT1–RT8 bitwise replay must wait for separate owner permission for synthetic optimizer steps. No real RNA/GPU training/Stage4.",
+        "Owner-only V80 sealed-controller source escrow expiry 2026-11-13 and dev synthetic FIT expiry 2026-12-04 remain in Event90; no public sealed truth."
+      ],
+      "historical_supersession": "Event91 adds a new scoped implementation to immutable Event1–90; neither rewrites 535 PR historical metadata/TD/Stage81/V79/V80/R5 nor promotes source/representation winners.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/575",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42088900620",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/574",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/571",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
+      ]
     }
   ]
 }
