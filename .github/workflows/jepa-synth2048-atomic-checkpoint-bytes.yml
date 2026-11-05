@@ -16,7 +16,7 @@ permissions:
   contents: read
 jobs:
   actual-disk-sha-no-model:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         python: ["3.11.9", "3.12.7"]
