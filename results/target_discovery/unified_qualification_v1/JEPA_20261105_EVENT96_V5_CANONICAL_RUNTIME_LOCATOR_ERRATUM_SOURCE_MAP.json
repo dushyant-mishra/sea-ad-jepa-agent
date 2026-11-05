@@ -19,11 +19,11 @@
     "original_head_fetch_status": "NOT_FOUND",
     "event90_status": "ERRATUM_OPEN__LOCATE_ORIGINAL_OWNER_PR",
     "path_now_exists": false,
-    "status": "LITERAL_PATH_STILL_INVALID__ROLE_RESOLVED_WITH_EXISTING_GUARDED_FILES"
+    "status": "LITERAL_PATH_NOT_FOUND__GUARDED_ROLE_SOURCE_LOCATED_BY_SOL__MACHA_CONFIRMATION_PENDING"
   },
   "new_human": {
     "path": "docs/agent/JEPA_20261105_EVENT96_CANONICAL_V5_GUARDED_RUNTIME_SOURCE_LOCATOR_ERRATUM_NO_EXECUTION.md",
-    "git_blob_sha1": "adecd87142f72924fa225293f6448acc4850833e"
+    "git_blob_sha1": "1f17ea1796143a16c0abb448377984daa7a3716c"
   },
   "exact_original_sources": [
     {
@@ -84,6 +84,13 @@
     "reason": "read-only Git content and blob verification only"
   },
   "preserve": "Do not mutate Events68/90, original RED tests or source; this is an additive role-locator erratum. Historical public original-path retrieval remains 55/56; the one invalid path remains invalid despite role resolution.",
-  "no_repeat": "Do not rebuild guarded V5 actor, EMA or mechanical runtime. Macha owns independent #579 review and integrated #575/#576/#577/#579/#578 repairs; no collision. No training/optimizer/GPU/source read.",
-  "owner_v80_status": "OWNER_CONFIRMED_PERSONAL_DOWNLOAD_COMPLETE__V80_BACKUP_RESOLVED"
+  "no_repeat": "Do not rebuild guarded V5 actor or repeat old PR census. Macha original priority independent #579 plus #575/#576/#578 review; separate scoped source-locator verification requested; no accepted finding until reciprocal verdict. No training/optimizer/GPU/source read.",
+  "owner_v80_status": "OWNER_CONFIRMED_PERSONAL_DOWNLOAD_COMPLETE__V80_BACKUP_RESOLVED",
+  "independent_review": {
+    "status": "MACHA_REVIEW_REQUESTED_NOT_RECEIVED",
+    "comment_url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460#issuecomment-6669210784",
+    "sol_source_check": "LITERAL_FILE_NOT_FOUND_IN_PR224_PR525_PR548_PR570_PR579_MAIN",
+    "scope": "SOURCE_ROLE_LOCATED_PROVISIONALLY__FULL_RUNTIME_INTEGRATION_NOT_TESTED",
+    "next": "Macha independently verify historical renames, actual entrypoint and interpretation; do not self-accept"
+  }
 }
