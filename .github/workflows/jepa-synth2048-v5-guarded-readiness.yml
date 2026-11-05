@@ -5,6 +5,8 @@ on:
       - scripts/v5/jepa_synth2048_v5_readiness.py
       - tests/test_jepa_synth2048_v5_readiness.py
       - tests/test_jepa_synth2048_collapse_sentinel_v1.py
+      - tests/test_jepa_synth2048_token_cell_invariance_macha_red.py
+      - tests/test_jepa_synth2048_cross_cell_token_alignment_sol_v1.py
       - scripts/v5/jepa_synth2048_collapse_sentinel_v1.py
       - .github/workflows/jepa-synth2048-v5-guarded-readiness.yml
       - docs/agent/JEPA_20261104_SYNTH2048_EXACT_LATEST_MODEL_RUNTIME_AUDIT.md
@@ -71,7 +73,7 @@ jobs:
           OMP_NUM_THREADS: "2"
           MKL_NUM_THREADS: "2"
         run: |
-          python -m pytest -q tests/test_jepa_synth2048_v5_readiness.py tests/test_jepa_synth2048_collapse_sentinel_v1.py
+          python -m pytest -q tests/test_jepa_synth2048_v5_readiness.py tests/test_jepa_synth2048_collapse_sentinel_v1.py tests/test_jepa_synth2048_token_cell_invariance_macha_red.py tests/test_jepa_synth2048_cross_cell_token_alignment_sol_v1.py
       - name: Independent CLI exact FIT/source preflight and six-block U0
         env:
           PYTHONPATH: src:.
@@ -96,6 +98,8 @@ jobs:
           assert z['historical_mandatory_48_registry']['count']==48
           assert z['u0_student_cell_geometry']['qualified_biological_representation'] is False
           assert z['u0_teacher_cell_geometry']['qualified_biological_representation'] is False
+          assert z['u0_teacher_gene_token_geometry']['gene_id_alignment']=='EXPLICIT_CANONICAL_GENE_IDS'
+          assert z['u0_student_gene_token_geometry']['gene_id_alignment']=='EXPLICIT_CANONICAL_GENE_IDS'
           assert z['u0_student_gene_token_geometry']['exact_token_collapsed_cells']==0
           assert z['u0_teacher_gene_token_geometry']['exact_token_collapsed_cells']==0
           assert z['u0_student_gene_token_geometry']['qualified_biological_representation'] is False

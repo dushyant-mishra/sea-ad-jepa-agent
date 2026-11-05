@@ -100,11 +100,19 @@ def geometry_diagnostic(states: np.ndarray) -> GeometryReport:
 
 
 
-def token_geometry_diagnostic(states: np.ndarray) -> dict[str, object]:
-    """Raw gene-token diversity; CELL diversity alone can hide token collapse.
+def token_geometry_diagnostic(
+    states: np.ndarray, *, gene_ids: np.ndarray | None = None,
+) -> dict[str, object]:
+    """Check BOTH gene-token collapse axes, aligned by physical gene identity.
 
-    Mirrors the historical distinction between CELL and slot/token collapse.
-    This does not select a token-variance loss or a numerical cutoff.
+    Original #548 checked only 'every gene within a cell is identical'.
+    Macha #552 showed the opposite failure: every *same gene* token can be
+    identical across distinct cells, yielding identity-only JEPA predictions
+    while CELL embeddings are not collapsed. Positions cannot be compared
+    when structural measurements/masks differ: use supplied exact gene IDs.
+
+    No tuned threshold: exact-equality failure is a mechanical STOP; partial
+    cell-specific diversity is telemetry ONLY, NOT biology qualification.
     """
     x = np.asarray(states)
     if x.ndim != 3 or min(x.shape) < 2 or x.dtype.kind not in "fiu":
@@ -112,18 +120,73 @@ def token_geometry_diagnostic(states: np.ndarray) -> dict[str, object]:
     a = x.astype(np.float64, copy=False)
     if not np.isfinite(a).all():
         raise CollapseStop("nonfinite gene-token state")
-    row_collapse = np.all(a == a[:, :1, :], axis=(1, 2))
-    if np.any(row_collapse):
+
+    if gene_ids is None:
+        # Compatibility with original synthetic fixture tests only; real V5
+        # must pass packed canonical gene IDs to avoid comparing shifted tokens.
+        ids = np.broadcast_to(
+            np.arange(a.shape[1], dtype=np.int64), a.shape[:2]
+        )
+        alignment = "POSITIONAL_SYNTHETIC_ONLY__NO_SUPPORT_PARITY_AUTHORITY"
+    else:
+        raw = np.asarray(gene_ids)
+        if raw.shape != a.shape[:2] or raw.dtype.kind not in "iu":
+            raise CollapseStop("gene IDs must be integral [cells,tokens] aligned to states")
+        ids = raw
+        if (ids < 0).any():
+            raise CollapseStop("negative invalid or padding gene ID")
+        if any(len(np.unique(row)) != len(row) for row in ids):
+            raise CollapseStop("duplicate physical gene ID within a cell")
+        alignment = "EXPLICIT_CANONICAL_GENE_IDS"
+
+    within_equal = np.all(a == a[:, :1, :], axis=(1, 2))
+    if np.any(within_equal):
         raise CollapseStop("exactly identical gene-token states within a cell")
+
+    # Accumulate first-seen gene token per canonical address, compare the
+    # *same* address across all participating cells regardless of column.
+    first_by_gene: dict[int, np.ndarray] = {}
+    observations_by_gene: dict[int, int] = {}
+    varying_gene: set[int] = set()
+    for row in range(a.shape[0]):
+        for col in range(a.shape[1]):
+            gene = int(ids[row, col])
+            vec = a[row, col]
+            if gene in first_by_gene:
+                observations_by_gene[gene] += 1
+                if not np.array_equal(vec, first_by_gene[gene]):
+                    varying_gene.add(gene)
+            else:
+                first_by_gene[gene] = vec
+                observations_by_gene[gene] = 1
+
+    shared = {gene for gene, n in observations_by_gene.items() if n >= 2}
+    if shared and not varying_gene:
+        raise CollapseStop(
+            "identity-only gene-token collapse: aligned same-gene tokens "
+            "are exactly invariant across all observed cells"
+        )
+
     within_std = np.std(a, axis=1, ddof=0)
     return {
-        "status": "UNQUALIFIED_TOKEN_GEOMETRY_TELEMETRY_ONLY",
-        "cells": int(a.shape[0]), "tokens_per_cell": int(a.shape[1]),
+        "status": (
+            "UNQUALIFIED_TOKEN_GEOMETRY_TELEMETRY_ONLY" if shared
+            else "NOT_ESTIMABLE_NO_SHARED_GENE_IDS"
+        ),
+        "cells": int(a.shape[0]),
+        "tokens_per_cell": int(a.shape[1]),
         "width": int(a.shape[2]),
         "within_cell_feature_std_median": float(np.median(within_std)),
         "exact_token_collapsed_cells": 0,
+        "shared_gene_ids_compared_across_cells": len(shared),
+        "shared_gene_ids_with_cell_specific_states": len(varying_gene),
+        "shared_gene_ids_without_detected_cell_specific_states": (
+            len(shared) - len(varying_gene)
+        ),
+        "gene_id_alignment": alignment,
         "qualified_biological_representation": False,
     }
+
 
 
 def check_encoder_gradient_registry(online: object) -> dict:
