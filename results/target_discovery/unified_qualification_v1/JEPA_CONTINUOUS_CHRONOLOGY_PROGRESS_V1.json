@@ -3453,6 +3453,47 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/561",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41973584129"
       ]
+    },
+    {
+      "event_id": "20261105-SOL-V5-561-E2-FORENSIC-LAST-GOOD-OPAQUE-CHECKPOINT-RECOVERY-AUTHOR-CI-EVENT83",
+      "date_utc": "2026-11-05",
+      "workstream": "macha561_e2_read_only_verified_prefix_recoverability_after_interrupted_write",
+      "implementation_pr": 563,
+      "implementation_head": "0acbf16407f63560bbd8a1cc81030cf232068c71",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT83_V5_561_E2_FORENSIC_RECOVERY_AUTHOR_CI.md",
+          "blob_sha1": "2ec43eb6168b1a4115536991b746ce140bbe7ecd",
+          "role": "Mirrored human Event83 scope, physical filesystem test and unresolved E1 custody"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT83_V5_561_E2_SOURCE_MAP.json",
+          "blob_sha1": "1709e18b00923bbb891243249b86473b54e9f2e8",
+          "role": "Machine exact PR563 source/test/blob/CI and RED status map"
+        }
+      ],
+      "change_type": "repair",
+      "what_already_existed": "Original PR555 POSIX opaque checkpoint storage + PR559 failed-onset bytes, independently reviewed Macha PR561 E1 and E2 intentionally RED test-only. Event82 PR562 scoped cause reporting, still unintegrated. Original all-C biology/target research, 535 PR metadata and 108 PR precedence no-repeat maps.",
+      "new_work_or_result": "Draft PR563 based directly on unchanged #561 original head. New forensic scan reads SHA-linked last committed checkpoint despite later orphaned failed-onset evidence, next payload or partial .uncommitted temp. It returns orphan name/size/SHA as UNCOMMITTED_UNVERIFIED; strict verify and writer continue to refuse. Tested Macha #561 E2 original three cases untouched, extra tamper/gap/symlink/nonresume controls. Exact-head CI run 41974969978: 110 passed per Python version 3.11.9 and 3.12.7. Human+machine source maps mirrored on #322 and #460.",
+      "negative_or_counterfactual_evidence": "Critical Macha #561 E1 erasure/rewrite RED tests remain unchanged and unresolved: internally consistent SHA history can have its newest failed-onset tail deleted or earlier checkpoint removed. E1 is NOT green and cannot be closed by the E2 forensic reader. Need owner-controlled external monotonic head/attempt anchor. No model state restored, no optimizer/EMA, no GPU, no actual biological learning, no independent Macha #563 acceptance.",
+      "test_review_scope": "Exact PR563 head 0acbf164; original Macha #561 test blob be259ab4 unchanged; old Sol #555 e3b72072 and #559 a070b224 tests unchanged; GitHub Actions 41974969978 complete success Python3.11+3.12, 110 tests each. Only E2 original case included from #561; E1 still red. All stimuli synthetic fake opaque bytes.",
+      "independent_review": "PR563_AUTHOR_CI_SCOPED_E2_GREEN__MACHA_INDEPENDENT_REVIEW_PENDING__PR561_E1_REMAINS_RED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha independent exact-head review #563, preserve original #561 E1/E2 file; no green E1 claim.",
+        "Implement externally immutable monotonically committed attempt/head anchor, write-ahead attempt intent, and physical each-attempt journal to block #561 E1 tail deletion or laundering.",
+        "Integrate #558/#562 reported failure cause schema into physical #559 journal with prospectively declared run horizon; this is not already implemented.",
+        "Complete physically authenticated V5 encoder/predictor/EMA/Adam/RNG/q-rights checkpoint and deterministic fresh-process update parity, with fixed TRAIN probe and 48 actual protected gradients before any separately authorized synthetic update.",
+        "Task4 #541 HOLD, Task3 #551 external signed successor owner decision and L04/#525/#533/#547 science rights remain unchanged. Do not repeat closed original experiments."
+      ],
+      "historical_supersession": "Only a new scoped E2 implementation and author test result. Event1–82 preserved; does not overturn any biological RED or create training authority.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/563",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/561",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41974969978",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/562"
+      ]
     }
   ]
 }
