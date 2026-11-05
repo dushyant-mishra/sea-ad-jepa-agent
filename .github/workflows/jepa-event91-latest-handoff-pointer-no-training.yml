@@ -58,7 +58,7 @@ jobs:
           for entry in latest["source_inputs"]:
               path = root / entry["path"]
               raw = path.read_bytes()
-              blob = sha1(b"blob " + str(len(raw)).encode() + b"\\0" + raw).hexdigest()
+              blob = sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
               assert blob == entry["blob_sha1"], entry["path"]
               assert entry["path"] in top, entry["path"]
           print(f"EVENT{n}_LIVE_POINTER_SOURCE_BLOBS_AND_NO_PROMOTION_OK")
