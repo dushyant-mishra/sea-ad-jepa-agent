@@ -1,3 +1,17 @@
+# READ FIRST — EVENT84 (2026-11-05): SCOPED #561 E1 LOCAL INTENT BLOCK; EXTERNAL CUSTODY STILL MISSING
+
+**Canonical audit #322 exact head `fbdbe76af00f5ee2056a85ce04d6d5e374c8a5d2`, 84 append-only events, 25/25 checks SUCCESS.** [Draft PR #564](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/564) exact head `5cd20a418c360a6cb9b532a70ec48cf5e3a58dc7`, stacked on #563. Hosted author CI `41976065000`: **126/126 passed on each Python 3.11.9/3.12.7**. Macha independent #564 review PENDING; no model, optimizer/EMA, GPU or training.
+
+**READ:** `docs/agent/JEPA_20261105_EVENT84_E1_LOCAL_WRITE_INTENT_AND_HEAD_COMPARE_AUTHOR_CI.md` and `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT84_E1_LOCAL_HEAD_SOURCE_MAP.json` (mirrored byte-identically on audit/handoff), then Event83 (#563 E2), Event82 (#562 cause), Event81 original entire handoff, Event75/68 no-repeat original biology.
+
+**Scope achieved:** Macha original #561 test-only file (blob `be259ab4cdcf035d7bf05134f68b6fe8d09f8833`) is unchanged; all 5 test cases now pass at PR564 due local write-ahead **storage** intents and forensic E2 reads. Local expected-head comparison can detect fuller deletion **only if an independent custodian previously retained the authentic head/counter**.
+
+**Unclosed BLOCK:** An attacker can erase the local intent too. There is NO out-of-process signer, immutable remote head, trusted freshness proof or real pre-optimizer attempt journal. Head comparison is caller-supplied and explicitly does **not** claim authentication. Therefore **#561 E1 as a full custody property is NOT CLOSED**. PR562 cause and PR564 physical journal remain separate, not an accepted integrated system; full neural/Adam/EMA/RNG checkpoint, actual physical collapse evidence and restart parity are absent. No scientist/owner authorization or biological winner; Task4 #541 HOLD, Task3 #551 owner decision, L04/#525/#533 open.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT83 (2026-11-05): #561 E2 LAST-HEALTHY OPAQUE CHECKPOINT RECOVERY; E1 STILL RED
 
 **Canonical audit #322 head `20351ccd8964ea9ab19009e3b6083dc5bf1e3442`, 83 append-only events.** Draft [PR #563](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/563) exact `0acbf16407f63560bbd8a1cc81030cf232068c71`, built directly on unchanged Macha #561 `f59f9f8fd9fec198c1b84501d78591e7a6e90820`. Hosted author workflow `41974969978`: 110/110 on each Python version 3.11.9 and 3.12.7. Macha independent acceptance **PENDING**.
