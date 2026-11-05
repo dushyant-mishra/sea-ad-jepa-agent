@@ -1564,5 +1564,52 @@
       "PR533_PROSPECTIVE_LAW_UNRATIFIED"
     ],
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_failed_onset_logical_and_durable_event80_20261104": {
+    "chronology_event": 80,
+    "human": "docs/agent/JEPA_20261104_EVENT80_FAILED_ONSET_CAPTURE_MACHA_F1_AND_V5_CHECKPOINT_SUCCESSOR.md",
+    "human_blob_sha1": "3039b4f9cee4d72afeb8e832f10f8c2fb4bf8c8b",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_EVENT80_FAILED_ATTEMPT_CAPTURE_SOURCE_DATA_RESULTS_MAP.json",
+    "machine_blob_sha1": "fd0a0105c9f6d88308cf2e36d8c2995b68a49556",
+    "macha_existing_reviews": {
+      "pr553": "F1_FAILED_ONSET_NOT_RECORDABLE__F2_SELF_DECLARED_GRAD_EMA__F3_NO_FIXED_CELL_COLLAPSE_PANEL__F4_REPLAY_CRASH_ADAM",
+      "pr554": "ACCEPT_SCOPED_T1_ONLY",
+      "pr556": "NEW_T2_REAL_ENCODER_VALUE_BLIND_DIFFERENT_GENE_SET_AND_TRAIN_DROPOUT__T3_T4_T5_RED",
+      "pr557": "EXACT_TEST_UNCHANGED_BFA5345775570205DEF66EB19A98EFC207D28D90"
+    },
+    "pr558": {
+      "head": "33793a07a7c19eeb6a35273182d1ba9151bcf600",
+      "run": 41967859163,
+      "python311_pass": 80,
+      "python312_pass": 80,
+      "status": "AUTHOR_GREEN__MACHAS_UNCHANGED_RED_TEST_PASSES__NO_REAL_MODEL",
+      "failed_uN1": "UNTRUSTED_NONRESUMABLE_STOP_NOT_COMPLETED_CHECKPOINT"
+    },
+    "pr559": {
+      "head": "38880f2c196b950a4f672aaf9fd480c7297662c5",
+      "run": 41968170206,
+      "python311_pass": 96,
+      "python312_pass": 96,
+      "status": "AUTHOR_GREEN__REAL_POSIX_OPAQUE_BYTES_JOURNAL_ONLY__NO_REAL_MODEL",
+      "actual_opaque_failed_attempt_evidence_file": true,
+      "commit_last_receipt": true,
+      "abrupt_child_death_orphan_refusal": true,
+      "external_signed_custody": false
+    },
+    "original_fit_identity_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+    "owner_goal": "RELIABLE_COLLAPSE_ONSET_CAPTURE_NOT_ONLY_SUCCESSFUL_CHECKPOINTS__REAL_48_GRAD_ADAM_EMA_CELLS_COUNTERFACTUAL_FIXED_TRAIN_PANEL_BEFORE_STOP",
+    "not_done": [
+      "REAL_GRADIENT_ADAM_EMA_WEIGHT_PHYSICAL_EVIDENCE",
+      "COMPLETE_V5_MODEL_RNG_SERIALIZER",
+      "FRESH_PROCESS_NEXT_OPTIMIZER_UPDATE_REPLAY",
+      "INDEPENDENT_EXTERNAL_SIGNED_OWNER_CUSTODY",
+      "FIXED_TRAIN_DONOR_CELL_EXPR_SHUFFLE_SOURCE_PREDICTABILITY_PROBE",
+      "U0_CHECKPOINT_SIZE_QUOTA_DECISION",
+      "OWNER_SCOPED_FUTURE_TRAINING_AUTHORIZATION",
+      "MACHA_ACCEPTANCE_PR558_PR559"
+    ],
+    "cs": "C1_TO_C6_ALL_LEARNED_UNASSESSED",
+    "training_steps_executed": 0,
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
