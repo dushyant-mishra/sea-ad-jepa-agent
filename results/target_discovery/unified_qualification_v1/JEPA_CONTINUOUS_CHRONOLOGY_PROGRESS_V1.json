@@ -3655,6 +3655,50 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/566",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42054401819"
       ]
+    },
+    {
+      "event_id": "20261105-SOL-V5-EVERY-ATTEMPT-V2-JOURNAL-EXTERNAL-COPY-AND-FORENSIC-NONTRAINING-EVENT88",
+      "date_utc": "2026-11-05",
+      "workstream": "v5_synth2048_prospective_append_only_attempt_journal_every_success_fake_bytes_external_copy_v2",
+      "implementation_pr": 570,
+      "implementation_head": "0e2deffa0191ddfc8b11161a85224e6367d97c22",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT88_V5_PROSPECTIVE_ATTEMPT_JOURNAL_V2_AUTHOR_CI_NO_TRAINING.md",
+          "blob_sha1": "418d9bd76c3d66b55af0f92da76f3200535c26c6",
+          "role": "Human exact-head PR570 scoped every-attempt fake-byte implementation and test limits"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT88_V5_ATTEMPT_JOURNAL_V2_SOURCE_MAP.json",
+          "blob_sha1": "efbd0d8947c3ea1e4d5455acc033ae41bfa99269",
+          "role": "Machine exact source, immutable original Macha tests and hosted CI/negative evidence map"
+        }
+      ],
+      "change_type": "implementation",
+      "what_already_existed": "Draft #565 typed self-reported onset-to-disk bridge with Macha REPAIR_REQUIRED; independently not yet reviewed scoped #568 first-anomaly forensic recovery and #569 honest post-step collapse receipt repairs; owner chose external outside-run copy, every-success checkpoint schedule, nonresumable collapsed payload, forensic verified prefix; old V2 source not trained.",
+      "new_work_or_result": "Draft PR570 stacked on #565, imports source fixes #568/#569 byte-identically and preserves Macha original immutable #557/#560/#561/#566/#567 tests. New V2 independent versioned POSIX fsynced hash-linked journal writes RUN_OPEN, ATTEMPT_BEGIN, one outcome (UPDATE_COMMITTED/STATE_COLLAPSED/ATTEMPT_FAILED/ATTEMPT_ABORTED), and required RUN_CLOSED; every reported success has SHA-bound opaque state bytes, collapse retains full-size nonresumable bytes under 512MiB, not old 8MiB evidence cap. Each journal row mirrored outside run folder, unsigned; exactly one local-head-ahead mirror repair after crash; aborted attempt quarantines incomplete bytes and scans verify quarantine integrity. Strict storage refuses damaged/erased local/custody records; forensic read-only prefix up to first anomaly. Six new hostile tests cover deleted or modified quarantine files, unknown external temp files and complete run-tail deletion. Exact-head CI at 0e2deffa: V2 run 42062323739 223 PASSED per Python3.11.9/3.12.7; atomic bytes run 42062323501 126 PASSED each; typed onset run 42062323805 186 PASSED each; prefreeze run 42062323891 63 PASSED each. 4/4 workflows and 8/8 jobs SUCCESS. Inherited atomic workflow was pinned Ubuntu24.04 due Python 3.11.9/3.12.7 unavailable on ubuntu-latest 26.04; original Macha REDs unchanged.",
+      "negative_or_counterfactual_evidence": "ALL state and collapse probes remain self-reported; code does not run a real optimizer step, derive protected/all-trainable gradients, Adam moments, EMA, actual neural sentinel, expression controls, source/donor predictors, nor prove model-state completeness or next-update parity. SHA-verification is byte-level only, not healthy neuroscience. Outside-run mirror may be on same disk and same writer can tamper both; unsigned custody and owner signing acceptance not established. No true pre-forward-pass call integration, GPU, human RNA, sealed controller, biological representation winner or training authorization.",
+      "test_review_scope": "Macha original #557 bfa5345775570205def66eb19a98efc207d28d90; #560 3ab6c208206251728116debda1edb226cb5b647a; #561 be259ab4cdcf035d7bf05134f68b6fe8d09f8833; #566 60a16378c22b35ec5d52837c7c641cf6a59e0935; #567 c513693fa11b2c0ef72b68601ca83dcd5a0a5b2f. All exact Git blobs unchanged. New V2 source a2b43dc363eefaf45f79261331f400e0870242ee, new suite becd451da9dc6e44518d8cd897e255e793ff8dd0. Author-side 8/8 CI jobs green, Macha independent #570 review pending.",
+      "independent_review": "PR570_AUTHOR_CI_GREEN__MACHA_INDEPENDENT_REVIEW_PENDING__FULL_NEURAL_EVIDENCE_ABSENT",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha independent exact-head review PR568/#569/#570 and test any safety-critical discrepancy without altering original RED tests.",
+        "Owner confirmation whether unsigned but separately retained head log is accepted; current copy does not protect against same-disk destruction or malicious writer controlling both.",
+        "Physically measured and state-digest-bound all-trainable-tensor gradients including value_encoder, Adam moments, EMA arithmetic, fixed TRAIN panel, identity-only baseline, expression-shuffle, teacher target and donor/source controls; no falling-loss biology claim.",
+        "Complete encoder/predictor/teacher/optimizer/EMA/RNG/gene-address/source/rights checkpoint serializer and strict loader, then RT1–RT8 only after owner separately authorizes synthetic optimizer execution.",
+        "No scientific authority for C1–C6, Task4 #541 HOLD, Task3 #551 signed successor, L04/#525/#533 and legacy no-repeat constraints."
+      ],
+      "historical_supersession": "Append-only Event88 distinct from historical Event1–87. No repeated frozen experiments, no merge or Stage4 promotion.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/570",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42062323739",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42062323501",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42062323805",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42062323891",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/568",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/569"
+      ]
     }
   ]
 }
