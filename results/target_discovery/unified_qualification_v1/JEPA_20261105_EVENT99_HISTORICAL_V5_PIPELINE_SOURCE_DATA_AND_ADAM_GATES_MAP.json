@@ -1,0 +1,188 @@
+{
+  "schema": "JEPA_EVENT99_V5_HISTORICAL_PIPELINE_INTEGRITY_AND_SOURCE_DATA_GATE_V1",
+  "event": 99,
+  "date_utc": "2026-11-05",
+  "author": "Sol",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "human_report": {
+    "path": "docs/agent/JEPA_20261105_EVENT99_SOL_HISTORICAL_PIPELINE_IDENTITY_FAILURE_AUDIT_AND_V5_SOURCE_DATA_GATES_NO_TRAINING.md",
+    "git_blob_sha1": "531e3aad21ca4b1d4b35892caff1cb07debee3d5"
+  },
+  "historical_incidents": [
+    {
+      "event": 5,
+      "issue": "gene/source/display-ID/physical row/donor/PAR_Y/BIN1 wrong comparator and Sept17 row order invalid",
+      "status": "CORRECTED_HISTORICALLY__NO_NEW_SOURCE_READ"
+    },
+    {
+      "event": 35,
+      "issue": "four transposed SEAAD/NPH52 original PR59 source labels corrected PR69",
+      "status": "CORRECTED_HISTORICALLY__NOT_NEW_RAW_READ"
+    },
+    {
+      "issue": "TRAIN_CACHE_42_SHARDS_INCORRECT_FULL104_READ_AUTHORITY",
+      "status": "PRIOR_FIREWALL_IMPLEMENTED__NO_FULL104_CLAIM_FROM_DEV2048"
+    },
+    {
+      "event": 74,
+      "issue": "old 48 gene fixture not 3 x 512 views, assay structural support not same as detection",
+      "status": "DEVELOPMENT_2048_FIT_ONLY__NO_SCIENTIFIC_C_PASS"
+    },
+    {
+      "event": 75,
+      "issue": "2044 compact student q-hidden columns can renumber original 2048 gene axis",
+      "status": "PR548_ORIGINAL_FULL_2048_AXIS_RESTORED__EXACT_SOURCE_BLOB_VERIFIED"
+    },
+    {
+      "events": [
+        76,
+        77,
+        78
+      ],
+      "issue": "new PR547 support F1 rare/perturbation view1; F2 q ATAC proxy; F3 source-specific support; F4 source-nested donors, depth drift",
+      "status": "KNOWN_LIMITATIONS__GENERIC_STATE_ONLY_NO_BIOLOGY"
+    },
+    {
+      "events": [
+        68,
+        90,
+        96,
+        98
+      ],
+      "issue": "Nonexistent canonical_runtime.py and 40-step V5 mis-attribution; incomplete initial 5-file map",
+      "status": "EVENT98_REPAIRED_TO_V5_12_CANONICAL_PLUS_2_PRIVATE_PLUS_INIT__40_STEP_V4_NOT_V5"
+    },
+    {
+      "event": 97,
+      "issue": "Macha journal and structural standalone integration author GREEN but no actual V5 model-to-journal",
+      "status": "PR582_INTEGRATED_FAKE_CPU_ONLY__20_OF_20_CI_JOBS"
+    }
+  ],
+  "pipeline": {
+    "actual_v5_runtime": {
+      "original_pr": 224,
+      "head_sha": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+      "integrated_pr": 582,
+      "integrated_head_sha": "e71d864b0496de0b86fe7442ba51d53b44e0b225",
+      "canonical_source_declared_files": 12,
+      "private_impl_files": 2,
+      "init_file": 1,
+      "git_blobs_reverified_at_original_and_integrated": "15/15",
+      "entrypoint": "src/sea_ad_jepa/v5/inactive_guarded_update_v1.py::run_guarded_inactive_reference_update",
+      "non_authorizing_one_update_only": true,
+      "v4_ipb_jepa_and_gene_tokenizer_reused_as_declared_v5_utilities": true,
+      "old_v4_production_runner_not_active": true,
+      "multi_update_driver_verified": false
+    },
+    "dev_input": {
+      "origin_pr": 547,
+      "artifact_id": 13364085153,
+      "original_fit_archive_bytes": 25023562,
+      "archive_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+      "fits_member_sha_verified": true,
+      "member_count": 5,
+      "synthetic_cells": 1440,
+      "synthetic_donors": 36,
+      "synthetic_address_count": 2048,
+      "hidden_query_original_gene_ids": [
+        1672,
+        1673,
+        1674,
+        1675
+      ],
+      "array_2044_compaction_prohibited": true,
+      "not_real_FULL104": true,
+      "not_selected_target": true,
+      "controller_truth_accessed": false
+    },
+    "pr548": {
+      "actor_data_adapter_path": "scripts/v5/jepa_synth2048_v5_readiness.py",
+      "blob_sha1": "6a6c219402d7acd24c1b54b3c2571133a08e4a0a",
+      "byte_identical_at_pr582": true,
+      "u0_forward_only": true,
+      "real_optimizer_steps": 0,
+      "real_ema_updates": 0
+    },
+    "posttd": {
+      "pr": 525,
+      "head": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "contract_path": "scripts/v5/jepa_post_td_harness_contract_v1.py",
+      "source_blob_sha1": "76341dbe6e2ef505dfb84a4a69c6505c28c899b6",
+      "source_set": "FOUR_V4_FILES",
+      "present_on_pr582_branch": false,
+      "role": "SEPARATE_NONAUTHORIZING_PLANNING_CONTRACT__NOT_V5_MODEL_SOURCE_AUTHORITY"
+    },
+    "journal": {
+      "pr": 582,
+      "head": "e71d864b0496de0b86fe7442ba51d53b44e0b225",
+      "source_model_provenance_executed_end_to_end": false,
+      "fake_state_adam": true,
+      "caller_reported_probes": true,
+      "run_restore_and_rng_amp": false
+    }
+  },
+  "independent_sol_repairs": {
+    "pr583": {
+      "role": "STRUCTURED_JOURNAL_NAMED_ADAM_ID_AND_GROUP_ORDER_U0_BINDING",
+      "base": "PR582 exact head e71d864b0496de0b86fe7442ba51d53b44e0b225",
+      "red_head": "41b7eff355b8916243fb14f8dc0888348722695d",
+      "red_run_id": 42114608692,
+      "red_each_python": {
+        "failed": 2,
+        "passed": 4
+      },
+      "green_head": "76eddf86ea7d8e5d66731a36d889e502d633b181",
+      "green_workflows": {
+        "success": 11,
+        "total": 11
+      },
+      "source": {
+        "path": "scripts/v5/jepa_v5_structured_journal_preflight_v1.py",
+        "blob_sha1": "56fd66f2734bd9ec8c3ce92511e5f24e8a5950c7"
+      },
+      "test": {
+        "path": "tests/test_jepa_v5_structured_journal_preflight_v1_sol_optimizer_identity_red.py",
+        "blob_sha1": "6c92d95b1b10d7859d45aa92661675c73080b19c"
+      },
+      "review": "MACHA_INDEPENDENT_ACCEPTANCE_PENDING"
+    },
+    "pr584": {
+      "role": "ORIGINAL_V5_15_SOURCE_GIT_BLOBS_PLUS_PUBLIC_PR547_EXACT_FIT_5_MEMBER_DIGESTS_NO_TORCH",
+      "base": "PR582 exact head e71d864b0496de0b86fe7442ba51d53b44e0b225",
+      "head": "11d8a70235cfc02d412db6b6158485732bdec246",
+      "source": {
+        "path": "scripts/v5/jepa_v5_source_data_custody_gate_v1.py",
+        "blob_sha1": "c90ece159cc3c8cfb87e9f0757e307413b829d3f"
+      },
+      "test": {
+        "path": "tests/test_jepa_v5_source_data_custody_gate_v1.py",
+        "blob_sha1": "e6f169faab383d352935f6153727597205524f36"
+      },
+      "workflow_run": 42116258536,
+      "workflow_success": 1,
+      "workflow_total": 1,
+      "job_success": 2,
+      "job_total": 2,
+      "hosted_python_versions": [
+        "3.11.9",
+        "3.12.7"
+      ],
+      "hosted_tests_per_python": 10,
+      "actual_original_public_dev_zip_read_and_sha_verified": true,
+      "torch_loaded": false,
+      "model_executed": false,
+      "review": "MACHA_INDEPENDENT_ACCEPTANCE_PENDING"
+    }
+  },
+  "owner_v80_backup": "OWNER_CONFIRMED_PERSONAL_DOWNLOAD_COMPLETE__RESOLVED_EVENT95",
+  "source_records_immutable": true,
+  "not_done": [
+    "No actual physical model-to-journal continuation",
+    "No real FULL104 source-authorized training panel",
+    "No physically measured CELL and gene-token biology",
+    "No actual gradients/Adam/EMA arithmetic or full RNG/AMP bitwise restore",
+    "No C1-C6 target/representation winner",
+    "No RT1–RT8 or Stage4 authorization",
+    "Macha must cross-review new Sol #583/#584"
+  ]
+}
