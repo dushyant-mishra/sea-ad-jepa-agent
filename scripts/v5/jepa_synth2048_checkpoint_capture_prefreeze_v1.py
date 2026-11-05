@@ -12,6 +12,7 @@ from __future__ import annotations
 from hashlib import sha256
 from math import isfinite
 import json
+import re
 from pathlib import Path
 from typing import Mapping, Sequence
 
@@ -234,6 +235,56 @@ def _validate_collapse_evidence(cause: str, evidence: object) -> dict:
     return dict(evidence)
 
 
+
+def _validate_runtime_abort_evidence(evidence: object) -> dict:
+    """Describe process interruption; never interpret it as neural collapse."""
+    refuse_unless(type(evidence) is dict and set(evidence) == {
+        "exception_class", "traceback_sha256", "execution_stage",
+    }, "RUNTIME_ABORT_EVIDENCE_FIELDS")
+    name = evidence["exception_class"]
+    refuse_unless(type(name) is str
+                  and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_.]{0,127}", name) is not None,
+                  "RUNTIME_ABORT_EXCEPTION_CLASS_INVALID")
+    refuse_unless(_is_sha256(evidence["traceback_sha256"]),
+                  "RUNTIME_ABORT_TRACEBACK_SHA_INVALID")
+    refuse_unless(evidence["execution_stage"] in {
+        "BEFORE_FORWARD", "FORWARD", "BACKWARD", "OPTIMIZER",
+        "EMA", "POST_STEP_PROBE", "UNKNOWN",
+    }, "RUNTIME_ABORT_EXECUTION_STAGE_INVALID")
+    return dict(evidence)
+
+
+def exact_distinct_row_witness(rows: object) -> dict:
+    """Equality-only diagnostic without float32 centering roundoff.
+
+    Works on *already supplied values*, not actual neural tensor streams.
+    Full measured provenance, panel SHA and weight binding still unproved.
+    """
+    refuse_unless(type(rows) in (tuple, list) and len(rows) >= 2,
+                  "EXACT_ROWS_NEED_MULTIPLE_CELLS")
+    canonical = []
+    length = None
+    for row in rows:
+        refuse_unless(type(row) in (tuple, list) and bool(row),
+                      "EXACT_ROW_TYPE")
+        values = []
+        for value in row:
+            refuse_unless(type(value) in (float, int) and isfinite(value),
+                          "EXACT_ROW_VALUE_NOT_FINITE")
+            values.append(float(value))
+        if length is None:
+            length = len(values)
+        refuse_unless(len(values) == length, "EXACT_ROW_SHAPE_CHANGED")
+        canonical.append(tuple(values))
+    n = len(set(canonical))
+    return {
+        "distinct_row_count": n,
+        "exact_constant": n == 1,
+        "method": "EXACT_DISTINCT_ROW_COUNT_OF_OBSERVED_VALUES",
+        "physical_neural_probe_verified": False,
+    }
+
+
 def validate_failed_attempt_onset_receipt(receipt: Mapping[str, object]) -> dict[str, object]:
     """Record the first failed attempt with its *reported* cause; never resume it.
 
@@ -249,6 +300,7 @@ def validate_failed_attempt_onset_receipt(receipt: Mapping[str, object]) -> dict
                   and extras in (
                       set(), {"failure_cause"},
                       {"failure_cause", "collapse_evidence"},
+                      {"failure_cause", "abort_evidence"},
                   ), "FAILED_ATTEMPT_TELEMETRY_INCOMPLETE")
     exact_integer(receipt["update_index"], "FAILED_ATTEMPT_UPDATE")
     refuse_unless(receipt["update_index"] > 0, "FAILED_ATTEMPT_INDEX")
@@ -263,15 +315,21 @@ def validate_failed_attempt_onset_receipt(receipt: Mapping[str, object]) -> dict
         exact_integer(receipt[key], key)
     refuse_unless(receipt["telemetry_committed"] is True, "FAILED_ONSET_NOT_RECORDED")
     refuse_unless(receipt["success"] is False, "FAILED_ONSET_MUST_NOT_PASS")
-    refuse_unless(receipt["optimizer_step_proved"] is False
-                  and receipt["ema_completed_after_optimizer"] is False
-                  and receipt["presentation_cursor_advanced"] is False,
-                  "FAILED_ONSET_CLAIMS_OPTIMIZER_OR_EMA")
+    # A collapsed state can result from a completed optimizer + EMA step.
+    # For mechanics and process-abort failures, nothing counts as a success.
+    step = receipt["optimizer_step_proved"]
+    ema = receipt["ema_completed_after_optimizer"]
+    cursor = receipt["presentation_cursor_advanced"]
+    all_completed = step is True and ema is True and cursor is True
+    none_completed = step is False and ema is False and cursor is False
+    refuse_unless(all_completed or none_completed,
+                  "FAILED_ONSET_INCONSISTENT_OPTIMIZER_OR_EMA")
 
     signals = _reported_mechanics_causes(receipt)
     cause = receipt.get("failure_cause")
     origin = "EXPLICIT_UNVERIFIED_TELEMETRY"
     probe = None
+    abort = None
     if cause is None and "failure_cause" not in receipt:
         # Compatibility for unchanged #557 and #558 mechanically failing inputs:
         # derive the cause ONLY from an observed nonzero/true mechanical field.
@@ -281,15 +339,24 @@ def validate_failed_attempt_onset_receipt(receipt: Mapping[str, object]) -> dict
     else:
         refuse_unless(type(cause) is str, "FAILURE_CAUSE_TYPE")
         if cause in COLLAPSE_CAUSE_METRIC:
-            refuse_unless("collapse_evidence" in receipt,
+            refuse_unless("collapse_evidence" in receipt
+                          and "abort_evidence" not in receipt,
                           "COLLAPSE_EVIDENCE_REQUIRED")
             probe = _validate_collapse_evidence(
-                cause, receipt["collapse_evidence"]
-            )
+                cause, receipt["collapse_evidence"])
+        elif cause == "RUNTIME_ABORT":
+            refuse_unless(none_completed
+                          and "abort_evidence" in receipt
+                          and "collapse_evidence" not in receipt,
+                          "RUNTIME_ABORT_NEEDS_UNCOMMITTED_STATE")
+            abort = _validate_runtime_abort_evidence(receipt["abort_evidence"])
         else:
             refuse_unless(cause in signals, "UNSUPPORTED_OR_UNOBSERVED_CAUSE")
-            refuse_unless("collapse_evidence" not in receipt,
-                          "MECHANICS_WITH_UNRELATED_COLLAPSE_EVIDENCE")
+            refuse_unless("collapse_evidence" not in receipt
+                          and "abort_evidence" not in receipt,
+                          "MECHANICS_WITH_UNRELATED_CAUSE_EVIDENCE")
+    refuse_unless(none_completed or cause in COLLAPSE_CAUSE_METRIC,
+                  "FAILED_ONSET_CLAIMS_OPTIMIZER_OR_EMA")
     return {
         "status": "FAILED_ATTEMPT_RETAINED_AS_UNTRUSTED_STOP_EVIDENCE",
         "attempt_update_index": receipt["update_index"],
@@ -297,6 +364,22 @@ def validate_failed_attempt_onset_receipt(receipt: Mapping[str, object]) -> dict
         "failure_cause_origin": origin,
         "other_reported_mechanical_causes": [s for s in signals if s != cause],
         "collapse_probe_self_reported": probe,
+        "runtime_abort_self_reported": abort,
+        "reported_step_and_ema_completed": all_completed,
+        "verdict_kind": (
+            "STATE_COLLAPSED_AFTER_STEP" if cause in COLLAPSE_CAUSE_METRIC
+            and all_completed else
+            "STATE_COLLAPSED_BEFORE_NEXT_STEP" if cause in COLLAPSE_CAUSE_METRIC
+            else "ATTEMPT_ABORTED" if cause == "RUNTIME_ABORT"
+            else "ATTEMPT_FAILED_NO_COMPLETED_STEP"
+        ),
+        "probed_state_update": (
+            receipt["update_index"] if all_completed
+            else receipt["update_index"] - 1
+            if cause in COLLAPSE_CAUSE_METRIC else None),
+        "probed_weights_sha256_authenticated": False,
+        "last_healthy_state_update": None,
+        "healthy_state_not_established_from_self_reports": True,
         "protected_attention_tensors_reported": receipt["protected_attention_tensor_count"],
         "exact_zero_gradients_reported": receipt["exact_zero_protected_gradients"],
         "missing_or_nonfinite_gradients_reported": receipt["missing_or_nonfinite_gradients"],
@@ -365,6 +448,10 @@ def verify_capture_inventory(
         "required_completed_checkpoints": list(required),
         "update_telemetry_windows": len(per_update_receipts),
         "last_valid_completed_update": horizon,
+        # A mechanically completed checkpoint is not proof of a healthy
+        # representation; this V1 inventory lacks per-success state probes.
+        "last_healthy_state_update": None,
+        "last_neurally_healthy_state_proved": False,
         "failed_attempt_recorded": failed_attempt is not None,
         "failed_attempt": failed_attempt,
         "failed_attempt_never_authorizes_resumable_checkpoint": True,
