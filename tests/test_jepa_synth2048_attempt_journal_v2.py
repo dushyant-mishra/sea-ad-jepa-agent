@@ -153,7 +153,7 @@ def test_crash_after_begin_recovers_aborted_with_quarantine_no_delete(tmp_path):
     root, backup = initialize(tmp_path)
     v.begin_attempt(root, backup, update=1)
     (root / "u00001.state.bin").write_bytes(b"FAILED_PARTIAL_MODEL")
-    (root / ".uncommitted-" + "a"*32).write_bytes(b"HALF_WRITTEN")
+    (root / (".uncommitted-" + "a"*32)).write_bytes(b"HALF_WRITTEN")
     with pytest.raises(v.JournalRefusal, match="UNCOMMITTED_OR_UNKNOWN"):
         v.inspect_journal(root, backup)
     report = v.inspect_forensic_prefix(root, backup)
