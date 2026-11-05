@@ -1,3 +1,36 @@
+# READ FIRST — EVENT98 (2026-11-05): MACHA VERDICT ON EVENT96 — V5 RUNTIME IS 12 FILES; THE "40-STEP" CLAIM IS V4; NO V5 MULTI-UPDATE DRIVER EXISTS
+
+**Audit and handoff.** Canonical append-only audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322), exact Audit head bd64a723e8fff624c4bd8bda66e7b21597847998 — 98 chronology events and 63 no-repeat index keys. This is the operational [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) handoff.
+
+**Read first.** The Event98 human `docs/agent/JEPA_20261105_EVENT98_MACHA_VERDICT_EVENT96_V5_RUNTIME_LOCATOR_12_FILES_V4_40_STEP_NO_EXECUTION.md` (blob `f92d6cfb00e3772dc84aab59d9ac1521b8756d5c`) and machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT98_MACHA_V5_RUNTIME_LOCATOR_VERDICT_SOURCE_MAP.json` (blob `f1185ad2b6ff4001f186404b55b918613213ffcc`) are byte-identical on #322 and #460. Then read:
+- Event97, Event96 and Events 95–91 below;
+- historical Event90 human `docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md`;
+- historical Event90 machine map `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json`.
+
+**Verdict on Event96: ACCEPT_SCOPED with two corrections.** Static Git checks only; nothing was imported or executed.
+
+1. **The path is invalid.** `src/sea_ad_jepa/v5/canonical_runtime.py` is `LEGACY_PATH_INVALID`: absent at PR224, PR525, PR548, #570, #579, #582 and `main`.
+2. **The entrypoint** is `run_guarded_inactive_reference_update` in `inactive_guarded_update_v1.py`. It requires `PrefreezeMechanicalAuthorityV1` and returns non-authorizing flags.
+3. **The canonical runtime is 12 files, not 5.** PR224 defines `CANONICAL_RUNTIME_SOURCE_FILES`:
+   - the guarded wrapper, the reference module and the authority contract;
+   - the checkpoint binding and three EMA modules (presentation, bound proof, persisted continuation);
+   - data-first geometry, keyed dropout and the keyed RNG contract;
+   - V4 `ipb_jepa.py` and `gene_tokenizer.py`;
+   - plus two private implementations.
+
+   All 15 (with `__init__`) are **byte-identical across PR224, PR525, PR548 and the integration #582**. `main` lacks six of them and carries the older unguarded reference module. **Never take the runtime from `main`; never bind only the 5-file subset.**
+4. **The "40-step" claim is V4.** Event68's "40-step bounded synthetic V5 … already executed" comes from the V4 healthy-teacher u0→u40 runner and contract, which require separate authority. The V5 runtime is a **one-update guarded rehearsal**; its tests run update 0 → 1. No u40 execution receipt was found at PR224 or #226; that search was keyword-filtered and is not proof of absence elsewhere.
+
+**Consequence.**
+- Nothing needs rebuilding.
+- A **multi-update V5 driver does not exist**. It must be new code, built around the guarded wrapper and the integrated journal.
+- **Running it, even for synthetic RT1–RT8, needs separate owner authority.**
+- Sol cross-review of #580, #581 and #582 is still pending.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT97 (2026-11-05): MACHA REVIEW OF #579/#575/#576, REPAIRS #580/#581, INTEGRATION #582, EVENT96 SOURCE CHECK
 
 **Audit and handoff.** Canonical append-only audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322), exact Audit head ade48047f33a715422ef1703999d92f82522bb9f — 97 chronology events and 62 no-repeat index keys. This is the operational [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) handoff.
