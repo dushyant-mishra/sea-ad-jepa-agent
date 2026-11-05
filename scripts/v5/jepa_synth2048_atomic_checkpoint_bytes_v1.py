@@ -30,6 +30,10 @@ from scripts.v5.jepa_synth2048_checkpoint_capture_prefreeze_v1 import (
 SCHEMA = "JEPA_SYNTH2048_ATOMIC_OPAQUE_CHECKPOINT_BYTES_V1"
 STATUS = "OPAQUE_BYTES_STORAGE_ONLY__NO_TRAINING_OR_RESUME_AUTHORITY"
 MAX_PAYLOAD_BYTES = 512 * 1024 * 1024
+MAX_FAILED_EVIDENCE_BYTES = 8 * 1024 * 1024
+FAIL_EVIDENCE = "failed_attempt.evidence"
+FAIL_RECEIPT = "failed_attempt.receipt.json"
+FAIL_STATUS = "UNTRUSTED_FAILED_ATTEMPT_EVIDENCE__NONRESUMABLE_STOP"
 PAYLOAD_NAME = re.compile(r"u[0-9]{5}\.checkpoint\Z")
 RECEIPT_NAME = re.compile(r"u[0-9]{5}\.receipt\.json\Z")
 RUN_NAME = re.compile(r"[A-Za-z0-9_-]{1,64}\Z")
@@ -153,6 +157,51 @@ def expected_run_lock(*, horizon: int, run_id: str,
     }
 
 
+def _failed_attempt_record(root: Path, lock: dict, previous: list[dict]) -> dict | None:
+    """Validate actual failed-attempt evidence bytes, never a resumable state."""
+    data_path = root / FAIL_EVIDENCE
+    receipt_path = root / FAIL_RECEIPT
+    has_data = data_path.exists() or data_path.is_symlink()
+    has_receipt = receipt_path.exists() or receipt_path.is_symlink()
+    require(has_data == has_receipt, "ORPHAN_FAILED_ATTEMPT_EVIDENCE")
+    if not has_data:
+        return None
+    require(bool(previous), "FAILURE_BEFORE_VALID_U0")
+    data = _regular_file_bytes(data_path, max_bytes=MAX_FAILED_EVIDENCE_BYTES)
+    receipt_bytes = _regular_file_bytes(receipt_path, max_bytes=4096)
+    try:
+        record = json.loads(receipt_bytes)
+    except (ValueError, UnicodeError) as exc:
+        raise StorageRefusal("REFUSE_ATOMIC_OPAQUE_V5__BAD_FAILURE_RECEIPT") from exc
+    require(type(record) is dict and _json(record) == receipt_bytes,
+            "NONCANONICAL_FAILURE_RECEIPT")
+    expected_fields = {
+        "schema", "status", "attempted_update", "last_valid_checkpoint_update",
+        "run_lock_sha256", "evidence_sha256", "evidence_bytes",
+        "previous_checkpoint_receipt_sha256", "resumable", "training_authorized",
+        "external_authentication",
+    }
+    require(set(record) == expected_fields, "FAILURE_RECEIPT_FIELDS_CHANGED")
+    attempted = record.get("attempted_update")
+    require(type(attempted) is int
+            and previous[-1]["update"] < attempted <= lock["horizon"] + 1,
+            "BAD_FAILED_ATTEMPT_POSITION")
+    require(record == {
+        "schema": SCHEMA,
+        "status": FAIL_STATUS,
+        "attempted_update": attempted,
+        "last_valid_checkpoint_update": previous[-1]["update"],
+        "run_lock_sha256": _sha(_json(lock)),
+        "evidence_sha256": _sha(data),
+        "evidence_bytes": len(data),
+        "previous_checkpoint_receipt_sha256": _sha(_json(previous[-1])),
+        "resumable": False,
+        "training_authorized": False,
+        "external_authentication": False,
+    }, "FAILED_EVIDENCE_SHA_OR_CHAIN_DRIFT")
+    return record
+
+
 def _scan(root: Path, lock: dict) -> list[dict]:
     """Verify strict linked receipt prefix, exact SHA and no orphans."""
     expected = canonical_checkpoint_steps(lock["horizon"])
@@ -193,6 +242,9 @@ def _scan(root: Path, lock: dict) -> list[dict]:
         prev_digest = _sha(receipt_raw)
         receipts.append(obj)
         allowed.update({payload.name, receipt.name})
+    failure = _failed_attempt_record(root, lock, receipts)
+    if failure is not None:
+        allowed.update((FAIL_EVIDENCE, FAIL_RECEIPT))
     names = {p.name for p in root.iterdir()}
     require(names == allowed, "UNEXPECTED_OR_GAPPED_FILES")
     return receipts
@@ -208,9 +260,16 @@ def verify_storage(root: Path, *, horizon: int, run_id: str,
         raw = _regular_file_bytes(Path(root) / "run.lock.json", max_bytes=2048)
         require(raw == _json(lock), "RUN_BINDING_OR_HORIZON_CHANGED")
         receipts = _scan(Path(root), lock)
+        failure = _failed_attempt_record(Path(root), lock, receipts)
     return {
         "schema": SCHEMA, "status": STATUS,
         "complete_captured_updates": [r["update"] for r in receipts],
+        "failed_attempt_recorded_as_untrusted_stop": failure is not None,
+        "failed_attempt_update": (failure["attempted_update"] if failure else None),
+        "last_good_checkpoint_before_failure": (
+            failure["last_valid_checkpoint_update"] if failure else None
+        ),
+        "failed_attempt_not_model_resumable": True,
         "latest_receipt_sha256": _sha(_json(receipts[-1])) if receipts else None,
         "physical_byte_sha_verified": True,
         "model_state_authenticated": False, "optimizer_or_ema_proved": False,
@@ -240,6 +299,8 @@ def save_opaque_bytes(root: Path, *, horizon: int, run_id: str,
         require(_regular_file_bytes(marker, max_bytes=2048) == _json(lock),
                 "RUN_BINDING_CHANGED")
         previous = _scan(root, lock)
+        require(_failed_attempt_record(root, lock, previous) is None,
+                "FAILED_RUN_CLOSED_NO_NEW_MODEL_SNAPSHOT")
         steps = canonical_checkpoint_steps(horizon)
         require(len(previous) < len(steps), "CHECKPOINT_SERIES_COMPLETE")
         require(update == steps[len(previous)], "SKIPPED_OR_DUPLICATE_CHECKPOINT")
@@ -256,6 +317,66 @@ def save_opaque_bytes(root: Path, *, horizon: int, run_id: str,
         _unique_file(root, label + ".receipt.json", _json(entry))
         _scan(root, lock)
     return entry
+
+
+def save_failed_attempt_evidence(
+    root: Path, *, horizon: int, run_id: str,
+    attempted_update: int, evidence_bytes: bytes,
+) -> dict:
+    """Durably keep one STOP observation after u0; NOT a checkpoint or gate.
+
+    This does NOT observe optimizer state, gradients, EMA or biological context.
+    Caller must supply genuine evidence separately. It cannot vouch for bytes.
+    """
+    require(type(attempted_update) is int, "FAILED_ATTEMPT_UPDATE_TYPE")
+    require(type(evidence_bytes) is bytes
+            and 0 < len(evidence_bytes) <= MAX_FAILED_EVIDENCE_BYTES,
+            "FAILED_ATTEMPT_BYTES_REQUIRED")
+    lock = expected_run_lock(horizon=horizon, run_id=run_id)
+    root = Path(root)
+    with _locked(root):
+        require(_regular_file_bytes(root / "run.lock.json", max_bytes=2048)
+                == _json(lock), "RUN_BINDING_CHANGED")
+        previous = _scan(root, lock)
+        require(bool(previous), "FAILURE_BEFORE_VALID_U0")
+        require(_failed_attempt_record(root, lock, previous) is None,
+                "FAILURE_ALREADY_RECORDED")
+        require(previous[-1]["update"] < attempted_update <= horizon + 1,
+                "FAILED_ATTEMPT_ORDER")
+        record = {
+            "schema": SCHEMA,
+            "status": FAIL_STATUS,
+            "attempted_update": attempted_update,
+            "last_valid_checkpoint_update": previous[-1]["update"],
+            "run_lock_sha256": _sha(_json(lock)),
+            "evidence_sha256": _sha(evidence_bytes),
+            "evidence_bytes": len(evidence_bytes),
+            "previous_checkpoint_receipt_sha256": _sha(_json(previous[-1])),
+            "resumable": False,
+            "training_authorized": False,
+            "external_authentication": False,
+        }
+        # Commit last. Abrupt death between writes leaves a refused orphan.
+        _unique_file(root, FAIL_EVIDENCE, evidence_bytes)
+        _unique_file(root, FAIL_RECEIPT, _json(record))
+        _scan(root, lock)
+    return record
+
+
+def read_verified_failed_attempt_evidence(
+    root: Path, *, horizon: int, run_id: str,
+) -> bytes:
+    """Returns SHA-checked STOP bytes without granting any model resume."""
+    root = Path(root)
+    with _locked(root):
+        lock = expected_run_lock(horizon=horizon, run_id=run_id)
+        require(_regular_file_bytes(root / "run.lock.json", max_bytes=2048)
+                == _json(lock), "RUN_BINDING_CHANGED")
+        previous = _scan(root, lock)
+        require(_failed_attempt_record(root, lock, previous) is not None,
+                "NO_FAILED_ATTEMPT")
+        return _regular_file_bytes(root / FAIL_EVIDENCE,
+                                   max_bytes=MAX_FAILED_EVIDENCE_BYTES)
 
 
 def read_verified_bytes(root: Path, *, horizon: int, run_id: str,
