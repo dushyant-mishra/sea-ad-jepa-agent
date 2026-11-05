@@ -69,3 +69,29 @@ def test_red_a_damaged_new_success_cannot_be_mirrored_as_verified(
     with pytest.raises(v.JournalRefusal):
         v.inspect_journal(root, outside)
     assert v.inspect_forensic_prefix(root, outside)["resume_authorized"] is False
+
+
+def test_control_older_damage_does_not_erase_unmirrored_new_collapse(
+        tmp_path, monkeypatch):
+    """A fully intact collapse may be mirrored even if an old state is damaged."""
+    from tests.test_jepa_synth2048_attempt_journal_v2_macha_red import (
+        collapse_receipt,
+    )
+    root, outside = open_run(tmp_path, horizon=4)
+    commit(root, outside, 1)
+    v.begin_attempt(root, outside, update=2)
+    flip_last_byte(root / "u00001.state.bin")
+    original = kill_write(monkeypatch, outside, "j00000004.json")
+    with pytest.raises(RuntimeError, match="SIMULATED_PROCESS_DEATH"):
+        v.record_collapsed_state(root, outside, update=2,
+                                 state_bytes=b"COLLAPSED_STATE_U2",
+                                 reported_receipt=collapse_receipt(2))
+    monkeypatch.setattr(v, "_write_once", original)
+    assert v.reconcile_one_unmirrored_record(root, outside)["status"] == (
+        "ONE_VERIFIED_LOCAL_RECORD_MIRRORED"
+    )
+    assert v.close_run(root, outside)["status"].startswith("STOPPED_COLLAPSED")
+    forensic = v.inspect_forensic_prefix(root, outside)
+    assert forensic["collapsed_state_updates_nonresumable"] == [2]
+    assert forensic["probe_pass_states_with_damaged_evidence"] == [1]
+    assert forensic["training_authorized"] is False
