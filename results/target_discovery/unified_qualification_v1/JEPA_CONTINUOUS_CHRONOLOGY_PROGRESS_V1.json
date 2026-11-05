@@ -3429,16 +3429,6 @@
           "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT82_V5_560_CAUSE_REPAIR_SOURCE_MAP.json",
           "blob_sha1": "eceb43b8fd63a659f1b055210a66d41cdfd685c5",
           "role": "Machine source/unchanged test/CI map"
-        },
-        {
-          "path": "scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py",
-          "blob_sha1": "d83e5075a98376f43f3e4263be55a2fe7cf12da7",
-          "role": "PR562 scoped uncaused failure refusal and self-reported cause logic"
-        },
-        {
-          "path": "tests/test_jepa_synth2048_failed_onset_cause_successor_v1.py",
-          "blob_sha1": "a6e5975c67a7525826a2ca0fa9dc2078b6e43cf6",
-          "role": "New hostile self-reported-cause attacks; original Macha #560 test remains unchanged"
         }
       ],
       "change_type": "repair",
