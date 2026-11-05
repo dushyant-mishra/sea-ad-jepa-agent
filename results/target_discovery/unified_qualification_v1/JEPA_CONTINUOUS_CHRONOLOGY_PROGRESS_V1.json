@@ -3576,6 +3576,85 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/562",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/564"
       ]
+    },
+    {
+      "event_id": "20261105-SOL-V5-MACHA567-CORRUPT-TAIL-FIRST-ANOMALY-FORENSIC-PREFIX-REPAIR-EVENT86",
+      "date_utc": "2026-11-05",
+      "workstream": "macha567_e3a_corrupt_descendant_e3b_sparse_onset_crash_forensic_prefix_recovery",
+      "implementation_pr": 568,
+      "implementation_head": "eab59fea8002cd18d4989e8b741051de588c48d6",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT86_V5_567_CORRUPT_TAIL_FORENSIC_PREFIX_NO_TRAINING.md",
+          "blob_sha1": "572ebb415df3b4e56327fa2e28d9ee0887975215",
+          "role": "Mirrored human scoped author-side result with explicit neural/training limitations"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT86_V5_567_CORRUPT_TAIL_SOURCE_MAP.json",
+          "blob_sha1": "24b5d218c1d775d1723b55701d3cc691d1e721f3",
+          "role": "Mirrored exact Git source, original Macha immutable tests and CI/test custody"
+        }
+      ],
+      "change_type": "repair",
+      "what_already_existed": "Event83 #563 E2 verified-prefix after interrupted writes, Event84 #564 local intent with sparse failure regression, Event85 #565 self-reported cause/disk bridge held; original test-only Macha #567 E3a/E3b exact immutable blob c513693fa11b2c0ef72b68601ca83dcd5a0a5b2f authored to show corrupt latest checkpoint and sparse intent u43 made u2/u40 unreadable. No physical neural checkpoints or optimizer training.",
+      "new_work_or_result": "Draft PR568 based directly on unchanged Macha #567 test branch. Separate forensic-only maximal SHA-checked committed prefix stops at first damaged payload, receipt or intent, reports suspect tail and does not promote. Strict storage verification and writer still refuse all corrupt/orphan stores. Original #567 E3a/E3b and #561 unchanged now pass. Author tests expecting whole-store forensic refusal were updated for owner's D4 read-to-first-anomaly policy. GitHub Action 42053444473: Python3.11.9 130 PASSED, Python3.12.7 130 PASSED, 2/2 success. Source blob 169ec630f24c16f4568408be024f07cb138e4489.",
+      "negative_or_counterfactual_evidence": "Forensic SHA-linked bytes are not a proven healthy neural state. A later damaged checkpoint never permits reading that damaged state; corrupt ancestor invalidates all descendants. Whole-tail erasure with intent files can still bypass local SHA history; external custody absent. Sparse schedule still exists; no true optimizer attempt log/EMA or restart parity. No GPU, data, biological learning or Stage4.",
+      "test_review_scope": "Macha #567 test blob c513693fa11b2c0ef72b68601ca83dcd5a0a5b2f and #561 be259ab4cdcf035d7bf05134f68b6fe8d09f8833 unchanged. 130 PASSED on each Python version at exact head eab59fea, run 42053444473. Synthetic bytes only; independent Macha PR568 review pending.",
+      "independent_review": "PR568_AUTHOR_CI_GREEN__MACHA_INDEPENDENT_HEAD_REVIEW_PENDING__FORENSIC_ONLY",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha independently review PR568 first-anomaly prefix and no-resume boundary; no automatic merge.",
+        "Owner's every-success checkpoint policy and external separately retained head are not yet implemented.",
+        "Integrate repaired post-step collapse (#569) and first-anomaly forensic (#568) in a new prospective attempt journal, with actual physical gradients/Adam/EMA/RNG model state and later separately authorized restart RT1–RT8.",
+        "All prior C1–C6 UNASSESSED and original TD/Stage81/R5/V79/V80 no-repeat rules unchanged."
+      ],
+      "historical_supersession": "Event1–85 unchanged; new scoped author regression only, does not assert physical trained model health.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/568",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/567",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42053444473"
+      ]
+    },
+    {
+      "event_id": "20261105-SOL-V5-MACHA566-HONEST-POST-STEP-COLLAPSE-STATE-VERDICT-EVENT87",
+      "date_utc": "2026-11-05",
+      "workstream": "macha566_collapse_after_optimizer_step_and_unknown_last_healthy_receipt_schema",
+      "implementation_pr": 569,
+      "implementation_head": "aeca6b033c55208f84d84f3a6435af7a2a5209af",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT87_V5_566_POST_STEP_COLLAPSE_CAUSE_NO_TRAINING.md",
+          "blob_sha1": "8d7e0efcfe51d4423a803e09cbda1f5eef727206",
+          "role": "Mirrored human scoped author-side result with explicit neural/training limitations"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT87_V5_566_POST_STEP_COLLAPSE_SOURCE_MAP.json",
+          "blob_sha1": "f9fa1413d06d8f42131931769cb14166c3008e0f",
+          "role": "Mirrored exact Git source, original Macha immutable tests and CI/test custody"
+        }
+      ],
+      "change_type": "repair",
+      "what_already_existed": "Original #562 self-reported failure cause logic incorrectly required optimizer and EMA unexecuted even for post-step collapse and marked a mechanically completed collapsed prior state as last valid recovery state. Macha #566 test-only head c03f388845b3e2adf585c8aeece7e351148a4c2a, immutable test blob 60a16378c22b35ec5d52837c7c641cf6a59e0935. Original #557/#560 unchanged. No actual physical neural collapse detection.",
+      "new_work_or_result": "Draft PR569 based directly on unchanged #566 RED file. Validator allows reported completed-step optimizer+EMA flags for a nonresumable rejected collapsed state; distinguishes it from a pre-step probe of prior state. Explicit probed_state_update, last_healthy_state_update None unless genuine per-success probe exists, mechanical-only last_valid_completed_update. New RUNTIME_ABORT evidence carries exception class, traceback SHA and execution stage. Equality-based distinct-row witness avoids float32 centering false nonzero from constant row samples. Original #566 2 REDs now pass; new hostile type/EMA contradiction/runtime-abort/healthy-low-rank controls. GitHub Actions 42054401819: 121 PASSED per Python3.11.9 and 3.12.7, 2/2 success. New source blob d05a7dc4e399390d882f33e63c3534ae83498933.",
+      "negative_or_counterfactual_evidence": "No actual state weight SHA or frozen panel u0 evidence physically authenticated; all receipts and equality diagnostic take user-supplied values. Last healthy intentionally UNKNOWN, not previous completed step. Not integrated with #565 physical disk or #568 recovery. No physical all-trainable-tensor gradients, Adam/EMA, full checkpoint, restart-parity or biological winner. No optimizer/GPU/training.",
+      "test_review_scope": "Macha #566 test blob 60a16378c22b35ec5d52837c7c641cf6a59e0935, #557 bfa5345775570205def66eb19a98efc207d28d90, #560 3ab6c208206251728116debda1edb226cb5b647a all unchanged. Exact-head 42054401819 121 PASSED per Python3.11.9/3.12.7. Macha independent PR569 verdict pending.",
+      "independent_review": "PR569_AUTHOR_CI_GREEN__MACHA_INDEPENDENT_HEAD_REVIEW_PENDING__SELF_REPORTED_ONLY",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha independently review PR569 on its exact head, especially actual post-step truth and no healthy resume promotion.",
+        "Physical deterministic exact-collapse witness must be bound to actual weight digest and locked u0 TRAIN panel; every-success checkpoint/probe.",
+        "Owner D1 minimum outside-run journal copy unsigned signing decision pending, D2 every-success update checkpoint, D3 nonresumable collapsed payload, D4 first-anomaly forensic prefix.",
+        "Build versioned V2 per-attempt begin/outcome/closed journal and RT1–RT8 only after explicit owner optimizer-step authorization. Old #565 remains REPAIR_REQUIRED.",
+        "All learned C1–C6 unassessed, historical tests unchanged, no training or Stage4 authority."
+      ],
+      "historical_supersession": "Event1–86 unchanged; new narrowly scoped fake-receipt validation only, not neural collapse recovery.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/569",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/566",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42054401819"
+      ]
     }
   ]
 }
