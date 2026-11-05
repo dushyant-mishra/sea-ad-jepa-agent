@@ -4140,6 +4140,47 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460#issuecomment-6669210784",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/582"
       ]
+    },
+    {
+      "event_id": "20261105-SOL-HISTORICAL-PROVENANCE-FAILURES-ORIGINAL-V5-15-SOURCE-PR547-FIT-IDENTITY-AND-ADAM-MAPPING-RED-GREEN-EVENT99",
+      "date_utc": "2026-11-05",
+      "workstream": "owner_request_recurrent_historical_source_data_pipeline_misidentification_and_exact_v5_static_custody_gate_sol_fixes",
+      "implementation_pr": 584,
+      "implementation_head": "11d8a70235cfc02d412db6b6158485732bdec246",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT99_SOL_HISTORICAL_PIPELINE_IDENTITY_FAILURE_AUDIT_AND_V5_SOURCE_DATA_GATES_NO_TRAINING.md",
+          "blob_sha1": "531e3aad21ca4b1d4b35892caff1cb07debee3d5",
+          "role": "Mirrored Event99 human original-source/historical-failure root-cause and exact new CI evidence"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT99_HISTORICAL_V5_PIPELINE_SOURCE_DATA_AND_ADAM_GATES_MAP.json",
+          "blob_sha1": "c32f74c56f975f68c4f83db129ace5fe1d40feed",
+          "role": "Mirrored Event99 structured source/data/PR538 input V5 15-blob map and Sol #583/#584 red-green controls"
+        }
+      ],
+      "change_type": "source_provenance_guard_and_independent_repair",
+      "what_already_existed": "Events 5/35 source gene/BIN1/PAR_Y/SEAAD-NPH52 row and label corrections; September TRAIN-cache/42-shard partial/full104 firewall; TD23 physical source-row/value mismatch; Event74 PR547 1440x2048 public FIT original ZIP; Event75 PR548 2-cell original V5 guarded 6-block U0 with q 1672–1675 position restored; Events76–78 synthetic F1–F4 and 48 dead gradient/high-loss negative controls; Event98 Macha independently corrected Event96 V5 source from wrong canonical_runtime.py 5-file subset to original PR224 12 canonical + 2 private + initializer, and 40-step V4 not V5. Macha #582 completed synthetic-only journal/Adam/teacher integration and reported 20/20 hosted jobs with no actual V5 model/probes/Adam or EMA.",
+      "new_work_or_result": "Sol independently reread historical source-risk and exact repo/data maps: all 15 original V5 Git blob identities re-verified at both PR224 exact 9d00684e and PR582 exact e71d864b; original PR548 input readiness adapter exact same blob on PR582; PR525 nonauthorizing post-target contract hashes 4 V4 runtime files and is absent from PR582. A new independent attack found in #581/#582 optimizer structure hash only retained group sizes and no named-parameter-to-Adam-ID map/order; new draft #583 RED run 42114608692 produced 2 expected DID NOT RAISE and 4 control passes per both Python 3.11/3.12; repair head 76eddf86 passed 11/11 workflows, Macha review pending. New separate #584 on unmodified PR582 added standard-library AST-plus-exact 15 Git blob and original public PR547 25023562-byte ZIP/five-member sha+PR548 q/2048 source/data gate. Hosted 42116258536 10 static hostile tests passed on Python 3.11.9 and 3.12.7, 2/2 jobs success, downloaded ONLY public PR547 artifact 13364085153 and checked sha. No model import or optimizer run.",
+      "negative_or_counterfactual_evidence": "These are identity checks not binding real panel rights, runtime to journal, source row/value semantics, independently issued target or frozen biological outcome; old F1 rare/perturbation localization, F2 q ATAC proxy, F3 source-specific support masks, F4 nested synthetic donors remain limitations, so not C1-C6 biology or qualified human RNA. PR525 V4 runtime policy is separate and not on #582; never treat it as a V5 runtime license. Public synthetic 2048 FIT is distinct from 41,238-address FULL104 and owner sealed V80 controller. New #583 and #584 are author-GREEN, Macha independent cross-review not yet received; #581/#582 need repair acceptance. No real training, actual gradient, EMA arithmetic, donor RNA, model-journal integration, restore, RT1–RT8, GPU or Stage4.",
+      "test_review_scope": "Read-only GitHub source/Git blob lookup 15/15 PR224 and PR582, original PR548 adapter Git blob. #583 2 RED failures per Python 3.11.9/3.12.7 hosted CI 42114608692, repair head 76eddf86 11/11 workflows pass. #584 public exact FIT ZIP SHA 87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f and 5 member SHAs verified in two hosted Python jobs 42116258536; 10 static tests each, no torch/model. Original pre-existing Macha and Sol tests unchanged; source of this event human and machine docs exact same Git blobs on audit and handoff.",
+      "independent_review": "SOL_INDEPENDENT_REPAIR_AND_IDENTITY_AUDIT__MACHA_CROSS_REVIEW_OF_SOL_583_584_PENDING__NO_SELF_ACCEPTANCE",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha independently review Sol #583 named Adam positional/ID binding, Sol #584 complete PR224 15-file source/data public 2048 ZIP/5 member gate; exact scoped verdict or new repair, not author self-acceptance.",
+        "No real model-to-journal bridge yet. Next contract-only static link should tie PR224 V5 model/PR548 q/2048 data/PR582 fake journal/PR525 separate portfolio policy, plus signed source/right/target/panel issuer; no optimizer step until new explicit owner authorization.",
+        "Historical real FULL104 expression and private V80 controller are not read or a substitute for public synthetic PR547 FIT. Owner V80 private personal backup resolved per Event95.",
+        "Preserve future actual biological negative/probe/frozen panel, full RNG AMP restore, exact optimizer/teacher EMA, independent target issuance, and RT1–RT8 holds."
+      ],
+      "historical_supersession": "Append Event99 after Events1–98; no rewrites to Event68/90/96/98 or old REDs. Correct prior too-brief Sol 5-source view with fully pinned original 15. Current 2048 synthetic pipeline source and member bytes verified, but not real/C qualification, execution, production policy, or training.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/583",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/584",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42114608692",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42116258536",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/582"
+      ]
     }
   ]
 }
