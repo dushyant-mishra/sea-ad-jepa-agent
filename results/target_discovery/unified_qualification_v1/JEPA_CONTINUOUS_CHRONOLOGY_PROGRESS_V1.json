@@ -3412,6 +3412,57 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/558",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/559"
       ]
+    },
+    {
+      "event_id": "20261105-SOL-V5-560-UNCAUSED-FAILURE-RECEIPT-SCOPED-REPAIR-AUTHOR-CI-EVENT82",
+      "date_utc": "2026-11-05",
+      "workstream": "v5_synth2048_failed_onset_cause_logic_macha560_scoped_repair_no_model",
+      "implementation_pr": 562,
+      "implementation_head": "f1862ab528ba6ec74302684704b9078627e67b3b",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT82_V5_560_CAUSE_REPAIR_AUTHOR_CI_NO_TRAINING.md",
+          "blob_sha1": "35421ed68af69bfa15460be9059a6e462b558ef4",
+          "role": "Exact scoped cause-repair result, CI and unclosed engineering/scientific barriers"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT82_V5_560_CAUSE_REPAIR_SOURCE_MAP.json",
+          "blob_sha1": "eceb43b8fd63a659f1b055210a66d41cdfd685c5",
+          "role": "Machine source/unchanged test/CI map"
+        },
+        {
+          "path": "scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py",
+          "blob_sha1": "d83e5075a98376f43f3e4263be55a2fe7cf12da7",
+          "role": "PR562 scoped uncaused failure refusal and self-reported cause logic"
+        },
+        {
+          "path": "tests/test_jepa_synth2048_failed_onset_cause_successor_v1.py",
+          "blob_sha1": "a6e5975c67a7525826a2ca0fa9dc2078b6e43cf6",
+          "role": "New hostile self-reported-cause attacks; original Macha #560 test remains unchanged"
+        }
+      ],
+      "change_type": "NEW_SOURCE_AND_SCOPED_AUTHOR_TESTS_ONLY__NOT_INDEPENDENT_ACCEPTANCE",
+      "what_already_existed": "Original biological research and historical REDs remain on PR322 Event1-81. #558 captured when the failed u(N+1) occurred but uncaused representation STOP passed; #559 writer persisted opaque failure bytes but Macha #561 found E1 tail-deletion/false resumable update and E2 last-good unreadability after interrupted writes. #553 physical proof specification measured U0 11.21 MiB and estimated ~23.2 MiB after u1.",
+      "new_work_or_result": "Created draft PR562 stacked exactly on Macha #560. Refuses failed receipts lacking a positive mechanical signal or explicit matched exact-zero representation collapse probe; infers only labelled untrusted mechanical causes for unchanged #557 and #558 legacy tests. Added new hostile tests and included the original #560 RED in hosted CI. Preserved #557/#560 byte-identically. Github Actions 41973584129 completed both Python 3.11.9 and 3.12.7 jobs SUCCESS. New exact Event82 human and machine sources mirrored to audit/handoff.",
+      "negative_or_counterfactual_evidence": "Uncaused fail now refuses; near-but-nonzero metric not called an exact collapse. These are simulated receipts only, no physical encoder backprop, gradient proof, Adam, EMA, fixed TRAIN probe, full-state serialization, external journal trust, restart equality, actual biology or GPU. PR559 Macha #561 E1/E2 not repaired. Caller can forge new self-reported probe data. No Stage4 and all learned C1-C6 UNASSESSED.",
+      "test_review_scope": "Exact #562 f1862ab author CI 2/2 success. Original Macha #557 bfa53457 and #560 3ab6c208 original Git blobs unchanged; Sol #558 test 9a1366e8 unchanged. New test source a6e5975c. Macha independent review of #562 PENDING.",
+      "independent_review": "PR562_AUTHOR_CI_GREEN__MACHA_560_ORIGINAL_RED_NOW_PASSES__MACHA_EXACT_HEAD_VERDICT_PENDING__NOT_TRAINING_AUTHORITY",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Independent Macha review of PR562 cause semantics and legacy inference versus fully required explicit cause v2.",
+        "PR558 planned horizon must be prospectively bound to externally committed run lock; integrate typed cause receipts with PR559 disk journal.",
+        "Macha original PR561 E1/E2 REDs: external monotonic head anchor, attempt intent before update, forensic-prefix read without resume, physically persisted per-attempt telemetry.",
+        "Still no actual full V5 model/Adam/EMA/RNG/rights checkpoint or fresh process next-update parity, physical gradient/moment probe, authorization or learned C1–C6.",
+        "Historical L04 and Task3/Task4/#525/#533/#547 scientific decisions unchanged; avoid repetition of original TD, Stage81B, V79/V80 and PR547/548 work."
+      ],
+      "historical_supersession": "Event82 only supersedes Event81's prior review-pending #558/#559 status via actual Macha verdicts and documents a new narrow author-side #560 repair. Does not replace original historical experiment or a reviewed scientific outcome.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/562",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/560",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/561",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41973584129"
+      ]
     }
   ]
 }
