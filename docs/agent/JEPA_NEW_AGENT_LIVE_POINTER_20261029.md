@@ -1,3 +1,56 @@
+# READ FIRST — EVENT93 (2026-11-05): MACHA REVIEW OF #572/#573/#574/#571, REPAIRS #577 AND #578, MEASURED LAPTOP I/O
+
+**Audit and handoff.** Canonical append-only audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322), exact Audit head 12b43a9071d492167265dd36e3d724833c89328b — 93 chronology events and 58 no-repeat index keys. This is the operational [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) handoff.
+
+**Read first.** The Event93 human `docs/agent/JEPA_20261105_EVENT93_MACHA_574_IO_REVIEW_REPAIRS_577_578_NO_TRAINING.md` (blob `a63f3c744fe9356f95d3241d9ff25af588e5b964`) and machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT93_MACHA_IO_CACHE_LIVENESS_TEACHER_SOURCE_MAP.json` (blob `ede3f7b0af6620b1524cd2d4db347811db060fb3`) are byte-identical on #322 and #460. Then read:
+- Event92 and Event91 below;
+- historical Event90 human `docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md`;
+- historical Event90 machine map `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json`.
+
+**Macha verdicts:**
+- #573 `98b6e613`: **ACCEPT_SCOPED**.
+- #574 `42cb0efe`: **REPAIR_REQUIRED**, repaired in draft [#577](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/577) (RED `f7843637`, repair `b9f5be9790405dfb2873b2a754541c4fe8de43c5`).
+- #572 (Macha's own): self-identified gaps, repaired in #577; no self-acceptance.
+- #571 `8656adcf`: **REPAIR_REQUIRED** for EMA-teacher completeness, repaired in draft [#578](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/578) (RED `124c9eff`, repair `9cfe01c4fea40100e0f837cf8ece88392efd93db`); otherwise ACCEPT_SCOPED for its claims.
+- #575/#576: not reviewed this cycle. Combined locally with #577: 364 passed, 9 skipped.
+
+**#577 repairs.**
+- **Racily-clean metadata cache.** A same-tick change was previously trusted.
+- **Labels.** Writer results now say whether old evidence was re-hashed or only had unchanged metadata.
+- **Live-writer guard.** No other process or fork can recover a live writer.
+- **Failures over damaged history.** Collapse, failure and abort outcomes and their recovery still work when an unrelated old checkpoint is damaged. A success or a completed-run close still refuses.
+
+**CI.**
+- #577: runs 42096392485/42096392223/42096392113/42096392363, **8/8 jobs SUCCESS** on Python 3.11.9 and 3.12.7.
+- #578: run 42096400546, 35 passed ×2.
+
+Original Macha REDs #557/#560/#561/#566/#567, the #572 RED and controls, and Sol's #570/#573/#574/#571 tests are unchanged.
+
+**Measured on the recorded laptop.** i9-11980HK, 31 GiB WSL; GPU not used. Local evidence.
+
+| | Pre-cache | With the cache |
+|---|---|---|
+| Writer checkpoint reads, 205 × 23 MiB | 953 GiB | 19.7 GiB, plus 4.6 GiB at close |
+| 23 MiB × 33 updates | — | 66 reads, 6.8 s ext4 / 33 s C: NTFS |
+| u32 full scrub | — | 0.64–0.82 s ext4 |
+| Journal-record scan overhead, 205 updates | — | 28 s ext4 / ~12 min C: NTFS |
+
+**Run checkpoints on WSL ext4.** The project D: drive is **exFAT**: it refuses hard links, so the journal fails closed there.
+
+**Next:**
+- Sol cross-reviews #577/#578.
+- Macha reviews #575/#576.
+- Owner decision D1 (signed or device-separated head; exFAT-safe publish).
+- Connect physical evidence: a model-measured probe with gene-identity-only and teacher-target controls; all-tensor gradients incl. `value_encoder`; Adam/EMA residuals; complete RNG/cursor/AMP state.
+- **RT1–RT8 and any optimizer step need separate owner authority.**
+- V80 controller escrow before 2026-11-13 03:01:58 UTC.
+
+Falling loss is not biology, and a completed update is not a healthy state.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT92 (2026-11-05): INDEPENDENT FORENSIC FIX, EXISTING SCIENCE RECONCILIATION, RECIPROCAL REPAIR
 
 **Canonical append-only audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322), exact Audit head b11660c9599ccba97ec9cf0ffd1fd093c8904694 — 92 chronology events and 57 no-repeat index keys.** This is the operational [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) handoff. The Event92 human `docs/agent/JEPA_20261105_EVENT92_CROSS_REVIEW_FORENSIC_FIX_AND_HISTORICAL_NONREPEAT.md` and machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT92_CROSS_REVIEW_AND_NO_REPEAT_SOURCE_MAP.json` have verified matching Git blob SHA on #322 and #460. Read these FIRST, then Event91 and historical Event90 human `docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md` and machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json`, then the original scientific narrative, event68 original source/script/data/results index, and latest exact PR heads/reviews. Older sections below are preserved as *historical snapshots*, not live decisions.
