@@ -10,6 +10,7 @@ nonpromotion. Passing this contract's unit tests never proves those actions.
 from __future__ import annotations
 
 from hashlib import sha256
+from math import isfinite
 import json
 from pathlib import Path
 from typing import Mapping, Sequence
@@ -180,6 +181,135 @@ def validate_update_mechanics_receipt(receipt: Mapping[str, object]) -> None:
                   "INCOMPLETE_OPTIMIZER_TO_EMA_CHAIN")
 
 
+
+# Every failure must have an independently identifiable *reported* cause.
+# Legacy mechanical V1 receipts are interpreted from their existing numeric fields;
+# representation failure requires an explicit cause plus a numeric probe.
+# None of these caller-provided values constitutes physical neural evidence.
+COLLAPSE_CAUSE_METRIC = {
+    "CELL_CONSTANT": "cell_centered_energy",
+    "IDENTITY_ONLY_GENE_TOKENS": "same_gene_cross_cell_variance",
+    "EXPRESSION_RESPONSE_ZERO": "same_cell_expression_shuffle_delta",
+}
+
+
+def _reported_mechanics_causes(receipt: Mapping[str, object]) -> list[str]:
+    signals = {
+        "DEAD_PROTECTED_GRADIENTS": receipt["exact_zero_protected_gradients"] > 0,
+        "MISSING_OR_NONFINITE_GRADIENTS": receipt["missing_or_nonfinite_gradients"] > 0,
+        "MISSING_OR_NONFINITE_ADAM": receipt["missing_or_nonfinite_moments"] > 0,
+        "ZERO_ADAM_MOMENTS": receipt["exact_zero_protected_adam_moments"] > 0,
+        "AMP_SKIP": receipt["amp_skipped_step"],
+        "QUERY_LEAK": receipt["query_visible_to_student"],
+        "NONFINITE_STATE": not receipt["finite_state"],
+        "TEACHER_GRADIENTS": receipt["teacher_gradient_count"] > 0,
+        "PROTECTED_GRADIENT_REGISTRY_DRIFT": (
+            receipt["protected_attention_tensor_count"] != 48
+        ),
+    }
+    return [name for name, observed in signals.items() if observed]
+
+
+def _validate_collapse_evidence(cause: str, evidence: object) -> dict:
+    """Validate exact-collapse *reported* panel evidence, never inferred biology."""
+    refuse_unless(type(evidence) is dict
+                  and set(evidence) == {
+                      "metric", "observed", "u0_reference", "probe_panel_sha256",
+                      "operator_homogeneous_eval_mode", "identical_gene_sets",
+                  }, "COLLAPSE_EVIDENCE_FIELDS")
+    refuse_unless(evidence["metric"] == COLLAPSE_CAUSE_METRIC[cause],
+                  "COLLAPSE_CAUSE_METRIC_MISMATCH")
+    for name in ("observed", "u0_reference"):
+        value = evidence[name]
+        refuse_unless(type(value) in (int, float) and isfinite(value)
+                      and value >= 0, "COLLAPSE_" + name.upper() + "_INVALID")
+    # Do not treat near-zero or genuinely low-rank biology as an exact STOP.
+    refuse_unless(evidence["observed"] == 0
+                  and evidence["u0_reference"] > 0, "NO_EXACT_COLLAPSE_ON_PROBE")
+    refuse_unless(_is_sha256(evidence["probe_panel_sha256"]),
+                  "COLLAPSE_PANEL_ID_INVALID")
+    refuse_unless(evidence["operator_homogeneous_eval_mode"] is True
+                  and evidence["identical_gene_sets"] is True,
+                  "COLLAPSE_PANEL_NOT_COMPARABLE")
+    return dict(evidence)
+
+
+def validate_failed_attempt_onset_receipt(receipt: Mapping[str, object]) -> dict[str, object]:
+    """Record the first failed attempt with its *reported* cause; never resume it.
+
+    The unchanged Macha #557 tests send legacy mechanical failure receipts.
+    Their explicit nonzero gradients/AMP-skip flags remain supported as
+    inferred untrusted causes; an uncaused receipt fails Macha #560.
+    A representation collapse requires a named cause and exact-zero probe
+    evidence on a fixed, comparable TRAIN panel. Physical F2/F3/F4 remain open.
+    """
+    refuse_unless(type(receipt) is dict, "FAILED_ATTEMPT_TELEMETRY_INCOMPLETE")
+    extras = set(receipt) - REQUIRED_STOP_FIELDS
+    refuse_unless(REQUIRED_STOP_FIELDS.issubset(receipt)
+                  and extras in (
+                      set(), {"failure_cause"},
+                      {"failure_cause", "collapse_evidence"},
+                  ), "FAILED_ATTEMPT_TELEMETRY_INCOMPLETE")
+    exact_integer(receipt["update_index"], "FAILED_ATTEMPT_UPDATE")
+    refuse_unless(receipt["update_index"] > 0, "FAILED_ATTEMPT_INDEX")
+    for key in ("success", "optimizer_step_proved", "ema_completed_after_optimizer",
+                "presentation_cursor_advanced", "amp_skipped_step",
+                "query_visible_to_student", "finite_state", "telemetry_committed"):
+        refuse_unless(type(receipt[key]) is bool,
+                      "FAILED_ATTEMPT_" + key.upper() + "_TYPE")
+    for key in ("protected_attention_tensor_count", "missing_or_nonfinite_gradients",
+                "exact_zero_protected_gradients", "missing_or_nonfinite_moments",
+                "exact_zero_protected_adam_moments", "teacher_gradient_count"):
+        exact_integer(receipt[key], key)
+    refuse_unless(receipt["telemetry_committed"] is True, "FAILED_ONSET_NOT_RECORDED")
+    refuse_unless(receipt["success"] is False, "FAILED_ONSET_MUST_NOT_PASS")
+    refuse_unless(receipt["optimizer_step_proved"] is False
+                  and receipt["ema_completed_after_optimizer"] is False
+                  and receipt["presentation_cursor_advanced"] is False,
+                  "FAILED_ONSET_CLAIMS_OPTIMIZER_OR_EMA")
+
+    signals = _reported_mechanics_causes(receipt)
+    cause = receipt.get("failure_cause")
+    origin = "EXPLICIT_UNVERIFIED_TELEMETRY"
+    probe = None
+    if cause is None and "failure_cause" not in receipt:
+        # Compatibility for unchanged #557 and #558 mechanically failing inputs:
+        # derive the cause ONLY from an observed nonzero/true mechanical field.
+        refuse_unless(bool(signals), "UNCAUSED_FAILED_ATTEMPT")
+        cause = signals[0]
+        origin = "INFERRED_FROM_UNVERIFIED_LEGACY_MECHANICS"
+    else:
+        refuse_unless(type(cause) is str, "FAILURE_CAUSE_TYPE")
+        if cause in COLLAPSE_CAUSE_METRIC:
+            refuse_unless("collapse_evidence" in receipt,
+                          "COLLAPSE_EVIDENCE_REQUIRED")
+            probe = _validate_collapse_evidence(
+                cause, receipt["collapse_evidence"]
+            )
+        else:
+            refuse_unless(cause in signals, "UNSUPPORTED_OR_UNOBSERVED_CAUSE")
+            refuse_unless("collapse_evidence" not in receipt,
+                          "MECHANICS_WITH_UNRELATED_COLLAPSE_EVIDENCE")
+    return {
+        "status": "FAILED_ATTEMPT_RETAINED_AS_UNTRUSTED_STOP_EVIDENCE",
+        "attempt_update_index": receipt["update_index"],
+        "failure_cause": cause,
+        "failure_cause_origin": origin,
+        "other_reported_mechanical_causes": [s for s in signals if s != cause],
+        "collapse_probe_self_reported": probe,
+        "protected_attention_tensors_reported": receipt["protected_attention_tensor_count"],
+        "exact_zero_gradients_reported": receipt["exact_zero_protected_gradients"],
+        "missing_or_nonfinite_gradients_reported": receipt["missing_or_nonfinite_gradients"],
+        "amp_skip_reported": receipt["amp_skipped_step"],
+        "query_leak_reported": receipt["query_visible_to_student"],
+        "nonfinite_state_reported": not receipt["finite_state"],
+        "resumable_or_authorizing": False,
+        "physical_gradient_or_adam_moment_evidence_verified": False,
+        "causal_mechanism_independently_verified": False,
+    }
+
+
+
 def verify_capture_inventory(
     *,
     horizon: int,
@@ -194,10 +324,21 @@ def verify_capture_inventory(
     """
     required = canonical_checkpoint_steps(horizon)
     refuse_unless(len(checkpoints) == len(required), "MISSING_CHECKPOINT_WINDOW")
-    refuse_unless(len(per_update_receipts) == horizon, "UPDATE_TELEMETRY_GAPS")
-    for i, row in enumerate(per_update_receipts, start=1):
+    # horizon denotes COMPLETED updates. At most one final, failed u(horizon+1)
+    # is retained as observational STOP evidence. Never call it a checkpoint.
+    refuse_unless(
+        len(per_update_receipts) in (horizon, horizon + 1), "UPDATE_TELEMETRY_GAPS"
+    )
+    for i, row in enumerate(per_update_receipts[:horizon], start=1):
         validate_update_mechanics_receipt(row)
         refuse_unless(row["update_index"] == i, "UPDATE_SEQUENCE_CHANGED")
+    failed_attempt = None
+    if len(per_update_receipts) == horizon + 1:
+        failed_attempt = validate_failed_attempt_onset_receipt(
+            per_update_receipts[horizon]
+        )
+        refuse_unless(failed_attempt["attempt_update_index"] == horizon + 1,
+                      "FAILED_ATTEMPT_OUT_OF_ORDER")
     folder = root.resolve()
     for row, step in zip(checkpoints, required):
         refuse_unless(type(row) is dict
@@ -222,7 +363,12 @@ def verify_capture_inventory(
         "schema": TRACE_SCHEMA,
         "status": "PREFREEZE_RECEIPT_SHAPE_AND_FILE_SHA_TEST_ONLY",
         "required_completed_checkpoints": list(required),
-        "update_telemetry_windows": horizon,
+        "update_telemetry_windows": len(per_update_receipts),
+        "last_valid_completed_update": horizon,
+        "failed_attempt_recorded": failed_attempt is not None,
+        "failed_attempt": failed_attempt,
+        "failed_attempt_never_authorizes_resumable_checkpoint": True,
+        "all_telemetry_is_self_reported_not_physical_evidence": True,
         "actual_neural_updates_verified": False,
         "actual_resume_parity_verified": False,
         "training_authorized": False,
