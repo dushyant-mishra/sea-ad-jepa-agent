@@ -1,6 +1,8 @@
 # READ FIRST — EVENT99 (2026-11-05): HISTORICAL SOURCE/DATA MIX-UP AUDIT AND EXACT V5 GUARDS; SOL 583/584 NEED MACHA REVIEW
 
-**Canonical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322)** exact head `15a4e453dec02b0b49fd571113dcdcef4c8da47c`, **99 chronology events and 64 no-repeat index keys**; this is the live operational [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) first read, with all old Event98–90 snapshots preserved below.
+Audit head b892c42c32ad515ae35237777c6addd4aec663fb
+
+**Canonical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322)** exact head `b892c42c32ad515ae35237777c6addd4aec663fb`, **99 chronology events and 64 no-repeat index keys**; this is the live operational [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) first read, with all old Event98–90 snapshots preserved below.
 
 **Event99 identical Git blobs mirrored #322/#460:** human `docs/agent/JEPA_20261105_EVENT99_SOL_HISTORICAL_PIPELINE_IDENTITY_FAILURE_AUDIT_AND_V5_SOURCE_DATA_GATES_NO_TRAINING.md` blob `531e3aad21ca4b1d4b35892caff1cb07debee3d5`; machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT99_HISTORICAL_V5_PIPELINE_SOURCE_DATA_AND_ADAM_GATES_MAP.json` blob `c32f74c56f975f68c4f83db129ace5fe1d40feed`. Historical Event90 original first-read required sources remain `docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md` and `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json`.
 
