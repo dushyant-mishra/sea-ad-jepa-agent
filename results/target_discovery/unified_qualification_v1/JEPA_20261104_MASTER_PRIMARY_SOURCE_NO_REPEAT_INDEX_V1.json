@@ -1765,7 +1765,7 @@
     "human": "docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md",
     "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json",
     "human_sha": "a33ed0cdd8af86e078dc115d3e7c820ebb2da94a",
-    "machine_sha": "ffdc2c7bc2b97dc9a214fa15683664183f9cf5f5",
+    "machine_sha": "1b4c08579d7ba97e7852a284a428ac60e02f1ae5",
     "guard": "scripts/v5/verify_jepa_event90_takeover_integrity_v1.py blob db5f815bc80e4e414c17a57d4a31a7e7695da549",
     "hostile_tests": "tests/v5/test_verify_jepa_event90_takeover_integrity_v1.py blob 60826cb417fa93b2d127d387ec35f0a6b33870ea",
     "historical_locator": "Event68 60 entries; 56 public Git refs checked, 55 resolve, one stale 'src/sea_ad_jepa/v5/canonical_runtime.py' at 9d00684; 4 owner-only not remotely verifiable",
