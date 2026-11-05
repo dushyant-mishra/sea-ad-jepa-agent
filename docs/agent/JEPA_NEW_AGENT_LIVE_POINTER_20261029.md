@@ -1,3 +1,17 @@
+# READ FIRST — EVENT96 (2026-11-05): V5 original guarded runtime source role located; independent Macha confirmation PENDING
+
+**Canonical [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322)** audit head `6fef719c6037d4f9b0015be59d84cdeeebbc563d`, **96 append-only events, 61 no-repeat entries**. Active [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) first read preserved below Event95 and all prior events.
+
+**Event96 matched Git blobs on BOTH #322/#460:** `docs/agent/JEPA_20261105_EVENT96_CANONICAL_V5_GUARDED_RUNTIME_SOURCE_LOCATOR_ERRATUM_NO_EXECUTION.md` blob `1f17ea1796143a16c0abb448377984daa7a3716c` and machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT96_V5_CANONICAL_RUNTIME_LOCATOR_ERRATUM_SOURCE_MAP.json` blob `bbbe6a39670956edacae84dc773db0c521c99831`.
+
+**SCOPED GITHUB FACTS, NOT AN INDEPENDENTLY ACCEPTED VERDICT:** Event68 listed `src/sea_ad_jepa/v5/canonical_runtime.py` at original #224; that literal file was NOT_FOUND at #224, #525, #548, #570, #579 and main. Original PR224 exact head `9d00684e08ba34ef8d7b04e478b9c380cd36d537` **does** contain bounded guarded entrypoint `src/sea_ad_jepa/v5/inactive_guarded_update_v1.py` blob `59647eb0122dfd98068844f68b6d48c2c33d67ca`, split numerical consumer `src/sea_ad_jepa/v5/inactive_update_reference.py` blob `ab266faa31ac7d3e51acf695a7deff1702368cde`, `PrefreezeOptimizerGuardV1` in `prefreeze_runtime_authority.py` blob `41a6ebde613ee3ec5c898fa39e5a212c14eaac66`, and explicit convergence test blob `33d62e1a96e44b375467da3d88ee49f8430fc2fd`. Five exact source/test blobs identical at original PR224, PR525 and PR548. Previously recovered in PR548 report; this is only the historical **bad locator** correction. **Macha independent cross-check explicitly requested at [#460 comment 6669210784](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460#issuecomment-6669210784) and is not yet received.** Do not treat file absence as missing guarded V5 actor or claim Macha accepted. Old main numerical consumer uses unguarded direct optimizer/EMA mutations, not an acceptable substitute.
+
+**Event95 remains in force:** Owner has confirmed their own V80 private controller ZIP download; rescue deadline CLOSED, no re-download, no opening/sealed truth. **Engineering priorities** remain Macha independent #579 review and #575/#576/#577/#579/#578 guarded synthetic-only integration. Historical science, FULL104, previous training and prior synthetic V5 U0 already done; do not rebuild or repeat.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT95 (2026-11-05): V80 PRIVATE BACKUP CONFIRMED BY OWNER — RESCUE ALREADY RESOLVED
 
 **Canonical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact Audit head 6201c8a65ed354f5e3fc4f8b7f14f5d8baa3ef0c, 95 chronology events and 60 no-repeat index keys.** This is the live [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) first-read. Previous Event94 entry below is preserved as a historical snapshot.
