@@ -3137,6 +3137,50 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/546",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534"
       ]
+    },
+    {
+      "event_id": "20261104-SOL-MACHA-538-536-SCOPED-REVIEW-AND-541-HOLD-OWNER-OPTIONS-EVENT76",
+      "date_utc": "2026-11-04",
+      "workstream": "independent_macha_scoped_review_538_536_525_543_541_and_owner_L04_533_task3_decisions_no_autoapproval",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261104_EVENT76_MACHA_REVIEW_VERDICTS_AND_THREE_OWNER_DECISIONS_NOT_YET_RATIFIED.md",
+          "blob_sha1": "e31a4b701bedc82fd84880c5802da58797d0ebb2",
+          "role": "Read-only head-specific independent Macha PR reviews, original C3 single-source S6 limitation and three unratified owner options; no new code or owner ruling"
+        }
+      ],
+      "change_type": "chronology_correction",
+      "what_already_existed": "Original Macha #543 K01 accepted scoped only, #541 Task4 HOLD, #544 K02/K03 RED; Sol #545 K02/K03 repair already author GREEN and awaiting Macha acceptance; Sol #546 frozen Task3 RED tests already written. Original #538 conservative human 5-ID query address block, #536 C2 48-vs-3x512 and no fake student, #525 post-TD repaired M01/M02/S01 but P01 and L06 selection blockers. Event75 detailed all-history no-repeat and actual #547 fit 2048 and #548 V5 u0 completed.",
+      "new_work_or_result": "Independently reread the exact linked Macha GitHub issue comments on #538, #536, #543, #541 and #525 and source-bound #533 prospective 207/85 vs forensic mismatch. Published Event76 explicit statuses: #538 ACCEPT_SCOPED_CONSERVATIVE_QUERY_BLOCK_NONAUTHORIZING, #536 ACCEPT_SCOPED_NEGATIVE_ADMISSION_NONAUTHORIZING (CI-only), #543 ACCEPT_SCOPED_K01_FIX_ONLY, #525 ACCEPT_SCOPED_INCREMENTAL_WITH_LIMITATIONS/P01/L06, #541 HOLD_NEEDS_EVIDENCE; #545 repair exists and requires Macha acceptance, #546 Task3 hostile tests already run at test-only scope. Highlighted previously omitted #536 S6: 10/10 synthetic NPH52 C3 estimable versus 0/10 HVS and SEA-AD in frozen old PR328 sampled world, invalid for cross-source evidence. Documented three precisely scoped owner options for L04, #533 and frozen Task3 successor without issuing a new owner choice.",
+      "negative_or_counterfactual_evidence": "Macha #538 acceptance does not authenticate source/issuer or universal alias closure and does not govern PR547's artificial 2048 gene IDs. Old #536 single-source C3 estimability must not be transposed into PR547 2048 world. #525 P01 forged self-consistent C1-only portfolio can evade C3 wrong-query checks without external portfolio SHA; L06 prospective rules lack time-bound external commit. #545 author CI GREEN not equivalent to #541 cumulative acceptance or Task4 authorization; #546 test-only RED does not establish complete Task3 authority bypass or allow frozen source edits. L04 and 207/85 new version selection law have not been ratified by owner.",
+      "test_review_scope": "Read-only direct GitHub issue comment verification of Macha head-specific verdicts #538/#536/#543/#541/#525 and PR #533 original preflight/spec. No experiment, source read, controller truth, model training, GPU, gate rerun or source modification.",
+      "independent_review": "MACHA_PR538_PR536_PR543_SCOPED_ACCEPTED__MACHA_PR525_SCOPED_ACCEPT_WITH_LIMITATIONS__PR541_HOLD__SOL_REVIEWER_CUSTODY_SYNTHESIS_ONLY",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Owner decision needed for L04 SHARED teacher q visibility; conservative q-blind SHARED recommendation is not authorization.",
+        "Owner #533 prospective 207-confirmatory (includes Q08 fail), post-terminal 85 forensic-only selection-law choice; original V79/V80 immutable and PR533 remains BLOCKED until independently reviewed versioned new controller rule.",
+        "Owner choice on frozen Task3 history provenance: independent review pre-existing #546 RED and optionally separately versioned trusted successor; frozen Task3 stays unchanged.",
+        "Macha independent exact-head review #545 K02/K03 repair required before changing #541 HOLD; preserve #544 RED originals and C5-C9 FAIL.",
+        "Keep #525 TD externally expected portfolio SHA and L06 external pre-result commit constraints before selecting any C; #547/#548 Macha review still pending.",
+        "Original #536 C3 single-source 10/10 NPH52 only not evidence of source transfer or a claim about new #547 synthetic 2048 fixture"
+      ],
+      "historical_supersession": "Adds the previously missing Macha #538/#536 independently scoped accepts and single-source C3 source limitation to Event75; retains later #545 fix already present, preserves older events exactly and does not rewrite Task4 HOLD or scientific gates.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/538#issuecomment-6642767399",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/536#issuecomment-6642883751",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/543#issuecomment-6639527711",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/541#issuecomment-6639531636",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525#issuecomment-6642956092",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/544",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/545",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/546",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/533",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/547",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/548"
+      ]
     }
   ]
 }
