@@ -275,8 +275,14 @@ def run_zero_update_model_probe(full: np.ndarray, support: np.ndarray,
     insist(all(p.grad is None for p in modules.teacher.parameters()), "teacher gradient appeared")
     teacher_geometry = geometry_diagnostic(t.cell_state.detach().cpu().numpy())
     student_geometry = geometry_diagnostic(s.cell_state.detach().cpu().numpy())
-    teacher_token_geometry = token_geometry_diagnostic(t.gene_states.detach().cpu().numpy())
-    student_token_geometry = token_geometry_diagnostic(s.gene_states.detach().cpu().numpy())
+    teacher_token_geometry = token_geometry_diagnostic(
+        t.gene_states.detach().cpu().numpy(),
+        gene_ids=tp.canonical_gene_ids.detach().cpu().numpy(),
+    )
+    student_token_geometry = token_geometry_diagnostic(
+        s.gene_states.detach().cpu().numpy(),
+        gene_ids=sp.canonical_gene_ids.detach().cpu().numpy(),
+    )
     return {
         "status": "ACTUAL_V5_SIX_BLOCK_U0_FORWARD_PASS__NO_LEARNING",
         "actor": "KeyedIPBEncoderV2Reference+BlockPredictor",
