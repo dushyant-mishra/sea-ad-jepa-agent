@@ -6,6 +6,8 @@ on:
       - scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py
       - scripts/v5/jepa_synth2048_atomic_checkpoint_bytes_v1.py
       - tests/test_jepa_synth2048_attempt_journal_v2.py
+      - tests/test_jepa_synth2048_attempt_journal_v2_macha_red.py
+      - tests/test_jepa_synth2048_attempt_journal_v2_macha_controls.py
       - tests/test_jepa_synth2048_collapse_state_vs_attempt_macha_red.py
       - tests/test_jepa_synth2048_last_healthy_recoverability_macha_red.py
       - docs/agent/JEPA_20261105_V5_PROSPECTIVE_ATTEMPT_JOURNAL_V2_NO_TRAINING.md
@@ -46,7 +48,9 @@ jobs:
             tests/test_jepa_synth2048_write_intent_e1_scoped_v1.py \
             tests/test_jepa_synth2048_last_healthy_recoverability_macha_red.py \
             tests/test_jepa_synth2048_typed_onset_disk_integration_v2.py \
-            tests/test_jepa_synth2048_attempt_journal_v2.py
+            tests/test_jepa_synth2048_attempt_journal_v2.py \
+            tests/test_jepa_synth2048_attempt_journal_v2_macha_red.py \
+            tests/test_jepa_synth2048_attempt_journal_v2_macha_controls.py
       - name: Fail if this source advertises training or model resume
         env:
           PYTHONPATH: .

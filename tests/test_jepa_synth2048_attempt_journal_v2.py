@@ -15,6 +15,29 @@ from tests.test_jepa_synth2048_collapse_state_after_step_successor_v2 import (
 )
 
 
+U0_METRICS = {
+    "cell_centered_energy": 0.25,
+    "same_gene_cross_cell_variance": 0.5,
+    "same_cell_expression_shuffle_delta": 0.125,
+}
+
+
+def probe_for(update, raw, panel="1" * 64):
+    """Simulated caller-reported, state-bound NOT_COLLAPSED probe (Macha repair)."""
+    return {
+        "state_update": update,
+        "state_payload_sha256": sha256(raw).hexdigest(),
+        "probe_panel_sha256": panel,
+        "operator_homogeneous_eval_mode": True,
+        "identical_gene_sets": True,
+        "metrics": dict(U0_METRICS),
+        "cell_distinct_row_count": 64,
+        "probe_cells": 64,
+        "nonfinite_values": 0,
+        "measurement_origin": "CALLER_REPORTED__NOT_PHYSICALLY_PROVED",
+    }
+
+
 def roots(tmp_path):
     return tmp_path / "run", tmp_path / "separate-head-backup"
 
@@ -23,16 +46,17 @@ def initialize(tmp_path, horizon=3):
     root, backup = roots(tmp_path)
     v.open_journal(root, backup, run_id="synthetic-v2", horizon=horizon,
                    panel_sha256="1" * 64, config_sha256="2" * 64,
-                   rights_sha256="3" * 64, initial_state_bytes=b"SIMULATED_U0")
+                   rights_sha256="3" * 64, initial_state_bytes=b"SIMULATED_U0",
+                   initial_probe=probe_for(0, b"SIMULATED_U0"))
     return root, backup
 
 
 def step_ok(root, backup, update=1):
     v.begin_attempt(root, backup, update=update)
+    raw = f"FAKE_SUCCESS_U{update}".encode()
     return v.commit_reported_update(
-        root, backup, update=update,
-        state_bytes=f"FAKE_SUCCESS_U{update}".encode(),
-        panel_sha256="1" * 64)
+        root, backup, update=update, state_bytes=raw,
+        panel_sha256="1" * 64, probe=probe_for(update, raw))
 
 
 def abort_cause(u):
@@ -85,7 +109,8 @@ def test_outcome_requires_started_update_and_no_skip(tmp_path):
     root, backup = initialize(tmp_path)
     with pytest.raises(v.JournalRefusal):
         v.commit_reported_update(root, backup, update=1,
-                                 state_bytes=b"FAKE", panel_sha256="1" * 64)
+                                 state_bytes=b"FAKE", panel_sha256="1" * 64,
+                                 probe=probe_for(1, b"FAKE"))
     with pytest.raises(v.JournalRefusal):
         v.begin_attempt(root, backup, update=2)
     v.begin_attempt(root, backup, update=1)
@@ -93,7 +118,8 @@ def test_outcome_requires_started_update_and_no_skip(tmp_path):
         v.begin_attempt(root, backup, update=1)
     with pytest.raises(v.JournalRefusal):
         v.commit_reported_update(root, backup, update=2,
-                                 state_bytes=b"FAKE", panel_sha256="1" * 64)
+                                 state_bytes=b"FAKE", panel_sha256="1" * 64,
+                                 probe=probe_for(2, b"FAKE"))
     with pytest.raises(v.JournalRefusal):
         v.close_run(root, backup)
     assert v.inspect_journal(root, backup)["status"].startswith("TERMINATED")
@@ -105,8 +131,11 @@ def test_post_step_collapsed_state_23mib_nonresumable_last_u0(tmp_path):
     raw = b"SIMULATED_COLLAPSED_STATE" * (24 * 1024 * 1024 // 25 + 1)
     assert len(raw) > 8 * 1024 * 1024
     assert len(raw) < 512 * 1024 * 1024
+    receipt = post_step_collapse(1)
+    # Macha repair: collapse evidence must be measured on THIS run's panel.
+    receipt["collapse_evidence"]["probe_panel_sha256"] = "1" * 64
     saved = v.record_collapsed_state(
-        root, backup, update=1, state_bytes=raw, reported_receipt=post_step_collapse(1))
+        root, backup, update=1, state_bytes=raw, reported_receipt=receipt)
     assert saved["status"] == "STATE_COLLAPSED"
     assert saved["state_sha256"] == sha256(raw).hexdigest()
     assert saved["resumable"] is False
@@ -137,7 +166,8 @@ def test_mechanical_stop_and_runtime_abort_causes(tmp_path):
     outside = tmp_path / "other-head"
     v.open_journal(another, outside, run_id="abort", horizon=2,
                    panel_sha256="1"*64,config_sha256="2"*64,
-                   rights_sha256="3"*64,initial_state_bytes=b"U0")
+                   rights_sha256="3"*64,initial_state_bytes=b"U0",
+                   initial_probe=probe_for(0, b"U0"))
     v.begin_attempt(another, outside, update=1)
     with pytest.raises(v.JournalRefusal, match="CAUSE_OUTCOME_WRONG_STATE"):
         v.record_failed_attempt(another, outside, update=1,
@@ -183,7 +213,11 @@ def test_deleting_local_whole_tail_refuses_thanks_to_outside_copy(tmp_path):
         v.begin_attempt(root, backup, update=2)
     f = v.inspect_forensic_prefix(root, backup)
     assert f["anomalies"]
-    assert f["last_reported_probe_pass_checkpoint_update"] == 0
+    # Macha repair: the outside copy of j2 is intact and hash-linked, and the
+    # u1 bytes verify, so forensic recovery keeps u1 (flagged single-copy).
+    assert f["last_reported_probe_pass_checkpoint_update"] == 1
+    assert any(a.get("sequence") == 2 and a["reason"] == "ONLY_ONE_INTACT_RECORD_COPY"
+               for a in f["anomalies"])
     assert (backup / "j00000002.json").is_file()
     assert before["last_reported_probe_pass_checkpoint_update"] == 1
 
@@ -245,7 +279,8 @@ def test_invalid_outside_directory_and_mismatched_probe(tmp_path):
     v.begin_attempt(root, backup, update=1)
     with pytest.raises(v.JournalRefusal, match="COMMITTED_PROBE_INCONSISTENT"):
         v.commit_reported_update(root, backup, update=1, state_bytes=b"BAD_PANEL",
-                                 panel_sha256="f"*64)
+                                 panel_sha256="f"*64,
+                                 probe=probe_for(1, b"BAD_PANEL"))
     assert not (root / "u00001.state.bin").exists()
 
 
@@ -322,7 +357,12 @@ def test_complete_local_record_erasure_does_not_launder_planned_close(tmp_path):
         v.begin_attempt(root, backup, update=1)
     forensic = v.inspect_forensic_prefix(root, backup)
     assert forensic["status"] != "COMPLETE_REPORTED_ONLY"
-    assert forensic["journal_records"] == 0
+    # Macha repair: every record survives only in the outside copy; each is
+    # flagged single-copy and the status always carries the storage anomaly.
+    assert forensic["journal_records"] == 6
+    assert forensic["status"].endswith("__STORAGE_ANOMALIES")
+    assert {a["sequence"] for a in forensic["anomalies"]
+            if a["reason"] == "ONLY_ONE_INTACT_RECORD_COPY"} == set(range(6))
     assert forensic["anomalies"]
     assert len(list(backup.glob("j*.json"))) == 6
 
