@@ -286,3 +286,37 @@ def test_forked_child_cannot_inherit_structured_writer_capability(tmp_path):
     assert status == 0 and outcome == b"DENIED"
     assert not (root / "u00001.state.bin").exists()
     assert submit(root, backup, 1, raw)["journal"]["status"] == "UPDATE_COMMITTED"
+
+
+def test_forensic_reader_must_not_return_state_whose_own_probe_evidence_is_damaged(tmp_path):
+    """Independent RED: an intact payload alone is not an intact probed record.
+
+    The forensic scan may preserve later records after a damaged older receipt,
+    but a read of the damaged record must not call its state probe-qualified.
+    Fake bytes only; no training, optimizer, model, controller or data access.
+    """
+    from tests.test_jepa_synth2048_attempt_journal_v2_macha_red import (
+        open_run, commit,
+    )
+    root, custody = open_run(tmp_path, horizon=3)
+    commit(root, custody, 1)
+    later_state = commit(root, custody, 2)
+
+    telemetry = root / "u00001.telemetry.json"
+    raw = bytearray(telemetry.read_bytes())
+    raw[-1] ^= 0x01
+    telemetry.write_bytes(raw)
+
+    report = journal.inspect_forensic_prefix(root, custody)
+    assert 1 in report["probe_pass_states_with_damaged_evidence"]
+    assert report["last_reported_probe_pass_checkpoint_update"] == 2
+    assert any(
+        a.get("sequence") == 2
+        and a.get("status") == "EVIDENCE_DAMAGED__RECORD_INTACT"
+        for a in report["anomalies"]
+    )
+
+    with pytest.raises(journal.JournalRefusal, match="UPDATE_NOT_VERIFIED_COMMITTED_STATE"):
+        journal.read_forensic_opaque_state(root, custody, update=1)
+    assert journal.read_forensic_opaque_state(root, custody, update=2) == later_state
+    assert journal.inspect_forensic_prefix(root, custody)["resume_authorized"] is False

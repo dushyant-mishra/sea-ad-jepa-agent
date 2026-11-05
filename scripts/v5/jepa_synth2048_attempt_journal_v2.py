@@ -1239,8 +1239,12 @@ def inspect_forensic_prefix(root: Path, custody: Path) -> dict:
 def _read_state(root: Path, custody: Path, kinds: set[str], update: int) -> bytes:
     root, custody = _paths(root, custody)
     with _lock(root):
-        _lock_row, rows, _issues, _damaged = _forensic(root, custody)
-        matches = [r for r in rows if r["kind"] in kinds and r["update"] == update]
+        _lock_row, rows, _issues, damaged = _forensic(root, custody)
+        # The record may be hash-linked and its payload still SHA-valid while
+        # its own probe/collapse telemetry is damaged. Do not return it as a
+        # qualified state; preserve later intact records for forensic reading.
+        matches = [r for r in rows if r["kind"] in kinds
+                   and r["update"] == update and r["seq"] not in damaged]
         insist(type(update) is int and len(matches) == 1,
                "UPDATE_NOT_VERIFIED_COMMITTED_STATE")
         ref = matches[0]["payload"]
