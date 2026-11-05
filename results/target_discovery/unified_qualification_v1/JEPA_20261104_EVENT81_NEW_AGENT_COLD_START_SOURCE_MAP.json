@@ -1,0 +1,142 @@
+{
+  "schema": "JEPA_EVENT81_NEW_AGENT_COLD_START_SOURCE_MAP_V1",
+  "snapshot_local_date": "2026-11-04",
+  "kind": "HANDOFF_ONLY__NO_NEW_SCIENTIFIC_OR_EXECUTION_EVIDENCE",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "canonical_audit_pr": 322,
+  "active_handoff_pr": 460,
+  "human_document": "docs/agent/JEPA_20261104_EVENT81_NEW_AGENT_COLD_START_HANDOFF_AFTER_FAILED_ONSET_V5.md",
+  "active_read_first_pointer": "docs/agent/JEPA_NEW_AGENT_LIVE_POINTER_20261029.md",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "biology": {
+    "C1": "shared",
+    "C2": "relational",
+    "C3": "query_specific",
+    "C5": "regulatory",
+    "C6": "C1+C3",
+    "C4": "C1+C2+C3",
+    "winner": "NONE",
+    "scientific_claims": "ALL_LEARNED_UNASSESSED"
+  },
+  "exact_live_pr_heads": [
+    [
+      547,
+      "4bc7f9f31eaf1a7ccac49fdf45df7db9b0eef569",
+      "ACCEPT_SCOPED_DEVELOPMENT_FIXTURE_MECHANICS_ONLY__C2_C3_GENERIC_STATE_ONLY",
+      "2/2"
+    ],
+    [
+      548,
+      "cde03f738c758694aa66211b5021603af943675b",
+      "ACCEPT_SCOPED_U0_MECHANICS_ONLY__NO_BACKWARD_OR_TRAINING",
+      "1/1"
+    ],
+    [
+      550,
+      "8a143c0d193433f4d53245824874898afb551dcc",
+      "SYNTH_SOURCE_PHYSICAL_PANEL_ELIGIBILITY_ONLY",
+      "3/3"
+    ],
+    [
+      553,
+      "f6590e28a3c39f7cd270831d7d7a217223dec23e",
+      "MACHA_EVIDENCE_CONTRACT_INSUFFICIENT__F1_F4_REPAIR",
+      "1/1"
+    ],
+    [
+      554,
+      "b48fbb2d75118177a81ef9f1e411c637ba1768bb",
+      "MACHA_ACCEPT_SCOPED_T1_EXACT_IDENTITY_ONLY_CASE_ONLY",
+      "1/1"
+    ],
+    [
+      555,
+      "30b8848c95a10fc9e733daf2f7e0a8da906bb6d7",
+      "AUTHOR_GREEN_POSIX_OPAQUE_CHECKPOINT_BYTES__MACHA_REVIEW_PENDING",
+      "1/1"
+    ],
+    [
+      558,
+      "33793a07a7c19eeb6a35273182d1ba9151bcf600",
+      "AUTHOR_GREEN_MOCK_FAILED_ATTEMPT_LOGIC__MACHA_REVIEW_PENDING",
+      "1/1"
+    ],
+    [
+      559,
+      "38880f2c196b950a4f672aaf9fd480c7297662c5",
+      "AUTHOR_GREEN_ACTUAL_POSIX_OPAQUE_FAILED_ATTEMPT_JOURNAL__MACHA_REVIEW_PENDING",
+      "1/1"
+    ]
+  ],
+  "test_only_macha": {
+    "pr552": {
+      "scope": "T1 original same-gene across-cell invariant token collapse",
+      "result": "UNCHANGED_AND_GREEN_ON_554"
+    },
+    "pr556": {
+      "head": "57c00bcae17fc13feded47c9ac2e3054172d64fb",
+      "scope": "T2 VALUE_BLIND_MIXED_GENE_SUPPORT_TRAIN_DROPOUT; T3 FALSE_GRAD_BOOLS; T4 MSE_SIGN; T5 WITHHELD_Q"
+    },
+    "pr557": {
+      "head": "e5b3e8dd927afd6f1e3af11efe6252454f98682e",
+      "test_blob": "bfa5345775570205def66eb19a98efc207d28d90",
+      "scope": "F1 failed attempt after 12 valid updates; unchanged on Sol #558",
+      "result": "NOW_GREEN_ON_558"
+    }
+  },
+  "hosted_ci": {
+    "pr553": "41964769828 63/63 each of two Python versions",
+    "pr554": "41964985264 103+53 passed",
+    "pr555": "41966929210 86/86 each of two Python versions",
+    "pr558": "41967859163 80/80 each of two Python versions",
+    "pr559": "41968170206 96/96 each of two Python versions",
+    "authority_note": "AUTHOR_CI_GREEN_IS_NOT_INDEPENDENT_REVIEW_OR_TRAINING_PERMISSION"
+  },
+  "training_checkpoint_preference": {
+    "full": "u0_and_every_successful_u1_through_u40_then_every_fifth_to_u100_every_tenth_after_plus_terminal",
+    "alternative": "Measure actual u0 bytes; if practical every step entire synthetic development",
+    "attempt": "Every attempted update including the first failed one; commit STOP evidence; never mark failed optimizer/EMA as resumable",
+    "status": "PROPOSAL_NOT_FROZEN"
+  },
+  "physical_proof_pending": [
+    "raw actual unscaled 48 protected gradients & all predictor gradients",
+    "Adam step and two moment tensor norms",
+    "model online and EMA before/after fingerprints",
+    "EMA arithmetic residual and skip/step presentation consistency",
+    "fixed TRAIN donor/operator eval panel: same-cell expression shuffle, identity-only baseline, per-gene teacher variance, CELL spectra, source predictability",
+    "full six-block V5 model+Adam+GradScaler+RNG+mask+rights checkpoint data-only serializer",
+    "fresh process actual model restore and next-update replay; wrong Adam/checkpoint refusal",
+    "externally signed owner-controlled checkpoint source/historical trust root",
+    "measured u0 checkpoint size, quota and future cadence precommit",
+    "independent Macha review PR555 PR558 PR559",
+    "owner permission before any training or GPU"
+  ],
+  "still_hold": [
+    "Task4 PR541 HOLD K04 PR549 C1 store method forgery; C3 Q11 unauthenticated",
+    "frozen Task3 PR551 REAL_REFERENCE_READY forged custody: owner-signed versioned successor only",
+    "PR525 P01 external expected portfolio sha and L06 pre-result external commit",
+    "PR533 fresh 292 gate type selection law / Q08 new world / attempt cap owner pending",
+    "L04 EMERGENT vs TRANSFER, exact query set, shared teacher q-blind default not owner-ratified",
+    "PR547 C2 C3 generic-only until authorized balanced v2 rare perturbation fixture"
+  ],
+  "source_fit_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+  "historical_read_first": [
+    "docs/agent/JEPA_20261104_EVENT80_FAILED_ONSET_CAPTURE_MACHA_F1_AND_V5_CHECKPOINT_SUCCESSOR.md",
+    "docs/agent/JEPA_20261104_EVENT79_ACTUAL_ATOMIC_V5_CHECKPOINT_BYTES_AND_NEXT_AGENT_HANDOFF.md",
+    "docs/agent/JEPA_20261104_EVENT78_V5_FINE_GRAIN_CHECKPOINTS_MACHA_NEW_RED_AND_SUCCESSOR_HANDOFF.md",
+    "docs/agent/JEPA_20261104_EVENT75_SOL_COMPLETE_SYNTHETIC_V5_COLD_START_TAKEOVER_AND_NO_REPEAT.md",
+    "docs/agent/JEPA_20261104_EVENT76_MACHA_REVIEW_VERDICTS_AND_THREE_OWNER_DECISIONS_NOT_YET_RATIFIED.md",
+    "docs/agent/JEPA_20261104_EVENT77_SYNTH2048_C2_C3_SOURCE_FEASIBILITY_AND_NEW_AGENT_NO_REPEAT_HANDOFF.md",
+    "docs/agent/JEPA_20261104_SOL_LANE_SUCCESSOR_DETAILED_OPERATIONAL_HANDOFF_EVENT68.md",
+    "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json"
+  ],
+  "do_not_repeat": [
+    "historic measured TD19-TD59 + spent corrected real PR314",
+    "Stage81A3/Stage81B synthetic training and the original 48 dead-gradient forensics",
+    "original R5/C2 test-of-test 9/9",
+    "frozen V79/V80 including Q08 failure and 85 forensic rows",
+    "PR547 original 2048 synthetic FIT generation and PR548 U0",
+    "535-PR metadata census and 108-recent-PR precedence scan"
+  ],
+  "next_agent_first_step": "Re-verify exact PR heads and Macha recent comments; choose a single nontraining evidence/custody implementation slice; preserve unchanged Macha RED files and owner authority gates."
+}
