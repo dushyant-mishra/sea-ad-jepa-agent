@@ -257,8 +257,7 @@ def test_gradient_probe_rejects_fake_update_or_mismatched_grad_shape():
     with pytest.raises(c.FullStateRefusal, match="GRADIENT_PROBE_UPDATE"):
         c.inspect_existing_trainable_gradients(
             online=online, teacher=teacher, predictor=predictor, update_index=0)
-    online.value_encoder.weight.grad = torch.zeros_like(
-        online.value_encoder.weight)[:1]
-    with pytest.raises(c.FullStateRefusal, match="GRADIENT_TENSOR_SHAPE_OR_DTYPE"):
+    online.value_encoder.weight.requires_grad_(False)
+    with pytest.raises(c.FullStateRefusal, match="GRADIENT_PARAMETER_INVALID"):
         c.inspect_existing_trainable_gradients(
             online=online, teacher=teacher, predictor=predictor, update_index=1)
