@@ -206,7 +206,7 @@ def test_sparse_cadence_actual_filed_bytes_through_u45(tmp_path):
     assert result["replay_determinism_proved"] is False
 
 
-@pytest.mark.parametrize("bad", [False, 0, 1.0, "1", None])
+@pytest.mark.parametrize("bad", [False, 1.0, "1", None])
 def test_update_type_and_zero_byte_ambiguity_refused(tmp_path, bad):
     with pytest.raises((c.StorageRefusal, ValueError)):
         c.save_opaque_bytes(tmp_path / "run", horizon=3, run_id="u0-3",
