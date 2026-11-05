@@ -1,3 +1,17 @@
+# READ FIRST — EVENT83 (2026-11-05): #561 E2 LAST-HEALTHY OPAQUE CHECKPOINT RECOVERY; E1 STILL RED
+
+**Canonical audit #322 head `20351ccd8964ea9ab19009e3b6083dc5bf1e3442`, 83 append-only events.** Draft [PR #563](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/563) exact `0acbf16407f63560bbd8a1cc81030cf232068c71`, built directly on unchanged Macha #561 `f59f9f8fd9fec198c1b84501d78591e7a6e90820`. Hosted author workflow `41974969978`: 110/110 on each Python version 3.11.9 and 3.12.7. Macha independent acceptance **PENDING**.
+
+**Read first:** `docs/agent/JEPA_20261105_EVENT83_V5_561_E2_FORENSIC_RECOVERY_AUTHOR_CI.md` and `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT83_V5_561_E2_SOURCE_MAP.json`, mirrored identically on audit/handoff. Then Event82 (#562 reported cause schema, still not physical journal), Event81/80/79/78 and Event75/68 original no-repeat maps.
+
+**What is truly fixed:** Macha #561 E2's 3 interruption cases: the last verified opaque checkpoint prefix remains readable through uncommitted failure evidence, orphaned next payload or temp. Suspect bytes are `UNCOMMITTED_UNVERIFIED` with SHA/size; strict verification and writers still refuse, and model resume is not permitted.
+
+**What is NOT fixed:** Macha #561 **E1a/E1b erasure/rewind are original unchanged REDs**. Need out-of-process immutable monotonic attempt/head anchor, write-ahead intent and every-attempt committed telemetry; do not trust an internally consistent SHA chain. #562 cause and #563 forensic reader are on separate stacked lineages, not integrated or independently accepted. Actual 48-gradient/Adam/EMA physical data, full model checkpoint and fresh-process next-update parity still absent. No C1–C6 qualified, Stage4/Task4 HOLD, L04 and source rights undecided.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT82 (2026-11-05): #560 CAUSE-LESS STOP REPAIR, PR562 AUTHOR CI; NO TRAINING
 
 **Canonical audit #322 HEAD `7b3e150ed77dcce02076d98c6f28569f25e14c51`**, 82 append-only events. **New scope:** draft [PR #562](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/562) exact `f1862ab528ba6ec74302684704b9078627e67b3b`, stacked on unchanged Macha #560 `0c1fd7a82f2b6c06e44e4c0f9cb5b51960cbf745`. Author workflow `41973584129` **2/2 Python jobs SUCCESS**. Macha independent review of #562 **PENDING**. No model, optimizer, EMA, GPU, human source, sealed truth or training used.
