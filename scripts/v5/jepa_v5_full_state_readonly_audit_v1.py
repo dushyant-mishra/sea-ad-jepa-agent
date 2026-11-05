@@ -382,3 +382,82 @@ def read_verified_bytes(raw: bytes, *, expected_sha256: str) -> tuple[dict, dict
     except Exception as exc:
         raise FullStateRefusal("REFUSE_FULL_STATE_AUDIT_V1__SAFE_LOAD_FAILED") from exc
     return bundle, verify_readonly_bundle(bundle)
+
+
+
+def inspect_existing_trainable_gradients(
+        *, online: torch.nn.Module, teacher: torch.nn.Module,
+        predictor: torch.nn.Module, update_index: int) -> dict:
+    """Read ALL existing trainable parameter.grad tensors, including value_encoder.
+
+    Unlike self-reported 48-gradient flags, these measurements come from the
+    actual *supplied* torch Parameter objects and their .grad fields. They
+    do not prove the gradients came from the intended loss, panel, source,
+    data, or update; no backward/optimizer calls are performed.
+
+    Missing, exact-zero and nonfinite gradients are reported separately
+    instead of being discarded: those may be the onset evidence.
+    """
+    require(type(update_index) is int and update_index >= 1,
+            "GRADIENT_PROBE_UPDATE")
+    require(all(isinstance(m, torch.nn.Module)
+                for m in (online, teacher, predictor)), "MODULE_TYPE")
+    observed: dict[str, dict] = {}
+    for label, module in (("online", online), ("predictor", predictor)):
+        for name, p in module.named_parameters():
+            full = label + "." + name
+            require(full not in observed and p.device.type == "cpu"
+                    and p.is_floating_point() and p.requires_grad,
+                    "GRADIENT_PARAMETER_INVALID")
+            grad = p.grad
+            if grad is None:
+                observed[full] = {
+                    "status": "MISSING", "shape": list(p.shape),
+                    "finite": None, "nonzero_elements": None,
+                    "max_abs": None, "l2_norm_float64": None,
+                }
+                continue
+            require(type(grad) is torch.Tensor
+                    and grad.device.type == "cpu"
+                    and grad.dtype == p.dtype
+                    and tuple(grad.shape) == tuple(p.shape),
+                    "GRADIENT_TENSOR_SHAPE_OR_DTYPE")
+            finite = bool(torch.isfinite(grad).all())
+            if not finite:
+                observed[full] = {
+                    "status": "NONFINITE", "shape": list(p.shape),
+                    "finite": False, "nonzero_elements": None,
+                    "max_abs": None, "l2_norm_float64": None,
+                }
+                continue
+            detached = grad.detach().to(dtype=torch.float64)
+            n = int(torch.count_nonzero(detached).item())
+            observed[full] = {
+                "status": "EXACT_ZERO" if n == 0 else "NONZERO_FINITE",
+                "shape": list(p.shape),
+                "finite": True, "nonzero_elements": n,
+                "max_abs": float(detached.abs().max().item()),
+                "l2_norm_float64": float(torch.linalg.vector_norm(detached).item()),
+            }
+    require(bool(observed), "NO_TRAINABLE_PARAMETERS")
+    teacher_gradients = sorted(
+        "teacher." + n for n, p in teacher.named_parameters()
+        if p.grad is not None)
+    counts = {
+        key: sum(x["status"] == key for x in observed.values())
+        for key in ("MISSING", "NONFINITE", "EXACT_ZERO", "NONZERO_FINITE")
+    }
+    return {
+        "schema": "JEPA_V5_PHYSICAL_GRADIENT_INSPECTION_NO_TRAINING_V1",
+        "update_index": update_index,
+        "all_trainable_tensor_count": len(observed),
+        "per_tensor": observed,
+        "status_counts": counts,
+        "teacher_gradients_reported": teacher_gradients,
+        "actual_supplied_tensors_read": True,
+        "intended_loss_or_panel_identity_proved": False,
+        "optimizer_step_executed_by_this_inspection": False,
+        "representation_learned_biology_proved": False,
+        "training_authorized": False,
+        "authority": AUTHORITY,
+    }
