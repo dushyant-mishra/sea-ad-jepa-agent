@@ -4058,6 +4058,50 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/224",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460#issuecomment-6669210784"
       ]
+    },
+    {
+      "event_id": "20261105-MACHA-INDEPENDENT-V5-579-575-576-REVIEW-REPAIRS-580-581-INTEGRATION-582-EVENT97",
+      "date_utc": "2026-11-05",
+      "workstream": "v5_macha_independent_review_of_579_575_576_direct_repairs_and_single_synthetic_integration",
+      "implementation_pr": 582,
+      "implementation_head": "e71d864b0496de0b86fe7442ba51d53b44e0b225",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT97_MACHA_REVIEW_579_575_576_REPAIRS_580_581_INTEGRATION_582_NO_TRAINING.md",
+          "blob_sha1": "e02e94b3b0a58596389ddddf780e0d2e27454919",
+          "role": "Event97 mirrored human Macha verdicts, RED/GREEN repairs #580/#581, integration #582 and Event96 source check"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT97_MACHA_579_575_576_REPAIRS_INTEGRATION_582_SOURCE_MAP.json",
+          "blob_sha1": "a7dd22757315e7829b378743ce292f8bddfb2c75",
+          "role": "Event97 mirrored machine map: exact heads, RED/repair commits, hosted CI runs, conflicts, I/O and open limits"
+        }
+      ],
+      "change_type": "repair",
+      "what_already_existed": "Event96 at audit head 6fef719c6037d4f9b0015be59d84cdeeebbc563d: Sol #579 repaired two Macha #577 reconcile defects (Event94); Sol #575 structured preflight and #576 forensic own-evidence read awaited Macha review; #578 accepted by Sol; V80 backup resolved by owner (Event95); Sol Event96 located the original guarded V5 runtime at PR224 pending Macha confirmation.",
+      "new_work_or_result": "Macha independent review with direct repair, RED first in hosted CI. Draft #580 on #579: RED 0ecc0d78 run 42109490027 2 failed / 7 passed per Python; repair 63bf1bdc run 42110388184 9+84 passed, 12/12 jobs; attempt-thread ownership for in-process recovery and no completion mirror over damaged history. Draft #581 on #575: RED 2af9f8d3 run 42109496747 2 failed / 56 passed per Python; repair 86d96fc1 run 42110395980 58 passed; u0 model/optimizer structure bound at every commit. Draft #582 integrates #576 (incl. #575), #580 (incl. #579, #577), #581 and #578 with one add/add conflict resolved to #578; 19 new cross-component tests; hosted run 42110895354 19 + 387 passed / 9 skipped on Python 3.11.9 and 3.12.7, 10/10 workflows 20/20 jobs. Combined-tree I/O 73 and 66 checkpoint reads equal to budget, 23 MiB x 33 writer 6.2 s. #576 ACCEPT_SCOPED; Event96 source identity ACCEPT_SCOPED by static blob check.",
+      "negative_or_counterfactual_evidence": "At #579 a sibling thread of the opening process recovered a live attempt (its collapse then unrecordable) and reconcile mirrored a completed run over damaged history as verified; at #575 a later checkpoint with a reshaped or missing module was accepted as the next probe-pass state. A reconcile-from-sibling-thread RED failed for a different reason and was dropped rather than claimed. A spawned DataLoader worker failure in the local full suite was a conda mkl-service environment conflict, not a journal defect. All probes caller-reported, Adam moments fabricated, no model or optimizer executed; hashing and green CI are not biological evidence.",
+      "test_review_scope": "Original Macha 557/560/561/566/567/572/577 and Sol 570/573/574/575/576/579/571 tests unchanged on all new heads. New: #580 RED/controls, #581 RED, #582 integration tests and workflows. Local WSL2 Python 3.11.15 and hosted Python 3.11.9 and 3.12.7.",
+      "independent_review": "MACHA_VERDICTS__579_REPAIR_REQUIRED_IN_580__575_REPAIR_REQUIRED_IN_581_OTHERWISE_ACCEPT_SCOPED__576_ACCEPT_SCOPED__EVENT96_SOURCE_IDENTITY_ACCEPT_SCOPED__SOL_CROSS_REVIEW_OF_580_581_582_PENDING__NO_TRAINING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Sol independent cross-review of #580, #581 and integration #582 with ACCEPT_SCOPED, REPAIR_REQUIRED or HOLD.",
+        "Bind the PR224 guarded one-update wrapper to the integrated journal as a non-executing contract (BEGIN before, structured bytes and probe after, #571 gradient/Adam/EMA telemetry).",
+        "Physical evidence still missing: model-measured probes with gene-identity-only and teacher-target controls, real gradients incl. value_encoder, Adam/EMA residuals, complete RNG/cursor/AMP state, restore.",
+        "Owner decisions: D1 signed or device-separated outside head; RT1-RT8 and any optimizer step need separate authorization."
+      ],
+      "historical_supersession": "Append-only Event97; preserves Events 1-96 and all original tests. Confirms, does not rewrite, Event96's source-locator finding; V80 backup remains resolved per Event95.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/580",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/581",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/582",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42109490027",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42110388184",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42109496747",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42110395980",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42110895354"
+      ]
     }
   ]
 }

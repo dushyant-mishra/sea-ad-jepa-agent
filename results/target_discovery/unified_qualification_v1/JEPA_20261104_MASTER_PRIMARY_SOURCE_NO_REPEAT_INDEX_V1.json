@@ -1910,5 +1910,25 @@
     "scope": "SOURCE_LOCATION_ONLY__NO_CODE_EXECUTION__NO_TRAINING",
     "owner_v80_status": "OWNER_PERSONAL_DOWNLOAD_CONFIRMED_RESOLVED",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_macha_579_575_576_review_repairs_580_581_integration_582_event97_20261105": {
+    "event": 97,
+    "date_utc": "2026-11-05",
+    "scope": "MACHA_REVIEW_579_575_576_DIRECT_REPAIRS_580_581_SINGLE_SYNTHETIC_INTEGRATION_582_EVENT96_SOURCE_CHECK",
+    "pr": 582,
+    "head": "e71d864b0496de0b86fe7442ba51d53b44e0b225",
+    "repairs": {
+      "580": "63bf1bdc8eea276d144e5f33a5828c137fe3217f",
+      "581": "86d96fc1450038c1482d4cfd8389682d0f085d62"
+    },
+    "human": "docs/agent/JEPA_20261105_EVENT97_MACHA_REVIEW_579_575_576_REPAIRS_580_581_INTEGRATION_582_NO_TRAINING.md",
+    "human_sha": "e02e94b3b0a58596389ddddf780e0d2e27454919",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT97_MACHA_579_575_576_REPAIRS_INTEGRATION_582_SOURCE_MAP.json",
+    "machine_sha": "a7dd22757315e7829b378743ce292f8bddfb2c75",
+    "red": "0ecc0d78 run 42109490027; 2af9f8d3 run 42109496747 (expected failures, both Pythons)",
+    "green": "63bf1bdc run 42110388184; 86d96fc1 run 42110395980; integration e71d864b run 42110895354 20/20 jobs",
+    "result": "Sibling-thread recovery refused; completion mirror over damage refused; u0 model structure bound at every commit; #576 reader and report agree under random damage; combined system green with no I/O regression. No biological acceptance.",
+    "do_not_repeat": "Do not re-audit #579/#575/#576 or re-measure combined I/O without a code change; do not rediscover the PR224 runtime (Event96 confirmed).",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
