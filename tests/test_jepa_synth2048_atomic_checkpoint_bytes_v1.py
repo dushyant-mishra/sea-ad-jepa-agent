@@ -177,6 +177,67 @@ def test_crash_after_payload_before_receipt_leaves_fail_closed_orphan(tmp_path, 
     # Do not auto-adopt or silently delete a half-committed write.
 
 
+
+def test_real_abrupt_subprocess_exit_after_payload_is_fail_closed(tmp_path):
+    root = tmp_path / "run"
+    save(root, 0)
+    # A real process exits without Python cleanup after durable payload write.
+    injected = """
+import os, sys
+from pathlib import Path
+from scripts.v5 import jepa_synth2048_atomic_checkpoint_bytes_v1 as c
+original = c._unique_file
+def exit_before_receipt(root, filename, raw):
+    if filename == 'u00001.receipt.json':
+        os._exit(77)
+    return original(root, filename, raw)
+c._unique_file = exit_before_receipt
+c.save_opaque_bytes(Path(sys.argv[1]), horizon=3, run_id='u0-3',
+                    update=1, payload=b'FAKE_U1_CHECKPOINT_DURABLE')
+"""
+    child = subprocess.run(
+        [sys.executable, "-c", injected, str(root)],
+        env={**os.environ, "PYTHONPATH": "."}, check=False,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+    )
+    assert child.returncode == 77, child.stderr
+    assert (root / "u00001.checkpoint").read_bytes() == b"FAKE_U1_CHECKPOINT_DURABLE"
+    assert not (root / "u00001.receipt.json").exists()
+    # No adoption of post-crash bytes into a valid resumable model.
+    with pytest.raises(c.StorageRefusal, match="ORPHAN"):
+        c.verify_storage(root, horizon=3, run_id="u0-3")
+
+
+def test_two_concurrent_processes_cannot_both_publish_u0(tmp_path):
+    root = tmp_path / "run"
+    code = """
+import sys
+from pathlib import Path
+from scripts.v5 import jepa_synth2048_atomic_checkpoint_bytes_v1 as c
+try:
+    c.save_opaque_bytes(Path(sys.argv[1]), horizon=3, run_id='u0-3',
+                        update=0, payload=sys.argv[2].encode())
+except c.StorageRefusal:
+    sys.exit(31)
+"""
+    processes = [
+        subprocess.Popen(
+            [sys.executable, "-c", code, str(root), marker],
+            env={**os.environ, "PYTHONPATH": "."},
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+        )
+        for marker in ("COMPETING_FIRST", "COMPETING_SECOND")
+    ]
+    results = [proc.communicate(timeout=20) for proc in processes]
+    statuses = [proc.returncode for proc in processes]
+    assert sorted(statuses) == [0, 31], (statuses, results)
+    body = c.read_verified_bytes(root, horizon=3, run_id="u0-3", update=0)
+    assert body in (b"COMPETING_FIRST", b"COMPETING_SECOND")
+    assert c.verify_storage(root, horizon=3, run_id="u0-3")[
+        "complete_captured_updates"
+    ] == [0]
+
+
 def test_temp_file_from_interrupted_process_refused(tmp_path):
     root = tmp_path / "run"
     save(root, 0)
