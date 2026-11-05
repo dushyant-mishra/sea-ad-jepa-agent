@@ -1675,5 +1675,22 @@
     "known_critical_limit": "Attacker erasing intent AND all local tail files can still fool local verifier. No connected external signer, protected append-only custodian, or actual begin-optimizer attempt intent. E1 NOT CLOSED.",
     "other_open": "PR562 failure cause and PR563/564 disk journal not integrated; physical 48-gradient/Adam/EMA/biology evidence, model checkpoint and fresh-process restart, Task4/Task3/owner biology decisions all pending",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_typed_onset_disk_integration_author_ci_event85_20261105": {
+    "event": 85,
+    "date_utc": "2026-11-05",
+    "scope": "DRAFT_PR565_SCOPED_CAUSE_TO_OPAQUE_JOURNAL_AUTHOR_CI_ONLY_NOT_NEURAL",
+    "pr": 565,
+    "head": "6df804682098fa9eff6c8a95b29866c70cb45920",
+    "human": "docs/agent/JEPA_20261105_EVENT85_TYPED_ONSET_DISK_INTEGRATION_SMOKE_NO_TRAINING.md",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT85_TYPED_ONSET_DISK_INTEGRATION_SOURCE_MAP.json",
+    "source": "scripts/v5/jepa_synth2048_typed_onset_disk_integration_v2.py blob 26dec2aa3f7448365c1e0e9cae1230964c69ad48",
+    "macha_tests_unchanged": "#557 bfa5345775570205def66eb19a98efc207d28d90; #560 3ab6c208206251728116debda1edb226cb5b647a; #561 be259ab4cdcf035d7bf05134f68b6fe8d09f8833",
+    "ci": "42050634006: 186 PASSED per Python 3.11.9/3.12.7; 42050633949: 63 PASSED per Python 3.11.9/3.12.7",
+    "accepted_scope": "Typed self-reported cause validated and SHA persisted as failed onset disk evidence, clean early-stop classified incomplete, crash forensic last-good opaque bytes recoverable",
+    "review": "Macha independent PR565 exact-head review pending",
+    "critical_limits": "Self-reported cause not physical gradient/Adam/EMA; no every-attempt telemetry, full neural state checkpoint, new optimizer bitwise replay, trusted external head or biological winner",
+    "no_repeat": "Original Events1-84 and TD/Stage81/V79/V80, PR547 synthetic FIT, PR548 U0, Macha REDs unchanged",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
