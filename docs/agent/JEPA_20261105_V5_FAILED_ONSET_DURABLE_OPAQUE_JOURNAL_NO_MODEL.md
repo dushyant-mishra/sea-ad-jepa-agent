@@ -1,0 +1,20 @@
+# V5 synthetic failure-onset opaque journal — actual disk mechanics, NO TRAINING
+
+**Source draft stacked on existing #555**, no change to original #553, Macha #557 test or the original #555 verified parent head. No model serialization, optimizer/backward, teacher, GPU, calibrated biology or controller truth was accessed.
+
+Macha [#557](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/557) demonstrated that the original #553 inventory could not record the **failing u(N+1)** after N valid updates, losing the onset of collapse. Separate sibling [#558](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/558) repairs the *mock prefreeze inventory* to retain one failure as STOP, with the exact original Macha test byte-identical, not a model checkpoint. **This branch changes the physical byte-storage substrate**, not that separate mock validator.
+
+**New actual source** `scripts/v5/jepa_synth2048_atomic_checkpoint_bytes_v1.py` builds on #555's POSIX atomic/no-clobber/fsync stored opaque snapshots. New `save_failed_attempt_evidence(..., attempted_update, evidence_bytes)` creates **one** separate `failed_attempt.evidence` and `failed_attempt.receipt.json`; receipt is published last, source/FIT/run hash and previous last-valid checkpoint receipt bound, and `resumable: false`, `external_authentication: false`, `training_authorized: false`. The STOP bytes **are not** a `uN.checkpoint` and cannot be used as a valid model state. After STOP, no further checkpoints are accepted, and the last valid checkpoint may still be verified separately.
+
+**Actual hostile filesystem tests:** write four fake good u0..u3 opaque snapshots, then real failed u4 evidence bytes, read in a new verification path; reject tampered STOP bytes/receipt, wrong/duplicate attempted index, post-failure good checkpoint, missing STOP receipt, empty/wrong evidence type and **real abruptly terminated child process between evidence durable write and receipt**. Any resulting orphan fails closed; no automatic adoption. These tests do **not** validate real physical gradients/Adam/EMA, and **cannot determine that the supplied STOP bytes are truthful**.
+
+**Precisely still missing for owner's objective:**
+1. Record raw *measured* data at every training attempt on a precommitted fixed TRAIN donor panel: exact 48 unscaled protected gradient magnitudes/tensors, both optimizer moments, update weight fingerprints before/after, EMA arithmetic delta and skipped-step status; never trust a caller's boolean declaration (#553 F2 / #556 T3).
+2. Same-cell expression-shuffle counterfactual, identity-only gene-state baseline, teacher per-gene cross-cell diversity, source predictability and u0 normalized reference; evaluate with dropout controlled and identical token supports, not T1's exact-equality sentinel alone (#556 T2).
+3. Persist that evidence **before failure is declared**, with buffered intermediate model states if necessary; failure evidence cannot be recovered if the process was killed before acquiring it. Real u0 checkpoint sizes and practical all-update snapshot budget not yet measured.
+4. Real full V5 model/Adam/scaler/EMA/mask/cursor/RNG serialization; external signed custody rooted outside the same process; reproducible fresh-process next-update replay, including restart with lost Adam state. Current payloads are explicitly fake opaque markers, no neural run.
+5. Independently reviewed training scope, owner-authorized L04 EMERGENT/TRANSFER query rights, #547 rare-program balancing v2 if C2/C3 biological specialization desired, #525 external portfolio precommit and #533 independent fresh selection law. Task4 #541 HOLD and Task3 #551 reached public authorization bypass remain.
+
+This is a **test-only source engineering building block**. Even a fully green CI can never be used to claim a completed model update, healthy biological state, selection authority or training readiness. Preserve exact preceding Git heads and Macha adversarial tests.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
