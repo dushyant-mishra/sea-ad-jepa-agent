@@ -3740,6 +3740,62 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/570",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/553"
       ]
+    },
+    {
+      "event_id": "20261105-JEPA-SOL-EVENT90-TWO-BRANCH-COMPLETE-SOURCE-HISTORY-LOCATOR-ERRATUM-AND-AGENT-TAKEOVER-EVENT90",
+      "date_utc": "2026-11-05",
+      "workstream": "event90_independent_historical_source_locator_crosscheck_and_complete_two_branch_no_repeat_takeover",
+      "implementation_pr": 322,
+      "implementation_head_before_event90": "d5ab29e6eb420a3b90566badd60bfdc25e0bdc8d",
+      "active_handoff_pr": 460,
+      "active_handoff_head_before_event90": "7cffe7c421bdd274c2eae9db0a8b2ca6f02e7b81",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md",
+          "blob_sha1": "a33ed0cdd8af86e078dc115d3e7c820ebb2da94a",
+          "role": "Byte-identical on #322/#460, detailed biological, original source/code/data/result, negative, expiry, PR heads, operational handoff"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json",
+          "blob_sha1": "ffdc2c7bc2b97dc9a214fa15683664183f9cf5f5",
+          "role": "Byte-identical source map, 60 historical locator verification 55/56 public, exact artifact/PR heads/review and permanent update protocol"
+        },
+        {
+          "path": "scripts/v5/verify_jepa_event90_takeover_integrity_v1.py",
+          "blob_sha1": "db5f815bc80e4e414c17a57d4a31a7e7695da549",
+          "role": "Read-only local integrity gate; identical code on both branches"
+        },
+        {
+          "path": "tests/v5/test_verify_jepa_event90_takeover_integrity_v1.py",
+          "blob_sha1": "60826cb417fa93b2d127d387ec35f0a6b33870ea",
+          "role": "Hostile negative controls for source/authority/custody and mirror integrity, no neural model"
+        }
+      ],
+      "change_type": "source_custody_audit_erratum_and_future_agent_handoff",
+      "what_already_existed": "89 prior append-only events, 54 no-repeat keys, original June-Nov scientific lineage/negative effects and 535 historical PR metadata/108 recent PR disposition snapshots, Event68 60-entry source/script/data/result registry, Event69 original V80 public FIT and receipt binary archive, Event75 synthetic 2048 FIT, Event81 cold start, Events82-89 V5 repair and no-training implementation sources. Previous Event89 exact head 8656adcf7e96b1e9c52a598beb844f8f8f548644 for PR571.",
+      "new_work_or_result": "Independent second source-access pass over all 60 Event68 source locators: 56 GitHub-public, 4 owner-only/conversation not verifiable from public; of public 55 retrievable at their documented historical refs and one stale/missing canonical_v5_runtime path. Verified archived V80 FIT/receipt exact original Git blob sizes and hashes match BOTH #322 and #460; corrected old Event68 conversation-only characterization via additive supersession, without mutating original record. Verified V80 sealed-controller Actions artifact 11866917064 is extant and expires 2026-11-13T03:01:58Z, and dev2048 original synthetic FIT artifact 13364085153 expires 2026-12-04T21:02:06Z. Verified live original #547/#548/#550/#553/#554/#556/#562/#563/#564/#565/#568/#569/#570/#571 and held #541/#551/#525/#533 exact heads. Added deep 26k-character human takeover and ~14k machine map identical on audit/handoff, plus shared read-only integrity script and negative tests. Preserved old chronology records1-89 and original independent Macha #557/#560/#561/#566/#567 RED blobs. No historical experiment rerun or model update.",
+      "negative_or_counterfactual_evidence": "Old Event68 locator canonical_v5_runtime -> src/sea_ad_jepa/v5/canonical_runtime.py at 9d00684e08ba34ef8d7b04e478b9c380cd36d537 returned 404 and also absent from tested main/#548/#570; DO NOT silently substitute inactive_update_reference.py or V4 runtime or infer absence of all V5 infrastructure. Old Event68 V80 FIT and receipt were conversation-only at its historical moment but are now exact binary Git archives as of Event69; controller intentionally not public and private escrow is NOT VERIFIED, with known November13 retention deadline. 2048 FIT retention deadline December4. Four original owner-only sources unverified. All author-side CI and opaque-byte/supplied-tensor tests are narrower than physical state/biological learning; C1–C6 UNASSESSED. 535 metadata census not a 535-PR diff audit, 60 locator path checks not scientific validation. No real source read, GPU, human RNA, new optimizer step or Stage4.",
+      "test_review_scope": "Read-only historical PR322/PR460 file and branch-source metadata, exact V80 Git trees/sha sizes and original Actions artifact expiry, 60 locator source reachability probes. New Event90 custody verifier and hostile tests will be run at exact heads; any CI acceptance must be separately recorded after hosted results. Original Macha #557 bfa5345775570205def66eb19a98efc207d28d90, #560 3ab6c208206251728116debda1edb226cb5b647a, #561 be259ab4cdcf035d7bf05134f68b6fe8d09f8833, #566 60a16378c22b35ec5d52837c7c641cf6a59e0935 and #567 c513693fa11b2c0ef72b68601ca83dcd5a0a5b2f unchanged.",
+      "independent_review": "EVENT90_HISTORICAL_SOURCE_PATH_CUSTODY_CROSSCHECK_COMPLETE__NEW_GUARD_HOSTED_CI_PENDING__NOT_SCIENTIFIC_ACCEPTANCE",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Source locator 'canonical_v5_runtime' must be traced to actual originating PR/ref before using it to bind future trainer; old record immutable.",
+        "Owner-only V80 original controller independent private archive must be created and SHA-verified before 2026-11-13T03:01:58Z; never upload to public or extract into FIT logs.",
+        "Preserve original synthetic development FIT 25,023,562-byte artifact before 2026-12-04T21:02:06Z when justified by source rights/owner policy, without regenerating original.",
+        "Macha review and repair #568/#569/#570/#571 independently; next real engineering move complete state/Adam/RNG/AMP rights-bound serializer + all-tensor physically bound probes into V2 journal.",
+        "RT1–RT8 use real synthetic optimizer updates and require separate owner authorization; no Stage4 or real RNA.",
+        "All historical TD, Stage81A3/B, original R5 and V79/V80, original 535/108 source census and spent PR314 outcomes remain frozen/no-repeat; all C1–C6 learning unassessed."
+      ],
+      "historical_supersession": "Adds errata and current takeover pointers without altering prior Event1–89 or their original science. Event68 canonical runtime path failure and post-Event69 V80 archive supersession reported explicitly. All earlier PR322/PR460 history preserved, next Event91 must be appended.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/570",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/571",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41912111013",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/38504094639"
+      ]
     }
   ]
 }
