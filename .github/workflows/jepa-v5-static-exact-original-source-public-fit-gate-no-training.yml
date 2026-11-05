@@ -1,0 +1,55 @@
+name: JEPA V5 original source and PR547 public FIT identity only (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - src/sea_ad_jepa/v5/**
+      - src/sea_ad_jepa/v4/ipb_jepa.py
+      - src/sea_ad_jepa/v4/gene_tokenizer.py
+      - scripts/v5/jepa_synth2048_v5_readiness.py
+      - scripts/v5/jepa_v5_source_data_custody_gate_v1.py
+      - tests/test_jepa_v5_source_data_custody_gate_v1.py
+      - .github/workflows/jepa-v5-static-exact-original-source-public-fit-gate-no-training.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-v5-15-file-source-and-public-fit-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install pytest only (NO torch, GPU, model or optimizer)
+        run: python -m pip install --disable-pip-version-check pytest==9.0.2
+      - name: Reject older V4/main runtime substitution and wrong source/data pins
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q tests/test_jepa_v5_source_data_custody_gate_v1.py
+      - name: Fetch ONLY PR547's known PUBLIC synthetic FIT development artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JEPA_PUBLIC_FIT_ZIP: /tmp/JEPA_PR547_DEV2048_FIT_ONLY.zip
+        run: |
+          gh api "repos/${{ github.repository }}/actions/artifacts/13364085153/zip" > "$JEPA_PUBLIC_FIT_ZIP"
+          echo "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f  $JEPA_PUBLIC_FIT_ZIP" | sha256sum --check -
+      - name: Read-only 15-file V5 and 5-member FIT identity, no model or data science
+        env:
+          PYTHONPATH: .
+        run: |
+          python scripts/v5/jepa_v5_source_data_custody_gate_v1.py --repo-root . --fit-zip /tmp/JEPA_PR547_DEV2048_FIT_ONLY.zip > /tmp/v5_source_data_static_only.json
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/v5_source_data_static_only.json'))
+          assert r['source']['all_15_original_v5_git_blobs_match'] is True
+          assert r['data']['exact_member_digests_verified'] is True
+          assert r['pipeline']['single_end_to_end_model_journal_train_path_proved'] is False
+          assert r['training_authorized'] is False
+          print('V5_15_SOURCE_BLOBS_AND_PUBLIC_FIT_SHA_VERIFIED__NO_MODEL__NO_TRAINING__NO_TARGET')
+          PY
