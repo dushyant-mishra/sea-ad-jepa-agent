@@ -1883,5 +1883,32 @@
     "action": "STOP_REPEATED_NOV13_EMERGENCY_AND_REDUNDANT_DOWNLOAD",
     "controller_truth_read": false,
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_canonical_guarded_runtime_original_pr224_locator_provisional_macha_review_event96_20261105": {
+    "event": 96,
+    "date_utc": "2026-11-05",
+    "original_source_pr": 224,
+    "original_head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+    "human": "docs/agent/JEPA_20261105_EVENT96_CANONICAL_V5_GUARDED_RUNTIME_SOURCE_LOCATOR_ERRATUM_NO_EXECUTION.md",
+    "human_git_blob_sha1": "1f17ea1796143a16c0abb448377984daa7a3716c",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT96_V5_CANONICAL_RUNTIME_LOCATOR_ERRATUM_SOURCE_MAP.json",
+    "machine_git_blob_sha1": "bbbe6a39670956edacae84dc773db0c521c99831",
+    "historical_bad_path": "src/sea_ad_jepa/v5/canonical_runtime.py",
+    "historical_bad_path_status": "NOT_FOUND_IN_CHECKED_REFS__LITERAL_REMAINS_INVALID",
+    "correct_guarded_entrypoint": "src/sea_ad_jepa/v5/inactive_guarded_update_v1.py",
+    "correct_guarded_entrypoint_blob_sha1": "59647eb0122dfd98068844f68b6d48c2c33d67ca",
+    "numerical_consumer": "src/sea_ad_jepa/v5/inactive_update_reference.py",
+    "numerical_consumer_blob_sha1": "ab266faa31ac7d3e51acf695a7deff1702368cde",
+    "verified_same_five_blobs_at": [
+      "PR224",
+      "PR525",
+      "PR548"
+    ],
+    "recovered_preexisting_in_pr548": true,
+    "independent_reviewer_status": "MACHA_CHECK_REQUESTED_NOT_RECEIVED",
+    "review_url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460#issuecomment-6669210784",
+    "scope": "SOURCE_LOCATION_ONLY__NO_CODE_EXECUTION__NO_TRAINING",
+    "owner_v80_status": "OWNER_PERSONAL_DOWNLOAD_CONFIRMED_RESOLVED",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
