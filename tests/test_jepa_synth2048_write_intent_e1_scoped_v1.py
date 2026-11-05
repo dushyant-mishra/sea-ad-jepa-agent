@@ -145,8 +145,13 @@ def test_corrupt_local_intent_refuses_both_normal_and_forensic_reads(tmp_path):
     (root / "u00002.write_intent.json").write_bytes(b"WRONG")
     with pytest.raises(c.StorageRefusal, match="WRITE_INTENT_MISSING_OR_CHANGED"):
         c.verify_storage(root, **RUN)
-    with pytest.raises(c.StorageRefusal, match="WRITE_INTENT_MISSING_OR_CHANGED"):
-        c.read_verified_bytes(root, update=1, **RUN)
+    assert c.read_verified_bytes(root, update=1, **RUN) == b"GOOD_U1"
+    report = c.inspect_verified_prefix_read_only(root, **RUN)
+    assert report["verified_checkpoint_prefix"] == [0, 1]
+    assert report["first_damaged_checkpoint_update"] == 2
+    with pytest.raises(c.StorageRefusal):
+        c.read_verified_bytes(root, update=2, **RUN)
+    assert report["resume_authorized"] is False
 
 
 def test_crash_after_write_intent_before_checkpoint_still_recovers_last_good(tmp_path, monkeypatch):
