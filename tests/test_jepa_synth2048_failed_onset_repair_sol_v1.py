@@ -17,13 +17,13 @@ from tests.test_jepa_synth2048_checkpoint_capture_prefreeze_v1 import (
 
 def _failure(n: int, **kwargs):
     out = complete_update(n)
-    out.update(
-        success=False,
-        optimizer_step_proved=False,
-        ema_completed_after_optimizer=False,
-        presentation_cursor_advanced=False,
-        **kwargs,
-    )
+    out.update({
+        "success": False,
+        "optimizer_step_proved": False,
+        "ema_completed_after_optimizer": False,
+        "presentation_cursor_advanced": False,
+    })
+    out.update(kwargs)
     return out
 
 
