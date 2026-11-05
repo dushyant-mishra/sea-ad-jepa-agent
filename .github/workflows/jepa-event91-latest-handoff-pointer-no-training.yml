@@ -4,7 +4,11 @@ on:
     paths:
       - 'docs/agent/JEPA_NEW_AGENT_LIVE_POINTER_20261029.md'
       - 'docs/agent/JEPA_20261105_EVENT91_READONLY_CPU_FULL_ADAM_STRUCTURED_JOURNAL_BRIDGE_NO_TRAINING.md'
+      - 'docs/agent/JEPA_20261105_EVENT92_CROSS_REVIEW_FORENSIC_FIX_AND_HISTORICAL_NONREPEAT.md'
       - 'results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT91_V5_STRUCTURED_STATE_JOURNAL_SOURCE_MAP.json'
+      - 'results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT92_CROSS_REVIEW_AND_NO_REPEAT_SOURCE_MAP.json'
+      - 'results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json'
+      - 'results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json'
       - 'scripts/v5/verify_jepa_event90_takeover_integrity_v1.py'
       - 'tests/v5/test_verify_jepa_event90_takeover_integrity_v1.py'
       - '.github/workflows/jepa-event91-latest-handoff-pointer-no-training.yml'
@@ -25,17 +29,37 @@ jobs:
         run: python scripts/v5/verify_jepa_event90_takeover_integrity_v1.py --role handoff
       - name: Event90 immutable source/custody negative tests remain green
         run: python -m pytest -q tests/v5/test_verify_jepa_event90_takeover_integrity_v1.py
-      - name: Event91 topmost pointer is the new live first-read
+      - name: Latest EventN pointer, immutable source SHA and no-promotion
         run: |
           python - <<'PY'
           from pathlib import Path
-          p = Path("docs/agent/JEPA_NEW_AGENT_LIVE_POINTER_20261029.md").read_text()
-          assert p.startswith("# READ FIRST — EVENT91")
+          from hashlib import sha1
+          import json
+          import re
+          root = Path(".")
+          p = (root / "docs/agent/JEPA_NEW_AGENT_LIVE_POINTER_20261029.md").read_text()
           top = p.split("\n---\n", 1)[0]
-          assert "Audit head 2d1badbfab942af7ac8c9ec14ae829f9e120b32f" in top
-          assert "91 append-only" in top and "56 no-repeat" in top
-          assert "42088900620" in top
+          ledger = json.loads((root / "results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json").read_text())
+          index = json.loads((root / "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json").read_text())
+          n = len(ledger["records"])
+          match = re.match(r"# READ FIRST — EVENT([0-9]+)", p)
+          assert match and int(match.group(1)) == n and n >= 91
+          assert f"{n} chronology events" in top
+          assert f"{len(index)} no-repeat index keys" in top
+          assert re.search(r"Audit head [a-f0-9]{40}", top)
+          assert "#322" in top and "#460" in top
+          assert "JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md" in top
           assert "JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json" in top
-          assert "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED" in top
-          print("EVENT91_LIVE_POINTER_HISTORY_AND_NO_PROMOTION_OK")
+          assert "42088900620" in p and "EVENT91" in p
+          authority = "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+          assert authority in top
+          latest = ledger["records"][-1]
+          assert latest["authority_after"] == authority
+          for entry in latest["source_inputs"]:
+              path = root / entry["path"]
+              raw = path.read_bytes()
+              blob = sha1(b"blob " + str(len(raw)).encode() + b"\\0" + raw).hexdigest()
+              assert blob == entry["blob_sha1"], entry["path"]
+              assert entry["path"] in top, entry["path"]
+          print(f"EVENT{n}_LIVE_POINTER_SOURCE_BLOBS_AND_NO_PROMOTION_OK")
           PY
