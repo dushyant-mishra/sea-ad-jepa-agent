@@ -3883,6 +3883,51 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
       ]
+    },
+    {
+      "event_id": "20261105-MACHA-INDEPENDENT-V5-574-IO-CACHE-LIVENESS-DAMAGED-HISTORY-571-TEACHER-REPAIRS-EVENT93",
+      "date_utc": "2026-11-05",
+      "workstream": "v5_macha_independent_review_and_direct_repair_of_574_cache_573_572_571_with_measured_laptop_io",
+      "implementation_pr": 577,
+      "implementation_head": "b9f5be9790405dfb2873b2a754541c4fe8de43c5",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT93_MACHA_574_IO_REVIEW_REPAIRS_577_578_NO_TRAINING.md",
+          "blob_sha1": "a63f3c744fe9356f95d3241d9ff25af588e5b964",
+          "role": "Event93 mirrored human Macha verdicts, repairs #577/#578, measured laptop I/O and smallest physical-evidence connection steps"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT93_MACHA_IO_CACHE_LIVENESS_TEACHER_SOURCE_MAP.json",
+          "blob_sha1": "ede3f7b0af6620b1524cd2d4db347811db060fb3",
+          "role": "Event93 mirrored machine map: exact heads, RED/repair commits, blobs, CI runs, measurements and open deltas"
+        }
+      ],
+      "change_type": "repair",
+      "what_already_existed": "Event92 at audit head b11660c9599ccba97ec9cf0ffd1fd093c8904694: PR574 Sol incremental verified-I/O cache on PR573 PID-bound writer on Macha PR572; PR575 structural CPU Adam/teacher journal preflight (already checks teacher/online equality at the bridge); PR576 forensic own-evidence read refusal. PR571 read-only state audit. Original Macha RED blobs 557/560/561/566/567 and the PR572 RED/controls immutable.",
+      "new_work_or_result": "Macha independent review with direct repair. Draft PR577 on PR574 head 42cb0efe: RED f7843637 (9 RED fail at PR574 for named reasons, 11 controls pass before and after), repair b9f5be97: racily-clean metadata cache (trust only if ctime < filesystem-clock sample taken before hashing; bounded one-time wait so no extra read), writer historical_evidence_check labels and fresh-SHA basis on reports, opener lifetime flock so no other process or fork can recover a live writer, collapse/failure/runtime-abort/recovery/reconcile tolerate damage to earlier evidence while success and completed-run close still refuse. Draft PR578 on PR571 head 8656adcf: RED 124c9eff (6 fail), repair 9cfe01c4 requires the EMA teacher to mirror online tensor names/shapes/dtypes incl. value_encoder. CI PR577 runs 42096392485/42096392223/42096392113/42096392363 8/8 jobs SUCCESS on Python 3.11.9 and 3.12.7; PR578 run 42096400546 35 passed x2. Local WSL2 Python 3.11.15: all synth2048 suites 308 passed/9 skipped on ext4, 71 journal tests on C: NTFS; combined local merge of PR576 with PR577: 364 passed/9 skipped. Measured on the recorded laptop: 23 MiB x 33 updates 66 checkpoint reads (1.48 GiB) and 6.8 s ext4 / 33 s C: NTFS; pre-cache 1 MiB x 40 used 1681 reads vs 73; 205 x 23 MiB projection 953 GiB pre-cache vs 19.7 GiB writer reads plus 4.6 GiB at close; record-scan overhead 28 s ext4 vs about 12 min C: NTFS; peak RSS 114-136 MiB.",
+      "negative_or_counterfactual_evidence": "At PR574 a same-size change within one filesystem timestamp tick was accepted as unchanged (deterministic RED; 38/200 raw writes on WSL2 ext4 HZ=100, 0/300 through the public API), another process or fork could abort a live attempt by recovering it, and a damaged unrelated old checkpoint blocked recording the first collapse. The project D: drive is exFAT: hard links refused, so the journal cannot run there (fails closed). Metadata trust is never proof; bit rot preserving metadata is caught only by the 32-update scrub, close, reports or a fresh process. All probes remain caller-reported; no physical gradients, Adam, EMA, CELL or gene-token measurement, restart or biology. The GPU was not used and gives no benefit for hashing here.",
+      "test_review_scope": "Macha original RED blobs 557 bfa53457, 560 3ab6c208, 561 be259ab4, 566 60a16378, 567 c513693f, PR572 RED 34e0cf82 and controls 9d56478f, Sol V2 25bf5c07, PR573 fork 9c0a116c, PR574 I/O 0d79a438 and PR571 original 3247a0de unchanged on the repair heads. New blobs: journal d75c57e9, RED 7ea01808, controls c053e385, tool f7d4d01d, PR571 source ae79cd1b, PR571 RED ddf377fe. PR575 and PR576 not independently reviewed this cycle.",
+      "independent_review": "MACHA_VERDICTS__573_ACCEPT_SCOPED__574_REPAIR_REQUIRED_REPAIRED_IN_577__572_SELF_IDENTIFIED_REPAIR_IN_577_NO_SELF_ACCEPTANCE__571_REPAIR_REQUIRED_TEACHER_REPAIRED_IN_578__SOL_CROSS_REVIEW_OF_577_578_PENDING__NO_TRAINING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Sol independent cross-review of PR577 and PR578 with ACCEPT_SCOPED, REPAIR_REQUIRED or HOLD; preserve original Macha REDs.",
+        "Macha independent review of PR575 and PR576.",
+        "Owner decision D1: signed or device-separated outside head; exFAT-safe publish if the outside copy must live on the D: My Book drive.",
+        "Reduce the per-call journal-record re-read cost on C: NTFS (about 12 min per 205-update run); keep run directories on WSL ext4 meanwhile.",
+        "Connect physical evidence: model-measured probe incl. gene-identity-only and teacher-target controls, all-tensor gradients incl. value_encoder with a CUDA path, Adam and EMA residuals, complete RNG/cursor/AMP state as journal bytes, restore API; RT1-RT8 and any optimizer step withheld pending owner authority.",
+        "Protect the private V80 sealed controller before 2026-11-13 03:01:58 UTC; never open controller truth."
+      ],
+      "historical_supersession": "Append-only Event93; preserves Events 1-92, all original Macha and Sol tests and frozen V79/V80/TD/Stage81 history. Supersedes nothing; corrects the PR574 O(n) cost claim (the 32-update scrub is about n^2/64 checkpoints).",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/577",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/578",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42096392485",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42096400546",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/574",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
+      ]
     }
   ]
 }

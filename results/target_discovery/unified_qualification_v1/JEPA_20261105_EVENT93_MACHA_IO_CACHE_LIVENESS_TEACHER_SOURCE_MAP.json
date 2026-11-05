@@ -1,0 +1,170 @@
+{
+  "schema": "JEPA_EVENT93_MACHA_IO_CACHE_LIVENESS_TEACHER_SOURCE_MAP_V1",
+  "event": 93,
+  "date_utc": "2026-11-05",
+  "author": "Macha (independent reviewer and repair engineer)",
+  "scope": "FAKE_OPAQUE_BYTES_AND_FAKE_CPU_TENSORS_ONLY__NO_FORWARD_BACKWARD_OPTIMIZER_GPU_RNA_CONTROLLER_OR_MERGE",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "human": "docs/agent/JEPA_20261105_EVENT93_MACHA_574_IO_REVIEW_REPAIRS_577_578_NO_TRAINING.md",
+  "verdicts": [
+    {
+      "pr": 573,
+      "head": "98b6e61327396c73c66676d73b82ae7381002e40",
+      "verdict": "ACCEPT_SCOPED"
+    },
+    {
+      "pr": 574,
+      "head": "42cb0efe89882b066d9e123523ecfc5f9b2a9d85",
+      "verdict": "REPAIR_REQUIRED",
+      "repaired_in": 577
+    },
+    {
+      "pr": 572,
+      "head": "c4286f4b5fde761b16226b911054d085a3a97aef",
+      "verdict": "REPAIR_REQUIRED_SELF_IDENTIFIED",
+      "repaired_in": 577,
+      "note": "Macha own PR; no self-acceptance"
+    },
+    {
+      "pr": 571,
+      "head": "8656adcf7e96b1e9c52a598beb844f8f8f548644",
+      "verdict": "REPAIR_REQUIRED_TEACHER_COMPLETENESS__OTHERWISE_ACCEPT_SCOPED",
+      "repaired_in": 578
+    },
+    {
+      "pr": 575,
+      "head": "41e7c556e61e313253b7e839e948328b47ab88dc",
+      "verdict": "NOT_REVIEWED_THIS_CYCLE",
+      "note": "combined local merge with #576 and #577: 364 passed, 9 skipped"
+    },
+    {
+      "pr": 576,
+      "head": "227a957c6997dc0e99233b1e4eedff3e9bb0f683",
+      "verdict": "NOT_REVIEWED_THIS_CYCLE"
+    }
+  ],
+  "repairs": [
+    {
+      "pr": 577,
+      "base_pr": 574,
+      "base_head": "42cb0efe89882b066d9e123523ecfc5f9b2a9d85",
+      "branch": "fix/v5-journal-v2-574-cache-timing-live-writer-damaged-history-macha-20261105",
+      "red_commit": "f7843637f3e7a0dd275f7eeeb12e87b2a478768e",
+      "repair_commit": "b9f5be9790405dfb2873b2a754541c4fe8de43c5",
+      "blobs": {
+        "scripts/v5/jepa_synth2048_attempt_journal_v2.py": "d75c57e91d4be88aa6b70f9ed81a3402829e4cd5",
+        "scripts/v5/measure_attempt_journal_v2_io_no_training.py": "f7d4d01d1f5445c2de108b8e937a674acce3bc24",
+        "tests/test_jepa_synth2048_attempt_journal_v2_io_cache_macha_red.py": "7ea018084b6aa96abe61d57b62a091120df10a89",
+        "tests/test_jepa_synth2048_attempt_journal_v2_io_cache_macha_controls.py": "c053e38503cd7ae3e5bc15fd8ea4992951ebdbb1",
+        ".github/workflows/jepa-v5-journal-v2-io-cache-liveness-macha-no-training.yml": "a9cf2bd56893f4966b27a921fe4b1a33683796dc",
+        "docs/agent/JEPA_20261105_V5_MACHA_REPAIR_574_CACHE_LIVENESS_DAMAGED_HISTORY_NO_TRAINING.md": "8a1f74799bee54d44ca364df49f26792c8955e41",
+        "docs/agent/JEPA_20261105_V5_MACHA_574_JOURNAL_IO_MEASUREMENTS.json": "9ae56f13dee241cf5f4823afedea96a8eba1f09c"
+      },
+      "defects": [
+        "SAME_TICK_CHANGE_TRUSTED_BY_METADATA_CACHE",
+        "METADATA_TRUST_UNLABELLED",
+        "LIVE_WRITER_RECOVERABLE_BY_OTHER_PROCESS_OR_FORK",
+        "DAMAGED_UNRELATED_OLD_CHECKPOINT_BLOCKS_FAILURE_RECORD_AND_RECOVERY",
+        "O_N_CLAIM_WRONG_SCRUB_IS_N2_OVER_64"
+      ],
+      "local": {
+        "red_at_574": "9 failed for named reasons",
+        "controls_at_574_and_after": "11 passed",
+        "all_synth2048_ext4": "308 passed, 9 skipped",
+        "journal_suites_c_ntfs": "71 passed",
+        "python": "3.11.15 WSL2"
+      },
+      "ci": {
+        "42096392485": "20+51 passed and read budget, Python 3.11.9 and 3.12.7",
+        "42096392223": "248 passed x2",
+        "42096392113": "1+49 passed x2",
+        "42096392363": "7+44 passed x2",
+        "jobs": "8/8 SUCCESS"
+      }
+    },
+    {
+      "pr": 578,
+      "base_pr": 571,
+      "base_head": "8656adcf7e96b1e9c52a598beb844f8f8f548644",
+      "branch": "fix/v5-571-ema-teacher-mirrors-online-macha-20261105",
+      "red_commit": "124c9eff179c59022adf6afa120ef14754d32ffd",
+      "repair_commit": "9cfe01c4fea40100e0f837cf8ece88392efd93db",
+      "blobs": {
+        "scripts/v5/jepa_v5_full_state_readonly_audit_v1.py": "ae79cd1b705d33d29c7d28b5481dd0b91ee19ba9",
+        "tests/test_jepa_v5_full_state_readonly_audit_v1_teacher_macha_red.py": "ddf377fe6b167a5f7fa8e868429574c3932da135"
+      },
+      "defects": [
+        "EMA_TEACHER_NOT_REQUIRED_TO_MIRROR_ONLINE_INCL_VALUE_ENCODER"
+      ],
+      "local": {
+        "red_at_571": "6 failed, 1 control passed",
+        "repaired": "35 passed",
+        "torch": "2.7.0+cu128 on CPU"
+      },
+      "ci": {
+        "42096400546": "35 passed x2 Python, 2/2 jobs"
+      }
+    }
+  ],
+  "unchanged_blobs": {
+    "macha_557": "bfa5345775570205def66eb19a98efc207d28d90",
+    "macha_560": "3ab6c208206251728116debda1edb226cb5b647a",
+    "macha_561": "be259ab4cdcf035d7bf05134f68b6fe8d09f8833",
+    "macha_566": "60a16378c22b35ec5d52837c7c641cf6a59e0935",
+    "macha_567": "c513693fa11b2c0ef72b68601ca83dcd5a0a5b2f",
+    "macha_572_red": "34e0cf82",
+    "macha_572_controls": "9d56478f",
+    "sol_v2": "25bf5c07",
+    "sol_573_fork": "9c0a116c",
+    "sol_574_io": "0d79a438",
+    "sol_571_original": "3247a0de"
+  },
+  "measurements": {
+    "evidence": "LOCAL_EXECUTION__NOT_CI",
+    "record": "docs/agent/JEPA_20261105_V5_MACHA_574_JOURNAL_IO_MEASUREMENTS.json on #577",
+    "host": "i9-11980HK 8/16 cores, 31 GiB WSL RAM, WSL2 5.15 HZ=100, RTX 3080 Laptop NOT used",
+    "measured": {
+      "precache_1MiBx40_writer_reads": 1681,
+      "cache_1MiBx40_writer_reads": 73,
+      "precache_23MiBx12_writer_reads": 169,
+      "cache_23MiBx33_writer_reads": 66,
+      "cache_23MiBx33_writer_seconds_ext4": 6.8,
+      "cache_23MiBx33_writer_seconds_c_ntfs": 33.3,
+      "u32_scrub_seconds_ext4": "0.64-0.82",
+      "u32_scrub_seconds_c_ntfs": "3.3-3.5",
+      "record_scan_1KiBx205_writer_seconds_ext4": 28.0,
+      "record_scan_1KiBx100_writer_seconds_c_ntfs": 189,
+      "peak_rss_mib_23MiB": "114-136"
+    },
+    "projection_205x23MiB": {
+      "precache_writer_reads": 42436,
+      "precache_writer_gib": 953,
+      "cache_writer_reads": 878,
+      "cache_writer_gib": 19.7,
+      "close_gib": 4.6,
+      "writes_gib": 4.6,
+      "ntfs_record_scan_minutes_fitted": 12,
+      "assumptions": "warm page cache; read+SHA 1244 MiB/s ext4, 241 MiB/s C: NTFS"
+    },
+    "filesystems": {
+      "wsl_ext4": "links ok; same-tick change invisible 38/200",
+      "c_ntfs": "links ok; 0/200",
+      "d_exfat_project_drive": "links REFUSED; 199/200; journal fails closed"
+    }
+  },
+  "smallest_changes_to_connect_physical_evidence": [
+    "forward-only model-measured probe on the frozen TRAIN panel: CELL exact distinct rows, float64 centred energy, gene-token variance, expression-shuffle delta, gene-identity-only delta, teacher-target variance; versioned probe schema and new measurement origin",
+    "per-tensor gradients via #571 inspect_existing_trainable_gradients with a CUDA path, after unscale and before the step; missing or nonfinite becomes a failure outcome",
+    "validate_live_adam after the step plus per-tensor EMA residual and count; teacher mirrors online (#578, #575)",
+    "complete bundle: Python, NumPy, CUDA and masking RNG, data cursor, LR schedule, AMP scaler; bundle bytes become journal state_bytes; restore and bitwise-compare API",
+    "RT1-RT8 and any optimizer step withheld pending separate owner authorization"
+  ],
+  "open": [
+    "Sol cross-review #577 and #578",
+    "Macha review of #575 and #576",
+    "owner D1: signed or device-separated head and exFAT-safe publish",
+    "NTFS record-scan overhead",
+    "RT1-RT8 authorization",
+    "V80 controller escrow before 2026-11-13 03:01:58 UTC"
+  ]
+}

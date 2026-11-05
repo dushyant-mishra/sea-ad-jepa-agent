@@ -1819,5 +1819,25 @@
     "review": "MACHA_INDEPENDENT_CROSS_REVIEW_PENDING; owner permits direct reciprocal repair via RED first and independent review; no one self-accepts.",
     "preservation": "V80 private controller artifact 11866917064 expires 2026-11-13T03:01:58Z; DEV2048 fit artifact 13364085153 expires 2026-12-04T21:02:06Z; no sealed truth public; 1 historical stale V5 locator/four owner-held exceptions remain.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_macha_574_io_cache_liveness_damaged_history_571_teacher_event93_20261105": {
+    "event": 93,
+    "date_utc": "2026-11-05",
+    "scope": "MACHA_INDEPENDENT_REVIEW_AND_DIRECT_REPAIR_PR574_CACHE_PR572_PR573_PR571_TEACHER_WITH_MEASURED_LAPTOP_IO",
+    "pr": 577,
+    "head": "b9f5be9790405dfb2873b2a754541c4fe8de43c5",
+    "base_pr": 574,
+    "base_head": "42cb0efe89882b066d9e123523ecfc5f9b2a9d85",
+    "second_pr": 578,
+    "second_head": "9cfe01c4fea40100e0f837cf8ece88392efd93db",
+    "human": "docs/agent/JEPA_20261105_EVENT93_MACHA_574_IO_REVIEW_REPAIRS_577_578_NO_TRAINING.md",
+    "human_sha": "a63f3c744fe9356f95d3241d9ff25af588e5b964",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT93_MACHA_IO_CACHE_LIVENESS_TEACHER_SOURCE_MAP.json",
+    "machine_sha": "ede3f7b0af6620b1524cd2d4db347811db060fb3",
+    "red": "f7843637f3e7a0dd275f7eeeb12e87b2a478768e (9 RED fail at PR574); 124c9eff179c59022adf6afa120ef14754d32ffd (6 RED fail at PR571)",
+    "green": "PR577 runs 42096392485/42096392223/42096392113/42096392363 8/8 jobs SUCCESS; PR578 run 42096400546 35 passed x2 Python",
+    "result": "Racily-clean cache, metadata-trust labels, live-writer recovery guard, failures recordable over damaged earlier evidence, EMA teacher must mirror online. Measured 205 x 23 MiB projection: 953 GiB pre-cache vs 19.7 GiB writer reads. No biological acceptance.",
+    "do_not_repeat": "Do not re-measure the 205-update journal I/O without a code change; use scripts/v5/measure_attempt_journal_v2_io_no_training.py on PR577. Do not retest exFAT: hard links are refused.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
