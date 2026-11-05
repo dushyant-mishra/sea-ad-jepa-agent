@@ -142,13 +142,17 @@ def test_mechanical_stop_and_runtime_abort_causes(tmp_path):
     with pytest.raises(v.JournalRefusal, match="CAUSE_OUTCOME_WRONG_STATE"):
         v.record_failed_attempt(another, outside, update=1,
                                 reported_receipt=abort_cause(1))
+    explicit = v.record_runtime_abort(another, outside, update=1,
+                                      reported_receipt=abort_cause(1))
+    assert explicit["status"] == "ATTEMPT_ABORTED"
+    assert v.close_run(another, outside)["status"] == "ABORTED_RECOVERED"
+    assert v.inspect_journal(another, outside)["status"] == "ABORTED_RECOVERED"
 
 
 def test_crash_after_begin_recovers_aborted_with_quarantine_no_delete(tmp_path):
     root, backup = initialize(tmp_path)
     v.begin_attempt(root, backup, update=1)
     (root / "u00001.state.bin").write_bytes(b"FAILED_PARTIAL_MODEL")
-    (root / ".uncommitted-" + "") if False else None
     (root / ".uncommitted-" + "a"*32).write_bytes(b"HALF_WRITTEN")
     with pytest.raises(v.JournalRefusal, match="UNCOMMITTED_OR_UNKNOWN"):
         v.inspect_journal(root, backup)
