@@ -11,9 +11,10 @@
       "pre_event90_head": "d5ab29e6eb420a3b90566badd60bfdc25e0bdc8d",
       "chronology_path": "results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json",
       "chronology_prior_events": 89,
-      "expected_after_event90": 55,
+      "expected_after_event90": 90,
       "master_index_path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
-      "index_prior_keys": 54
+      "index_prior_keys": 54,
+      "expected_index_keys_after_event90": 55
     },
     "active_handoff": {
       "pr": 460,
