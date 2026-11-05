@@ -3323,6 +3323,52 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
       ]
+    },
+    {
+      "event_id": "20261104-SOL-V5-FAILED-ATTEMPT-CHECKPOINT-ONSET-LOGICAL-AND-DURABLE-REPAIRS-EVENT80",
+      "date_utc": "2026-11-05",
+      "workstream": "macha_independent_553_failed_attempt_review_and_sol_scope_repair_logical_and_actual_posix_journal",
+      "implementation_pr": 558,
+      "implementation_head": "33793a07a7c19eeb6a35273182d1ba9151bcf600",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261104_EVENT80_FAILED_ONSET_CAPTURE_MACHA_F1_AND_V5_CHECKPOINT_SUCCESSOR.md",
+          "blob_sha1": "3039b4f9cee4d72afeb8e832f10f8c2fb4bf8c8b",
+          "role": "Human successor full source, no-repeat history, Macha F1–F4, reviewed T1 limit, Sol PR558 and PR559 exact test and remaining proof requirements"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_EVENT80_FAILED_ATTEMPT_CAPTURE_SOURCE_DATA_RESULTS_MAP.json",
+          "blob_sha1": "fd0a0105c9f6d88308cf2e36d8c2995b68a49556",
+          "role": "Machine exact PR head/Git blob/CI source and data map and unchanged Macha #557 test SHA"
+        }
+      ],
+      "change_type": "source_custody",
+      "what_already_existed": "Previous canonical Events 1–79 include complete original Stage81A3/Stage81B, measured TD19–59/once-spent #314, R5, C2 9/9 gate mechanics, V79/V80 frozen, PR547 synthetic 2048 FIT, V5 #548 144 U0 tests and Macha scoped #547/#548 reviews, PR554 author accepted T1 exact case, PR553 design-only per-update success checkpoint prefreeze, PR555 actual POSIX SHA/lock opaque byte snapshots 86 tests per Python. All previous audit and handoff files preserved; Macha review original #557 T1 failed-attempt-onset RED and #556 T2-T5 existing test-only witnesses.",
+      "new_work_or_result": "Macha's new independent #553 F1 found that a failed u(N+1) from dead protected gradients or an AMP skip could not be written in #553's N-only passing-receipt inventory; tests-only #557 head e5b3e8dd927afd6f1e3af11efe6252454f98682e original test blob bfa5345775570205def66eb19a98efc207d28d90. Sol created standalone draft #558 head 33793a07a7c19eeb6a35273182d1ba9151bcf600 stacked on #557, original RED byte-identical, adds final failed-onset as untrusted STOP not a resumable model and refuses fake success/EMA, missing good/duplicate/reordered attempts; hosted 41967859163 SUCCESS 80/80 Python 3.11.9 and 80/80 3.12.7. Separately created draft #559 head 38880f2c196b950a4f672aaf9fd480c7297662c5 stacked on original PR555; actual POSIX write-once nonresumable failed_attempt.evidence and commit-last SHA receipt with source/run and last-good snapshot binding, no good checkpoint after STOP. Hostile tests cover disk tamper, first failing u4 after real fake-byte u0..3 and child os._exit(79) before receipt leaving rejected orphan; hosted run 41968170206 SUCCESS 96/96 Python 3.11.9 and 96/96 Python 3.12.7. No neural training or model import. Complete Event80 human/machine SHA-mirrored on both #322 and #460.",
+      "negative_or_counterfactual_evidence": "#558 validator receives caller flags only and #559 stores caller-provided opaque byte strings. Neither physically measures 48 gradient tensors/Adam first and second moments, pre/post weights, correct EMA arithmetic, per-attempt frozen train-cell expression-shuffle, per-gene teacher variance or source predictability; neither provides actual PyTorch model+RNG serialization, fresh-process next actual optimizer-step replay, externally signed owner trust root, GPU, or C1–C6 learned result. Macha #554 exact T1 scoped accepted but #556 value-blind student mixed-set/train-dropout undetected, T3 self-declared bool RED, T4 wrong MSE direction RED and T5 withheld-q vs structurally unavailable RED. Task4 #541 HOLD K04 #549, frozen Task3 #551 forged public promotion, #525 P01/L06 and #533 next-law pending; L04 EMERGENT/TRANSFER and v2 distributed biology not owner authorized.",
+      "test_review_scope": "Exact-head GitHub Actions #558 41967859163 two successful jobs 80 tests each, including original untouched Macha #557; #559 41968170206 two successful jobs 96 tests each, real POSIX disk and child abrupt death; source Git blobs verified before audit. No actual optimizer, model update, new generator, private V80 controller, real source, GPU or candidate scoring. Macha independent #558/#559 reviews still pending.",
+      "independent_review": "MACHA_553_REPAIR_REQUIRED_F1_F4__MACHA_554_ACCEPT_SCOPED_T1__SOL_558_559_AUTHOR_GREEN_ONLY_MACHA_REVIEW_PENDING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha independently review PR558 first-failed-attempt logical test and PR559 POSIX journal, preserve original #557 test byte-identical and #556 T2–T5 witness unchanged.",
+        "Develop physical per-attempt raw unscaled protected 48 attention gradients, both Adam moments, source/EMA arithmetic and weight snapshots verified by independent code instead of caller booleans; use pre-frozen TRAIN cells and same-cell expression-shuffle, gene-identity-only target, teacher same-gene cell variance, source predictability; no posthoc threshold.",
+        "Implement real full V5 model+EMA+Adam/scaler/RNG/masks/rights serialization using guarded V5 (not old unguarded main), benchmark u0 file size and storage before deciding all-updates saving; perform fresh-process true next-update replay and refuse lost Adam state before training.",
+        "Obtain external owner-signed manifest custody, source/donor/protected q rights/owner decision L04 and prospective biological design; no new GPU or synthetic fit before separate owner scoped authorization.",
+        "Keep Task4 #541 HOLD K04 #549, Task3 frozen #551 reachable public forgery (owner signed versioned successor only), post TD #525 P01/L06 and #533 prospective 292-type fresh controller law blocked; #547 C2/C3 generic-state-only and v2 source remains proposal.",
+        "Read Event80 and original Event68/75/78/79 before any investigation; do not rerun spent measured TD or old synthetic experiments."
+      ],
+      "historical_supersession": "Adds to Event79 real POSIX success byte storage a separately tested failed-attempt journal that retains onset bytes without treating them as resumable. Event78 #553 proposed telemetry was insufficient; #558 only fixes receipt shape, not physical proof or full model; old 79 events remain unchanged.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/557",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/556",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/558",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41967859163",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/559",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41968170206",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
+      ]
     }
   ]
 }
