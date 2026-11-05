@@ -1862,5 +1862,26 @@
     "no_repeat": "Preserve Event1–93 and prior TD/Stage81/V79/V80/R5 scientific sources; no new broad audit and no model optimizer/GPU/real data/Stage4. 205-update I/O gains projected from smaller real runs.",
     "open": "Macha review #579; exact combined draft integration #575/#576+#577/#579+#578; origin source rights/RNG/AMP/physical panel controls; private sealed V80 controller 2026-11-13 expiry; D1 owner decision",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v80_controller_owner_private_download_confirmed_backup_resolved_event95_20261105": {
+    "event": 95,
+    "date_utc": "2026-11-05",
+    "source_history_events": [
+      65,
+      69,
+      70
+    ],
+    "human": "docs/agent/JEPA_20261105_EVENT95_OWNER_CONFIRMED_V80_PRIVATE_DOWNLOAD_RESOLVED.md",
+    "human_blob_sha1": "eaf24bfa50a0d2de62cb701bc87472b89117665f",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT95_OWNER_CONFIRMED_V80_BACKUP_STATUS_SOURCE_MAP.json",
+    "machine_blob_sha1": "786dc8251e9fbc1ad61ebccb9f5020958344775a",
+    "v80_original_controller_sha256": "184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46",
+    "status": "OWNER_CONFIRMED_PERSONAL_DOWNLOAD_COMPLETE__V80_BACKUP_RESOLVED",
+    "old_event70_owner_download_unconfirmed": "HISTORICALLY_TRUE_AT_THAT_TIME__SUPERSEDED_BY_OWNER_EVENT95",
+    "independent_owner_local_copy_checksum": "NOT_PERFORMED",
+    "isolated_vault_verified": "NOT_CLAIMED",
+    "action": "STOP_REPEATED_NOV13_EMERGENCY_AND_REDUNDANT_DOWNLOAD",
+    "controller_truth_read": false,
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
