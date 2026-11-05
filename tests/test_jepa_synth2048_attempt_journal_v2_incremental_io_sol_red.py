@@ -102,3 +102,31 @@ def test_hard_link_change_cannot_launder_an_old_state(tmp_path):
     with pytest.raises(v.JournalRefusal):
         v.begin_attempt(root, backup, update=3)
     assert v.inspect_forensic_prefix(root, backup)["anomalies"]
+
+
+
+def test_periodic_full_byte_scrub_every_32nd_attempt(tmp_path, monkeypatch):
+    root, backup = open_run(tmp_path, horizon=40)
+    assert v.FULL_SCRUB_EVERY_ATTEMPTS == 32
+    for u in range(1, 32):
+        commit(root, backup, u)
+    reads = _count_payload_reads(monkeypatch)
+    v.begin_attempt(root, backup, update=32)
+    # u0 and u1..u31 are all freshly SHA-verified at this boundary even
+    # though their metadata did not change and writer cache was populated.
+    assert reads["reads"] >= 32
+    # An explicit full scrub is a detection safeguard, not resume authority.
+    assert v.inspect_journal(root, backup)["status"].startswith(
+        "TERMINATED_UNEXPECTEDLY")
+    assert v.AUTHORITY.endswith("REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED")
+
+
+def test_close_run_freshly_rehashes_all_old_bytes(tmp_path, monkeypatch):
+    root, backup = open_run(tmp_path, horizon=3)
+    for u in range(1, 4):
+        commit(root, backup, u)
+    reads = _count_payload_reads(monkeypatch)
+    result = v.close_run(root, backup)
+    assert result["status"] == "COMPLETE_REPORTED_ONLY"
+    assert reads["reads"] >= 4  # u0 and u1..u3, not a cached 'PASS'
+    assert v.inspect_journal(root, backup)["resume_authorized"] is False
