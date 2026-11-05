@@ -121,7 +121,22 @@ def _parameters(online: torch.nn.Module, teacher: torch.nn.Module,
     require(bool(names), "NO_TRAINABLE_PARAMETERS")
     require(not any(id(p) in {id(v) for v in names.values()}
                     for p in teacher.parameters()), "TEACHER_SHARED_WITH_STUDENT")
+    # Macha #571 repair: the EMA teacher produces the targets, so it must hold
+    # exactly the online encoder's tensors (incl. the expression-value encoder).
+    require([(n, tuple(p.shape), p.dtype) for n, p in teacher.named_parameters()]
+            == [(n, tuple(p.shape), p.dtype) for n, p in online.named_parameters()],
+            "TEACHER_DOES_NOT_MIRROR_ONLINE")
     return names
+
+
+def _require_teacher_mirrors_online(online: dict, teacher: dict) -> None:
+    """Same tensor names, shapes and dtypes; values may differ (EMA)."""
+    require(type(online) in (dict, OrderedDict) and type(teacher) in (dict, OrderedDict)
+            and set(teacher) == set(online)
+            and all(type(teacher[k]) is torch.Tensor and type(online[k]) is torch.Tensor
+                    and tuple(teacher[k].shape) == tuple(online[k].shape)
+                    and teacher[k].dtype == online[k].dtype for k in online),
+            "TEACHER_DOES_NOT_MIRROR_ONLINE")
 
 
 def validate_live_adam(online: torch.nn.Module, teacher: torch.nn.Module,
@@ -255,6 +270,7 @@ def verify_readonly_bundle(bundle: object) -> dict:
             require(type(t) is torch.Tensor and
                     bool(torch.isfinite(t).all()) and t.numel() >= 1,
                     "MODULE_TENSOR_NONFINITE")
+    _require_teacher_mirrors_online(state["online"], state["teacher"])
     names = bundle["parameter_names"]
     require(type(names) is list and names and
             all(type(x) is str and

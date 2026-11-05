@@ -4,6 +4,7 @@ on:
     paths:
       - scripts/v5/jepa_v5_full_state_readonly_audit_v1.py
       - tests/test_jepa_v5_full_state_readonly_audit_v1.py
+      - tests/test_jepa_v5_full_state_readonly_audit_v1_teacher_macha_red.py
       - docs/agent/JEPA_20261105_V5_FULL_STATE_READONLY_ADAM_PREFLIGHT_NO_STEPS.md
       - .github/workflows/jepa-v5-full-state-readonly-audit-no-optimizer.yml
   workflow_dispatch:
@@ -31,7 +32,7 @@ jobs:
           PYTHONPATH: .
           CUDA_VISIBLE_DEVICES: ""
         run: |
-          python -m pytest -q tests/test_jepa_v5_full_state_readonly_audit_v1.py
+          python -m pytest -q tests/test_jepa_v5_full_state_readonly_audit_v1.py tests/test_jepa_v5_full_state_readonly_audit_v1_teacher_macha_red.py
       - name: Confirm no execution authority in module
         env:
           PYTHONPATH: .
