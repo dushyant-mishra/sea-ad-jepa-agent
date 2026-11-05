@@ -1,0 +1,38 @@
+name: V5 #572 fork-safe writer capability RED and repair (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - scripts/v5/jepa_synth2048_attempt_journal_v2.py
+      - tests/test_jepa_synth2048_attempt_journal_v2_fork_writer_sol_red.py
+      - .github/workflows/jepa-synth2048-fork-writer-guard-no-training.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fake-bytes-no-optimizer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install --disable-pip-version-check pytest==9.0.2
+      - name: Forked-process inheritance must not authorize restart
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q tests/test_jepa_synth2048_attempt_journal_v2_fork_writer_sol_red.py
+      - name: Preserve Macha #572 tests and scoped original REDs
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/test_jepa_synth2048_attempt_journal_v2.py \
+            tests/test_jepa_synth2048_attempt_journal_v2_macha_red.py \
+            tests/test_jepa_synth2048_attempt_journal_v2_macha_controls.py \
+            tests/test_jepa_synth2048_collapse_state_vs_attempt_macha_red.py \
+            tests/test_jepa_synth2048_last_healthy_recoverability_macha_red.py
