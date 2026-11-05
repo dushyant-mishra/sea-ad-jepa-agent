@@ -1,0 +1,41 @@
+name: V5 SYNTH2048 fine-grain checkpoint PREFREEZE (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py
+      - tests/test_jepa_synth2048_checkpoint_capture_prefreeze_v1.py
+      - results/target_discovery/unified_qualification_v1/JEPA_SYNTH2048_V5_FINE_GRAIN_CHECKPOINT_PREFREEZE_V1.json
+      - docs/agent/JEPA_20261104_V5_SYNTH2048_FINE_GRAIN_CHECKPOINT_CAPTURE_PREFREEZE_AND_REVIEW.md
+      - .github/workflows/jepa-synth2048-checkpoint-prefreeze.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  design-only-adversarial:
+    strategy:
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Lightweight synthetic-only validator runtime
+        run: python -m pip install --disable-pip-version-check pytest==9.0.2
+      - name: Attacker checks on file/receipt/consistency, no model
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q tests/test_jepa_synth2048_checkpoint_capture_prefreeze_v1.py
+      - name: Illustrate 60 and 205 update proposals (not execution budgets)
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m scripts.v5.jepa_synth2048_checkpoint_capture_prefreeze_v1 \
+            --plan results/target_discovery/unified_qualification_v1/JEPA_SYNTH2048_V5_FINE_GRAIN_CHECKPOINT_PREFREEZE_V1.json \
+            --illustrative-horizon 60
+          python -m scripts.v5.jepa_synth2048_checkpoint_capture_prefreeze_v1 \
+            --plan results/target_discovery/unified_qualification_v1/JEPA_SYNTH2048_V5_FINE_GRAIN_CHECKPOINT_PREFREEZE_V1.json \
+            --illustrative-horizon 205
