@@ -33,6 +33,8 @@ MAX_PAYLOAD_BYTES = 512 * 1024 * 1024
 MAX_FAILED_EVIDENCE_BYTES = 8 * 1024 * 1024
 FAIL_EVIDENCE = "failed_attempt.evidence"
 FAIL_RECEIPT = "failed_attempt.receipt.json"
+FAIL_WRITE_INTENT = "failed_attempt.write_intent.json"
+INTENT_STATUS = "WRITE_STARTED_LOCAL_ONLY__NOT_EXTERNAL_TRUST"
 FAIL_STATUS = "UNTRUSTED_FAILED_ATTEMPT_EVIDENCE__NONRESUMABLE_STOP"
 PAYLOAD_NAME = re.compile(r"u[0-9]{5}\.checkpoint\Z")
 RECEIPT_NAME = re.compile(r"u[0-9]{5}\.receipt\.json\Z")
@@ -158,6 +160,97 @@ def expected_run_lock(*, horizon: int, run_id: str,
     }
 
 
+
+def _write_intent(lock: dict, *, attempted_update: int, kind: str,
+                  prior_checkpoint_receipt_sha256: str | None) -> dict:
+    require(kind in ("CHECKPOINT_WRITE", "FAILED_STOP_WRITE")
+            and type(attempted_update) is int and attempted_update >= 0,
+            "BAD_WRITE_INTENT")
+    return {
+        "schema": SCHEMA,
+        "status": INTENT_STATUS,
+        "run_lock_sha256": _sha(_json(lock)),
+        "attempted_update": attempted_update,
+        "kind": kind,
+        "previous_checkpoint_receipt_sha256": prior_checkpoint_receipt_sha256,
+        "training_authorized": False,
+        "externally_authenticated": False,
+    }
+
+
+def _require_write_intent(root: Path, filename: str, expected: dict) -> None:
+    raw = _regular_file_bytes(root / filename, max_bytes=2048)
+    require(raw == _json(expected), "WRITE_INTENT_MISSING_OR_CHANGED")
+
+
+def _head_proposal(lock: dict, receipts: list[dict], failure: dict | None) -> dict:
+    """Local SHA-chain head for comparison with a separately retained record.
+
+    The writer can fabricate this entire value. Only a genuinely external
+    custodian can make this comparison evidence against full tail deletion.
+    """
+    prior = _sha(_json(receipts[-1])) if receipts else None
+    return {
+        "run_lock_sha256": _sha(_json(lock)),
+        "record_counter": len(receipts) + (1 if failure is not None else 0),
+        "last_checkpoint_update": receipts[-1]["update"] if receipts else None,
+        "last_checkpoint_receipt_sha256": prior,
+        "last_failed_attempt_update": (
+            failure["attempted_update"] if failure is not None else None),
+        "failed_attempt_receipt_sha256": (
+            _sha(_json(failure)) if failure is not None else None),
+    }
+
+
+def read_local_head_proposal(root: Path, *, horizon: int, run_id: str) -> dict:
+    """Read a *self-declared* current head to hand to an external custodian.
+
+    DO NOT use a value fetched from the suspect directory as its own anchor.
+    """
+    root = Path(root)
+    with _locked(root):
+        lock = expected_run_lock(horizon=horizon, run_id=run_id)
+        require(_regular_file_bytes(root / "run.lock.json", max_bytes=2048)
+                == _json(lock), "RUN_BINDING_CHANGED")
+        receipts = _scan(root, lock)
+        failure = _failed_attempt_record(root, lock, receipts)
+        head = _head_proposal(lock, receipts, failure)
+        return {
+            "head_sha256": _sha(_json(head)),
+            "record_counter": head["record_counter"],
+            "head": head,
+            "status": "LOCAL_PROPOSAL_ONLY__NOT_EXTERNALLY_ATTESTED",
+            "training_authorized": False,
+        }
+
+
+def compare_independent_expected_head(root: Path, *, horizon: int, run_id: str,
+                                      expected_head_sha256: str,
+                                      expected_record_counter: int) -> dict:
+    """Fail closed against an independently retained expected head and count.
+
+    The external record is NOT obtained or authenticated here. The caller
+    must independently establish its issuer, immutability and freshness.
+    """
+    require(type(expected_head_sha256) is str and len(expected_head_sha256) == 64
+            and all(c in "0123456789abcdef" for c in expected_head_sha256),
+            "EXPECTED_HEAD_FORMAT")
+    require(type(expected_record_counter) is int and expected_record_counter >= 1,
+            "EXPECTED_COUNTER_FORMAT")
+    current = read_local_head_proposal(root, horizon=horizon, run_id=run_id)
+    require(current["head_sha256"] == expected_head_sha256
+            and current["record_counter"] == expected_record_counter,
+            "EXTERNAL_EXPECTED_HEAD_OR_COUNTER_MISMATCH")
+    return {
+        "status": "MATCHED_CALLER_SUPPLIED_EXPECTATION_ONLY",
+        "matched_expected_head": True,
+        "independent_custody_verified": False,
+        "resume_authorized": False,
+        "training_authorized": False,
+        "authority": AUTHORITY,
+    }
+
+
 def _failed_attempt_record(root: Path, lock: dict, previous: list[dict]) -> dict | None:
     """Validate actual failed-attempt evidence bytes, never a resumable state."""
     data_path = root / FAIL_EVIDENCE
@@ -278,9 +371,13 @@ def _scan(root: Path, lock: dict, *,
             "previous_receipt_sha256": prev_digest,
             "training_authorized": False,
         }, "CHECKPOINT_SHA_OR_PARENT_LINK_DRIFT")
+        _require_write_intent(
+            root, name + ".write_intent.json",
+            _write_intent(lock, attempted_update=u, kind="CHECKPOINT_WRITE",
+                          prior_checkpoint_receipt_sha256=prev_digest))
         prev_digest = _sha(receipt_raw)
         receipts.append(obj)
-        allowed.update({payload.name, receipt.name})
+        allowed.update({payload.name, receipt.name, name + ".write_intent.json"})
     has_failure_data = (root / FAIL_EVIDENCE).exists() or (root / FAIL_EVIDENCE).is_symlink()
     has_failure_receipt = (root / FAIL_RECEIPT).exists() or (root / FAIL_RECEIPT).is_symlink()
     if has_failure_data and not has_failure_receipt and forensic_orphans is not None:
@@ -291,7 +388,42 @@ def _scan(root: Path, lock: dict, *,
     else:
         failure = _failed_attempt_record(root, lock, receipts)
         if failure is not None:
-            allowed.update((FAIL_EVIDENCE, FAIL_RECEIPT))
+            _require_write_intent(
+                root, FAIL_WRITE_INTENT,
+                _write_intent(
+                    lock, attempted_update=failure["attempted_update"],
+                    kind="FAILED_STOP_WRITE",
+                    prior_checkpoint_receipt_sha256=(
+                        _sha(_json(receipts[-1])) if receipts else None)))
+            allowed.update((FAIL_EVIDENCE, FAIL_RECEIPT, FAIL_WRITE_INTENT))
+    # Read-only forensics can label an interrupted write-intent as an orphan.
+    # It remains unverified and never enters the checkpoint receipt chain.
+    if forensic_orphans is not None:
+        next_step = expected[len(receipts)] if len(receipts) < len(expected) else None
+        expected_intents = {}
+        previous = _sha(_json(receipts[-1])) if receipts else None
+        if next_step is not None:
+            expected_intents[f"u{next_step:05d}.write_intent.json"] = (
+                _write_intent(lock, attempted_update=next_step,
+                              kind="CHECKPOINT_WRITE",
+                              prior_checkpoint_receipt_sha256=previous))
+        if receipts:
+            for attempt in range(receipts[-1]["update"] + 1, lock["horizon"] + 2):
+                # Only a single failed-stop intent for the immediate successor
+                # is a plausible tail. Do not accept arbitrary backdating.
+                if attempt != receipts[-1]["update"] + 1:
+                    break
+                expected_intents[FAIL_WRITE_INTENT] = (
+                    _write_intent(lock, attempted_update=attempt,
+                                  kind="FAILED_STOP_WRITE",
+                                  prior_checkpoint_receipt_sha256=previous))
+        for name, expected_obj in expected_intents.items():
+            path = root / name
+            if name not in allowed and (path.exists() or path.is_symlink()):
+                _require_write_intent(root, name, expected_obj)
+                allowed.add(name)
+                forensic_orphans.append(_uncommitted_descriptor(
+                    root, name, 2048))
     names = {p.name for p in root.iterdir()}
     if forensic_orphans is None:
         require(names == allowed, "UNEXPECTED_OR_GAPPED_FILES")
@@ -360,6 +492,13 @@ def save_opaque_bytes(root: Path, *, horizon: int, run_id: str,
         require(update == steps[len(previous)], "SKIPPED_OR_DUPLICATE_CHECKPOINT")
         prev = _sha(_json(previous[-1])) if previous else None
         label = f"u{update:05d}"
+        # Write-ahead *storage* intent. This is NOT evidence of a true
+        # neural optimizer attempt, and is removable by the same writer.
+        _unique_file(
+            root, label + ".write_intent.json",
+            _json(_write_intent(
+                lock, attempted_update=update, kind="CHECKPOINT_WRITE",
+                prior_checkpoint_receipt_sha256=prev)))
         _unique_file(root, label + ".checkpoint", payload)
         entry = {
             "schema": SCHEMA, "status": STATUS, "update": update,
@@ -410,6 +549,14 @@ def save_failed_attempt_evidence(
             "training_authorized": False,
             "external_authentication": False,
         }
+        # The intent must precede *storage* of failure evidence. Actual
+        # optimizer-attempt intent and external custody remain separate tasks.
+        _unique_file(
+            root, FAIL_WRITE_INTENT,
+            _json(_write_intent(
+                lock, attempted_update=attempted_update,
+                kind="FAILED_STOP_WRITE",
+                prior_checkpoint_receipt_sha256=_sha(_json(previous[-1])))))
         # Commit last. Abrupt death between writes leaves a refused orphan.
         _unique_file(root, FAIL_EVIDENCE, evidence_bytes)
         _unique_file(root, FAIL_RECEIPT, _json(record))
