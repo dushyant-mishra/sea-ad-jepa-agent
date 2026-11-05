@@ -1692,5 +1692,33 @@
     "critical_limits": "Self-reported cause not physical gradient/Adam/EMA; no every-attempt telemetry, full neural state checkpoint, new optimizer bitwise replay, trusted external head or biological winner",
     "no_repeat": "Original Events1-84 and TD/Stage81/V79/V80, PR547 synthetic FIT, PR548 U0, Macha REDs unchanged",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_first_anomaly_corrupt_tail_forensic_recovery_event86_20261105": {
+    "event": 86,
+    "date_utc": "2026-11-05",
+    "scope": "PR568_E3A_E3B_FIRST_ANOMALY_FORENSIC_ONLY_AUTHOR_CI_MACHA_PENDING",
+    "pr": 568,
+    "head": "eab59fea8002cd18d4989e8b741051de588c48d6",
+    "human": "docs/agent/JEPA_20261105_EVENT86_V5_567_CORRUPT_TAIL_FORENSIC_PREFIX_NO_TRAINING.md",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT86_V5_567_CORRUPT_TAIL_SOURCE_MAP.json",
+    "macha_test_unchanged": "PR567 c513693fa11b2c0ef72b68601ca83dcd5a0a5b2f",
+    "ci": "42053444473 130/130 each Python3.11.9 and 3.12.7",
+    "result": "Read-only SHA-verified intact prefix survives later corrupted checkpoint bytes/receipt and sparse u43 onset crash with last u40; strict verification refuses all anomalies",
+    "not_done": "All model health unproven; whole-tail erasure, independent head, full neural checkpoint/telemetry and resume parity absent",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_post_step_collapse_honest_state_verdict_event87_20261105": {
+    "event": 87,
+    "date_utc": "2026-11-05",
+    "scope": "PR569_SCOPED_POST_STEP_COLLAPSE_AND_RUNTIME_ABORT_AUTHOR_CI_MACHA_PENDING",
+    "pr": 569,
+    "head": "aeca6b033c55208f84d84f3a6435af7a2a5209af",
+    "human": "docs/agent/JEPA_20261105_EVENT87_V5_566_POST_STEP_COLLAPSE_CAUSE_NO_TRAINING.md",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT87_V5_566_POST_STEP_COLLAPSE_SOURCE_MAP.json",
+    "macha_test_unchanged": "PR566 60a16378c22b35ec5d52837c7c641cf6a59e0935",
+    "ci": "42054401819 121/121 each Python3.11.9 and 3.12.7",
+    "result": "Completed optimizer+EMA may be honestly reported as resulting in collapsed rejected state, no healthy recovery point inferred; pre-step state index distinguished; RUNTIME_ABORT with exception details; deterministic exact distinct-row witness",
+    "not_done": "Self-reported and no physical weights/panel bound witness, still separate from PR565 and PR568, last healthy remains unknown, full V2 journal and true restart not built",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
