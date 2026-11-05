@@ -3441,7 +3441,7 @@
           "role": "New hostile self-reported-cause attacks; original Macha #560 test remains unchanged"
         }
       ],
-      "change_type": "NEW_SOURCE_AND_SCOPED_AUTHOR_TESTS_ONLY__NOT_INDEPENDENT_ACCEPTANCE",
+      "change_type": "repair",
       "what_already_existed": "Original biological research and historical REDs remain on PR322 Event1-81. #558 captured when the failed u(N+1) occurred but uncaused representation STOP passed; #559 writer persisted opaque failure bytes but Macha #561 found E1 tail-deletion/false resumable update and E2 last-good unreadability after interrupted writes. #553 physical proof specification measured U0 11.21 MiB and estimated ~23.2 MiB after u1.",
       "new_work_or_result": "Created draft PR562 stacked exactly on Macha #560. Refuses failed receipts lacking a positive mechanical signal or explicit matched exact-zero representation collapse probe; infers only labelled untrusted mechanical causes for unchanged #557 and #558 legacy tests. Added new hostile tests and included the original #560 RED in hosted CI. Preserved #557/#560 byte-identically. Github Actions 41973584129 completed both Python 3.11.9 and 3.12.7 jobs SUCCESS. New exact Event82 human and machine sources mirrored to audit/handoff.",
       "negative_or_counterfactual_evidence": "Uncaused fail now refuses; near-but-nonzero metric not called an exact collapse. These are simulated receipts only, no physical encoder backprop, gradient proof, Adam, EMA, fixed TRAIN probe, full-state serialization, external journal trust, restart equality, actual biology or GPU. PR559 Macha #561 E1/E2 not repaired. Caller can forge new self-reported probe data. No Stage4 and all learned C1-C6 UNASSESSED.",
