@@ -1196,12 +1196,17 @@ def reconcile_one_unmirrored_record(root: Path, custody: Path) -> dict:
     root, custody = _paths(root, custody)
     with _lock(root):
         lock = _binding(root, custody)
+        # An outsider must not change a still-live opener's mirror or clear
+        # its temporary files. The opener can repair its own failed write.
+        _refuse_if_writer_alive(root)
         removed = _clear_redundant_debris(root, custody)
-        # Mirroring a structurally valid record makes no evidence claim, so an
-        # unrelated damaged checkpoint must not strand a crashed failure record.
+        # Older damage cannot erase the first fully evidenced failure. But
+        # the newly mirrored record MUST have intact own evidence; likewise a
+        # locally committed success cannot be certified over damaged history.
+        tally = _new_tally()
         rows, issues = _scan(root, custody, lock, tolerant=False,
                              permit_one_ahead=True, evidence_damage_ok=True,
-                             tally=_new_tally())
+                             tally=tally)
         insist(not issues and len(rows) >= 1, "CANNOT_RECONCILE")
         local = _filenames(root)
         copies = _filenames(custody)
@@ -1212,6 +1217,11 @@ def reconcile_one_unmirrored_record(root: Path, custody: Path) -> dict:
                     "resume_authorized": False}
         insist(len(local) == len(copies) + 1, "NOT_EXACTLY_ONE_AHEAD")
         seq = len(copies)
+        insist(seq not in tally["damaged"],
+               "UNMIRRORED_NEW_RECORD_EVIDENCE_DAMAGED")
+        if rows[-1]["kind"] == "UPDATE_COMMITTED":
+            insist(not tally["damaged"],
+                   "UNMIRRORED_SUCCESS_HAS_DAMAGED_HISTORY")
         name = f"j{seq:08d}.json"
         _write_once(custody, name, _read(root / name, MAX_RECORD), MAX_RECORD)
         return {"status": "ONE_VERIFIED_LOCAL_RECORD_MIRRORED",
