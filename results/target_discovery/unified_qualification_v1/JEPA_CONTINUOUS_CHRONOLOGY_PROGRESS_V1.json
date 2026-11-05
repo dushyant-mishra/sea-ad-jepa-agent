@@ -3814,16 +3814,6 @@
           "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT91_V5_STRUCTURED_STATE_JOURNAL_SOURCE_MAP.json",
           "blob_sha1": "94c8b31e1c5e186091cc928eaf8a209ff3e72572",
           "role": "Event91 mirrored machine exact PR sources, CI, immutable original Macha test blobs and no authority"
-        },
-        {
-          "path": "scripts/v5/jepa_v5_structured_journal_preflight_v1.py",
-          "blob_sha1": "da0ea17f57e8160ae79cf1ceb7e045d895a750bf",
-          "role": "Actual PR575 implementation read-only complete Adam/teacher expression encoder before fake journal outcome"
-        },
-        {
-          "path": "tests/test_jepa_v5_structured_journal_preflight_v1.py",
-          "blob_sha1": "d1feb114824bdb0b8525fd2eac7c9e14074a3813",
-          "role": "Adversarial synthetic CPU fake-Adam/probe/metadata/PID no-write tests"
         }
       ],
       "change_type": "implementation",
