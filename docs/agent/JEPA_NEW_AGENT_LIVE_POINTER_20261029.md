@@ -1,3 +1,17 @@
+# READ FIRST — EVENT95 (2026-11-05): V80 PRIVATE BACKUP CONFIRMED BY OWNER — RESCUE ALREADY RESOLVED
+
+**Canonical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact Audit head 6201c8a65ed354f5e3fc4f8b7f14f5d8baa3ef0c, 95 chronology events and 60 no-repeat index keys.** This is the live [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) first-read. Previous Event94 entry below is preserved as a historical snapshot.
+
+**Read first (mirrored exact Git blobs on both PRs):** `docs/agent/JEPA_20261105_EVENT95_OWNER_CONFIRMED_V80_PRIVATE_DOWNLOAD_RESOLVED.md` (blob `eaf24bfa50a0d2de62cb701bc87472b89117665f`) and `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT95_OWNER_CONFIRMED_V80_BACKUP_STATUS_SOURCE_MAP.json` (blob `786dc8251e9fbc1ad61ebccb9f5020958344775a`). Then Event94, Event93, Event92, Event91 and historical Event90 `docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md` and `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json`.
+
+**CORRECTED V80 STATUS:** Event69 exact original public FIT and receipt ZIPs preserved on #322 and #460. Event70 exact opaque original sealed-controller ZIP retrieved to owner conversation area and original SHA verified; at that time owner download was not yet confirmed. **Owner now explicitly confirms personally downloading V80 controller backup and regards preservation resolved.** `OWNER_CONFIRMED_PERSONAL_DOWNLOAD_COMPLETE__V80_BACKUP_RESOLVED`. The old November 13 Actions expiry is **not an open backup-rescue deadline** and must not recur in future task priority lists. Do not retrieve, extract, publish or inspect sealed controller. This is owner attestation; no independent SHA of the owner's copy or separate vault certification is claimed. The latter distinction does not turn the completed download into an unfinished task.
+
+**Engineering frontier unchanged:** Macha independently reviews Sol #579; Sol independently reviewed Macha #578 ACCEPT_SCOPED teacher structure and #577 REPAIR_REQUIRED corrected by Sol #579 author-RED/GREEN. Then integrate draft #575/#576/#577/#579/#578 in a guarded synthetic-only branch. No historical experimental repeat, merge, real RNA, optimizer steps, RT1–RT8, GPU training or Stage4 without explicit authority.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT94 (2026-11-05): SOL INDEPENDENT REVIEW OF MACHA #577/#578, ADDITIONAL RECONCILIATION REPAIR #579
 
 **Current canonical [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) — exact Audit head 8d45e8deaadff19596fe7f6d310db4903acf8203, 94 chronology events, 59 no-repeat index keys.** Operational handoff is [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460). Both drafts are append-only no-training custody: update both on each new substantial implementation or independent review result. Older Event93 sections below are historical snapshots; never start by re-running already completed science.
