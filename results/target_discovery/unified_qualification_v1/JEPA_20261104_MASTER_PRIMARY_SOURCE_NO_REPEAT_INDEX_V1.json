@@ -1839,5 +1839,28 @@
     "result": "Racily-clean cache, metadata-trust labels, live-writer recovery guard, failures recordable over damaged earlier evidence, EMA teacher must mirror online. Measured 205 x 23 MiB projection: 953 GiB pre-cache vs 19.7 GiB writer reads. No biological acceptance.",
     "do_not_repeat": "Do not re-measure the 205-update journal I/O without a code change; use scripts/v5/measure_attempt_journal_v2_io_no_training.py on PR577. Do not retest exFAT: hard links are refused.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_sol_reconcile_owner_liveness_and_own_evidence_repair579_cross_review_event94_20261105": {
+    "event": 94,
+    "date_utc": "2026-11-05",
+    "scope": "SOL_INDEPENDENT_CROSS_REVIEW_OF_MACHA_577_578__MIRROR_RECONCILIATION_AUTHOR_REPAIR_579_NO_TRAINING",
+    "pr": 579,
+    "head": "676c991f9ca2a4b6b2424d1da070b73b1fb46c01",
+    "base_pr": 577,
+    "base_head": "b9f5be9790405dfb2873b2a754541c4fe8de43c5",
+    "human": "docs/agent/JEPA_20261105_EVENT94_SOL_CROSS_REVIEW_OF_MACHA_577_578_AND_RECONCILE_579_NO_TRAINING.md",
+    "human_sha": "d7fd58d77f3eaf3624a339854d3a848ec45cae15",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT94_SOL_CROSS_REVIEW_577_578_RECONCILE_579_SOURCE_MAP.json",
+    "machine_sha": "e89fb5e4cca9113072dece335061cfcf23b706f2",
+    "source": "scripts/v5/jepa_synth2048_attempt_journal_v2.py blob 9c574714669b8feef4b6b7f1f205e971c91ee3d6",
+    "tests": "tests/test_jepa_synth2048_attempt_journal_v2_sol_reconcile_review_red.py blob 37b978007be94f45e2bfbfc62922ada2c0ef94c6, original Macha REDs unchanged",
+    "red": "83942213211ed0729b384a96f1b9f81c33b0ca21 run 42100254750: 3 expected failures plus 53 passed per Python",
+    "green": "676c991f9ca2a4b6b2424d1da070b73b1fb46c01 5/5 workflows 10/10 jobs, run 42100478560 57 passed per Python3.11.9/3.12.7",
+    "result": "Live opener not pre-empted by nonowner reconciliation; damaged own state/telemetry unmirrored new success never falsely called verified; intact collapse still mirrored over unrelated older damaged evidence.",
+    "sol_verdict_577": "REPAIR_REQUIRED__REPAIRED_IN_SEPARATE_579__MACHA_REVIEW_PENDING",
+    "sol_verdict_578": "ACCEPT_SCOPED_TEACHER_STRUCTURE_ONLY__35_AUTHOR_CI_TESTS_PER_PYTHON__NO_EMA_OR_RESTART_PROOF",
+    "no_repeat": "Preserve Event1–93 and prior TD/Stage81/V79/V80/R5 scientific sources; no new broad audit and no model optimizer/GPU/real data/Stage4. 205-update I/O gains projected from smaller real runs.",
+    "open": "Macha review #579; exact combined draft integration #575/#576+#577/#579+#578; origin source rights/RNG/AMP/physical panel controls; private sealed V80 controller 2026-11-13 expiry; D1 owner decision",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
