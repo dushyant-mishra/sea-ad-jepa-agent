@@ -1532,5 +1532,37 @@
     "actual_training_steps": 0,
     "all_six_C_learned": "UNASSESSED",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_actual_atomic_checkpoint_bytes_event79_20261104": {
+    "chronology_event": 79,
+    "human": "docs/agent/JEPA_20261104_EVENT79_ACTUAL_ATOMIC_V5_CHECKPOINT_BYTES_AND_NEXT_AGENT_HANDOFF.md",
+    "human_blob_sha1": "45c89bc16b70b765d83a957f76877ef4ae9cc56c",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261104_EVENT79_ATOMIC_V5_CHECKPOINT_BYTES_SOURCE_AND_RESULT_MAP.json",
+    "machine_blob_sha1": "8186280fe2e73ebc9b062d4d771b767f7d7c995e",
+    "source_pr": 555,
+    "source_head": "30b8848c95a10fc9e733daf2f7e0a8da906bb6d7",
+    "stacked_on_pr": 553,
+    "ci_run": 41966929210,
+    "ci_status": "SUCCESS_2_OF_2",
+    "ci_python_311_pytest": 86,
+    "ci_python_312_pytest": 86,
+    "feature": "REAL_POSIX_FSYNC_NO_CLOBBER_OPAQUE_BYTES_AND_SHA_RECEIPT_CHAIN__FRESH_PROCESS_VERIFY__REAL_PROCESS_ABRUPT_DEATH__TWO_RACING_WRITERS",
+    "true_neural_checkpoint_serialized": false,
+    "true_48_gradient_adam_verified": false,
+    "full_V5_fresh_process_next_update_replay": false,
+    "external_authenticated_custody": false,
+    "training_authorized": false,
+    "macha_independent_review": "PENDING",
+    "owner_fine_grain_requirement": "EACH_COMPLETED_U1_TO_U40_FULL_STATE_AND_EACH_ATTEMPT_ACTUAL_TELEMETRY__NOT_YET_AN_AUTHORIZED_TRAINING_PROTOCOL",
+    "latest_negative_bounds": [
+      "PR547_F1_C2_C3_GENERIC_STATE_ONLY",
+      "PR548_T2_NEAR_COLLAPSE_T3_TRUE_GRADIENT_T4_METRIC_DIRECTION_T5_WITHHELD_QUERY_UNRESOLVED",
+      "PR554_T1_AUTHOR_GREEN_MACHA_PENDING",
+      "PR541_TASK4_HOLD_K04_INSTANCE_SHADOWING",
+      "PR551_FROZEN_TASK3_PUBLIC_HISTORY_CUSTODY_FORGERY",
+      "PR525_P01_L06_PORTFOLIO_SELECTION_BLOCKED",
+      "PR533_PROSPECTIVE_LAW_UNRATIFIED"
+    ],
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
