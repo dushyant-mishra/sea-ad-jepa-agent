@@ -285,12 +285,29 @@ def _check_record(row: dict, rows: list[dict], lock: dict, root: Path) -> None:
             insist(insisting and parsed["attempt_update_index"] == u,
                    "OUTCOME_NOT_MATCHING_STATE")
         elif kind == "ATTEMPT_ABORTED":
-            insist(set(item) == {"reason","quarantined","intent","self_reported"}
-                   and item["reason"] == "PROCESS_INTERRUPTED"
+            insist(set(item) == {"reason","quarantined","intent","self_reported",
+                                 "runtime_abort_receipt"}
+                   and item["reason"] in ("PROCESS_INTERRUPTED", "RUNTIME_ABORT")
                    and item["intent"] == u
                    and item["self_reported"] is True
                    and type(item["quarantined"]) is list,
                    "ABORT_METADATA_INVALID")
+            if item["reason"] == "RUNTIME_ABORT":
+                insist(item["quarantined"] == []
+                       and type(item["runtime_abort_receipt"]) is dict,
+                       "RUNTIME_ABORT_WITH_FALSE_QUARANTINE")
+                try:
+                    parsed = cause.validate_failed_attempt_onset_receipt(
+                        item["runtime_abort_receipt"])
+                except cause.CaptureRefusal as exc:
+                    raise JournalRefusal(
+                        "REFUSE_ATTEMPT_JOURNAL_V2__RUNTIME_ABORT_CAUSE_INVALID") from exc
+                insist(parsed["verdict_kind"] == "ATTEMPT_ABORTED"
+                       and parsed["attempt_update_index"] == u,
+                       "RUNTIME_ABORT_STATE_INDEX_INVALID")
+            else:
+                insist(item["runtime_abort_receipt"] is None,
+                       "CRASH_RECOVERY_NOT_RUNTIME_ABORT")
     else:
         insist(telemetry is None and reported is None,
                "UNEXPECTED_NON_OUTCOME_EVIDENCE")
@@ -468,11 +485,13 @@ def _outcome(root: Path, custody: Path, *, update: int, kind: str,
         elif kind == "ATTEMPT_ABORTED":
             insist(set(telemetry) == {
                 "reason", "quarantined", "intent", "self_reported",
-            } and telemetry["reason"] == "PROCESS_INTERRUPTED"
+                "runtime_abort_receipt",
+            } and telemetry["reason"] == "RUNTIME_ABORT"
                    and telemetry["quarantined"] == []
                    and telemetry["intent"] == update
-                   and telemetry["self_reported"] is True,
-                   "ABORT_MUST_USE_RECOVERY_API")
+                   and telemetry["self_reported"] is True
+                   and type(telemetry["runtime_abort_receipt"]) is dict,
+                   "ABORT_MUST_HAVE_RUNTIME_CAUSE")
         if state_ref:
             _write_once(root, state_ref["name"], state_bytes, MAX_STATE)
         raw = _json(telemetry)
@@ -517,6 +536,26 @@ def record_failed_attempt(root: Path, custody: Path, *, update: int,
     """Mechanical failure with NO completed step. No model resume."""
     return _outcome(root, custody, update=update, kind="ATTEMPT_FAILED",
                     state_bytes=None, telemetry=reported_receipt)
+
+
+def record_runtime_abort(root: Path, custody: Path, *, update: int,
+                         reported_receipt: dict) -> dict:
+    """Persist a typed non-scientific OOM/exception STOP; no successful step."""
+    insist(type(reported_receipt) is dict, "RUNTIME_ABORT_RECEIPT_REQUIRED")
+    try:
+        parsed = cause.validate_failed_attempt_onset_receipt(reported_receipt)
+    except cause.CaptureRefusal as exc:
+        raise JournalRefusal("REFUSE_ATTEMPT_JOURNAL_V2__INVALID_ABORT_CAUSE") from exc
+    insist(parsed["verdict_kind"] == "ATTEMPT_ABORTED"
+           and parsed["attempt_update_index"] == update,
+           "RUNTIME_ABORT_NOT_ABORTED")
+    return _outcome(
+        root, custody, update=update, kind="ATTEMPT_ABORTED",
+        state_bytes=None, telemetry={
+            "reason": "RUNTIME_ABORT",
+            "quarantined": [], "intent": update, "self_reported": True,
+            "runtime_abort_receipt": reported_receipt,
+        })
 
 
 def _quarantine(root: Path, update: int, rows: list[dict]) -> list[dict]:
@@ -583,7 +622,8 @@ def recover_interrupted_attempt(root: Path, custody: Path) -> dict:
         u = rows[-1]["update"]
         labels = _quarantine(root, u, rows)
         item = {"reason": "PROCESS_INTERRUPTED", "quarantined": labels,
-                "intent": u, "self_reported": True}
+                "intent": u, "self_reported": True,
+                "runtime_abort_receipt": None}
         raw = _json(item)
         tname = f"u{u:05d}.telemetry.json"
         _write_once(root, tname, raw, MAX_TELEMETRY)
@@ -658,6 +698,18 @@ def inspect_forensic_prefix(root: Path, custody: Path) -> dict:
     with _lock(root):
         lock = _binding(root, custody)
         rows, issues = _scan(root, custody, lock, tolerant=True)
+        known = {".writer.lock", "run.lock.json", "quarantine"}
+        for row in rows:
+            known.add(f"j{row['seq']:08d}.json")
+            for field in ("payload", "telemetry"):
+                if row[field]:
+                    known.add(row[field]["name"])
+        for p in sorted(root.iterdir(), key=lambda v: v.name):
+            if p.name not in known and not RECORD_NAME.fullmatch(p.name):
+                issues.append({
+                    "name": p.name, "reason": "UNCOMMITTED_OR_UNVERIFIED_FILE",
+                    "status": "UNVERIFIED_TAIL__NO_RESUME",
+                })
         return _report(rows, lock, issues)
 
 
