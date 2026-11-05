@@ -5,6 +5,8 @@ on:
       - scripts/v5/jepa_synth2048_atomic_checkpoint_bytes_v1.py
       - tests/test_jepa_synth2048_atomic_checkpoint_bytes_v1.py
       - tests/test_jepa_synth2048_failed_onset_atomic_journal_v1.py
+      - tests/test_jepa_synth2048_failed_onset_journal_macha_red.py
+      - tests/test_jepa_synth2048_forensic_prefix_e2_successor_v1.py
       - docs/agent/JEPA_20261104_V5_ATOMIC_OPAQUE_CHECKPOINT_BYTES_IMPLEMENTATION_NO_TRAINING.md
       - .github/workflows/jepa-synth2048-atomic-checkpoint-bytes.yml
   workflow_dispatch:
@@ -31,7 +33,9 @@ jobs:
           python -m pytest -q \
             tests/test_jepa_synth2048_checkpoint_capture_prefreeze_v1.py \
             tests/test_jepa_synth2048_atomic_checkpoint_bytes_v1.py \
-            tests/test_jepa_synth2048_failed_onset_atomic_journal_v1.py
+            tests/test_jepa_synth2048_failed_onset_atomic_journal_v1.py \
+            tests/test_jepa_synth2048_failed_onset_journal_macha_red.py::test_e2_red_last_valid_checkpoint_stays_readable_after_interrupted_write \
+            tests/test_jepa_synth2048_forensic_prefix_e2_successor_v1.py
       - name: Explicit source-scope refusal of model authority
         env:
           PYTHONPATH: .

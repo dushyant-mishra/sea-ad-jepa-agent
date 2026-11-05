@@ -37,6 +37,7 @@ FAIL_STATUS = "UNTRUSTED_FAILED_ATTEMPT_EVIDENCE__NONRESUMABLE_STOP"
 PAYLOAD_NAME = re.compile(r"u[0-9]{5}\.checkpoint\Z")
 RECEIPT_NAME = re.compile(r"u[0-9]{5}\.receipt\.json\Z")
 RUN_NAME = re.compile(r"[A-Za-z0-9_-]{1,64}\Z")
+FORENSIC_TEMP_NAME = re.compile(r"\.uncommitted-[0-9a-f]{32}\Z")
 
 
 class StorageRefusal(RuntimeError):
@@ -202,8 +203,39 @@ def _failed_attempt_record(root: Path, lock: dict, previous: list[dict]) -> dict
     return record
 
 
-def _scan(root: Path, lock: dict) -> list[dict]:
-    """Verify strict linked receipt prefix, exact SHA and no orphans."""
+
+def _uncommitted_descriptor(root: Path, filename: str, max_bytes: int) -> dict:
+    """Read suspect orphan bytes without granting committed status.
+
+    A missing/partial receipt cannot authenticate an orphaned payload.
+    """
+    path = root / filename
+    require(path.is_file() and not path.is_symlink(),
+            "FORENSIC_ORPHAN_UNSAFE_TYPE")
+    fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+    try:
+        st = os.fstat(fd)
+        require(stat.S_ISREG(st.st_mode) and st.st_nlink == 1
+                and 0 <= st.st_size <= max_bytes,
+                "FORENSIC_ORPHAN_BAD_FILE")
+        with os.fdopen(os.dup(fd), "rb") as stream:
+            raw = stream.read(max_bytes + 1)
+        end = os.fstat(fd)
+        require(len(raw) == st.st_size
+                and (st.st_ino, st.st_size, st.st_mtime_ns)
+                == (end.st_ino, end.st_size, end.st_mtime_ns),
+                "FORENSIC_ORPHAN_RACED")
+        return {
+            "name": filename, "bytes": len(raw), "sha256": _sha(raw),
+            "status": "UNCOMMITTED_UNVERIFIED", "resumable": False,
+        }
+    finally:
+        os.close(fd)
+
+
+def _scan(root: Path, lock: dict, *,
+          forensic_orphans: list[dict] | None = None) -> list[dict]:
+    """Verify the committed prefix; forensic mode reports only trailing orphans."""
     expected = canonical_checkpoint_steps(lock["horizon"])
     allowed = {".writer.lock", "run.lock.json"}
     receipts: list[dict] = []
@@ -214,7 +246,14 @@ def _scan(root: Path, lock: dict) -> list[dict]:
         receipt = root / (name + ".receipt.json")
         p_exists = payload.exists() or payload.is_symlink()
         r_exists = receipt.exists() or receipt.is_symlink()
-        require(p_exists == r_exists, "ORPHAN_PAYLOAD_OR_RECEIPT")
+        if p_exists != r_exists:
+            if forensic_orphans is not None and p_exists and not r_exists:
+                # Only the next scheduled payload may be an orphan.
+                allowed.add(payload.name)
+                forensic_orphans.append(_uncommitted_descriptor(
+                    root, payload.name, MAX_PAYLOAD_BYTES))
+                break
+            require(False, "ORPHAN_PAYLOAD_OR_RECEIPT")
         if not p_exists:
             # Later numbered checkpoints are rejected by the file allowlist.
             break
@@ -242,11 +281,26 @@ def _scan(root: Path, lock: dict) -> list[dict]:
         prev_digest = _sha(receipt_raw)
         receipts.append(obj)
         allowed.update({payload.name, receipt.name})
-    failure = _failed_attempt_record(root, lock, receipts)
-    if failure is not None:
-        allowed.update((FAIL_EVIDENCE, FAIL_RECEIPT))
+    has_failure_data = (root / FAIL_EVIDENCE).exists() or (root / FAIL_EVIDENCE).is_symlink()
+    has_failure_receipt = (root / FAIL_RECEIPT).exists() or (root / FAIL_RECEIPT).is_symlink()
+    if has_failure_data and not has_failure_receipt and forensic_orphans is not None:
+        # Data without commit-last receipt is only an unverified artifact.
+        allowed.add(FAIL_EVIDENCE)
+        forensic_orphans.append(_uncommitted_descriptor(
+            root, FAIL_EVIDENCE, MAX_FAILED_EVIDENCE_BYTES))
+    else:
+        failure = _failed_attempt_record(root, lock, receipts)
+        if failure is not None:
+            allowed.update((FAIL_EVIDENCE, FAIL_RECEIPT))
     names = {p.name for p in root.iterdir()}
-    require(names == allowed, "UNEXPECTED_OR_GAPPED_FILES")
+    if forensic_orphans is None:
+        require(names == allowed, "UNEXPECTED_OR_GAPPED_FILES")
+    else:
+        for name in sorted(names - allowed):
+            require(FORENSIC_TEMP_NAME.fullmatch(name) is not None,
+                    "FORENSIC_UNKNOWN_OR_GAPPED_FILES")
+            forensic_orphans.append(_uncommitted_descriptor(
+                root, name, MAX_PAYLOAD_BYTES))
     return receipts
 
 
@@ -379,20 +433,56 @@ def read_verified_failed_attempt_evidence(
                                    max_bytes=MAX_FAILED_EVIDENCE_BYTES)
 
 
+def inspect_verified_prefix_read_only(root: Path, *, horizon: int,
+                                      run_id: str) -> dict:
+    """Recover receipt-verified prefix and document suspect orphaned tail bytes.
+
+    This does not detect erased tail records without an independent external
+    anchor. Resume always remains refused (Macha #561 E1 still open).
+    """
+    root = Path(root)
+    with _locked(root):
+        lock = expected_run_lock(horizon=horizon, run_id=run_id)
+        require(_regular_file_bytes(root / "run.lock.json", max_bytes=2048)
+                == _json(lock), "RUN_BINDING_CHANGED")
+        orphans: list[dict] = []
+        receipts = _scan(root, lock, forensic_orphans=orphans)
+        return {
+            "status": "FORENSIC_READ_ONLY__NO_RESUME_AUTHORITY",
+            "verified_checkpoint_prefix": [r["update"] for r in receipts],
+            "latest_verified_receipt_sha256": (
+                _sha(_json(receipts[-1])) if receipts else None),
+            "uncommitted_orphans": orphans,
+            "has_uncommitted_orphans": bool(orphans),
+            "external_head_authenticated": False,
+            "full_history_completeness_proved": False,
+            "resume_authorized": False,
+            "training_authorized": False,
+            "authority": AUTHORITY,
+        }
+
+
 def read_verified_bytes(root: Path, *, horizon: int, run_id: str,
                         update: int) -> bytes:
-    """Return only SHA-verified opaque data, not a loaded or authorized model."""
+    """Read a committed prefix, even if a later write was interrupted.
+
+    Strict verify_storage and both writer entry points still reject orphans.
+    This is a forensic opaque-byte read, never a model load or resume.
+    """
     require(type(update) is int, "UPDATE_NOT_INTEGER")
     root = Path(root)
     with _locked(root):
         lock = expected_run_lock(horizon=horizon, run_id=run_id)
         require(_regular_file_bytes(root / "run.lock.json", max_bytes=2048)
                 == _json(lock), "RUN_BINDING_CHANGED")
-        checked = _scan(root, lock)
-        require(update in [r["update"] for r in checked],
-                "UPDATE_NOT_VERIFIED_OR_MISSING")
+        orphans: list[dict] = []
+        checked = _scan(root, lock, forensic_orphans=orphans)
+        matches = [r for r in checked if r["update"] == update]
+        require(len(matches) == 1, "UPDATE_NOT_VERIFIED_OR_MISSING")
         data = _regular_file_bytes(root / f"u{update:05d}.checkpoint",
                                    max_bytes=MAX_PAYLOAD_BYTES)
+        require(_sha(data) == matches[0]["payload_sha256"],
+                "CHECKPOINT_CHANGED_AFTER_FORENSIC_SCAN")
     return data
 
 
