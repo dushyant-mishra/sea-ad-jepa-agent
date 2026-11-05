@@ -76,6 +76,10 @@ _SESSIONS: dict[str, tuple[int, str]] = {}
 # always-full inspect/forensic paths NEVER consult this cache. Recheck all
 # historical evidence on explicit close and restart/recovery.
 _VERIFIED_EVIDENCE_STAT: dict[tuple, tuple] = {}
+# Fixed fail-safe periodic full SHA scrub. Small real checkpoint (23MiB)
+# every 32 commits plus final close costs O(n) cumulative bytes, not O(n²).
+# Never turn this into a configurable skip-scrub escape hatch.
+FULL_SCRUB_EVERY_ATTEMPTS = 32
 _SCAN_ERRORS = (OSError, KeyError, TypeError, ValueError, IndexError, AttributeError)
 
 
@@ -762,7 +766,11 @@ def begin_attempt(root: Path, custody: Path, *, update: int) -> dict:
     """Persist ATTEMPT_BEGIN before a caller would execute any neural step."""
     root, custody = _paths(root, custody)
     with _lock(root):
-        lock, rows = _ready(root, custody, incremental=True)
+        # Fully rehash all committed bytes every 32nd attempted update.
+        # Detect silent bit rot that changes bytes without changing stat fields.
+        # Metadata-only caching is restricted to other ordinary writer scans.
+        full_scrub = type(update) is int and update % FULL_SCRUB_EVERY_ATTEMPTS == 0
+        lock, rows = _ready(root, custody, incremental=not full_scrub)
         writer = _require_session(root, rows)
         allowed, expected = _expected_next(rows, lock)
         insist("ATTEMPT_BEGIN" in allowed
