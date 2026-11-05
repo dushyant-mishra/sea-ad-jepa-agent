@@ -1,0 +1,101 @@
+{
+  "schema": "JEPA_SYNTH2048_V5_FINE_GRAIN_CHECKPOINT_PREFREEZE_V1",
+  "status": "PROPOSAL_NOT_FROZEN__INDEPENDENT_REVIEW_REQUIRED",
+  "v5_source_head": "cde03f738c758694aa66211b5021603af943675b",
+  "fit_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+  "checkpoint_schedule": {
+    "u0": true,
+    "u1_through_u40": "EVERY_SUCCESSFUL_UPDATE",
+    "u41_through_u100": "EVERY_FIFTH_SUCCESSFUL_UPDATE",
+    "above_u100": "EVERY_TENTH_SUCCESSFUL_UPDATE",
+    "terminal_update": "ALWAYS",
+    "failed_attempt": "TELEMETRY_AND_LAST_PREVIOUS_VALID_ONLY",
+    "full_payload_only_at_completed_update_boundary": true,
+    "update_cadence_precommitted_and_not_loss_adaptive": true,
+    "training_horizon_selected": false
+  },
+  "telemetry": {
+    "frequency": "EVERY_ATTEMPTED_UPDATE",
+    "mandatory_fields": [
+      "update_index",
+      "success",
+      "optimizer_step_proved",
+      "ema_completed_after_optimizer",
+      "presentation_cursor_advanced",
+      "protected_attention_tensor_count",
+      "missing_or_nonfinite_gradients",
+      "exact_zero_protected_gradients",
+      "missing_or_nonfinite_moments",
+      "exact_zero_protected_adam_moments",
+      "teacher_gradient_count",
+      "amp_skipped_step",
+      "query_visible_to_student",
+      "finite_state",
+      "telemetry_committed"
+    ],
+    "biology_and_shortcut_telemetry_required_at_reviewed_probe_windows": true,
+    "descriptive_metrics_for_each_attempt": [
+      "JEPA loss before/after",
+      "raw student/teacher CELL dispersion",
+      "gene-token dispersion",
+      "source-wise evidence and depth stratification",
+      "EMA exposure unit/count",
+      "gradient and Adam moment records",
+      "RNG/scheduler identity"
+    ],
+    "prospective_probe_windows": "MUST_BE_INDEPENDENTLY_REVIEWED_AND_PRECOMMITTED_BEFORE_REAL_MODEL_UPDATES",
+    "no_posthoc_checkpoint_choice": true,
+    "no_private_test_labels_or_controller_truth": true
+  },
+  "payload_requirements": {
+    "state_components": [
+      "online_encoder",
+      "ema_teacher",
+      "predictor",
+      "optimizer_with_adam_moments",
+      "grad_scaler",
+      "protected_gradient_proof",
+      "completed_step_ema_proof",
+      "masking_rng",
+      "python_rng",
+      "numpy_rng",
+      "torch_cpu_rng",
+      "torch_cuda_rngs",
+      "presentation_cursor",
+      "schedule_cursor",
+      "raw_cell_and_gene_token_telemetry",
+      "exact_source_dataset_config_and_evidence_rights_sha256"
+    ],
+    "write_once_atomic_fsync_sha256_manifest": true,
+    "verified_fresh_process_resume_before_continue": true,
+    "do_not_save_invalid_as_resumable": true,
+    "require_replay_identity": true,
+    "implementation_note": "Existing #224 V5 presentation-persisted checkpoint proof and historical V4 write-once SHA-state are reference mechanisms. An actual training/resume implementation still requires a reviewed new source PR; no alternate unguarded loop.",
+    "integrity_note": "Write checkpoint to local temp, fsync, rename no-clobber, SHA256 stream, append immutable parent-linked manifest and remote custody hash. Fail-stop on missing/mismatch. Before GPU training benchmark I/O, quota, memory and forced-kill replay."
+  },
+  "rights_and_evaluation": {
+    "q_exclusion_verified_at_every_update": true,
+    "no_query_derived_depth": true,
+    "source_donor_disjoint_split": true,
+    "blinded_protected_test_not_used_for_tuning": true,
+    "prospective_eval_panel_freeze_before_run": true,
+    "teacher_query_visibility": "L04_OWNER_DECISION_PENDING__NO_IMPLICIT_SHARED_Q_DESCENDANT_TO_C3",
+    "probe_source": "Fixed permitted TRAIN-only synthetic panel; biological DEVELOPMENT validation only at precommitted windows; no SEALED/test labels for tuning",
+    "synthetic_assay": "PR547 synthetic 1440x2048x36 donor source, not human genome"
+  },
+  "gates": {
+    "actual_unscaled_48_gradient_and_adam_moment_proof_each_step": true,
+    "no_ema_on_skipped_optimizer": true,
+    "raw_cell_and_gene_token_collapse_monitoring": true,
+    "loss_not_biology": true,
+    "synthetic_cpu_gpu_parity_required_before_gpu": true,
+    "independent_review_of_resume_and_failure_injection_required": true,
+    "forbidden_hidden_gene_anchor": true,
+    "owner_approval_before_any_training": true
+  },
+  "training_authorized": false,
+  "execution_authorized": false,
+  "requires_macha_review": true,
+  "requires_separate_owner_authorization": true,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
