@@ -1797,5 +1797,27 @@
     "critical_limits": "No real optimizer/forward/backward, all Adam moments are manually populated synthetic. Caller-reported probe, not physical biological health. V2 lock does not independently seal all gene/source/Philox/seed. No full V5 RNG/AMP, true model loader or fresh process bitwise RT1-RT8. PR574 Macha review ongoing.",
     "no_repeat": "Events1–90 and original frozen TD/Stage81/V79/V80/R5/535 PR metadata census unchanged, owner controller remains sealed.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_forensic_own_evidence_and_reciprocal_cross_review_event92_20261105": {
+    "event": 92,
+    "date_utc": "2026-11-05",
+    "scope": "SOL_INDEPENDENT_PR576_CORRUPT_OWN_TELEMETRY_READ_REFUSAL_AND_RECIPROCAL_REVIEW_HISTORY_NONREPEAT",
+    "pr": 576,
+    "head": "227a957c6997dc0e99233b1e4eedff3e9bb0f683",
+    "base_pr": 575,
+    "base_head": "41e7c556e61e313253b7e839e948328b47ab88dc",
+    "human": "docs/agent/JEPA_20261105_EVENT92_CROSS_REVIEW_FORENSIC_FIX_AND_HISTORICAL_NONREPEAT.md",
+    "human_sha": "9ca97b0c60203038e60348c5b8c489f6f66eb8db",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT92_CROSS_REVIEW_AND_NO_REPEAT_SOURCE_MAP.json",
+    "machine_sha": "2a95c9797b69c647c1658bfc91cca1642d4973e1",
+    "source": "scripts/v5/jepa_synth2048_attempt_journal_v2.py blob 839e8da59a5f618701b42b40b04d4bb4ac7e227a",
+    "tests": "New forensic own-probe-telemetry damage RED test blob 42cf5e928b4f57bb0bfbc107e07fca3096315ca9; originals Macha #557/#560/#561/#566/#567/#572 unchanged",
+    "red": "97bb47e3126604b6fba7cca8329222e2f03c7cdd run 42092747862 EXPECTED_FAIL",
+    "green": "227a957c6997dc0e99233b1e4eedff3e9bb0f683 runs 42093122875/42093122835/42093122803/42093122673: 4/4 workflows 8/8 jobs SUCCESS; 56+57 tests x2 Python",
+    "result": "A record with SHA-valid payload but damaged own telemetry no longer returned as a probe-qualified forensic state; later independently intact records remain readable. No biological acceptance.",
+    "historical_nonrepeat": "October 6 observation operator, 160-D subspace stability, evidence/depth curves and measurement-vs-biology OOD already specified; September 12 FULL104 blocker recovers old materialization but not new V5 dimension authority. No rediscovery, no renewed old experiments.",
+    "review": "MACHA_INDEPENDENT_CROSS_REVIEW_PENDING; owner permits direct reciprocal repair via RED first and independent review; no one self-accepts.",
+    "preservation": "V80 private controller artifact 11866917064 expires 2026-11-13T03:01:58Z; DEV2048 fit artifact 13364085153 expires 2026-12-04T21:02:06Z; no sealed truth public; 1 historical stale V5 locator/four owner-held exceptions remain.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
