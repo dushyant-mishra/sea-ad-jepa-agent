@@ -1,0 +1,31 @@
+# V5 synthetic fine-grain checkpointing: actual bytes-only atomic storage (NO TRAINING)
+
+**Status: DRAFT / INDEPENDENT REVIEW PENDING / NO MODEL RESTART AUTHORITY.** This is the first real filesystem-storage implementation following the design-only [#553](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/553). It is a **separate source PR stacked on #553**. Original #553 and #554 source/review histories remain unchanged. No model optimizer, EMA, GPU, human source, biological target scoring or protected controller truth was accessed.
+
+## Difference from the original and what is new
+
+The historical training/checkpoint design already covers the *model payload* and rights: `src/sea_ad_jepa/v4/teacher_student_checkpoint.py` captures encoder, teacher, predictor, optimizer/Adam, GradScaler, gradients and all RNG state; the newer V5 `ema_persisted_continuation_v2.py` establishes presentation/EMA one-step resume. **Do not replace or bypass that real source with this storage-only helper.**
+
+The new `scripts/v5/jepa_synth2048_atomic_checkpoint_bytes_v1.py` is a **POSIX opaque bytes storage mechanism**; it performs actual filesystem writes, flush/fsync, no-clobber hardlink publication, parent directory fsync, per-update independently SHA-verified payload and receipt, and receipt-to-receipt SHA chain. It stores **arbitrary opaque bytes** and deliberately **does not parse/validate PyTorch state or call optimizer/EMA**. It cannot itself prove that caller-supplied bytes are a complete, healthy, post-optimizer V5 checkpoint.
+
+**Trusted binding:** immutable `run.lock.json` binds original V5 #548 source HEAD and original #547 FIT ZIP SHA, a *test-only illustrative horizon* and run ID; `training_authorized:false` and `external_trust_anchor_present:false`. This chain detects accidental/tampered filesystem bytes **assuming its root lock and receipts are trusted**; it is NOT externally signed/authenticated custody. An attacker able to rewrite the complete chain and run lock can forge internal consistency. Production requires an **out-of-process owner-controlled external manifest anchor** (Task3 #551 lesson) and genuine physically observed training step authority.
+
+**Write-once ordering:** under Linux/WSL `fcntl.flock`, create temp payload with `O_EXCL`, write and fsync file, publish by `os.link` (guaranteed no overwrite), unlink temp, fsync directory. Only after payload is durable, write and fsync a second unique receipt with payload SHA, exact byte count and previous receipt digest. A crash after payload but before receipt leaves an **orphan that is explicitly rejected**; no automatic salvage or acceptance as a valid model. A stale temp file, changed header, duplicate checkpoint, missing u18, symlink, incomplete JSON, altered middle receipt or unexpected source data is a **STOP**. Local snapshot consumption requires fresh-process verification before opaque bytes are read.
+
+**Schedule:** the new writer imports #553's design-only `canonical_checkpoint_steps`, enforcing **u0 and every completed u1..u40**, then u45,u50,...u100, then u110+ every ten steps, plus exact terminal. However, whether an update *actually completed* cannot be established by this writer: the future V5 trainer must supply external optimizer→EMA evidence. This is test-only support for a proposed cadence, not owner selection of a training horizon or learning budget.
+
+**Actual test coverage:** `tests/test_jepa_synth2048_atomic_checkpoint_bytes_v1.py` invokes real filesystem writes and SHA reads, a fresh Python subprocess verification, simulated interrupted write between payload and receipt, receipt tamper, missing middle checkpoint, path alias/symlink, skipped update, duplicate, foreign file, fake run/source and sparse u45 step. CI uses Python 3.11 and 3.12 on Linux. These are **storage** tests; all payloads are obviously fake marker bytes, never a trained neural model. It does not prove full-model serialization, fresh-process *next-update* replay parity, actual SIGKILL under load, GPU/disk throughput, quota/budget, durable owner custody, or expected health biology.
+
+## Required before any synthetic training can be run
+
+1. Macha independently reviews **#553 prefreeze schedule** and **this source's actual file ordering, recovery/forgery limits**. Both are still draft.
+2. The owner chooses a real v5 training scope, query policy (L04 EMERGENT/TRANSFER), evaluation law and source biology; #547 current world C2/C3 is **GENERIC_STATE_ONLY** with rare/perturbation signal concentrated in view1. Do not silently repurpose for all-C rare biology.
+3. An independently reviewed versioned V5 trainer must serialize the full **actual** model and step state from original guarded V5 source and physically establish protected 48 gradients, nonzero Adam moments, no GradScaler skip, EMA count/half-life, all RNG/masking, plus checkpoint source/rights hashes. No self-attested booleans (#548 T3).
+4. Freeze an external manifest signing/owner-controlled anchor and prove fresh-process *actual next-update* deterministic replay after a forced kill. This storage layer on its own provides **no external authority**.
+5. Source-/donor-/depth-matched wrong-cell and q control, T2 near-collapse, T4 biological metric sign/paired-donor uncertainty, T5 withheld-q state and C3 independent readout remain unresolved. Existing #554 T1 exact-collapse fix is a separate branch pending independent review.
+6. Avoid early checkpoint collapse from disappearing into sparse windows: require **full saved states at u0 and every completed u1–u40**, and **factual telemetry for every attempted step**, including failed/skipped updates. This must be proven using real V5 source before any model fits.
+7. All real-data training, Stage4 and production synthetic Task4 remain OFF/HOLD. Original Task3 #551 public promotion forgery and Task4 #549 C1 spoof remain independently blocked.
+
+**Known limitation:** POSIX `fsync` + directory fsync is stronger against an interrupted process but not proof of storage hardware durability, remote replication or external authenticity. 30-day GitHub Actions artifacts are not durable owner escrow.
+
+Current authority: `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
