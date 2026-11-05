@@ -69,8 +69,9 @@ ABORT_FIELDS = {"reason", "quarantined", "intent", "self_reported",
 VERDICT_KINDS = {"STATE_COLLAPSED_AFTER_STEP", "STATE_COLLAPSED_BEFORE_NEXT_STEP",
                  "ATTEMPT_ABORTED", "ATTEMPT_FAILED_NO_COMPLETED_STEP"}
 # Process-lifetime writer capability. Only its SHA is written to RUN_OPEN, so a
-# fresh process cannot continue a run whose opening process died.
-_SESSIONS: dict[str, str] = {}
+# a fresh or forked process cannot continue a run whose opening process died.
+# PID is bound at open time, because POSIX fork inherits Python module globals.
+_SESSIONS: dict[str, tuple[int, str]] = {}
 _SCAN_ERRORS = (OSError, KeyError, TypeError, ValueError, IndexError, AttributeError)
 
 
@@ -590,8 +591,15 @@ def _forensic_scan(root: Path, custody: Path, lock: dict
 # ---------------------------------------------------------------- writers
 
 def _session_sha(root: Path) -> str | None:
-    token = _SESSIONS.get(str(root))
-    return _sha(token.encode("ascii")) if token else None
+    session = _SESSIONS.get(str(root))
+    if session is None:
+        return None
+    opening_pid, token = session
+    # A forked child inherits _SESSIONS unchanged; it is not the opening
+    # process and cannot advance a run whose actual restart is unverified.
+    if opening_pid != os.getpid():
+        return None
+    return _sha(token.encode("ascii"))
 
 
 def _require_session(root: Path, rows: list[dict]) -> str:
@@ -698,7 +706,7 @@ def open_journal(root: Path, custody: Path, *, run_id: str, horizon: int,
         _write_once(root, "u00000.telemetry.json", _json(initial_probe), MAX_TELEMETRY)
         _write_once(root, name, initial_state_bytes, MAX_STATE)
         _append_row(root, custody, lock, [], row)
-        _SESSIONS[str(root)] = token
+        _SESSIONS[str(root)] = (os.getpid(), token)
         return {"status": "OPENED_FAKE_BYTES_ONLY", "horizon": horizon,
                 "run_id": run_id, "writer_session": "THIS_PROCESS_ONLY",
                 "training_authorized": False}
