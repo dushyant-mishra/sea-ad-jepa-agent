@@ -12,6 +12,7 @@ It does not add a new kind of V2 scientific outcome or restart authority.
 from __future__ import annotations
 
 from hashlib import sha256
+import os
 from pathlib import Path
 
 from scripts.v5 import jepa_synth2048_attempt_journal_v2 as journal
@@ -19,6 +20,10 @@ from scripts.v5 import jepa_v5_full_state_readonly_audit_v1 as state
 
 SCHEMA = "JEPA_V5_SYNTHETIC_STRUCTURED_JOURNAL_PREFLIGHT_V1"
 AUTHORITY = journal.AUTHORITY
+# Process-local binding prevents accidental changes to the run's gene axis,
+# manifest, Philox contract or keyed seed between recorded updates.
+# New processes cannot continue V2 updates at all. Not external custody.
+_OPENING_CONTRACTS: dict[tuple[int, str], dict] = {}
 
 
 class StructuredJournalRefusal(ValueError):
@@ -41,7 +46,8 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
                            config_sha256: str, rights_sha256: str,
                            gene_axis_sha256: str,
                            source_manifest_sha256: str,
-                           philox_contract_sha256: str) -> dict:
+                           philox_contract_sha256: str,
+                           keyed_run_seed: int) -> dict:
     """Check state *structure and declarations*; never the truth of training.
 
     All expected binding SHAs are supplied by the caller, not authenticated
@@ -57,6 +63,8 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
                      ("source_manifest", source_manifest_sha256),
                      ("philox_contract", philox_contract_sha256)):
         _sha_match(val, key)
+    insist(type(keyed_run_seed) is int and 0 <= keyed_run_seed < 2**32,
+           "KEYED_SEED_INVALID")
     digest = sha256(raw).hexdigest()
     try:
         bundle, report = state.read_verified_bytes(
@@ -76,6 +84,7 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
         "gene_axis_sha256": gene_axis_sha256,
         "source_manifest_sha256": source_manifest_sha256,
         "keyed_philox_contract_sha256": philox_contract_sha256,
+        "keyed_run_seed": keyed_run_seed,
         "execution_authorized": False,
         "training_authorized": False,
     }
@@ -83,6 +92,17 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
         insist(meta.get(name) == value and
                (type(meta.get(name)) is type(value)),
                "STRUCTURED_METADATA_BINDING_" + name.upper())
+    insist("online.value_encoder.weight" in bundle["parameter_names"],
+           "EXPRESSION_VALUE_ENCODER_MISSING")
+    online_state = bundle["modules"]["online"]
+    teacher_state = bundle["modules"]["teacher"]
+    insist(set(online_state) == set(teacher_state),
+           "TEACHER_ONLINE_PARAMETER_OR_BUFFER_NAMES_MISMATCH")
+    for name, online_tensor in online_state.items():
+        teacher_tensor = teacher_state[name]
+        insist(tuple(teacher_tensor.shape) == tuple(online_tensor.shape)
+               and teacher_tensor.dtype == online_tensor.dtype,
+               "TEACHER_ONLINE_TENSOR_SHAPE_DTYPE_MISMATCH")
     insist(report["actual_step_or_bitwise_resume_proved"] is False
            and report["biological_health_proved"] is False
            and report["training_authorized"] is False,
@@ -96,9 +116,7 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
         "all_trainable_parameter_names_present":
             report["all_trainable_parameter_names_present"],
         "optimizer_tensor_count": report["optimizer_tensor_count"],
-        "has_expression_value_encoder": (
-            "online.value_encoder.weight" in bundle["parameter_names"]
-        ),
+        "has_expression_value_encoder": True,
         "physically_executed_optimizer_step_proved": False,
         "probe_computation_origin_proved": False,
         "learned_biology_proved": False,
@@ -111,7 +129,8 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
 def _run_args(run_id: str, panel_sha256: str,
               config_sha256: str, rights_sha256: str,
               gene_axis_sha256: str, source_manifest_sha256: str,
-              philox_contract_sha256: str) -> dict:
+              philox_contract_sha256: str,
+              keyed_run_seed: int) -> dict:
     return {
         "run_id": run_id, "panel_sha256": panel_sha256,
         "config_sha256": config_sha256,
@@ -119,6 +138,7 @@ def _run_args(run_id: str, panel_sha256: str,
         "gene_axis_sha256": gene_axis_sha256,
         "source_manifest_sha256": source_manifest_sha256,
         "philox_contract_sha256": philox_contract_sha256,
+        "keyed_run_seed": keyed_run_seed,
     }
 
 
@@ -128,11 +148,13 @@ def open_synthetic_journal(*, root: Path, custody: Path,
                            rights_sha256: str, gene_axis_sha256: str,
                            source_manifest_sha256: str,
                            philox_contract_sha256: str,
+                           keyed_run_seed: int,
                            state_bytes: bytes, reported_probe: dict) -> dict:
     """Validate u0 *before* creating a run folder or emitting any bytes."""
     args = _run_args(run_id, panel_sha256, config_sha256,
                      rights_sha256, gene_axis_sha256,
-                     source_manifest_sha256, philox_contract_sha256)
+                     source_manifest_sha256, philox_contract_sha256,
+                     keyed_run_seed)
     check = check_structured_bytes(
         state_bytes, expected_update=0, **args)
     lock = journal._run_lock(
@@ -148,6 +170,7 @@ def open_synthetic_journal(*, root: Path, custody: Path,
         initial_state_bytes=state_bytes, initial_probe=reported_probe)
     insist(result["training_authorized"] is False,
            "JOURNAL_PROMOTED_TRAINING")
+    _OPENING_CONTRACTS[(os.getpid(), str(Path(root).absolute()))] = args
     return {
         "status": "SYNTHETIC_U0_STRUCTURED_BYTES_RECORDED",
         "run_id": run_id, "state": check,
@@ -161,7 +184,8 @@ def commit_synthetic_preflight(*, root: Path, custody: Path,
                                reported_probe: dict,
                                expected_gene_axis_sha256: str,
                                expected_source_manifest_sha256: str,
-                               expected_philox_contract_sha256: str) -> dict:
+                               expected_philox_contract_sha256: str,
+                               expected_keyed_run_seed: int) -> dict:
     """Fail closed before any V2 write if an Adam/model/metadata slot is bad.
 
     Requires ATTEMPT_BEGIN to have already been durably recorded by V2.
@@ -174,7 +198,11 @@ def commit_synthetic_preflight(*, root: Path, custody: Path,
         lock["config_sha256"], lock["rights_sha256"],
         expected_gene_axis_sha256,
         expected_source_manifest_sha256,
-        expected_philox_contract_sha256)
+        expected_philox_contract_sha256,
+        expected_keyed_run_seed)
+    insist(_OPENING_CONTRACTS.get(
+        (os.getpid(), str(Path(root).absolute()))) == args,
+        "OPENING_PROCESS_CONTRACT_CHANGED_OR_UNKNOWN")
     check = check_structured_bytes(
         state_bytes, expected_update=update, **args)
     journal._validate_probe(
@@ -204,7 +232,8 @@ def inspect_stored_structured_snapshot(
         *, root: Path, custody: Path, update: int,
         expected_gene_axis_sha256: str,
         expected_source_manifest_sha256: str,
-        expected_philox_contract_sha256: str) -> dict:
+        expected_philox_contract_sha256: str,
+        expected_keyed_run_seed: int) -> dict:
     """Read-only forensic scan, plus safe full-state component check.
 
     A SHA-valid reported probe checkpoint is not a proven HEALTHY state.
@@ -220,7 +249,8 @@ def inspect_stored_structured_snapshot(
             lock["config_sha256"], lock["rights_sha256"],
             expected_gene_axis_sha256,
             expected_source_manifest_sha256,
-            expected_philox_contract_sha256))
+            expected_philox_contract_sha256,
+            expected_keyed_run_seed))
     return {
         "status": "RETRIEVED_FORENSIC_STRUCTURED_COMPONENTS",
         "state": check,
