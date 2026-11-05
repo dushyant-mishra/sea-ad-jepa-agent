@@ -1,3 +1,19 @@
+# READ FIRST — EVENT76 (2026-11-04): MACHA'S LATEST SCOPED VERDICTS; TASK4 STILL HOLD; OWNER OPTIONS NOT RATIFIED
+
+**Read:** [Event76 precise Macha head-specific review and three unratified owner decisions](JEPA_20261104_EVENT76_MACHA_REVIEW_VERDICTS_AND_THREE_OWNER_DECISIONS_NOT_YET_RATIFIED.md), then [Event75 complete Sol V5 synthetic takeover](JEPA_20261104_EVENT75_SOL_COMPLETE_SYNTHETIC_V5_COLD_START_TAKEOVER_AND_NO_REPEAT.md) and machine map. #322 now **76 append-only events**, machine-index key `macha_scoped_verdicts_and_unratified_owner_questions_event76_20261104`; audit head after event/index `3b1976f9f26a98234b23778ab92df0d2da899bef` (verify exact-head hosted CI). **Do not re-audit original 535-PR/108-recent-PR/Event68 history or rerun original measured TD.**
+
+**Macha's independent scoped accepted results:** #543 **K01 only**; #538 **five real human alias-query IDs conservatively refused**, *not* issuer/source authenticated, source-specific #513 recheck before any new human operator; #536 **correct C2 48→3×512 and C3 no-student refusals**, CI-only, old frozen PR328 30-cell C3 estimability **10/10 synthetic NPH52, 0/10 HVS and 0/10 SEA-AD**: **NOT a cross-source C3 assay** and **NOT evidence about new #547 artificial 2048-gene source**; #525 **M01/M02/S01 accepted but portfolio P01 TD-issued external SHA and L06 pre-result commit remain BLOCKERS**. Head-specific original comments and exact SHAs are in Event76.
+
+**Task4:** [#541](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/541) cumulative remains **HOLD**. Macha's #544 original latent K02/K03 REDs have already been addressed by Sol in [#545](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/545), author CI green with untouched RED test blobs; Macha **independent exact-head #545 review is still pending**. No reimplementation or invented Task4 authority. Existing [#546](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/546) **already tests** frozen Task3 history/HMAC bypass in intentional RED; no need to commission duplicate tests, no in-place change to frozen Task3.
+
+**Three owner choices remain open, not self-authorized by Sol:** L04 shared teacher q visibility (conservative suggestion: SHARED q-blind, q-target only in independently scoped C3 teacher); #533 V79/V80 207 prospective rows **including terminal Q08 hard failure** versus 85 post-terminal **forensic-only** (new versioned externally precommitted selection law; original receipts never rewritten); #546 frozen Task3 history integrity (review existing RED then decide on a separate versioned successor). These are **proposals awaiting owner decision**, not scientific permissions.
+
+**New V5 #547/#548:** actual 1440×2048 fit-only and 144/144 six-IPB V5 u0 checks still GREEN author-only, **zero model updates, no trained C1–C6, no GPU**; independent review remains. Prior catastrophic collapse and 48 dead gradient tests continue to bind. Original controller private and unopened.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT75 (2026-11-04) — FULL SOL/GPT V5 SYNTHETIC TAKEOVER; DO NOT REPEAT HISTORICAL SCIENCE
 
 **Start here, not with a project-wide PR recrawl:** [Event75 complete human cold-start handoff](JEPA_20261104_EVENT75_SOL_COMPLETE_SYNTHETIC_V5_COLD_START_TAKEOVER_AND_NO_REPEAT.md), and machine map `results/target_discovery/unified_qualification_v1/JEPA_20261104_EVENT75_SOL_V5_SYNTHETIC_COMPLETE_SUCCESSOR_SOURCE_SCRIPT_DATA_RESULT_MAP.json` — **mirrored byte-identically on #322 and #460**. Original Event68 detailed 34.5k handoff + its 60-script/source/data/result index, original 535 PR metadata, recent 108 PR result/supersession audit, old 74 chronology events, user upload SHA custody, Event71–74 and negative experiments are already complete on canonical #322. **Never restart these histories.**
