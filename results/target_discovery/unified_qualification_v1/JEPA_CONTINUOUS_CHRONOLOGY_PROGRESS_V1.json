@@ -3973,6 +3973,44 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
       ]
+    },
+    {
+      "event_id": "20261105-OWNER-V80-CONTROLLER-PRIVATE-BACKUP-CONFIRMED-HISTORICAL-CORRECTION-EVENT95",
+      "date_utc": "2026-11-05",
+      "workstream": "v80_protected_controller_owner_download_custody_attestation_prevent_stale_expiry_rescue",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT95_OWNER_CONFIRMED_V80_PRIVATE_DOWNLOAD_RESOLVED.md",
+          "blob_sha1": "eaf24bfa50a0d2de62cb701bc87472b89117665f",
+          "role": "Owner confirmation of personal V80 controller backup and correction to older pre-confirmation rescue warning; mirrored #322/#460"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT95_OWNER_CONFIRMED_V80_BACKUP_STATUS_SOURCE_MAP.json",
+          "blob_sha1": "786dc8251e9fbc1ad61ebccb9f5020958344775a",
+          "role": "Machine exact original controller artifact SHA, owner attestation/verification scope, historical Event65/69/70 references"
+        }
+      ],
+      "change_type": "custody_process",
+      "what_already_existed": "Event65 original V80 ZIP rescue; Event69 exact original FIT and receipt ZIP SHA-pinned on BOTH public audit/handoff branches; Event70 re-retrieved opaque sealed controller ZIP to owner conversation area and confirmed original SHA/bytes without opening; at that time the owner had not confirmed personal download. Historical Events90–94 repeated Nov13 expiry and owner backup as unverified.",
+      "new_work_or_result": "Owner explicitly confirms on Nov5 2026 that they independently downloaded original V80 controller ZIP as personal backup and regard the rescue as resolved. Record owner attestation, close repeated urgent download/rescue blocker, preserve public FIT+receipt and private controller boundary, and tell successor agents not to rediscover or download it again.",
+      "negative_or_counterfactual_evidence": "Owner local backup is a direct user attestation, not independent file-system view, re-hash, tested vault replication or controlled private repository certification. Do not claim a separately audited vault or re-open sealed truth. Event70 source remains accurate for its timestamp; only its prior not-confirmed owner-download state is superseded. Original Actions expiry remains dated but no open emergency. No training/scientific result.",
+      "test_review_scope": "History/source-only correction. Original controller ZIP 6,844,053 bytes, SHA256 184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46 was independently verified at Event70; owner's new personal copy itself not inspected. Human and machine Event95 documents mirrored by original Git blob SHA on audit #322 and handoff #460; no optimizer/GPU/data/CI execution from this custody correction.",
+      "independent_review": "OWNER_ATTESTED_PERSONAL_BACKUP_COMPLETE__LOCAL_SHA_NOT_INDEPENDENTLY_CHECKED__NO_CODE_CHANGE_OR_TRAINING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "No repeat V80 controller Nov13 rescue warnings or calls to download protected artifact. Independent vault/second-device validation optional future owner-controlled custody choice, not an urgent current work blocker.",
+        "Continue Macha review #579 and #575/#576, synthetic-only integration and existing scientific blockers without controller access.",
+        "Preserve original V80 benchmark negative portability/red findings and no chosen target/representation/Stage4."
+      ],
+      "historical_supersession": "Add Event95 to Event1–94; Event65/69/70 are not edited, and Event70 pre-confirmation wording remains historically true; supersedes its backup-unconfirmed status as of new owner statement, not its controller SHA evidence.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/38504094639"
+      ]
     }
   ]
 }
