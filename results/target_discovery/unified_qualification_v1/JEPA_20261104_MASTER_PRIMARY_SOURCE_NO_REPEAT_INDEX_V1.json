@@ -1384,5 +1384,52 @@
     ],
     "next": "INDEPENDENT_SOURCE_REVIEW_THEN_SCOPED_MULTIUPDATE_V5_GPU_PARITY_C1_C6_BIOLOGICAL_TESTS_WITH_OWNER_SCOPE",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "macha_scoped_verdicts_and_unratified_owner_questions_event76_20261104": {
+    "chronology_event": 76,
+    "human": "docs/agent/JEPA_20261104_EVENT76_MACHA_REVIEW_VERDICTS_AND_THREE_OWNER_DECISIONS_NOT_YET_RATIFIED.md",
+    "independent_verdicts": {
+      "pr538": {
+        "head": "b901d3fe25857a09f7e0cbc48d4e75d75d9ca3e0",
+        "status": "ACCEPT_SCOPED_CONSERVATIVE_QUERY_BLOCK_NONAUTHORIZING",
+        "source": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/538#issuecomment-6642767399"
+      },
+      "pr536": {
+        "head": "b723b9d522a013554a0a53cf600e6e9812c35935",
+        "status": "ACCEPT_SCOPED_NEGATIVE_ADMISSION_NONAUTHORIZING",
+        "source": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/536#issuecomment-6642883751",
+        "local_run": "NOT_PERFORMED_CI_ONLY",
+        "C3_old_fixture": "10_10_NPH52_ESTIMABLE__0_10_HVS__0_10_SEAAD__CANNOT_ASSERT_TRANSFER"
+      },
+      "pr543": {
+        "status": "ACCEPT_SCOPED_K01_FIX_ONLY",
+        "head": "7e4bffe8f75f65452e41304108c2d62b14e14cf5"
+      },
+      "pr525": {
+        "status": "ACCEPT_SCOPED_INCREMENTAL_WITH_LIMITATIONS",
+        "selection_limits": [
+          "P01_EXTERNAL_EXPECTED_TD_ISSUED_PORTFOLIO_SHA_REQUIRED",
+          "L06_EXTERNAL_PRE_RESULT_COMMIT_REQUIRED"
+        ],
+        "head": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd"
+      },
+      "pr541": {
+        "status": "HOLD_NEEDS_EVIDENCE",
+        "head": "3b86b9467506539776e04a6470fa8f2f7363f129"
+      }
+    },
+    "next_source_status": {
+      "pr545": "SOL_REPAIRED_K02_K03_AUTHOR_GREEN_MACHA_REVIEW_PENDING",
+      "pr546": "ALREADY_WRITTEN_INTENTIONALLY_RED_FROZEN_TASK3_HMAC_HISTORY_TESTS_REVIEW_PENDING",
+      "pr547": "NEW_2048_SYNTHETIC_NOT_SAME_SOURCE_AS_PR536_AND_NOT_INDEPENDENTLY_REVIEWED",
+      "pr548": "V5_U0_NO_TRAINING_MACHA_PENDING"
+    },
+    "open_owner_decisions": [
+      "L04_SHARED_TEACHER_QUERY_VISIBILITY_CONSERVATIVE_Q_BLIND_PROPOSAL_NOT_RULING",
+      "PR533_V79_V80_207_CONFIRMATORY_INCLUDING_Q08_FAIL_85_POST_TERMINAL_FORENSIC_PROSPECTIVE_VERSIONED_SELECTOR_PROPOSAL_NOT_RULING",
+      "REVIEW_EXISTING_PR546_FROZEN_TASK3_HISTORY_PROVENANCE_RED_THEN_POSSIBLE_VERSIONED_SUCCESSOR_PROPOSAL_NOT_RULING"
+    ],
+    "no_new_decision_or_training": true,
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
