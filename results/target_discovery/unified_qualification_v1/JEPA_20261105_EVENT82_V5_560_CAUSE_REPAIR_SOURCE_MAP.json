@@ -1,0 +1,62 @@
+{
+  "schema": "JEPA_20261105_EVENT82_V5_FAILED_ONSET_CAUSE_REPAIR_SOURCE_MAP_V1",
+  "kind": "NEW_DRAFT_CODE_AND_AUTHOR_TESTS_ONLY__NO_NEURAL_EXECUTION",
+  "date_utc": "2026-11-05",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "canonical_pr": 322,
+  "handoff_pr": 460,
+  "implementation_pr": 562,
+  "implementation_head": "f1862ab528ba6ec74302684704b9078627e67b3b",
+  "pr_base_macha_red": {
+    "pr": 560,
+    "head": "0c1fd7a82f2b6c06e44e4c0f9cb5b51960cbf745",
+    "file": "tests/test_jepa_synth2048_failed_onset_cause_macha_red.py",
+    "blob": "3ab6c208206251728116debda1edb226cb5b647a"
+  },
+  "unchanged_original_tests": [
+    {
+      "pr": 557,
+      "blob": "bfa5345775570205def66eb19a98efc207d28d90"
+    },
+    {
+      "pr": 558,
+      "blob": "9a1366e819cd4050266a1580766041545c09b686"
+    }
+  ],
+  "new_sources": [
+    {
+      "path": "scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py",
+      "blob": "d83e5075a98376f43f3e4263be55a2fe7cf12da7"
+    },
+    {
+      "path": "tests/test_jepa_synth2048_failed_onset_cause_successor_v1.py",
+      "blob": "a6e5975c67a7525826a2ca0fa9dc2078b6e43cf6"
+    },
+    {
+      "path": ".github/workflows/jepa-synth2048-checkpoint-prefreeze.yml",
+      "blob": "8fa900000303ac11f6cc01fcbf7a47829df06a84"
+    },
+    {
+      "path": "docs/agent/JEPA_20261105_V5_FAILED_ONSET_CAUSE_SCOPED_REPAIR_NO_TRAINING.md",
+      "blob": "a0461be015975b3dbfe729675da1f16d873803a0"
+    }
+  ],
+  "ci": {
+    "run_id": 41973584129,
+    "python311": "SUCCESS",
+    "python312": "SUCCESS",
+    "scope": "AUTHOR_TESTS_ONLY",
+    "no_neural_model": true
+  },
+  "scope": "REJECT_UNCAUSED_STOP__RETAIN_LEGACY_MECHANICAL_COMPAT__EXPLICIT_EXACT_ZERO_COLLAPSE_PROBE_SELF_REPORTED",
+  "review": "MACHA_INDEPENDENT_REVIEW_PENDING",
+  "still_blocked": [
+    "planned horizon externally bound to run lock",
+    "PR559/561 external head anchor and erasure RED",
+    "forensic read of valid checkpoint prefix after interrupted write",
+    "physical every-attempt journal and physical protected gradients/Adam/EMA proof",
+    "full V5 checkpoint and fresh process next update parity",
+    "Task4 and scientific owner decisions"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
