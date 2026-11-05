@@ -1930,5 +1930,19 @@
     "result": "Sibling-thread recovery refused; completion mirror over damage refused; u0 model structure bound at every commit; #576 reader and report agree under random damage; combined system green with no I/O regression. No biological acceptance.",
     "do_not_repeat": "Do not re-audit #579/#575/#576 or re-measure combined I/O without a code change; do not rediscover the PR224 runtime (Event96 confirmed).",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_runtime_locator_macha_verdict_12_file_set_v4_40_step_event98_20261105": {
+    "event": 98,
+    "date_utc": "2026-11-05",
+    "scope": "MACHA_STATIC_VERDICT_ON_EVENT96_V5_RUNTIME_LOCATOR",
+    "pr": 224,
+    "head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+    "human": "docs/agent/JEPA_20261105_EVENT98_MACHA_VERDICT_EVENT96_V5_RUNTIME_LOCATOR_12_FILES_V4_40_STEP_NO_EXECUTION.md",
+    "human_sha": "f92d6cfb00e3772dc84aab59d9ac1521b8756d5c",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT98_MACHA_V5_RUNTIME_LOCATOR_VERDICT_SOURCE_MAP.json",
+    "machine_sha": "f1185ad2b6ff4001f186404b55b918613213ffcc",
+    "result": "canonical_runtime.py LEGACY_PATH_INVALID; entrypoint run_guarded_inactive_reference_update; canonical runtime = 12 files + 2 private impls, identical PR224/525/548/582; 40-step claim is V4; no V5 multi-update driver exists.",
+    "do_not_repeat": "Do not rediscover or rebuild the PR224 guarded runtime; do not take it from main; do not assume an executed 40-step V5 trainer.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }

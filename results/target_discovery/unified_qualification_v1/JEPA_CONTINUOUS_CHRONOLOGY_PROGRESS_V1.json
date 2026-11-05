@@ -4102,6 +4102,44 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42110395980",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42110895354"
       ]
+    },
+    {
+      "event_id": "20261105-MACHA-INDEPENDENT-VERDICT-EVENT96-V5-RUNTIME-12-FILE-SET-V4-40-STEP-CORRECTION-EVENT98",
+      "date_utc": "2026-11-05",
+      "workstream": "v5_runtime_source_locator_independent_verdict_static_only",
+      "implementation_pr": 224,
+      "implementation_head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT98_MACHA_VERDICT_EVENT96_V5_RUNTIME_LOCATOR_12_FILES_V4_40_STEP_NO_EXECUTION.md",
+          "blob_sha1": "f92d6cfb00e3772dc84aab59d9ac1521b8756d5c",
+          "role": "Event98 mirrored human Macha verdict on Event96: path invalid, entrypoint, 12-file canonical set, V4 40-step correction"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT98_MACHA_V5_RUNTIME_LOCATOR_VERDICT_SOURCE_MAP.json",
+          "blob_sha1": "f1185ad2b6ff4001f186404b55b918613213ffcc",
+          "role": "Event98 mirrored machine map: per-file blobs across PR224/525/548/582 and main, absence table, correction details"
+        }
+      ],
+      "change_type": "source_custody",
+      "what_already_existed": "Event96 (Sol) located the V5 guarded runtime under other filenames with a 5-file table, pending Macha; Event97 (Macha) accepted static identity of those 5 files. Audit head before this event: ade48047f33a715422ef1703999d92f82522bb9f.",
+      "new_work_or_result": "Macha full static verdict: canonical_runtime.py absent at PR224, PR525, PR548, #570, #579, #582 and main (LEGACY_PATH_INVALID); entrypoint run_guarded_inactive_reference_update confirmed. Correction 1: PR224 defines CANONICAL_RUNTIME_SOURCE_FILES as 12 files plus 2 private implementations; all 15 (with __init__) byte-identical across PR224, PR525, PR548 and integration #582; main lacks 6 and carries the older unguarded reference. Correction 2: Event68's 40-step V5 execution claim is V4 (healthy-teacher u0->u40 runner and contract needing separate authority); the V5 runtime is a one-update rehearsal with no multi-update loop.",
+      "negative_or_counterfactual_evidence": "Sol's 5-file list would under-bind the runtime (EMA presentation/persistence, checkpoint binding, keyed RNG, data-first geometry and V4 ipb_jepa/gene_tokenizer omitted). No V5 multi-update driver exists, so no agent may assume an executed 40-step V5 trainer. The u40 execution-receipt search was keyword-filtered at PR224 and PR226 only and is not proof that no 40-step run occurred elsewhere. Nothing was imported or executed.",
+      "test_review_scope": "Static git rev-parse of 15 source paths at PR224/525/548/582/main and of canonical_runtime.py at 7 heads; source reads of the entrypoint, callers, V5 tests and V4 runner. No tests run.",
+      "independent_review": "MACHA_VERDICT_EVENT96_ACCEPT_SCOPED_WITH_CORRECTIONS__12_FILE_CANONICAL_SET__FORTY_STEP_IS_V4__NO_V5_MULTI_UPDATE_DRIVER__SOL_MAY_CROSS_CHECK__NO_EXECUTION",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Bind any future V5 checkpoint/integration to the full 12-file CANONICAL_RUNTIME_SOURCE_FILES set plus private implementations, never the 5-file subset or main.",
+        "Design (not run) the multi-update V5 driver around the guarded one-update wrapper and the integrated journal; execution needs separate owner authority.",
+        "Sol cross-review of #580, #581, #582 remains pending."
+      ],
+      "historical_supersession": "Append-only Event98; Event68 row 101/167, Event90 and Event96 text unchanged. Corrects Event96's 5-file table to the 12-file canonical set and attributes Event68's 40-step statement to V4.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/224",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460#issuecomment-6669210784",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/582"
+      ]
     }
   ]
 }
