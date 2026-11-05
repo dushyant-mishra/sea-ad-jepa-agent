@@ -1,0 +1,355 @@
+{
+  "schema": "JEPA_EVENT90_COMPLETE_TWO_BRANCH_HISTORY_SOURCE_AND_OPERATIONAL_TAKEOVER_V1",
+  "audit_date_local": "2026-11-05",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "source_role": "ADDITIVE_HISTORICAL_NO_REPEAT_CROSSCHECK_AND_LIVE_IMPLEMENTATION_POINTER__NO_TRAINING",
+  "branch_contract": {
+    "canonical_audit": {
+      "pr": 322,
+      "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
+      "pre_event90_head": "d5ab29e6eb420a3b90566badd60bfdc25e0bdc8d",
+      "chronology_path": "results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json",
+      "chronology_prior_events": 89,
+      "expected_after_event90": 55,
+      "master_index_path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
+      "index_prior_keys": 54
+    },
+    "active_handoff": {
+      "pr": 460,
+      "branch": "handoff/jepa-v8-clean-successor-from-audit-20261027",
+      "pre_event90_head": "7cffe7c421bdd274c2eae9db0a8b2ca6f02e7b81",
+      "live_first_read": "docs/agent/JEPA_NEW_AGENT_LIVE_POINTER_20261029.md",
+      "update_after_audit_exact_head": true
+    },
+    "human_mirror": {
+      "path": "docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md",
+      "git_blob_sha1": "a33ed0cdd8af86e078dc115d3e7c820ebb2da94a",
+      "same_blob_on_both": true
+    }
+  },
+  "historical_scope": {
+    "source_locator_60": "results/target_discovery/unified_qualification_v1/JEPA_20261104_SOL_LANE_SUCCESSOR_SOURCE_SCRIPT_DATA_RESULT_LOCATOR_EVENT68.json",
+    "locator_counts": {
+      "total": 60,
+      "public_git_paths": 56,
+      "found_at_recorded_ref": 55,
+      "not_found_at_recorded_ref": 1,
+      "owner_only_local_or_conversation": 4
+    },
+    "historical_pr_census": "results/target_discovery/unified_qualification_v1/JEPA_20261104_COMPLETE_535_PR_AND_OPEN_ISSUE_METADATA_CENSUS_V1.json",
+    "pr_description_register": "results/target_discovery/unified_qualification_v1/JEPA_20261104_ALL_535_PR_DESCRIPTION_DISPOSITION_REGISTER_V1.json",
+    "recent_108_supersession": "results/target_discovery/unified_qualification_v1/JEPA_20261104_LAST_14_DAYS_108_PR_RESULT_PRECEDENCE_AND_NO_REPEAT_V1.json",
+    "coverage_limits": [
+      "535 is past metadata count, not 535 line-by-line code reviews",
+      "108 is dated recent-PR history snapshot, not current live total",
+      "55/56 is Git path resolvability only, not scientific evidence proof",
+      "four owner local/conversation assets not verifiable on public Git",
+      "old audit/history is append-only; corrections are new events"
+    ]
+  },
+  "extra_finding": {
+    "code": "HISTORICAL_CANONICAL_V5_RUNTIME_LOCATOR_UNRESOLVED",
+    "legacy_id": "canonical_v5_runtime",
+    "legacy_ref": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+    "legacy_path": "src/sea_ad_jepa/v5/canonical_runtime.py",
+    "checked_on": [
+      "legacy pinned ref",
+      "main",
+      "PR548 cde03f738c758694aa66211b5021603af943675b",
+      "PR570 0e2deffa0191ddfc8b11161a85224e6367d97c22"
+    ],
+    "observed": "404 not found at all checked refs",
+    "do_not_substitute_or_edit_old_record": true,
+    "existing_adjacent_verified_sources": [
+      {
+        "ref": "main",
+        "path": "src/sea_ad_jepa/v5/inactive_update_reference.py",
+        "blob": "ab266faa31ac7d3e51acf695a7deff1702368cde",
+        "note": "inactive CPU reference, NOT certified canonical guarded mutation authority"
+      },
+      {
+        "ref": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+        "path": "src/sea_ad_jepa/v4/teacher_student_runtime.py",
+        "blob": "9053d157e8132c1b671037b2db197533a6c06677",
+        "note": "existing V4 runtime, distinct"
+      }
+    ],
+    "status": "ERRATUM_OPEN__LOCATE_ORIGINAL_OWNER_PR_BEFORE_CLAIMING_CANONICAL_V5_RUNTIME"
+  },
+  "data_and_expiry": {
+    "v80_public_binaries_verified_on_both": [
+      {
+        "role": "ORIGINAL_FIT",
+        "path": "artifacts/v80/original/V80-original-fit-transport-artifact.zip",
+        "bytes": 660628,
+        "git_blob": "8b81742b66dfd7d2d40940933c7775a515e0610d",
+        "sha256": "4cec8966cff7bdddb3640903f4525328d23ed3482e2b232ead1bc440993fca71"
+      },
+      {
+        "role": "ORIGINAL_RECEIPT",
+        "path": "artifacts/v80/original/V80-original-receipt-artifact.zip",
+        "bytes": 1274,
+        "git_blob": "4ec0e2eed6eba099645638232f3962482ae2dc26",
+        "sha256": "97e264cfe76709f5098b346e56130716640e6c8ce8562974d6ab126ac82a47fe"
+      }
+    ],
+    "original_fit_legacy_locator_correction": "Event68 OWNER_CONVERSATION_FILES for FIT and receipt is superseded by Event69 verified public archive on BOTH branches",
+    "v80_controller_owner_only": {
+      "original_artifact_id": 11866917064,
+      "original_actions_run": 38504094639,
+      "bytes": 6844053,
+      "sha256": "184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46",
+      "expires_at_utc": "2026-11-13T03:01:58Z",
+      "verified_private_vault": false,
+      "status": "OWNER_ONLY_PRIVATE_ESCROW_URGENT__NEVER_PUBLIC_UPLOAD_OR_EXTRACT"
+    },
+    "synthetic_dev2048_fit": {
+      "pr": 547,
+      "head": "4bc7f9f31eaf1a7ccac49fdf45df7db9b0eef569",
+      "artifact_id": 13364085153,
+      "actions_run": 41912111013,
+      "bytes": 25023562,
+      "sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+      "expires_at_utc": "2026-12-04T21:02:06Z",
+      "expired_as_of_audit": false,
+      "scope": "SYNTHETIC_FIT_ONLY__C2_C3_GENERIC_STATE__NOT_HUMAN_RNA"
+    },
+    "owner_assets": "results/target_discovery/unified_qualification_v1/JEPA_20261104_PROJECT_LOCAL_ASSET_SHA256_CUSTODY_V1.json",
+    "local_paths_not_guaranteed_in_next_session": true
+  },
+  "scientific_lattice": {
+    "C1": "shared biology",
+    "C2": "relational cell-to-cell",
+    "C3": "query-context",
+    "C6": "C1+C3",
+    "C4": "C1+C2+C3",
+    "C5": "regulatory specialist",
+    "status": "ALL_LEARNED_QUALIFICATIONS_UNASSESSED",
+    "negative_evidence": [
+      "Stage81A3/B 48 gradient/Adam protected attention collapse despite falling loss",
+      "graph-specificity and source confounders, historic shuffled controls",
+      "original TD real fine-local limits and spent PR314",
+      "V80 cross-host original package SHA drift RED",
+      "expanded PR547 synthetic rare and perturbation programs confined genes0..59; C2/C3 generic only"
+    ]
+  },
+  "historical_navigation": [
+    {
+      "role": "science",
+      "pr": 322,
+      "path": "docs/agent/JEPA_20261104_END_TO_END_SCIENTIFIC_NARRATIVE_AND_DECISION_LINEAGE_V1.md"
+    },
+    {
+      "role": "underindexed_work_correction",
+      "pr": 322,
+      "path": "docs/agent/JEPA_20261104_V9_PREVIOUS_WORK_UNDERINDEXING_CORRECTION_V1.md"
+    },
+    {
+      "role": "biological_results_original",
+      "pr": 322,
+      "path": "docs/agent/JEPA_20261104_STAGE81B_INTRINSIC_RARE_CONTEXT_AND_TARGET_LEARNABILITY_NO_REPEAT.md"
+    },
+    {
+      "role": "master_lane_handoff",
+      "pr": 322,
+      "path": "docs/agent/JEPA_20261104_SOL_LANE_SUCCESSOR_DETAILED_OPERATIONAL_HANDOFF_EVENT68.md"
+    },
+    {
+      "role": "code_script_data_result_source_locator",
+      "pr": 322,
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_SOL_LANE_SUCCESSOR_SOURCE_SCRIPT_DATA_RESULT_LOCATOR_EVENT68.json"
+    },
+    {
+      "role": "source_and_rights_state",
+      "pr": 322,
+      "path": "docs/agent/JEPA_20261104_PROJECT_UPLOADS_AND_EXCLUSIVE_SOURCE_TEXT_CUSTODY.md"
+    },
+    {
+      "role": "event75_v5_and_synthetic",
+      "pr": 322,
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_EVENT75_SOL_V5_SYNTHETIC_COMPLETE_SUCCESSOR_SOURCE_SCRIPT_DATA_RESULT_MAP.json"
+    },
+    {
+      "role": "event81_failed_onset",
+      "pr": 322,
+      "path": "docs/agent/JEPA_20261104_EVENT81_NEW_AGENT_COLD_START_HANDOFF_AFTER_FAILED_ONSET_V5.md"
+    },
+    {
+      "role": "event88_journal",
+      "pr": 322,
+      "path": "docs/agent/JEPA_20261105_EVENT88_V5_PROSPECTIVE_ATTEMPT_JOURNAL_V2_AUTHOR_CI_NO_TRAINING.md"
+    },
+    {
+      "role": "event89_adam_gradient",
+      "pr": 322,
+      "path": "docs/agent/JEPA_20261105_EVENT89_V5_READONLY_ADAM_AND_ALL_TRAINABLE_GRADIENT_AUDIT_NO_STEPS.md"
+    },
+    {
+      "role": "current_live_pointer",
+      "pr": 460,
+      "path": "docs/agent/JEPA_NEW_AGENT_LIVE_POINTER_20261029.md"
+    }
+  ],
+  "implementation_heads_20261105": [
+    {
+      "pr": 547,
+      "head": "4bc7f9f31eaf1a7ccac49fdf45df7db9b0eef569",
+      "review": "MACHA_ACCEPT_SCOPED_DEV_FIXTURE_ONLY"
+    },
+    {
+      "pr": 548,
+      "head": "cde03f738c758694aa66211b5021603af943675b",
+      "review": "MACHA_ACCEPT_SCOPED_U0_MECHANICS_ONLY"
+    },
+    {
+      "pr": 550,
+      "head": "8a143c0d193433f4d53245824874898afb551dcc",
+      "review": "SYNTHETIC_SOURCE_DEPTH_ONLY"
+    },
+    {
+      "pr": 553,
+      "head": "f6590e28a3c39f7cd270831d7d7a217223dec23e",
+      "review": "MACHA_EVIDENCE_SPEC_REPAIR_BEFORE_WRITER"
+    },
+    {
+      "pr": 554,
+      "head": "b48fbb2d75118177a81ef9f1e411c637ba1768bb",
+      "review": "MACHA_T1_ONLY"
+    },
+    {
+      "pr": 556,
+      "head": "57c00bcae17fc13feded47c9ac2e3054172d64fb",
+      "review": "T2_T5_UNCLOSED"
+    },
+    {
+      "pr": 562,
+      "head": "f1862ab528ba6ec74302684704b9078627e67b3b",
+      "review": "MACHA_REPAIR_REQUIRED"
+    },
+    {
+      "pr": 563,
+      "head": "0acbf16407f63560bbd8a1cc81030cf232068c71",
+      "review": "MACHA_ACCEPT_SCOPED_E2_INTERRUPTED_WRITE_ONLY"
+    },
+    {
+      "pr": 564,
+      "head": "5cd20a418c360a6cb9b532a70ec48cf5e3a58dc7",
+      "review": "MACHA_REPAIR_REQUIRED"
+    },
+    {
+      "pr": 565,
+      "head": "6df804682098fa9eff6c8a95b29866c70cb45920",
+      "review": "MACHA_REPAIR_REQUIRED"
+    },
+    {
+      "pr": 568,
+      "head": "eab59fea8002cd18d4989e8b741051de588c48d6",
+      "review": "AUTHOR_GREEN_MACHA_REVIEW_PENDING"
+    },
+    {
+      "pr": 569,
+      "head": "aeca6b033c55208f84d84f3a6435af7a2a5209af",
+      "review": "AUTHOR_GREEN_MACHA_REVIEW_PENDING"
+    },
+    {
+      "pr": 570,
+      "head": "0e2deffa0191ddfc8b11161a85224e6367d97c22",
+      "review": "AUTHOR_223x2_GREEN_MACHA_REVIEW_PENDING"
+    },
+    {
+      "pr": 571,
+      "head": "8656adcf7e96b1e9c52a598beb844f8f8f548644",
+      "review": "AUTHOR_28x2_GREEN_MACHA_REVIEW_PENDING"
+    },
+    {
+      "pr": 541,
+      "head": "3b86b9467506539776e04a6470fa8f2f7363f129",
+      "review": "TASK4_HOLD"
+    },
+    {
+      "pr": 551,
+      "head": "4a6cb33225cc09ecb53d61c534e0a2158b53466f",
+      "review": "TASK3_OWNER_APPROVAL_NEEDED"
+    },
+    {
+      "pr": 525,
+      "head": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "review": "P01_L06_PENDING"
+    },
+    {
+      "pr": 533,
+      "head": "b531b81ec4e08779a974214ec9ba9905f0498294",
+      "review": "SOURCE_PRECOMMITMENT_BLOCKED"
+    }
+  ],
+  "macha_original_red_immutable": [
+    {
+      "pr": 557,
+      "blob": "bfa5345775570205def66eb19a98efc207d28d90"
+    },
+    {
+      "pr": 560,
+      "blob": "3ab6c208206251728116debda1edb226cb5b647a"
+    },
+    {
+      "pr": 561,
+      "blob": "be259ab4cdcf035d7bf05134f68b6fe8d09f8833"
+    },
+    {
+      "pr": 566,
+      "blob": "60a16378c22b35ec5d52837c7c641cf6a59e0935"
+    },
+    {
+      "pr": 567,
+      "blob": "c513693fa11b2c0ef72b68601ca83dcd5a0a5b2f"
+    }
+  ],
+  "newest_ci": {
+    "v2_journal": {
+      "pr": 570,
+      "head": "0e2deffa0191ddfc8b11161a85224e6367d97c22",
+      "run": 42062323739,
+      "py311": 223,
+      "py312": 223
+    },
+    "read_only_state": {
+      "pr": 571,
+      "head": "8656adcf7e96b1e9c52a598beb844f8f8f548644",
+      "run": 42066951548,
+      "py311": 28,
+      "py312": 28
+    },
+    "independent_scoped_acceptance": "PENDING"
+  },
+  "implementation_frontier": [
+    "Independent Macha fix/test/cross-review of PR568/569/570/571 on new draft branches",
+    "Bind complete model/teacher/predictor/Adam/EMA/scaler/RNG/gene/source/rights state and actual run cursor to every successful V2 checkpoint",
+    "Bind physical ALL-trainable gradient and optimizer/teacher EMA measurements to actual step and fixed TRAIN panel plus identity-only/shuffled-expression/target-variance controls",
+    "Recover most recent PROVED healthy state not latest mechanically completed, else UNKNOWN",
+    "Keep independently retained outside-run unsigned journal copy and disclose same-device limitation; owner signing decision open",
+    "Run RT1–RT8 only after separate owner permission for synthetic optimizer steps",
+    "Do not repeat frozen real TD, Stage81, original V79/V80, R5, old 535-PR metadata audit"
+  ],
+  "permanent_two_branch_rule": {
+    "source_changes": "own scoped draft implementation PR only",
+    "event_human_machine": "same byte-identical human and JSON mapping on both #322 and #460",
+    "audit": "append only chronology new record + unique no-repeat key on #322",
+    "audit_ci": "verify exact new audit head before handoff pointer update",
+    "handoff": "prepend top READ FIRST on #460 with current exact checked audit head; retain old pointer sections",
+    "independent_review": "two reviewers Sol/Macha, author CI is not independent verdict",
+    "never": "merge/promote/train/Stage4/sealed truth without explicit owner authority",
+    "next_event_id": 91,
+    "required_next_agent_packet": [
+      "live #322 head",
+      "live #460 head",
+      "latest chronological event and source map",
+      "535 historical PR metadata census scope (not current PR total)",
+      "current branch PR heads and original RED blobs",
+      "CI/test outcomes and exact scope",
+      "frozen negative results and no-repeat",
+      "private artifact expiry and custody",
+      "owner decisions and minimal next engineering slice"
+    ]
+  }
+}
