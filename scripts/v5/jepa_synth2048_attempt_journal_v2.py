@@ -72,6 +72,14 @@ VERDICT_KINDS = {"STATE_COLLAPSED_AFTER_STEP", "STATE_COLLAPSED_BEFORE_NEXT_STEP
 # a fresh or forked process cannot continue a run whose opening process died.
 # PID is bound at open time, because POSIX fork inherits Python module globals.
 _SESSIONS: dict[str, tuple[int, str]] = {}
+# Only a process-local speedup. No bytes or scientific claims cached. The
+# always-full inspect/forensic paths NEVER consult this cache. Recheck all
+# historical evidence on explicit close and restart/recovery.
+_VERIFIED_EVIDENCE_STAT: dict[tuple, tuple] = {}
+# Fixed fail-safe periodic full SHA scrub. Small real checkpoint (23MiB)
+# every 32 commits plus final close costs O(n) cumulative bytes, not O(n²).
+# Never turn this into a configurable skip-scrub escape hatch.
+FULL_SCRUB_EVERY_ATTEMPTS = 32
 _SCAN_ERRORS = (OSError, KeyError, TypeError, ValueError, IndexError, AttributeError)
 
 
@@ -456,16 +464,53 @@ def _check_structure(row: dict, rows: list[dict], lock: dict) -> None:
                "FALSE_PLANNED_COMPLETE")
 
 
-def _check_evidence(row: dict, root: Path, *, twin_ok: bool = False) -> None:
-    """The files a structurally valid record points to are present and intact."""
+def _evidence_stat(path: Path, max_bytes: int) -> tuple:
+    """Capture metadata for accidental-change detection, never prove bytes."""
+    try:
+        st = os.lstat(path)
+    except OSError as exc:
+        raise JournalRefusal("REFUSE_ATTEMPT_JOURNAL_V2__EVIDENCE_FILE_MISSING") from exc
+    insist(stat.S_ISREG(st.st_mode) and st.st_nlink == 1
+           and 0 < st.st_size <= max_bytes, "EVIDENCE_METADATA_UNSAFE")
+    return (st.st_dev, st.st_ino, st.st_mode, st.st_nlink,
+            st.st_size, st.st_mtime_ns, st.st_ctime_ns)
+
+
+def _verified_evidence_ref(root: Path, ref: dict, max_bytes: int,
+                           error: str, *, incremental: bool,
+                           twin_ok: bool) -> None:
+    """Hash on first encounter. Skip old bytes only for the same process
+    when size, inode, device, mtime, ctime and link count are unchanged.
+
+    Metadata cannot prove absence of silent disk bit rot. Full inspect,
+    forensic, close, startup/recovery always independently rehash bytes.
+    This fast path is a storage optimization, not a resume/biology gate.
+    """
+    name = ref["name"]
+    path = root / name
+    key = (os.getpid(), str(root.absolute()), name, ref["sha256"], ref["bytes"])
+    before = _evidence_stat(path, max_bytes) if incremental else None
+    if incremental and _VERIFIED_EVIDENCE_STAT.get(key) == before:
+        return
+    raw = _read(path, max_bytes, twin_ok=twin_ok)
+    insist(ref == _reference(raw, name), error)
+    if incremental:
+        after = _evidence_stat(path, max_bytes)
+        insist(before == after, "EVIDENCE_CHANGED_DURING_VERIFICATION")
+        _VERIFIED_EVIDENCE_STAT[key] = after
+
+
+def _check_evidence(row: dict, root: Path, *, twin_ok: bool = False,
+                    incremental: bool = False) -> None:
+    """Strict SHA verification by default; writer skips unchanged old bytes."""
     if row["payload"] is not None:
-        ref = row["payload"]
-        data = _read(root / ref["name"], MAX_STATE, twin_ok=twin_ok)
-        insist(ref == _reference(data, ref["name"]), "STATE_PAYLOAD_CORRUPT")
+        _verified_evidence_ref(root, row["payload"], MAX_STATE,
+                               "STATE_PAYLOAD_CORRUPT",
+                               incremental=incremental, twin_ok=twin_ok)
     if row["telemetry"] is not None:
-        ref = row["telemetry"]
-        raw = _read(root / ref["name"], MAX_TELEMETRY, twin_ok=twin_ok)
-        insist(ref == _reference(raw, ref["name"]), "TELEMETRY_CORRUPT")
+        _verified_evidence_ref(root, row["telemetry"], MAX_TELEMETRY,
+                               "TELEMETRY_CORRUPT",
+                               incremental=incremental, twin_ok=twin_ok)
     item = row["reported"]
     if row["kind"] == "ATTEMPT_ABORTED" and item["reason"] == "PROCESS_INTERRUPTED":
         qdir = root / "quarantine"
@@ -488,15 +533,17 @@ def _check_evidence(row: dict, root: Path, *, twin_ok: bool = False) -> None:
                "UNCOMMITTED_VERDICTS_NOT_DERIVED_FROM_QUARANTINE")
 
 
-def _check_record(row: dict, rows: list[dict], lock: dict, root: Path) -> None:
+def _check_record(row: dict, rows: list[dict], lock: dict, root: Path,
+                  *, incremental: bool = False) -> None:
     _check_structure(row, rows, lock)
-    _check_evidence(row, root)
+    _check_evidence(row, root, incremental=incremental)
 
 
 # ---------------------------------------------------------------- scans
 
 def _scan(root: Path, custody: Path, lock: dict, *, tolerant: bool,
-          permit_one_ahead: bool = False) -> tuple[list[dict], list[dict]]:
+          permit_one_ahead: bool = False,
+          incremental: bool = False) -> tuple[list[dict], list[dict]]:
     """Strict journal/custody scan (both copies identical, all evidence intact)."""
     if tolerant:
         rows, issues, _damaged = _forensic_scan(root, custody, lock)
@@ -519,7 +566,7 @@ def _scan(root: Path, custody: Path, lock: dict, *, tolerant: bool,
                        and len(local) == len(copies) + 1,
                        "EXTERNAL_HEAD_MISSING_RECORD")
             row = _parse(raw, "RECORD")
-            _check_record(row, rows, lock, root)
+            _check_record(row, rows, lock, root, incremental=incremental)
             rows.append(row)
         except (JournalRefusal, *_SCAN_ERRORS) as exc:
             raise JournalRefusal("REFUSE_ATTEMPT_JOURNAL_V2__" + str(exc)) from exc
@@ -612,7 +659,8 @@ def _require_session(root: Path, rows: list[dict]) -> str:
 
 def _append_row(root: Path, custody: Path, lock: dict, rows: list[dict],
                 row: dict) -> dict:
-    _check_record(row, rows, lock, root)
+    # New state and telemetry bytes must be physically SHA-verified once.
+    _check_record(row, rows, lock, root, incremental=True)
     name = f"j{len(rows):08d}.json"
     raw = _json(row)
     _write_once(root, name, raw, MAX_RECORD)
@@ -633,9 +681,11 @@ def _append(root: Path, custody: Path, lock: dict, rows: list[dict],
     return _append_row(root, custody, lock, rows, row)
 
 
-def _ready(root: Path, custody: Path) -> tuple[dict, list[dict]]:
+def _ready(root: Path, custody: Path, *,
+           incremental: bool = False) -> tuple[dict, list[dict]]:
     lock = _binding(root, custody)
-    rows, issues = _scan(root, custody, lock, tolerant=False)
+    rows, issues = _scan(root, custody, lock, tolerant=False,
+                         incremental=incremental)
     insist(not issues, "INCOMPLETE_HEAD")
     # Orphan/missing uncommitted payload is never silently adopted.
     accounted = {".writer.lock", "run.lock.json", "quarantine"}
@@ -716,7 +766,11 @@ def begin_attempt(root: Path, custody: Path, *, update: int) -> dict:
     """Persist ATTEMPT_BEGIN before a caller would execute any neural step."""
     root, custody = _paths(root, custody)
     with _lock(root):
-        lock, rows = _ready(root, custody)
+        # Fully rehash all committed bytes every 32nd attempted update.
+        # Detect silent bit rot that changes bytes without changing stat fields.
+        # Metadata-only caching is restricted to other ordinary writer scans.
+        full_scrub = type(update) is int and update % FULL_SCRUB_EVERY_ATTEMPTS == 0
+        lock, rows = _ready(root, custody, incremental=not full_scrub)
         writer = _require_session(root, rows)
         allowed, expected = _expected_next(rows, lock)
         insist("ATTEMPT_BEGIN" in allowed
@@ -734,7 +788,7 @@ def _outcome(root: Path, custody: Path, *, update: int, kind: str,
            and type(telemetry) is dict, "OUTCOME_ARGUMENTS")
     root, custody = _paths(root, custody)
     with _lock(root):
-        lock, rows = _ready(root, custody)
+        lock, rows = _ready(root, custody, incremental=True)
         writer = _require_session(root, rows)
         allowed, expected = _expected_next(rows, lock)
         insist(kind in allowed and update == expected,
