@@ -580,27 +580,177 @@ def read_verified_failed_attempt_evidence(
                                    max_bytes=MAX_FAILED_EVIDENCE_BYTES)
 
 
+def _forensic_checkpoint_prefix(root: Path, lock: dict) -> tuple[list[dict], list[dict], list[dict]]:
+    """Read-only maximal verified prefix. Nothing beyond its first anomaly is valid.
+
+    This is deliberately independent of the strict all-or-nothing _scan: no
+    filesystem mutation or global override of _scan, and no resume authority.
+    A damaged descendant cannot invalidate a previously SHA-verified ancestor.
+    """
+    expected = canonical_checkpoint_steps(lock["horizon"])
+    receipts: list[dict] = []
+    anomalies: list[dict] = []
+    leftovers: list[dict] = []
+    allowed = {"run.lock.json", ".writer.lock"}
+    prev_digest = None
+
+    for u in expected:
+        prefix = f"u{u:05d}"
+        payload = root / (prefix + ".checkpoint")
+        receipt = root / (prefix + ".receipt.json")
+        intent = root / (prefix + ".write_intent.json")
+        p = payload.exists() or payload.is_symlink()
+        r = receipt.exists() or receipt.is_symlink()
+        i = intent.exists() or intent.is_symlink()
+        if not (p or r or i):
+            break
+        if not (p and r and i):
+            anomalies.append({
+                "update": u, "reason": "INCOMPLETE_CHECKPOINT_TRIPLE",
+                "status": "UNVERIFIED_TAIL__NO_RESUME",
+            })
+            break
+        try:
+            raw = _regular_file_bytes(payload, max_bytes=MAX_PAYLOAD_BYTES)
+            receipt_raw = _regular_file_bytes(receipt, max_bytes=4096)
+            try:
+                record = json.loads(receipt_raw)
+            except (UnicodeError, ValueError) as exc:
+                raise StorageRefusal("REFUSE_ATOMIC_OPAQUE_V5__BAD_RECEIPT_JSON") from exc
+            require(type(record) is dict and _json(record) == receipt_raw,
+                    "NONCANONICAL_RECEIPT")
+            require(set(record) == {
+                "schema", "status", "update", "run_lock_sha256",
+                "payload_sha256", "payload_bytes", "previous_receipt_sha256",
+                "training_authorized",
+            }, "RECEIPT_FIELDS")
+            require(record == {
+                "schema": SCHEMA,
+                "status": STATUS,
+                "update": u,
+                "run_lock_sha256": _sha(_json(lock)),
+                "payload_sha256": _sha(raw),
+                "payload_bytes": len(raw),
+                "previous_receipt_sha256": prev_digest,
+                "training_authorized": False,
+            }, "CHECKPOINT_SHA_OR_PARENT_LINK_DRIFT")
+            _require_write_intent(
+                root, intent.name,
+                _write_intent(
+                    lock, attempted_update=u, kind="CHECKPOINT_WRITE",
+                    prior_checkpoint_receipt_sha256=prev_digest))
+        except (StorageRefusal, OSError) as exc:
+            anomalies.append({
+                "update": u, "reason": "DAMAGED_CHECKPOINT_OR_INTENT",
+                "detail": str(exc), "status": "UNVERIFIED_TAIL__NO_RESUME",
+            })
+            break
+        receipts.append(record)
+        prev_digest = _sha(receipt_raw)
+        allowed.update({payload.name, receipt.name, intent.name})
+
+    # A valid STOP receipt can be inspected, but is NEVER a valid model state.
+    # If the STOP is damaged or incomplete, keep the checkpoint prefix intact.
+    stop_paths = [root / name for name in
+                  (FAIL_EVIDENCE, FAIL_RECEIPT, FAIL_WRITE_INTENT)]
+    has_stop = [p.exists() or p.is_symlink() for p in stop_paths]
+    if all(has_stop) and receipts:
+        try:
+            stop = _failed_attempt_record(root, lock, receipts)
+            require(stop is not None, "FORENSIC_STOP_NOT_VERIFIED")
+            _require_write_intent(
+                root, FAIL_WRITE_INTENT,
+                _write_intent(
+                    lock, attempted_update=stop["attempted_update"],
+                    kind="FAILED_STOP_WRITE",
+                    prior_checkpoint_receipt_sha256=prev_digest))
+        except (StorageRefusal, OSError) as exc:
+            anomalies.append({
+                "reason": "DAMAGED_FAILED_ATTEMPT_STOP",
+                "detail": str(exc), "status": "UNVERIFIED_TAIL__NO_RESUME",
+            })
+        else:
+            allowed.update((FAIL_EVIDENCE, FAIL_RECEIPT, FAIL_WRITE_INTENT))
+
+    # Collect every remaining artifact by name and SHA where safe. Never
+    # follow symlinks, silently skip a suspicious file, or adopt an orphan.
+    for path in sorted(root.iterdir(), key=lambda p: p.name):
+        if path.name in allowed:
+            continue
+        if path.is_symlink():
+            anomalies.append({
+                "name": path.name, "reason": "UNTRUSTED_SYMLINK",
+                "status": "UNVERIFIED_TAIL__NO_RESUME",
+            })
+            continue
+        limit = (MAX_FAILED_EVIDENCE_BYTES if path.name == FAIL_EVIDENCE
+                 else MAX_PAYLOAD_BYTES if (
+                     PAYLOAD_NAME.fullmatch(path.name) is not None
+                     or FORENSIC_TEMP_NAME.fullmatch(path.name) is not None)
+                 else 4096)
+        try:
+            descriptor = _uncommitted_descriptor(root, path.name, limit)
+        except (StorageRefusal, OSError) as exc:
+            anomalies.append({
+                "name": path.name, "reason": "UNREADABLE_UNTRUSTED_TAIL",
+                "detail": str(exc), "status": "UNVERIFIED_TAIL__NO_RESUME",
+            })
+            continue
+        leftovers.append(descriptor)
+        if not (
+            path.name in (FAIL_EVIDENCE, FAIL_RECEIPT, FAIL_WRITE_INTENT)
+            or PAYLOAD_NAME.fullmatch(path.name)
+            or RECEIPT_NAME.fullmatch(path.name)
+            or FORENSIC_TEMP_NAME.fullmatch(path.name)
+            or re.fullmatch(r"u[0-9]{5}\.write_intent\.json", path.name)
+        ):
+            anomalies.append({
+                "name": path.name, "reason": "UNRECOGNIZED_ARTIFACT",
+                "status": "UNVERIFIED_TAIL__NO_RESUME",
+            })
+
+    # A missing interior index with a later checkpoint is an anomaly, never
+    # evidence of a planned end or authority to load the partial prefix.
+    if len(receipts) < len(expected):
+        next_expected = f"u{expected[len(receipts)]:05d}"
+        if any(p.name.startswith("u") and
+               p.name[:6] != next_expected and
+               (PAYLOAD_NAME.fullmatch(p.name)
+                or RECEIPT_NAME.fullmatch(p.name))
+               for p in root.iterdir() if p.name not in allowed):
+            anomalies.append({
+                "reason": "MISSING_OR_GAPPED_CHECKPOINT",
+                "first_unverified_update": expected[len(receipts)],
+                "status": "UNVERIFIED_TAIL__NO_RESUME",
+            })
+    return receipts, leftovers, anomalies
+
+
 def inspect_verified_prefix_read_only(root: Path, *, horizon: int,
                                       run_id: str) -> dict:
-    """Recover receipt-verified prefix and document suspect orphaned tail bytes.
+    """Report the maximal intact SHA-linked prefix and every suspect tail file.
 
-    This does not detect erased tail records without an independent external
-    anchor. Resume always remains refused (Macha #561 E1 still open).
+    A known good SHA receipt is a byte-level claim only; it is not evidence
+    that the neural representation or the optimizer state is healthy.
     """
     root = Path(root)
     with _locked(root):
         lock = expected_run_lock(horizon=horizon, run_id=run_id)
         require(_regular_file_bytes(root / "run.lock.json", max_bytes=2048)
                 == _json(lock), "RUN_BINDING_CHANGED")
-        orphans: list[dict] = []
-        receipts = _scan(root, lock, forensic_orphans=orphans)
+        prefix, orphans, anomalies = _forensic_checkpoint_prefix(root, lock)
         return {
             "status": "FORENSIC_READ_ONLY__NO_RESUME_AUTHORITY",
-            "verified_checkpoint_prefix": [r["update"] for r in receipts],
+            "verified_checkpoint_prefix": [r["update"] for r in prefix],
             "latest_verified_receipt_sha256": (
-                _sha(_json(receipts[-1])) if receipts else None),
+                _sha(_json(prefix[-1])) if prefix else None),
             "uncommitted_orphans": orphans,
             "has_uncommitted_orphans": bool(orphans),
+            "anomalies": anomalies,
+            "first_damaged_checkpoint_update": next(
+                (e["update"] for e in anomalies if "update" in e), None),
+            "checkpoint_bytes_mechanically_verified_only": True,
+            "last_neurally_healthy_state_proved": False,
             "external_head_authenticated": False,
             "full_history_completeness_proved": False,
             "resume_authorized": False,
@@ -611,10 +761,10 @@ def inspect_verified_prefix_read_only(root: Path, *, horizon: int,
 
 def read_verified_bytes(root: Path, *, horizon: int, run_id: str,
                         update: int) -> bytes:
-    """Read a committed prefix, even if a later write was interrupted.
+    """Forensic-only opaque bytes from intact prefix, NEVER a resume loader.
 
-    Strict verify_storage and both writer entry points still reject orphans.
-    This is a forensic opaque-byte read, never a model load or resume.
+    No corrupt descendant or orphan is used as a state. Strict verify_storage
+    and both writers still fail closed on corruption or interruption.
     """
     require(type(update) is int, "UPDATE_NOT_INTEGER")
     root = Path(root)
@@ -622,15 +772,14 @@ def read_verified_bytes(root: Path, *, horizon: int, run_id: str,
         lock = expected_run_lock(horizon=horizon, run_id=run_id)
         require(_regular_file_bytes(root / "run.lock.json", max_bytes=2048)
                 == _json(lock), "RUN_BINDING_CHANGED")
-        orphans: list[dict] = []
-        checked = _scan(root, lock, forensic_orphans=orphans)
-        matches = [r for r in checked if r["update"] == update]
+        prefix, _orphans, _anomalies = _forensic_checkpoint_prefix(root, lock)
+        matches = [r for r in prefix if r["update"] == update]
         require(len(matches) == 1, "UPDATE_NOT_VERIFIED_OR_MISSING")
         data = _regular_file_bytes(root / f"u{update:05d}.checkpoint",
                                    max_bytes=MAX_PAYLOAD_BYTES)
         require(_sha(data) == matches[0]["payload_sha256"],
                 "CHECKPOINT_CHANGED_AFTER_FORENSIC_SCAN")
-    return data
+        return data
 
 
 def main() -> None:

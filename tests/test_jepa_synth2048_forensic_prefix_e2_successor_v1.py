@@ -73,8 +73,11 @@ def test_corrupted_committed_prefix_never_accepted_as_good(tmp_path, which, alte
     (root / which).write_bytes(alter)
     with pytest.raises(c.StorageRefusal):
         c.read_verified_bytes(root, update=3, **RUN)
-    with pytest.raises(c.StorageRefusal):
-        c.inspect_verified_prefix_read_only(root, **RUN)
+    report = c.inspect_verified_prefix_read_only(root, **RUN)
+    assert report["verified_checkpoint_prefix"] == [0, 1]
+    assert report["first_damaged_checkpoint_update"] == 2
+    assert report["anomalies"]
+    assert report["resume_authorized"] is False
 
 
 def test_missing_middle_checkpoint_is_not_disguised_as_an_orphan(tmp_path):
@@ -82,16 +85,24 @@ def test_missing_middle_checkpoint_is_not_disguised_as_an_orphan(tmp_path):
     setup(root)
     for ext in (".checkpoint", ".receipt.json"):
         (root / ("u00002" + ext)).unlink()
-    with pytest.raises(c.StorageRefusal, match="FORENSIC_UNKNOWN_OR_GAPPED_FILES"):
-        c.read_verified_bytes(root, update=1, **RUN)
+    assert c.read_verified_bytes(root, update=1, **RUN) == b"GOOD_U1"
+    report = c.inspect_verified_prefix_read_only(root, **RUN)
+    assert report["verified_checkpoint_prefix"] == [0, 1]
+    assert any(e["reason"] == "MISSING_OR_GAPPED_CHECKPOINT" for e in report["anomalies"])
+    assert report["resume_authorized"] is False
+    with pytest.raises(c.StorageRefusal):
+        c.verify_storage(root, **RUN)
 
 
 def test_orphan_receipt_only_not_assumed_to_be_power_loss(tmp_path):
     root = tmp_path / "run"
     setup(root)
     (root / "u00004.receipt.json").write_bytes(b"RECEIPT_ONLY")
+    assert c.read_verified_bytes(root, update=3, **RUN) == b"GOOD_U3"
+    report = c.inspect_verified_prefix_read_only(root, **RUN)
+    assert any(x["name"] == "u00004.receipt.json" for x in report["uncommitted_orphans"])
     with pytest.raises(c.StorageRefusal, match="ORPHAN_PAYLOAD_OR_RECEIPT"):
-        c.read_verified_bytes(root, update=3, **RUN)
+        c.verify_storage(root, **RUN)
 
 
 def test_symlink_and_unrecognized_extra_file_refused(tmp_path):
@@ -99,12 +110,16 @@ def test_symlink_and_unrecognized_extra_file_refused(tmp_path):
     setup(root)
     marker = root / (".uncommitted-" + "1" * 32)
     marker.symlink_to(root / "u00000.checkpoint")
-    with pytest.raises(c.StorageRefusal, match="FORENSIC_ORPHAN_UNSAFE_TYPE"):
-        c.read_verified_bytes(root, update=3, **RUN)
+    assert c.read_verified_bytes(root, update=3, **RUN) == b"GOOD_U3"
+    report = c.inspect_verified_prefix_read_only(root, **RUN)
+    assert any(e["reason"] == "UNTRUSTED_SYMLINK" for e in report["anomalies"])
     marker.unlink()
     (root / "suspicious_unknown").write_bytes(b"BAD")
-    with pytest.raises(c.StorageRefusal, match="FORENSIC_UNKNOWN_OR_GAPPED_FILES"):
-        c.read_verified_bytes(root, update=3, **RUN)
+    assert c.read_verified_bytes(root, update=3, **RUN) == b"GOOD_U3"
+    report = c.inspect_verified_prefix_read_only(root, **RUN)
+    assert any(e["reason"] == "UNRECOGNIZED_ARTIFACT" for e in report["anomalies"])
+    with pytest.raises(c.StorageRefusal):
+        c.verify_storage(root, **RUN)
 
 
 def test_clean_prefix_still_explicitly_not_training_or_resume(tmp_path):
@@ -127,5 +142,8 @@ def test_committed_failure_record_is_still_verified(tmp_path):
     assert report["verified_checkpoint_prefix"] == [0, 1, 2, 3]
     assert report["uncommitted_orphans"] == []
     (root / c.FAIL_RECEIPT).write_bytes(b"BAD_RECEIPT")
+    assert c.read_verified_bytes(root, update=3, **RUN) == b"GOOD_U3"
+    report = c.inspect_verified_prefix_read_only(root, **RUN)
+    assert any(e["reason"] == "DAMAGED_FAILED_ATTEMPT_STOP" for e in report["anomalies"])
     with pytest.raises(c.StorageRefusal):
-        c.read_verified_bytes(root, update=3, **RUN)
+        c.verify_storage(root, **RUN)
