@@ -45,6 +45,7 @@ from pathlib import Path
 import re
 import secrets
 import stat
+import threading
 import time
 from typing import Iterator
 
@@ -90,6 +91,11 @@ _SESSIONS: dict[str, tuple[int, str]] = {}
 # run.lock.json). The kernel drops the lock when the opener and every fork of
 # it have exited, which is what lets another process recover the run.
 _ALIVE: dict[str, tuple[int, int]] = {}
+# (pid, thread ident) of the thread that began the open attempt, cleared when
+# its outcome is recorded. Inside the opening process, a sibling thread (a
+# watchdog, a timeout handler) must not "recover" the attempt while that
+# thread is still alive and may still record its real outcome.
+_ATTEMPT_THREAD: dict[str, tuple[int, int]] = {}
 # Only a process-local speedup. No bytes or scientific claims cached. The
 # always-full inspect/forensic paths NEVER consult this cache. Recheck all
 # historical evidence on explicit close and restart/recovery.
@@ -787,6 +793,17 @@ def _refuse_if_writer_alive(root: Path) -> None:
         os.close(fd)
 
 
+def _refuse_if_attempt_thread_alive(root: Path) -> None:
+    """In the opening process, only the thread that began the attempt, or
+    any thread once that thread has ended, may recover it."""
+    owner = _ATTEMPT_THREAD.get(str(root))
+    if owner is None or owner[0] != os.getpid() or owner[1] == threading.get_ident():
+        return
+    insist(not any(t.ident == owner[1] and t.is_alive()
+                   for t in threading.enumerate()),
+           "ATTEMPT_THREAD_STILL_ALIVE__RECOVERY_REFUSED")
+
+
 def _append_row(root: Path, custody: Path, lock: dict, rows: list[dict],
                 row: dict) -> dict:
     # New state and telemetry bytes must be physically SHA-verified once.
@@ -912,6 +929,7 @@ def begin_attempt(root: Path, custody: Path, *, update: int) -> dict:
                "ATTEMPT_NOT_NEXT_UPDATE")
         row = _append(root, custody, lock, rows, "ATTEMPT_BEGIN", update,
                       writer=writer)
+        _ATTEMPT_THREAD[str(root)] = (os.getpid(), threading.get_ident())
         return {"status": row["kind"], "update": update,
                 **_check_summary(tally),
                 "real_optimizer_executed": False, "training_authorized": False}
@@ -969,6 +987,7 @@ def _outcome(root: Path, custody: Path, *, update: int, kind: str,
         if state_ref:
             _write_once(root, state_ref["name"], state_bytes, MAX_STATE)
         record = _append_row(root, custody, lock, rows, row)
+        _ATTEMPT_THREAD.pop(str(root), None)
         return {
             "status": record["kind"], "update": update,
             "state_bytes_stored": state_ref["bytes"] if state_ref else 0,
@@ -1222,6 +1241,12 @@ def reconcile_one_unmirrored_record(root: Path, custody: Path) -> dict:
         if rows[-1]["kind"] == "UPDATE_COMMITTED":
             insist(not tally["damaged"],
                    "UNMIRRORED_SUCCESS_HAS_DAMAGED_HISTORY")
+        # Macha #579 review: close_run refuses to complete a run over damaged
+        # evidence, so mirroring its RUN_CLOSED over damage must refuse too.
+        if (rows[-1]["kind"] == "RUN_CLOSED" and len(rows) >= 2
+                and rows[-2]["kind"] == "UPDATE_COMMITTED"):
+            insist(not tally["damaged"],
+                   "UNMIRRORED_COMPLETION_HAS_DAMAGED_HISTORY")
         name = f"j{seq:08d}.json"
         _write_once(custody, name, _read(root / name, MAX_RECORD), MAX_RECORD)
         return {"status": "ONE_VERIFIED_LOCAL_RECORD_MIRRORED",
@@ -1234,8 +1259,10 @@ def recover_interrupted_attempt(root: Path, custody: Path) -> dict:
     root, custody = _paths(root, custody)
     with _lock(root):
         lock = _binding(root, custody)
-        # Before touching any file: never "recover" a run whose writer lives.
+        # Before touching any file: never "recover" a run whose writer lives,
+        # nor, inside the opening process, an attempt whose thread lives.
         _refuse_if_writer_alive(root)
+        _refuse_if_attempt_thread_alive(root)
         removed = _clear_redundant_debris(root, custody)
         tally = _new_tally()
         rows, issues = _scan(root, custody, lock, tolerant=False,
@@ -1246,6 +1273,7 @@ def recover_interrupted_attempt(root: Path, custody: Path) -> dict:
         u = rows[-1]["update"]
         completed = _complete_durable_failure(root, custody, lock, rows, u)
         if completed is not None:
+            _ATTEMPT_THREAD.pop(str(root), None)
             return {"status": completed["kind"], "update": u,
                     "completed_by_crash_recovery": True, "quarantined": [],
                     "redundant_debris_removed": removed,
@@ -1265,6 +1293,7 @@ def recover_interrupted_attempt(root: Path, custody: Path) -> dict:
         record = _append(
             root, custody, lock, rows, "ATTEMPT_ABORTED", u,
             telemetry=_reference(raw, tname), reported=item, writer=None)
+        _ATTEMPT_THREAD.pop(str(root), None)
         return {"status": record["kind"], "update": u,
                 "quarantined": labels, "uncommitted_typed_verdicts": verdicts,
                 "redundant_debris_removed": removed,
