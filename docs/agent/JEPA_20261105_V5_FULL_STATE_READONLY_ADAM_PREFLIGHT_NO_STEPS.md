@@ -15,6 +15,12 @@ The new independent audit checks:
 
 The tests create tiny fake untrained CPU `torch.nn` models and **manually populate** synthetic optimizer moments. They *explicitly prohibit* calling `optimizer.step()`, forward propagation or training. This does not constitute execution of the V5 update. PyTorch is installed only for these read-only tests.
 
+## Additional physical read-only gradient observation (NO backward)
+
+`inspect_existing_trainable_gradients` now reads **actual supplied `Parameter.grad` tensors** from every trainable online and predictor parameter, explicitly including the expression-value encoder. It records each named tensor's shape, finite/nonfinite status, missing/zero/nonzero classification, exact nonzero element count, max absolute value and float64 L2 norm. It reports teacher gradients as an observed violation rather than hiding them. A tiny but positive gradient stays positive, without a threshold. No backward, `optimizer.step`, EMA change, optimizer reset or model forward occurs.
+
+This is narrower than a biological gradient proof: the caller could provide synthetic or unrelated gradients, and the observer does **not** establish that they came from the intended frozen update, query, loss, donor, data rights or pre-step state. There is no live trainer hook or state-to-panel SHA binding yet. Because these are read-only measurements of supplied tensor objects, they do not by themselves qualify a representation or prove genuine V5 learning.
+
 ## Limits and next step
 
 This is not yet complete V5 checkpoint serialization or exact resume. It lacks masking RNG generator state, Python/NumPy and optional CUDA RNG, AMP scaler support, actual data iterator/presentation cursor authority, source/rights content authentication, model-class/version binding, genuine optimizer-step evidence, gradient observations, EMA arithmetic, and the state-to-panel collapse witness. The SHA hashes are supplied bindings, not external independently trusted attestations. A full model restore and bitwise replay RT1–RT8 would require explicit owner authorization for **synthetic optimizer steps**. Passing this preflight proves only inspection completeness of the provided CPU states and artifact structure.
