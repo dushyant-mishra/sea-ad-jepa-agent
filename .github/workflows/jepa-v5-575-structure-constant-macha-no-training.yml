@@ -1,0 +1,37 @@
+name: V5 #575 review - model/optimizer structure constant across commits (Macha, NO STEPS)
+on:
+  pull_request:
+    paths:
+      - scripts/v5/jepa_v5_structured_journal_preflight_v1.py
+      - scripts/v5/jepa_v5_full_state_readonly_audit_v1.py
+      - tests/test_jepa_v5_structured_journal_preflight_v1*.py
+      - tests/test_jepa_v5_full_state_readonly_audit_v1*.py
+      - .github/workflows/jepa-v5-575-structure-constant-macha-no-training.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cpu-structure-no-optimizer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install CPU-only PyTorch and pytest (NO datasets/CUDA)
+        run: |
+          python -m pip install --disable-pip-version-check pytest==9.0.2
+          python -m pip install --disable-pip-version-check --index-url https://download.pytorch.org/whl/cpu "torch==2.5.1"
+      - name: Macha #575 structure RED, Sol #575 bridge and #571 read-only state tests
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/test_jepa_v5_structured_journal_preflight_v1_macha_structure_red.py \
+            tests/test_jepa_v5_structured_journal_preflight_v1.py \
+            tests/test_jepa_v5_full_state_readonly_audit_v1.py

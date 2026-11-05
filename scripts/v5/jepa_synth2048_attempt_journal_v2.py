@@ -19,6 +19,19 @@ Macha repair of #570 (2026-11-05), still fake bytes and caller reports only:
     collapse cause, and never collides with its own earlier quarantine.
   * Only the process that opened a run may advance it; a fresh process is
     refused until a verified restart path is separately authorized.
+
+Macha repair of #574 (2026-11-05), still fake bytes only:
+  * The writer's metadata cache trusts a file only if its last change is
+    strictly older than a filesystem-clock sample taken before it was hashed
+    (git's racily-clean rule), so a change in the same timestamp tick (10 ms
+    on WSL2 ext4) is re-hashed rather than accepted as unchanged.
+  * Writer results say whether old evidence was re-hashed or only had
+    unchanged metadata; every report says its evidence was freshly re-hashed.
+  * While the opening process (or a fork of it) is alive, no other process can
+    "recover" its run and abort the live attempt.
+  * Damage to an unrelated old checkpoint no longer blocks recording a
+    collapse, failure or runtime abort, nor recovering one. A success is still
+    never recorded, and a completed run never closed, over damaged history.
 """
 from __future__ import annotations
 
@@ -32,6 +45,8 @@ from pathlib import Path
 import re
 import secrets
 import stat
+import threading
+import time
 from typing import Iterator
 
 from scripts.v5 import jepa_synth2048_checkpoint_capture_prefreeze_v1 as cause
@@ -72,14 +87,32 @@ VERDICT_KINDS = {"STATE_COLLAPSED_AFTER_STEP", "STATE_COLLAPSED_BEFORE_NEXT_STEP
 # a fresh or forked process cannot continue a run whose opening process died.
 # PID is bound at open time, because POSIX fork inherits Python module globals.
 _SESSIONS: dict[str, tuple[int, str]] = {}
+# Opening process liveness: (opener pid, fd holding a shared flock on
+# run.lock.json). The kernel drops the lock when the opener and every fork of
+# it have exited, which is what lets another process recover the run.
+_ALIVE: dict[str, tuple[int, int]] = {}
+# (pid, thread ident) of the thread that began the open attempt, cleared when
+# its outcome is recorded. Inside the opening process, a sibling thread (a
+# watchdog, a timeout handler) must not "recover" the attempt while that
+# thread is still alive and may still record its real outcome.
+_ATTEMPT_THREAD: dict[str, tuple[int, int]] = {}
 # Only a process-local speedup. No bytes or scientific claims cached. The
 # always-full inspect/forensic paths NEVER consult this cache. Recheck all
 # historical evidence on explicit close and restart/recovery.
 _VERIFIED_EVIDENCE_STAT: dict[tuple, tuple] = {}
-# Fixed fail-safe periodic full SHA scrub. Small real checkpoint (23MiB)
-# every 32 commits plus final close costs O(n) cumulative bytes, not O(n²).
+# Fixed fail-safe periodic full SHA scrub at every 32nd update, plus a full
+# re-hash at close. Cumulative bytes are about n**2/64 checkpoints: 32 times
+# less than re-hashing at every BEGIN and OUTCOME, but still quadratic
+# (205 updates x 23 MiB: about 15 GiB of scrub reads in total).
 # Never turn this into a configurable skip-scrub escape hatch.
 FULL_SCRUB_EVERY_ATTEMPTS = 32
+# Longest wait for the filesystem clock to tick past a just-written file
+# (WSL2 ext4 ticks every 10 ms). Past it the file is simply re-read later.
+RACY_WAIT_SECONDS = 0.03
+_RACY_WAITED: set[tuple] = set()
+FULL_SHA ="FULL_SHA256_OF_EVERY_REFERENCED_FILE"
+METADATA_ONLY = "METADATA_UNCHANGED_SINCE_SHA_IN_THIS_PROCESS__NOT_FRESH_PROOF"
+FRESH_SHA = "FRESH_SHA256_OF_EVERY_REFERENCED_FILE_AT_THIS_READ"
 _SCAN_ERRORS = (OSError, KeyError, TypeError, ValueError, IndexError, AttributeError)
 
 
@@ -476,11 +509,34 @@ def _evidence_stat(path: Path, max_bytes: int) -> tuple:
             st.st_size, st.st_mtime_ns, st.st_ctime_ns)
 
 
+def _fs_now(root: Path) -> int:
+    """'Now' on the run directory's own filesystem clock.
+
+    Touching the lock file makes the filesystem stamp its ctime with the
+    current time, in the same clock and granularity as every evidence ctime.
+    """
+    lock = root / ".writer.lock"
+    os.utime(lock, follow_symlinks=False)
+    st = os.lstat(lock)
+    return st.st_ctime_ns
+
+
+def _new_tally() -> dict:
+    return {"sha_verified": 0, "metadata_only": 0, "damaged": []}
+
+
 def _verified_evidence_ref(root: Path, ref: dict, max_bytes: int,
                            error: str, *, incremental: bool,
-                           twin_ok: bool) -> None:
+                           twin_ok: bool, tally: dict | None = None) -> None:
     """Hash on first encounter. Skip old bytes only for the same process
     when size, inode, device, mtime, ctime and link count are unchanged.
+
+    Racily-clean rule: unchanged metadata is trusted only if the file's ctime
+    (set by the kernel on every change; no ordinary tool can set it, unlike
+    mtime) is strictly older than a filesystem-clock sample taken BEFORE the
+    bytes were hashed. A later change then always gets a newer ctime; a change
+    inside the same timestamp tick (10 ms on WSL2 ext4) would not, so a file
+    that young is re-hashed at its next use instead of being trusted.
 
     Metadata cannot prove absence of silent disk bit rot. Full inspect,
     forensic, close, startup/recovery always independently rehash bytes.
@@ -489,28 +545,50 @@ def _verified_evidence_ref(root: Path, ref: dict, max_bytes: int,
     name = ref["name"]
     path = root / name
     key = (os.getpid(), str(root.absolute()), name, ref["sha256"], ref["bytes"])
-    before = _evidence_stat(path, max_bytes) if incremental else None
-    if incremental and _VERIFIED_EVIDENCE_STAT.get(key) == before:
-        return
+    if incremental:
+        before = _evidence_stat(path, max_bytes)
+        if _VERIFIED_EVIDENCE_STAT.get(key) == before:
+            if tally is not None:
+                tally["metadata_only"] += 1
+            return
+        # A just-written file shares the current tick. Waiting (at most
+        # RACY_WAIT_SECONDS) for the clock to move on lets this one read make
+        # it trustworthy, instead of re-reading 23 MiB at the next scan.
+        # Wait at most once per file: a ctime that stays ahead of the clock
+        # (a clock stepped backwards) is then just re-read, never waited on.
+        deadline = time.monotonic() + (0 if key in _RACY_WAITED else RACY_WAIT_SECONDS)
+        fence = _fs_now(root)
+        while before[6] >= fence and time.monotonic() < deadline:
+            time.sleep(0.001)
+            fence = _fs_now(root)
+        if before[6] >= fence:
+            _RACY_WAITED.add(key)
     raw = _read(path, max_bytes, twin_ok=twin_ok)
     insist(ref == _reference(raw, name), error)
+    if tally is not None:
+        tally["sha_verified"] += 1
     if incremental:
         after = _evidence_stat(path, max_bytes)
         insist(before == after, "EVIDENCE_CHANGED_DURING_VERIFICATION")
-        _VERIFIED_EVIDENCE_STAT[key] = after
+        if after[6] < fence:
+            _VERIFIED_EVIDENCE_STAT[key] = after
+        else:
+            _VERIFIED_EVIDENCE_STAT.pop(key, None)
 
 
 def _check_evidence(row: dict, root: Path, *, twin_ok: bool = False,
-                    incremental: bool = False) -> None:
+                    incremental: bool = False, tally: dict | None = None) -> None:
     """Strict SHA verification by default; writer skips unchanged old bytes."""
     if row["payload"] is not None:
         _verified_evidence_ref(root, row["payload"], MAX_STATE,
                                "STATE_PAYLOAD_CORRUPT",
-                               incremental=incremental, twin_ok=twin_ok)
+                               incremental=incremental, twin_ok=twin_ok,
+                               tally=tally)
     if row["telemetry"] is not None:
         _verified_evidence_ref(root, row["telemetry"], MAX_TELEMETRY,
                                "TELEMETRY_CORRUPT",
-                               incremental=incremental, twin_ok=twin_ok)
+                               incremental=incremental, twin_ok=twin_ok,
+                               tally=tally)
     item = row["reported"]
     if row["kind"] == "ATTEMPT_ABORTED" and item["reason"] == "PROCESS_INTERRUPTED":
         qdir = root / "quarantine"
@@ -542,9 +620,17 @@ def _check_record(row: dict, rows: list[dict], lock: dict, root: Path,
 # ---------------------------------------------------------------- scans
 
 def _scan(root: Path, custody: Path, lock: dict, *, tolerant: bool,
-          permit_one_ahead: bool = False,
-          incremental: bool = False) -> tuple[list[dict], list[dict]]:
-    """Strict journal/custody scan (both copies identical, all evidence intact)."""
+          permit_one_ahead: bool = False, incremental: bool = False,
+          evidence_damage_ok: bool = False,
+          tally: dict | None = None) -> tuple[list[dict], list[dict]]:
+    """Strict journal/custody scan (both copies identical, all evidence intact).
+
+    With evidence_damage_ok the record chain is still strict, but a damaged
+    payload/telemetry/quarantine file of an earlier record is listed in
+    tally["damaged"] instead of refusing: failure outcomes and their recovery
+    must stay recordable when an unrelated old checkpoint is damaged.
+    """
+    insist(not evidence_damage_ok or tally is not None, "DAMAGE_TALLY_REQUIRED")
     if tolerant:
         rows, issues, _damaged = _forensic_scan(root, custody, lock)
         return rows, issues
@@ -566,7 +652,13 @@ def _scan(root: Path, custody: Path, lock: dict, *, tolerant: bool,
                        and len(local) == len(copies) + 1,
                        "EXTERNAL_HEAD_MISSING_RECORD")
             row = _parse(raw, "RECORD")
-            _check_record(row, rows, lock, root, incremental=incremental)
+            _check_structure(row, rows, lock)
+            try:
+                _check_evidence(row, root, incremental=incremental, tally=tally)
+            except (JournalRefusal, *_SCAN_ERRORS):
+                if not evidence_damage_ok:
+                    raise
+                tally["damaged"].append(seq)
             rows.append(row)
         except (JournalRefusal, *_SCAN_ERRORS) as exc:
             raise JournalRefusal("REFUSE_ATTEMPT_JOURNAL_V2__" + str(exc)) from exc
@@ -657,6 +749,61 @@ def _require_session(root: Path, rows: list[dict]) -> str:
     return live
 
 
+def _hold_alive(root: Path) -> None:
+    """Opening process holds a shared flock on run.lock.json for its life.
+
+    The kernel releases it when the opener and every fork of it have exited
+    (or crashed); nothing on disk changes, so a dead writer leaves no lease.
+    """
+    fd = os.open(root / "run.lock.json", os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+    try:
+        fcntl.flock(fd, fcntl.LOCK_SH | fcntl.LOCK_NB)
+    except OSError:
+        os.close(fd)
+        raise
+    _ALIVE[str(root)] = (os.getpid(), fd)
+
+
+def _release_alive(root: Path) -> None:
+    held = _ALIVE.get(str(root))
+    if held is not None and held[0] == os.getpid():
+        del _ALIVE[str(root)]
+        os.close(held[1])
+
+
+def _refuse_if_writer_alive(root: Path) -> None:
+    """Another process may recover a run only once its opener has exited.
+
+    The opening process itself may recover after one of its own journal calls
+    failed (e.g. a write error): it knows its attempt is not running.
+    """
+    held = _ALIVE.get(str(root))
+    if held is not None and held[0] == os.getpid():
+        return
+    fd = os.open(root / "run.lock.json", os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+    try:
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            raise JournalRefusal(
+                "REFUSE_ATTEMPT_JOURNAL_V2__WRITER_PROCESS_STILL_ALIVE__"
+                "RECOVERY_REFUSED") from exc
+        fcntl.flock(fd, fcntl.LOCK_UN)
+    finally:
+        os.close(fd)
+
+
+def _refuse_if_attempt_thread_alive(root: Path) -> None:
+    """In the opening process, only the thread that began the attempt, or
+    any thread once that thread has ended, may recover it."""
+    owner = _ATTEMPT_THREAD.get(str(root))
+    if owner is None or owner[0] != os.getpid() or owner[1] == threading.get_ident():
+        return
+    insist(not any(t.ident == owner[1] and t.is_alive()
+                   for t in threading.enumerate()),
+           "ATTEMPT_THREAD_STILL_ALIVE__RECOVERY_REFUSED")
+
+
 def _append_row(root: Path, custody: Path, lock: dict, rows: list[dict],
                 row: dict) -> dict:
     # New state and telemetry bytes must be physically SHA-verified once.
@@ -681,11 +828,13 @@ def _append(root: Path, custody: Path, lock: dict, rows: list[dict],
     return _append_row(root, custody, lock, rows, row)
 
 
-def _ready(root: Path, custody: Path, *,
-           incremental: bool = False) -> tuple[dict, list[dict]]:
+def _ready(root: Path, custody: Path, *, incremental: bool = False,
+           evidence_damage_ok: bool = False,
+           tally: dict | None = None) -> tuple[dict, list[dict]]:
     lock = _binding(root, custody)
     rows, issues = _scan(root, custody, lock, tolerant=False,
-                         incremental=incremental)
+                         incremental=incremental,
+                         evidence_damage_ok=evidence_damage_ok, tally=tally)
     insist(not issues, "INCOMPLETE_HEAD")
     # Orphan/missing uncommitted payload is never silently adopted.
     accounted = {".writer.lock", "run.lock.json", "quarantine"}
@@ -756,6 +905,7 @@ def open_journal(root: Path, custody: Path, *, run_id: str, horizon: int,
         _write_once(root, "u00000.telemetry.json", _json(initial_probe), MAX_TELEMETRY)
         _write_once(root, name, initial_state_bytes, MAX_STATE)
         _append_row(root, custody, lock, [], row)
+        _hold_alive(root)
         _SESSIONS[str(root)] = (os.getpid(), token)
         return {"status": "OPENED_FAKE_BYTES_ONLY", "horizon": horizon,
                 "run_id": run_id, "writer_session": "THIS_PROCESS_ONLY",
@@ -770,7 +920,8 @@ def begin_attempt(root: Path, custody: Path, *, update: int) -> dict:
         # Detect silent bit rot that changes bytes without changing stat fields.
         # Metadata-only caching is restricted to other ordinary writer scans.
         full_scrub = type(update) is int and update % FULL_SCRUB_EVERY_ATTEMPTS == 0
-        lock, rows = _ready(root, custody, incremental=not full_scrub)
+        tally = _new_tally()
+        lock, rows = _ready(root, custody, incremental=not full_scrub, tally=tally)
         writer = _require_session(root, rows)
         allowed, expected = _expected_next(rows, lock)
         insist("ATTEMPT_BEGIN" in allowed
@@ -778,8 +929,20 @@ def begin_attempt(root: Path, custody: Path, *, update: int) -> dict:
                "ATTEMPT_NOT_NEXT_UPDATE")
         row = _append(root, custody, lock, rows, "ATTEMPT_BEGIN", update,
                       writer=writer)
+        _ATTEMPT_THREAD[str(root)] = (os.getpid(), threading.get_ident())
         return {"status": row["kind"], "update": update,
+                **_check_summary(tally),
                 "real_optimizer_executed": False, "training_authorized": False}
+
+
+def _check_summary(tally: dict) -> dict:
+    """How old evidence was checked: never a health or integrity proof."""
+    return {
+        "historical_evidence_check": METADATA_ONLY if tally["metadata_only"] else FULL_SHA,
+        "files_sha256_verified": tally["sha_verified"],
+        "files_trusted_on_unchanged_metadata": tally["metadata_only"],
+        "historical_evidence_damaged_sequences": list(tally["damaged"]),
+    }
 
 
 def _outcome(root: Path, custody: Path, *, update: int, kind: str,
@@ -788,7 +951,13 @@ def _outcome(root: Path, custody: Path, *, update: int, kind: str,
            and type(telemetry) is dict, "OUTCOME_ARGUMENTS")
     root, custody = _paths(root, custody)
     with _lock(root):
-        lock, rows = _ready(root, custody, incremental=True)
+        # A success needs fully intact history. A failure (collapse, failed
+        # attempt, runtime abort) is recorded even when an unrelated older
+        # checkpoint is damaged: losing the first collapse is the worse error.
+        tally = _new_tally()
+        lock, rows = _ready(root, custody, incremental=True,
+                            evidence_damage_ok=kind != "UPDATE_COMMITTED",
+                            tally=tally)
         writer = _require_session(root, rows)
         allowed, expected = _expected_next(rows, lock)
         insist(kind in allowed and update == expected,
@@ -818,10 +987,12 @@ def _outcome(root: Path, custody: Path, *, update: int, kind: str,
         if state_ref:
             _write_once(root, state_ref["name"], state_bytes, MAX_STATE)
         record = _append_row(root, custody, lock, rows, row)
+        _ATTEMPT_THREAD.pop(str(root), None)
         return {
             "status": record["kind"], "update": update,
             "state_bytes_stored": state_ref["bytes"] if state_ref else 0,
             "state_sha256": state_ref["sha256"] if state_ref else None,
+            **_check_summary(tally),
             "resumable": False, "physical_neural_health_proved": False,
             "training_authorized": False,
         }
@@ -1044,9 +1215,17 @@ def reconcile_one_unmirrored_record(root: Path, custody: Path) -> dict:
     root, custody = _paths(root, custody)
     with _lock(root):
         lock = _binding(root, custody)
+        # An outsider must not change a still-live opener's mirror or clear
+        # its temporary files. The opener can repair its own failed write.
+        _refuse_if_writer_alive(root)
         removed = _clear_redundant_debris(root, custody)
+        # Older damage cannot erase the first fully evidenced failure. But
+        # the newly mirrored record MUST have intact own evidence; likewise a
+        # locally committed success cannot be certified over damaged history.
+        tally = _new_tally()
         rows, issues = _scan(root, custody, lock, tolerant=False,
-                             permit_one_ahead=True)
+                             permit_one_ahead=True, evidence_damage_ok=True,
+                             tally=tally)
         insist(not issues and len(rows) >= 1, "CANNOT_RECONCILE")
         local = _filenames(root)
         copies = _filenames(custody)
@@ -1057,6 +1236,17 @@ def reconcile_one_unmirrored_record(root: Path, custody: Path) -> dict:
                     "resume_authorized": False}
         insist(len(local) == len(copies) + 1, "NOT_EXACTLY_ONE_AHEAD")
         seq = len(copies)
+        insist(seq not in tally["damaged"],
+               "UNMIRRORED_NEW_RECORD_EVIDENCE_DAMAGED")
+        if rows[-1]["kind"] == "UPDATE_COMMITTED":
+            insist(not tally["damaged"],
+                   "UNMIRRORED_SUCCESS_HAS_DAMAGED_HISTORY")
+        # Macha #579 review: close_run refuses to complete a run over damaged
+        # evidence, so mirroring its RUN_CLOSED over damage must refuse too.
+        if (rows[-1]["kind"] == "RUN_CLOSED" and len(rows) >= 2
+                and rows[-2]["kind"] == "UPDATE_COMMITTED"):
+            insist(not tally["damaged"],
+                   "UNMIRRORED_COMPLETION_HAS_DAMAGED_HISTORY")
         name = f"j{seq:08d}.json"
         _write_once(custody, name, _read(root / name, MAX_RECORD), MAX_RECORD)
         return {"status": "ONE_VERIFIED_LOCAL_RECORD_MIRRORED",
@@ -1069,17 +1259,25 @@ def recover_interrupted_attempt(root: Path, custody: Path) -> dict:
     root, custody = _paths(root, custody)
     with _lock(root):
         lock = _binding(root, custody)
+        # Before touching any file: never "recover" a run whose writer lives,
+        # nor, inside the opening process, an attempt whose thread lives.
+        _refuse_if_writer_alive(root)
+        _refuse_if_attempt_thread_alive(root)
         removed = _clear_redundant_debris(root, custody)
-        rows, issues = _scan(root, custody, lock, tolerant=False)
+        tally = _new_tally()
+        rows, issues = _scan(root, custody, lock, tolerant=False,
+                             evidence_damage_ok=True, tally=tally)
         insist(not issues and bool(rows) and
                rows[-1]["kind"] == "ATTEMPT_BEGIN",
                "NO_UNFINISHED_ATTEMPT")
         u = rows[-1]["update"]
         completed = _complete_durable_failure(root, custody, lock, rows, u)
         if completed is not None:
+            _ATTEMPT_THREAD.pop(str(root), None)
             return {"status": completed["kind"], "update": u,
                     "completed_by_crash_recovery": True, "quarantined": [],
                     "redundant_debris_removed": removed,
+                    "historical_evidence_damaged_sequences": tally["damaged"],
                     "training_authorized": False}
         labels = _quarantine(root, u, rows)
         verdicts = sorted({
@@ -1095,22 +1293,35 @@ def recover_interrupted_attempt(root: Path, custody: Path) -> dict:
         record = _append(
             root, custody, lock, rows, "ATTEMPT_ABORTED", u,
             telemetry=_reference(raw, tname), reported=item, writer=None)
+        _ATTEMPT_THREAD.pop(str(root), None)
         return {"status": record["kind"], "update": u,
                 "quarantined": labels, "uncommitted_typed_verdicts": verdicts,
                 "redundant_debris_removed": removed,
+                "historical_evidence_damaged_sequences": tally["damaged"],
                 "training_authorized": False}
 
 
 def close_run(root: Path, custody: Path) -> dict:
     root, custody = _paths(root, custody)
     with _lock(root):
-        lock, rows = _ready(root, custody)
+        # Full fresh re-hash. A run that STOPPED on a failure may be closed
+        # over damaged older evidence (the damage stays in every report); a
+        # completed run may not, so "complete" never covers damaged history.
+        tally = _new_tally()
+        lock, rows = _ready(root, custody, evidence_damage_ok=True, tally=tally)
         allowed, u = _expected_next(rows, lock)
         insist("RUN_CLOSED" in allowed, "CANNOT_CLOSE_INCOMPLETE_ATTEMPT")
+        insist(not tally["damaged"] or rows[-1]["kind"] != "UPDATE_COMMITTED",
+               "CANNOT_CLOSE_A_COMPLETED_RUN_OVER_DAMAGED_EVIDENCE")
         live = _session_sha(root)
         writer = live if live == rows[0]["writer_session_sha256"] else None
         _append(root, custody, lock, rows, "RUN_CLOSED", u, writer=writer)
-        return {"status": _status(rows + [{"kind": "RUN_CLOSED"}], lock),
+        _release_alive(root)
+        status = _status(rows + [{"kind": "RUN_CLOSED"}], lock)
+        return {"status": status + ("__HISTORICAL_EVIDENCE_DAMAGED"
+                                    if tally["damaged"] else ""),
+                "historical_evidence_damaged_sequences": tally["damaged"],
+                "evidence_integrity_basis": FRESH_SHA,
                 "training_authorized": False}
 
 
@@ -1155,6 +1366,8 @@ def _report(rows: list[dict], lock: dict, anomalies: list[dict],
         "collapsed_state_updates_nonresumable": collapsed,
         "uncommitted_collapse_evidence_updates": uncommitted,
         "anomalies": anomalies,
+        # Reports never use the writer's metadata cache.
+        "evidence_integrity_basis": FRESH_SHA,
         "external_copy_is_separately_retained_unsigned": True,
         "history_authentication_against_malicious_writer": False,
         "every_completed_update_has_blob": not damaged,
@@ -1239,8 +1452,12 @@ def inspect_forensic_prefix(root: Path, custody: Path) -> dict:
 def _read_state(root: Path, custody: Path, kinds: set[str], update: int) -> bytes:
     root, custody = _paths(root, custody)
     with _lock(root):
-        _lock_row, rows, _issues, _damaged = _forensic(root, custody)
-        matches = [r for r in rows if r["kind"] in kinds and r["update"] == update]
+        _lock_row, rows, _issues, damaged = _forensic(root, custody)
+        # The record may be hash-linked and its payload still SHA-valid while
+        # its own probe/collapse telemetry is damaged. Do not return it as a
+        # qualified state; preserve later intact records for forensic reading.
+        matches = [r for r in rows if r["kind"] in kinds
+                   and r["update"] == update and r["seq"] not in damaged]
         insist(type(update) is int and len(matches) == 1,
                "UPDATE_NOT_VERIFIED_COMMITTED_STATE")
         ref = matches[0]["payload"]
