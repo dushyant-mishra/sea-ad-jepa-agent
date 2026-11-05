@@ -201,3 +201,64 @@ def test_snapshot_does_not_mutate_teacher_student_or_optimizer():
     assert all(torch.equal(before[k], v) for k,v in online.state_dict().items())
     assert before_steps == [float(s["step"].item()) for s in opt.state.values()]
     assert not any(p.grad is not None for p in teacher.parameters())
+
+
+
+def test_physically_read_all_supplied_gradient_tensors_including_expression_value_encoder():
+    online, teacher, predictor, _, _ = fixture(updates=0)
+    for p in list(online.parameters()) + list(predictor.parameters()):
+        p.grad = torch.ones_like(p) * 0.5
+    seen = c.inspect_existing_trainable_gradients(
+        online=online, teacher=teacher, predictor=predictor, update_index=1)
+    assert seen["all_trainable_tensor_count"] == 6
+    assert seen["status_counts"]["NONZERO_FINITE"] == 6
+    assert seen["per_tensor"]["online.value_encoder.weight"]["status"] == "NONZERO_FINITE"
+    assert seen["per_tensor"]["online.value_encoder.weight"]["l2_norm_float64"] > 0
+    assert seen["teacher_gradients_reported"] == []
+    assert seen["intended_loss_or_panel_identity_proved"] is False
+    assert seen["representation_learned_biology_proved"] is False
+    assert seen["optimizer_step_executed_by_this_inspection"] is False
+
+
+def test_gradient_onset_missing_exact_zero_nonfinite_are_not_silently_dropped():
+    online, teacher, predictor, _, _ = fixture(updates=0)
+    params = list(online.parameters()) + list(predictor.parameters())
+    params[0].grad = None
+    params[1].grad = torch.zeros_like(params[1])
+    params[2].grad = torch.full_like(params[2], float("nan"))
+    for p in params[3:]:
+        p.grad = torch.ones_like(p)
+    # Record the teacher violation as evidence, not as a fake passing probe.
+    next(teacher.parameters()).grad = torch.ones_like(next(teacher.parameters()))
+    seen = c.inspect_existing_trainable_gradients(
+        online=online, teacher=teacher, predictor=predictor, update_index=2)
+    assert seen["status_counts"] == {
+        "MISSING": 1, "NONFINITE": 1, "EXACT_ZERO": 1, "NONZERO_FINITE": 3,
+    }
+    assert seen["per_tensor"]["online.value_encoder.weight"]["status"] == "MISSING"
+    assert seen["per_tensor"]["online.value_encoder.bias"]["status"] == "EXACT_ZERO"
+    assert seen["teacher_gradients_reported"]
+    assert seen["training_authorized"] is False
+
+
+def test_tiny_positive_gradient_stays_positive_without_threshold():
+    online, teacher, predictor, _, _ = fixture(updates=0)
+    p = online.value_encoder.weight
+    p.grad = torch.full_like(p, 1e-18)
+    result = c.inspect_existing_trainable_gradients(
+        online=online, teacher=teacher, predictor=predictor, update_index=1)
+    assert result["per_tensor"]["online.value_encoder.weight"]["status"] == "NONZERO_FINITE"
+    assert result["per_tensor"]["online.value_encoder.weight"]["l2_norm_float64"] > 0
+    assert result["per_tensor"]["online.value_encoder.weight"]["nonzero_elements"] == p.numel()
+
+
+def test_gradient_probe_rejects_fake_update_or_mismatched_grad_shape():
+    online, teacher, predictor, _, _ = fixture(updates=0)
+    with pytest.raises(c.FullStateRefusal, match="GRADIENT_PROBE_UPDATE"):
+        c.inspect_existing_trainable_gradients(
+            online=online, teacher=teacher, predictor=predictor, update_index=0)
+    online.value_encoder.weight.grad = torch.zeros_like(
+        online.value_encoder.weight)[:1]
+    with pytest.raises(c.FullStateRefusal, match="GRADIENT_TENSOR_SHAPE_OR_DTYPE"):
+        c.inspect_existing_trainable_gradients(
+            online=online, teacher=teacher, predictor=predictor, update_index=1)
