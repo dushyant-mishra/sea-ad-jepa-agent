@@ -1,0 +1,161 @@
+{
+  "schema": "JEPA_20261104_EVENT78_FINE_GRAIN_V5_CHECKPOINT_AND_MACHA_REVIEW_SOURCE_MAP_V1",
+  "date_local": "2026-11-04",
+  "scope": "HISTORICAL_SOURCE_CUSTODY__CHECKPOINT_PREFREEZE_AND_T1_ZERO_UPDATE_REPAIR__NO_TRAINING",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "read_first": [
+    "docs/agent/JEPA_20261104_EVENT78_V5_FINE_GRAIN_CHECKPOINTS_MACHA_NEW_RED_AND_SUCCESSOR_HANDOFF.md",
+    "docs/agent/JEPA_20261104_EVENT75_SOL_COMPLETE_SYNTHETIC_V5_COLD_START_TAKEOVER_AND_NO_REPEAT.md",
+    "docs/agent/JEPA_20261104_EVENT76_MACHA_REVIEW_VERDICTS_AND_THREE_OWNER_DECISIONS_NOT_YET_RATIFIED.md",
+    "docs/agent/JEPA_20261104_EVENT77_SYNTH2048_C2_C3_SOURCE_FEASIBILITY_AND_NEW_AGENT_NO_REPEAT_HANDOFF.md",
+    "docs/agent/JEPA_20261104_SOL_LANE_SUCCESSOR_DETAILED_OPERATIONAL_HANDOFF_EVENT68.md",
+    "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json"
+  ],
+  "checkpoint_prefreeze": {
+    "pr": 553,
+    "head": "f6590e28a3c39f7cd270831d7d7a217223dec23e",
+    "base_pr": 548,
+    "ci": {
+      "run": 41964769828,
+      "conclusion": "success",
+      "jobs": 2,
+      "pytest_count_per_python": 63,
+      "python_versions": [
+        "3.11.9",
+        "3.12.7"
+      ]
+    },
+    "files": [
+      {
+        "path": "scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py",
+        "blob": "598e4a134a8ddd844aaf01271bf757ea75d7419d"
+      },
+      {
+        "path": "tests/test_jepa_synth2048_checkpoint_capture_prefreeze_v1.py",
+        "blob": "f7ed76a13441d07fe33c01f7fa1a6e8ecc1ebd4e"
+      },
+      {
+        "path": "results/target_discovery/unified_qualification_v1/JEPA_SYNTH2048_V5_FINE_GRAIN_CHECKPOINT_PREFREEZE_V1.json",
+        "blob": "91c375a76b720f314b33b14e83074b6322a81e74"
+      },
+      {
+        "path": "docs/agent/JEPA_20261104_V5_SYNTH2048_FINE_GRAIN_CHECKPOINT_CAPTURE_PREFREEZE_AND_REVIEW.md",
+        "blob": "4ca3cafe94f0ef91c1edf0fdbcaa73e6419340d3"
+      },
+      {
+        "path": ".github/workflows/jepa-synth2048-checkpoint-prefreeze.yml",
+        "blob": "bbed0649b12d48957b5ece1719dce40db1c95b9f"
+      }
+    ],
+    "status": "PROPOSAL_NOT_FROZEN__INDEPENDENT_MACHA_REVIEW_REQUIRED",
+    "full_snapshots_rule": "u0, EVERY_COMPLETED_STEP_1_TO_40, EVERY_FIFTH_45_TO_100, EVERY_TENTH_FROM_110, EXACT_TERMINAL",
+    "telemetry_rule": "EACH_ATTEMPTED_UPDATE_EVEN_FAILURE__REAL_48_UNSCALED_GRAD_ADAM_MOMENT_AMP_EMA_CELL_TOKEN_SOURCE_QUERY_RNG",
+    "reference_historical_original_real_snapshots": [
+      0,
+      10,
+      25,
+      40,
+      50,
+      100,
+      200,
+      205
+    ],
+    "historical_reused_sources": [
+      "docs/agent/HEALTHY_TEACHER_TRAINING_CONTRACT_V1_20260907.md",
+      "docs/agent/TEACHER_STUDENT_CANONICAL_RUNTIME_V1_20260907.md",
+      "src/sea_ad_jepa/v4/teacher_student_checkpoint.py",
+      "src/sea_ad_jepa/v5/ema_persisted_continuation_v2.py",
+      "docs/agent/v5_anticheat/ATOMIC_CHECKPOINT_TELEMETRY_GUARD_V1.md",
+      "docs/agent/v5_anticheat/T1_TRAJECTORY_JSON_REVIEW_V1.md"
+    ],
+    "pending": [
+      "ACTUAL_FULL_STATE_ATOMIC_WRITER",
+      "REAL_GRADIENT_ADAM_PHYSICAL_PROOF",
+      "FORCED_KILL_RESTART_PARITY",
+      "FROZEN_BIOLOGY_MONITOR_PROBES",
+      "STORAGE_QUOTA_ESCROW",
+      "GPU_PARITY",
+      "EXTERNAL_OWNER_SCOPE"
+    ],
+    "actual_training_steps": 0,
+    "actual_model_checkpoints_written": 0,
+    "unit_tests_only": true
+  },
+  "t1_model_collapse_repair": {
+    "pr": 554,
+    "head": "b48fbb2d75118177a81ef9f1e411c637ba1768bb",
+    "base_pr": 548,
+    "upstream_original_macha_red_pr": 552,
+    "upstream_head": "42c8a3ff31dca7e76b421df0b7bac3f3486591d3",
+    "original_macha_red_test": {
+      "path": "tests/test_jepa_synth2048_token_cell_invariance_macha_red.py",
+      "blob": "dd3ff92ce1c6ddc8288611efb66f78a103053dd5",
+      "byte_identical": true
+    },
+    "ci": {
+      "run": 41964985264,
+      "conclusion": "success",
+      "original_runtime_tests": 103,
+      "source_integration_collapse_tests": 53,
+      "total": 156
+    },
+    "files": [
+      {
+        "path": "scripts/v5/jepa_synth2048_collapse_sentinel_v1.py",
+        "blob": "0ea5967f16366b66d7a5ef9f350e8b8bc1f0f2a1"
+      },
+      {
+        "path": "scripts/v5/jepa_synth2048_v5_readiness.py",
+        "blob": "f3c610cf272e7f80ade90ac78d8636f8dfbef9a0"
+      },
+      {
+        "path": "tests/test_jepa_synth2048_cross_cell_token_alignment_sol_v1.py",
+        "blob": "4669a0c5bc271b5baff9ceb5db57b8a7b8766561"
+      },
+      {
+        "path": ".github/workflows/jepa-synth2048-v5-guarded-readiness.yml",
+        "blob": "30d56ab8bc4b1593a9f1a0a2254d5cb3200448b5"
+      }
+    ],
+    "actual_2048_U0": {
+      "cells": 2,
+      "teacher_shared_gene_ids": 1988,
+      "student_shared_gene_ids": 716,
+      "zero_updates": true,
+      "jepa_mse": 2.069324493408203,
+      "geometry_rank": "NOT_ESTIMABLE"
+    },
+    "status": "AUTHOR_CI_GREEN__MACHA_INDEPENDENT_T1_ACCEPTANCE_PENDING__T2_T3_T4_T5_UNRESOLVED",
+    "model_training_performed": false
+  },
+  "macha_new_verdicts": {
+    "pr547": "ACCEPT_SCOPED_DEVELOPMENT_FIXTURE_MECHANICS_ONLY__F1_C2_C3_GENERIC_STATE_ONLY__F2_ATAC_Q_PROXY__F3_EXACT_SOURCE_MASK_FINGERPRINT__F4_DONOR_NESTING",
+    "pr548": "ACCEPT_SCOPED_U0_MECHANICS_ONLY__T1_TOKEN_CROSS_CELL_COLLAPSE_RED__T2_NEAR_COLLAPSE__T3_FAKE_GRAD_FLAGS__T4_LOSS_VS_SCORE__T5_WITHHELD_NOT_UNMEASURED",
+    "pr545": "AUTHOR_K01_K02_K03_GREEN_BUT_K04_PR549_INSTANCE_SHADOW_STORE_REPLAY_FAIL__PR541_HOLD",
+    "pr546": "R1_R2_VALID__PR551_PUBLIC_PROMOTION_REACHABLE_FORGED_CUSTODY__FROZEN_TASK3_UNTOUCHED"
+  },
+  "review_links": [
+    "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/547#issuecomment-6649187938",
+    "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/548#issuecomment-6649188367",
+    "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/549",
+    "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/551",
+    "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/552",
+    "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/553",
+    "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/554"
+  ],
+  "owner_choices_not_rulings": [
+    "L04_QUERY_SET_AND_EMERGENT_VS_TRANSFER_DEFAULT_Q_BLIND_SHARED_TEACHER",
+    "PR533_VERSIONED_NEW_WORLD_SELECTOR_292_GATE_TYPES_204_REGRESSION_ONLY_85_FORMER_FORENSIC_FRESH_CHALLENGE_ATTEMPT_CAP",
+    "TASK3_VERSIONED_EXTERNALLY_SIGNED_CUSTODY_TRUST_ANCHOR",
+    "PR547_GENERIC_STATE_ONLY_C2_C3_OR_AUTHORIZED_PROSPECTIVE_DISTRIBUTED_RARE_V2"
+  ],
+  "nonrepeat": [
+    "NO_REAL_TD314_RERUN",
+    "NO_STAGE81B_REPEAT",
+    "NO_V79_V80_REGENERATION",
+    "NO_PR547_FIT_REGENERATION",
+    "NO_UNGUARDED_V4_MODEL",
+    "NO_C1_C6_LEARNED_PASS",
+    "NO_TRAINING_ON_ANY_CI_SUCCESS"
+  ]
+}
