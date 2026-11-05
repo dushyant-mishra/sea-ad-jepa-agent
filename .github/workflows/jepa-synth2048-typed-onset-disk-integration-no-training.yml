@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         python: ["3.11.9", "3.12.7"]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
