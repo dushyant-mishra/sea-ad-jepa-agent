@@ -35,7 +35,7 @@ META_FIELDS = BINDINGS | {
     "execution_authorized",
 }
 PACKAGE_FIELDS = {"metadata", "modules", "optimizer", "parameter_names",
-                  "rng_state", "amp_scaler_state"}
+                  "parameter_layout", "rng_state", "amp_scaler_state"}
 MODULES = ("online", "teacher", "predictor")
 SLOTS = {"step", "exp_avg", "exp_avg_sq"}
 
@@ -214,11 +214,24 @@ def capture_readonly_bundle(*, online: torch.nn.Module,
     # parameter_names preserves the identity binding missing in positional
     # optimizer load_state_dict alone. This is descriptive, not a loader.
     opt = deepcopy(optimizer.state_dict())
+    objects = [p for g in optimizer.param_groups for p in g["params"]]
+    integer_ids = [pid for g in opt["param_groups"] for pid in g["params"]]
+    require(len(objects) == len(integer_ids), "OPTIMIZER_ID_COUNT")
+    lookup = {id(p): full for full, p in _parameters(
+        online, teacher, predictor).items()}
+    layout = {
+        lookup[id(p)]: {
+            "optimizer_param_id": pid, "shape": list(p.shape),
+            "dtype": str(p.dtype),
+        }
+        for p, pid in zip(objects, integer_ids)
+    }
     result = {
         "metadata": meta,
         "modules": modules,
         "optimizer": opt,
         "parameter_names": measured["parameter_names"],
+        "parameter_layout": layout,
         "rng_state": _rng_state(meta["keyed_run_seed"]),
         "amp_scaler_state": None,
     }
@@ -249,6 +262,9 @@ def verify_readonly_bundle(bundle: object) -> dict:
                 for x in names)
             and sorted(set(names)) == names,
             "PARAMETER_NAMES_UNBOUND")
+    layout = bundle["parameter_layout"]
+    require(type(layout) is dict and set(layout) == set(names),
+            "PARAMETER_LAYOUT_COVERAGE")
     optimizer = bundle["optimizer"]
     require(type(optimizer) is dict
             and set(optimizer) == {"state", "param_groups"},
@@ -262,6 +278,45 @@ def verify_readonly_bundle(bundle: object) -> dict:
             and all(type(i) is int for i in ids)
             and len(set(ids)) == len(ids),
             "OPTIMIZER_PARAM_IDS_DUPLICATE_OR_MISSING")
+    require({v["optimizer_param_id"] for v in layout.values()} == set(ids),
+            "OPTIMIZER_PARAM_ID_TO_NAME_MISMATCH")
+    by_id = {}
+    for full, desc in layout.items():
+        require(type(desc) is dict and set(desc) == {
+            "optimizer_param_id", "shape", "dtype"
+        }, "PARAMETER_LAYOUT_FIELDS")
+        require(type(desc["optimizer_param_id"]) is int
+                and type(desc["shape"]) is list
+                and all(type(n) is int and n >= 0 for n in desc["shape"])
+                and type(desc["dtype"]) is str,
+                "PARAMETER_LAYOUT_TYPE")
+        label, name = full.split(".", 1)
+        require(name in state[label], "TRAINABLE_PARAMETER_MISSING_FROM_MODEL")
+        t = state[label][name]
+        require(tuple(desc["shape"]) == tuple(t.shape)
+                and desc["dtype"] == str(t.dtype)
+                and t.is_floating_point(),
+                "PARAMETER_LAYOUT_MISMATCH")
+        by_id[desc["optimizer_param_id"]] = t
+    require(len(by_id) == len(ids), "PARAMETER_ID_DUPLICATE")
+    for g in groups:
+        require(type(g) is dict and "params" in g
+                and type(g["params"]) is list
+                and "lr" in g and "betas" in g
+                and "eps" in g and "weight_decay" in g,
+                "OPTIMIZER_GROUP_HYPERPARAMETERS")
+        require(type(g["lr"]) in (int, float)
+                and isfinite(g["lr"]) and g["lr"] >= 0
+                and type(g["eps"]) in (int, float)
+                and isfinite(g["eps"]) and g["eps"] > 0
+                and type(g["weight_decay"]) in (int, float)
+                and isfinite(g["weight_decay"]) and g["weight_decay"] >= 0
+                and type(g["betas"]) in (tuple, list)
+                and len(g["betas"]) == 2
+                and all(type(b) in (int, float) and isfinite(b)
+                        and 0 <= b < 1 for b in g["betas"])
+                and g.get("amsgrad", False) is False,
+                "OPTIMIZER_GROUP_HYPERPARAMETERS_INVALID")
     require(len(slots) == (0 if meta["completed_updates"] == 0 else len(ids)),
             "ADAM_STATE_CARDINALITY")
     require(set(slots) == (set(ids) if meta["completed_updates"] else set()),
@@ -275,8 +330,8 @@ def verify_readonly_bundle(bundle: object) -> dict:
         require(_scalar_step(record["step"]) == meta["completed_updates"],
                 "ADAM_STEP_NOT_EQUAL_COMPLETED")
         for moment in ("exp_avg", "exp_avg_sq"):
-            t = _tensor(record[moment])
-            require(bool(torch.isfinite(t).all()), "ADAM_MOMENT_NONFINITE")
+            _tensor(record[moment],
+                    shape=tuple(by_id[i].shape), dtype=by_id[i].dtype)
         require(tuple(record["exp_avg"].shape) == tuple(record["exp_avg_sq"].shape),
                 "ADAM_MOMENT_SHAPE_DIFFERENT")
         require(bool((record["exp_avg_sq"] >= 0).all()),
