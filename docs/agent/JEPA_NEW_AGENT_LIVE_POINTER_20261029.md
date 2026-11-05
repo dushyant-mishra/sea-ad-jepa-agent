@@ -1,3 +1,19 @@
+# READ FIRST — EVENT89 (2026-11-05): PR571 READ-ONLY V5 ADAM COMPLETENESS + ALL SUPPLIED GRADIENT TENSORS
+
+**Canonical audit #322 exact head `d5ab29e6eb420a3b90566badd60bfdc25e0bdc8d`, 89 append-only events and 54 no-repeat index keys, 25/25 exact-head checks SUCCESS.** New draft [PR #571](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/571) exact head `8656adcf7e96b1e9c52a598beb844f8f8f548644`, directly on #570, read-only CPU synthetic inspection only. Hosted GitHub Actions `42066951548` **28/28 PASSED on each Python 3.11.9 and 3.12.7**, 2/2 jobs SUCCESS. Macha independent review pending.
+
+**Read first:** Event89 human `docs/agent/JEPA_20261105_EVENT89_V5_READONLY_ADAM_AND_ALL_TRAINABLE_GRADIENT_AUDIT_NO_STEPS.md`; machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT89_V5_FULL_STATE_READONLY_SOURCE_MAP.json` (identical bytes across #322 and #460). Then Event88 PR570 V2 every-attempt outside-run fake-byte journal, Event87 PR569 honest post-step collapse, Event86 PR568 first-anomaly forensic prefix, Event85 PR565 and original historical cold-start.
+
+**New scoped code:** `scripts/v5/jepa_v5_full_state_readonly_audit_v1.py` Git blob `fea600306364adb4d23f333b61e45f622686b3b1` inspects all online and predictor trainable parameter names, including the expression-value encoder, exactly once in AdamW. For u>=1, **all** tensor slots must contain `step`, `exp_avg`, `exp_avg_sq` with correct name/ID/shape/dtype, finite state and integer step; no absent moment may be hidden by a valid-looking global counter. At u0 optimizer state must be absent. Read-only cloned online/teacher/predictor+optimizer snapshot includes EMA count, keyed seed, CPU RNG, declared gene/source/panel/rights/config SHAs; SHA verification then safe `torch.load(weights_only=True)`. New physical read of existing `Parameter.grad` from **every supplied trainable tensor** reports missing/nonfinite/exact-zero/nonzero with exact element count and float64 norm. It never invokes a forward, backward, optimizer step or teacher EMA; tests manually seed fake moments/gradients.
+
+**Important:** This is *component shape and supplied-gradient inspection*, NOT full live V5 checkpoint/healthy biology, original source data proof, genuine optimizer step, source-of-gradients proof, target variance/null controls, journal integration or fresh-process next-update parity. Python/NumPy/CUDA/masking RNG, AMP scaler, live presentation cursor and state binding to real frozen TRAIN panel still absent. No restore API. Separate authorization required before any synthetic RT1–RT8 optimizer update. Macha may directly fix major flaws on a separate stacked PR and cross-test with Sol under the new reciprocal repair protocol.
+
+**Original Macha RED test blobs unchanged:** #557 `bfa53457`, #560 `3ab6c208`, #561 `be259ab4`, #566 `60a16378`, #567 `c513693f`. Held #547 generic-only, #554 T1-only, #556 T2–T5, #541 Task4 HOLD, #551 Task3 successor, L04/#525/#533 unchanged. No target, representation or Stage4 promotion.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT88 (2026-11-05): V5 PROSPECTIVE V2 ATTEMPT JOURNAL, OUTSIDE-RUN HEAD COPY, SYNTHETIC SMOKE ONLY
 
 **Canonical audit #322 exact head `dc930f498a1045cb5b32787d3fcde11e26c58a70`, 88 append-only events, 53 master no-repeat keys, 25/25 exact-head checks SUCCESS.** New draft [PR #570](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/570) exact head `0e2deffa0191ddfc8b11161a85224e6367d97c22`, stacked on #565. All 4 of 4 exact-head hosted CI workflows SUCCESS, 8/8 jobs SUCCESS: V2 fake-byte journal `42062323739` **223 PASSED** per Python 3.11.9 and 3.12.7; atomic storage `42062323501` **126 PASSED** each; cause/disk `42062323805` **186 PASSED** each; prefreeze `42062323891` **63 PASSED** each. **Macha independent review #570 PENDING.**
