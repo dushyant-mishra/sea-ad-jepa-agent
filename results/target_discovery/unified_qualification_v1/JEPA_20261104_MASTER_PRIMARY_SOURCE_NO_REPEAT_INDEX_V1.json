@@ -1776,5 +1776,26 @@
     "scope_limit": "535 PR/108 PR original metadata/supersession indexes are not 535 full diff reviews. 55/56 source-path success is not scientific review. No controller/private raw files read. Frozen history not repeated.",
     "future_agent_rule": "Read #460 newest top pointer, Event90 machine map, #322 append-only ledger and 60-entry Event68 source locator; do not repeat historical audits. Work own PR; add Event91+ human/machine on BOTH branches, append only chronology/index on #322, validate CI, prepend #460 pointer with audited exact head.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_structured_cpu_adam_teacher_journal_preflight_event91_20261105": {
+    "event": 91,
+    "date_utc": "2026-11-05",
+    "scope": "AUTHOR_PR575_CPU_FULL_ADAM_STRUCTURAL_PRECHECK_TO_FAKE_V2_JOURNAL_NO_OPTIMIZER_STEPS",
+    "pr": 575,
+    "head": "41e7c556e61e313253b7e839e948328b47ab88dc",
+    "base_pr": 574,
+    "base_head": "42cb0efe89882b066d9e123523ecfc5f9b2a9d85",
+    "human": "docs/agent/JEPA_20261105_EVENT91_READONLY_CPU_FULL_ADAM_STRUCTURED_JOURNAL_BRIDGE_NO_TRAINING.md",
+    "human_sha": "6219be538642ed3b15a895e2ce2e6bd14ce1eb35",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT91_V5_STRUCTURED_STATE_JOURNAL_SOURCE_MAP.json",
+    "machine_sha": "94c8b31e1c5e186091cc928eaf8a209ff3e72572",
+    "source": "scripts/v5/jepa_v5_structured_journal_preflight_v1.py blob da0ea17f57e8160ae79cf1ceb7e045d895a750bf",
+    "tests": "tests/test_jepa_v5_structured_journal_preflight_v1.py blob d1feb114824bdb0b8525fd2eac7c9e14074a3813; original PR571 read-only source and tests byte-identical; original Macha #557/#560/#561/#566/#567 unchanged",
+    "ci": "42088900620 exact head; 55 + 57 PASSED Python3.11.9 and 55 + 57 PASSED Python3.12.7, all 2 jobs SUCCESS",
+    "result": "Safe SHA-checked CPU tensor bundle and full every-trainable-Adam state/teacher online shape equivalence is checked prior to u0 or synthetic UPDATE_COMMITTED disk write. Reported panel-bound probe and metadata counters must match. Wrong Adam/rights/gene/source/seed/probe fails before outcome files. Fork PID inherited prevention preserved.",
+    "review": "MACHA_INDEPENDENT_REVIEW_PENDING__AUTHOR_SIDE_CI_ONLY",
+    "critical_limits": "No real optimizer/forward/backward, all Adam moments are manually populated synthetic. Caller-reported probe, not physical biological health. V2 lock does not independently seal all gene/source/Philox/seed. No full V5 RNG/AMP, true model loader or fresh process bitwise RT1-RT8. PR574 Macha review ongoing.",
+    "no_repeat": "Events1–90 and original frozen TD/Stage81/V79/V80/R5/535 PR metadata census unchanged, owner controller remains sealed.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
