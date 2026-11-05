@@ -264,3 +264,82 @@ def test_no_model_training_or_resume_api():
     assert v.SCHEMA.endswith("_V2")
     assert not hasattr(v, "resume_model")
     assert not hasattr(v, "optimizer_step")
+
+
+
+@pytest.mark.parametrize("damage", ["remove", "corrupt", "extra"])
+def test_quarantined_abort_evidence_is_hash_bound_and_cannot_disappear(
+        tmp_path, damage):
+    root, backup = initialize(tmp_path)
+    v.begin_attempt(root, backup, update=1)
+    (root / "u00001.state.bin").write_bytes(b"PARTIAL_MODEL_UNVERIFIED")
+    v.recover_interrupted_attempt(root, backup)
+    v.close_run(root, backup)
+    assert v.inspect_journal(root, backup)["status"] == "ABORTED_RECOVERED"
+    qdir = root / "quarantine"
+    if damage == "remove":
+        (qdir / "u00001.state.bin").unlink()
+    elif damage == "corrupt":
+        (qdir / "u00001.state.bin").write_bytes(b"MUTATED_ABORT_PAYLOAD")
+    else:
+        (qdir / "unexpected.bin").write_bytes(b"NEW_UNREPORTED_BYTES")
+    with pytest.raises(v.JournalRefusal):
+        v.inspect_journal(root, backup)
+    with pytest.raises(v.JournalRefusal):
+        v.begin_attempt(root, backup, update=2)
+    prefix = v.inspect_forensic_prefix(root, backup)
+    assert prefix["anomalies"]
+    assert prefix["status"] != "COMPLETE_REPORTED_ONLY"
+    # Corrupt quarantine never alters the prior validated u0 byte payload.
+    assert v.read_forensic_opaque_state(root, backup, update=0) == b"SIMULATED_U0"
+
+
+def test_external_mirror_orphan_is_reported_and_blocks_future_writes(tmp_path):
+    root, backup = initialize(tmp_path)
+    step_ok(root, backup, 1)
+    (backup / (".uncommitted-" + "9"*32)).write_bytes(b"CRASHED_MIRROR_TEMP")
+    with pytest.raises(v.JournalRefusal, match="EXTERNAL_CUSTODY_UNCOMMITTED_OR_UNKNOWN"):
+        v.inspect_journal(root, backup)
+    with pytest.raises(v.JournalRefusal):
+        v.begin_attempt(root, backup, update=2)
+    forensic = v.inspect_forensic_prefix(root, backup)
+    assert any(a["reason"] == "EXTERNAL_CUSTODY_ORPHAN" for a in forensic["anomalies"])
+    assert forensic["resume_authorized"] is False
+
+
+def test_complete_local_record_erasure_does_not_launder_planned_close(tmp_path):
+    root, backup = initialize(tmp_path, horizon=2)
+    step_ok(root, backup, 1)
+    step_ok(root, backup, 2)
+    v.close_run(root, backup)
+    assert v.inspect_journal(root, backup)["status"] == "COMPLETE_REPORTED_ONLY"
+    # Simulate ordinary broad 'rm j*' cleanup inside the run only.
+    for file in root.glob("j*.json"):
+        file.unlink()
+    with pytest.raises(v.JournalRefusal):
+        v.inspect_journal(root, backup)
+    with pytest.raises(v.JournalRefusal):
+        v.begin_attempt(root, backup, update=1)
+    forensic = v.inspect_forensic_prefix(root, backup)
+    assert forensic["status"] != "COMPLETE_REPORTED_ONLY"
+    assert forensic["journal_records"] == 0
+    assert forensic["anomalies"]
+    assert len(list(backup.glob("j*.json"))) == 6
+
+
+def test_failed_attempt_record_not_laundered_to_success_by_deleting_local_tail(tmp_path):
+    root, backup = initialize(tmp_path, horizon=2)
+    v.begin_attempt(root, backup, update=1)
+    v.record_failed_attempt(root, backup, update=1, reported_receipt=mechanical(1))
+    v.close_run(root, backup)
+    assert v.inspect_journal(root, backup)["status"] == "STOPPED_FAILED"
+    for file in root.glob("j*.json"):
+        if int(file.stem[1:]) >= 2:
+            file.unlink()
+    with pytest.raises(v.JournalRefusal):
+        v.inspect_journal(root, backup)
+    with pytest.raises(v.JournalRefusal):
+        v.begin_attempt(root, backup, update=1)
+    report = v.inspect_forensic_prefix(root, backup)
+    assert report["status"] != "COMPLETE_REPORTED_ONLY"
+    assert report["anomalies"]
