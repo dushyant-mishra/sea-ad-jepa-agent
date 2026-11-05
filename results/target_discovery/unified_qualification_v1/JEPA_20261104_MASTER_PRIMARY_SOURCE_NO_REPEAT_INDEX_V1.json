@@ -1431,5 +1431,57 @@
     ],
     "no_new_decision_or_training": true,
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "synth2048_source_observability_event77_20261104": {
+    "chronology_event": 77,
+    "human": "docs/agent/JEPA_20261104_EVENT77_SYNTH2048_C2_C3_SOURCE_FEASIBILITY_AND_NEW_AGENT_NO_REPEAT_HANDOFF.md",
+    "human_blob_sha1": "8a938846284711b702b121dcb760f114e4221180",
+    "durable_report": "results/target_discovery/unified_qualification_v1/JEPA_20261104_EVENT77_SYNTH2048_SOURCE_C2_C3_OBSERVABILITY_REPORT.json",
+    "durable_report_blob_sha1": "4bddf3afe845f6042330a0d1e59dbb91ada44be4",
+    "github_new_code_pr": 550,
+    "github_new_code_head": "8a143c0d193433f4d53245824874898afb551dcc",
+    "exact_3_of_3_ci_success": [
+      41962778468,
+      41962778390,
+      41962778379
+    ],
+    "new_hostile_tests": "12_OF_12_SUCCESS",
+    "original_public_fit_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+    "report_artifact_id": 13385469201,
+    "report_artifact_expires_utc": "2026-12-05T03:38:14Z",
+    "report_zip_sha256": "d75aff220483ef8fb9a65b416dee12d09b0cfd2b1a37f60c2424020304b253ae",
+    "report_member_sha256": "0fa330b346135cb1c6a021dcb9bd3d07139e1f709745e9c845ccd1cd6513b4fd",
+    "report_byte_identical_with_github_actions": true,
+    "sources": [
+      "SYNTH_A",
+      "SYNTH_B",
+      "SYNTH_C"
+    ],
+    "cells_per_source": 480,
+    "donors_per_source": 12,
+    "C3_4_q_other8_panels_physical_measured_eligibility_per_source": [
+      480,
+      480,
+      480
+    ],
+    "C2_three_disjoint_512_measured_views_per_source": true,
+    "median_student_base_depth_per_source": [
+      4362,
+      3365.5,
+      2606.5
+    ],
+    "median_detected_nonquery_genes_per_source": [
+      1688.5,
+      1546.5,
+      1381
+    ],
+    "source_depth_max_min_ratio": 1.673508536351429,
+    "compare_old_pr536": "OLD_48_GENE_C3_WAS_NPH52_ONLY_10_OF_10_VERSUS_0_OF_10_HVS_SEAAD__NO_CROSS_WORLD_BIOLOGY_INFERENCE",
+    "scope": "OBSERVATIONAL_PHYSICAL_PANEL_FEASIBILITY_ONLY__NOT_C3_SIGNAL_OR_TRANSFER__NOT_MODEL_TRAINING",
+    "model_updates": 0,
+    "controller_truth_opened": false,
+    "all_C_science": "ALL_UNASSESSED",
+    "independent_review": "MACHA_PR550_PENDING",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
