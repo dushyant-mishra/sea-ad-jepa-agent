@@ -3534,6 +3534,48 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/561",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41976065000"
       ]
+    },
+    {
+      "event_id": "20261105-SOL-V5-TYPED-FAILURE-CAUSE-ATOMIC-JOURNAL-INTEGRATION-SYNTHETIC-SMOKE-EVENT85",
+      "date_utc": "2026-11-05",
+      "workstream": "v5_synth2048_typed_onset_bridge_pr562_to_pr564_disk_forensic_only",
+      "implementation_pr": 565,
+      "implementation_head": "6df804682098fa9eff6c8a95b29866c70cb45920",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT85_TYPED_ONSET_DISK_INTEGRATION_SMOKE_NO_TRAINING.md",
+          "blob_sha1": "ab3c34ba763b61d7f04b35b3cc306e32b27b72a0",
+          "role": "Human exact-head Event85 synthetic integration receipts and nonpromotion/no-repeat explanation"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT85_TYPED_ONSET_DISK_INTEGRATION_SOURCE_MAP.json",
+          "blob_sha1": "3c57a7bbf8fe1d21868b1edabf6554f510c414a9",
+          "role": "Machine exact test, source, workflow, SHA and still-open physical proof map"
+        }
+      ],
+      "change_type": "implementation",
+      "what_already_existed": "Scoped #562 representation failed-receipt cause logic on separate branch; #563 E2 read-only verified prefix after crash; #564 local write intent and conditional independently expected-head comparison, no connected custodian; original Macha #557/#560/#561 tests unchanged; Event1–84 audit/handoff and historical experiments frozen.",
+      "new_work_or_result": "Draft PR565 based on #564 exact head; copied #562 validator and #557/#560 original Macha files byte-identically, plus author #558/#562 regressions. New versioned typed-onset disk bridge validates explicit exact-zero collapse cause or positive mechanical signal, then persists canonical typed evidence via fsynced intent/evidence/receipt journal; rereads SHA and cause, rejects unexplained early end relative to local planned horizon, preserves last healthy opaque checkpoint on crash. New synthetic-only smoke includes simulated failed update13, corruption, near-zero healthy control, crash and fresh subprocess. Exact-head CI on ubuntu24.04: workflow 42050634006 186 PASS Python3.11.9 and 186 PASS Python3.12.7; prefreeze 42050633949 63 PASS each. Earlier ubuntu-latest failures were Ubuntu26.04 Python-version setup, not tests. Event85 human and machine maps mirrored byte-identically on #322/#460.",
+      "negative_or_counterfactual_evidence": "The bridge verifies only caller-supplied representation-collapse metrics and fake opaque checkpoint bytes, not physical model tensor states or actual optimizer/Adam/EMA effects. Full local tail deletion remains undetectable without independent pinned head. Prior success receipts do not prove actual executed updates; no each-attempt persistent true telemetry or full Adam/RNG/source rights model checkpoint; fresh subprocess verifies byte contents/cause, NOT next optimizer update bit equality. No neural updates, GPU, sealed truth or biological winner.",
+      "test_review_scope": "Original Macha #557 blob bfa53457, #560 3ab6c208, #561 be259ab4 confirmed byte-identical. Exact integrated PR565 head 6df804682098fa9eff6c8a95b29866c70cb45920: 2/2 integration jobs SUCCESS 186 each, 2/2 prefreeze jobs SUCCESS 63 each, no skipped tests from declared files. New bridge source blob 26dec2aa3f7448365c1e0e9cae1230964c69ad48, new test blob 16f1686f1f8e575e9c32c25538a40eb337c326ad. No real training.",
+      "independent_review": "PR565_AUTHOR_CI_GREEN__MACHA_PR565_INDEPENDENT_REVIEW_PENDING__PHYSICAL_NEURAL_CHECKPOINT_PROOF_ABSENT",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha independent exact-head review #562/#563/#564/#565 and typed API causality/spurious low-rank stop; original RED files untouched.",
+        "One actual per-attempt physical telemetry journal with real 48-gradient/Adam norms, EMA residual, fixed operator-homogeneous TRAIN panel CELL/gene-token variation, expression shuffle, source/donor predictability, and measured cause attribution.",
+        "Full V5 encoder/predictor/teacher/Adam/EMA/RNG/gene-address/source/rights checkpoint and fresh-process next-update deterministic replay before any training authority.",
+        "Independent append-only head custody remains a known E1 gap, but owner prioritizes accidental crash and data loss rather than sophisticated malicious tampering; report, do not silently waive.",
+        "Owner decisions #547 C2/C3 generic-only, #541 Task4 HOLD, #551 signed Task3 successor, L04/#525/#533 remain open. Do not regenerate originals or rerun spent TD/Stage81/V79/V80."
+      ],
+      "historical_supersession": "Only a new scoped integration and fake-byte regression evidence. Earlier 84 audit records and all scientific REDs preserved. No Stage4, target or representation promotion.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/565",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42050634006",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42050633949",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/562",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/564"
+      ]
     }
   ]
 }
