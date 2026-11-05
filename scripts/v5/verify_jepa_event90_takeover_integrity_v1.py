@@ -254,7 +254,7 @@ def validate_repository(root: Path, *, role: str) -> dict:
                    "MISSING_HISTORICAL_ORIGINAL_SOURCE")
     else:
         text = (root / HANDOFF).read_text(encoding="utf-8")
-        latest = re.match(r"# READ FIRST — EVENT([0-9]+)\\b", text)
+        latest = re.match(r"# READ FIRST — EVENT([0-9]+)", text)
         insist(latest is not None and int(latest.group(1)) >= 90,
                "HANDOFF_NOT_PREPENDED_TO_LATEST")
         top = text.split("\n---\n", 1)[0]
