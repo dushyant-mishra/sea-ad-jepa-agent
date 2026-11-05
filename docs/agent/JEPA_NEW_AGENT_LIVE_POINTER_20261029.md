@@ -1,3 +1,24 @@
+# READ FIRST — EVENT87 (2026-11-05): SCOPED #566 POST-STEP COLLAPSE + #567 FIRST-ANOMALY FORENSIC RECOVERY
+
+**Canonical audit #322 exact head `9e43278e1fde3ec6f7abd4dd256c50efc1e54f07`, 87 append-only chronology events, 25/25 exact-head checks SUCCESS.** New author-side draft [PR #568](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/568) exact head `eab59fea8002cd18d4989e8b741051de588c48d6` and [PR #569](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/569) exact head `aeca6b033c55208f84d84f3a6435af7a2a5209af`; both **independent Macha reviews PENDING**.
+
+**PR568 E3a/E3b:** Based directly on unchanged Macha #567 test blob `c513693fa11b2c0ef72b68601ca83dcd5a0a5b2f`. Strict storage and writers still refuse damaged files. Forensic-only reading now verifies the maximal prefix up to the first damaged checkpoint, reports orphans/suspect tail, and recovers intact earlier opaque bytes even after a corrupted latest file or a u43 onset-write crash after sparse u40. Author CI `42053444473`: 130/130 passed on each Python 3.11.9/3.12.7. **SHA-verified bytes do not prove a healthy neural representation.**
+
+**PR569 #566:** Based directly on unchanged Macha #566 test blob `60a16378c22b35ec5d52837c7c641cf6a59e0935`; original #557/#560 tests also unchanged. A state verdict `STATE_COLLAPSED_AFTER_STEP` can truthfully follow an executed optimizer+EMA step; pre-next-step diagnosis correctly names previously probed state; **last healthy state is UNKNOWN** absent physical passing probe. `RUNTIME_ABORT` records a process error without calling it collapse. Deterministic exact-distinct-row demonstration avoids float32 centering false nonzero. Author CI `42054401819`: 121/121 passed each Python version. **Receipts are self-reported, not physical weights/evidence.**
+
+**Read these mirrored docs/maps before doing more work:**
+- `docs/agent/JEPA_20261105_EVENT87_V5_566_POST_STEP_COLLAPSE_CAUSE_NO_TRAINING.md`
+- `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT87_V5_566_POST_STEP_COLLAPSE_SOURCE_MAP.json`
+- `docs/agent/JEPA_20261105_EVENT86_V5_567_CORRUPT_TAIL_FORENSIC_PREFIX_NO_TRAINING.md`
+- `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT86_V5_567_CORRUPT_TAIL_SOURCE_MAP.json`
+Then Event85 (#565 held integration), Events84–82, and Event81 full historic cold-start/no-repeat handoff.
+
+**No integration yet of PR568 and PR569 into PR565.** Do not merge or claim the full journal repaired. Owner D1 outside-run append-only head copy selected for accident resilience, **signing still owner decision**; D2 every successful checkpoint selected, D3 nonresumable collapsed-state retention selected, D4 first-anomaly forensic prefix selected. Implementation of prospectively versioned RUN_OPEN/ATTEMPT_BEGIN/OUTCOME/RUN_CLOSED, true physical gradients for ALL trainable tensors/Adam/EMA, fixed panel, full model state, trusted per-success healthy proof and future separately authorized RT1–RT8 still missing. Current training is OFF, no optimizer, GPU, biology C1–C6 qualification or Task4 authority; original Task3/Task4/L04/#525/#533 held.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT85 (2026-11-05): PR565 TYPED COLLAPSE-CAUSE + DURABLE ONSET BYTES, SYNTHETIC SMOKE ONLY
 
 **Canonical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `9a146bac60ecb13e13269a866ae21321ccec839d`, 85 append-only events, 25/25 checks SUCCESS.** New draft [PR #565](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/565) exact head `6df804682098fa9eff6c8a95b29866c70cb45920`, stacked on #564. Hosted integration `42050634006` **186/186 per Python 3.11.9/3.12.7 SUCCESS**; checkpoint prefreeze `42050633949` **63/63 per Python version SUCCESS**. Macha independent acceptance PENDING; no model execution.
