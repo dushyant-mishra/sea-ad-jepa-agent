@@ -1643,5 +1643,21 @@
     "remaining": "External monotonic head anchor, per-attempt intent/telemetry and #561 E1/E2 repair; explicit v2 typed cause + planned horizon bound to run lock; full neural/Adam/EMA/RNG/rights and physical probes before any training authority",
     "no_repeat": "Events1-81 and original TD, R5, Stage81A/B, V79/V80, PR547/548 unchanged",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_failed_onset_e2_forensic_prefix_recovery_event83_20261105": {
+    "date_utc": "2026-11-05",
+    "event": 83,
+    "scope": "PR563_SCOPED_E2_AUTHOR_CI_ONLY_NO_TRAINING_INDEPENDENT_REVIEW_PENDING",
+    "pr": 563,
+    "head": "0acbf16407f63560bbd8a1cc81030cf232068c71",
+    "human_doc": "docs/agent/JEPA_20261105_EVENT83_V5_561_E2_FORENSIC_RECOVERY_AUTHOR_CI.md",
+    "machine_map": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT83_V5_561_E2_SOURCE_MAP.json",
+    "original_macha_red_unchanged": "PR561 test blob be259ab4cdcf035d7bf05134f68b6fe8d09f8833",
+    "author_ci": "41974969978 110 tests passed on each of Python 3.11.9 and 3.12.7",
+    "scoped_result": "Forensic prefix read of last committed SHA-verified opaque bytes with incomplete tail reported UNCOMMITTED_UNVERIFIED; strict writers/verification refuse orphans",
+    "still_red": "PR561 E1a/E1b deletion/laundering remains unprotected; no external immutable monotonic head anchor. Do not call #561 accepted or E1 closed.",
+    "other_limits": "No per-attempt physical journal/intent, no #562 typed cause integration, no full V5/Adam/EMA/RNG model state, actual gradients, fresh-process next-update parity, independent reviewer verdict or training authority",
+    "historical": "All Event1-82, TD, Stage81B, R5, V79/V80, source/fit original preserved, no repetition",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
