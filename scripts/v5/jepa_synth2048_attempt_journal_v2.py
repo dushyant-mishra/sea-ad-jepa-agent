@@ -308,6 +308,29 @@ def _check_record(row: dict, rows: list[dict], lock: dict, root: Path) -> None:
             else:
                 insist(item["runtime_abort_receipt"] is None,
                        "CRASH_RECOVERY_NOT_RUNTIME_ABORT")
+                qdir = root / "quarantine"
+                insist(qdir.is_dir() and not qdir.is_symlink(),
+                       "QUARANTINE_DIR_MISSING_OR_UNSAFE")
+                seen = set()
+                for entry in item["quarantined"]:
+                    insist(type(entry) is dict and set(entry) == {
+                        "name", "sha256", "bytes", "status",
+                    }, "QUARANTINE_ENTRY_FIELDS")
+                    name = entry["name"]
+                    insist(type(name) is str and name not in ("", ".", "..")
+                           and "/" not in name and chr(92) not in name
+                           and name not in seen and name != "quarantine",
+                           "QUARANTINE_ENTRY_PATH_OR_DUPLICATE")
+                    seen.add(name)
+                    insist(entry["status"] == "QUARANTINED_UNVERIFIED",
+                           "QUARANTINE_CLAIMS_VERIFIED")
+                    raw = _read(qdir / name, MAX_STATE)
+                    insist(entry == {
+                        "name": name, "sha256": _sha(raw), "bytes": len(raw),
+                        "status": "QUARANTINED_UNVERIFIED",
+                    }, "QUARANTINE_BYTES_SHA_DRIFT")
+                insist({p.name for p in qdir.iterdir()} == seen,
+                       "QUARANTINE_UNKNOWN_OR_MISSING_FILES")
     else:
         insist(telemetry is None and reported is None,
                "UNEXPECTED_NON_OUTCOME_EVIDENCE")
@@ -392,6 +415,23 @@ def _ready(root: Path, custody: Path) -> tuple[dict, list[dict]]:
             accounted.add(row["telemetry"]["name"])
     extras = {p.name for p in root.iterdir()} - accounted
     insist(not extras, "UNCOMMITTED_OR_UNKNOWN_FILES_PRESENT")
+    expected_external = {"run.lock.json"} | {
+        f"j{row['seq']:08d}.json" for row in rows
+    }
+    external_extras = {p.name for p in custody.iterdir()} - expected_external
+    insist(not external_extras, "EXTERNAL_CUSTODY_UNCOMMITTED_OR_UNKNOWN")
+    qdir = root / "quarantine"
+    if qdir.exists() or qdir.is_symlink():
+        insist(qdir.is_dir() and not qdir.is_symlink(),
+               "QUARANTINE_DIR_UNSAFE")
+        described = set()
+        for row in rows:
+            if row["kind"] == "ATTEMPT_ABORTED":
+                item = row["reported"]
+                if item["reason"] == "PROCESS_INTERRUPTED":
+                    described |= {r["name"] for r in item["quarantined"]}
+        insist({p.name for p in qdir.iterdir()} == described,
+               "QUARANTINE_NOT_LINKED_TO_ABORT")
     return lock, rows
 
 
@@ -698,6 +738,15 @@ def inspect_forensic_prefix(root: Path, custody: Path) -> dict:
     with _lock(root):
         lock = _binding(root, custody)
         rows, issues = _scan(root, custody, lock, tolerant=True)
+        known_external = {"run.lock.json"} | {
+            f"j{r['seq']:08d}.json" for r in rows
+        }
+        for p in sorted(custody.iterdir(), key=lambda v: v.name):
+            if p.name not in known_external and not RECORD_NAME.fullmatch(p.name):
+                issues.append({
+                    "name": p.name, "reason": "EXTERNAL_CUSTODY_ORPHAN",
+                    "status": "UNVERIFIED_TAIL__NO_RESUME",
+                })
         known = {".writer.lock", "run.lock.json", "quarantine"}
         for row in rows:
             known.add(f"j{row['seq']:08d}.json")
