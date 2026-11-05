@@ -1,3 +1,48 @@
+# READ FIRST — EVENT97 (2026-11-05): MACHA REVIEW OF #579/#575/#576, REPAIRS #580/#581, INTEGRATION #582, EVENT96 SOURCE CHECK
+
+**Audit and handoff.** Canonical append-only audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322), exact Audit head ade48047f33a715422ef1703999d92f82522bb9f — 97 chronology events and 62 no-repeat index keys. This is the operational [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) handoff.
+
+**Read first.** The Event97 human `docs/agent/JEPA_20261105_EVENT97_MACHA_REVIEW_579_575_576_REPAIRS_580_581_INTEGRATION_582_NO_TRAINING.md` (blob `e02e94b3b0a58596389ddddf780e0d2e27454919`) and machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT97_MACHA_579_575_576_REPAIRS_INTEGRATION_582_SOURCE_MAP.json` (blob `a7dd22757315e7829b378743ce292f8bddfb2c75`) are byte-identical on #322 and #460. Then read:
+- Event96 below, and Events 95–91;
+- historical Event90 human `docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md`;
+- historical Event90 machine map `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json`.
+
+**Macha verdicts:**
+- **#579** `676c991f`: **REPAIR_REQUIRED** → draft [#580](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/580).
+  - Sol's two fixes are confirmed.
+  - Still open at #579: a sibling thread could recover a live attempt, and a completed run was mirrored over damaged history.
+  - RED `0ecc0d78`, run 42109490027: 2 failed per Python. Repair `63bf1bdc8eea276d144e5f33a5828c137fe3217f`: 12/12 jobs.
+- **#575** `41e7c556`: **REPAIR_REQUIRED** → draft [#581](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/581); otherwise ACCEPT_SCOPED.
+  - The u0 model/optimizer structure is now bound at every commit.
+  - RED `2af9f8d3`, run 42109496747. Repair `86d96fc1450038c1482d4cfd8389682d0f085d62`: 4/4 jobs.
+- **#576** `227a957c`: **ACCEPT_SCOPED**. The reader and the report agree under 12 seeded random accident patterns.
+- **#578:** Sol ACCEPT_SCOPED (Event94).
+- **Event96 runtime locator:** **ACCEPT_SCOPED**, static source identity only. The 5 PR224 blobs are identical at PR224, PR525 and PR548; `canonical_runtime.py` is absent; `main`'s older `inactive_update_reference.py` still calls `optimizer.step()`.
+
+**Integration:** draft [#582](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/582), head `e71d864b0496de0b86fe7442ba51d53b44e0b225`.
+- **Merged:** #576 (incl. #575), #580 (incl. #579, #577), #581 and #578. The one add/add conflict was resolved to #578.
+- **Tests:** 19 new cross-component tests.
+- **Hosted run 42110895354:** 19 + 387 passed / 9 skipped on Python 3.11.9 and 3.12.7; 10/10 workflows, 20/20 jobs.
+- **I/O:** no regression (66 reads for 23 MiB × 33, 6.2 s).
+
+**Not tested:**
+- real models, physical gradients, Adam moments or EMA arithmetic;
+- frozen-panel probes;
+- complete RNG, cursor or AMP state;
+- restore and RT1–RT8.
+
+Caller-reported probes and fabricated Adam moments are not biological evidence.
+
+**Next:**
+- Sol cross-reviews #580, #581 and #582.
+- Then bind the PR224 guarded one-update wrapper to the integrated journal as a non-executing contract.
+- **Any optimizer step or RT1–RT8 needs separate owner authority.**
+- The V80 backup is resolved (Event95).
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT96 (2026-11-05): V5 original guarded runtime source role located; independent Macha confirmation PENDING
 
 **Canonical [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322)** audit head `6fef719c6037d4f9b0015be59d84cdeeebbc563d`, **96 chronology events, 61 no-repeat index keys**. Active [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) first read preserved below Event95 and all prior events.
