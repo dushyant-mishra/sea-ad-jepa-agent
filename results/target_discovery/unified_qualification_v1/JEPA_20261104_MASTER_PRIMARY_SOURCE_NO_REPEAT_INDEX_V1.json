@@ -1754,5 +1754,27 @@
     "critical_limits": "no real gradient source proof, no real optimizer/EMA step, no complete V5 RNG/AMP/data rights/loader/restart parity or real biological learned state; no training",
     "no_repeat": "Historical Event1–88 unchanged, no frozen data experiment repeated, original Macha REDs byte-identical",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "event90_complete_audit_handoff_source_script_data_result_continuity_20261105": {
+    "event": 90,
+    "date_utc": "2026-11-05",
+    "scope": "TWO_BRANCH_HISTORICAL_SOURCE_CUSTODY_SECOND_PASS_AND_DETAILED_NEW_AGENT_TAKEOVER__NO_EXPERIMENT",
+    "pr": 322,
+    "historical_predecessor": "89 immutable records and 54 curated keys",
+    "handoff_pr": 460,
+    "human": "docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json",
+    "human_sha": "a33ed0cdd8af86e078dc115d3e7c820ebb2da94a",
+    "machine_sha": "ffdc2c7bc2b97dc9a214fa15683664183f9cf5f5",
+    "guard": "scripts/v5/verify_jepa_event90_takeover_integrity_v1.py blob db5f815bc80e4e414c17a57d4a31a7e7695da549",
+    "hostile_tests": "tests/v5/test_verify_jepa_event90_takeover_integrity_v1.py blob 60826cb417fa93b2d127d387ec35f0a6b33870ea",
+    "historical_locator": "Event68 60 entries; 56 public Git refs checked, 55 resolve, one stale 'src/sea_ad_jepa/v5/canonical_runtime.py' at 9d00684; 4 owner-only not remotely verifiable",
+    "recovered_archive": "Exact original V80 FIT and receipt ZIP Git blobs exist identically in both #322/#460 since Event69; original controller remains intentionally owner private, private escrow not verified",
+    "retention_risks": "V80 SEALED controller original Actions artifact 11866917064 expires 2026-11-13 03:01:58Z; dev2048 synthetic FIT artifact 13364085153 expires 2026-12-04 21:02:06Z",
+    "latest_real_implementation": "PR570 0e2deffa 223x2 opaque V2 journal; PR571 8656adcf 28x2 read-only Adam and all supplied gradients; no neural optimizer or true biology",
+    "review": "Macha independent PR568/569/570/571 review pending; author CI cannot accept itself",
+    "scope_limit": "535 PR/108 PR original metadata/supersession indexes are not 535 full diff reviews. 55/56 source-path success is not scientific review. No controller/private raw files read. Frozen history not repeated.",
+    "future_agent_rule": "Read #460 newest top pointer, Event90 machine map, #322 append-only ledger and 60-entry Event68 source locator; do not repeat historical audits. Work own PR; add Event91+ human/machine on BOTH branches, append only chronology/index on #322, validate CI, prepend #460 pointer with audited exact head.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
