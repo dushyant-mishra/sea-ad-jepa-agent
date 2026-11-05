@@ -1659,5 +1659,21 @@
     "other_limits": "No per-attempt physical journal/intent, no #562 typed cause integration, no full V5/Adam/EMA/RNG model state, actual gradients, fresh-process next-update parity, independent reviewer verdict or training authority",
     "historical": "All Event1-82, TD, Stage81B, R5, V79/V80, source/fit original preserved, no repetition",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_failed_onset_e1_local_intent_external_head_scoped_event84_20261105": {
+    "date_utc": "2026-11-05",
+    "event": 84,
+    "scope": "SCOPED_LOCAL_E1_DELETION_TESTS_GREEN_AUTHOR_CI_ONLY__FULL_E1_EXTERNAL_CUSTODY_MISSING",
+    "pr": 564,
+    "head": "5cd20a418c360a6cb9b532a70ec48cf5e3a58dc7",
+    "human": "docs/agent/JEPA_20261105_EVENT84_E1_LOCAL_WRITE_INTENT_AND_HEAD_COMPARE_AUTHOR_CI.md",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT84_E1_LOCAL_HEAD_SOURCE_MAP.json",
+    "review": "MACHA_EXACT_HEAD_REVIEW_PENDING",
+    "original_macha_561_unchanged": "be259ab4cdcf035d7bf05134f68b6fe8d09f8833",
+    "author_ci": "41976065000: 126 passed Python3.11.9 and 126 passed Python3.12.7",
+    "new_impl": "Fsync local write intent for checkpoint/failure byte storage; comparison against separately retained expected head/counter, without external authentication",
+    "known_critical_limit": "Attacker erasing intent AND all local tail files can still fool local verifier. No connected external signer, protected append-only custodian, or actual begin-optimizer attempt intent. E1 NOT CLOSED.",
+    "other_open": "PR562 failure cause and PR563/564 disk journal not integrated; physical 48-gradient/Adam/EMA/biology evidence, model checkpoint and fresh-process restart, Task4/Task3/owner biology decisions all pending",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
