@@ -1944,5 +1944,43 @@
     "result": "canonical_runtime.py LEGACY_PATH_INVALID; entrypoint run_guarded_inactive_reference_update; canonical runtime = 12 files + 2 private impls, identical PR224/525/548/582; 40-step claim is V4; no V5 multi-update driver exists.",
     "do_not_repeat": "Do not rediscover or rebuild the PR224 guarded runtime; do not take it from main; do not assume an executed 40-step V5 trainer.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_source_data_historical_source_row_label_q_id_and_adam_binding_sol_583_584_event99_20261105": {
+    "event": 99,
+    "date_utc": "2026-11-05",
+    "historical_sources": [
+      "Events5,35 original gene/feature/row/source label repairs",
+      "Sept12 FULL104 TRAIN-cache/42-shard scope firewall",
+      "TD23 source-row/value physical identity",
+      "Event74/75 PR547 FIT-only2048 / PR548 U0 correct original q gene address",
+      "Events76–78 PR547 F1–F4 model and biological limits",
+      "Event98 Macha 12+2+init guarded V5 correction, V4 40-step provenance"
+    ],
+    "human": "docs/agent/JEPA_20261105_EVENT99_SOL_HISTORICAL_PIPELINE_IDENTITY_FAILURE_AUDIT_AND_V5_SOURCE_DATA_GATES_NO_TRAINING.md",
+    "human_blob_sha1": "531e3aad21ca4b1d4b35892caff1cb07debee3d5",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT99_HISTORICAL_V5_PIPELINE_SOURCE_DATA_AND_ADAM_GATES_MAP.json",
+    "machine_blob_sha1": "c32f74c56f975f68c4f83db129ace5fe1d40feed",
+    "active_v5_exact_source": "PR224 9d00684e08ba34ef8d7b04e478b9c380cd36d537 and integrated PR582 e71d864b0496de0b86fe7442ba51d53b44e0b225 15/15 identical original Git blobs",
+    "public_synthetic_fit": "PR547 artifact 13364085153 ZIP sha256 87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f 5/5 members; PR548 U0 adapter sha1 6a6c219402d7acd24c1b54b3c2571133a08e4a0a",
+    "v4_policy_warning": "PR525 postTD plan source identity points to FOUR V4 files; not in PR582, not active V5 runtime/authority",
+    "sol_red_pr583": {
+      "red_run": 42114608692,
+      "failures_per_python": 2,
+      "controls_pass_per_python": 4,
+      "green_head": "76eddf86ea7d8e5d66731a36d889e502d633b181",
+      "green_workflows": 11,
+      "macha_review": "PENDING"
+    },
+    "sol_source_data_gate_pr584": {
+      "head": "11d8a70235cfc02d412db6b6158485732bdec246",
+      "hosted_run": 42116258536,
+      "pass_jobs": 2,
+      "hosted_static_tests_per_python": 10,
+      "verified_public_zip_and_5_members": true,
+      "macha_review": "PENDING"
+    },
+    "no_repeat": "Original source and synthetic FIT already recovered; do not rerun original donor expression/TD or rebuild V5 original model, do not call 40 V4 steps V5, do not treat green fake journal as learned biology.",
+    "limits": "No genuine V5 model-to-journal execution/policy-rights issuer, real trainer, FULL104 source read, original V80 controller truth, actual Adam/EMA and physical gene/cell probes, full RNG/AMP/bitwise restore, RT1–RT8, Stage4.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
