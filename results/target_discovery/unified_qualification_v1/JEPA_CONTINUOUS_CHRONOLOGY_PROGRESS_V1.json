@@ -3494,6 +3494,46 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41974969978",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/562"
       ]
+    },
+    {
+      "event_id": "20261105-SOL-V5-561-E1-LOCAL-WRITE-INTENT-AND-EXPECTED-HEAD-SCOPED-CI-EVENT84",
+      "date_utc": "2026-11-05",
+      "workstream": "macha561_e1_local_write_ahead_intent_plus_external_expected_head_comparison_untrusted",
+      "implementation_pr": 564,
+      "implementation_head": "5cd20a418c360a6cb9b532a70ec48cf5e3a58dc7",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT84_E1_LOCAL_WRITE_INTENT_AND_HEAD_COMPARE_AUTHOR_CI.md",
+          "blob_sha1": "04ce253e8ba32e526050693a32e41eed187406e9",
+          "role": "Mirrored Event84 scientific/engineering scope, full E1 external-anchor LIMIT and nontraining evidence"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT84_E1_LOCAL_HEAD_SOURCE_MAP.json",
+          "blob_sha1": "b63786b6142fe46a2d08a46f2e6162d7ba9da6e9",
+          "role": "Exact Git blob, original Macha immutable test and hosted CI source mapping"
+        }
+      ],
+      "change_type": "repair",
+      "what_already_existed": "Macha #561 E1a/E1b original RED tail delete/launder; E2 forensic read scoped author-green #563; internal receipt SHA chain, but no external immutability. Event82 #562 self-reported failed-onset cause also unintegrated. Original science and research preserved on #322 and #460.",
+      "new_work_or_result": "Draft PR564 exact head 5cd20a4, stacked directly on #563. Fsyncs local write-intents before checkpoint/failure byte storage and requires matching intents for each committed receipt; this blocks deleting only paired failure files or only last checkpoint/receipt. Adds local SHA/attempt-counter head proposal and comparator for a separately retained expected head. Executes all five original Macha #561 E1/E2 scenarios with original test unchanged, plus new hostile tests preserving the full-tail erasure negative. Exact CI run 41976065000: 126 PASS per Python3.11.9/3.12.7. Author-side only; mirrored source/map to #322 and #460.",
+      "negative_or_counterfactual_evidence": "Stronger E1 remains OPEN: deleting BOTH failed evidence/receipt AND local write intent, or all local tail files, restores internally plausible history. Source can only compare to independently saved expected head; no connected external custodian, protected signer, trust, or freshness check. New test proves full local deletion bypass and counterfactual comparison mismatch. Local storage intent is not real optimizer update intent; no physical per-attempt model/Adam/EMA evidence; no training or biology.",
+      "test_review_scope": "Macha original PR561 tests blob be259ab4cdcf035d7bf05134f68b6fe8d09f8833 unchanged and all five original cases run on PR564. Legacy PR555/559/563 tests preserved. New source blob 15f4f0e3a309e206db4a52034b1be548f8410fa8, test c8ed0b1627d2b4768f7151bfabff237dd1414997, exact GitHub Actions 41976065000 2/2 success each 126 tests. No model.",
+      "independent_review": "PR564_AUTHOR_CI_GREEN__ORIGINAL_MACHA_561_E1_E2_PASS_SCOPED__EXTERNAL_FULL_E1_NOT_ESTABLISHED__MACHA_REVIEW_PENDING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Independent Macha exact-head review of PR564 local intent security and self-supplied head weakness. Do not characterize scoped E1 tests as complete E1 tamper protection.",
+        "Owner-selected out-of-process append-only monotonic attempt/head custodian with independent signing and freshness, not same writer or repository editable by writer.",
+        "True write-ahead neural-attempt intent, per-attempt physically measured gradients/Adam/EMA, typed failure cause and PR562 integration with #559/#563/#564, then full-state checkpoint/restart proof under separate authorization.",
+        "All scientific owner decisions remain: #547 generic-state C2/C3, #541 Task4 HOLD, #551 Task3 signed successor, L04, #525/#533; training OFF and C1–C6 UNASSESSED.",
+        "Preserve original negatives and do not rerun completed TD/Stage81A3/B/R5/V79/V80/PR547 FIT."
+      ],
+      "historical_supersession": "Adds new limited local E1 tests and exact nontraining result, does not revise Event1-83 or approve training/biology.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/564",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/561",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41976065000"
+      ]
     }
   ]
 }
