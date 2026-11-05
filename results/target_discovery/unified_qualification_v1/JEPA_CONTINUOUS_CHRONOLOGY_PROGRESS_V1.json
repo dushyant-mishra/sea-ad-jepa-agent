@@ -3757,7 +3757,7 @@
         },
         {
           "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json",
-          "blob_sha1": "ffdc2c7bc2b97dc9a214fa15683664183f9cf5f5",
+          "blob_sha1": "1b4c08579d7ba97e7852a284a428ac60e02f1ae5",
           "role": "Byte-identical source map, 60 historical locator verification 55/56 public, exact artifact/PR heads/review and permanent update protocol"
         },
         {
