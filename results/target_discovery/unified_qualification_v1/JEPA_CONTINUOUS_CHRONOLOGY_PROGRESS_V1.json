@@ -3228,6 +3228,55 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
       ]
+    },
+    {
+      "event_id": "20261104-SOL-V5-SYNTH2048-FINE-GRAIN-CHECKPOINT-PREFREEZE-AND-MACHA-T1-REPAIR-EVENT78",
+      "date_utc": "2026-11-04",
+      "workstream": "new_owner_fine_grain_V5_checkpoint_mandate_and_independent_macha_collision_training_hold",
+      "implementation_pr": 553,
+      "implementation_head": "f6590e28a3c39f7cd270831d7d7a217223dec23e",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261104_EVENT78_V5_FINE_GRAIN_CHECKPOINTS_MACHA_NEW_RED_AND_SUCCESSOR_HANDOFF.md",
+          "blob_sha1": "c180aaa1564330f2532bbe6aaedcff3abfe5f7e5",
+          "role": "Event78 definitive future-agent historical checkpoint source, PR553 exact 63x2 tests, PR554 Macha T1 156 tests, F1 C2/C3 generic-only and Task3/Task4 new independent RED"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_EVENT78_FINE_GRAIN_V5_CHECKPOINT_AND_MACHA_REVIEW_SOURCE_MAP.json",
+          "blob_sha1": "6efd1d68530963c4a0b774a795782501d4a94dbe",
+          "role": "Event78 structured exact SHAs, PR review heads, CI runs, deferred owner decisions, no-repeat source/result locator"
+        }
+      ],
+      "change_type": "source_custody",
+      "what_already_existed": "Historical u0/u10/u25/u40 and u50/u100/u200/u205 full checkpoint plan and every-update telemetry; original write-once SHA full optimizer/EMA/GradScaler/RNG restore and newer V5 one-step persisted presentation EMA; old T1 205-step loss -99.737960% yet dead 48 protected gradient/moment tensors; original Stage81A3/Stage81B biological failure despite falling loss. Completed Event68 primary source+60 script/data locator, 535 PR/108 recent no-repeat index; Event74 PR547 2048 FIT and Event75 PR548 144 U0 tests, Event77 #550 measured/source feasibility. Latest Macha independent scoped accepted #547 mechanics with rare/perturbation F1 confined to C2 view1 and C2/C3 GENERIC_STATE_ONLY, F2 q ATAC proxy, F3 source-identifying support masks, F4 donor nesting; #548 U0 mechanics only with T1–T5 unresolved and original #552 T1 test-only RED. Macha #549 K04 C1 forged real store method and #551 Task3 R1 reachable public promotion via forged custody, original frozen Task3 unchanged.",
+      "new_work_or_result": "Created draft PR553 exact head f6590e28a3c39f7cd270831d7d7a217223dec23e stacked on #548: proposed full immutable checkpoints at u0 and each completed u1-u40, every fifth u45..u100, every tenth u110 onward, plus terminal, mandatory per-attempt telemetry, source/EMA/RNG/48 gradients/Adam/q rights and no posthoc model selection. Source consists of a pure standard-library spec/receipt mock verifier with no model/checkpoint writer. Hosted workflow 41964769828 SUCCESS on Python 3.11.9 and 3.12.7, 63/63 synthetic receipt and corruption tests each. Separately created draft PR554 exact head b48fbb2d75118177a81ef9f1e411c637ba1768bb stacked on original #548, including Macha #552 exact original RED blob dd3ff92ce1c6ddc8288611efb66f78a103053dd5 unchanged; fixed identity-only same-gene tokens across cells by canonical gene alignment despite differing supports, kept near-collapse unqualified. Hosted workflow 41964985264 SUCCESS, 103 original guarded V5 + 53 source/collapse tests and real 2 TRAIN-cell U0 only, 0 optimizer/EMA updates. No new learned biology. Published Event78 human and machine source/script/result detailed handoff to audit #322 and byte-identically mirrored on handoff #460; owner checkpoint mandate recorded as mandatory before future training.",
+      "negative_or_counterfactual_evidence": "PR553 mock receipt and file SHA tests do not implement actual write-once model/RNG/Adam/EMA checkpoint saver or fresh-process resume; no capture of real training exists. PR554 T1 source scope change does not resolve T2 near-collapse matched-null, T3 self-asserted 48 gradient/Adam booleans, T4 MSE metric direction and donor-paired uncertainty, T5 q withheld vs structurally absent and untrained query identity. Actual 2048 backprop training not run, CUDA parity not tested, no controller/latent truth used. #547 F1 means C2/C3 current fixture only generic state, no rare or perturbation qualified claim; #541 Task4 remains HOLD with new K04 RED #549 and C3 unauthenticated Q11; #551 shows Task3 R1 public promotion REAL_REFERENCE_READY using forged exact class/subclass, R2 HMAC chain unchecked, frozen original untouched. #533 owner prospective rule: original 204 PASS no-regression only, Q08 fresh challenge, 292 gate types include formerly forensic 85, prospective attempt cap; L04 EMERGENT vs TRANSFER and q-blind shared teacher default still owner pending; #525 P01/L06 unresolved.",
+      "test_review_scope": "Direct primary GitHub comments Macha #547 6649187938 and #548 6649188367 plus original test-only PRs #549 #551 #552; source files and blob SHA verified; PR553 2/2 exact-head 63-test Python workflows SUCCESS, PR554 1/1 exact-head 103+53 tests SUCCESS and original Macha #552 blob byte-identical, #548 model no new optimizer or training. No private controller, GPU, real data, new generator, source replay or model candidate pass.",
+      "independent_review": "MACHA_PR547_ACCEPT_SCOPED_DEVELOPMENT_FIXTURE_MECHANICS_ONLY__PR548_ACCEPT_SCOPED_U0_MECHANICS_ONLY__NEW_PR553_PR554_MACHA_REVIEW_PENDING__TASK4_HOLD_TASK3_HMAC_REPAIR_OWNER_PENDING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha independently reviews PR553 fine-grained prefreeze mock checkpoint/cadence and PR554 T1 cross-cell aligned exact-collapse repair against unchanged #552 RED.",
+        "Owner authorizes exact future experiment source/rights, L04 EMERGENT vs TRANSFER q sets and q-blind teacher default, #533 fresh 292-type challenge law+attempt cap, Task3 externally signed custody successor, PR547 generic-only vs prospectively distributed v2 fixture.",
+        "Implement actual V5 guarded multi-update checkpoint writer with complete parameters/Adam/scaler/EMA/presentation/mask/source/RNG, every early u1..u40 full immutable SHA and every-attempt physical telemetry, forced interruption/restart parity, durable owner storage, and true 48 gradient/moment check before training.",
+        "Resolve V5 #548 T2 near-collapse matched-null, T3 physically verified gradients and moments, T4 metric sign and held-donor uncertainty, T5 q measured/withheld and legal C3 readout; no source/leak or biology PASS.",
+        "Task4 #541 HOLD, new #549 K04 instance-shadow-store C1 attack requires versioned independent Sol repair and Macha acceptance without editing original RED, C3 Q11 unauthenticated; #551 frozen Task3 public REAL_REFERENCE_READY forgery requires owner reviewed successor, do not in-place edit frozen Task3.",
+        "Keep #525 P01 external TD-issued expected portfolio SHA and L06 external prospective commit gate; original V79/V80 Q08 failure unchanged; don't rerun spent TD and synthetic historical runs."
+      ],
+      "historical_supersession": "Supersedes Event75/77 statements that Macha #547 and #548 independent reviews are pending: both are now scoped accepted with F1 and T1–T5 limitations. Event78 adds actual new PR553 and PR554 author CI source proof and later tests, without rewriting any prior event or changing scientific authority.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/553",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41964769828",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/554",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41964985264",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/552",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/547#issuecomment-6649187938",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/548#issuecomment-6649188367",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/549",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/551",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/541",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/533"
+      ]
     }
   ]
 }
