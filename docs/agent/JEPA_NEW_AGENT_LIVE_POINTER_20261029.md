@@ -1,3 +1,17 @@
+# READ FIRST — EVENT85 (2026-11-05): PR565 TYPED COLLAPSE-CAUSE + DURABLE ONSET BYTES, SYNTHETIC SMOKE ONLY
+
+**Canonical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `9a146bac60ecb13e13269a866ae21321ccec839d`, 85 append-only events, 25/25 checks SUCCESS.** New draft [PR #565](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/565) exact head `6df804682098fa9eff6c8a95b29866c70cb45920`, stacked on #564. Hosted integration `42050634006` **186/186 per Python 3.11.9/3.12.7 SUCCESS**; checkpoint prefreeze `42050633949` **63/63 per Python version SUCCESS**. Macha independent acceptance PENDING; no model execution.
+
+**Read first:** `docs/agent/JEPA_20261105_EVENT85_TYPED_ONSET_DISK_INTEGRATION_SMOKE_NO_TRAINING.md` and `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT85_TYPED_ONSET_DISK_INTEGRATION_SOURCE_MAP.json`, byte-identical across #322 and #460. Then Event84, 83, 82 and Event81 original handoff; use Event75/68 source maps rather than recrawling history.
+
+**What improved:** Byte-identical #562 cause validator plus original unchanged Macha #557/#560 tests now coexist with PR564 journal and original unchanged Macha #561 tests in one integration branch. Versioned typed API refuses failed onset without a reported cause, writes the canonical JSON receipt through physically fsynced bytes and verifies its SHA; early clean end before planned run horizon is **INCOMPLETE**, not a planned success. Synthetic fake u0–12 + failed u13 `CELL_CONSTANT` smoke and fresh-process cause/last-healthy-opaque-byte check pass; injected crash yields read-only u12 recovery. No failed update can silently count as successful checkpoint while its STOP exists.
+
+**What remains unproven:** All cause/biology metrics are *self-reported*, not measured from actual neural states; no per-attempt true 48-gradient/Adam/EMA and counterfactual CELL/gene-token/lineage telemetry, full V5 encoder/teacher/predictor/optimizer/RNG/source/rights checkpoint or exact next neural update replay. Raw legacy disk writer still accepts arbitrary bytes but V2 typed wrapper explicitly refuses; do not confuse. An attacker deleting every local tail and intent still defeats local-only head; no protected independent custodian. Owner threat model emphasizes crashes/accidental loss, not malicious attack, but this limit must remain visible. **Training OFF.** C1–C6 UNASSESSED, Task4 #541 HOLD, Task3 #551 and L04/#525/#533 owner decisions open.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT84 (2026-11-05): SCOPED #561 E1 LOCAL INTENT BLOCK; EXTERNAL CUSTODY STILL MISSING
 
 **Canonical audit #322 exact head `fbdbe76af00f5ee2056a85ce04d6d5e374c8a5d2`, 84 append-only events, 25/25 checks SUCCESS.** [Draft PR #564](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/564) exact head `5cd20a418c360a6cb9b532a70ec48cf5e3a58dc7`, stacked on #563. Hosted author CI `41976065000`: **126/126 passed on each Python 3.11.9/3.12.7**. Macha independent #564 review PENDING; no model, optimizer/EMA, GPU or training.
