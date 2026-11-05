@@ -1624,5 +1624,24 @@
     "checkpoint_mandate": "NO_TRAINING_UNTIL_ACTUAL_COMPLETE_V5_MODEL_STATE_ATOMIC_FULL_EVERY_EARLY_UPDATE_AND_EVERY_ATTEMPT_TRUE_GRAD_ADAM_EMA_COUNTERFACTUAL_ONSET_CAPTURE__FRESH_PROCESS_NEXT_UPDATE_REPLAY__EXTERNAL_OWNER_SIGNED_TRUST",
     "next_safe_task": "RECHECK_LIVE_MACHA_COMMENTS_AND_IMPLEMENT_READ_ONLY_PHYSICAL_EVIDENCE_OR_U0_FULL_MODEL_SERIALIZATION_WITHOUT_OPTIMIZER",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_failed_onset_cause_scoped_author_ci_event82_20261105": {
+    "date_utc": "2026-11-05",
+    "event": 82,
+    "scope": "NEW_SCOPED_CODE__AUTHOR_CI_ONLY__INDEPENDENT_REVIEW_PENDING__NO_TRAINING",
+    "new_pr": 562,
+    "exact_head": "f1862ab528ba6ec74302684704b9078627e67b3b",
+    "human_doc": "docs/agent/JEPA_20261105_EVENT82_V5_560_CAUSE_REPAIR_AUTHOR_CI_NO_TRAINING.md",
+    "machine_map": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT82_V5_560_CAUSE_REPAIR_SOURCE_MAP.json",
+    "original_macha_red_unchanged": [
+      "PR557 tests/test_jepa_synth2048_checkpoint_failed_attempt_macha_red.py bfa5345775570205def66eb19a98efc207d28d90",
+      "PR560 tests/test_jepa_synth2048_failed_onset_cause_macha_red.py 3ab6c208206251728116debda1edb226cb5b647a"
+    ],
+    "author_workflow": "41973584129 2/2 successful Python jobs",
+    "accepted_scope": "REJECT_UNCAUSED_FAILED_ONSET__SCOPED_SELF_REPORTED_EXACT_COLLAPSE_CAUSE_FIELDS",
+    "macha_status": "PR562_INDEPENDENT_REVIEW_PENDING__PR558_WHEN_ONLY__PR559_REPAIR_REQUIRED__PR561_RED",
+    "remaining": "External monotonic head anchor, per-attempt intent/telemetry and #561 E1/E2 repair; explicit v2 typed cause + planned horizon bound to run lock; full neural/Adam/EMA/RNG/rights and physical probes before any training authority",
+    "no_repeat": "Events1-81 and original TD, R5, Stage81A/B, V79/V80, PR547/548 unchanged",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
