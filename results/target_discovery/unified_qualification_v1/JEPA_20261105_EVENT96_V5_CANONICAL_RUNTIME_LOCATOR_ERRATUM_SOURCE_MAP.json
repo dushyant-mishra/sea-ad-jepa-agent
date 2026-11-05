@@ -1,0 +1,89 @@
+{
+  "schema": "JEPA_EVENT96_V5_CANONICAL_RUNTIME_ORIGINAL_SOURCE_LOCATOR_ERRATUM_V1",
+  "event": 96,
+  "date_utc": "2026-11-05",
+  "branch_custody": {
+    "canonical_pr": 322,
+    "active_handoff_pr": 460
+  },
+  "scope": "READONLY_SOURCE_LOCATION_AND_GIT_BLOB_IDENTITY__NO_CODE_OR_MODEL_EXECUTION",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "original_source": {
+    "pr": 224,
+    "exact_head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537"
+  },
+  "prior_unresolved": {
+    "legacy_event": 68,
+    "legacy_locator_id": "canonical_v5_runtime",
+    "invalid_path": "src/sea_ad_jepa/v5/canonical_runtime.py",
+    "original_head_fetch_status": "NOT_FOUND",
+    "event90_status": "ERRATUM_OPEN__LOCATE_ORIGINAL_OWNER_PR",
+    "path_now_exists": false,
+    "status": "LITERAL_PATH_STILL_INVALID__ROLE_RESOLVED_WITH_EXISTING_GUARDED_FILES"
+  },
+  "new_human": {
+    "path": "docs/agent/JEPA_20261105_EVENT96_CANONICAL_V5_GUARDED_RUNTIME_SOURCE_LOCATOR_ERRATUM_NO_EXECUTION.md",
+    "git_blob_sha1": "adecd87142f72924fa225293f6448acc4850833e"
+  },
+  "exact_original_sources": [
+    {
+      "role": "GUARDED_CANONICAL_ENTRYPOINT",
+      "path": "src/sea_ad_jepa/v5/inactive_guarded_update_v1.py",
+      "git_blob_sha1": "59647eb0122dfd98068844f68b6d48c2c33d67ca",
+      "definition": "run_guarded_inactive_reference_update",
+      "scope": "one guarded prefreeze rehearsal update; no training authorization"
+    },
+    {
+      "role": "SPLIT_NUMERICAL_CONSUMER",
+      "path": "src/sea_ad_jepa/v5/inactive_update_reference.py",
+      "git_blob_sha1": "ab266faa31ac7d3e51acf695a7deff1702368cde",
+      "definition": "run_inactive_reference_update",
+      "scope": "model loss, preallocated evidence, supplied guarded backward/optimizer/EMA callbacks"
+    },
+    {
+      "role": "MUTATION_AUTHORITY",
+      "path": "src/sea_ad_jepa/v5/prefreeze_runtime_authority.py",
+      "git_blob_sha1": "41a6ebde613ee3ec5c898fa39e5a212c14eaac66",
+      "scope": "PrefreezeMechanicalAuthorityV1 and PrefreezeOptimizerGuardV1"
+    },
+    {
+      "role": "KEYED_V5_ENCODER",
+      "path": "src/sea_ad_jepa/v5/keyed_dropout_prototype_v2.py",
+      "git_blob_sha1": "0fd06ae0891625924761ef097b20ba6e11495cb3",
+      "scope": "KeyedIPBEncoderV2Reference"
+    },
+    {
+      "role": "ORIGINAL_CANONICAL_ROLE_RED_TEST",
+      "path": "tests/test_v5_canonical_runtime_convergence_red.py",
+      "git_blob_sha1": "33d62e1a96e44b375467da3d88ee49f8430fc2fd",
+      "scope": "explicitly names inactive_update_reference.py as consumer and refuses direct EMA/alternate generic rehearsal"
+    }
+  ],
+  "cross_ref_verification": {
+    "identical_git_blobs_at_all_five_paths": true,
+    "exact_heads": [
+      "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+      "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "cde03f738c758694aa66211b5021603af943675b"
+    ],
+    "source_document_recovered_previously": {
+      "path": "docs/agent/JEPA_20261104_SYNTH2048_EXACT_LATEST_MODEL_RUNTIME_AUDIT.md",
+      "at": "cde03f738c758694aa66211b5021603af943675b",
+      "git_blob_sha1": "6aed686ba7b942862f68cc603c537251cd9b21ac"
+    }
+  },
+  "old_main_warning": {
+    "path": "src/sea_ad_jepa/v5/inactive_update_reference.py",
+    "older_main_git_blob_sha1": "3dc61b629c1d4723e7df058f72c1497c4b4c6c20",
+    "guarded_entrypoint_on_main": false,
+    "old_consumer_direct_ema_and_optimizer_mutation": true,
+    "required": "DO_NOT_USE_DEFAULT_MAIN_AS_GUARDED_V5_SOURCE"
+  },
+  "test_execution": {
+    "performed": false,
+    "reason": "read-only Git content and blob verification only"
+  },
+  "preserve": "Do not mutate Events68/90, original RED tests or source; this is an additive role-locator erratum. Historical public original-path retrieval remains 55/56; the one invalid path remains invalid despite role resolution.",
+  "no_repeat": "Do not rebuild guarded V5 actor, EMA or mechanical runtime. Macha owns independent #579 review and integrated #575/#576/#577/#579/#578 repairs; no collision. No training/optimizer/GPU/source read.",
+  "owner_v80_status": "OWNER_CONFIRMED_PERSONAL_DOWNLOAD_COMPLETE__V80_BACKUP_RESOLVED"
+}
