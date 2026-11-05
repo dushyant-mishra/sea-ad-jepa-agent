@@ -40,7 +40,14 @@ def _structure_sha256(bundle: dict) -> str:
     }
     layout = sorted((name, list(d["shape"]), d["dtype"])
                     for name, d in bundle["parameter_layout"].items())
-    groups = [len(g["params"]) for g in bundle["optimizer"]["param_groups"]]
+    # Optimizer state_dict uses integer IDs and positional param_groups.
+    # The same tensor shapes/counts are insufficient to prove that the
+    # moments still belong to the SAME named parameters at every update.
+    # Normalize IDs to names, retaining exact ordered group membership.
+    by_id = {desc["optimizer_param_id"]: name
+             for name, desc in bundle["parameter_layout"].items()}
+    groups = [[by_id[pid] for pid in group["params"]]
+              for group in bundle["optimizer"]["param_groups"]]
     raw = json.dumps({"modules": modules, "layout": layout, "groups": groups},
                      sort_keys=True, separators=(",", ":")).encode("ascii")
     return sha256(raw).hexdigest()
