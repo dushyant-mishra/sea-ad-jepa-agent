@@ -180,6 +180,49 @@ def validate_update_mechanics_receipt(receipt: Mapping[str, object]) -> None:
                   "INCOMPLETE_OPTIMIZER_TO_EMA_CHAIN")
 
 
+
+def validate_failed_attempt_onset_receipt(receipt: Mapping[str, object]) -> dict[str, object]:
+    """Retain a failed attempted update as STOP evidence, never a passed update.
+
+    The original #553 validator rejected the most important observation:
+    zero protected gradients or AMP-skip at attempted u(N+1). This schema
+    remains self-reported and is NOT physical gradient/Adam proof.
+    """
+    refuse_unless(type(receipt) is dict
+                  and set(receipt) == REQUIRED_STOP_FIELDS,
+                  "FAILED_ATTEMPT_TELEMETRY_INCOMPLETE")
+    exact_integer(receipt["update_index"], "FAILED_ATTEMPT_UPDATE")
+    refuse_unless(receipt["update_index"] > 0, "FAILED_ATTEMPT_INDEX")
+    for key in ("success", "optimizer_step_proved", "ema_completed_after_optimizer",
+                "presentation_cursor_advanced", "amp_skipped_step",
+                "query_visible_to_student", "finite_state", "telemetry_committed"):
+        refuse_unless(type(receipt[key]) is bool,
+                      "FAILED_ATTEMPT_" + key.upper() + "_TYPE")
+    for key in ("protected_attention_tensor_count", "missing_or_nonfinite_gradients",
+                "exact_zero_protected_gradients", "missing_or_nonfinite_moments",
+                "exact_zero_protected_adam_moments", "teacher_gradient_count"):
+        exact_integer(receipt[key], key)
+    refuse_unless(receipt["telemetry_committed"] is True, "FAILED_ONSET_NOT_RECORDED")
+    refuse_unless(receipt["success"] is False, "FAILED_ONSET_MUST_NOT_PASS")
+    refuse_unless(receipt["optimizer_step_proved"] is False
+                  and receipt["ema_completed_after_optimizer"] is False
+                  and receipt["presentation_cursor_advanced"] is False,
+                  "FAILED_ONSET_CLAIMS_OPTIMIZER_OR_EMA")
+    return {
+        "status": "FAILED_ATTEMPT_RETAINED_AS_UNTRUSTED_STOP_EVIDENCE",
+        "attempt_update_index": receipt["update_index"],
+        "protected_attention_tensors_reported": receipt["protected_attention_tensor_count"],
+        "exact_zero_gradients_reported": receipt["exact_zero_protected_gradients"],
+        "missing_or_nonfinite_gradients_reported": receipt["missing_or_nonfinite_gradients"],
+        "amp_skip_reported": receipt["amp_skipped_step"],
+        "query_leak_reported": receipt["query_visible_to_student"],
+        "nonfinite_state_reported": not receipt["finite_state"],
+        "resumable_or_authorizing": False,
+        "physical_gradient_or_adam_moment_evidence_verified": False,
+    }
+
+
+
 def verify_capture_inventory(
     *,
     horizon: int,
@@ -194,10 +237,21 @@ def verify_capture_inventory(
     """
     required = canonical_checkpoint_steps(horizon)
     refuse_unless(len(checkpoints) == len(required), "MISSING_CHECKPOINT_WINDOW")
-    refuse_unless(len(per_update_receipts) == horizon, "UPDATE_TELEMETRY_GAPS")
-    for i, row in enumerate(per_update_receipts, start=1):
+    # horizon denotes COMPLETED updates. At most one final, failed u(horizon+1)
+    # is retained as observational STOP evidence. Never call it a checkpoint.
+    refuse_unless(
+        len(per_update_receipts) in (horizon, horizon + 1), "UPDATE_TELEMETRY_GAPS"
+    )
+    for i, row in enumerate(per_update_receipts[:horizon], start=1):
         validate_update_mechanics_receipt(row)
         refuse_unless(row["update_index"] == i, "UPDATE_SEQUENCE_CHANGED")
+    failed_attempt = None
+    if len(per_update_receipts) == horizon + 1:
+        failed_attempt = validate_failed_attempt_onset_receipt(
+            per_update_receipts[horizon]
+        )
+        refuse_unless(failed_attempt["attempt_update_index"] == horizon + 1,
+                      "FAILED_ATTEMPT_OUT_OF_ORDER")
     folder = root.resolve()
     for row, step in zip(checkpoints, required):
         refuse_unless(type(row) is dict
@@ -222,7 +276,12 @@ def verify_capture_inventory(
         "schema": TRACE_SCHEMA,
         "status": "PREFREEZE_RECEIPT_SHAPE_AND_FILE_SHA_TEST_ONLY",
         "required_completed_checkpoints": list(required),
-        "update_telemetry_windows": horizon,
+        "update_telemetry_windows": len(per_update_receipts),
+        "last_valid_completed_update": horizon,
+        "failed_attempt_recorded": failed_attempt is not None,
+        "failed_attempt": failed_attempt,
+        "failed_attempt_never_authorizes_resumable_checkpoint": True,
+        "all_telemetry_is_self_reported_not_physical_evidence": True,
         "actual_neural_updates_verified": False,
         "actual_resume_parity_verified": False,
         "training_authorized": False,
