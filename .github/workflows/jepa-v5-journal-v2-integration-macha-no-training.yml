@@ -1,0 +1,48 @@
+name: V5 journal V2 integration of #575/#576/#577/#578/#579/#580/#581 (Macha, NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - scripts/v5/jepa_synth2048_attempt_journal_v2.py
+      - scripts/v5/jepa_v5_structured_journal_preflight_v1.py
+      - scripts/v5/jepa_v5_full_state_readonly_audit_v1.py
+      - scripts/v5/measure_attempt_journal_v2_io_no_training.py
+      - tests/test_jepa_synth2048_*.py
+      - tests/test_jepa_v5_full_state_readonly_audit_v1*.py
+      - tests/test_jepa_v5_structured_journal_preflight_v1*.py
+      - tests/test_jepa_v5_journal_integration_macha_v1.py
+      - .github/workflows/jepa-v5-journal-v2-integration-macha-no-training.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  combined-synthetic-no-optimizer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install pytest, numpy and CPU-only PyTorch (no CUDA, no datasets)
+        run: |
+          python -m pip install --disable-pip-version-check pytest==9.0.2 numpy
+          python -m pip install --disable-pip-version-check --index-url https://download.pytorch.org/whl/cpu "torch==2.5.1"
+      - name: Cross-component integration tests (fake bytes and fake CPU tensors)
+        env:
+          PYTHONPATH: src:.
+        run: python -m pytest -q tests/test_jepa_v5_journal_integration_macha_v1.py
+      - name: Every original and repair suite, unchanged, on the combined tree
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python -m pytest -q $(ls tests/test_jepa_synth2048_*.py \
+            tests/test_jepa_v5_full_state_readonly_audit_v1*.py \
+            tests/test_jepa_v5_structured_journal_preflight_v1*.py)
+      - name: I/O read budget on the combined journal (1 KiB fake states, 40 updates)
+        env:
+          PYTHONPATH: src:.
+        run: python scripts/v5/measure_attempt_journal_v2_io_no_training.py ci "$RUNNER_TEMP/io" 1024 40
