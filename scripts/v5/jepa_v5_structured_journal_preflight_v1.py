@@ -12,6 +12,7 @@ It does not add a new kind of V2 scientific outcome or restart authority.
 from __future__ import annotations
 
 from hashlib import sha256
+import json
 import os
 from pathlib import Path
 
@@ -24,6 +25,25 @@ AUTHORITY = journal.AUTHORITY
 # manifest, Philox contract or keyed seed between recorded updates.
 # New processes cannot continue V2 updates at all. Not external custody.
 _OPENING_CONTRACTS: dict[tuple[int, str], dict] = {}
+# Macha #575 review: the u0 model/optimizer structure (tensor names, shapes,
+# dtypes, optimizer group layout). Every later commit must match it, so a
+# reshaped or missing module cannot become the "last probe-pass" checkpoint.
+_OPENING_STRUCTURE: dict[tuple[int, str], str] = {}
+
+
+def _structure_sha256(bundle: dict) -> str:
+    """Digest of structure only: names, shapes, dtypes; never tensor values."""
+    modules = {
+        label: sorted((name, list(t.shape), str(t.dtype))
+                      for name, t in bundle["modules"][label].items())
+        for label in sorted(bundle["modules"])
+    }
+    layout = sorted((name, list(d["shape"]), d["dtype"])
+                    for name, d in bundle["parameter_layout"].items())
+    groups = [len(g["params"]) for g in bundle["optimizer"]["param_groups"]]
+    raw = json.dumps({"modules": modules, "layout": layout, "groups": groups},
+                     sort_keys=True, separators=(",", ":")).encode("ascii")
+    return sha256(raw).hexdigest()
 
 
 class StructuredJournalRefusal(ValueError):
@@ -111,6 +131,7 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
         "schema": SCHEMA,
         "snapshot_sha256": digest,
         "snapshot_bytes": len(raw),
+        "structure_sha256": _structure_sha256(bundle),
         "state_update": expected_update,
         "model_component_names": report["model_modules"],
         "all_trainable_parameter_names_present":
@@ -171,6 +192,7 @@ def open_synthetic_journal(*, root: Path, custody: Path,
     insist(result["training_authorized"] is False,
            "JOURNAL_PROMOTED_TRAINING")
     _OPENING_CONTRACTS[(os.getpid(), str(Path(root).absolute()))] = args
+    _OPENING_STRUCTURE[(os.getpid(), str(Path(root).absolute()))] =         check["structure_sha256"]
     return {
         "status": "SYNTHETIC_U0_STRUCTURED_BYTES_RECORDED",
         "run_id": run_id, "state": check,
@@ -205,6 +227,9 @@ def commit_synthetic_preflight(*, root: Path, custody: Path,
         "OPENING_PROCESS_CONTRACT_CHANGED_OR_UNKNOWN")
     check = check_structured_bytes(
         state_bytes, expected_update=update, **args)
+    insist(_OPENING_STRUCTURE.get((os.getpid(), str(Path(root).absolute())))
+           == check["structure_sha256"],
+           "MODEL_OR_OPTIMIZER_STRUCTURE_CHANGED_SINCE_U0")
     journal._validate_probe(
         reported_probe, update=update,
         state_sha256=check["snapshot_sha256"], lock=lock)
