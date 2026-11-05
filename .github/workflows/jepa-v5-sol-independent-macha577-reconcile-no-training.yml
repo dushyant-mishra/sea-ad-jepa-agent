@@ -1,0 +1,37 @@
+name: Sol independent Macha #577 reconcile review (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/jepa_synth2048_attempt_journal_v2.py'
+      - 'tests/test_jepa_synth2048_attempt_journal_v2_sol_reconcile_review_red.py'
+      - '.github/workflows/jepa-v5-sol-independent-macha577-reconcile-no-training.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  read-only-fake-bytes-review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install --disable-pip-version-check pytest==9.0.2
+      - name: Independent Sol reconciliation RED and existing Macha regression
+        env:
+          PYTHONPATH: .
+          CUDA_VISIBLE_DEVICES: ""
+        run: |
+          python -m pytest -q \
+            tests/test_jepa_synth2048_attempt_journal_v2_sol_reconcile_review_red.py \
+            tests/test_jepa_synth2048_attempt_journal_v2_io_cache_macha_red.py \
+            tests/test_jepa_synth2048_attempt_journal_v2_io_cache_macha_controls.py \
+            tests/test_jepa_synth2048_attempt_journal_v2_macha_red.py \
+            tests/test_jepa_synth2048_attempt_journal_v2_macha_controls.py \
+            tests/test_jepa_synth2048_attempt_journal_v2_fork_writer_sol_red.py \
+            tests/test_jepa_synth2048_attempt_journal_v2_incremental_io_sol_red.py
