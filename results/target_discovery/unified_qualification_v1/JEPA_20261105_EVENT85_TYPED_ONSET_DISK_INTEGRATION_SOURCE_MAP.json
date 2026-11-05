@@ -1,0 +1,85 @@
+{
+  "schema": "JEPA_20261105_EVENT85_TYPED_FAILURE_ONSET_DISK_INTEGRATION_MAP_V1",
+  "date_utc": "2026-11-05",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "scope": "TYPE_CHECKED_SELF_REPORTED_CAUSE_PLUS_PHYSICAL_OPAQUE_DISK_ONLY__NO_NEURAL",
+  "new_pr": 565,
+  "head": "6df804682098fa9eff6c8a95b29866c70cb45920",
+  "base_pr": 564,
+  "base_head": "5cd20a418c360a6cb9b532a70ec48cf5e3a58dc7",
+  "source_blobs": [
+    [
+      "scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py",
+      "d83e5075a98376f43f3e4263be55a2fe7cf12da7"
+    ],
+    [
+      "scripts/v5/jepa_synth2048_typed_onset_disk_integration_v2.py",
+      "26dec2aa3f7448365c1e0e9cae1230964c69ad48"
+    ],
+    [
+      "tests/test_jepa_synth2048_typed_onset_disk_integration_v2.py",
+      "16f1686f1f8e575e9c32c25538a40eb337c326ad"
+    ],
+    [
+      ".github/workflows/jepa-synth2048-typed-onset-disk-integration-no-training.yml",
+      "96b097f4b68f2e03ddf672fa5cdcb5d5ebf87611"
+    ],
+    [
+      ".github/workflows/jepa-synth2048-checkpoint-prefreeze.yml",
+      "8e2190e922e95c9f65e6e485b815d01937696ac4"
+    ],
+    [
+      "docs/agent/JEPA_20261105_V5_TYPED_ONSET_DISK_INTEGRATION_NO_TRAINING.md",
+      "93c53514330b0429c2760a9212c1ad9e115dc32f"
+    ]
+  ],
+  "original_macha_tests_unchanged": [
+    {
+      "pr": 557,
+      "blob": "bfa5345775570205def66eb19a98efc207d28d90"
+    },
+    {
+      "pr": 560,
+      "blob": "3ab6c208206251728116debda1edb226cb5b647a"
+    },
+    {
+      "pr": 561,
+      "blob": "be259ab4cdcf035d7bf05134f68b6fe8d09f8833"
+    }
+  ],
+  "ci": [
+    {
+      "run": 42050634006,
+      "name": "typed onset physical disk integration",
+      "python_311": "186 PASSED",
+      "python_312": "186 PASSED",
+      "status": "SUCCESS"
+    },
+    {
+      "run": 42050633949,
+      "name": "checkpoint prefreeze",
+      "python_311": "63 PASSED",
+      "python_312": "63 PASSED",
+      "status": "SUCCESS"
+    }
+  ],
+  "smokes": [
+    "fake completed u0..u12 plus failed onset 13 cause record",
+    "uncased failure refuses before write",
+    "tampered physical evidence refuses",
+    "interrupted failed receipt preserves verified last healthy checkpoint u12",
+    "fresh process physically rechecks cause and last checkpoint bytes",
+    "healthy nonzero low-rank not exact collapse",
+    "full local tail deletion still bypasses local journal; expected externally retained head detects only conditional mismatch"
+  ],
+  "limits": [
+    "No real neural/optimizer/EMA/GPU execution",
+    "All cause, identity and sentinel fields self-reported",
+    "No full V5 model/Adam/RNG/rights state or bitwise next optimizer replay",
+    "No every-attempt physical telemetry or genuine pre-update write-ahead",
+    "No independent external journal head custodian",
+    "No Macha independent #565 verdict"
+  ],
+  "review": "MACHA_INDEPENDENT_REVIEW_PENDING",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
