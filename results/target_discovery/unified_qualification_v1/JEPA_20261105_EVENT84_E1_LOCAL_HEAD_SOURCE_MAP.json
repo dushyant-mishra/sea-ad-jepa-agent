@@ -1,0 +1,55 @@
+{
+  "schema": "JEPA_EVENT84_E1_LOCAL_INTENT_EXTERNAL_HEAD_COMPARISON_V1",
+  "date_utc": "2026-11-05",
+  "scope": "SCOPED_LOCAL_DELETION_DEFENSE_AUTHOR_CI_ONLY_NOT_FULL_E1_CLOSURE",
+  "repo": "dushyant-mishra/sea-ad-jepa-agent",
+  "implementation_pr": 564,
+  "implementation_head": "5cd20a418c360a6cb9b532a70ec48cf5e3a58dc7",
+  "stacked_on_pr": 563,
+  "stacked_on_head": "0acbf16407f63560bbd8a1cc81030cf232068c71",
+  "macha_unchanged": {
+    "pr": 561,
+    "head": "f59f9f8fd9fec198c1b84501d78591e7a6e90820",
+    "test_path": "tests/test_jepa_synth2048_failed_onset_journal_macha_red.py",
+    "test_blob": "be259ab4cdcf035d7bf05134f68b6fe8d09f8833",
+    "all_five_test_cases_executed": true
+  },
+  "changed_files": [
+    {
+      "path": "scripts/v5/jepa_synth2048_atomic_checkpoint_bytes_v1.py",
+      "blob": "15f4f0e3a309e206db4a52034b1be548f8410fa8"
+    },
+    {
+      "path": "tests/test_jepa_synth2048_write_intent_e1_scoped_v1.py",
+      "blob": "c8ed0b1627d2b4768f7151bfabff237dd1414997"
+    },
+    {
+      "path": ".github/workflows/jepa-synth2048-atomic-checkpoint-bytes.yml",
+      "blob": "61a8b1bf45cecfe03aad4bcea9edf068b9e4cf8c"
+    },
+    {
+      "path": "docs/agent/JEPA_20261105_V5_561_E1_LOCAL_INTENT_EXTERNAL_HEAD_SCOPED.md",
+      "blob": "95c8c0bb9bb7e4ec9dc9d279758c76af530da968"
+    }
+  ],
+  "ci": {
+    "run_id": 41976065000,
+    "python_3_11_9": "126 PASSED",
+    "python_3_12_7": "126 PASSED",
+    "status": "SUCCESS"
+  },
+  "scoped_positive": "Macha E1a/E1b deletion of failure evidence or checkpoint receipt while retaining same-directory write intent now refuses; E2 unchanged original tests pass; orphaned intent forensic-only",
+  "negative_preserved": "Attacker deleting all local intent files as well can still forge a locally consistent truncated history; external held expected head/count detects difference only if authenticated elsewhere",
+  "external_signer_connected": false,
+  "external_custodian_connected": false,
+  "independent_review": "MACHA_PR564_EXACT_HEAD_PENDING",
+  "physical_neural_training_occurred": false,
+  "open": [
+    "trusted out-of-process monotonic external custody head and signer",
+    "actual pre-optimizer begin-attempt and every-attempt durable telemetry",
+    "typed PR562 causes integrated into physical journal",
+    "complete neural/Adam/EMA/RNG model checkpoint and restart parity",
+    "all scientific/Task4/Task3 owner authority decisions"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
