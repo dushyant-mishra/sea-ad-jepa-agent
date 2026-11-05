@@ -6,6 +6,8 @@ on:
       - tests/test_jepa_synth2048_checkpoint_capture_prefreeze_v1.py
       - tests/test_jepa_synth2048_checkpoint_failed_attempt_macha_red.py
       - tests/test_jepa_synth2048_failed_onset_repair_sol_v1.py
+      - tests/test_jepa_synth2048_failed_onset_cause_macha_red.py
+      - tests/test_jepa_synth2048_failed_onset_cause_successor_v1.py
       - results/target_discovery/unified_qualification_v1/JEPA_SYNTH2048_V5_FINE_GRAIN_CHECKPOINT_PREFREEZE_V1.json
       - docs/agent/JEPA_20261104_V5_SYNTH2048_FINE_GRAIN_CHECKPOINT_CAPTURE_PREFREEZE_AND_REVIEW.md
       - .github/workflows/jepa-synth2048-checkpoint-prefreeze.yml
@@ -30,7 +32,7 @@ jobs:
         env:
           PYTHONPATH: .
         run: |
-          python -m pytest -q tests/test_jepa_synth2048_checkpoint_capture_prefreeze_v1.py tests/test_jepa_synth2048_checkpoint_failed_attempt_macha_red.py tests/test_jepa_synth2048_failed_onset_repair_sol_v1.py
+          python -m pytest -q tests/test_jepa_synth2048_checkpoint_capture_prefreeze_v1.py tests/test_jepa_synth2048_checkpoint_failed_attempt_macha_red.py tests/test_jepa_synth2048_failed_onset_repair_sol_v1.py tests/test_jepa_synth2048_failed_onset_cause_macha_red.py tests/test_jepa_synth2048_failed_onset_cause_successor_v1.py
       - name: Illustrate 60 and 205 update proposals (not execution budgets)
         env:
           PYTHONPATH: .
