@@ -4011,6 +4011,53 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/38504094639"
       ]
+    },
+    {
+      "event_id": "20261105-SOL-ORIGINAL-PR224-V5-GUARDED-RUNTIME-SOURCE-LOCATOR-SCOPED-PROVISIONAL-EVENT96",
+      "date_utc": "2026-11-05",
+      "workstream": "v5_original_pr224_guarded_runtime_role_source_locator_provisional_cross_review_pending_no_training",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261105_EVENT96_CANONICAL_V5_GUARDED_RUNTIME_SOURCE_LOCATOR_ERRATUM_NO_EXECUTION.md",
+          "blob_sha1": "1f17ea1796143a16c0abb448377984daa7a3716c",
+          "role": "Exact-source provisional human Event96, mirrored audit/handoff"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT96_V5_CANONICAL_RUNTIME_LOCATOR_ERRATUM_SOURCE_MAP.json",
+          "blob_sha1": "bbbe6a39670956edacae84dc773db0c521c99831",
+          "role": "Exact source/role/custody/review-pending machine map mirrored audit/handoff"
+        },
+        {
+          "path": "src/sea_ad_jepa/v5/inactive_guarded_update_v1.py",
+          "blob_sha1": "59647eb0122dfd98068844f68b6d48c2c33d67ca",
+          "role": "PR224 bounded canonical guarded one-update wrapper"
+        },
+        {
+          "path": "tests/test_v5_canonical_runtime_convergence_red.py",
+          "blob_sha1": "33d62e1a96e44b375467da3d88ee49f8430fc2fd",
+          "role": "PR224 original runtime convergence source tests"
+        }
+      ],
+      "change_type": "chronology_correction",
+      "what_already_existed": "PR224 bound guarded one-update code and original convergence tests, same five source/test Git blobs at PR525 and PR548; original PR548 existing source audit had already identified V5 mechanics. Event68 incorrectly referred to src/sea_ad_jepa/v5/canonical_runtime.py and Event90 correctly observed missing literal path and left role unresolved. Macha engaged separately in independent #579 and #575/#576/#578 reviews.",
+      "new_work_or_result": "Sol fetched the original PR224 exact head 9d00684e and examined the five actual source/test blobs and explicit module/entrypoint code. Literal canonical_runtime.py path NOT_FOUND at original PR224, #525, #548, #570, #579 and main. Correct nonauthorizing guarded entrypoint appears to be inactive_guarded_update_v1.py blob 59647eb0 which calls numerical consumer inactive_update_reference.py blob ab266faa behind PrefreezeOptimizerGuardV1 in prefreeze_runtime_authority.py blob 41a6ebd. Exact five blobs identical PR224/PR525/PR548. Source role located provisionally; requested independent Macha confirmation on #460 comment 6669210784.",
+      "negative_or_counterfactual_evidence": "Literal path still missing; 404 is not evidence all V5 runtime functionality absent. Old main consumer blob 3dc61b6 with direct optimizer/EMA mutation differs from guarded PR224; do not substitute it. No new code implementation or test execution, no holistic runtime correctness or production readiness. Macha independent verdict not yet received; this is NOT independently accepted. Do not claim that historical file never existed on any unexamined head; explicitly request rename/history cross-check.",
+      "test_review_scope": "Static GitHub source/ref inspections only, no optimizer, EMA, model forward/backward, runtime Python, training, GPU, restricted RNA or sealed controller. Human and machine record mirrored exactly on both branches. Independent reviewer Macha review REQUESTED_PENDING.",
+      "independent_review": "MACHA_INDEPENDENT_SOURCE_LOCATOR_CHECK_REQUESTED_PENDING__https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460#issuecomment-6669210784",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha independently confirm exact missing literal filename vs original runtime entrypoint/renames and issue ACCEPT_SCOPED or CORRECTION_REQUIRED, preserving primary #579 review priority.",
+        "Maintain existing #575/#576/#577/#579/#578 integration only; no runtime rebuild or new optimizer authorization.",
+        "No new V80 backup rescue task; owner download resolved in Event95."
+      ],
+      "historical_supersession": "Keep original Event68 and Event90 false/stale locator records immutable and literal 404 true; add a source-role interpretation that remains pending independent Macha acceptance. Original PR548 source lineage already recovered, not a new missing implementation.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/224",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460#issuecomment-6669210784"
+      ]
     }
   ]
 }
