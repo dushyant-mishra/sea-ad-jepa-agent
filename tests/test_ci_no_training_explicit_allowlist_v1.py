@@ -38,6 +38,14 @@ class ExplicitCollectionSafetyTests(unittest.TestCase):
                 self.assertNotIn("python -m pytest -q tests/test_jepa_v5_*.py", source)
                 self.assertNotIn("python -m pytest -q tests/test_jepa_synth2048_attempt_journal_v2*.py", source)
 
+    def test_ast_gate_rejects_real_step_call_but_allows_teacher_eval_mode(self):
+        from scripts.v5.jepa_v5_ci_explicit_nonstepping_allowlist_v1 import _check_ast
+        _check_ast("teacher.eval()", "safe_mode.py")
+        with self.assertRaisesRegex(RuntimeError, "FORBIDDEN_CALL"):
+            _check_ast("optimizer.step()", "step_disallowed.py")
+        with self.assertRaisesRegex(RuntimeError, "FORBIDDEN_CALL"):
+            _check_ast("eval('1 + 2')", "dynamic_disallowed.py")
+
     def test_manifest_exists_and_contains_explicit_only_gate(self):
         self.assertTrue(ALLOWLIST.is_file(), "MISSING_EXPLICIT_TEST_ALLOWLIST")
         source = ALLOWLIST.read_text(encoding="utf-8")

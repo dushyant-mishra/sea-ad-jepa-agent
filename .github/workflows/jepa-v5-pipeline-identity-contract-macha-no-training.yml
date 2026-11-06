@@ -8,6 +8,7 @@ on:
       - scripts/v5/jepa_v5_full_state_readonly_audit_v1.py
       - scripts/v5/jepa_synth2048_attempt_journal_v2.py
       - tests/test_jepa_v5_*.py
+      - tests/test_jepa_synth2048_*.py
       - results/target_discovery/unified_qualification_v1/JEPA_V5_DEV2048_PIPELINE_IDENTITY_CONTRACT_V1.json
       - .github/workflows/jepa-v5-pipeline-identity-contract-macha-no-training.yml
       - scripts/v5/jepa_v5_ci_explicit_nonstepping_allowlist_v1.py

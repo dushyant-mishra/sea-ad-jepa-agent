@@ -123,7 +123,7 @@ FORBIDDEN_CALL_NAMES = frozenset({
     "step", "backward", "zero_grad", "run_ema", "update_ema", "apply_ema",
     "ema_update", "run_guarded_inactive_reference_update",
     "run_inactive_reference_update", "optimizer_step", "run_training",
-    "fit_model", "train_model", "pytest_main", "eval", "exec", "compile",
+    "fit_model", "train_model", "pytest_main",
 })
 
 
@@ -139,7 +139,10 @@ def _check_ast(source: str, filename: str) -> None:
         func = node.func
         name = (func.attr if isinstance(func, ast.Attribute)
                 else func.id if isinstance(func, ast.Name) else None)
-        if name in FORBIDDEN_CALL_NAMES:
+        if name in FORBIDDEN_CALL_NAMES or (
+                isinstance(func, ast.Name) and name in ("eval", "exec", "compile")):
+            # Builtin eval() is dynamic execution, but nn.Module.eval()
+            # merely switches frozen teacher evaluation mode at U0.
             _refuse(f"FORBIDDEN_CALL:{filename}:{node.lineno}:{name}")
         if (name == "grad" and isinstance(func, ast.Attribute)
                 and isinstance(func.value, ast.Attribute)
