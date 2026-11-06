@@ -1,0 +1,67 @@
+name: V5 DEV2048 original source/data/journal/policy static contract (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - scripts/v5/jepa_v5_dev2048_pipeline_contract_v1.py
+      - tests/test_jepa_v5_dev2048_pipeline_contract_v1.py
+      - scripts/v5/jepa_v5_source_data_custody_gate_v1.py
+      - scripts/v5/jepa_synth2048_v5_readiness.py
+      - scripts/v5/jepa_v5_structured_journal_preflight_v1.py
+      - scripts/v5/jepa_synth2048_attempt_journal_v2.py
+      - .github/workflows/jepa-v5-dev2048-static-data-to-journal-contract-no-training.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  pinned-original-public-dev2048-and-readonly-interfaces:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install only numpy and pytest (NO torch, model, optimizer, CUDA)
+        run: python -m pip install --disable-pip-version-check "numpy==2.2.6" "pytest==9.0.2"
+      - name: Retrieve only original PR547 PUBLIC FIT, SHA verify first
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JEPA_PUBLIC_DEV_FIT_ZIP: ${{ runner.temp }}/ORIGINAL_PR547_PUBLIC_DEV2048_FIT_ONLY.zip
+        run: |
+          gh api "repos/${{ github.repository }}/actions/artifacts/13364085153/zip" > "$JEPA_PUBLIC_DEV_FIT_ZIP"
+          echo "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f  $JEPA_PUBLIC_DEV_FIT_ZIP" | sha256sum --check -
+      - name: Hosted negative controls against wrong V4, wrong source, q-shift, donor, rights and journal claims
+        env:
+          PYTHONPATH: .
+          JEPA_PUBLIC_DEV_FIT_ZIP: ${{ runner.temp }}/ORIGINAL_PR547_PUBLIC_DEV2048_FIT_ONLY.zip
+        run: |
+          python -m pytest -q \
+            tests/test_jepa_v5_source_data_custody_gate_v1.py \
+            tests/test_jepa_v5_dev2048_pipeline_contract_v1.py
+      - name: Emit static identity receipt only; fail closed on any untrusted state or absent synthetic FIT
+        env:
+          PYTHONPATH: .
+          JEPA_PUBLIC_DEV_FIT_ZIP: ${{ runner.temp }}/ORIGINAL_PR547_PUBLIC_DEV2048_FIT_ONLY.zip
+        run: |
+          python scripts/v5/jepa_v5_dev2048_pipeline_contract_v1.py \
+            --repo-root . --public-fit-zip "$JEPA_PUBLIC_DEV_FIT_ZIP" > "${{ runner.temp }}/v5_static_dev_contract.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from scripts.v5.jepa_v5_dev2048_pipeline_contract_v1 import verify_claim, digest
+          r=json.loads((Path(os.environ["RUNNER_TEMP"])/"v5_static_dev_contract.json").read_text())
+          verify_claim(r, r)
+          assert r["contract_sha256"] == digest(r["contract"])
+          assert r["contract"]["data"]["public_zip_exact_verified"]
+          assert r["contract"]["data"]["rna_row_entity_ids_distinct"]
+          assert r["contract"]["data"]["donor_source_and_split_purity_checked"]
+          assert r["contract"]["source"]["post_target_pr525_v4_source_set_is_valid_v5_executor"] is False
+          assert r["contract"]["hard_holds"]["optimizer_step_allowed"] is False
+          assert r["contract"]["hard_holds"]["V5_model_to_journal_end_to_end_executed"] is False
+          print("V5_15_SOURCE_AND_ORIGINAL_DEV2048_DATA_JOURNAL_POLICY_IDENTITY_STATIC_ONLY__TRAINING_OFF")
+          PY
