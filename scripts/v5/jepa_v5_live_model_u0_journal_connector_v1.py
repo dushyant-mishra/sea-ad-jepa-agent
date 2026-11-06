@@ -236,19 +236,25 @@ def capture_real_v5_u0(*, modules: Any, repo_root: Path, public_fit_zip: Path,
     # historic unit tests; that compatibility must NEVER count as evidence
     # that this real-V5 connector has accepted a production actor.
     actual_names = set(bundle["parameter_names"])
-    required_live_tokenizer = {
+    required_online = {
         "online.tokenizer.value_encoder.0.weight",
         "online.tokenizer.value_encoder.0.bias",
         "online.tokenizer.value_encoder.2.weight",
         "online.tokenizer.value_encoder.2.bias",
-        "teacher.tokenizer.value_encoder.0.weight",
-        "teacher.tokenizer.value_encoder.0.bias",
-        "teacher.tokenizer.value_encoder.2.weight",
-        "teacher.tokenizer.value_encoder.2.bias",
     }
-    require(required_live_tokenizer <= actual_names
+    # parameter_names lists *trainable* tensors: the frozen original teacher
+    # must instead be validated from the complete module state_dict.
+    required_teacher = {
+        "tokenizer.value_encoder.0.weight",
+        "tokenizer.value_encoder.0.bias",
+        "tokenizer.value_encoder.2.weight",
+        "tokenizer.value_encoder.2.bias",
+    }
+    teacher_state_names = set(bundle["modules"]["teacher"])
+    require(required_online <= actual_names
+            and required_teacher <= teacher_state_names
             and "online.value_encoder.weight" not in actual_names
-            and "teacher.value_encoder.weight" not in actual_names,
+            and "value_encoder.weight" not in teacher_state_names,
             "TOY_VALUE_ENCODER_OR_INCOMPLETE_ORIGINAL_V5_FORBIDDEN")
     require(checked["snapshot_sha256"] == digest
             and checked["state_update"] == 0
