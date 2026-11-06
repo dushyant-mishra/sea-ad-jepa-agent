@@ -25,6 +25,14 @@ from typing import Any
 from scripts.v5 import jepa_v5_dev2048_pipeline_contract_v1 as contract
 
 SCHEMA = "JEPA_REAL_ORIGINAL_V5_U0_TO_SYNTHETIC_JOURNAL_V1"
+# Do not allow the word "real" (meaning real PyTorch V5 *module* weights)
+# to be misread as real biological data, a trained model or production rights.
+ARTIFACT_CLASS = "QUARANTINED_PUBLIC_SYNTHETIC_DEV_U0_ONLY"
+PRODUCTION_ELIGIBLE = False
+REAL_DONOR_DATA_ELIGIBLE = False
+REAL_TARGET_ISSUER_VERIFIED = False
+REAL_PROBE_PANEL_VERIFIED = False
+TOY_MODULES_ELIGIBLE = False
 AUTHORITY = contract.AUTHORITY
 RUN_ID = re.compile(r"[A-Za-z0-9_-]{1,64}\Z")
 CONFIG = {
@@ -223,6 +231,25 @@ def capture_real_v5_u0(*, modules: Any, repo_root: Path, public_fit_zip: Path,
     except (state.FullStateRefusal, bridge.StructuredJournalRefusal) as exc:
         raise LiveV5JournalRefusal(
             "REFUSE_REAL_V5_U0_JOURNAL_V1__LIVE_MODEL_OR_ADAM_STATE_INVALID") from exc
+    # Snapshot must be the actual original PR224 tokenizer. The lower-level
+    # fake synthetic journal deliberately supports toy fixtures for its
+    # historic unit tests; that compatibility must NEVER count as evidence
+    # that this real-V5 connector has accepted a production actor.
+    actual_names = set(bundle["parameter_names"])
+    required_live_tokenizer = {
+        "online.tokenizer.value_encoder.0.weight",
+        "online.tokenizer.value_encoder.0.bias",
+        "online.tokenizer.value_encoder.2.weight",
+        "online.tokenizer.value_encoder.2.bias",
+        "teacher.tokenizer.value_encoder.0.weight",
+        "teacher.tokenizer.value_encoder.0.bias",
+        "teacher.tokenizer.value_encoder.2.weight",
+        "teacher.tokenizer.value_encoder.2.bias",
+    }
+    require(required_live_tokenizer <= actual_names
+            and "online.value_encoder.weight" not in actual_names
+            and "teacher.value_encoder.weight" not in actual_names,
+            "TOY_VALUE_ENCODER_OR_INCOMPLETE_ORIGINAL_V5_FORBIDDEN")
     require(checked["snapshot_sha256"] == digest
             and checked["state_update"] == 0
             and checked["optimizer_tensor_count"] == 0
@@ -319,6 +346,12 @@ def record_real_v5_u0_to_journal(*, snapshot: RealV5U0Snapshot,
     return {
         "schema": SCHEMA,
         "status": "ACTUAL_ORIGINAL_V5_INITIALIZED_U0_BYTES_RECORDED",
+        "artifact_class": ARTIFACT_CLASS,
+        "production_eligible": PRODUCTION_ELIGIBLE,
+        "real_donor_data_eligible": REAL_DONOR_DATA_ELIGIBLE,
+        "real_target_issuer_verified": REAL_TARGET_ISSUER_VERIFIED,
+        "real_probe_panel_verified": REAL_PROBE_PANEL_VERIFIED,
+        "toy_modules_eligible": TOY_MODULES_ELIGIBLE,
         "data_class": "PR547_PUBLIC_SYNTHETIC_DEV2048_ONLY",
         "checkpoint_class": "DEV_ONLY_U0_INITIALIZATION__NOT_PRODUCTION_CHECKPOINT",
         "source_rights_issuer_verified": False,
@@ -339,6 +372,20 @@ def record_real_v5_u0_to_journal(*, snapshot: RealV5U0Snapshot,
         "training_authorized": False,
         "authority": AUTHORITY,
     }
+
+
+def assert_production_eligible(*args: Any, **kwargs: Any) -> None:
+    """Fail closed, even for caller-provided 'valid' SHA or staged approvals.
+
+    No production pipeline exists in this branch. A future independently
+    signed model/data/target/probe/rights issuer must use a NEW, peer-reviewed
+    implementation and owner authorization. Never promote public synthetic
+    DEV U0 checkpoints, mock probes, or legacy V4 training as production.
+    """
+    raise LiveV5JournalRefusal(
+        "REFUSE_REAL_V5_U0_JOURNAL_V1__PRODUCTION_PATH_NOT_IMPLEMENTED__"
+        "PUBLIC_SYNTHETIC_AND_CALLER_REPORTED_PROBES_NOT_AUTHORIZED"
+    )
 
 
 def refuse_post_step_without_separate_authority(*args: Any, **kwargs: Any) -> None:
