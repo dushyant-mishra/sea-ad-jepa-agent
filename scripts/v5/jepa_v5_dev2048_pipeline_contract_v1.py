@@ -35,7 +35,7 @@ FILE_PINS = {
     "scripts/v5/jepa_v5_source_data_custody_gate_v1.py":
         "c90ece159cc3c8cfb87e9f0757e307413b829d3f",
     "scripts/v5/jepa_v5_structured_journal_preflight_v1.py":
-        "389e03f0921f8f78e592799e6f9f9d2af1145a98",
+        "a70641ea8df7bfe8a20b39e8190e1c4dc3e82d93",
     "scripts/v5/jepa_v5_full_state_readonly_audit_v1.py":
         "ae79cd1b705d33d29c7d28b5481dd0b91ee19ba9",
     "scripts/v5/jepa_synth2048_attempt_journal_v2.py":
