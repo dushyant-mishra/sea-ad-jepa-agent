@@ -34,6 +34,37 @@ jobs:
         run: |
           gh api "repos/${{ github.repository }}/actions/artifacts/13364085153/zip" > "$JEPA_PUBLIC_DEV_FIT_ZIP"
           echo "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f  $JEPA_PUBLIC_DEV_FIT_ZIP" | sha256sum --check -
+      - name: Fail closed before test collection if a selected test can invoke a model update or EMA
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          allowlist = [
+              "tests/test_jepa_v5_live_model_u0_journal_connector_v1.py",
+              "tests/test_jepa_v5_dev2048_pipeline_contract_v1.py",
+              "tests/test_jepa_v5_source_data_custody_gate_v1.py",
+              "tests/test_jepa_v5_structured_journal_preflight_v1.py",
+              "tests/test_jepa_v5_full_state_readonly_audit_v1.py",
+          ]
+          forbidden_calls = {
+              "step", "backward", "run_ema", "run_guarded_inactive_reference_update",
+              "run_inactive_reference_update", "optimizer_step", "ema_update",
+              "apply_ema", "update_ema", "run_training", "fit_model",
+          }
+          assert len(set(allowlist)) == len(allowlist)
+          for name in allowlist:
+              path = Path(name)
+              assert path.is_file(), f"NO_STEP_ALLOWLIST_MISSING: {name}"
+              tree = ast.parse(path.read_text(encoding="utf-8"), filename=name)
+              for call in (n for n in ast.walk(tree) if isinstance(n, ast.Call)):
+                  name_at_call = (call.func.attr if isinstance(call.func, ast.Attribute)
+                                  else call.func.id if isinstance(call.func, ast.Name)
+                                  else None)
+                  assert name_at_call not in forbidden_calls, (
+                      f"FORBIDDEN_OPTIMIZER_BACKWARD_EMA_CALL_IN_TEST: "
+                      f"{name}:{call.lineno}:{name_at_call}")
+          print("ALL_5_EXPLICIT_NO_STEP_NO_BACKWARD_NO_EMA_TEST_FILES_AST_VERIFIED")
+          PY
       - name: Actual PR224 original V5 modules initialized U0 ONLY, read-only capture + V2 journal, hostility tests
         env:
           PYTHONPATH: .:src
