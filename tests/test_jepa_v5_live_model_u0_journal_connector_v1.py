@@ -192,6 +192,15 @@ def test_no_fabricated_adam_moments_at_u0(public_contract):
         capture(modules, public_contract)
 
 
+
+def test_wrong_initialization_seed_cannot_launder_as_original_PR548_U0(public_contract):
+    """Independent RED: same V5 code/shapes but wrong seed is wrong frozen U0."""
+    modules = real_v5(init_seed=8113003)
+    with pytest.raises(live.LiveV5JournalRefusal,
+                       match="INITIAL_WEIGHTS_NOT_PR548_EXACT_SEED"):
+        capture(modules, public_contract)
+
+
 def test_post_step_connector_is_unavailable_until_separate_owner_authority():
     with pytest.raises(live.LiveV5JournalRefusal,
                        match="POST_STEP_REAL_TRAINING_NOT_AUTHORIZED"):
