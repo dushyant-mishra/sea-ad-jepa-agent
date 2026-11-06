@@ -113,7 +113,7 @@
     "scripts/v5/jepa_synth2048_attempt_journal_v2.py": "d5dd8c26cf7e8e99c1d665c6482ce053997fbb09",
     "scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py": "d05a7dc4e399390d882f33e63c3534ae83498933",
     "scripts/v5/jepa_v5_full_state_readonly_audit_v1.py": "ae79cd1b705d33d29c7d28b5481dd0b91ee19ba9",
-    "scripts/v5/jepa_v5_structured_journal_preflight_v1.py": "a7a45fd51cf042d677c18731201f269404ff85e2"
+    "scripts/v5/jepa_v5_structured_journal_preflight_v1.py": "85de1e403818520700c5c9dd16ca28a41e4fedef"
    },
    "origin": {
     "prs": [
@@ -122,8 +122,13 @@
     ]
    },
    "run_directory": "WSL ext4; D: exFAT cannot host the journal",
-   "state_class": "FABRICATED_SYNTHETIC_ONLY",
-   "structure_binding": "u0 names/shapes/dtypes, ordered named AdamW groups, all group fields except lr"
+   "state_class": "SYNTHETIC_FAKE_POST_UPDATE_OR_REAL_PR224_INITIALIZED_U0_ONLY",
+   "structure_binding": "u0 names/shapes/dtypes, ordered named AdamW groups, all group fields except lr",
+   "real_model_initialization_only": "ORIGINAL_PR224_V5_U0_REQUIRES_STRICT_NONTOY_BRIDGE",
+   "real_model_post_step_commit": "FORBIDDEN__NO_TRAINING_AUTHORIZATION",
+   "real_model_qualified_target": "NOT_BOUND",
+   "real_model_physical_probe_panel": "NOT_BOUND",
+   "real_model_production_checkpoint": false
   },
   "dataset": {
    "class": "PR547_PUBLIC_SYNTHETIC_DEV2048_FIT_ONLY",
@@ -4366,12 +4371,12 @@
    }
   }
  },
- "contract_sha256": "b43d0165654de2facf3ad97beb9215fe3c4df8054a59a968c171855901956b02",
+ "contract_sha256": "b71043564f237fc7197ab6b0e5a45a4a5e2dc945d2707fa9ebe44a0633e05daf",
  "journal_bindings": {
   "config_sha256": "7ce98ae874ae885c6d0284d58000000be0bad47e46e7e481f8c7df3f3bb97c92",
   "gene_axis_sha256": "74586512c4ef76b48667a974a2769a8053664c58ec9921cd95da8b92fbf29f86",
   "philox_contract_sha256": "d6cf2c6345bea4ac51ee1325523dc88738aa2105257dd0dda57c4e0650f25d87",
-  "source_manifest_sha256": "b3032f1e3146742fb842f2add0b286d1add81cc89d3c734201e1feea5e5b1d8e",
+  "source_manifest_sha256": "cdfd577ac5549c16900a6a5ae145dc3f280824144449f6f8827b75e06272d66d",
   "source_rights_sha256": "1a3e7780f181ef555de7e12c9fb8a779b0f64332180a2c40365d8ce6db1aaa5c"
  },
  "schema": "JEPA_V5_DEV2048_PIPELINE_IDENTITY_CONTRACT_V1",
