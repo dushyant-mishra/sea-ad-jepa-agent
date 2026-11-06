@@ -2055,5 +2055,19 @@
     "pr525_policy_status": "Non-authorizing four V4-file portfolio planner separate and absent PR582; never train on its source hash as if V5",
     "no_repeat": "Do not regenerate synthetic FIT, reexecute original PR548 U0, reread protected FULL104, train actual RT1–RT8, or reopen resolved Event95 V80 private backup. Contract identity alone is not frozen science/rights or runtime neural state proof; Macha review 583/584/585 pending.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_pipeline_identity_583_584_585_repairs_586_587_contract_588_event102_20261105": {
+    "event": 102,
+    "date_utc": "2026-11-05",
+    "scope": "MACHA_REVIEW_583_584_585_REPAIRS_AND_PIPELINE_IDENTITY_CONTRACT",
+    "pr": 588,
+    "head": "48a9fce2642b736009b3a00b429e886d26dc72d2",
+    "human": "docs/agent/JEPA_20261105_EVENT102_MACHA_VERDICTS_583_584_585_REPAIRS_586_587_INTEGRATION_588_PIPELINE_IDENTITY_CONTRACT_NO_TRAINING.md",
+    "human_sha": "e93b5a8a2d7b969e11d4ddabe068d9e5419a8187",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT102_MACHA_583_584_585_REPAIRS_INTEGRATION_CONTRACT_SOURCE_MAP.json",
+    "machine_sha": "e5a41f44b216bacfbbe03d376d4c422f8e85ff55",
+    "result": "AdamW group fields bound to u0 (#586); 35-file executed V5 closure pinned, shadows refused (#587); DEV2048 pipeline identity contract with derived bindings (#588); PR525 identity is NON_ACTOR; #585 to reconcile.",
+    "do_not_repeat": "Do not re-derive the V5 import closure or re-measure the PR547 FIT; do not bind V5 identity to 15 files or PR525's 4 V4 files; never glob tests/test_v5_* or tests/test_teacher_student_v5_* under a no-step directive.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
