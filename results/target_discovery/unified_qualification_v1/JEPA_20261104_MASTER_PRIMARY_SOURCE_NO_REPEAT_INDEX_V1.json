@@ -2024,5 +2024,36 @@
     "original_public_fit_zip_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
     "not_to_repeat": "Do not redo V80 private backup, old V4 40-step, TD real replay, PR547 data generation or PR548 original V5 U0; do not mistake PR525 V4 policy identity for current V5 executor.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_original_public_dev2048_gene_row_donor_rights_fake_journal_contract_sol585_event101_20261105": {
+    "event": 101,
+    "date_utc": "2026-11-05",
+    "human": "docs/agent/JEPA_20261105_EVENT101_SOL_STATIC_ORIGINAL_V5_PUBLIC_DEV2048_JOURNAL_POLICY_PIPELINE_CONTRACT_NO_TRAINING.md",
+    "human_git_blob_sha1": "bd9248483ad35da39a3ac8a9694f1389aaea0f63",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT101_V5_DEV2048_SOURCE_GENE_ROW_RIGHTS_JOURNAL_STATIC_CONTRACT_MAP.json",
+    "machine_git_blob_sha1": "f89a0ad1da6239b6814b6e56918495682e206363",
+    "original_v5_source": "PR224 12 canonical + 2 private implementation + initializer exact 15 Git blobs match in integrated PR582",
+    "active_dev_dataset": "PR547 original public 1440x2048x36 FIT-only artifact ID 13364085153, ZIP SHA256 87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f; 5 SHA member pins",
+    "physical_dev_row_gene_donor_checks": "Public student q=1672..1675 withheld, 2044 physical q-excluded addresses restored to original 2048, 1440 RNA entity IDs unique, exact artificial donor/source/split nesting; SHA of public teacher member bytes only, not decoded",
+    "sol_new_pr": {
+      "number": 585,
+      "head": "1336899454b50c32f05d62886cffb4c493c79b09",
+      "base_pr": 584,
+      "source_blob_sha1": "3e58581bd54cb3fc427d80248ce74bed0cef9c0c",
+      "hostile_test_blob_sha1": "49f5d39ddbc5993ab9e235cb5d77b610ad4dfc64",
+      "workflow_blob_sha1": "9f910d828123f6551a0555d94750b2a283ad7914",
+      "ci_run": 42160062128,
+      "passed_tests_per_python": 45,
+      "python_versions": [
+        "3.11.9",
+        "3.12.7"
+      ],
+      "jobs_success": 2,
+      "jobs_total": 2,
+      "macha_review": "PENDING"
+    },
+    "pr525_policy_status": "Non-authorizing four V4-file portfolio planner separate and absent PR582; never train on its source hash as if V5",
+    "no_repeat": "Do not regenerate synthetic FIT, reexecute original PR548 U0, reread protected FULL104, train actual RT1–RT8, or reopen resolved Event95 V80 private backup. Contract identity alone is not frozen science/rights or runtime neural state proof; Macha review 583/584/585 pending.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
