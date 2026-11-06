@@ -30,6 +30,9 @@ _OPENING_CONTRACTS: dict[tuple[int, str], dict] = {}
 # dtypes, optimizer group layout). Every later commit must match it, so a
 # reshaped or missing module cannot become the "last probe-pass" checkpoint.
 _OPENING_STRUCTURE: dict[tuple[int, str], str] = {}
+# Authenticated ORIGINAL V5 initialized U0 is not the legacy fake snapshot
+# lane: never allow its journal to commit a fabricated u1 and call it trained.
+_ORIGINAL_V5_U0_ONLY: set[tuple[int, str]] = set()
 # Macha #583 review: PyTorch's positional ``load_state_dict`` copies every
 # saved group field except ``params`` into the live optimizer, so betas,
 # eps, weight_decay, maximize, foreach, fused ... are optimizer structure.
@@ -101,7 +104,8 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
                            gene_axis_sha256: str,
                            source_manifest_sha256: str,
                            philox_contract_sha256: str,
-                           keyed_run_seed: int) -> dict:
+                           keyed_run_seed: int,
+                           require_original_v5: bool = False) -> dict:
     """Check state *structure and declarations*; never the truth of training.
 
     All expected binding SHAs are supplied by the caller, not authenticated
@@ -146,8 +150,29 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
         insist(meta.get(name) == value and
                (type(meta.get(name)) is type(value)),
                "STRUCTURED_METADATA_BINDING_" + name.upper())
-    insist("online.value_encoder.weight" in bundle["parameter_names"],
-           "EXPRESSION_VALUE_ENCODER_MISSING")
+    # Real original PR224 V5 tokenizer is Sequential Linear-GELU-Linear
+    # at layers 0 and 2. The inherited toy checker has a separate
+    # top-level value_encoder.weight. Keep legacy synthetic journal tests
+    # but never claim that a toy alias constitutes the original V5 actor.
+    names = set(bundle["parameter_names"])
+    original_v5_value_encoder = {
+        "online.tokenizer.value_encoder.0.weight",
+        "online.tokenizer.value_encoder.0.bias",
+        "online.tokenizer.value_encoder.2.weight",
+        "online.tokenizer.value_encoder.2.bias",
+    }
+    synthetic_fixture_encoder = "online.value_encoder.weight" in names
+    if require_original_v5:
+        insist(original_v5_value_encoder <= names
+               and not synthetic_fixture_encoder,
+               "REAL_V5_U0_CANNOT_CONTAIN_TOY_VALUE_ENCODER")
+    else:
+        # Legacy fake-only structural test lane, never the live actor lane.
+        insist(original_v5_value_encoder <= names or synthetic_fixture_encoder,
+               "EXPRESSION_VALUE_ENCODER_MISSING")
+    insist(not (original_v5_value_encoder & names)
+           or original_v5_value_encoder <= names,
+           "INCOMPLETE_ORIGINAL_V5_EXPRESSION_VALUE_ENCODER")
     online_state = bundle["modules"]["online"]
     teacher_state = bundle["modules"]["teacher"]
     insist(set(online_state) == set(teacher_state),
@@ -208,14 +233,16 @@ def open_synthetic_journal(*, root: Path, custody: Path,
                            source_manifest_sha256: str,
                            philox_contract_sha256: str,
                            keyed_run_seed: int,
-                           state_bytes: bytes, reported_probe: dict) -> dict:
+                           state_bytes: bytes, reported_probe: dict,
+                           require_original_v5: bool = False) -> dict:
     """Validate u0 *before* creating a run folder or emitting any bytes."""
     args = _run_args(run_id, panel_sha256, config_sha256,
                      rights_sha256, gene_axis_sha256,
                      source_manifest_sha256, philox_contract_sha256,
                      keyed_run_seed)
     check = check_structured_bytes(
-        state_bytes, expected_update=0, **args)
+        state_bytes, expected_update=0,
+        require_original_v5=require_original_v5, **args)
     lock = journal._run_lock(
         run_id=run_id, horizon=horizon, panel_sha256=panel_sha256,
         config_sha256=config_sha256, rights_sha256=rights_sha256)
@@ -230,7 +257,9 @@ def open_synthetic_journal(*, root: Path, custody: Path,
     insist(result["training_authorized"] is False,
            "JOURNAL_PROMOTED_TRAINING")
     _OPENING_CONTRACTS[(os.getpid(), str(Path(root).absolute()))] = args
-    _OPENING_STRUCTURE[(os.getpid(), str(Path(root).absolute()))] =         check["structure_sha256"]
+    _OPENING_STRUCTURE[(os.getpid(), str(Path(root).absolute()))] = check["structure_sha256"]
+    if require_original_v5:
+        _ORIGINAL_V5_U0_ONLY.add((os.getpid(), str(Path(root).absolute())))
     return {
         "status": "SYNTHETIC_U0_STRUCTURED_BYTES_RECORDED",
         "run_id": run_id, "state": check,
@@ -252,6 +281,9 @@ def commit_synthetic_preflight(*, root: Path, custody: Path,
     The snapshot is *synthetic*: no optimizer activity is performed here.
     """
     root, custody = journal._paths(root, custody)
+    insist((os.getpid(), str(Path(root).absolute())) not in
+           _ORIGINAL_V5_U0_ONLY,
+           "ORIGINAL_REAL_V5_U0_JOURNAL_CANNOT_COMMIT_FAKE_U1")
     lock = journal._binding(root, custody)
     args = _run_args(
         lock["run_id"], lock["panel_sha256"],
