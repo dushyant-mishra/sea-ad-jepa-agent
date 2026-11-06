@@ -1,0 +1,48 @@
+name: V5 Macha #584 review - executed import closure, shadows, public FIT (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - scripts/v5/jepa_v5_source_data_custody_gate_v1.py
+      - tests/test_jepa_v5_source_data_custody_gate_v1*.py
+      - .github/workflows/jepa-v5-584-executed-closure-macha-no-training.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  static-closure-no-torch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install pytest only (NO torch, GPU, model or optimizer)
+        run: python -m pip install --disable-pip-version-check pytest==9.0.2
+      - name: Sol #584 tests + Macha #584 RED/controls (+ strict closure after repair)
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q -rA tests/test_jepa_v5_source_data_custody_gate_v1*.py
+      - name: Fetch ONLY PR547's public synthetic FIT artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${{ github.repository }}/actions/artifacts/13364085153/zip" > /tmp/fit.zip
+          echo "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f  /tmp/fit.zip" | sha256sum --check -
+      - name: Strict 35-file executed closure, import resolution and FIT, isolated interpreter
+        run: |
+          python -I scripts/v5/jepa_v5_source_data_custody_gate_v1.py --repo-root . --require-complete-closure --fit-zip /tmp/fit.zip > /tmp/gate.json
+          python -I - <<'PY'
+          import json
+          r = json.load(open('/tmp/gate.json'))
+          s = r['source']
+          assert s['executed_import_closure_verified'] is True and s['executed_closure_file_count'] == 35
+          assert s['import_resolution_checked'] is True and r['pipeline']['source_identity_complete'] is True
+          assert r['data']['exact_member_digests_verified'] is True and r['training_authorized'] is False
+          print('V5_35_FILE_EXECUTED_CLOSURE_AND_PUBLIC_FIT_VERIFIED__NO_MODEL__NO_TRAINING')
+          PY
