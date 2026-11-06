@@ -1,0 +1,59 @@
+name: V5 pipeline identity contract + integrated non-stepping suites (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - scripts/v5/jepa_v5_pipeline_identity_contract_v1.py
+      - scripts/v5/jepa_v5_source_data_custody_gate_v1.py
+      - scripts/v5/jepa_v5_structured_journal_preflight_v1.py
+      - scripts/v5/jepa_v5_full_state_readonly_audit_v1.py
+      - scripts/v5/jepa_synth2048_attempt_journal_v2.py
+      - tests/test_jepa_v5_*.py
+      - results/target_discovery/unified_qualification_v1/JEPA_V5_DEV2048_PIPELINE_IDENTITY_CONTRACT_V1.json
+      - .github/workflows/jepa-v5-pipeline-identity-contract-macha-no-training.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  contract-and-allowlisted-suites:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install pytest, numpy and CPU-only torch (no GPU, no datasets beyond the public FIT)
+        run: |
+          python -m pip install --disable-pip-version-check pytest==9.0.2 "numpy<2.3"
+          python -m pip install --disable-pip-version-check --index-url https://download.pytorch.org/whl/cpu "torch==2.5.1"
+      - name: Static guard - allowlisted suites contain no backward/step/EMA call sites
+        run: |
+          if grep -lE '\.backward\(|run_guarded_inactive_reference_update\(|run_inactive_reference_update\(|run_ema\(|scaler\.step' tests/test_jepa_v5_*.py tests/test_jepa_synth2048_*.py; then
+            echo "A stepping test entered the no-step allowlist"; exit 1; fi
+      - name: Fetch ONLY PR547's public synthetic FIT artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${{ github.repository }}/actions/artifacts/13364085153/zip" > /tmp/fit.zip
+          echo "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f  /tmp/fit.zip" | sha256sum --check -
+      - name: Contract CLI - repository, FIT bytes and semantics, canonical request (isolated)
+        run: |
+          python -I -c "import sys; sys.path[:0]=['src','.']; sys.argv=['c','--repo-root','.','--fit-zip','/tmp/fit.zip']; from scripts.v5.jepa_v5_pipeline_identity_contract_v1 import main; main()" > /tmp/contract.json
+          python -I - <<'PY'
+          import json
+          r = json.load(open('/tmp/contract.json'))
+          assert r['repository']['source_identity_complete'] is True
+          assert r['dataset']['fit_bytes_and_semantics_verified'] is True
+          assert r['run_request']['execution_authorized'] is False
+          print('V5_PIPELINE_IDENTITY_CONTRACT_VERIFIED__CONTRACT_ONLY__NO_TRAINING', r['contract_sha256'])
+          PY
+      - name: Contract tests + every non-stepping V5 journal/preflight/checker/gate/synth2048 suite
+        env:
+          PYTHONPATH: src:.
+          JEPA_PUBLIC_FIT_ZIP: /tmp/fit.zip
+        run: python -m pytest -q tests/test_jepa_v5_*.py tests/test_jepa_synth2048_*.py
