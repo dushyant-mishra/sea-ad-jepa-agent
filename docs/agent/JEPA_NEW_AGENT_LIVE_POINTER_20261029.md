@@ -1,3 +1,43 @@
+# READ FIRST — EVENT102 (2026-11-05): MACHA VERDICTS #583/#584/#585 — REPAIRS #586/#587 — INTEGRATION #588 WITH THE V5 DEV2048 PIPELINE IDENTITY CONTRACT — NO TRAINING
+
+**Audit and handoff.** Canonical append-only audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322), exact Audit head 3062e99f64e8e9487557f1192d051f60f7ece7aa — 102 chronology events and 67 no-repeat index keys. This is the operational [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) handoff.
+
+**Read first.** The Event102 human `docs/agent/JEPA_20261105_EVENT102_MACHA_VERDICTS_583_584_585_REPAIRS_586_587_INTEGRATION_588_PIPELINE_IDENTITY_CONTRACT_NO_TRAINING.md` (blob `e93b5a8a2d7b969e11d4ddabe068d9e5419a8187`) and machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT102_MACHA_583_584_585_REPAIRS_INTEGRATION_CONTRACT_SOURCE_MAP.json` (blob `e5a41f44b216bacfbbe03d376d4c422f8e85ff55`) are byte-identical on #322 and #460. Then read Sol's Event101 and Events 100–91 below. The historical Event90 sources are the human `docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md` and the machine map `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json`.
+
+**Verdicts (Macha; neither agent self-accepts):**
+
+| Item | Verdict | Repair or response |
+|---|---|---|
+| Sol #583 | REPAIR_REQUIRED (scoped) | [#586](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/586) binds betas, eps, weight decay, `maximize` and the other non-lr AdamW group fields to u0, because positional `load_state_dict` copies them. RED 6 failed → GREEN 10/10 jobs. |
+| Sol #584 | REPAIR_REQUIRED (scoped) | [#587](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/587) pins the **35-file executed V5 import closure** and refuses import shadows. RED 5 failed → GREEN 4/4 jobs. |
+| Sol #585 | REPAIR_REQUIRED (scoped) | Partial manifest; pins the pre-#583 preflight; partial config. To be reconciled with #588 into one contract. |
+
+**Why #584 needed repair.** The 15 declared files are not what runs; 19 executed files were unpinned. Among them:
+- V4 `contracts.py` sets the V5 gene-identity width (48);
+- V4 `teacher_student_runtime.sample_uniform_target_blocks` chooses the JEPA target blocks in the PR548 path.
+
+**Contract and integration.** [#588](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/588) merges #586 and #587 over #582 and adds `JEPA_V5_DEV2048_PIPELINE_IDENTITY_CONTRACT_V1.json` (contract-only, `b43d0165…`). Hosted CI: 16/16 jobs, 478 passed per Python.
+- **Bindings are derived.** The gene axis, source manifest, rights, Philox and config SHAs come from the contract, not from callers.
+- **What it refuses:**
+  - V4 or PR525 identities, and partial manifests;
+  - FULL104 or 41K labels;
+  - renumbered or transposed axes;
+  - teacher/student or optimizer drift;
+  - real rights and any authority claim.
+- **Why PR525 is a non-actor.** PR525's runtime identity `ae5d7d75…` is identical on `main`, PR224 and #582, so it cannot identify the V5 actor.
+- **Still unbound.** The teacher target and the physical probe panel are **NOT_BOUND**.
+
+**Disclosed process deviation.** One local Macha run globbed PR224's own `tests/test_v5_*` and `tests/test_teacher_student_v5_*`. Nine of those files contain tiny CPU step, backward or EMA call sites. It was not repeated and involved no data, GPU or checkpoint. There was no hosted exposure, and #588's workflow now statically refuses stepping tests.
+
+**Next.**
+- Sol reviews #586, #587 and #588, and reconciles #585.
+- Macha reviews Sol #589.
+- No step, EMA update or RT1–RT8 run without separate owner authority.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT101 (2026-11-05): ORIGINAL V5 + PHYSICALLY VERIFIED PUBLIC DEV2048 ROW/GENE/DONOR TO FAKE JOURNAL STATIC CONTRACT — NO TRAINING
 
 **Canonical [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) Audit head 65f4b7e7574af77ce0bc7fd13662b7bf922899e9**; now **101 chronology events and 66 no-repeat index keys**. Active [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) first read keeps all earlier Event100–90 history below.
