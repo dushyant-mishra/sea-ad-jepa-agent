@@ -1,3 +1,21 @@
+# READ FIRST — EVENT105 (2026-11-06): INDEPENDENT ORIGINAL-V5 U0-ONLY V2 JOURNAL WRITER BYPASS CONFIRMED → STACKED #591 RED→GREEN (NO TRAINING)
+
+**Canonical [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact audit head `98753028964e8509408edc8676d59a43ea3fca00`**, **105 append-only chronology events and 70 no-repeat keys**. **Active [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460)** is the operational pointer; Event104 and all earlier entries follow below unchanged. Read the full Event104 source/science takeover and original Event90 once; do NOT repeat historical research.
+
+**FIRST READ Event105 mirrored exact primary evidence (byte-identical on both #322/#460):**
+- Human: `docs/agent/JEPA_20261106_EVENT105_INDEPENDENT_V5_U0_DURABLE_V2_JOURNAL_WRITER_BYPASS_RED_GREEN_REPAIR_NO_TRAINING.md`, Git blob `41bcb04206f48fc825e85af500160c107aa2e29e`.
+- Machine: `results/target_discovery/unified_qualification_v1/JEPA_20261106_EVENT105_ORIGINAL_V5_U0_DURABLE_JOURNAL_DIRECT_WRITER_RED_GREEN_REVIEW_MAP.json`, Git blob `2c26a807f1c5f65f3217e1133c6d9931a7cda0bb`.
+
+**Independent implementation review:** Combined Sol [draft #590](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/590) original head `a3a59eb934186a8ab329eb2b0b4385b3948d1f0a` had a confirmed lower-level synthetic V2 writer bypass: `_ORIGINAL_V5_U0_ONLY` in the structured bridge was process-local, whereas bare `journal.begin_attempt` and `commit_reported_update` did not bind original initialized V5 U0 identity. Independent stacked [draft #591](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/591) RED head `1b27037aede64e8834b67a2591aa7993691fbc0a` [run 42239689452](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42239689452) reproduced **3 expected failures, 67 passes per Python 3.11.9/3.12.7**: direct V2 BEGIN erroneously accepted; standalone fake commit and separate process refused for unrelated reasons (no trained U1 written).
+
+**Current scoped repair draft #591 GREEN exact head `ff1141fefa1377ac394be530c1236b682805e5e4`**, **13/13 workflows and 26/26 hosted jobs SUCCESS**. A strictly validated genuine original V5 U0 now stores `original_v5_u0_only=true` in both unsigned mirrored `run.lock.json` copies, hash-linked to journal records. Direct lower-level begin/commit and ordinary/forensic record checks reject purported updates; legacy artificial fake-only journals retain their prior lock bytes. The original 35-source and exact PR547 artificial FIT-only dataset authority is unchanged. Changed custody Git blobs and source manifest are repinned, never ignored; new *non-authorizing* DEV contract SHA-256 `e3ccfa164f06ff7fd22b4d292365a12442d9fcde898f1cc8497f5d5339c8914a`.
+
+**Verdict:** CONFIRMED_SCOPED_DEFECT__REPAIR_AUTHOR_GREEN__INDEPENDENT_RECIPROCAL_REVIEW_PENDING. #590 remains unchanged and draft, and full Macha cross-review of #590 is pending; #591 must also be independently reviewed before acceptance. The fresh-process check verifies persistent policy visibility only, **not** full crash-restart, bitwise restore, signed D1 custody or protection from malicious replacement of both unsigned copies. NO physical biological probe, qualified teacher target, patient data rights, production promotion, V5 optimizer/EMA/backward steps, GPU, RT1–RT8 or Stage4. No PR merge. Original Event102 accidental prior local stepping-suite incident remains disclosed; owner private V80 backup remains RESOLVED Event95 and must not be opened.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT104 (2026-11-06): COMPLETE HISTORICAL SCIENCE/SOURCE/DATA/RESULT TAKEOVER → ORIGINAL V5 U0 COMBINED #590 (DEV ONLY; NO TRAINING)
 
 **Current canonical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322)** Audit head 7867cf4686963dbb6c3a46be008c738f14c1c757 (exact head) with **104 chronology events and 69 no-repeat index keys** (all append-only). Active handoff [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) keeps all old Event103–90 first-read snapshots below (do not rely on them as newest). **Primary takeover sources mirrored byte-identically on BOTH PR branches:**
