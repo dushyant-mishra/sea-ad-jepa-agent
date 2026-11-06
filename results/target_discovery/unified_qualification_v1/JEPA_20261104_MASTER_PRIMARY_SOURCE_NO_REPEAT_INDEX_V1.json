@@ -1982,5 +1982,47 @@
     "no_repeat": "Original source and synthetic FIT already recovered; do not rerun original donor expression/TD or rebuild V5 original model, do not call 40 V4 steps V5, do not treat green fake journal as learned biology.",
     "limits": "No genuine V5 model-to-journal execution/policy-rights issuer, real trainer, FULL104 source read, original V80 controller truth, actual Adam/EMA and physical gene/cell probes, full RNG/AMP/bitwise restore, RT1–RT8, Stage4.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_sol_independent_peer_verdict_macha580_accept_581_582_require_adam_named_id_repair_event100_20261105": {
+    "event": 100,
+    "date_utc": "2026-11-05",
+    "human": "docs/agent/JEPA_20261105_EVENT100_SOL_INDEPENDENT_CROSS_REVIEW_MACHA_580_581_582_NO_TRAINING.md",
+    "human_blob_sha1": "e1ab18951b4679944451cd892399ff3a186f33c5",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT100_SOL_MACHA_580_581_582_RECIPROCAL_REVIEW_SOURCE_MAP.json",
+    "machine_blob_sha1": "c2ed482ffa228c6e68580f527a2b9ddc5cc54ce0",
+    "peer_reviews": [
+      {
+        "pr": 580,
+        "verdict": "ACCEPT_SCOPED__NO_MULTITHREADED_TRAINER",
+        "head": "63bf1bdc8eea276d144e5f33a5828c137fe3217f",
+        "comment": 6675986361,
+        "red_ci": 42109490027,
+        "green_ci": 42110388184
+      },
+      {
+        "pr": 581,
+        "verdict": "REPAIR_REQUIRED__UNBOUND_NAMED_ADAM_ID_ORDER",
+        "head": "86d96fc1450038c1482d4cfd8389682d0f085d62",
+        "comment": 6675986913,
+        "independent_red_ci": 42114608692,
+        "sol_repair_pr": 583,
+        "sol_repair_head": "76eddf86ea7d8e5d66731a36d889e502d633b181"
+      },
+      {
+        "pr": 582,
+        "verdict": "REPAIR_REQUIRED__SYNTHETIC_ONLY_AND_ADAM_ID_ORDER",
+        "head": "e71d864b0496de0b86fe7442ba51d53b44e0b225",
+        "comment": 6675987375,
+        "author_green_ci": 42110895354,
+        "sol_guard_pr": 584,
+        "sol_guard_head": "11d8a70235cfc02d412db6b6158485732bdec246"
+      }
+    ],
+    "independent_macha_review_sol583_584": "PENDING",
+    "actual_model_optimizer_ema_or_real_panel_run": false,
+    "original_v5_source_contract": "12_CANONICAL_PLUS_2_PRIVATE_PLUS_INIT_MATCH_AT_PR224_AND_PR582",
+    "original_public_fit_zip_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+    "not_to_repeat": "Do not redo V80 private backup, old V4 40-step, TD real replay, PR547 data generation or PR548 original V5 U0; do not mistake PR525 V4 policy identity for current V5 executor.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
