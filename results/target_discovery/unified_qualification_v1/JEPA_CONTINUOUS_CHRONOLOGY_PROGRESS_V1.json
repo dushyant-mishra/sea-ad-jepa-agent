@@ -4421,6 +4421,48 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42241140839",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/590"
       ]
+    },
+    {
+      "event_id": "20261106-INDEPENDENT-V5-NO-TRAINING-CI-EXPLICIT-INVENTORY-WILDCARD-BYPASS-RED-GREEN-EVENT106",
+      "date_utc": "2026-11-06",
+      "workstream": "independent_original_v5_synthetic_journal_ci_safety_unsafe_wildcard_collectors_red_green_no_training",
+      "implementation_pr": 592,
+      "implementation_head": "7e4c45ae7991ed79d136922fd8d157ce847f9f47",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261106_EVENT106_INDEPENDENT_V5_NO_TRAINING_CI_EXPLICIT_TEST_INVENTORY_RED_GREEN_AND_TWO_BRANCH_TAKEOVER.md",
+          "blob_sha1": "a116d8c57e720d2fc991d9c82ea2532962c3a983",
+          "role": "Second-pass source-driven unsafe CI wildcard discovery, static RED, guard false-positive fix, 4/4 8/8 hosted GREEN, future two-branch protocol"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261106_EVENT106_CI_ALLOWLIST_WILDCARD_COLLECTION_RED_GREEN_AND_AGENT_CUSTODY_MAP.json",
+          "blob_sha1": "21621668d67d79e2de73d575f893ede0f56ff6d0",
+          "role": "Machine exact PR stack, 3 workflow source paths, original static RED, code Git blobs and hosted GREEN runs"
+        }
+      ],
+      "change_type": "confirmed_no_training_ci_collection_safety_gap_scoped_author_green_repair",
+      "what_already_existed": "Event90 historical curated source/data/results inventory, Event104 current original V5 synthetic DEV2048 U0 combined PR590 full35 source/public PR547, Event105 PR591 original-U0-only durable lower-level V2 journal guard GREEN 13/13 workflows 26/26 jobs. Event102 disclosed accidental local WSL test glob might have stepped tiny CPU optimizer/backward/EMA; new original V5 U0 workflow had five-file AST allowlist, but three inherited CI workflow paths still had wildcard pytest and/or ls test discovery.",
+      "new_work_or_result": "Independent source audit found original combined PR590 / stacked PR591 had 3 unbounded no-training pytest test-file collectors. New draft PR592 stacked on PR591, RED static-only run42248519185 at a14ec6455: 3 unittest methods with 7 failing assertions/subtests per Python3.11.9/3.12.7, no torch or pytest collection. Introduced literal reviewed test inventories and AST precollection gate, 40 full canonical tests, 33 integration tests, 10 thread tests; no wildcard passed to pytest. Initial CI at 952e1868 fail-closed due to teacher.eval() mistaken for builtin eval(); corrected and added static regression. Final exact head7e4c45ae, 4/4 workflows 8/8 jobs GREEN on Python3.11.9 and 3.12.7 with original inherited nonstepping suites and static-only verifier. Current workflow collection is explicitly bounded in these 3 workflows; new tests matching scope fail until reviewed, even if filename names appear legitimate. No PR merged or owner training authorization.",
+      "negative_or_counterfactual_evidence": "The original wildcard detection is a structural risk of future unapproved test inclusion, not evidence any completed hosted CI step trained a model. Source GREP on patterns and Python AST of the tests cannot prove absence of all indirect import/subprocess training paths or malicious wheel/sys.path attacks. Other workflows and installed dependencies not comprehensively attested. Initial AST guard false-positive teacher.eval() preserved as RED evidence. #590 full Macha cross-review pending; #591 and #592 reciprocal review pending. No real RNA rights/qualified teacher/physical probe, no biological C1-C6, no signed D1 custody, bitwise restart or Stage4.",
+      "test_review_scope": "RED run42248519185 static unittest only 3 methods 7 subtest failures per Python, no torch import/test collection. Fail-closed first attempted green run42248931129+42248931396. Final GREEN runs42249241987 42249241979 42249242013 42249242012, each Python 3.11.9 and 3.12.7, 4 workflows 8 jobs passed. Original public PR547 FIT-only for full contract; no optimizer/backward/EMA/GPU/real patient RNA/controller access, no new physics probe.",
+      "independent_review": "NEW_AGENT_SCOPED_AUTHOR_GREEN__MACHA_INDEPENDENT_590_AND_RECIPROCAL_591_592_REVIEW_PENDING__NO_SELF_ACCEPT",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Reciprocal independent review of #591 and #592; Macha complete independent review of #590; all remain unmerged drafts.",
+        "Review other no-training workflows, transitive imports and binary environment in bounded static manner; no broadened test glob or training.",
+        "No issued real-data rights or qualified target/teacher/frozen physical panel; D1 custody and true bitwise resume not granted.",
+        "For every new event Event107+: update #322 append-only chronology and source no-repeat index FIRST, create byte-identical human and machine records on #322 AND #460; prepend #460 first-read and update both PR descriptions; preserve all original failures.",
+        "Do not repeat original Event90 historical sciences, accidental Event102 unsafe broad tests or access Event95 resolved sealed V80 backup."
+      ],
+      "historical_supersession": "Event105 original-V5 U0-only durable storage gate remains author-green, no new physics/biology/training claims. Event106 independently repairs 3 inherited unsafe pytest collection routes rather than repeating historical sources.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/592",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42248519185",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42249242013",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42249241979",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/591"
+      ]
     }
   ]
 }
