@@ -256,8 +256,8 @@ def capture_real_v5_u0(*, modules: Any, repo_root: Path, public_fit_zip: Path,
             metadata=metadata)
         raw, digest = state.to_verified_bytes(bundle)
         checked = bridge.check_structured_bytes(
-            require_original_v5=True,
-            raw, expected_update=0, run_id=run_id,
+            raw, expected_update=0, require_original_v5=True,
+            run_id=run_id,
             panel_sha256=binds["panel_sha256"],
             config_sha256=binds["config_sha256"],
             rights_sha256=binds["rights_sha256"],
