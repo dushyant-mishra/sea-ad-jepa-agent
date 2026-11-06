@@ -4380,6 +4380,47 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42165667072",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/588"
       ]
+    },
+    {
+      "event_id": "20261106-INDEPENDENT-ORIGINAL-V5-U0-DURABLE-V2-JOURNAL-BYPASS-RED-GREEN-NO-TRAINING-EVENT105",
+      "date_utc": "2026-11-06",
+      "workstream": "independent_combined_original_v5_u0_journal_implementation_review_direct_bare_writer_policy_durable_guard_no_training",
+      "implementation_pr": 591,
+      "implementation_head": "ff1141fefa1377ac394be530c1236b682805e5e4",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261106_EVENT105_INDEPENDENT_V5_U0_DURABLE_V2_JOURNAL_WRITER_BYPASS_RED_GREEN_REPAIR_NO_TRAINING.md",
+          "blob_sha1": "41bcb04206f48fc825e85af500160c107aa2e29e",
+          "role": "Original independent source flaw, RED then corrected lower-level V2 journal writer, exact hosted CI, limitations, both branch mirrored"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261106_EVENT105_ORIGINAL_V5_U0_DURABLE_JOURNAL_DIRECT_WRITER_RED_GREEN_REVIEW_MAP.json",
+          "blob_sha1": "2c26a807f1c5f65f3217e1133c6d9931a7cda0bb",
+          "role": "Machine exact PR, Git blobs, source/dataset/contract SHA256 and RED/GREEN CI bounded evidence"
+        }
+      ],
+      "change_type": "independently_reproduced_implementation_defect_and_nontraining_repair",
+      "what_already_existed": "Event104 established #590 exact head a3a59eb9, original authentic V5 U0 development checkpoint captured with full #588 35-file source/data contract. The only U0-only protection for the strict structured bridge was a process-local _ORIGINAL_V5_U0_ONLY set. Underlying V2 begin_attempt and commit_reported_update had no durable model class; Event104 flagged untested restart/direct writer bypass. No production or optimizer steps authorized.",
+      "new_work_or_result": "Independent new agent opened draft #591 stacked on #590. Hosted RED at 1b27037a run42239689452: each Python3.11.9 and 3.12.7 3 expected failures and 67 passes; direct V2 BEGIN on genuine initialized V5 U0 did not raise, standalone fake commit failed only for missing BEGIN and fresh interpreter failed only for missing writer session. No fake U1 was actually written in RED tests. Repair at exact ff1141f persists original_v5_u0_only=true only on strict genuine V5 U0 in both mirrored run.lock copies hashed into immutable record chain, and enforces refusal in low-level begin, commit, ordinary/forensic record validation. Legacy fake V2 journal lock remains unchanged. Rebound 2 custody Git blobs, pipeline code definition and derived DEV source_manifest_SHA256=5b03b91643cd654c7469d6af82c457f541d8029c7c0a8ab66385b3d52a0b4ec1, nonauthorizing contract_SHA256=e3ccfa164f06ff7fd22b4d292365a12442d9fcde898f1cc8497f5d5339c8914a. Hosted exact-head GREEN 13/13 workflows, 26/26 jobs PASS, including original V5 and inherited V2/nonstepping suites.",
+      "negative_or_counterfactual_evidence": "Original source allows lower-level BEGIN despite strict bridge local marker, but RED tests did not actually commit a fabricated U1 to disk. After repair direct writer and second-process code path fail with durable U0-only policy. A fresh interpreter check does not certify full post-crash restart. Outside-run custody remains unsigned, not owner-backed D1; no production-eligible rights, physical panels, qualified teacher or biology. Generic synthetic fake journals still allowed for isolated tests but cannot be promoted. #590 and #591 remain draft, peer review pending.",
+      "test_review_scope": "Only explicit safe hosted test files (AST/test allowlist) and exact original public artificial PR547 FIT were run on CPU Python3.11.9/3.12.7. No neural forward/backward/optimizer/EMA, no GPU, new real human data, sealed V80, or prohibited private backup access. GREEN 13/13 hosted workflows 26/26 jobs on PR591 head ff1141f; RED run 42239689452 on test-only 1b27037.",
+      "independent_review": "NEW_TAKEOVER_AGENT_CONFIRMED_SCOPED_IMPLEMENTATION_DEFECT_AND_AUTHOR_GREEN_REPAIR__SOL_RECIPROCAL_AND_MACHA_FULL_590_REVIEW_PENDING__NO_SELF_ACCEPT",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Require independent reciprocal #591 repair review; Macha full #590 review remains pending; no merge or production promotion.",
+        "Do not confuse durable logical run-lock marker with an externally signed D1 custody issuer or an authorized crash-restart mechanism.",
+        "No optimizer/EMA/backward/RT1–RT8 even synthetic until explicit new owner authorization, no real RNA/teacher/physical panel rights.",
+        "Keep original PR547 public source, 35 V5 imported closure and source-manifest exact; no repeat science or private V80 access.",
+        "Future verified work append Event106+; mirror human/machine records to both #322/#460 and update #460 first-read after canonical audit exact head."
+      ],
+      "historical_supersession": "Event104 process-local U0-only concern is confirmed and repaired in development-only stacked draft #591; all previous source/CI/negative evidence and original Event90 history retained. #590 remains unmodified combined predecessor, not merged.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/591",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42239689452",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42241140839",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/590"
+      ]
     }
   ]
 }
