@@ -90,6 +90,11 @@ def _validate_actual_reference_modules(modules: Any) -> None:
             and online.tokenizer.gene_identity.num_embeddings == CONFIG["vocabulary_size"]
             and teacher.tokenizer.gene_identity.num_embeddings == CONFIG["vocabulary_size"],
             "FULL_2048_ORIGINAL_GENE_AXIS_REQUIRED")
+    # Gene identity width comes from a legitimate imported V4 *utility*
+    # contract (gene_tokenizer defaults), not the old V4 trainer.
+    require(online.tokenizer.gene_identity.embedding_dim == 48
+            and teacher.tokenizer.gene_identity.embedding_dim == 48,
+            "GENE_IDENTITY_EMBEDDING_WIDTH_48_REQUIRED")
     require(tuple(online.cell_token.shape) == (1, 1, CONFIG["width"])
             and tuple(predictor.block_mask.shape) == (1, 1, CONFIG["width"])
             and len(online.blocks) == len(teacher.blocks) == CONFIG["blocks"]
@@ -115,7 +120,10 @@ def _validate_actual_reference_modules(modules: Any) -> None:
             and tuple(group["betas"]) == CONFIG["betas"]
             and group["eps"] == CONFIG["eps"]
             and group["weight_decay"] == CONFIG["weight_decay"]
-            and group.get("amsgrad") is False,
+            and group.get("amsgrad") is False
+            and group.get("maximize") is False
+            and group.get("foreach") in (None, False)
+            and group.get("fused") in (None, False),
             "ORIGINAL_V5_ADAMW_HYPERPARAMETERS_CHANGED")
     require(all(p.device.type == "cpu" and p.grad is None
                 for m in (online, teacher, predictor)
@@ -255,9 +263,17 @@ def record_real_v5_u0_to_journal(*, snapshot: RealV5U0Snapshot,
     from scripts.v5 import jepa_v5_structured_journal_preflight_v1 as bridge
     from scripts.v5 import jepa_synth2048_attempt_journal_v2 as journal
 
+    # Hard quarantine: this is a public synthetic U0 DEVELOPMENT receipt,
+    # not an authorized production model or biological measurement. Prevent
+    # caller-reported fake probe values from presenting as physical evidence.
     require(type(caller_reported_probe) is dict
             and caller_reported_probe.get("measurement_origin") ==
-                journal.MEASUREMENT_ORIGIN,
+                journal.MEASUREMENT_ORIGIN
+            and caller_reported_probe.get("state_update") == 0
+            and caller_reported_probe.get("state_payload_sha256") ==
+                snapshot.snapshot_sha256
+            and caller_reported_probe.get("probe_panel_sha256") ==
+                snapshot.metadata["panel_sha256"],
             "CALLER_REPORTED_ONLY_PROBE_REQUIRED")
     try:
         current = state.capture_readonly_bundle(
@@ -303,6 +319,12 @@ def record_real_v5_u0_to_journal(*, snapshot: RealV5U0Snapshot,
     return {
         "schema": SCHEMA,
         "status": "ACTUAL_ORIGINAL_V5_INITIALIZED_U0_BYTES_RECORDED",
+        "data_class": "PR547_PUBLIC_SYNTHETIC_DEV2048_ONLY",
+        "checkpoint_class": "DEV_ONLY_U0_INITIALIZATION__NOT_PRODUCTION_CHECKPOINT",
+        "source_rights_issuer_verified": False,
+        "qualified_teacher_target_bound": False,
+        "physical_probe_panel_bound": False,
+        "synthetic_fixture_model_used": False,
         "original_v5_actual_module_weights_captured": True,
         "original_v5_u0_snapshot_sha256": snapshot.snapshot_sha256,
         "model_structure_sha256": snapshot.model_structure_sha256,
