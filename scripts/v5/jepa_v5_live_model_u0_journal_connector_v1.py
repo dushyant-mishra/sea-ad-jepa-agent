@@ -125,6 +125,21 @@ def _validate_actual_reference_modules(modules: Any) -> None:
             "TEACHER_WAS_NOT_FROZEN")
     # Capturing at U0 only: an optimizer state with real or fake moments is
     # NOT accepted as an initialized checkpoint by this adapter.
+    # The source/model SHAs and tensor shapes alone cannot authenticate the
+    # PR548 initialization seed. Recreate the *original* initializer under an
+    # isolated CPU RNG fork and compare ALL model/teacher/predictor tensors.
+    # No forward, backward, optimizer step or EMA operation occurs.
+    from sea_ad_jepa.v5.inactive_update_reference import build_reference_modules
+    with torch.random.fork_rng(devices=[]):
+        expected = build_reference_modules(**CONFIG)
+    for name in ("online", "teacher", "predictor"):
+        observed_tensors = getattr(modules, name).state_dict()
+        expected_tensors = getattr(expected, name).state_dict()
+        require(set(observed_tensors) == set(expected_tensors)
+                and all(torch.equal(t, expected_tensors[k])
+                        for k, t in observed_tensors.items()),
+                "INITIAL_WEIGHTS_NOT_PR548_EXACT_SEED")
+    del expected
 
 
 def _locked_contract(*, repo_root: Path, public_fit_zip: Path,
