@@ -2124,5 +2124,36 @@
     "independent_verdict": "REPAIR_AUTHOR_GREEN__RECIPROCAL_REVIEW_PENDING",
     "no_repeat": "Do not duplicate existing direct-journal RED; owner V80 backup resolved; no V5 steps or broad unsafe tests",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_no_training_ci_inherited_wildcard_collector_explicit_test_inventory_592_event106_20261106": {
+    "event": 106,
+    "human": "docs/agent/JEPA_20261106_EVENT106_INDEPENDENT_V5_NO_TRAINING_CI_EXPLICIT_TEST_INVENTORY_RED_GREEN_AND_TWO_BRANCH_TAKEOVER.md",
+    "human_blob_sha1": "a116d8c57e720d2fc991d9c82ea2532962c3a983",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261106_EVENT106_CI_ALLOWLIST_WILDCARD_COLLECTION_RED_GREEN_AND_AGENT_CUSTODY_MAP.json",
+    "machine_blob_sha1": "21621668d67d79e2de73d575f893ede0f56ff6d0",
+    "implementation_pr": 592,
+    "stacked_on": 591,
+    "original_combined_pr": 590,
+    "head": "7e4c45ae7991ed79d136922fd8d157ce847f9f47",
+    "red_head": "a14ec64556208a48ac69a19d4091959cbd5581c3",
+    "red_static_run": 42248519185,
+    "red_status": "3 pure static unittest methods 7 failing subtests each Python3.11/3.12",
+    "green_hosted_workflows": "4/4",
+    "green_hosted_jobs": "8/8",
+    "explicit_suite_files": {
+      "full": 40,
+      "integration": 33,
+      "thread": 10
+    },
+    "green_runs": [
+      42249241987,
+      42249241979,
+      42249242013,
+      42249242012
+    ],
+    "scope": "DEVELOPMENT_NONTRAINING_CI_SAFETY_ONLY",
+    "peer_status": "SCOPED_AUTHOR_GREEN__RECIPROCAL_REVIEW_PENDING",
+    "no_repeat": "Events1-105 unchanged; don't use broad test globs, do not rerun original science or open resolved V80 private controller",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
