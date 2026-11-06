@@ -4463,6 +4463,48 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42249241979",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/591"
       ]
+    },
+    {
+      "event_id": "20261106-INDEPENDENT-LEGACY-V5-STEP-CAPABLE-FOUR-HOSTED-WORKFLOW-STATIC-QUARANTINE-RED-GREEN-EVENT107",
+      "date_utc": "2026-11-06",
+      "workstream": "no_training_legacy_v5_step_capable_automatic_github_workflow_static_quarantine_independent_implementation",
+      "implementation_pr": 593,
+      "implementation_head": "612c1b2ff86c225eb9ba8cba5b0db306a45b41af",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261106_EVENT107_LEGACY_V5_STEP_CAPABLE_HOSTED_WORKFLOW_STATIC_QUARANTINE_RED_GREEN_NO_TRAINING.md",
+          "blob_sha1": "93fdbe2fac0c1d5fb34ca621c230c3e32976f5b5",
+          "role": "Fourth new-agent independent execution-safety pass: four legacy V5 workflows with optimizer/backward/EMA test sources, static-only RED/GREEN and permanent handoff"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261106_EVENT107_LEGACY_V5_STEP_TEST_CI_QUARANTINE_AND_TWO_BRANCH_HANDOFF_MAP.json",
+          "blob_sha1": "75b96288b5c12e592d2fa62614aaaadfc4a0051d",
+          "role": "Machine PR/branch/unsafe-call-site witnesses, complete GREEN CI and preserved restrictions"
+        }
+      ],
+      "change_type": "independent_legacy_automatic_ci_step_eligibility_safety_repair",
+      "what_already_existed": "Event104 complete historical PR322/460 takeover and combined #590 public synthetic original V5 U0; Event105 #591 repaired direct lower-level original U0-only journal bypass; Event106 #592 replaced three dynamic no-training pytest collectors with explicit 40/33/10 inventories. Older legacy V5 workflow paths not examined under these scoped fixes. Event102 recorded accidental local historical optimizer/backward/EMA suite execution risk; no new training authorized.",
+      "new_work_or_result": "Source-reviewed four legacy automatically triggered workflows v64-runtime-core-reconciliation, v5-inactive-runtime-step-guard, jepa-synth2048-v5-guarded-readiness (misleading U0 no training label), and current-authority-surface-guard second inactive-runtime job. They explicitly ran old tests with real source calls loss.backward(), modules.optimizer.step(), run_optimizer_step(), run_ema(). No proof those workflows ran on today's code changes. Opened new stacked draft #593. Test-only static RED head4404a03b run42250990432 3 unittest methods, 9 expected subtest failures per Python3.11.9/3.12.7, no Torch imports or pytest test collection. New source-only guard retains and AST-inspects historic step-capable tests as custody evidence without running them and verifies all four workflows do not execute numerical step tests. Replaced 4 automatic jobs/routes with static checks; current-authority separate governance tests and py_compile remain. Exact final GREEN head612c1b2f, 6/6 workflow runs and 9/9 jobs SUCCESS. No actual optimization, training, private controller or real RNA operations.",
+      "negative_or_counterfactual_evidence": "Legacy workflow tests contain direct .backward, .step, guarded optimizer/EMA actions, a future workflow trigger risk, but no evidence of those suites executing in the current GREEN run. Historic test files and original prior receipts remain unchanged, not deleted or declared production-authorized. Other older D1/teacher-student push-branch workflows outside this scoped fix need authorization review before dispatch. Source-only static analysis does not qualify model restart, data rights, biology, D1 signed custody or future synthetic/real training.",
+      "test_review_scope": "Host RED 42250990432 pure Python stdlib static safety only on 3.11.9/3.12.7 with 9 expected fails each; hosted GREEN original-head PR593 runs 42251314812, 42251314631, 42251314708, 42251314627, 42251314728, 42251304007, 6/6 workflows 9/9 jobs. No Torch in quarantine step; no step-capable pytest suites collected by repaired workflows. No real RNA, V80 sealed controller, GPU or EMA/optimizer/backward.",
+      "independent_review": "NEW_AGENT_SCOPED_AUTHOR_GREEN__FULL_MACHA_590_AND_RECIPROCAL_591_592_593_REVIEW_PENDING__NO_SELF_ACCEPT",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Independent complete review of #590 and reciprocal review of #591/#592/#593; all drafts, none merged.",
+        "No automatic legacy optimizer/backward/EMA test suite without separate owner authorization. D1 and older teacher-student branch-scoped workflows not certified by scoped V5 quarantine.",
+        "Real target/teacher/probe/data rights, D1 owner-backed signed external head, bitwise restart and true neural post-update journal missing and not authorized.",
+        "Next agent must read live #460 Event107→104→original Event90 and #322 chronology/no-repeat index; append Event108+ to #322 first and mirror byte-identical human/machine on both branches, then first-read and both descriptions.",
+        "Maintain original Event102 local accidental step-suite disclosure and Event95 resolved private V80 backup; do not repeat science or open controller."
+      ],
+      "historical_supersession": "Event107 adds a new implementation safety repair, does not change Events1–106 or original biological/source/negative result evidence. Both canonical custody PRs are draft, unmerged.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/593",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42250990432",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42251314708",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/592",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/591"
+      ]
     }
   ]
 }
