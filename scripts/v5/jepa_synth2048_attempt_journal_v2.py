@@ -248,14 +248,16 @@ def _receipt(root: Path, name: str, max_bytes: int) -> dict:
 
 
 def _run_lock(*, run_id: str, horizon: int, panel_sha256: str,
-              config_sha256: str, rights_sha256: str) -> dict:
+              config_sha256: str, rights_sha256: str,
+              original_v5_u0_only: bool = False) -> dict:
+    insist(type(original_v5_u0_only) is bool, "ORIGINAL_V5_U0_ONLY_FLAG_INVALID")
     insist(type(run_id) is str and RUN_ID.fullmatch(run_id) is not None,
            "RUN_ID")
     insist(type(horizon) is int and 1 <= horizon <= 99999, "HORIZON")
     for name, val in (("PANEL", panel_sha256), ("CONFIG", config_sha256),
                       ("RIGHTS", rights_sha256)):
         insist(type(val) is str and SHA_NAME.fullmatch(val) is not None, name)
-    return {
+    lock = {
         "schema": SCHEMA, "run_id": run_id, "planned_horizon": horizon,
         "schedule": "EVERY_SUCCESSFUL_UPDATE",
         "panel_sha256": panel_sha256, "config_sha256": config_sha256,
@@ -264,6 +266,11 @@ def _run_lock(*, run_id: str, horizon: int, panel_sha256: str,
         "true_neural_state_verified": False, "training_authorized": False,
         "authority": AUTHORITY,
     }
+    # Legacy synthetic journals keep exactly their historical lock bytes.
+    # Only original V5 U0 has a mirrored, immutable U0-only policy.
+    if original_v5_u0_only:
+        lock["original_v5_u0_only"] = True
+    return lock
 
 
 def _binding(root: Path, custody: Path) -> dict:
@@ -279,7 +286,9 @@ def _binding(root: Path, custody: Path) -> dict:
         run_id=lock["run_id"], horizon=lock["planned_horizon"],
         panel_sha256=lock["panel_sha256"],
         config_sha256=lock["config_sha256"],
-        rights_sha256=lock["rights_sha256"]), "RUN_BINDING_DRIFT")
+        rights_sha256=lock["rights_sha256"],
+        original_v5_u0_only=lock.get("original_v5_u0_only", False)),
+        "RUN_BINDING_DRIFT")
     return lock
 
 
@@ -419,6 +428,10 @@ def _check_structure(row: dict, rows: list[dict], lock: dict) -> None:
            "HEAD_CHAIN_OR_RUN_DRIFT")
     kind, payload, telemetry, reported = (
         row["kind"], row["payload"], row["telemetry"], row["reported"])
+    # Forensic readers also reject forged lower-level updates on U0-only runs.
+    if lock.get("original_v5_u0_only", False):
+        insist(kind not in ("ATTEMPT_BEGIN", "UPDATE_COMMITTED"),
+               "ORIGINAL_V5_U0_ONLY_JOURNAL_NO_UPDATES")
     writer = row["writer_session_sha256"]
     if kind == "RUN_OPEN":
         insist(type(writer) is str and SHA_NAME.fullmatch(writer) is not None,
@@ -868,7 +881,8 @@ def _ready(root: Path, custody: Path, *, incremental: bool = False,
 
 def open_journal(root: Path, custody: Path, *, run_id: str, horizon: int,
                  panel_sha256: str, config_sha256: str, rights_sha256: str,
-                 initial_state_bytes: bytes, initial_probe: dict | None = None) -> dict:
+                 initial_state_bytes: bytes, initial_probe: dict | None = None,
+                 original_v5_u0_only: bool = False) -> dict:
     """RUN_OPEN with durable, PROBED u0 bytes in the run and an outside copy.
 
     The u0 probe fixes the run's u0 references for every later collapse claim.
@@ -877,7 +891,8 @@ def open_journal(root: Path, custody: Path, *, run_id: str, horizon: int,
     _outside(root, custody)
     lock = _run_lock(run_id=run_id, horizon=horizon,
                      panel_sha256=panel_sha256, config_sha256=config_sha256,
-                     rights_sha256=rights_sha256)
+                     rights_sha256=rights_sha256,
+                     original_v5_u0_only=original_v5_u0_only)
     insist(type(initial_state_bytes) is bytes
            and 0 < len(initial_state_bytes) <= MAX_STATE, "U0_BYTES_REQUIRED")
     insist(initial_probe is not None, "U0_PROBE_REQUIRED")
@@ -922,6 +937,8 @@ def begin_attempt(root: Path, custody: Path, *, update: int) -> dict:
         full_scrub = type(update) is int and update % FULL_SCRUB_EVERY_ATTEMPTS == 0
         tally = _new_tally()
         lock, rows = _ready(root, custody, incremental=not full_scrub, tally=tally)
+        insist(not lock.get("original_v5_u0_only", False),
+               "ORIGINAL_V5_U0_ONLY_JOURNAL_NO_UPDATES")
         writer = _require_session(root, rows)
         allowed, expected = _expected_next(rows, lock)
         insist("ATTEMPT_BEGIN" in allowed
@@ -1006,6 +1023,10 @@ def commit_reported_update(root: Path, custody: Path, *, update: int,
     insist(type(probe) is dict, "COMMIT_REQUIRES_STATE_BOUND_PROBE")
     insist(panel_sha256 is None or panel_sha256 == probe.get("probe_panel_sha256"),
            "COMMITTED_PROBE_INCONSISTENT")
+    # Direct V2 callers cannot bypass original-V5 U0-only connector policy.
+    root, custody = _paths(root, custody)
+    insist(not _binding(root, custody).get("original_v5_u0_only", False),
+           "ORIGINAL_V5_U0_ONLY_JOURNAL_NO_UPDATES")
     return _outcome(root, custody, update=update, kind="UPDATE_COMMITTED",
                     state_bytes=state_bytes, telemetry=probe)
 
@@ -1397,7 +1418,9 @@ def _forensic_binding(root: Path, custody: Path) -> tuple[dict, list[dict]]:
                 run_id=lock["run_id"], horizon=lock["planned_horizon"],
                 panel_sha256=lock["panel_sha256"],
                 config_sha256=lock["config_sha256"],
-                rights_sha256=lock["rights_sha256"]), "RUN_BINDING_DRIFT")
+                rights_sha256=lock["rights_sha256"],
+        original_v5_u0_only=lock.get("original_v5_u0_only", False)),
+        "RUN_BINDING_DRIFT")
             found.append((raw, lock))
         except (JournalRefusal, *_SCAN_ERRORS) as exc:
             issues.append({"name": "run.lock.json", "copy": where, "reason": str(exc),
