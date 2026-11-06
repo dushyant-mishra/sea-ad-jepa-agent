@@ -112,8 +112,24 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
         insist(meta.get(name) == value and
                (type(meta.get(name)) is type(value)),
                "STRUCTURED_METADATA_BINDING_" + name.upper())
-    insist("online.value_encoder.weight" in bundle["parameter_names"],
+    # Actual original PR224 V5 uses GeneExpressionTokenizer.value_encoder
+    # (Sequential: Linear(1,32) and Linear(32,width)); the tiny synthetic
+    # #575 fixture instead has a top-level value_encoder.weight. Keep old
+    # structural fixture tests without confusing their names with real V5.
+    names = set(bundle["parameter_names"])
+    original_v5_value_encoder = {
+        "online.tokenizer.value_encoder.0.weight",
+        "online.tokenizer.value_encoder.0.bias",
+        "online.tokenizer.value_encoder.3.weight",
+        "online.tokenizer.value_encoder.3.bias",
+    }
+    synthetic_fixture_encoder = "online.value_encoder.weight" in names
+    insist(original_v5_value_encoder <= names or synthetic_fixture_encoder,
            "EXPRESSION_VALUE_ENCODER_MISSING")
+    # A partial V5 tokenizer must not exploit the synthetic-only alias.
+    insist(not (original_v5_value_encoder & names)
+           or original_v5_value_encoder <= names,
+           "INCOMPLETE_ORIGINAL_V5_EXPRESSION_VALUE_ENCODER")
     online_state = bundle["modules"]["online"]
     teacher_state = bundle["modules"]["teacher"]
     insist(set(online_state) == set(teacher_state),
