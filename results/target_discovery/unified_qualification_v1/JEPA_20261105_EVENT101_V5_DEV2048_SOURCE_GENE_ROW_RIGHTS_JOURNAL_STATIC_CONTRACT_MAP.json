@@ -6,7 +6,7 @@
   "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
   "human": {
     "path": "docs/agent/JEPA_20261105_EVENT101_SOL_STATIC_ORIGINAL_V5_PUBLIC_DEV2048_JOURNAL_POLICY_PIPELINE_CONTRACT_NO_TRAINING.md",
-    "git_blob_sha1": "ff24d79e88d95a92295fedfdd5c8873564afb9a2"
+    "git_blob_sha1": "bd9248483ad35da39a3ac8a9694f1389aaea0f63"
   },
   "new_draft_pr": {
     "number": 585,
@@ -67,7 +67,6 @@
     "member_sha256_verified_count": 5,
     "student_member": "student_qexcluded.npz",
     "evaluation_roster_member": "roster_evaluation_only.npz",
-    "teacher_measured_data_read": false,
     "real_human_rna_read": false,
     "private_controller_read": false,
     "synthetic_cells": 1440,
@@ -95,7 +94,9 @@
       "test"
     ],
     "C1_to_C6": "UNASSESSED",
-    "F1_to_F4_source_atac_rare_donor_limitations_remain": true
+    "F1_to_F4_source_atac_rare_donor_limitations_remain": true,
+    "teacher_measured_member_bytes_hashed_only": true,
+    "teacher_measured_values_decoded_or_used": false
   },
   "contract_issued_only_as": {
     "schema": "JEPA_ORIGINAL_V5_DEV2048_PIPELINE_STATIC_CONTRACT_V1",
