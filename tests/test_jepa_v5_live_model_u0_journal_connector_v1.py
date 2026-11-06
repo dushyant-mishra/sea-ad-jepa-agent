@@ -107,6 +107,12 @@ def test_true_original_v5_u0_bytes_recorded_in_integrated_v2_journal(
     assert outcome["probe_measurement_origin"] == journal.MEASUREMENT_ORIGIN
     assert outcome["physical_c1_c6_biology_or_collapse_proved"] is False
     assert outcome["training_authorized"] is False
+    assert outcome["data_class"] == "PR547_PUBLIC_SYNTHETIC_DEV2048_ONLY"
+    assert outcome["checkpoint_class"].startswith("DEV_ONLY_U0_INITIALIZATION")
+    assert outcome["source_rights_issuer_verified"] is False
+    assert outcome["qualified_teacher_target_bound"] is False
+    assert outcome["physical_probe_panel_bound"] is False
+    assert outcome["synthetic_fixture_model_used"] is False
     assert (root/"u00000.state.bin").read_bytes() == snapshot.state_bytes
     assert sha256((root/"u00000.state.bin").read_bytes()).hexdigest() == snapshot.snapshot_sha256
     assert journal.inspect_journal(root, custody)["resume_authorized"] is False
@@ -199,6 +205,54 @@ def test_wrong_initialization_seed_cannot_launder_as_original_PR548_U0(public_co
     with pytest.raises(live.LiveV5JournalRefusal,
                        match="INITIAL_WEIGHTS_NOT_PR548_EXACT_SEED"):
         capture(modules, public_contract)
+
+
+
+def test_toy_model_substitute_never_bypasses_exact_original_v5_type(public_contract):
+    from types import SimpleNamespace
+    fake = SimpleNamespace(online=object(), teacher=object(), predictor=object(),
+                           optimizer=object())
+    with pytest.raises(live.LiveV5JournalRefusal,
+                       match="NOT_ORIGINAL_V5_REFERENCE_MODULES"):
+        capture(fake, public_contract)
+
+
+def test_gene_identity_width_48_is_bound_to_original_v5_computation(public_contract):
+    modules = real_v5()
+    modules.online.tokenizer.gene_identity.embedding_dim = 49
+    with pytest.raises(live.LiveV5JournalRefusal,
+                       match="GENE_IDENTITY_EMBEDDING_WIDTH_48_REQUIRED"):
+        capture(modules, public_contract)
+
+
+@pytest.mark.parametrize(("key", "value"), [
+    ("maximize", True), ("foreach", True), ("fused", True),
+])
+def test_optimizer_ascent_or_unapproved_fused_mode_refused_at_u0(
+        public_contract, key, value):
+    modules = real_v5()
+    modules.optimizer.param_groups[0][key] = value
+    with pytest.raises(live.LiveV5JournalRefusal,
+                       match="ORIGINAL_V5_ADAMW_HYPERPARAMETERS_CHANGED"):
+        capture(modules, public_contract)
+
+
+def test_caller_reported_probe_with_wrong_model_state_sha_refused_before_write(
+        tmp_path, public_contract):
+    modules = real_v5()
+    snapshot = capture(modules, public_contract)
+    report = caller_reported_probe(snapshot)
+    report["state_payload_sha256"] = "f" * 64
+    root, custody = tmp_path / "tampered", tmp_path / "outside"
+    with pytest.raises(live.LiveV5JournalRefusal,
+                       match="CALLER_REPORTED_ONLY_PROBE_REQUIRED"):
+        live.record_real_v5_u0_to_journal(
+            snapshot=snapshot, modules=modules, repo_root=ROOT,
+            public_fit_zip=Path(os.environ["JEPA_PUBLIC_DEV_FIT_ZIP"]),
+            expected_contract=public_contract, journal_root=root,
+            external_custody=custody, horizon=2,
+            caller_reported_probe=report)
+    assert not root.exists() and not custody.exists()
 
 
 def test_post_step_connector_is_unavailable_until_separate_owner_authority():
