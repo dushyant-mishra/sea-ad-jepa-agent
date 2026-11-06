@@ -1,0 +1,266 @@
+{
+  "schema": "DOWNSTREAM_QUALIFICATION_EVIDENCE_REUSE_MATRIX_V1",
+  "date": "2026-10-14",
+  "authority": "ANALYSIS_ONLY__NO_DOWNSTREAM_OR_TRAINING_AUTHORITY",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "reuse_policy": {
+    "classification_before_new_work": ["ALREADY_AUDITED", "SUPERSEDED", "OPEN", "CHANGED_INPUT_REQUIRES_REQUALIFICATION"],
+    "rule": "PORT_OR_REBIND_EQUIVALENT_HISTORICAL_TESTS_BEFORE_WRITING_NEW_AUDITS",
+    "historical_index": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
+    "v4_active_tests": "docs/agent/TEACHER_STUDENT_ACTIVE_TEST_SELECTION_V4.txt",
+    "v5_active_tests": "docs/agent/TEACHER_STUDENT_V5_ACTIVE_TEST_SELECTION.txt",
+    "target_redteam_branch": {"branch": "planning/v5-teacher-target-redteam-20260915", "head": "e342455ae841050282ef1932824e1aec971f1375"}
+  },
+  "packages": [
+    {
+      "id": "A",
+      "name": "TQB_EXACT_CONSUMPTION_TARGET_SEMANTICS",
+      "classification": "CHANGED_INPUT_REQUIRES_REQUALIFICATION",
+      "reuse": [
+        "docs/agent/TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V2.json",
+        "tests/test_teacher_student_v5_scientific_target_v2.py",
+        "docs/agent/TEACHER_STUDENT_V5_DONOR_PRIMARY_OBJECTIVE_20260908.md"
+      ],
+      "preserve": ["DONOR_PRIMARY_TARGET_DOCTRINE", "OPERATOR_AS_ADMISSIBILITY_NOT_EQUAL_MASS", "P_Q_SEPARATION"],
+      "new_delta": ["BIND_EXACT_TARGET_QUALIFICATION_BUNDLE_DIGEST", "TARGET_OR_PORTFOLIO_SEMANTICS_MUST_MATCH_TQB", "TARGET_NONE_MUST_REMAIN_FIRST_CLASS", "TQB_LIMITATIONS_AND_FORBIDDEN_INTERPRETATIONS_MUST_PROPAGATE"]
+    },
+    {
+      "id": "B",
+      "name": "TEACHER_EVIDENCE_TARGET_CONSTRUCTION",
+      "classification": "CHANGED_INPUT_REQUIRES_REQUALIFICATION",
+      "reuse": [
+        "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md",
+        "docs/agent/TEACHER_STUDENT_V5_DATA_FIRST_STATUS_20260908.md",
+        "tests/test_teacher_student_data_first_v1.py"
+      ],
+      "preserve": ["TEACHER_EXACT_COPY_INIT_MECHANIC", "TEACHER_NO_GRAD_MECHANIC", "NATIVE_SUPPORT_NE_PRIVATE_BIOLOGY", "COMMON_CORE_NE_BIOLOGICAL_TRUTH"],
+      "new_delta": ["EXACT_TQB_EVIDENCE_RIGHTS", "F7_MULTIMODAL_PROVENANCE", "TEACHER_PRIVATE_INFORMATION_CLASSIFICATION", "NO_QUERY_OR_HIDDEN_TOTAL_LEAKAGE_IN_TEACHER_TARGET"]
+    },
+    {
+      "id": "C",
+      "name": "STUDENT_RESTRICTION_RECOVERABILITY_UNCERTAINTY",
+      "classification": "CHANGED_INPUT_REQUIRES_REQUALIFICATION",
+      "reuse": [
+        "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R4.md",
+        "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md",
+        "tests/test_population_access_registry_v1.py"
+      ],
+      "preserve": ["PROTECTED_PARTITION_FIREWALL", "POINT_STOCHASTIC_TEACHER_PRIVATE_NOT_ESTIMABLE_TAXONOMY"],
+      "new_delta": ["EXACT_TQB_STUDENT_EVIDENCE_RESTRICTION", "UNCERTAINTY_OUTPUT_WHERE_IDENTIFIABILITY_IS_STOCHASTIC", "NOT_ESTIMABLE_NO_ZERO_FILL", "TEACHER_PRIVATE_CRITIC_ONLY_NO_STUDENT_TARGET"]
+    },
+    {
+      "id": "D",
+      "name": "TARGET_ADDRESS_QUERY_PREDICTOR_SHORTCUT_FIREWALL",
+      "classification": "OPEN",
+      "reuse": [
+        "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md#target-identity-shortcut",
+        "planning/v5-teacher-target-redteam-20260915@e342455ae841050282ef1932824e1aec971f1375",
+        "tests/test_teacher_student_unified_runtime_v1.py",
+        "tests/test_f1b_successor_attack_suite_v1.py"
+      ],
+      "preserve": ["IDENTITY_SHORTCUT_DISCOVERY_ALREADY_DONE", "NO_HIDDEN_EXPRESSION_LEAK_ALLEGED_FROM_IDENTITY_PATH_ALONE"],
+      "new_delta": ["FIXED_OR_SEPARATE_TARGET_ADDRESS_CODE", "IDENTITY_ONLY_BASELINE", "TARGET_IDENTITY_SHUFFLE_CONTROL", "QUERY_IDENTITY_TO_ONLINE_TO_EMA_GRADIENT_PATH_BLOCK_OR_QUANTIFY", "BIND_TO_EXACT_TQB_ADDRESSES"]
+    },
+    {
+      "id": "E",
+      "name": "MASKING_EVIDENCE_ACQUISITION_SHORTCUT_FIREWALL",
+      "classification": "OPEN",
+      "reuse": [
+        "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md#correlated-gene-masking",
+        "tests/test_teacher_student_v5_support_schedule_v1.py",
+        "tests/test_teacher_student_v5_finite_triplets_v1.py",
+        "analysis/v5_layer2_cross_view_shortcut_20260915/X_CROSS_VIEW_SHORTCUT_AUDIT_SPEC.json"
+      ],
+      "preserve": ["RANDOM_MASKING_CAN_LEAVE_CORRELATED_PARTNERS_VISIBLE", "DO_NOT_BLINDLY_RESTORE_POOLED_FULL104_CORRMASK"],
+      "new_delta": ["UNIFORM_VS_HISTORICAL_GRAPH_VS_DONOR_SOURCE_RECURRENT_MASK_COMPARISON", "OUTCOME_BLIND_COVERAGE_EXPOSURE_CRITERIA", "F9_NORMALIZATION_AND_SUPPORT_CHANNEL_ATTACKS", "MASKING_POLICY_FROZEN_BEFORE_MODEL_OUTCOMES"]
+    },
+    {
+      "id": "F",
+      "name": "SCIENTIFIC_WEIGHTING_PROPOSAL_EXPOSURE_SCHEDULE",
+      "classification": "CHANGED_INPUT_REQUIRES_REQUALIFICATION",
+      "reuse": [
+        "docs/agent/TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V2.json",
+        "docs/agent/TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3.json",
+        "tests/test_teacher_student_v5_objective_schedule_v2.py",
+        "tests/test_teacher_student_v5_proposal_policy_v1.py",
+        "tests/test_teacher_student_v5_support_schedule_v1.py"
+      ],
+      "preserve": ["DONOR_PRIMARY_P", "P_Q_IMPORTANCE_CORRECTION", "PACKING_CANNOT_CHANGE_SCIENTIFIC_MASS", "OPERATOR_NOT_AUTOMATIC_EQUAL_MASS"],
+      "new_delta": ["REBIND_P_TO_CURRENT_MANIFEST_AND_TQB", "FREEZE_Q_AGAINST_CURRENT_PRESENTATION_HORIZON", "FREEZE_REPEAT_EXPOSURE_LIMITS", "SOURCE_DONOR_OPERATOR_CHANNELS_MUST_NOT_BE_SILENTLY_REWEIGHTED"]
+    },
+    {
+      "id": "G",
+      "name": "REPRESENTATION_SUBSPACE_TRANSFER",
+      "classification": "CHANGED_INPUT_REQUIRES_REQUALIFICATION",
+      "reuse": [
+        "results/target_discovery/unified_qualification_v1/DOWNSTREAM_INHERITED_OBLIGATIONS_F6_F9_V1.json",
+        "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md#dimension-d-shared"
+      ],
+      "preserve": ["SUBSPACE_ONLY", "AXIS_SEMANTICS_NOT_QUALIFIED", "QUALIFICATION_RANK_CEILING_NE_MODEL_WIDTH", "TECHNOLOGY_INVARIANCE_NOT_QUALIFIED"],
+      "new_delta": ["TQB_EXPORT_REPRESENTATION_SCOPE", "PRINCIPAL_ANGLE_CANONICAL_CORRELATION_PROCRUSTES_TESTS", "SOURCE_ACQUISITION_SIGNAL_LIMITATION", "HVS_NPH52_TRANSPORT_WITHOUT_FORCED_INVARIANCE"]
+    },
+    {
+      "id": "H",
+      "name": "NORMALIZATION_LIBRARY_SUPPORT_INFORMATION_CHANNELS",
+      "classification": "CHANGED_INPUT_REQUIRES_REQUALIFICATION",
+      "reuse": [
+        "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md#full104",
+        "analysis/v5_layer2_cross_view_shortcut_20260915/V5_LAYER2_CROSS_VIEW_SHORTCUT_CLOSEOUT.json",
+        "results/target_discovery/unified_qualification_v1/DOWNSTREAM_INHERITED_OBLIGATIONS_F6_F9_V1.json"
+      ],
+      "preserve": ["FULL_LIBRARY_EXTENDS_BEYOND_41K", "ADDRESS_PARITY_NE_EVIDENCE_PARITY", "NO_ZERO_FILL", "WITHIN_DONOR_METRIC_CAN_MISS_SOURCE_CHANNEL"],
+      "new_delta": ["TQB_BOUND_LIBRARY_PROVENANCE", "STORED_VS_UNMATERIALIZED_MASS", "DENOMINATOR_SOURCE_SHORTCUT_ATTACK", "SOURCE_EXPLICIT_ESTIMABILITY"]
+    },
+    {
+      "id": "I",
+      "name": "MULTIMODAL_REGULATORY_PROVENANCE",
+      "classification": "CHANGED_INPUT_REQUIRES_REQUALIFICATION",
+      "reuse": [
+        "results/target_discovery/unified_qualification_v1/DOWNSTREAM_INHERITED_OBLIGATIONS_F6_F9_V1.json",
+        "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R4.md"
+      ],
+      "preserve": ["RNA_DERIVED_EDGES_HYPOTHESIS_ONLY", "PROXIMITY_NE_CAUSAL_TARGET", "SAME_NUCLEUS_NE_SEPARATE_NUCLEUS", "INDEPENDENT_ATAC_NE_RNA_DERIVED_ANSWER_KEY"],
+      "new_delta": ["EXACT_TQB_MODALITY_PROVENANCE", "INDEPENDENCE_BOUNDARY_RECEIPTS", "SCENIC_INCOMPLETE_WORK_CANNOT_PROMOTE", "REGULATORY_NEGATIVE_CONTROLS"]
+    },
+    {
+      "id": "J",
+      "name": "OPTIMIZER_GRADIENT_MOMENT_EMA_JOINED_RUNTIME",
+      "classification": "CHANGED_INPUT_REQUIRES_REQUALIFICATION",
+      "reuse": [
+        "tests/test_c2_mandatory_gradient_gate_v1.py",
+        "tests/test_f1b_successor_attack_suite_v1.py",
+        "tests/test_healthy_teacher_training_contract_v1.py",
+        "tests/test_teacher_student_unified_runtime_v1.py",
+        "tests/test_teacher_student_v5_inactive_update_reference.py"
+      ],
+      "preserve": ["BACKWARD_AUTOCAST_DISABLED", "UNSCALE_BEFORE_GRADIENT_GATE", "NONZERO_FINITE_GRADIENT_AND_ADAM_MOMENTS", "PROVE_OPTIMIZER_STEP_ONCE", "EMA_ONLY_AFTER_PROVED_STEP", "NO_EMA_ON_REJECTED_STEP"],
+      "new_delta": ["RUN_SAME_ATTACKS_ON_CURRENT_JOINED_CONFIGURATION", "CURRENT_PROTECTED_REGISTRY", "CURRENT_SCIENTIFIC_WEIGHT_INPUT", "CURRENT_TQB_AND_RUNTIME_RECEIPTS"]
+    },
+    {
+      "id": "K",
+      "name": "EMA_TIMESCALE_AUTHORITY",
+      "classification": "OPEN",
+      "reuse": [
+        "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md#ema-timescale",
+        "docs/agent/TEACHER_STUDENT_V5_DATA_FIRST_STATUS_20260908.md",
+        "docs/agent/TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1.json"
+      ],
+      "preserve": ["HISTORICAL_POINT996_NOT_CURRENT_AUTHORITY", "PRESENTATION_NORMALIZED_FORM_MU_U_EQUALS_EXP_LOG_HALF_TIMES_P_U_OVER_H"],
+      "new_delta": ["DEFINE_AUTHORIZED_PRESENTATION_UNIT", "FREEZE_HALF_LIFE_H_PROSPECTIVELY", "TEST_LAG_STABILITY_COLLAPSE_AND_RESUME_INVARIANCE", "NO_OUTCOME_TUNING_OF_H"]
+    },
+    {
+      "id": "L",
+      "name": "CHECKPOINT_RESUME_SOURCE_RUNTIME_PROVENANCE",
+      "classification": "CHANGED_INPUT_REQUIRES_REQUALIFICATION",
+      "reuse": [
+        "tests/test_teacher_student_unified_runtime_v1.py",
+        "src/sea_ad_jepa/v4/teacher_student_checkpoint.py",
+        "src/sea_ad_jepa/v4/teacher_student_source_authority.py",
+        "tests/test_teacher_student_v5_inactive_update_reference.py"
+      ],
+      "preserve": ["ONLINE_TEACHER_PREDICTOR_OPTIMIZER_SCALER_RNG_BINDING", "SCHEDULE_AND_EMA_COUNTER_BINDING", "SOURCE_BYTE_REHASH", "ENVIRONMENT_FAIL_CLOSED"],
+      "new_delta": ["BIND_TQB_DIGEST", "BIND_DOWNSTREAM_CERTIFICATION_RECEIPT", "BIND_RUNTIME_ELIGIBILITY_RECEIPT", "CURRENT_MODEL_CONFIG_AND_SOURCE_ROOTS", "CURRENT_HARDWARE_KERNEL_AUTHORITY"]
+    },
+    {
+      "id": "M",
+      "name": "MODEL_PROTECTED_REGISTRY_GEOMETRY_AUTHORITY",
+      "classification": "OPEN",
+      "reuse": [
+        "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md#protected-registry-checkpoint-anti-carryover",
+        "tests/test_teacher_student_unified_runtime_v1.py"
+      ],
+      "preserve": ["DERIVE_REGISTRY_FROM_CURRENT_MODEL", "HISTORICAL_48_TENSOR_CONSTANT_FORBIDDEN", "MODEL_WIDTH_NE_QUALIFICATION_RANK_CEILING"],
+      "new_delta": ["FREEZE_FINAL_MODEL_DEPTH_WIDTH_HEADS_FROM_PROSPECTIVE_AUTHORITY", "DERIVE_CURRENT_PROTECTED_REGISTRY", "BIND_REGISTRY_DIGEST_TO_RUNTIME", "REJECT_HARDCODED_6_48_128X8_CARRYOVER"]
+    },
+    {
+      "id": "N",
+      "name": "PACKING_RNG_HARDWARE_EQUIVALENCE",
+      "classification": "CHANGED_INPUT_REQUIRES_REQUALIFICATION",
+      "reuse": [
+        "tests/test_teacher_student_packed_equivalence_v1.py",
+        "tests/test_teacher_student_v5_rng_contract_v2.py",
+        "tests/test_teacher_student_v5_rng_dense_packed_v2.py",
+        "tests/test_teacher_student_v5_numerical_boundary_v1.py"
+      ],
+      "preserve": ["IDENTITY_KEYED_RNG_NOT_TENSOR_POSITION", "PACKING_DOES_NOT_CHANGE_CELL_SET_OR_WEIGHT_MASS", "DENSE_PACKED_EVAL_EQUIVALENCE", "PACKED_V5_NOT_ASSUMED_BITWISE_V4_CONTINUATION"],
+      "new_delta": ["QUALIFY_OPTIMIZED_GPU_KERNEL_AGAINST_REFERENCE", "TARGET_HARDWARE_TOKEN_BUDGET", "CURRENT_RUNTIME_DENSE_PACKED_GRADIENT_EQUIVALENCE", "HARDWARE_PROVENANCE_BINDING"]
+    },
+    {
+      "id": "O",
+      "name": "COLLAPSE_MOVEMENT_STABILITY_QUALIFICATION",
+      "classification": "CHANGED_INPUT_REQUIRES_REQUALIFICATION",
+      "reuse": [
+        "tests/test_teacher_student_unified_runtime_v1.py",
+        "tests/test_teacher_student_relational_v2.py",
+        "docs/agent/TEACHER_STUDENT_CANONICAL_RUNTIME_V1_20260907.md"
+      ],
+      "preserve": ["EXACT_DECAY_ONLY_COUNTERFACTUAL", "NO_POOLED_RESCUE_OF_FAILED_MANDATORY_TENSOR", "RELATIONAL_GROUP_NONCOMPENSATION"],
+      "new_delta": ["CURRENT_MODEL_MOVEMENT_GATE", "CURRENT_REPRESENTATION_COLLAPSE_METRICS", "SUBSPACE_STABILITY_BEFORE_AXIS_INTERPRETATION", "NO_FIXED_2X_OR_HISTORICAL_THRESHOLD_INHERITANCE"]
+    },
+    {
+      "id": "P",
+      "name": "HISTORICAL_LEAKAGE_FALSIFIER_REGRESSION_BATTERY",
+      "classification": "CHANGED_INPUT_REQUIRES_REQUALIFICATION",
+      "reuse": [
+        "tests/test_f1b_successor_attack_suite_v1.py",
+        "analysis/v5_layer2_cross_view_shortcut_20260915/V5_LAYER2_CROSS_VIEW_SHORTCUT_CLOSEOUT.json",
+        "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
+        "results/target_discovery/unified_qualification_v1/DOWNSTREAM_INHERITED_OBLIGATIONS_F6_F9_V1.json"
+      ],
+      "preserve": ["NORMALIZATION_QUERY_HIDDEN_TOTAL_SUPPORT_WRONG_CELL_DONOR_SOURCE_ORACLE_EVIDENCE_STARVATION_TARGET_DRIFT_SUBSPACE_AXIS_SUPPORT_WIDENING_ATTACK_CLASSES"],
+      "new_delta": ["RUN_ALL_APPLICABLE_ATTACKS_ON_EXACT_TQB_AND_RUNTIME", "ADD_TARGET_IDENTITY_ATTACK", "ADD_MASKING_DEPENDENCY_ATTACK", "ADD_F7_AND_F9_ATTACKS", "EVERY_MANDATORY_ATTACK_GETS_RECEIPT"]
+    },
+    {
+      "id": "Q",
+      "name": "DOWNSTREAM_CERTIFICATION_RECEIPT",
+      "classification": "OPEN",
+      "reuse": [
+        "results/target_discovery/unified_qualification_v1/DOWNSTREAM_CERTIFICATION_SCHEMA_BLUEPRINT_V1.json",
+        "results/target_discovery/unified_qualification_v1/TARGET_QUALIFICATION_BUNDLE_SCHEMA_BLUEPRINT_V1.json"
+      ],
+      "preserve": ["EXACT_TQB_CONSUMPTION", "NO_SUPPORT_OR_ESTIMABILITY_WIDENING", "NO_DROPPED_NEGATIVE_CONTROLS", "NO_SEMANTIC_SUBSTITUTION"],
+      "new_delta": ["IMPLEMENT_AND_VERIFY_RECEIPT", "ENUMERATE_EVERY_INHERITED_OBLIGATION", "BIND_TEST_RECEIPTS", "CAP_AUTHORITY_AT_DOWNSTREAM_CERTIFIED"]
+    },
+    {
+      "id": "R",
+      "name": "RUNTIME_ELIGIBILITY_RECEIPT",
+      "classification": "OPEN",
+      "reuse": [
+        "results/target_discovery/unified_qualification_v1/RUNTIME_ELIGIBILITY_RECEIPT_SCHEMA_BLUEPRINT_V1.json",
+        "tests/test_teacher_student_unified_runtime_v1.py",
+        "tests/test_healthy_teacher_training_contract_v1.py"
+      ],
+      "preserve": ["OPTIMIZER_BEFORE_EMA", "CHECKPOINT_SOURCE_PROVENANCE", "COORDINATE_VALUE_COUPLING", "Q_SAFETY_FINAL_JOIN"],
+      "new_delta": ["IMPLEMENT_RUNTIME_ELIGIBILITY_RECEIPT", "REQUIRE_DOWNSTREAM_CERTIFIED_PARENT", "BIND_CURRENT_RUNTIME_BYTES_AND_JOINED_TESTS", "NO_PROJECT_TRAINING_AUTHORITY"]
+    },
+    {
+      "id": "S",
+      "name": "TRAINING_ELIGIBILITY_REVIEW",
+      "classification": "OPEN",
+      "reuse": [
+        "docs/agent/TEACHER_STUDENT_CANONICAL_RUNTIME_V1_20260907.md",
+        "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md"
+      ],
+      "preserve": ["MECHANICAL_READINESS_NE_EXECUTION_AUTHORITY", "TRAINING_ELIGIBLE_NE_TRAINING_AUTHORIZED"],
+      "new_delta": ["INDEPENDENT_REVIEW_OF_EXACT_TQB_DOWNSTREAM_RUNTIME_CHAIN", "ALL_PREREQUISITES_ACTIVE", "NO_REVOKED_OR_SUPERSEDED_PARENT", "ISSUE_PROJECT_SCOPE_TRAINING_ELIGIBILITY_ONLY"]
+    },
+    {
+      "id": "T",
+      "name": "OWNER_TRAINING_AUTHORIZATION",
+      "classification": "OPEN",
+      "reuse": [
+        "docs/superpowers/specs/2026-10-14-unified-td-qualification-downstream-custody-architecture-v1-1-hostile-review-amendment.md"
+      ],
+      "preserve": ["PROJECT_TRAINING_AUTHORITY_IS_SEPARATE_EXPLICIT_OWNER_DECISION"],
+      "new_delta": ["ONLY_AFTER_TRAINING_ELIGIBLE", "EXACT_PROJECT_SCOPE_AUTHORIZATION", "NO_AUTOMATIC_PROMOTION_FROM_GREEN_CI_OR_COMPONENT_STAGE"]
+    }
+  ],
+  "summary": {
+    "reviewable_packages": 20,
+    "historical_reuse_required": true,
+    "fresh_historical_archaeology_required": false,
+    "current_joined_teacher_student_ema_fully_qualified": false,
+    "training_eligible": false,
+    "training_authorized": false
+  }
+}

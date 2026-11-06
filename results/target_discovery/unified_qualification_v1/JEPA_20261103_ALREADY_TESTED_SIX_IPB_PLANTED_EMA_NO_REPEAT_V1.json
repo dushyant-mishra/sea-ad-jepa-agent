@@ -1,0 +1,114 @@
+{
+  "schema": "JEPA_20261103_ALREADY_TESTED_SIX_IPB_PLANTED_EMA_NO_REPEAT_V1",
+  "date": "2026-11-03",
+  "source_audit": "docs/agent/JEPA_20261103_PRIOR_PLANTED_IPB_JEPA_AND_EMA_EXPERIMENT_NO_REPEAT_CORRECTION.md",
+  "scientific_verdict": "GENERIC_V65_TO_V5_REDUCED_WIDTH_PLANTED_EMA_PILOT_WITHDRAWN_AS_DUPLICATE_OR_INSUFFICIENTLY_DIFFERENT",
+  "evidence": [
+    {
+      "family": "STAGE81A3_V4A_SYNTHETIC_GEOMETRY_ESCAPE",
+      "code": "scripts/v4/stage81a3_synthetic_geometry_escape.py",
+      "receipt": "docs/v4/STAGE81A3_CALIBRATION_AND_SYNTHETIC_MECHANICS_READOUT.md",
+      "runs": 10,
+      "steps_each": 500,
+      "genes": 4096,
+      "factors": 32,
+      "technical_status": "PASS",
+      "scientific_status": "FAIL_10_OF_10__MASKED_FACTOR_R2_NEGATIVE__LOSS_FELL_GT99_PERCENT",
+      "provenance": "ORIGINAL_HISTORICAL_PROJECT_READOUT"
+    },
+    {
+      "family": "STAGE81A3_EMA_0996_DISAMBIGUATION",
+      "code": "scripts/v4/stage81a3_ema_bootstrap_disambiguation.py",
+      "runs": 10,
+      "steps_each": 500,
+      "scientific_status": "FASTER_EMA_DID_NOT_RESCUE_GEOMETRY",
+      "provenance": "ORIGINAL_HISTORICAL_PROJECT_READOUT"
+    },
+    {
+      "family": "STAGE81A3_REVISED_INFORMATION_PRESERVATION",
+      "code": "scripts/v4/stage81a3_final_information_preservation_qualification.py",
+      "runs": 10,
+      "steps_each": 500,
+      "scientific_status": "S1_ONLY_PASS__S2_TO_S7_AND_GEOMETRY_FAIL__NEGATIVE_MASKED_FACTORS",
+      "provenance": "ORIGINAL_HISTORICAL_PROJECT_READOUT"
+    },
+    {
+      "family": "STAGE81A3_V4_1_SIX_BLOCK_IPB_JEPA",
+      "code": "scripts/v4/stage81a3_ipb_jepa_feasibility.py",
+      "configuration": "configs/v4/stage81a3_ipb_jepa_feasibility.yaml",
+      "result_path": "results/v4/stage81a3_ipb_jepa_feasibility.json",
+      "sha256": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "sha_evidence": "docs/history/preservation_20260902/results/v4/stage81a3_context_evidence_audit.json",
+      "independent_evidence": "docs/history/foundation_target_discovery_prior_20260907/stage81/results/v4/stage81a3r_freeze1_evidence_manifest.json",
+      "architecture": {
+        "IPB_blocks": 6,
+        "width": 160,
+        "heads": 4,
+        "genes": 4096,
+        "synthetic_fixtures": 2,
+        "training_seeds": 2,
+        "conditions": [
+          "ipb_jepa",
+          "anchor_only"
+        ],
+        "planned_trajectories": 8,
+        "steps_per_trajectory": 500
+      },
+      "physical_receipt": "EXISTS_AND_SHA256_EXPECTED_EQUALS_OBSERVED_IN_PRESERVED_AUDIT",
+      "numerical_verdict": "EXISTING_RESULT_FULL_CONTENT_NOT_PRESENT_ON_CURRENT_MAIN__DO_NOT_INFER",
+      "next": "MACHA_READ_EXISTING_FILE_AND_VERIFY_SHA__NO_RERUN"
+    },
+    {
+      "family": "STAGE81B_JEPA_VS_ANCHOR_CAUSAL",
+      "source": "docs/agent/archive/governance/ACTIVE_STATE_20260903_HISTORICAL.md",
+      "steps": [
+        100,
+        300,
+        500
+      ],
+      "conditions": [
+        "JEPA_ONLY",
+        "CURRENT",
+        "ANCHOR_ONLY"
+      ],
+      "result": "JEPA_ONLY_STABLE_RELATIVE_TO_CURRENT__ANCHOR_ONLY_HURT__GENE_ID_MOVEMENT_7_618X",
+      "status": "HISTORICAL_CLOSED_DONOT_REINTRODUCE"
+    },
+    {
+      "family": "V65_PLANTED_SUPERVISED_RIDGE",
+      "source_pr": 199,
+      "run": 36804320183,
+      "result": {
+        "rna_shared_r2": 0.5640371488918989,
+        "multimodal_shared_r2": 0.6746087233362175,
+        "multimodal_private_r2": 0.8779468284584567
+      },
+      "model": "RIDGE_SUPERVISED_PLANTED_Z",
+      "status": "COMPLETED_NOT_TRUE_JEPA"
+    },
+    {
+      "family": "V65_EMA_SUPERVISED_MECHANICS",
+      "source_pr": 199,
+      "run": 36805792282,
+      "steps": 120,
+      "status": "COMPLETED_SUPERVISED_EMA_NOT_FREE_LEARNED_TARGET"
+    },
+    {
+      "family": "V5_KEYED_CANONICAL_REFERENCE",
+      "source": "src/sea_ad_jepa/v5/keyed_dropout_prototype_v2.py",
+      "source2": "src/sea_ad_jepa/v5/inactive_update_reference.py",
+      "tests": "tests/test_teacher_student_v5_inactive_update_reference.py",
+      "status": "SAME_TOKEN_PRESERVING_BACKBONE_PLUS_KEYED_RNG_AND_RUNTIME_GUARDS__TINY_REFERENCE_UPDATES_EXIST__NOT_PROOF_NEW_ARCHITECTURE"
+    },
+    {
+      "family": "TD_RELATIONAL_TRUTH_SCORING",
+      "source_pr": 336,
+      "run": 38478444632,
+      "status": "9_OF_9_ALREADY_QUALIFIED_TEST_OF_TEST"
+    }
+  ],
+  "source_semantic_trap": "V65_Xr_FULL_Rlib_NORMALIZED_BEFORE_ANY_STUDENT_MASK__MASKING_POST_NORMALIZATION_LEAKS_HIDDEN_COUNTS",
+  "future_distinct_scope": "NOT_BROAD_PLANTED_LEARNER; VERIFY_ARCHIVED_IPB_RECEIPT_FIRST; IDENTIFY_AND_FREEZE_NOVEL_C2_C3_ACTUAL_TARGET_PRODUCER_TO_QUALIFICATION_TO_CONTROLLER_TRUTH_AND_LEARNED_STUDENT_CONDITIONAL_GAIN_NOT_ALREADY_TESTED",
+  "no_new_training_this_turn": true,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

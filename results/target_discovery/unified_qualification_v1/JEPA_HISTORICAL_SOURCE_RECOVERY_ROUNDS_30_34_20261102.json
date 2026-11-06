@@ -1,0 +1,83 @@
+{
+  "schema": "JEPA_HISTORICAL_SOURCE_RECOVERY_ROUNDS_30_34_V1",
+  "date_utc": "2026-11-02",
+  "scope": "PRIMARY_SOURCE_HISTORICAL_RECONCILIATION_ONLY__NO_NEW_EXPERIMENT",
+  "preceding_index_sources": 52,
+  "previous_rounds": "1-29",
+  "rounds": [
+    30,
+    31,
+    32,
+    33,
+    34
+  ],
+  "snapshot": {
+    "path": "docs/agent/takeover_inventory_20261102/ALL_519_GITHUB_PULL_REQUESTS_SNAPSHOT_V1.tsv",
+    "all_rows": 519,
+    "open": 418,
+    "merged": 49,
+    "closed": 52,
+    "missing_pr_numbers": [
+      54,
+      55,
+      494
+    ],
+    "meaning": "PR status inventory only, not independent verification of every diff"
+  },
+  "sources": [
+    {
+      "round": 30,
+      "pr": 137,
+      "head": "e130f55c7471b74b387f0bd0aca586c4a1614921",
+      "path": "analysis/therapeutic_perturbation_etl/CRISPRBRAIN_SCREEN_RELIABILITY_20260925.md",
+      "blob_sha1": "c97a33a372fb6d53609ffd4a4adf47ccd8127a29",
+      "classification": "benchmark_reliability_rejected_historical",
+      "decision_thresholds": "POST_HOC_DESCRIPTIVE"
+    },
+    {
+      "round": 31,
+      "pr": 131,
+      "head": "8647d21174c5e7eab2ad01fc6b9251b069ba0e03",
+      "path": "analysis/therapeutic_perturbation_etl/P1_6_BULK_INDEPENDENT_RECOMPUTE_20260925.md",
+      "blob_sha1": "dfae152d639606713a3384ed2bfd89c142fc161b",
+      "classification": "exact_stored_precision_physical_recompute__not_biology"
+    },
+    {
+      "round": 32,
+      "pr": 175,
+      "head": "349c90a2c8e1d3d568cee41ad8ebcc8692670b5b",
+      "path": "results/agent2/agent2_coverage_matrix_summary_v1.json",
+      "blob_sha1": "61d35cf3644e3a44505907541352d94b273b7191",
+      "classification": "historical_41k_coverage_crosswalk__not_same_cell_validation"
+    },
+    {
+      "round": 33,
+      "pr": 207,
+      "head": "189e62092e095efba71ffaa23522f627b819e37e",
+      "path": "results/v75/V75_100K_MEASUREMENT_ARCHITECTURE_CLOSEOUT_V3_REPAIRED_AUTHORITY.json",
+      "blob_sha1": "668f00706967d1ed17fca73cddd713806f6d7b8c",
+      "classification": "qualified_synthetic_measurement_100k__no_representation_or_training"
+    },
+    {
+      "round": 34,
+      "pr": 276,
+      "head": "083f640bbf6ca438cbf2e38d1ef4c7ffbba49bb7",
+      "path": "results/v4/FOUNDATION_MATRIX_LABEL_IDENTIFIABILITY_V2.csv",
+      "blob_sha1": "495f65d58b9425d86d521f4d5d602a6a80570c77",
+      "classification": "v2_current_historical_endpoint_34_of_42"
+    },
+    {
+      "round": 34,
+      "pr": 276,
+      "head": "083f640bbf6ca438cbf2e38d1ef4c7ffbba49bb7",
+      "path": "results/v4/FOUNDATION_REPRESENTATION_RESIDUAL_GATES_V1.json",
+      "blob_sha1": "60ab2d6427b5edb23421a52bd020b152b37c7c51",
+      "classification": "residual_tech_imprint_nonqualification__v1_35_of_42_superseded"
+    }
+  ],
+  "source_branches_have_files": true,
+  "audit_branch_contains_primary_sources": false,
+  "reference_doc": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_30_34_20261102.md",
+  "real_training_authorized": false,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

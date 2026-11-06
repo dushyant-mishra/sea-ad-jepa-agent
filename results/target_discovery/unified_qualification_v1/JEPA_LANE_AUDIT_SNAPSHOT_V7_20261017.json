@@ -1,0 +1,66 @@
+{
+  "schema": "JEPA_LANE_AUDIT_SNAPSHOT_V7",
+  "date": "2026-10-17",
+  "status": "MACHA_TASK4_REJECTED__B1_B5_RECHECK_PROSPECTIVELY_GREEN__ACCEPTANCE_ABSENT",
+  "previous_v6": "results/target_discovery/unified_qualification_v1/JEPA_LANE_AUDIT_SNAPSHOT_V6_20261017.json",
+  "task3_frozen_sha": "117dd51dea827e734b299982da93991b934bdc8f",
+  "macha_rejection": {
+    "candidate_sha": "36e3b46f1ca44465864a11872b459b5d108d6a67",
+    "review_head": "d4d9ef94",
+    "verdict": "REJECT_TASK4_CUSTODY_CANDIDATE",
+    "blockers": [
+      "T4-B1",
+      "T4-B2",
+      "T4-B3",
+      "T4-B4",
+      "T4-B5"
+    ]
+  },
+  "successor6_sha": "211375de57cc1f70d46c6eb3a4860d61a1aba0a6",
+  "successor6_repaired": [
+    "same_process_campaign_remint",
+    "in_process_concurrent_exposure_double_spend"
+  ],
+  "current_repair_pr": 426,
+  "current_recheck_pr": 427,
+  "current_immutable_candidate_sha": "64535753acfab0993165b5666797808f20cd8743",
+  "red_probes": [
+    {
+      "run": 39091118650,
+      "job": 117567897946,
+      "result": "4 failed, 129 passed, 1 skipped"
+    },
+    {
+      "run": 39091241599,
+      "job": 117568264331,
+      "result": "1 failed, 133 passed, 1 skipped"
+    }
+  ],
+  "final_exact_head_checks": {
+    "task4": 39091466138,
+    "task0_migration": 39091466284,
+    "task0_b1_b5": 39091466186,
+    "task3_b6": 39091466136,
+    "task1": 39091466221,
+    "task2": 39091466143,
+    "task3_registry": 39091466195,
+    "synthetic": 39091466139
+  },
+  "last_code_test_outcomes": {
+    "focused": "135 passed, 1 skipped",
+    "projected_100k": "1 passed",
+    "unified": "326 passed, 1 skipped"
+  },
+  "recheck_requirements": [
+    "Macha original A1-A5 hostile probes",
+    "external FINAL authority fail-closed",
+    "original PR417 and PR419 attacks",
+    "real Windows filesystem tests",
+    "POSIX rename durability",
+    "Task0-3 frozen code unchanged"
+  ],
+  "macha_recheck_verdict": "ABSENT",
+  "real_windows_recheck": "ABSENT",
+  "historical_artifacts": "results/target_discovery/unified_qualification_v1/LOCAL_ARTIFACT_CUSTODY_MANIFEST_V4_20261017.json",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

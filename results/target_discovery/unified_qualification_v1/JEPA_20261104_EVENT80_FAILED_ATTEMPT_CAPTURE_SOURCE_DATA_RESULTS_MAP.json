@@ -1,0 +1,139 @@
+{
+  "schema": "JEPA_EVENT80_V5_FAILED_ATTEMPT_CAPTURE_SOURCE_DATA_RESULTS_MAP_V1",
+  "date_local": "2026-11-04",
+  "git_ci_utc": "2026-11-05",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "human_handoff": "docs/agent/JEPA_20261104_EVENT80_FAILED_ONSET_CAPTURE_MACHA_F1_AND_V5_CHECKPOINT_SUCCESSOR.md",
+  "read_first_prior": [
+    "docs/agent/JEPA_20261104_EVENT79_ACTUAL_ATOMIC_V5_CHECKPOINT_BYTES_AND_NEXT_AGENT_HANDOFF.md",
+    "docs/agent/JEPA_20261104_EVENT78_V5_FINE_GRAIN_CHECKPOINTS_MACHA_NEW_RED_AND_SUCCESSOR_HANDOFF.md",
+    "docs/agent/JEPA_20261104_EVENT75_SOL_COMPLETE_SYNTHETIC_V5_COLD_START_TAKEOVER_AND_NO_REPEAT.md",
+    "docs/agent/JEPA_20261104_SOL_LANE_SUCCESSOR_DETAILED_OPERATIONAL_HANDOFF_EVENT68.md",
+    "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json"
+  ],
+  "macha_source_new": {
+    "pr553": {
+      "head": "f6590e28a3c39f7cd270831d7d7a217223dec23e",
+      "decision": "REPAIR_REQUIRED__F1_FAILED_ATTEMPT_NOT_RECORDABLE__F2_SELF_ASSERTED_FLAGS__F3_MISSING_EACH_ATTEMPT_FROZEN_COUNTERFACTUAL__F4_REPLAY_CRASH_ADAM"
+    },
+    "pr554": {
+      "head": "b48fbb2d75118177a81ef9f1e411c637ba1768bb",
+      "decision": "ACCEPT_SCOPED_T1_EXACT_CASE_ONLY",
+      "limits": [
+        "DIFFERENT_GENE_SETS_OBSCURE_IDENTITY_ONLY_STUDENT",
+        "TRAINING_DROPOUT_OBSCURES_VALUE_BLIND",
+        "NOT_REAL_OPTIMIZER_CHECK"
+      ]
+    },
+    "pr556": {
+      "head": "57c00bcae17fc13feded47c9ac2e3054172d64fb",
+      "role": "TEST_ONLY_T2_VALUE_SHUFFLE_REAL_V5_ENCODER__T3_FALSE_BOOLEAN_GRAD_GATE_RED__T4_MSE_DIRECTION_RED__T5_WITHHELD_Q_RED",
+      "test_path": "tests/test_jepa_synth2048_t2_t5_macha_review.py",
+      "test_blob_sha1": "2419450d9fc6c8027cd32c14a3371c9eb4433874"
+    },
+    "pr557": {
+      "head": "e5b3e8dd927afd6f1e3af11efe6252454f98682e",
+      "role": "TEST_ONLY_F1_12_GOOD_THEN_FAILED_13_RED",
+      "test_path": "tests/test_jepa_synth2048_checkpoint_failed_attempt_macha_red.py",
+      "test_blob_sha1": "bfa5345775570205def66eb19a98efc207d28d90",
+      "unchanged_in_sol_pr558": true
+    }
+  },
+  "sol_new": {
+    "pr558": {
+      "head": "33793a07a7c19eeb6a35273182d1ba9151bcf600",
+      "base_pr": 557,
+      "base_head": "e5b3e8dd927afd6f1e3af11efe6252454f98682e",
+      "ci_run": 41967859163,
+      "ci": "SUCCESS",
+      "python311_passed": 80,
+      "python312_passed": 80,
+      "status": "DRAFT__AUTHOR_GREEN__MACHA_REVIEW_PENDING__MOCK_RECEIPTS_ONLY",
+      "files": [
+        {
+          "path": "scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py",
+          "blob_sha1": "2281c01c261375d711d00711ad35ad48b5acb5b9"
+        },
+        {
+          "path": "tests/test_jepa_synth2048_checkpoint_failed_attempt_macha_red.py",
+          "blob_sha1": "bfa5345775570205def66eb19a98efc207d28d90",
+          "role": "Macha original untouched"
+        },
+        {
+          "path": "tests/test_jepa_synth2048_failed_onset_repair_sol_v1.py",
+          "blob_sha1": "9a1366e819cd4050266a1580766041545c09b686"
+        },
+        {
+          "path": ".github/workflows/jepa-synth2048-checkpoint-prefreeze.yml",
+          "blob_sha1": "2cf50f6e6ad90fd383bbc36ac0dfa2b5279499f2"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_V5_FAILED_ATTEMPT_ONSET_RECEIPT_REPAIR_NO_MODEL.md",
+          "blob_sha1": "c5b99c69c82e2ec5b0c5f1e7ba6a184466c05297"
+        }
+      ],
+      "recorded_success_updates": 12,
+      "example_failed_onset_update": 13,
+      "failed_update_resumable": false,
+      "physical_gradients_proved": false
+    },
+    "pr559": {
+      "head": "38880f2c196b950a4f672aaf9fd480c7297662c5",
+      "base_pr": 555,
+      "base_head": "30b8848c95a10fc9e733daf2f7e0a8da906bb6d7",
+      "ci_run": 41968170206,
+      "ci": "SUCCESS",
+      "python311_passed": 96,
+      "python312_passed": 96,
+      "status": "DRAFT__AUTHOR_GREEN__MACHA_REVIEW_PENDING__REAL_DISK_OPAQUE_BYTES_ONLY",
+      "files": [
+        {
+          "path": "scripts/v5/jepa_synth2048_atomic_checkpoint_bytes_v1.py",
+          "blob_sha1": "f1ddeff551554f7100d52891e593ccd05a6f0491"
+        },
+        {
+          "path": "tests/test_jepa_synth2048_failed_onset_atomic_journal_v1.py",
+          "blob_sha1": "a070b224cfb2dc37704a327305d79adf6b951cc4"
+        },
+        {
+          "path": ".github/workflows/jepa-synth2048-atomic-checkpoint-bytes.yml",
+          "blob_sha1": "e03396afa1cff0dbabff7e8c8fb4826289442f4f"
+        },
+        {
+          "path": "docs/agent/JEPA_20261105_V5_FAILED_ONSET_DURABLE_OPAQUE_JOURNAL_NO_MODEL.md",
+          "blob_sha1": "281c975947fa4a1e5c01bc32dd8f1822bcd93a3a"
+        }
+      ],
+      "real_disk_failure_evidence": true,
+      "nonresumable": true,
+      "crash_orphan_fail_closed": true,
+      "sha_verified": true,
+      "truth_authenticated": false,
+      "any_actual_neural_checkpoint": false,
+      "any_neural_updates": 0
+    }
+  },
+  "owner_checkpoint_goal": "FINE_GRAIN_CAPTURE_OF_BOTH_SUCCESSFUL_AND_FAILED_ATTEMPT_WITH_REAL_UNSCALED_48_GRADS_ADAM_MOMENTS_EMA_WEIGHT_DIFF_AND_FIXED_DONOR_COUNTERFACTUAL_PANEL",
+  "still_missing": [
+    "PHYSICAL_RAW_GRADIENT_ADAM_WEIGHT_EMA_ARITHMETIC_NOT_SELF_ATTESTED",
+    "PER_ATTEMPT_FIXED_TRAIN_PANEL_SAME_CELL_EXPR_SHUFFLE_GENE_ID_ONLY_LOSS_PER_GENE_TEACHER_VARIATION_SOURCE_PREDICTABILITY",
+    "REAL_6_BLOCK_ONLINE_TEACHER_PREDICTOR_ADAM_SCALER_RNG_SERIALIZE",
+    "ACTUAL_VALID_MODEL_FRESH_PROCESS_NEXT_UPDATE_REPLAY_AND_LOST_ADAM_REFUSAL",
+    "OWNER_OFF_PROCESS_SIGNED_HISTORY_EXTERNAL_ANCHOR",
+    "U0_SIZE_MEASURE_BEFORE_FULL_RUN_EVERY_STEP_CAPTURE_APPROVAL",
+    "INDEPENDENT_MACHA_REVIEW_PR558_PR559",
+    "NEW_OWNER_SCOPE_L04_AND_C1_C6_BIOLOGY",
+    "PR541_TASK4_HOLD_PR549_K04",
+    "PR551_TASK3_PUBLIC_PROMOTION_BYPASS_NO_FROZEN_SOURCE_EDIT",
+    "PR525_P01_L06_AND_PR533_FRESH_292_TYPE_LAW"
+  ],
+  "outcome": "NO_TRAINING__C1_TO_C6_ALL_UNASSESSED__NO_GPU__NO_PRIVATE_CONTROLLER",
+  "evidence_links": [
+    "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/558",
+    "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41967859163",
+    "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/559",
+    "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41968170206",
+    "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/557",
+    "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/556"
+  ]
+}

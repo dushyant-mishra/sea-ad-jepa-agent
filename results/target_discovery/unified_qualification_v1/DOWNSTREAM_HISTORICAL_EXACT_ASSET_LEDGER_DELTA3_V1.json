@@ -1,0 +1,83 @@
+{
+  "schema": "DOWNSTREAM_HISTORICAL_EXACT_ASSET_LEDGER_DELTA3_V1",
+  "date": "2026-10-14",
+  "authority": "HISTORICAL_EVIDENCE_CUSTODY_ONLY__NO_DOWNSTREAM_OR_TRAINING_AUTHORITY",
+  "parent_ledgers": [
+    "results/target_discovery/unified_qualification_v1/DOWNSTREAM_HISTORICAL_EXACT_ASSET_LEDGER_V1.json",
+    "results/target_discovery/unified_qualification_v1/DOWNSTREAM_HISTORICAL_EXACT_ASSET_LEDGER_DELTA2_V1.json"
+  ],
+  "assets": [
+    {
+      "asset_id": "V5_TEACHER_STUDENT_OBJECTIVE_AUTHORITY_DRAFT",
+      "package_ids": ["A", "B", "C", "D", "E", "F", "P"],
+      "branch": "planning/v5-teacher-target-redteam-20260915",
+      "commit": "d9a678f261797f5dfc7a6e6b7a281e413ae7e0ae",
+      "path": "docs/agent/V5_TEACHER_STUDENT_OBJECTIVE_AUTHORITY_DRAFT_20260915.md",
+      "blob_sha": "d1dc4f6041ada842cb585ef14004530221f4866e",
+      "historical_status": "DRAFT_FOR_REVIEW_NOT_FROZEN",
+      "retain": [
+        "TEACHER_GETS_COMPLETE_MEASURED_VIEW",
+        "STUDENT_GETS_MEASURED_SUPPORT_MINUS_AUTHORIZED_HIDDEN_SET",
+        "HIDDEN_TARGET_VALUES_AND_TOKENS_ABSENT_FROM_STUDENT_MEMORY",
+        "DIRECT_WEIGHTED_JEPA_LOSS_GEOMETRY_CANDIDATE",
+        "TEACHER_TARGET_SEMANTICS_MUST_BE_QUALIFIED_NOT_INHERITED",
+        "TARGET_IDENTITY_SHORTCUT_SEPARATE_FROM_MEASUREMENT_AND_MASKING_SHORTCUTS",
+        "MASKING_POLICY_REQUIRES_OUTCOME_BLIND_AUDIT",
+        "SCIENTIFIC_ESTIMAND_EXTERNAL_TO_TRAINER",
+        "CONTEXT_BASELINE_IF_USED_MUST_BE_FROZEN_WEIGHTING_ALIGNED_AND_GRADIENT_ISOLATED"
+      ],
+      "do_not_promote": "Draft defines qualification questions and invariant candidates; it is not teacher or training authority."
+    },
+    {
+      "asset_id": "V5_INACTIVE_ONE_UPDATE_REFERENCE",
+      "package_ids": ["B", "C", "J", "L", "N"],
+      "branch": "planning/v5-teacher-target-redteam-20260915",
+      "commit": "d9a678f261797f5dfc7a6e6b7a281e413ae7e0ae",
+      "path": "src/sea_ad_jepa/v5/inactive_update_reference.py",
+      "blob_sha": "3dc61b629c1d4723e7df058f72c1497c4b4c6c20",
+      "historical_status": "INACTIVE_MECHANICS_REFERENCE__NOT_PRODUCTION_RUNTIME",
+      "retain": [
+        "FROZEN_CELL_SET_INPUT_ONLY",
+        "SCIENTIFIC_CELL_WEIGHTS_EXTERNAL_AND_PRESERVED",
+        "PACKING_CANNOT_CHANGE_SCIENTIFIC_WEIGHT_MASS",
+        "TEACHER_DEEPCOPY_EVAL_NO_GRAD",
+        "STUDENT_VIEW_EXCLUDES_HIDDEN_TARGETS",
+        "OPTIMIZER_STEPS_EXACTLY_ONCE",
+        "EMA_AFTER_PROVED_OPTIMIZER_STEP",
+        "EXACT_EMA_EQUATION_CHECK",
+        "DETERMINISTIC_REPLAY_FOR_SAME_INPUT_AND_STATE",
+        "REFERENCE_CHECKPOINT_BINDS_ONLINE_TEACHER_PREDICTOR_OPTIMIZER_CURSOR_AND_PRESENTATIONS"
+      ],
+      "known_unqualified_carryover": [
+        "INHERITED_V4_BLOCK_PREDICTOR_AND_TARGET_IDENTITY_QUERY",
+        "EMA_MOMENTUM_CALLER_SUPPLIED_NOT_PROSPECTIVE_CURRENT_AUTHORITY",
+        "CPU_REFERENCE_NOT_PRODUCTION_GPU_RUNTIME",
+        "NO_PRODUCTION_SCHEDULE_DEFAULTS"
+      ],
+      "authority_flags": {"execution_authorized": false, "training_authorized": false}
+    },
+    {
+      "asset_id": "V5_KEYED_DROPOUT_REFERENCE_ENCODER",
+      "package_ids": ["N", "J"],
+      "branch": "planning/v5-teacher-target-redteam-20260915",
+      "commit": "d9a678f261797f5dfc7a6e6b7a281e413ae7e0ae",
+      "path": "src/sea_ad_jepa/v5/keyed_dropout_prototype_v2.py",
+      "blob_sha": "0fd06ae0891625924761ef097b20ba6e11495cb3",
+      "historical_status": "INACTIVE_REFERENCE__NOT_PRODUCTION_KERNEL",
+      "retain": [
+        "RNG_ADDRESSED_BY_SCIENTIFIC_CELL_AND_TOKEN_IDENTITIES",
+        "PACKING_POSITION_NOT_RANDOM_ADDRESS",
+        "STUDENT_VALID_EQUALS_MEASURED_MINUS_HIDDEN",
+        "TEACHER_VALID_EQUALS_MEASURED",
+        "DENSE_PACKED_REFERENCE_PATTERN"
+      ],
+      "requires_requalification": [
+        "OPTIMIZED_GPU_KERNEL_PARITY",
+        "CURRENT_MODEL_CONFIG",
+        "CURRENT_HARDWARE_PROVENANCE",
+        "CURRENT_TQB_RUNTIME_BINDING"
+      ]
+    }
+  ],
+  "scientific_conclusion": "Historical V5 work already supplies a substantial candidate scientific/mechanics substrate. Remaining work is exact target/evidence/masking/query/estimand/model/EMA authority plus joined current-runtime qualification, not invention of a teacher-student architecture."
+}

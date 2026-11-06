@@ -1,0 +1,108 @@
+{
+  "C1_C2_C3_C4_C5_C6_status": "ALL_UNASSESSED",
+  "C2_relational_correct_cell_biology": "UNASSESSED",
+  "C3_learned_context_above_wrong_query": "UNASSESSED",
+  "all_three_C2_512_address_views_present": true,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "conclusion": "Mechanically all four C3 q+other8 panels are measured across all three artificial sources in new 2048 FIT; unlike original #536 old 48-gene source restriction. However depth and detection differ by source. This descriptive report DOES NOT establish source-generalizable contextual biology or JEPA recovery.",
+  "controller_truth_or_sealed_v80_used": false,
+  "exact_parent_fit_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+  "four_C3_query_plus_other8_panels_present": true,
+  "per_source": {
+    "SYNTH_A": {
+      "C2_per_view_median_detected_genes": [
+        437.0,
+        433.0,
+        438.0
+      ],
+      "C3_per_panel_median_detected_other8": [
+        7.0,
+        7.0,
+        7.0,
+        7.0
+      ],
+      "C3_query_and_other8_structurally_estimable_cells": 480,
+      "cells": 480,
+      "cells_by_split": {
+        "test": 120,
+        "train": 280,
+        "val": 80
+      },
+      "donors": 12,
+      "donors_by_split": {
+        "test": 3,
+        "train": 7,
+        "val": 2
+      },
+      "mean_student_base_depth": 4453.35625,
+      "median_detected_base_genes": 1688.5,
+      "median_student_base_depth": 4362.0
+    },
+    "SYNTH_B": {
+      "C2_per_view_median_detected_genes": [
+        397.0,
+        393.5,
+        402.0
+      ],
+      "C3_per_panel_median_detected_other8": [
+        6.0,
+        6.0,
+        6.0,
+        6.0
+      ],
+      "C3_query_and_other8_structurally_estimable_cells": 480,
+      "cells": 480,
+      "cells_by_split": {
+        "test": 80,
+        "train": 280,
+        "val": 120
+      },
+      "donors": 12,
+      "donors_by_split": {
+        "test": 2,
+        "train": 7,
+        "val": 3
+      },
+      "mean_student_base_depth": 3410.6145833333335,
+      "median_detected_base_genes": 1546.5,
+      "median_student_base_depth": 3365.5
+    },
+    "SYNTH_C": {
+      "C2_per_view_median_detected_genes": [
+        358.5,
+        352.0,
+        360.0
+      ],
+      "C3_per_panel_median_detected_other8": [
+        6.0,
+        5.0,
+        6.0,
+        6.0
+      ],
+      "C3_query_and_other8_structurally_estimable_cells": 480,
+      "cells": 480,
+      "cells_by_split": {
+        "test": 120,
+        "train": 280,
+        "val": 80
+      },
+      "donors": 12,
+      "donors_by_split": {
+        "test": 3,
+        "train": 7,
+        "val": 2
+      },
+      "mean_student_base_depth": 2684.8791666666666,
+      "median_detected_base_genes": 1381.0,
+      "median_student_base_depth": 2606.5
+    }
+  },
+  "schema": "JEPA_SYNTH2048_EXACT_FIT_SOURCE_C2_C3_OBSERVABILITY_V1",
+  "selection_or_threshold_freeze_produced": false,
+  "source_and_donor_not_independently_randomized": true,
+  "source_depth_median_max_to_min_ratio": 1.673508536351429,
+  "source_support_is_prospective_simulation_not_human_calibration": true,
+  "status": "DESCRIPTIVE_OBSERVABILITY_ONLY__NO_TD_OR_JEPA_GATE_PASS",
+  "student_q_values_or_teacher_q_values_read": false,
+  "training_or_student_scoring_executed": false
+}

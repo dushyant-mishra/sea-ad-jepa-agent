@@ -1,0 +1,58 @@
+{
+  "schema": "JEPA_EVENT83_V5_561_E2_FORENSIC_RECOVERY_V1",
+  "date_utc": "2026-11-05",
+  "kind": "AUTHOR_SIDE_E2_RECOVERY_TESTS_ONLY_NO_NEURAL_OR_TRAINING",
+  "pr": 563,
+  "head": "0acbf16407f63560bbd8a1cc81030cf232068c71",
+  "base": {
+    "pr": 561,
+    "head": "f59f9f8fd9fec198c1b84501d78591e7a6e90820",
+    "test_blob": "be259ab4cdcf035d7bf05134f68b6fe8d09f8833",
+    "unchanged": true
+  },
+  "files": [
+    [
+      "scripts/v5/jepa_synth2048_atomic_checkpoint_bytes_v1.py",
+      "4cddf136f9f1b252fac9b0c027a86d350e180e2c"
+    ],
+    [
+      "tests/test_jepa_synth2048_forensic_prefix_e2_successor_v1.py",
+      "95e0d6192d82809fab71bbce72cfbdb2bda988ce"
+    ],
+    [
+      ".github/workflows/jepa-synth2048-atomic-checkpoint-bytes.yml",
+      "3dda226a72bdf3dd2c2103e2fdc659e32d4e7b13"
+    ],
+    [
+      "docs/agent/JEPA_20261105_V5_561_E2_FORENSIC_PREFIX_READ_NO_TRAINING.md",
+      "aa2b52bef46e39119adb3beb47cdc503c2771c9d"
+    ]
+  ],
+  "hosted_ci": {
+    "run_id": 41974969978,
+    "python311": {
+      "passed": 110,
+      "result": "SUCCESS"
+    },
+    "python312": {
+      "passed": 110,
+      "result": "SUCCESS"
+    }
+  },
+  "passing_scoped_original_reds": [
+    "#561 E2 three crash/orphan test cases"
+  ],
+  "known_reds_still_failing": [
+    "#561 E1a failed-tail removal falsely allows saving failed u4 as valid",
+    " #561 E1b tail truncation rewrites last good state"
+  ],
+  "limitations": [
+    "No external immutable monotonic attempt/head trust anchor",
+    "No write-ahead intent or physical every-attempt durable telemetry",
+    "No #558/#562 typed failure cause/journal integration",
+    "No physical neural model/Adam/EMA state checkpoint or full-state restart",
+    "No actual gradient/biology monitors or training authority"
+  ],
+  "review": "MACHA_INDEPENDENT_REVIEW_PENDING",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

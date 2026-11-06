@@ -1,0 +1,233 @@
+{
+  "schema": "JEPA_GPT_LANE_COMPLETE_COLD_START_TAKEOVER_V1",
+  "date_utc": "2026-11-04",
+  "purpose": "Future agent can continue without broad historical re-audit, duplicate experiments, duplicate ETL or duplicate Macha review work.",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "branch_roles": {
+    "canonical_audit": {
+      "pr": 322,
+      "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013"
+    },
+    "active_handoff": {
+      "pr": 460,
+      "branch": "handoff/jepa-v8-clean-successor-from-audit-20261027"
+    },
+    "production": "main"
+  },
+  "first_read": [
+    "docs/agent/JEPA_20261104_GPT_LANE_COMPLETE_COLD_START_TAKEOVER_AND_NO_REPEAT_V1.md",
+    "docs/agent/JEPA_20261104_END_TO_END_SCIENTIFIC_NARRATIVE_AND_DECISION_LINEAGE_V1.md",
+    "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
+    "results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json",
+    "docs/agent/JEPA_20261104_RECENT_TWO_WEEK_SCIENCE_RESOLUTIONS_AND_CORRECTED_NEXT_WORK_V1.md",
+    "docs/agent/JEPA_20261104_ITERATIVE_PROJECT_WIDE_HISTORY_SATURATION_AND_NEXT_FRONTIER_V1.md",
+    "docs/agent/JEPA_20261104_LEARNED_STUDENT_BIOLOGICAL_GAP_READONLY_DECISION_V1.md",
+    "results/target_discovery/unified_qualification_v1/JEPA_20261104_PROJECT_LOCAL_ASSET_SHA256_CUSTODY_V1.json"
+  ],
+  "key_code_and_results": {
+    "stage81a3_ipb": {
+      "script": "scripts/v4/stage81a3_ipb_jepa_feasibility.py",
+      "receipt": "results/v4/stage81a3_ipb_jepa_feasibility.json",
+      "receipt_sha256": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "status": "EXECUTED_HISTORICAL_NO_DEFAULT_RERUN"
+    },
+    "td19": {
+      "decision": "target_discovery/iterations/td19_claude_followup/TD19_DECISION.md"
+    },
+    "td60": {
+      "design": "target_discovery/iterations/td60_learned_teacher_continuity/TD60_PROSPECTIVE_SCREEN.md",
+      "status": "DESIGNED_NOT_TO_BE_REDESIGNED__CHECKPOINT_SEMANTICS_NEEDS_V5_RECONCILIATION"
+    },
+    "v5_convergence": {
+      "doc": "docs/agent/TEACHER_STUDENT_V5_CONVERGENCE_RECOMMENDATION_20260908.md"
+    },
+    "pr328": {
+      "pr": 328,
+      "head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+      "scripts": [
+        "scripts/v79/unified_synthetic_integration_v1.py",
+        "scripts/v79/unified_synthetic_fit_view_v1.py",
+        "scripts/v79/unified_synthetic_controller_truth_v1.py"
+      ],
+      "receipt": "results/v79/unified_synthetic/UNIFIED_SYNTHETIC_INTEGRATION_RECEIPT_V2.json",
+      "status": "FROZEN_REUSE_FIRST"
+    },
+    "pr526": {
+      "pr": 526,
+      "script": "scripts/v79/audit_frozen_measured_panel_observability_v1.py",
+      "result": "results/v79/unified_synthetic/JEPA_FROZEN_Q_OTHER_8_MEASUREMENT_REUSE_20261102_V1.json",
+      "status": "EXECUTED_AND_INDEPENDENTLY_REVIEWED_BY_MACHA_PR531"
+    }
+  },
+  "pr_state_snapshot": {
+    "314": {
+      "head": "c6899a2910244a0352c0c57e7aea6e3026191da1",
+      "role": "spent corrected real relational replay"
+    },
+    "328": {
+      "head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+      "role": "unified frozen synthetic world"
+    },
+    "336": {
+      "head": "b92f335b53a93805a5d05330dc0d61f0479b1dcf",
+      "role": "independent 9/9 Phase2 audit"
+    },
+    "369": {
+      "head": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+      "role": "cross-gate sealed battery"
+    },
+    "451": {
+      "head": "bbdf9a90973303e41cee6d8bd9d05de38e9b828a",
+      "role": "post-TD bridge repair/review"
+    },
+    "469": {
+      "head": "7a6477244dfc817d929e210c38c1ea4b2d1a1927",
+      "role": "PR328 observation to Task5 fixture integration"
+    },
+    "509": {
+      "head": "3e5694e2c1b959c8e21f9fc6dd50cbf694ac4013",
+      "role": "source/ETL identity gap matrix"
+    },
+    "513": {
+      "head": "0b1af4f06ba423753899e7c564d3b16ce609ac6a",
+      "role": "source qualification/ETL reuse/alias/QC/issuer contract"
+    },
+    "518": {
+      "head": "32c0a22b9ae6220ed03fe7d6e944da753c0e4a0c",
+      "role": "D1 to V2C Macha review"
+    },
+    "522": {
+      "head": "5f6e81aa1cb47eb512c7786cc40d0f2fc233c764",
+      "role": "main V2C/D1 reconciliation"
+    },
+    "523": {
+      "head": "bce3a35a9cd8ec364906798738c14ab3236cc583",
+      "role": "Macha main hostile review/student container repair"
+    },
+    "524": {
+      "head": "b9072905245cf408d521d6b9f574facf0ac9936f",
+      "role": "main scoped status pointer"
+    },
+    "525": {
+      "head": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "role": "post-TD author repair includes byte-identical #527/#530/#532 suites; author CI green; no later independent acceptance found"
+    },
+    "526": {
+      "head": "b7761a3e7578f51db17fea26dae607aec299c1de",
+      "role": "frozen measured-panel audit"
+    },
+    "531": {
+      "head": "270bc33c291e1934d9fcfb32138bff298c64f5cb",
+      "role": "Macha independent #526 replication/support-semantics correction"
+    },
+    "533": {
+      "head": "b531b81ec4e08779a974214ec9ba9905f0498294",
+      "role": "V79/V80 207/85 selection audit"
+    },
+    "534": {
+      "head": "165447a8bbdef8b427ca9cd0d29b51c36b9c1c1a",
+      "role": "cross-host V80 SHA regression/custody RED"
+    },
+    "535": {
+      "head": "af7acbcf6d2244764e17f44686b94a72199c7d9c",
+      "role": "read-free Level4 to CaseBundle reconciliation"
+    },
+    "536": {
+      "head": "b723b9d522a013554a0a53cf600e6e9812c35935",
+      "role": "actual C3 measured producer; C2 48->512 refusal"
+    },
+    "537": {
+      "head": "7e8ff44120fd7acda9046d0f509fab504b4f73f3",
+      "role": "GPU candidate HOLD pending nonduplication"
+    },
+    "538": {
+      "head": "b901d3fe25857a09f7e0cbc48d4e75d75d9ca3e0",
+      "role": "conservative q-address rights author-scoped; no independent Macha thread comment found"
+    },
+    "539": {
+      "head": "bf5ca7828f268de770196da169d133a4ebd77110",
+      "role": "closed read-only learned-student gap memo; content incorporated into canonical audit"
+    }
+  },
+  "owner_rulings_event57": {
+    "qc_only_allowlist": "APPROVED_NARROWLY",
+    "new_level4_casebundle_read": "NOT_AUTHORIZED_NOW",
+    "pr531_support_semantics": "ACCEPTED_AS_FUTURE_PREREQUISITE",
+    "corrected_synthetic_world_generation": "NOT_AUTHORIZED_NOW"
+  },
+  "new_uploaded_source": {
+    "filename": "Pasted text.txt",
+    "bytes": 374129,
+    "physical_lines": 4840,
+    "files_renderer_lines": 4841,
+    "original_sha256": "2eaea727bcf2ca33b6d22f7c78e6677855ae4bf76d52df5dcbff2af8cb140c67",
+    "normalized_git_path": "docs/agent/archive/user_supplied_evidence_20261104/MACHA_EXECUTION_REVIEW_TRANSCRIPT_PASTED_TEXT_20261104_NORMALIZED.txt",
+    "normalized_copy_byte_identity": "NOT_CLAIMED",
+    "normalized_git_blob_sha1": "58fa5b56ad617c14598c399066219a5bcf399cdb"
+  },
+  "no_repeat": [
+    "Do not broadly reaudit history before reading canonical files.",
+    "Do not repeat PR59/69 Level4 reads.",
+    "Do not repeat PR314, R5, Stage81B, PR336, PR469, PR526/531, original V79/V80 at frozen questions.",
+    "Do not build another synthetic generator by default.",
+    "Do not automatically run PR537.",
+    "Do not reassign completed Macha/Claude/GPU reviews or experiments.",
+    "Do not treat controller truth as measured teacher target.",
+    "Do not treat author-green CI as independent acceptance."
+  ],
+  "current_science_frontier": "QUALIFIED_LEARNED_EMA_TEACHER_BROAD_MESOSCALE_ORDERING_THEN_LAWFUL_PARTIAL_RNA_STUDENT_INCREMENT_BEYOND_DEPTH_OPERATOR_SOURCE_DONOR_WRONG_CELL_CONTROLS__C3_SEPARATE",
+  "update_protocol": [
+    "focused implementation/science/review PR",
+    "append exact event to PR322 chronology",
+    "update no-repeat/source index when future planning changes",
+    "verify PR322 exact-head CI",
+    "update PR460 live pointer to exact PR322 state",
+    "verify PR460 exact-head CI"
+  ],
+  "macha_event58": {
+    "source": "docs/agent/JEPA_MACHA_LANE_STATE_FOR_SOL_20261104.md",
+    "precedence": "CONTROLS_OVER_OLDER_SUMMARIES_OF_MACHA_WORK",
+    "seven_retractions": [
+      "NPH52 accession/terms unknown -> false; Zenodo 8319719 rev2 CC-BY-4.0",
+      "hardware/offline signing key prerequisite -> false; optional governance hardening",
+      "Phase2 independent audit missing -> false; PR336 already did it",
+      "synthetic sources reversed relative to real -> overstated; defect is support mechanism and NPH52 gaps",
+      "alias-right owner decision pending -> false; owner adopted 2026-10-30; enforcement code missing",
+      "no Level4 count read existed -> incomplete; PR59/69 already read/corrected",
+      "Macha replayed #513 QC probe once before adjudication; disclosed governance breach, byte-identical public metadata output"
+    ],
+    "actual_open_queue": [
+      {
+        "item": "PR525 fresh-head independent review",
+        "head": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+        "owner": "Macha",
+        "auto_assign": false
+      },
+      {
+        "item": "PR535 no-read field-classification challenge",
+        "head": "af7acbcf6d2244764e17f44686b94a72199c7d9c",
+        "owner": "Macha",
+        "auto_assign": false
+      },
+      {
+        "item": "PR537 GPU JEPA-only run",
+        "head": "7e8ff44120fd7acda9046d0f509fab504b4f73f3",
+        "owner": "Macha",
+        "status": "HOLD_REQUIRES_EXPLICIT_OWNER_AUTHORIZATION"
+      },
+      {
+        "item": "PR536 review",
+        "head": "b723b9d522a013554a0a53cf600e6e9812c35935",
+        "owner": "Macha",
+        "status": "ONLY_IF_REQUESTED"
+      }
+    ],
+    "pr460_incident": {
+      "branch_accidentally_deleted": true,
+      "restored_exact_commit": "d5732fe690dc3a6ef89ebaaaf25c98d23fa65493",
+      "pr_auto_closed": true,
+      "pr_reopened_by_sol": true,
+      "content_loss": false
+    }
+  }
+}

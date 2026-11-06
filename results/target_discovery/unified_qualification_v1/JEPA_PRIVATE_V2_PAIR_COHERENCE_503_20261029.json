@@ -1,0 +1,49 @@
+{
+  "schema": "JEPA_PRIVATE_V2_PAIR_COHERENCE_503_20261029_V1",
+  "date": "2026-10-29",
+  "classification": "NEW_EXECUTABLE_FIXTURE_BOUNDARY__NOT_SOURCE_OR_G7_QUALIFICATION",
+  "pr": 503,
+  "head": "f93aa8a7132fa02fa2c7be7c7ddfca4dfec6f325",
+  "stacked_on": {
+    "pr": 502,
+    "head": "0789247cdbbdfca671613b020865aba958dfd699"
+  },
+  "new_module": "scripts/v5/td_unified/observation_v2_private_pair_coherence_v1.py",
+  "clinical_or_human_data_used": false,
+  "design": "private exact dual-view snapshot; both individually source-UNauthenticated producer-bound; matching query/rights/cell/source/donor/operator; exact D1/base equality; constant no-teacher/no-digest receipt",
+  "positive_counterexample": "student and teacher from distinct physical synthetic q worlds are coherent; same physical provenance NOT PROVEN",
+  "expected_authority": {
+    "external_source_authenticated": false,
+    "physical_measurement_identity_authenticated": false,
+    "donor_specimen_identity_authenticated": false,
+    "feature_alias_closure_authenticated": false,
+    "q_independent_qc_selection_authenticated": false,
+    "q_rights_issuer_authenticated": false,
+    "g7_content_v2_authorized": false,
+    "real_training_authorized": false
+  },
+  "ci": {
+    "run": 40903779280,
+    "linux_job": 123552863282,
+    "windows_job": 123552863488,
+    "author_green": true,
+    "per_os": {
+      "new_pair": 15,
+      "inherited_v2": 55,
+      "upstream_producer": 106
+    },
+    "all_pr_workflows": 6,
+    "failures": 0
+  },
+  "open": [
+    "independent review of PR 503 pending",
+    "Macha #474 A4 zero-base refusal noninterference RED",
+    "Macha independent PR #502 review pending",
+    "process-local issuer map not durable source attestation",
+    "G7 E3 V2 requires versioned physical source/rights law",
+    "G7 R1/R1D/R2 external ETL unresolved",
+    "D2 source residual OFF",
+    "Task4 not authorized"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

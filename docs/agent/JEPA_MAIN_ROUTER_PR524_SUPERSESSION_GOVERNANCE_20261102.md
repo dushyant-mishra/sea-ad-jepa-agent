@@ -1,0 +1,20 @@
+# JEPA main startup/router correction — independently scoped PR #523 accepted, governance PR #524 landed (2026-11-02)
+
+**Class:** `MAIN_ROUTER_FRESHNESS_REPAIR__NO_BIOLOGY_OR_RUNTIME_ATTESTATION_AUTHORITY`. This is implementation-governance evidence, not an independent audit of all historical sources. Original protected science, RED tests and chronology are unchanged.
+
+## Evidence and exact authority
+
+- Existing code landing: main `971ec6a14a9435ffc9fe03b1373c3ec3f5a30687` from [PR #523](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/523), with Macha's original test suite and GPT scoped review. Student V2C repaired blob `46b813fcbf598e12a2a9f209ca254d01aaeba784`, D1 blob `edee1b8adc1b5c7ca660d52d3667d2020abdb417`, entrypoint blob `ceb7d25ec0501b66a791463372aa2e363449bb39` and Dockerfile blob `1414d02c14a62f658e82a03b962448e35bd03ecc`.
+- **Identified governance defect:** after #523, main `START_HERE.md`, `README.md`, `CURRENT_AUTHORITY_INDEX.md`, `CURRENT_SUPERSESSION_MAP.md`, `memory-os/ACTIVE_STATE.md`, the machine pointer and execution map still claimed Macha's exact-main independent review was pending. The previous `verify_current_authority_surface_v2.py` hard-coded that stale PENDING state as a passing requirement. A successful old guard therefore would have perpetuated obsolete successor instructions.
+- **Narrow repair:** flat [PR #524](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/524), initial base main `971ec6a14a9435ffc9fe03b1373c3ec3f5a30687`, exact reviewed proposal head `b9072905245cf408d521d6b9f574facf0ac9936f`; merged by squash into new canonical main **`28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb`**.
+- **Nine changed paths:** the seven startup/navigation documents/pointer, `scripts/agent/verify_current_authority_surface_v2.py` and `tests/test_current_authority_surface_guard_v2.py`. No scientific model, teacher, D1, V2C or Docker package code changed.
+- The machine status now reads `V2C_D1_FIXTURE_ACCEPT_SCOPED__CONTAINER_FIXTURE_ACCEPT_SCOPED__ISSUER_BLOCKED`; `independent_recheck=ACCEPT_SCOPED_FIXTURE_ONLY`, `runtime_attested=false`, `trusted_launcher_accepted=false`, `source_issuer=NOT_PROVISIONED`, `real_training_authorized=false`. New guard mutation tests reject both stale PENDING routing and invented runtime/launcher attestation. Earlier Oct-5/6 source and original history remain beneath the supersession.
+- **CI for PR #524 exact proposal head:** [41535575562](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41535575562) branch push and [41535636708](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41535636708) PR-triggered current-authority guard **SUCCESS**. **Postmerge main** current-authority guard run [41535736374](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/41535736374) was **in progress** at first check; final exact-head result must be queried before claiming success.
+
+## Current route and scope
+
+`main` is the only canonical code landing; PR #523 and #524 are merged provenance. #322 is cumulative append-only historical/scientific/engineering chronology, and #460 is live operational successor, never a competing code branch. No one should recreate the prior source census, ATAC/SCENIC+/CRISPR or corrected R5/C2 experiments merely because the new source-rights path still lacks external acceptance.
+
+**Next engineering work:** source-specific authenticated issuer/rights, alias and q-independent cell-selection evidence; and a trusted-launcher/engine-origin/IPC/cancellation boundary for non-authorizing fixture; later genuinely qualified Task4–8 and biological teacher-target integration. Reuse existing Task4 custody and post-TD infrastructure, do not design another general signing or training framework. Student container self-checks and unkeyed receipts cannot prove real source authenticity, teacher target or deployment origin. Audit PR #322 history event and #460 top pointer must follow this merge.
+
+**Terminal:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.

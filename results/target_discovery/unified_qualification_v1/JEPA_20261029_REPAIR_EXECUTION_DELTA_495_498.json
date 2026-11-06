@@ -1,0 +1,78 @@
+{
+  "schema": "JEPA_20261029_REPAIR_EXECUTION_DELTA_495_498_V1",
+  "date": "2026-10-29",
+  "classification": "APPEND_ONLY_HOSTED_MECHANICS_AUDIT__NO_SCIENTIFIC_PROMOTION",
+  "records": [
+    {
+      "pr": 495,
+      "head": "d2e430d739e1ef16806120752b867c6aeeba4972",
+      "scope": "V2_A3_METACLASS",
+      "hosted_author_workflows_passed": 5,
+      "independent_acceptance": false
+    },
+    {
+      "pr": 496,
+      "head": "ee0e6ca983a693240830a0ba361d45768bab8521",
+      "scope": "V2_A1_A2_FIXTURE_BINDING",
+      "run_id": 40893727886,
+      "ubuntu": {
+        "new_adversarial_pass": 14,
+        "unchanged_macha_review_pass": 23,
+        "upstream_a4_deselected": 1,
+        "inherited_pass": 127,
+        "inherited_fail": 1
+      },
+      "windows": {
+        "new_adversarial_pass": 14,
+        "unchanged_macha_review_pass": 23,
+        "upstream_a4_deselected": 1,
+        "inherited_pass": 127,
+        "inherited_fail": 1
+      },
+      "overall_ci": "FAIL",
+      "remaining_red": "OLD_V2_COUNT_999_UNCHANGED_DEPTH_ACCEPTANCE_CONTRADICTS_A1_EXACT_SUM",
+      "independent_acceptance": false
+    },
+    {
+      "pr": 497,
+      "head": "a8ad4111906a6de8b3faa7292b432ba934df3499",
+      "scope": "G7_METACLASS",
+      "run_id": 40894289987,
+      "ubuntu": {
+        "macha_review_pass": 21,
+        "inherited_scoped_pass": 60,
+        "external_physical_cases_deselected": 11
+      },
+      "windows": {
+        "macha_review_pass": 21,
+        "inherited_scoped_pass": 60,
+        "external_physical_cases_deselected": 11
+      },
+      "targeted_author_ci": "PASS",
+      "remaining_red": "V3_DIRECT_BINDER_BYPASS_AND_R1_R1D_R2",
+      "independent_acceptance": false
+    },
+    {
+      "pr": 498,
+      "head": "34543d8fbb08b91d662476403dd98018fdecad36",
+      "scope": "PS_CANONICAL_CLASS_CAUSE",
+      "run_id": 40894739874,
+      "platform_matrix": "LINUX_WINDOWS_NUMPY1_NUMPY2_SUCCESS",
+      "inherited_failure_runs": [
+        40894739577,
+        40894739983
+      ],
+      "inherited_failure_exact": "test_t2d_hand_written_secret_absence_attestation_is_not_accepted_as_a_scan",
+      "remaining_red": "LIVE_GENERATOR_BOUNDARY_AND_T2D_EXTERNAL_ISSUER",
+      "independent_acceptance": false
+    }
+  ],
+  "review_test_git_blobs": {
+    "pr481": "3dda6c2cc9be19d5daececfb07967e94067519f6",
+    "pr482": "fd98636f85967226af1605c376522865167c8706",
+    "pr483": "f2d10a8c4ea3620c3f46f7d6b208c07279027d56"
+  },
+  "contract_decision": "D1_D2_VERSIONED_V2_G7_NOT_YET_ACCEPTED",
+  "production_authority": false,
+  "scientific_stop": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

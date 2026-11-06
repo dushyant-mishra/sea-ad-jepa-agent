@@ -1,0 +1,129 @@
+{
+  "schema": "JEPA_20261103_SOURCE_PINNED_FORWARD_PRIORITY_REGISTER_V1",
+  "timestamp_date": "2026-11-03",
+  "scope": "NO_REPEAT__SOURCE_SELECTIVE_CURRENT_IMPLEMENTATION_AND_SCIENCE_TRIAGE__NOT_NEW_AUTHORIZATION",
+  "heads_before": {
+    "main": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb",
+    "audit322": "21facb870e2d4336c6f2d9f5eb314067bd426c2f",
+    "handoff460": "e6353c22224d5031615ba104eef371f163c4c336",
+    "post_td525": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+    "selection533": "b531b81ec4e08779a974214ec9ba9905f0498294",
+    "integration534": "165447a8bbdef8b427ca9cd0d29b51c36b9c1c1a",
+    "source528": "1a4fda758936a3cc3868948b44d25694de216bd9",
+    "source_inventory531": "270bc33c291e1934d9fcfb32138bff298c64f5cb"
+  },
+  "current_checks": {
+    "audit322": "25/25_SUCCESS",
+    "handoff460": "2/2_SUCCESS",
+    "post_td525": "6/6_AUTHOR_SUCCESS_NOT_INDEPENDENT_ACCEPTANCE",
+    "selection533": "4/4_CI_SUCCESS_NOT_SCIENCE_AUTHORITY",
+    "integration534": "2/2_FAILURE_FROZEN_V80_IDENTITY",
+    "source528": "3/3_SUCCESS_SCOPED"
+  },
+  "completed_preserved": [
+    "Stage36E->49 18 gene candidates/four mechanisms; Stage48 DO_NOT_RERUN_BROAD_GENE_DISCOVERY",
+    "TD56/TD57B/TD59 source-donor real pilots and PR314 one-shot corrected real replay; TD57C fine negative",
+    "R5 actual measured eight-other gene developmental query target",
+    "PR275/313/331/332/351 C1-C6 independent portfolio and PR337 synthetic phase2/PR336 external audit",
+    "PR201 100K? NO: PR201 coupled worlds; PR207 provider 2K->100K measurement architecture; PR328/469/534 source-to-fixture integration",
+    "PR59/69 Level4 physical read lineage; PR349 operator support; PR509/513/528 source right and QC correction",
+    "Main PR523/524 D1/V2C fixture and Task3/Task2 interface; no duplicate producer",
+    "V79 PR294 Windows-only byte precedent; original V80 PR348 frozen receipt/producer retained"
+  ],
+  "actions": [
+    {
+      "id": "A1",
+      "priority": 1,
+      "title": "Enforce the THREE already-decided address/alias restrictions",
+      "owner": "GPT_ENGINEERING_AUTHOR__MACHA_INDEPENDENT_RED_REVIEW",
+      "scope": "Producer/source-rights fixture boundary only; never student V2C-only trust as policy issuer",
+      "already": "Owner Oct30 decision + PR513 source table; downstream D1/V2C and Task2 exist",
+      "delta": "Exact-address deny/joint-withhold rule plus collision, forged source ID, q-in-BASE, off-ledger, measured-zero and NOT_ESTIMABLE hostile tests; use existing consumer APIs",
+      "accept": "Changed code rejects prohibited query/alias cases before materializing a student view and preserves D1 for valid fixture observations; Macha fresh-head hostile pass",
+      "stop": "No physical Level4 read; no new issuer/signing key; no new synthetic generator; do not fabricate alias molecular equivalence",
+      "source": [
+        "JEPA_512_513_DECISION_AND_ISSUER_ROLE_20261030.json",
+        "JEPA_MACHA_20261103B_INVENTORY_AND_BLOCKER_REGISTER.md",
+        "PR523"
+      ]
+    },
+    {
+      "id": "A2",
+      "priority": 2,
+      "title": "Independent acceptance of PR525 repaired post-TD scope and preoutcome manifest integrity",
+      "owner": "MACHA_REVIEWER__GPT_FIX_IF_NEW_RED",
+      "already": "Macha #527/#530/#532 original RED; current PR525 b493efc3 99 passing author tests each Python 3.11/3.12; current 6/6 CI",
+      "delta": "Macha executes original hostile tests against exact current head; verify portfolio->manifest QUERY/RARE roster binding, single noncompensation adjudication path, immutable pre-outcome L06 issuer/commit timing",
+      "accept": "Fresh-head independent verdict separately records what M01/M02/S01 closed and whether L06 remains",
+      "stop": "No caller-declared PASS/mutable retrospectively written NOT_ESTIMABLE may confer science or model authority",
+      "source": [
+        "PR525",
+        "PR527",
+        "PR530",
+        "PR532"
+      ]
+    },
+    {
+      "id": "S1",
+      "priority": 3,
+      "title": "Freeze C2/C3 biologically deciding TEST LAW without model fitting",
+      "owner": "GPT_SCIENCE_DESIGN__MACHA_CONTROLLER_ADVERSARIAL_REVIEW",
+      "already": "TD56/57B/59 and PR314 outcome; R5 measured query pilot; PR275 portfolio; PR338 15 conditionally specified and 13 blocked",
+      "delta": "Select smallest gate bundle in existing PR338: C2 R1+G9+R4 against identity/depth/wrong-cell null; C3 Q4-8+G6 against query-count/technical/q-agnostic/wrong-q and measured rights; G2 substantive margin, coverage G12 where relevant. Freeze donor/source splits, null estimand, effect size/magnitude and matched-compute protocol prospectively",
+      "accept": "Independent outcome-blind approval of exact pre-registered comparison, controls and stop/abstention conditions; no new training permission inferred",
+      "stop": "Do not infer thresholds from historical 50K/heldout results, do not re-open #314, do not run TD60/JEPA fit while authority off",
+      "source": [
+        "PR275",
+        "PR313",
+        "PR314",
+        "PR338",
+        "PR337"
+      ]
+    },
+    {
+      "id": "A3",
+      "priority": 4,
+      "title": "Source-to-CaseBundle delta-only qualification rather than new pipeline",
+      "owner": "MACHA_SOURCE_CUSTODY__GPT_SOURCE_INTERFACE_AUDIT",
+      "already": "Macha 8-field inventory; raw count materializer, support matrix, metadata, private source_library, Task2 access interface and main D1 law exist",
+      "delta": "Reconcile unreconciled adapter row count 50 vs 47 and parent digests in existing read-only metadata, apply A1, prove exact source-bound parent resolution + private physical total versus student D1 with synthetic/metadata receipts",
+      "accept": "Precise source path/line and independent reproducible synthetic contract test proving a new missing binding; then limited versioned successor if genuinely necessary",
+      "stop": "Real count values/Level4 block read need separate owner authorization; NPH52 real query remains blocked; QC-only allowlist unresolved; no second CaseBundle framework or private issuer created",
+      "source": [
+        "PR59",
+        "PR69",
+        "PR349",
+        "PR451",
+        "PR469",
+        "PR509",
+        "PR513",
+        "PR528",
+        "PR535"
+      ]
+    },
+    {
+      "id": "F1",
+      "priority": 5,
+      "title": "Narrow V79/V80 historical test-law and frozen V80 artifact integrity",
+      "owner": "GPT_FORENSICS__MACHA_INDEPENDENT_REVIEW",
+      "already": "V79 original terminal 206, postterminal 85, V80 original 348 qualified; V79 PR294 cross-host byte difference; PR534 latest RED; PR533 CI green scope-only",
+      "delta": "Correct PR533 '291 pass rows' vs 'prior hard pass preservation', seek prospective selection-law decision; inspect original Oct14 V80 fit/controller archived artifacts and compare to existing failed transports first",
+      "accept": "Exact original vs failing field localized or correctly classified as undetermined; no changes to frozen identity, original RED or estimator",
+      "stop": "Do not make #534 replay a global blocker for A1/A2/S1; do not promote same-run determinism as cross-host exact identity; no V79 reruns",
+      "source": [
+        "PR294",
+        "PR348",
+        "PR533",
+        "PR534"
+      ]
+    }
+  ],
+  "recommendation": "START_A1_AND_A2_IN_PARALLEL; START_S1_PAPER_PREFREEZE_IN_PARALLEL; A3_AFTER_A1_READ_ONLY; F1_SIDE_CAR; NO_TRAINING",
+  "open_owner_decisions": [
+    "QC-only allowlist for SEA_AD Doublet score and HVS is_primary_data is unapproved",
+    "Any new Level4 value read into CaseBundle is unauthorized",
+    "PR328 successor with true support geometry needs prospective owner/controller authorization",
+    "Future real target qualification and TD60 require distinct explicit prospective authority"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

@@ -1,0 +1,160 @@
+{
+  "schema": "JEPA_NEW_AGENT_BOOTSTRAP_20261029_V1",
+  "date": "2026-10-29",
+  "classification": "NAVIGATION_AND_EXECUTION_ORDER_ONLY__NO_NEW_BIOLOGY__NO_NEW_AUTHORITY",
+  "current_audit": {
+    "pr": 322,
+    "head": "bae9ce01ffabb7e96cd0987921d7cd979e8814a7",
+    "ci": {
+      "passed": 23,
+      "failed": 0,
+      "pending": 0
+    }
+  },
+  "current_handoff": {
+    "pr": 460,
+    "head": "da5c3909bbab0a615d88ae48e11ddab913dd3ec0",
+    "ci": {
+      "passed": 2,
+      "failed": 0,
+      "pending": 0
+    }
+  },
+  "frozen_independently_reviewed_v8e_head": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+  "read_first": [
+    {
+      "path": "docs/agent/JEPA_FINAL_LANE_TAKEOVER_FREEZE_20261028.md",
+      "git_blob": "35dfb461116ba4690694a177d9f19ec142014467",
+      "purpose": "current source graph, live review verdicts, no-repeat science, exact runbook"
+    },
+    {
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_FINAL_LANE_TAKEOVER_FREEZE_20261028.json",
+      "git_blob": "2057b7471003d1981911851867737c6beb723724",
+      "purpose": "machine mirror and fail-closed current-state ledger"
+    },
+    {
+      "path": "docs/agent/JEPA_COMPLETE_LANE_TAKEOVER_FREEZE_20261028.md",
+      "git_blob": "46cee25071d6891bdb6b95e9ac3275f25ffcefa2",
+      "purpose": "deeper chronological freeze"
+    },
+    {
+      "path": "docs/agent/JEPA_LANE_TAKEOVER_MASTER_20261028.md",
+      "git_blob": "89ad6477b801ce1f5bda3d0b1f7af383ed79235b",
+      "purpose": "full historical source map and no-repeat chronology"
+    },
+    {
+      "path": "docs/agent/JEPA_MACHA_V2_G7_OBSERVATION_CONTRACT_DELTA_20261028.md",
+      "git_blob": "fafa64b43b56c2207963d6920df0f46d5c6ebb93",
+      "purpose": "latest independent Macha #479/#476/#477 verdicts and D1/D2/G7 contract analysis"
+    },
+    {
+      "path": "docs/agent/JEPA_PS_TASK3_MACHA437_INDEPENDENT_REVIEW_20261028.md",
+      "git_blob": "3ea78eed8965cd46478bf980ab2d7105a2c689f6",
+      "purpose": "ChatGPT independent Task3 #437 RED that #486 repairs"
+    }
+  ],
+  "trust_without_historical_reaudit": [
+    "PR314 corrected one-shot TD56/57B/57C/59 result is spent and preserved; do not rerun to seek a different outcome",
+    "R5 developmental query-measured eight-other-gene target and V44 RNA proxy results are historical evidence, not current winners",
+    "Stage69/70 rare work, PR164 separate-nucleus RNA/ATAC, PR77 macrophage CRISPR and SCENIC+/chromVAR limitations retain exact original scope",
+    "PR328/369/451/469 are fixture/test-of-test/downstream mechanics, not production biological qualification",
+    "97/97 August archive SHA result in PR471 is source-byte integrity only, not a current calibration issuer",
+    "Macha hostile REDs #481/#482/#483 and ChatGPT Task3 RED #480 control the old exact code heads until repaired and independently accepted"
+  ],
+  "reaudit_only_if": [
+    "exact pinned source Git blob or head changed",
+    "new independent reviewer presents a contradictory executable result",
+    "new authenticated physical/source data materially changes an unavailable fact",
+    "the scientific question or evidence-right policy is deliberately changed and preregistered",
+    "a newly found integrity/security defect invalidates a prior receipt"
+  ],
+  "live_review_state": [
+    {
+      "code_pr": 479,
+      "head": "ae762d7096a94ac663a0788f6f577ba404e37536",
+      "review_pr": 481,
+      "review_head": "957fa4a558ce2bd219b5c2dec6dad8f65dca81ab",
+      "verdict": "REPAIR_REQUIRED",
+      "next": "ChatGPT repair A1 consumer depth spoof, A2 self-labelled student rights exposure, A3 metaclass route; A4 belongs upstream PR474/Macha when assigned"
+    },
+    {
+      "code_pr": 476,
+      "head": "26031df25b51087f2f3ec35a88eef2919d794c68",
+      "review_pr": 482,
+      "review_head": "58baa4f912c791866c1aae31eab797da9dca588a",
+      "verdict": "ACCEPT_INCREMENTAL_WITH_R1_R2_BLOCKERS",
+      "next": "repair exact-type metaclass route and create reviewed composed bind->snapshot->V3 entry; R1/R1D/R2 remain RED"
+    },
+    {
+      "code_pr": 477,
+      "head": "c83088de090bc4f2fc6bbee353c46070bcca7be5",
+      "review_pr": 483,
+      "review_head": "48ec018735a095571a0bfaa25b33f9b9deb40b39",
+      "verdict": "ACCEPT_INCREMENTAL_WITH_LIMITATIONS",
+      "next": "exact type dispatch before isinstance and suppress payload exception chaining with from None; preserve T2-D RED"
+    },
+    {
+      "code_pr": 437,
+      "head": "fd3242ada6f77ba09ff2d8a1c7716eb9725ced11",
+      "review_pr": 480,
+      "review_head": "f39e605abc616cf59051a8bda9b0270cef5d6f09",
+      "verdict": "REPAIR_REQUIRED__R1_NUMERIC_ALIAS__R2_OBS_PARAMETER_SPOOF",
+      "next": "superseded for repair by Macha PR486; retain immutable RED"
+    },
+    {
+      "code_pr": 486,
+      "head": "f17080516f77e79fb6f6cb44903cbabdb2a85dd7",
+      "verdict": "AUTHOR_GREEN__INDEPENDENT_CHATGPT_REVIEW_PENDING",
+      "ci": {
+        "passed_workflows": 3,
+        "failed": 0,
+        "pending": 0
+      },
+      "next": "highest-priority independent exact-head review; attack exact numeric comparison, finite/cross-type numerics, closed OBS registry semantics and false authority"
+    }
+  ],
+  "observation_contract": {
+    "decision_status": "PROPOSED_BY_MACHA__DECIDING_LANE_NOT_YET_ACCEPTED",
+    "recommended_default": {
+      "name": "VISIBLE_BASE_MAPPED_SUM_V1",
+      "alias": "D1",
+      "definition": "sum of base-visible MEASURED_SCALAR counts",
+      "private_input": false,
+      "reason": "student-verifiable, ladder-invariant, no private physical total"
+    },
+    "optional_nondefault": {
+      "name": "D2",
+      "definition": "D1 plus source residual",
+      "allowed_only_after": "per-query/operator off-ledger alias and source feature audit",
+      "default": false
+    },
+    "preserve": [
+      "CaseBundle V1 physical library_size meaning",
+      "G7 E3 V1 physical count<=library_size safeguards"
+    ],
+    "do_not_do": [
+      "rename normalization depth to library_size",
+      "publish/hash private teacher or whole-library total into student payload",
+      "treat a rename adapter as G7 compatibility"
+    ]
+  },
+  "first_session_order": [
+    "Fetch current PR322/460/486/479/476/477 heads and compare to this bootstrap. If unchanged, do NOT recrawl historical audits.",
+    "Read JEPA_FINAL_LANE_TAKEOVER_FREEZE_20261028.md and its machine JSON; use older master only for source lookup.",
+    "Independently review Macha PR486 against immutable ChatGPT PR480 tests and add new numerical/registry attacks. Record exact verdict before any Task3 promotion.",
+    "Repair PR479 A1-A3 against unchanged Macha PR481 tests. Do not self-approve. Coordinate A4 upstream PR474 with Macha.",
+    "Repair PR476 metaclass route and create a single composed bind-then-decide path so V3 cannot bypass binder evidence; preserve R1/R1D/R2 RED.",
+    "Repair PR477 exact-type/isinstance and exception-cause routes; preserve T2-D external issuer RED.",
+    "Deciding lane explicitly accepts/rejects D1 as default and D2 as optional, then versions a G7 E3 V2 content law if needed. No silent mutation of V1.",
+    "ETL/source lane measures reader_fit residual decomposition and feature/alias closure; external lane obtains depositor QC methods and SEA-AD specimen keys if permitted.",
+    "Only after Tasks1-3, G7 source rights, calibration, D1/D2 contract and anti-gaming prerequisites qualify: implement PS Task4 candidate-neutral biology generator.",
+    "Only after PS Task4 and sealed known-truth qualification: return to human C2/C3 target selection and downstream JEPA; TARGET_NONE remains valid."
+  ],
+  "source_data_custody": [
+    "large historical binaries/checkpoints are hash-indexed, not guaranteed retrievable from GitHub",
+    "do not download project-prohibited BAM/FASTQ files",
+    "do not copy incidental sample-level diagnosis/age/sex fields into audit/handoff",
+    "all current branches are open stacked PRs; do not assume main contains them"
+  ],
+  "standing_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

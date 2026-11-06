@@ -1,0 +1,415 @@
+{
+  "schema": "JEPA_20261104_V9_PREVIOUS_WORK_COMPLETENESS_CROSSWALK_V1",
+  "date_utc": "2026-11-04",
+  "base_audit_head": "5b37c491536abf01b6c7bebe3f8326fdbb274c7c",
+  "base_handoff_head": "27dfe9446448b000fadfefc762d3cae7006b17e2",
+  "source_scope": "ORIGINAL_WORK_REAPPEARANCE_NOT_NEW_EXECUTION__V9_FIRST_READ_UNDERINDEXING__CHRONOLOGY48_PRESERVED",
+  "claims": "Named original sources or prior source-verified audits; summary omission does not mean source files were lost. No exhaustive 534 PR audit.",
+  "items": [
+    {
+      "key": "graph_jepa_v1_v3",
+      "title": "Graph-JEPA V1/V2/V3, actual internal benchmark and graph specificity",
+      "visibility": "ABSENT_FROM_V9_SCIENCE_TABLE",
+      "original": "2026 historical V1/V2/V3 extensive real-data graph/neural/module baseline suite; V3 official five-pathology donor OOF metric and module-mean 0.3128, minimum 0.3228, graph specificity separate from raw prediction",
+      "negative": "Graph not established merely by improved prediction; Stage39D proxy sensitivity, Stage41C nonlock and later shuffled/no-graph results. Historical pathology-guided benchmarking is NOT authority for current pathology-blind foundation target.",
+      "sources": [
+        {
+          "path": "docs/V3_SCORECARD.md",
+          "blob_sha1": "4c43b0d4b57dd955887223d4da7a525c508bf8ed",
+          "ref": "main"
+        },
+        {
+          "path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_17_20_20261102.md",
+          "blob_sha1": "be054818147486847dc0793094f0d5954c30d412",
+          "ref": "PR322"
+        }
+      ],
+      "events": [
+        1,
+        4
+      ],
+      "next": "Only use historical benchmark as provenance or comparator with identical estimand/splits; no new V3 sweep"
+    },
+    {
+      "key": "rare_microglia_stages53_70",
+      "title": "Stage53–70 MTG/DLPFC high-tail rare microglia, Stage69 auxiliary and Stage70 no-lock",
+      "visibility": "COMPRESSED_TO_GENERIC_RARE_STATE_SENTENCE",
+      "original": "Real donor-tail/module/region analyses; Stage69 internal rare-auxiliary score 0.3591038, +0.0324014 versus Stage27C under its own proxy, not a new external validation",
+      "negative": "Stage61 best DLPFC 0.343324 fell to Stage62 0.277315; within-donor shuffled 0.281391 beat real, Stage70 no benchmark lock; rare candidates not automatically treatment targets",
+      "sources": [
+        {
+          "path": "results/reports/stage63_dlpfc_signal_instability_diagnosis_report_v1.md",
+          "blob_sha1": "4bbfad59453997d94c1ac413d71b0266057dc723",
+          "ref": "main"
+        },
+        {
+          "path": "results/reports/stage69_rare_microglia_auxiliary_head_jepa_audit_report_v1.md",
+          "blob_sha1": "529af717e6dc4b019faaaf38a80f37422d5b6f2b",
+          "ref": "main"
+        }
+      ],
+      "events": [
+        1,
+        4
+      ],
+      "next": "Preserve donor-tail and negative-control designs; do not merge these historic pathology proxies with current rare-state biological qualification"
+    },
+    {
+      "key": "mechanism_candidate_atlas_stage36_49",
+      "title": "Stage36–49 complete AD mechanism/assay/PI candidate program",
+      "visibility": "18_GENES_AND_FOUR_MECHANISMS_ONLY",
+      "original": "103 local knowledge resources, 770 annotations, mechanism and evidence dossiers, ranked assay/validation routes, Stage42–44 methods/PI/manuscript work; Stage48 18 traceable genes, 4 mechanisms",
+      "negative": "Not causal treatment targets or independent patient validation; Stage48 expressly froze do_not_rerun_broad_gene_discovery; review package is not publication/clinical validation",
+      "sources": [
+        {
+          "path": "results/reports/stage48_gene_discovery_rerun_decision_v1.md",
+          "blob_sha1": "c09e170b7b4704fe76c73f562504159d92d7fc97",
+          "ref": "main"
+        },
+        {
+          "path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.md",
+          "blob_sha1": "4cbb451463aac3babe4c40025281c1ac4f11daa3",
+          "ref": "PR322"
+        }
+      ],
+      "events": [
+        1,
+        39
+      ],
+      "next": "Retain candidate dossiers, evidence tiers, assay decisions and validation order; no broad rediscovery"
+    },
+    {
+      "key": "v2_external_microglia_cohorts",
+      "title": "V2.1/V2.2 completed Morabito/Grubman/Rexach/Olah external projections",
+      "visibility": "UNDERINDEXED_AS_MORABITO_EXPOSURE_ONLY",
+      "original": "Morabito 4,126 microglia/18 samples, tau rho 0.2237 p .3723, AUC 0.6234; Grubman 449 cells/six groups, module AUC 1.0 but p .1; Rexach 21,575/40 donors and Olah 16,099/17 donors original 2,957-feature adapters",
+      "negative": "Exposed historical cohorts, weak/underpowered external association; older 2,957-feature projection != current 41,238-address issuer; zero-fill/imputation and sample/donor semantics matter",
+      "sources": [
+        {
+          "path": "results/reports/external_validation_gse174367.md",
+          "blob_sha1": "41f9d6851b1dedee862e0fe402563512efc9ab9d",
+          "ref": "main"
+        },
+        {
+          "path": "results/reports/v2_2_cellxgene_alignment_stats.md",
+          "blob_sha1": "8b97d931bf8e854b423654f0f1236e0e72e2f331",
+          "ref": "main"
+        },
+        {
+          "path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md",
+          "blob_sha1": "94625689a7d7352231f0c908811763a0fcd8cb60",
+          "ref": "PR322"
+        }
+      ],
+      "events": [
+        15,
+        38
+      ],
+      "next": "Reuse prior exposures correctly, do not count as clean unseen validation or rerun acquisition"
+    },
+    {
+      "key": "discovery_atlas_manifold",
+      "title": "Discovery Atlas full candidate audit and 45/45 sampled manifold QC",
+      "visibility": "OMITTED",
+      "original": "38 artifact checks and 45/45 prespecified sampled candidate manifold proximity checks, p95 distance 0.0174693; GPU/CUDA backend solved prior sklearn/threadpool problem",
+      "negative": "This was candidate-space geometric QA only; no causal/regulatory/therapeutic effect or whole-population support",
+      "sources": [
+        {
+          "path": "results/reports/discovery_targeted_manifold_audit_v1.md",
+          "blob_sha1": "82d2c6246de8ea19abaa4b44660d2880a66b9464",
+          "ref": "main"
+        },
+        {
+          "path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md",
+          "blob_sha1": "94625689a7d7352231f0c908811763a0fcd8cb60",
+          "ref": "PR322"
+        }
+      ],
+      "events": [
+        15
+      ],
+      "next": "No duplicate manifold scan on the same original claim"
+    },
+    {
+      "key": "regulatory_72b_75f",
+      "title": "Stage72B–75F actual RNA/ATAC coactivity, motif, TF-region-gene evidence and graph controls",
+      "visibility": "SCENIC_ATAC_REDUCED_TO_MENTION",
+      "original": "541 sample-pseudobulk TF-target coactivity candidate edges, 18 RNA sample units/4,126 microglia with separate 12,232-cell snATAC/20 samples; F8 tiers STAT1/ELF1/SPI1, IRF8/BACH1/CEBPA/RELA, MITF/NRF1/STAT3 and deterministic evidence manifests",
+      "negative": "No packaged peak-to-gene/motif cross-assay validation for 541 edges, no validated eRegulon, causal TF binding or therapy; Stage73R STRING/shuffled controls non-win",
+      "sources": [
+        {
+          "path": "results/reports/stage72b_external_morabito_micro_pvm_grn_construction_report_v1.md",
+          "blob_sha1": "a864cefccc9544b759bec0557944245093abeb8a",
+          "ref": "main"
+        },
+        {
+          "path": "docs/stage75f_f8_integrated_regulatory_evidence.md",
+          "blob_sha1": "bb09966d8a4788bc44ee3d834dfe2e41af426481",
+          "ref": "main"
+        }
+      ],
+      "events": [
+        1,
+        15,
+        38
+      ],
+      "next": "Keep the executable regulatory reports, source support, promoter/enhancer limits and negative gates; no new first ATAC/SCENIC review"
+    },
+    {
+      "key": "stage76_79_gene_jepa_perturbation",
+      "title": "Stage76–79 executed frozen-GeneJEPA perturbation→latent→graph-control chain (NOT synthetic V79)",
+      "visibility": "OMITTED",
+      "original": "Original 2,957-feature epoch30 frozen GeneJEPA model; 96 signed hypotheses, 10 unresolved regulator directions, 53 Tier-A signed edges, 12 up/down perturbation scenarios, 32 cells/6 donors/8 contexts, one-hop unitless input deltas, frozen latent shift and 152 real/control graph variants",
+      "negative": "Model-input perturbation is not intervention/dose or causal rescue; 10/10 direction unresolved; Stage79 pass means technical graph test, not graph-specific biology or production teacher",
+      "sources": [
+        {
+          "path": "results/reports/stage76_directionality_audit_v1.json",
+          "blob_sha1": "f3102ca0dcd167d4413bd0711f6f77034351f067",
+          "ref": "main"
+        },
+        {
+          "path": "results/reports/stage77_tier_a_perturbation_mvp_v1.json",
+          "blob_sha1": "01a2d4eb3519e9dd7182ff0ed2ef263485736bbc",
+          "ref": "main"
+        },
+        {
+          "path": "results/reports/stage78_jepa_latent_shift_v1.json",
+          "blob_sha1": "f1011a42c4ba4984bd8ae164eab1831c0f6df987",
+          "ref": "main"
+        },
+        {
+          "path": "results/reports/stage79_graph_controls_v1.json",
+          "blob_sha1": "9ac0adaf8d6b9ce5b90efd54abf50c49b8ea484a",
+          "ref": "main"
+        }
+      ],
+      "events": [
+        2
+      ],
+      "next": "Preserve original checkpoint and graph null outputs, do not confuse Stage79 with V79 synthetic Q00–Q11"
+    },
+    {
+      "key": "stage81a2r_full_identity",
+      "title": "Stage81A2R repaired 41,238-address semantic/observation namespace",
+      "visibility": "BRIEF_41K_REFERENCE_ONLY",
+      "original": "40,422 current exact+773 legacy exact+43 anchored = 41,238; 2,010 additional preserved ambiguous/identifier-poor outside unrestricted namespace; observation states MEASURED_SCALAR/STRUCTURALLY_UNMEASURED/COLLISION_UNRESOLVED; 40,949 scalar somewhere, 289 collision only at historical Freeze1 scope",
+      "negative": "Gene-symbol equality or same-strand overlap does not establish identical features; historic A2R normalization and 4,096 top-K architecture are not unrestricted whole-transcriptome authority",
+      "sources": [
+        {
+          "path": "docs/history/docs/v4/CURRENT_STATE_HANDOFF.md",
+          "blob_sha1": "67b6cf83174dbce53e0a948e216aec04a538709c",
+          "ref": "main"
+        },
+        {
+          "path": "docs/history/foundation_target_discovery_prior_20260907/stage81/docs/v4/STAGE81A3R_FREEZE1_REPRESENTATION_CONTRACT.md",
+          "blob_sha1": "2bf156f60ad5ca60fd06231c9691d371864528cb",
+          "ref": "main"
+        }
+      ],
+      "events": [
+        5,
+        6
+      ],
+      "next": "Do not merge historical 2,957, 4,096 and current 41,238 address spaces"
+    },
+    {
+      "key": "identity_row_guide_comparators",
+      "title": "Separately resolved gene/row/guide/PAR_Y and comparator errors",
+      "visibility": "UNDERINDEXED_AS_ALIAS_Q_RIGHTS",
+      "original": "NPH/cross-source source-feature and gene-address distinction; invalid selection_row→donor link (12/12 block-position vs 0/12 authoritative selection_row); PR118 BIN1 14 impossible guides removed; Morabito PAR_Y ambiguity; F1/QID query-mask and wrong-query-vs-matched-null distinction",
+      "negative": "Neither one universal gene-column permutation nor proven direction of bias from broken donor join; old 2/4/8 view optimum WITHHELD, not automatically numerically false; QID matched-null not wrong-query experiment",
+      "sources": [
+        {
+          "path": "docs/agent/JEPA_IDENTITY_ALIGNMENT_AND_COMPARATOR_FAILURE_RECONCILIATION_20261102.md",
+          "blob_sha1": "4d34906b5f321e54efa15044fdfb4b6b06a75e5b",
+          "ref": "PR322"
+        }
+      ],
+      "events": [
+        5
+      ],
+      "next": "Trace affected estimands/receipts individually; do not disqualify unrelated successful original work"
+    },
+    {
+      "key": "a3r_224_freeze",
+      "title": "Stage81A3R historical 224D Freeze1 and molecular-ledger architecture",
+      "visibility": "HISTORICAL_WIDTH_MENTION_ONLY",
+      "original": "Real older bounded Freeze1 selected d_global=224 by one-SE rule, best tested 336, donor refits, 149 TRAIN donors/42 operators/4,726 cells; 41,238 address molecular ledger, d_gene160 six-block token architecture; uncertainties not calibrated",
+      "negative": "The earlier Stage81A3 not-freeze statements were earlier in sequence, not a universal status; archived 224 decision is superseded for current FULL104 dimensions/representation and cannot authorize real training",
+      "sources": [
+        {
+          "path": "docs/history/foundation_target_discovery_prior_20260907/stage81/docs/v4/STAGE81A3R_FREEZE1_REPRESENTATION_CONTRACT.md",
+          "blob_sha1": "2bf156f60ad5ca60fd06231c9691d371864528cb",
+          "ref": "main"
+        }
+      ],
+      "events": [
+        6,
+        38
+      ],
+      "next": "Preserve historical bounded freeze and its precise supersession, do not call it current dimension selection"
+    },
+    {
+      "key": "td15_27_depth_null_and_residual",
+      "title": "TD15–27 universal relational failure and conditional residual positives",
+      "visibility": "OMITTED_IN_FAVOR_OF_TD56_59",
+      "original": "TD19 depth-only pseudo-state HVS↔SEA r .980–.986; universal cross-source same-gene edges -0.0055 to +0.0051; TD20/21B/22 source-conditional subspaces survived controls, TD27 support varied with 2 vs 8–16 donor cells",
+      "negative": "Raw cross-source geometry does not independently establish a biological target; residualization does not prove biological residual; fine operator/class nesting makes HVS adjustment nonmeasurable",
+      "sources": [
+        {
+          "path": "target_discovery/iterations/td19_claude_followup/TD19_DECISION.md",
+          "blob_sha1": "bb207df987285190edf40fff6a19137cf63de0b0",
+          "ref": "main"
+        },
+        {
+          "path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_21_24_20261102.md",
+          "blob_sha1": "126c1ff43a1ba684f2ae78557540afbd55612569",
+          "ref": "PR322"
+        }
+      ],
+      "events": [
+        6,
+        38
+      ],
+      "next": "Use original depth and wrong-cell controls before interpreting TD56–59, do not redo already-spent TD19"
+    },
+    {
+      "key": "stage73r_x4_control_repairs",
+      "title": "Stage73R graph-prior non-win and Sept V5 x4 estimator invalidation",
+      "visibility": "OMITTED",
+      "original": "Stage73R context graph predictive score .323611 underperformed shuffled .332290 and STRING .331809; old x4_within estimator generated false cell residual on operator-only null and corrected estimators followed",
+      "negative": "Graph topology not earned; an estimator that creates cell biology from operator-only evidence cannot confer production authority",
+      "sources": [
+        {
+          "path": "results/reports/stage73r_context_specific_grn_control_repair_report_v1.md",
+          "blob_sha1": "b49e97016cef9af4230a58739ef0a972bfedfaee",
+          "ref": "main"
+        },
+        {
+          "path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_21_24_20261102.md",
+          "blob_sha1": "126c1ff43a1ba684f2ae78557540afbd55612569",
+          "ref": "PR322"
+        }
+      ],
+      "events": [
+        6,
+        38
+      ],
+      "next": "Retain failed graph and estimator controls as exact evidence rather than proposing new default graph"
+    },
+    {
+      "key": "physical_perturbation_and_clonality",
+      "title": "Original perturbation/CRISPRbrain physical ETL and clone-aware bulk validation",
+      "visibility": "MERE_REFERENCE_TO_16_ASSETS",
+      "original": "Original actual PR117 39-target Day8/10,549 gene experiments; PR131 separately recomputed 179,384 bulk clone-aware comparisons (141,294 + 38,090); PR137 CRISPRbrain joint engagement 1/31, median correlation .028, negative eligibility",
+      "negative": "6-decimal source storage, one-sample-per-condition GSE240609 uncertainty NOT_ESTIMABLE; 179K reproducibility not an accepted causal effect, and CRISPRbench not a successful transfer",
+      "sources": [
+        {
+          "path": "analysis/therapeutic_perturbation_etl/P1_6_BULK_INDEPENDENT_RECOMPUTE_20260925.md",
+          "blob_sha1": "dfae152d639606713a3384ed2bfd89c142fc161b",
+          "ref": "8647d21174c5e7eab2ad01fc6b9251b069ba0e03"
+        },
+        {
+          "path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_30_34_20261102.md",
+          "blob_sha1": "1caf23b0060c04e90da1c90614ed7fef9849c1d3",
+          "ref": "PR322"
+        }
+      ],
+      "events": [
+        16,
+        38
+      ],
+      "next": "Reuse failed/corrected original perturbation eligibility, no new generic perturbation ETL"
+    },
+    {
+      "key": "context_spatial_qualification",
+      "title": "Slide-tags/Fang spatial actual source qualification and context benefit still unrun",
+      "visibility": "UCDQ_21_DATASETS_234_SAMPLES_LINE_ONLY",
+      "original": "21 acquired datasets/234 sample records; SCP2167 4,065/4,067 linked coordinates and 36,601 features, source provenance later adjudicated by publication; five Fang STG MERFISH experiments, 2 donors, distinct scope",
+      "negative": "Initial unqualified human provenance quarantined; paper-only adjudication permits only bounded context role; matching/identifiability does not mean actual context benefit was tested, Fang MTG quarantined",
+      "sources": [
+        {
+          "path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_17_20_20261102.md",
+          "blob_sha1": "be054818147486847dc0793094f0d5954c30d412",
+          "ref": "PR322"
+        },
+        {
+          "path": "docs/history/docs/v4/CURRENT_STATE_HANDOFF.md",
+          "blob_sha1": "67b6cf83174dbce53e0a948e216aec04a538709c",
+          "ref": "main"
+        }
+      ],
+      "events": [
+        4
+      ],
+      "next": "Do not propose new first acquisition or infer biological context transfer from source eligibility"
+    },
+    {
+      "key": "premise_and_rbb_qdepth",
+      "title": "Premise V3 / Bayesian belief learned failures / full-source query denominator shortcut",
+      "visibility": "COMPRESSED",
+      "original": "Previous observation-aware premise qualification, learned Bayesian belief/uncertainty trials, and real Foundation archive source count inversion/11,449 collision relations; hidden query enters visible log1p10k base values via full-cell denominator",
+      "negative": "Bayesian posterior not earned, same-source self-consistent normalization can mathematically leak q; the software counterexample is not proof of leak in any selected human model",
+      "sources": [
+        {
+          "path": "docs/agent/JEPA_20261104_ADDITIONAL_MISSING_PREMISE_BELIEF_AND_SOURCE_NORMALIZATION_HISTORY.md",
+          "blob_sha1": "f663c6fe5c1abe615e20e2ac28a79bb818a106bc",
+          "ref": "PR322"
+        }
+      ],
+      "events": [
+        38,
+        46
+      ],
+      "next": "Retain qualified mathematical leakage boundary, use D1 base-only view, do not revive rejected learned RBB without new hypothesis"
+    },
+    {
+      "key": "full104_and_gpu_boundaries",
+      "title": "Physical source, F1 gradient, FULL104 dimensions and spent real replay governance",
+      "visibility": "PRESENT_BUT_DISTINCT_EXECUTION_RIGHTS_NOT_CLEAR",
+      "original": "PR59/69 original raw/label corrections; exact 8,915 block/4.55M physical store and source-mapped counts; F1B/C3 original distinct gradient bug; PR270/273/274 bound prospective numeric dimension methods, PR314 one spent C2 corrected replay",
+      "negative": "A CI/audit PASS is not authenticated source release, numerical D values or teacher winner; PR537 may overlap prior Stage81B JEPA_ONLY; G7 already NOT_ESTIMABLE",
+      "sources": [
+        {
+          "path": "docs/agent/JEPA_20261104_RESOLVED_HISTORICAL_G7_S174_LEVEL4_AND_REMAINING_GAPS_V1.md",
+          "blob_sha1": null,
+          "ref": "PR322"
+        },
+        {
+          "path": "docs/agent/JEPA_20261104_STAGE81B_INTRINSIC_RARE_CONTEXT_AND_TARGET_LEARNABILITY_NO_REPEAT.md",
+          "blob_sha1": null,
+          "ref": "PR322"
+        }
+      ],
+      "events": [
+        43,
+        44,
+        46,
+        48
+      ],
+      "next": "Original physical receipts stand; next only exact missing issuer/CaseBundle or previously unsubmitted numeric receipt"
+    }
+  ],
+  "stale_machine_index_correction": {
+    "where": "science_milestones.REAL_RELATIONAL_TD.state",
+    "before": "original G7 follow-on needs exact terminal check",
+    "after": "G7 executed once NOT_ESTIMABLE_NO_NATURAL_S174_CELL_OVERLAP; never rerun",
+    "authority": "Original PR304 and PR322 resolved-G7 report"
+  },
+  "no_repeat": [
+    "No Graph-JEPA/V3, ATAC/SCENIC, perturbation, F1, G7/S174, broad gene discovery or older synthetic re-execution to re-establish original conclusion",
+    "Never turn source/fixture/model/CI pass into human biological effect",
+    "Historical 2,957/4,096/41,238 gene universes, 160 gene ledger, 224 historical global and FULL104 current dimensions must not be conflated"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "source_locator_verification_20261104": {
+    "checked_unique_sources": 27,
+    "corrected_truncated_blob_ids": 3,
+    "corrected_historical_ref_to_original_PR131_head": 1,
+    "sha_matched_sources": 25,
+    "missing_sources": 0,
+    "method": "All 27 unique source paths fetched at exact GitHub refs; 25 full Git SHA1 blob identities compared and match; 2 new audit documents exist but have no prior frozen blob pin; no source bytes modified",
+    "new_results": false,
+    "existing_unpinned_audit_source_paths": 2
+  }
+}

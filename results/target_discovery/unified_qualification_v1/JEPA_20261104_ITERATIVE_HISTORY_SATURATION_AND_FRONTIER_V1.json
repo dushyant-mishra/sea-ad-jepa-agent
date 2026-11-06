@@ -1,0 +1,83 @@
+{
+  "schema": "JEPA_20261104_ITERATIVE_PROJECT_WIDE_HISTORY_SATURATION_AND_FRONTIER_V1",
+  "date": "2026-11-04",
+  "disposition": "READ_ONLY_HISTORY_AUDIT__NO_MODEL_OR_DATA_EXECUTION",
+  "audit_passes": [
+    "canonical_two_branch_and_machine_indexes",
+    "sep_nov_result_bearing_prs_and_primary_files",
+    "pre_sep_v3_scorecard_stage30_75_and_stage81_v5",
+    "latest_open_pr_issue_precedence",
+    "saturation_search_candidate_specific_learned_results_and_missing_receipts"
+  ],
+  "new_underindexed_findings": [
+    {
+      "id": "V3_STAGE39_41_CONTEXT_RESCUE",
+      "result": "multiple point-estimate improvements but no robust lock; Stage40B stopped architecture rescue; Stage41B 0.339423; Stage41 full 0.368087 CI lower 0.260360"
+    },
+    {
+      "id": "FULL104_INFORMATION_CHANNEL",
+      "result": "17053 eligible; 14526/17053=85.18% all-three-source estimable; 6653 affected; 202 wholly vacuous source guardrail; strong source-identifying support geometry"
+    },
+    {
+      "id": "V29_TEACHER_LEAKAGE_CONTROL",
+      "result": "hidden q enters teacher before mixing; full-library normalization leak; global-context falsifier inadequate; query-exchangeability control validated"
+    },
+    {
+      "id": "C5_REGULATORY_SPECIFICITY_NEGATIVES",
+      "result": "V53 -0.13102; V54 -0.01430143; V55 -0.17632; V56 -0.23295; V57 n18 -0.02871; Stage75F hierarchy not validated"
+    },
+    {
+      "id": "V63_HIDDEN_QUALITY_BOUNDARY",
+      "result": "specificity margin collapses near zero by hidden-quality b=1.6; common-support cost 59%"
+    },
+    {
+      "id": "GSE289721_PERTURBATION_CANDIDATE",
+      "result": "source-authenticated, five external-clean targets, predeclared qualification exists, later physical effect qualification not located"
+    },
+    {
+      "id": "TD_BAYESIAN_SPIKE",
+      "result": "SAMPLER_NOT_ESTIMABLE; formulation prospectively stopped before historical fit"
+    }
+  ],
+  "confirmed_not_missing": [
+    "synthetic_real_unified_pipeline",
+    "teacher_student_optimizer_ema_checkpoint_runtime",
+    "CaseBundle_Tasks0_8",
+    "PR328_PR336_PR369_known_truth",
+    "PR469_PR536_integration",
+    "HVS_SEA_alias_accounting",
+    "D1_V2C_main_scoped_acceptance",
+    "PR314_real_TD",
+    "Stage81B_JEPA_ONLY_anchor",
+    "V65_V67",
+    "V75_100K",
+    "V79_V80",
+    "PR59_PR69_Level4",
+    "Stage75F_Stage76_79",
+    "E2G_7track"
+  ],
+  "saturation_frontier": {
+    "missing_learned_atomic_foundation_result": [
+      "C1_SHARED_EMERGENT",
+      "C2_RELATIONAL_SHARED",
+      "C3_QUERY_MEASURED"
+    ],
+    "composite_after_constituents": [
+      "C6_SHARED_QUERY_COMPOSITE",
+      "C4_STRUCTURED_COMPOSITE"
+    ],
+    "specialist_separate": "C5_REGULATORY_SPECIALIST",
+    "full104_numeric_dimensions_primary_receipt_found": false,
+    "R5_primary_deciding_receipt_found": false,
+    "PR537_gpu_authorized": false
+  },
+  "next_actions": [
+    "READ_ONLY_R5_RECEIPT_AND_STAGE81B_PR537_NOVELTY_RECONCILIATION",
+    "EXECUTE_EXISTING_UNIFIED_PIPELINE_ATOMIC_C1_C2_C3_LEARNED_TEACHER_STUDENT_KNOWN_TRUTH_COMPARISON",
+    "DERIVE_C6_C4_ONLY_AFTER_CONSTITUENT_QUALIFICATION__KEEP_C5_SEPARATE",
+    "FREEZE_MINIMAL_REAL_HUMAN_COUNTERPART_ONLY_AFTER_SYNTHETIC_LEARNED_SURVIVAL",
+    "QUALIFY_GSE289721_UNDER_EXISTING_PRESPECIFIED_PERTURBATION_PROTOCOL",
+    "DEFER_ORTHOGONAL_PR534_PR537_ISSUES54_55_AND_DIMENSION_RECOVERY_UNLESS_DEPENDENCY"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

@@ -1,0 +1,143 @@
+{
+  "schema": "JEPA_EVENT100_SOL_INDEPENDENT_MACHA580_581_582_REVIEW_V1",
+  "event": 100,
+  "date_utc": "2026-11-05",
+  "author": "Sol",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "human": {
+    "path": "docs/agent/JEPA_20261105_EVENT100_SOL_INDEPENDENT_CROSS_REVIEW_MACHA_580_581_582_NO_TRAINING.md",
+    "git_blob_sha1": "e1ab18951b4679944451cd892399ff3a186f33c5"
+  },
+  "reviews": [
+    {
+      "pr": 580,
+      "exact_head": "63bf1bdc8eea276d144e5f33a5828c137fe3217f",
+      "reviewer": "Sol",
+      "verdict": "ACCEPT_SCOPED__THREAD_RECOVERY_AND_RUN_COMPLETION_MIRROR_ONLY",
+      "comment_id": 6675986361,
+      "red": {
+        "run": 42109490027,
+        "fail_jobs": 2,
+        "python_versions": [
+          "3.11.9",
+          "3.12.7"
+        ],
+        "failures_each": 2
+      },
+      "green": {
+        "run": 42110388184,
+        "success_jobs": 2,
+        "workflows_success": 6,
+        "workflows_total": 6
+      },
+      "source": "scripts/v5/jepa_synth2048_attempt_journal_v2.py",
+      "limited": "Same-process split opener/compute thread with opener initiating recovery not covered; no actual neural threaded training/bitwise restore."
+    },
+    {
+      "pr": 581,
+      "exact_head": "86d96fc1450038c1482d4cfd8389682d0f085d62",
+      "reviewer": "Sol",
+      "verdict": "REPAIR_REQUIRED__UNBOUND_NAMED_ADAM_ID_AND_ORDER",
+      "comment_id": 6675986913,
+      "original_red": {
+        "run": 42109496747,
+        "fail_jobs": 2
+      },
+      "original_green": {
+        "run": 42110395980,
+        "success_jobs": 2
+      },
+      "independent_new_red": {
+        "base_pr": 582,
+        "base_head": "e71d864b0496de0b86fe7442ba51d53b44e0b225",
+        "run": 42114608692,
+        "python_versions": [
+          "3.11.9",
+          "3.12.7"
+        ],
+        "failures_per_python": 2,
+        "controls_passed_per_python": 4,
+        "proof": "DID_NOT_RAISE_ON_CHANGE_OF_NAMED_OPTIMIZER_PARAM_ID_OR_GROUP_ORDER"
+      },
+      "sol_repair": {
+        "pr": 583,
+        "head": "76eddf86ea7d8e5d66731a36d889e502d633b181",
+        "source": "scripts/v5/jepa_v5_structured_journal_preflight_v1.py",
+        "source_blob_sha1": "56fd66f2734bd9ec8c3ce92511e5f24e8a5950c7",
+        "red_test": "tests/test_jepa_v5_structured_journal_preflight_v1_sol_optimizer_identity_red.py",
+        "red_test_blob_sha1": "6c92d95b1b10d7859d45aa92661675c73080b19c",
+        "green_workflows": 11,
+        "green_workflows_total": 11,
+        "macha_review": "PENDING"
+      }
+    },
+    {
+      "pr": 582,
+      "exact_head": "e71d864b0496de0b86fe7442ba51d53b44e0b225",
+      "reviewer": "Sol",
+      "verdict": "REPAIR_REQUIRED__INHERITED_NAMED_ADAM_ID_ORDER_AND_INCOMPLETE_RUNTIME_DATA_TARGET_JOURNAL_BINDING",
+      "comment_id": 6675987375,
+      "ci": {
+        "run": 42110895354,
+        "workflows_success": 10,
+        "workflows_total": 10,
+        "jobs_success": 20,
+        "jobs_total": 20,
+        "new_cross_tests": 19,
+        "passing_tests_per_python": 406,
+        "skipped_tests_per_python": 9
+      },
+      "source_preservation": {
+        "original_pr": 224,
+        "original_head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+        "canonical_source_files": 12,
+        "private_impl": 2,
+        "initializer": 1,
+        "source_blobs_exact_comparison": "15_OF_15_IDENTICAL",
+        "dev2048_adapter_blob": "6a6c219402d7acd24c1b54b3c2571133a08e4a0a"
+      },
+      "source_data_guard": {
+        "pr": 584,
+        "head": "11d8a70235cfc02d412db6b6158485732bdec246",
+        "run": 42116258536,
+        "static_tests_per_python": 10,
+        "success_jobs": 2,
+        "python_versions": [
+          "3.11.9",
+          "3.12.7"
+        ],
+        "macha_review": "PENDING"
+      },
+      "end_to_end_actual_v5_model_journal_executed": false,
+      "real_optimizer_or_teacher_ema_executed": false,
+      "real_panel_or_rights_issuer_verified": false
+    }
+  ],
+  "history": {
+    "event98": "Original 15-file V5 source and false V4 40-step attribution fixed (source-only)",
+    "event99": "Independent optimizer identity RED→GREEN #583 and original V5/public PR547 FIT source data identity #584",
+    "no_repeat": "No rebuild original V5 one-update model, no repeat FULL104 or old V80 fetch, no change Events1–99."
+  },
+  "data": {
+    "pr547_original_dev_fit_only_zip_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+    "synthetic_cells": 1440,
+    "addresses": 2048,
+    "donors": 36,
+    "hidden_q_gene_ids": [
+      1672,
+      1673,
+      1674,
+      1675
+    ],
+    "private_controller_accessed": false,
+    "real_data_accessed": false
+  },
+  "holds": [
+    "Macha independent reciprocal review of Sol #583 #584",
+    "Actual multi-update V5 driver absent and not authorized",
+    "PR525 source policy is four V4 runtime files and not present at integrated #582",
+    "Missing actual trainable gradients/Adam EMA, frozen biological panel probes, full RNG/AMP bitwise restart",
+    "No merge, no Stage4, no target or representation winner"
+  ],
+  "v80_private_backup": "OWNER_CONFIRMED_PERSONAL_DOWNLOAD_COMPLETE__RESOLVED_EVENT95"
+}

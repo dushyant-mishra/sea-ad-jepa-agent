@@ -1,0 +1,137 @@
+{
+  "schema": "JEPA_EVENT91_V5_SYNTHETIC_FULL_ADAM_COMPONENT_JOURNAL_SOURCE_MAP_V1",
+  "event": 91,
+  "date_utc": "2026-11-05",
+  "repo": "dushyant-mishra/sea-ad-jepa-agent",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "scope": "STRUCTURALLY_VERIFIED_CPU_TORCH_COMPONENT_SNAPSHOT_TO_FAKE_BYTE_V2_JOURNAL_NO_FORWARD_BACKWARD_OPTIMIZER_STEPS_TRAINING",
+  "implementation_pr": 575,
+  "implementation_head": "41e7c556e61e313253b7e839e948328b47ab88dc",
+  "base_pr": 574,
+  "base_head": "42cb0efe89882b066d9e123523ecfc5f9b2a9d85",
+  "dependency_lineage": [
+    {
+      "pr": 572,
+      "head": "c4286f4b5fde761b16226b911054d085a3a97aef",
+      "role": "Macha forensic first-collapse/last reported probe/crash recovery"
+    },
+    {
+      "pr": 573,
+      "head": "98b6e61327396c73c66676d73b82ae7381002e40",
+      "role": "Sol opening PID-bound fork-safe writer"
+    },
+    {
+      "pr": 574,
+      "head": "42cb0efe89882b066d9e123523ecfc5f9b2a9d85",
+      "role": "Sol incremental metadata cached historical byte rehash + 32-attempt scrub, Macha review pending"
+    },
+    {
+      "pr": 571,
+      "head": "8656adcf7e96b1e9c52a598beb844f8f8f548644",
+      "role": "unchanged read-only model/Adam CPU validator source carried onto PR575"
+    }
+  ],
+  "human_mirror": {
+    "path": "docs/agent/JEPA_20261105_EVENT91_READONLY_CPU_FULL_ADAM_STRUCTURED_JOURNAL_BRIDGE_NO_TRAINING.md",
+    "blob_sha1": "6219be538642ed3b15a895e2ce2e6bd14ce1eb35",
+    "same_on_pr322_and_pr460": true
+  },
+  "source_blobs": [
+    {
+      "path": "scripts/v5/jepa_v5_structured_journal_preflight_v1.py",
+      "sha1": "da0ea17f57e8160ae79cf1ceb7e045d895a750bf",
+      "role": "new before-write full-Adam/teacher/metadata declared binding and synthetic journal bridge"
+    },
+    {
+      "path": "tests/test_jepa_v5_structured_journal_preflight_v1.py",
+      "sha1": "d1feb114824bdb0b8525fd2eac7c9e14074a3813",
+      "role": "new synthetic CPU adversarial model state/probe/fork refusal tests"
+    },
+    {
+      "path": "scripts/v5/jepa_v5_full_state_readonly_audit_v1.py",
+      "sha1": "fea600306364adb4d23f333b61e45f622686b3b1",
+      "role": "byte-identical PR571 read-only CPU model/Adam audit"
+    },
+    {
+      "path": "tests/test_jepa_v5_full_state_readonly_audit_v1.py",
+      "sha1": "3247a0de6e33f49d708d82422c254211b6d18ac5",
+      "role": "byte-identical original PR571 read-only tests"
+    },
+    {
+      "path": "scripts/v5/jepa_synth2048_attempt_journal_v2.py",
+      "sha1": "a8e06b32e3a67460a3b0a48c668f2103fc8438dc",
+      "role": "unchanged PR574 optimized V2 core"
+    },
+    {
+      "path": ".github/workflows/jepa-v5-structured-synthetic-checkpoint-journal-no-training.yml",
+      "sha1": "a6aef2d037b5b0947d2e38f128dec6d2b997513b",
+      "role": "two Python CPU-only author workflow"
+    },
+    {
+      "path": "docs/agent/JEPA_20261105_V5_STRUCTURED_SNAPSHOT_TO_JOURNAL_PRECHECK_NO_TRAINING.md",
+      "sha1": "01974abb284b084c3e2f8de1bb3f80855de29181",
+      "role": "scoped implementation and scientific limitations"
+    }
+  ],
+  "ci": {
+    "run": 42088900620,
+    "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42088900620",
+    "exact_head": "41e7c556e61e313253b7e839e948328b47ab88dc",
+    "status": "SUCCESS",
+    "python_3_11_9": {
+      "component_tests_passed": 55,
+      "v2_original_macha_and_sol_tests_passed": 57
+    },
+    "python_3_12_7": {
+      "component_tests_passed": 55,
+      "v2_original_macha_and_sol_tests_passed": 57
+    },
+    "jobs_passed": 2,
+    "jobs_total": 2,
+    "original_macha_tests_edited": false
+  },
+  "original_macha_red_blobs_unchanged": [
+    {
+      "pr": 557,
+      "sha1": "bfa5345775570205def66eb19a98efc207d28d90"
+    },
+    {
+      "pr": 560,
+      "sha1": "3ab6c208206251728116debda1edb226cb5b647a"
+    },
+    {
+      "pr": 561,
+      "sha1": "be259ab4cdcf035d7bf05134f68b6fe8d09f8833"
+    },
+    {
+      "pr": 566,
+      "sha1": "60a16378c22b35ec5d52837c7c641cf6a59e0935"
+    },
+    {
+      "pr": 567,
+      "sha1": "c513693fa11b2c0ef72b68601ca83dcd5a0a5b2f"
+    }
+  ],
+  "implemented_scope": [
+    "Only existing serialized CPU torch state bytes and manually populated synthetic AdamW moments",
+    "SHA-256 checked, safe weights_only PyTorch bundle load; named online/teacher/predictor tensor shape matching",
+    "Expression value_encoder plus every Adam moment/step, update/EMA and keyed CPU Philox declaration",
+    "Declares and checks panel/config/rights/gene/source manifest and seed against expected run identity",
+    "V2 u0 and reported successful attempt outcome only after invalid component/probe refusals, no-state-write on refusal",
+    "Process-local opening-contract binding plus inherited V2 opener PID requirement",
+    "Read-only forensic inspection of stored structured bundle, no restored executable model"
+  ],
+  "unproven": [
+    "No actual optimizer/backward/forward/EMA change or physically sourced gradients",
+    "No independently sealed gene-axis/source/Philox/seed contract in V2 disk run.lock; expectations are caller supplied and process-local",
+    "No biological fixed-panel physical CELL/gene-token/teacher controls or learned qualification",
+    "No complete Python NumPy CUDA masking RNG, AMP scaler or rights source content authentication",
+    "No full actual neural encoder restore or fresh-process next-update bitwise RT1–RT8",
+    "No independent Macha acceptance; source code and tests author CI only",
+    "No owner-authorized training, real SEA-AD data or Stage4"
+  ],
+  "review": "MACHA_INDEPENDENT_PR575_REVIEW_REQUESTED__AUTHOR_CI_GREEN",
+  "next_priority": "Macha review #574 and #575; then implement physically sourced per-success model/Adam/RNG and fixed-panel probe evidence in the same V2 journal, and separately approved RT1–RT8",
+  "legacy_no_repeat": "Event1–90 immutable, historical TD/Stage81/V79/V80/R5 and 535 PR metadata census not rerun; historical owner-only sealed controller still private",
+  "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

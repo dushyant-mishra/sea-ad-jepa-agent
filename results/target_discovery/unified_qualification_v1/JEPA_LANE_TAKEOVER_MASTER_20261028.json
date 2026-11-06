@@ -1,0 +1,345 @@
+{
+  "schema": "JEPA_LANE_TAKEOVER_MASTER_20261028_V1",
+  "created_date": "2026-10-28",
+  "classification": "APPEND_ONLY_CUSTODY_NAVIGATION__NO_NEW_SCIENCE_OR_ISSUER",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "frozen_accepted_v8e_head": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+  "takeover_scope": "Archive all new source-verified evidence in chat while retaining immutable prior audit/hostile verdicts; no new biological execution",
+  "authoritative_source_pointers": [
+    {
+      "pr": 314,
+      "head": "c6899a2910244a0352c0c57e7aea6e3026191da1",
+      "kind": "CORRECTED_REAL_RELATIONAL_ONE_SHOT_SPENT",
+      "result": "TD56_TD57B_TD59_PASS__TD57C_NEAREST_THIRD_FAIL__NO_TARGET_WINNER"
+    },
+    {
+      "pr": 322,
+      "previous_head_before_this_takeover": "dfaba7967a77d482496d1b843f4a5d666b9ce570",
+      "kind": "APPEND_ONLY_AUDIT"
+    },
+    {
+      "pr": 460,
+      "previous_head_before_this_takeover": "6237438d0b1e708839d4b66547129d26664ae03e",
+      "kind": "ACTIVE_SUCCESSOR"
+    },
+    {
+      "pr": 328,
+      "head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+      "kind": "FIXTURE_SYNTHETIC_NOT_PRODUCTION_BIOLOGY"
+    },
+    {
+      "pr": 344,
+      "head": "847fe734b15e52f204f18903a124e1cfd3bf111d",
+      "kind": "PRODUCTION_SYNTHETIC_V3_1_1_DESIGN_ONLY"
+    },
+    {
+      "pr": 379,
+      "kind": "UNIFIED_SOURCE_PRODUCER_ARTIFACT_EXECUTOR_ARCHITECTURE"
+    },
+    {
+      "pr": 469,
+      "head": "7a6477244dfc817d929e210c38c1ea4b2d1a1927",
+      "kind": "432_ATOM_FIXTURE_INTEGRATION_ONLY"
+    },
+    {
+      "pr": 471,
+      "head": "7957b7578168532eabad8b2b75126bb71e6f43b7",
+      "kind": "AUG_2026_HISTORICAL_ARCHIVE_97_OF_97_SHA_INTEGRITY_NOT_REAL_CALIBRATION"
+    },
+    {
+      "pr": 475,
+      "head": "b40d815290fd02ae89259e3b441eabcf7f69d5be",
+      "kind": "INDEPENDENT_MACHA_SOURCE_REVIEW"
+    },
+    {
+      "pr": 476,
+      "head": "26031df25b51087f2f3ec35a88eef2919d794c68",
+      "kind": "AUTHOR_R5X_R6_PATCH__EXTERNAL_G7_RED"
+    },
+    {
+      "pr": 477,
+      "head": "c83088de090bc4f2fc6bbee353c46070bcca7be5",
+      "kind": "AUTHOR_WINDOWS_NUMPY_PATCH__T2D_RED"
+    },
+    {
+      "pr": 474,
+      "head": "e7635e7982e950a010d181ec6f6883a18ade0db6",
+      "kind": "SOURCE_Q_EXCLUDED_DEPTH_FIXTURE"
+    },
+    {
+      "pr": 478,
+      "head": "b7aa56e2915d2af7dd733f0f0253e684164ce70a",
+      "kind": "INDEPENDENT_DEPTH_FIXTURE_MATH_CONDITIONAL_REVIEW"
+    },
+    {
+      "pr": 479,
+      "head": "ae762d7096a94ac663a0788f6f577ba404e37536",
+      "kind": "AUTHOR_V2_SEPARATE_STUDENT_TEACHER_NORMALIZATION_VIEW_FIXTURE"
+    },
+    {
+      "pr": 437,
+      "head": "fd3242ada6f77ba09ff2d8a1c7716eb9725ced11",
+      "kind": "MACHA_PS_TASK3_SOURCE_ORIGINAL"
+    },
+    {
+      "pr": 480,
+      "head": "f39e605abc616cf59051a8bda9b0270cef5d6f09",
+      "kind": "CHATGPT_INDEPENDENT_PS_TASK3_RED_REVIEW__SOURCE_UNMODIFIED"
+    },
+    {
+      "pr": 465,
+      "head": "3b86b9467506539776e04a6470fa8f2f7363f129",
+      "kind": "MACHA_UNIFIED_TASK4_CUSTODY_INCREMENTAL_NOT_CUMULATIVE"
+    }
+  ],
+  "central_source_artifacts": {
+    "historical_no_repeat_index": "docs/agent/JEPA_CHAT_EXCLUSIVE_LANE_TAKEOVER_V1_20261027.md",
+    "original_chat_file_sha_inventory": "results/target_discovery/chat_exclusive_takeover_20261027/CHAT_LOCAL_SOURCE_SHA256_INVENTORY_V1.json",
+    "original_local_g7_reports": [
+      {
+        "path": "docs/agent/chat_exclusive_20261027/g7_local_input_admissibility_20261027_original.md",
+        "sha256": "6642a9673e7d71ae7314e7858016c682019d06e46fe9d3c6140b00fbbdd33c2f",
+        "git_blob": "4829c74e0a22de17a9c825e7fde4c720b2161e79",
+        "role": "ORIGINAL_V1_SUPERSEDED_NOT_PASS"
+      },
+      {
+        "path": "docs/agent/chat_exclusive_20261027/g7_local_input_admissibility_v2_20261027_original.md",
+        "sha256": "bcfc9fe5c254f5a038d4a24a02c7a66c5800fc239066014612ae7d1f0e231128",
+        "git_blob": "540731aa1d1f56199336d7095180cf156b970645",
+        "role": "CORRECTED_LOCAL_METADATA_SCOPE__G7_UNQUALIFIED"
+      }
+    ],
+    "local_g7_probe_scripts": "docs/agent/chat_exclusive_20261027/20261027_G7_LOCAL_HEADER_PROBE_V1_SUPERSEDED.py;20261027_G7_LOCAL_HEADER_PROBE_V2_CORRECTED.py",
+    "past_g7_probes_results": "docs/agent/chat_exclusive_20261027/20261027_G7_LOCAL_HEADER_RESULT_V1_SUPERSEDED.json;20261027_G7_LOCAL_HEADER_RESULT_V2_CORRECTED.json",
+    "source_binary_boundary": "RAW_LARGE_ZIP_NPZ_CHECKPOINTS_HASH_ONLY_NOT_HOSTED_IN_GITHUB",
+    "pasted_20261027_handoff": {
+      "source_file": "Pasted text.txt",
+      "sha256": "d08e24d481e77a89ebf07428601fe6c54759a9050adf58346d0fa6cb5281a549",
+      "status": "OLDER_REVIEW_SOURCE_SUPERSEDED_C3_RARE_IS_WRONG__CONTENT_OVERLAPS_PR460_COMMENT_6449538165__NOT_VERBATIM_COPIED"
+    },
+    "Macha_475_original_report": "docs/agent/JEPA_MACHA_REVIEW_AND_READINESS_DELTA_20261027.md",
+    "Macha_475_machine": "results/target_discovery/unified_qualification_v1/JEPA_MACHA_REVIEW_AND_READINESS_DELTA_20261027.json",
+    "Macha_475_four_probe_dir": "scripts/v5/review_probes/macha_20261027/",
+    "V2_source_supplement": "docs/agent/JEPA_TD_NORMALIZATION_VIEW_V2_FIXTURE_AUDIT_20261027.md",
+    "V2_source_receipt": "results/target_discovery/unified_qualification_v1/JEPA_NORMALIZATION_VIEW_V2_FIXTURE_DELTA_20261027.json",
+    "task3_original_report": "docs/agent/JEPA_PS_TASK3_MACHA437_INDEPENDENT_REVIEW_20261028.md",
+    "task3_original_machine": "results/production_synthetic/JEPA_TASK3_CHATGPT_INDEPENDENT_REVIEW_20261028.json",
+    "task3_original_test": "docs/agent/review_probes/chatgpt_20261028/ps_task3_437_expected_red_probe.py.txt",
+    "task3_result_source_blob": "9f2ea674b41730faacd9801a82a20745e592d9ad"
+  },
+  "science_decisions": [
+    {
+      "id": "C2",
+      "name": "RELATIONAL_STATE",
+      "evidence": "REAL_CORRECTED_TD56_TD57B_TD59_PASS_FINE_LOCAL_TD57C_FAIL",
+      "status": "ACTIVE_NOT_A_JEPA_WINNER"
+    },
+    {
+      "id": "C3",
+      "name": "QUERY_MEASURED_STATE",
+      "evidence": "R5_DIRECTLY_MEASURED_OTHER_8_GENES_AND_DONOR_HELD_OUT_DEVELOPMENTAL_R2_0_430",
+      "status": "DEVELOPMENTAL_NOT_PRODUCTION_QUALIFIED",
+      "not": "RARE_MICROGLIA"
+    },
+    {
+      "id": "V44",
+      "name": "REAL_RNA_TEACHER_PROXY",
+      "evidence": "R2_0_407823_SHARED_TRUNK_NOT_NEURAL_Q_TEACHER",
+      "status": "PROXY_ONLY"
+    },
+    {
+      "id": "C5",
+      "name": "REGULATORY",
+      "evidence": "ATAC_SCENIC_CHROMVAR_CONDITIONAL_SEPARATE_NUCLEI",
+      "status": "NO_CLAIM_OF_SAME_CELL_PAIRED_OR_CAUSAL_REGULATION"
+    },
+    {
+      "id": "SYNTH",
+      "name": "KNOWN_TRUTH",
+      "evidence": "PR328_MECHANICS_AND_PR469_432_RNA_ATOMS",
+      "status": "NOT_PRODUCTION_V3_1_1__NO_FULL_KNOWN_TRUTH_EXECUTION"
+    }
+  ],
+  "reviewer_verdicts": [
+    {
+      "pr": 470,
+      "review_pr": 475,
+      "verdict": "REPAIR_REQUIRED",
+      "repair_pr": 476,
+      "repair_status": "AUTHOR_SCOPED_60_PASS__11_PHYSICAL_DONOR_DEPTH_RED__INDEPENDENT_REVIEW_PENDING"
+    },
+    {
+      "pr": 464,
+      "review_pr": 475,
+      "verdict": "REJECT_INCREMENTAL",
+      "repair_pr": 477,
+      "repair_status": "AUTHOR_23_HOSTILES_ON_4_PLATFORMS_GREEN__T2D_RED__INDEPENDENT_REVIEW_PENDING"
+    },
+    {
+      "pr": 467,
+      "review_pr": 475,
+      "verdict": "ACCEPT_INCREMENTAL_WITH_LIMITATIONS",
+      "status": "NO_CUMULATIVE_CUSTODY"
+    },
+    {
+      "pr": 474,
+      "review_pr": 478,
+      "verdict": "ACCEPT_INCREMENTAL_FIXTURE_MATH_WITH_LIMITATIONS__REJECT_PHYSICAL_R2_PROMOTION"
+    },
+    {
+      "pr": 479,
+      "verdict": "AUTHOR_TESTS_PASS_124__6_WORKFLOWS_GREEN__INDEPENDENT_REVIEW_PENDING"
+    },
+    {
+      "pr": 437,
+      "review_pr": 480,
+      "verdict": "REPAIR_REQUIRED__R1_NUMERIC_ALIAS__R2_OBS_PARAMETER_SPOOF",
+      "repair_status": "NO_SOURCE_REPAIR"
+    }
+  ],
+  "ci_pins": {
+    "audit_before_freeze": {
+      "head": "dfaba7967a77d482496d1b843f4a5d666b9ce570",
+      "all_workflows": 20,
+      "passed": 20
+    },
+    "handoff_before_freeze": {
+      "head": "6237438d0b1e708839d4b66547129d26664ae03e",
+      "all_workflows": 2,
+      "passed": 2
+    },
+    "pr479": {
+      "head": "ae762d7096a94ac663a0788f6f577ba404e37536",
+      "run_id": 40591648499,
+      "passed_tests": 124,
+      "workflows_green": 6,
+      "real_g7_cross_head_executed": false
+    },
+    "pr480": {
+      "head": "f39e605abc616cf59051a8bda9b0270cef5d6f09",
+      "review_run": 40733573862,
+      "review_expected_failed": 3,
+      "review_control_passed": 1,
+      "original_tests_passed": 33,
+      "full_task3_run": 40733573934,
+      "full_task3_failed": 3,
+      "full_task3_passed": 391,
+      "full_task3_xfailed": 1,
+      "not_promoted": true
+    },
+    "pr476": {
+      "scoped_run": 40582085162,
+      "scoped_passed": 60,
+      "remaining_unresolved_external_g7_fails": 11
+    },
+    "pr477": {
+      "platform_run": 40582199779,
+      "macha_hostile_tests_each_platform": 23,
+      "platforms": 4,
+      "T2D_red": true
+    },
+    "pr478": {
+      "independent_run": 40583065261,
+      "tests_passed": 106
+    },
+    "pr471": {
+      "hostile_archive_run": 40571088557,
+      "historical_logical_files_sha_verified": 97
+    }
+  },
+  "science_gates": {
+    "target_winner": "NONE",
+    "representation_winner": "NONE",
+    "real_training_authorized": false,
+    "stage4_authorized": false,
+    "g7_physical_atom_identity": "RED_R1",
+    "g7_donor_specimen_independence": "RED_R1D",
+    "g7_q_excluded_normalization_issuer": "RED_R2",
+    "production_synthetic_t2_external_scan_issuer": "RED",
+    "production_synthetic_task3": "REPAIR_REQUIRED_AND_NO_CURRENT_REAL_CALIBRATION_ISSUER",
+    "production_synthetic_task4_candidate_neutral_biology": "ABSENT_ON_REVIEWED_BRANCHES",
+    "V79_V80_objective_conflict": "UNRESOLVED_PROSPECTIVE_AUTHORITY",
+    "G7_V2_cross_branch": "NOT_TESTED",
+    "production_synthetic_known_truth": "NOT_QUALIFIED",
+    "post_td_selected_TQB": "NONE"
+  },
+  "next_actions": [
+    {
+      "owner": "MACHA_OR_ASSIGNED_REVIEWER",
+      "step": "Independently review PR479 V2 student/teacher fixture, PR476 G7 R6, PR477 PS canonical; preserve hostile RED"
+    },
+    {
+      "owner": "PS_TASK3_AUTHOR_OR_ASSIGNED_REPAIRER",
+      "step": "On a separate repair PR address independent PR480 lossy 2**53 integer equivalence and OBS_ tunable-name spoof; leave authenticated calibration registry empty and reviewer tests unchanged"
+    },
+    {
+      "owner": "CHATGPT_INDEPENDENT_REVIEWER",
+      "step": "Independently challenge that Task3 repair and Macha unified Task4 PR465 cumulative custody as scope permits; preserve separate source issuer requirements"
+    },
+    {
+      "owner": "SOURCE_DATA_ISSUER_LANE",
+      "step": "Deliver authenticated current TRAIN-only raw-count feature universe, full/alias mapping, q rights, donor/physical grouping, depth and QC lineage; no BAM/FASTQ without authorization"
+    },
+    {
+      "owner": "PRODUCTION_SYNTHETIC",
+      "step": "Only after stop gates, implement candidate-neutral V3.1.1 Task4 biology generator and one identifiable plus no-winner known-truth challenge through existing common scientific executors; do not make PR328 gene blocks biology"
+    }
+  ],
+  "standing_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "current_source_supersession": {
+    "original_ledger_role": "DATED_PRE_MACHA481_484_REVIEW_SNAPSHOT__NOT_LATEST_REVIEW_VERDICT",
+    "current_source_index": "docs/agent/JEPA_COMPLETE_LANE_TAKEOVER_FREEZE_20261028.md",
+    "current_machine_mirror": "results/target_discovery/unified_qualification_v1/JEPA_CURRENT_SUCCESSOR_FREEZE_20261028.json",
+    "independent_review_source_pr": 484,
+    "independent_review_head": "5d84ed90417fbc1be1a13657a08491e2db6feef5",
+    "new_reviews": [
+      {
+        "review_pr": 481,
+        "head": "957fa4a558ce2bd219b5c2dec6dad8f65dca81ab",
+        "target_pr": 479,
+        "verdict": "REPAIR_REQUIRED",
+        "new_hostile_red": 19,
+        "characterization_pass": 5,
+        "source_result": "A1_DEPTH_FORGERY_A2_BASE_RIGHTS_A3_METACLASS_A4_INHERITED_EMPTY_BASE_AND_ALIAS_DENSITY"
+      },
+      {
+        "review_pr": 482,
+        "head": "58baa4f912c791866c1aae31eab797da9dca588a",
+        "target_pr": 476,
+        "verdict": "ACCEPT_INCREMENTAL_WITH_R1_R2_BLOCKERS",
+        "new_hostile_red": 18,
+        "characterization_pass": 3,
+        "source_result": "R6_FIXTURE_FORGERY_FIXED_R5X_METACLASS_AND_V3_BINDER_BYPASS_STILL_OPEN_R1_R1D_R2_RED"
+      },
+      {
+        "review_pr": 483,
+        "head": "48ec018735a095571a0bfaa25b33f9b9deb40b39",
+        "target_pr": 477,
+        "verdict": "ACCEPT_INCREMENTAL_WITH_LIMITATIONS",
+        "new_hostile_red": 8,
+        "characterization_pass": 2,
+        "source_result": "PYTHON_ISINSTANCE___CLASS___AND_EXCEPTION___CAUSE___PAYLOAD_ROUTES_T2D_RED"
+      }
+    ],
+    "recent_task3_author_repair": {
+      "pr": 486,
+      "head": "f17080516f77e79fb6f6cb44903cbabdb2a85dd7",
+      "source_review_pr": 480,
+      "immutable_480_hostiles_pass": 4,
+      "author_repair_tests_pass": 28,
+      "ci_run": 40741905858,
+      "ci_status": "AUTHOR_GREEN_INDEPENDENT_CHATGPT_REVIEW_PENDING",
+      "observation_parameter_semantics_bound": false,
+      "real_calibration_authorized": false
+    },
+    "observation_depth_decision": {
+      "proposal": "D1_VISIBLE_BASE_MAPPED_SUM_V1",
+      "status": "PROSPECTIVE_SCIENCE_DECISION_PENDING",
+      "optional_D2": "OFF_LEDGER_RESIDUAL_NOT_DEFAULT_REQUIRES_INDEPENDENT_ALIAS_ISSUER",
+      "g7_v2_rename_adapter_accepted_fixtures": 6,
+      "g7_v2_rename_adapter_tested_fixtures": 200,
+      "same_code_path_v3_authorized": false
+    },
+    "current_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  }
+}

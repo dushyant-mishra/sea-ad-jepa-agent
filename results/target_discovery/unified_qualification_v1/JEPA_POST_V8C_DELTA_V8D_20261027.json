@@ -1,0 +1,180 @@
+{
+  "schema": "JEPA_POST_V8C_DELTA_V8D_20261027",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "prior_audit_head": "1a6e59d338906fa9da1cbbc4b93c918349a4a3c5",
+  "prior_successor_head": "368c34d5a919f09e118660c4ff311ba8f8188d51",
+  "append_only": true,
+  "snapshots_frozen": [
+    "V8",
+    "V8a",
+    "V8b",
+    "V8c"
+  ],
+  "live_ledger": [
+    {
+      "pr": 457,
+      "head": "2fa7a4621c00e27e41c1c52afe122599d0114ae0",
+      "ci": [
+        {
+          "run": 40538117453,
+          "conclusion": "success",
+          "suite": "E2G seven-track receipt"
+        },
+        {
+          "run": 40538117363,
+          "conclusion": "success",
+          "suite": "external public E2G intake"
+        }
+      ],
+      "status": "SOURCE_REPORTED_STAGE75_GEOMETRY__PUBLIC_CONTEXT_ONLY__NO_TARGET_CAUSALITY",
+      "evidence": "PR457 source readout claims a new fine-grain Stage75 source upload with 319 motif rows, 149 TF-gene-query-peak hypotheses/56 unique physical peaks; 26/149 candidate motif hypotheses pass macrophage E2G geometry recurrence using 12 physical peaks. This is an author/source report, NOT independently re-verified raw source in this audit.",
+      "caveats": "No independent original-ATAC genome-build and 0-based coordinate convention attestation, no authenticated external Ensembl source IDs, no demonstrated TF physical occupancy or perturbation, correlated ENCODE/SCREEN annotation exposure, promoter-proximity biases, not donors/time-course, no Stage75 biology PASS."
+    },
+    {
+      "pr": 458,
+      "head": "3b08081d7fb3fa99cf1459b13cbe47d5b0962547",
+      "ci": [
+        {
+          "run": 40516953772,
+          "conclusion": "failure",
+          "suite": "PS T1 canonical and T3 compatibility original 13 RED"
+        },
+        {
+          "run": 40516953763,
+          "conclusion": "failure",
+          "suite": "PS T2 exact type original 13 RED"
+        }
+      ],
+      "status": "ORIGINAL_13_HOSTILE_RED__UNALTERED_SOURCE_AND_TESTS__NO_CUMULATIVE_ACCEPTANCE"
+    },
+    {
+      "pr": 459,
+      "head": "57e707149b46ca011eee096f01dc08b64aeb8f9f",
+      "ci": [
+        {
+          "run": 40518058012,
+          "conclusion": "success",
+          "suite": "Task4 author scoped tests"
+        }
+      ],
+      "status": "TASK4_AUTHOR_CANDIDATE_GREEN__INDEPENDENT_SHORT_WRITE_RED_STILL_OPEN"
+    },
+    {
+      "pr": 460,
+      "head": "368c34d5a919f09e118660c4ff311ba8f8188d51",
+      "ci": [
+        {
+          "run": 40533968217,
+          "conclusion": "success",
+          "suite": "V8c successor pointer 31 pass"
+        },
+        {
+          "run": 40533968150,
+          "conclusion": "success",
+          "suite": "V8c successor custody"
+        }
+      ],
+      "status": "PREVIOUS_SUCCESSOR_QUALIFIED__NO_SCIENTIFIC_AUTHORITY__V8D_UPDATE_REQUIRED"
+    },
+    {
+      "pr": 461,
+      "head": "495350d477a0b7ba65c13dcab5032d443f939cd5",
+      "ci": [
+        {
+          "run": 40519155593,
+          "conclusion": "failure",
+          "suite": "8 Unified Task1 hostile RED"
+        }
+      ],
+      "status": "PREVIOUSLY_ACCEPTED_UNIFIED_TASK1_DISPATCH_REJECTED_FOR_HOSTILE_INPUT"
+    },
+    {
+      "pr": 462,
+      "head": "67d2336155624a8657d2ef3320c9bfff175951ee",
+      "ci": [
+        {
+          "run": 40531130624,
+          "conclusion": "failure",
+          "suite": "Windows X1-S1/S2 2 RED"
+        }
+      ],
+      "status": "INDEPENDENT_TASK4_SHORT_WRITE_TWO_RED_UNCHANGED"
+    },
+    {
+      "pr": 463,
+      "head": "84b05952112ca405436ee3ccf35cc1c0df53c14d",
+      "ci": [
+        {
+          "run": 40533382517,
+          "conclusion": "success",
+          "suite": "Unified Task1 35 focused tests"
+        },
+        {
+          "run": 40533382419,
+          "conclusion": "success",
+          "suite": "Unified synthetic integration"
+        }
+      ],
+      "status": "CHATGPT_REPAIR_AUTHOR_CI_GREEN__MACHA_INDEPENDENT_INCREMENTAL_REVIEW_PENDING"
+    },
+    {
+      "pr": 464,
+      "head": "f6ee226c146c4c31d88ce5b845449ce21758cdeb",
+      "ci": [
+        {
+          "run": 40536232358,
+          "conclusion": "success",
+          "suite": "12 PS mechanical hostile tests and 412 inherited passes / 1 xfail"
+        },
+        {
+          "run": 40536232091,
+          "conclusion": "failure",
+          "suite": "301 passed / 1 T2-D RED"
+        },
+        {
+          "run": 40536232086,
+          "conclusion": "failure",
+          "suite": "419 passed / 1 xfail / 1 T2-D RED"
+        },
+        {
+          "run": 40536232080,
+          "conclusion": "failure",
+          "suite": "424 passed / 1 xfail / 1 T2-D RED"
+        },
+        {
+          "run": 40536232098,
+          "conclusion": "success",
+          "suite": "unified synthetic integration"
+        }
+      ],
+      "status": "TWELVE_MECHANICS_GREEN__T2D_UNAUTHENTICATED_SCAN_RED__MACHA_INDEPENDENT_REVIEW_PENDING"
+    }
+  ],
+  "audit_rounds": [
+    {
+      "id": "HEADS_AND_CUSTODY",
+      "finding": "V8c and V8c successor are exact-qualified historical snapshots, PR457 moved; V8d is a new append-only delta"
+    },
+    {
+      "id": "AUTHOR_REPAIR_HOSTILITY",
+      "finding": "#463 35 author-side tests passed; #464 mechanical subset passes, but full inherited suites each retain the sole independent #458 T2-D RED; no cumulative acceptance"
+    },
+    {
+      "id": "HISTORY_SCIENCE_CROSSCHECK",
+      "finding": "V8 no-repeat/architecture decision ledger and downstream readiness history preserve historical negative RBB-JEPA, graph, G7 and non-promoting downstream; no new architecture authorized"
+    },
+    {
+      "id": "E2G_SOURCE_CUSTODY",
+      "finding": "New PR457 source-upload and coordinate matching are author/source reports; original uploaded source bytes and build attestations not independently re-verified by this lane; no biological authority"
+    }
+  ],
+  "material_source_limitations": [
+    "G7 local expression/calibration ZIP header probe is bounded read-only; no genuine physical G7 read-count producer or deciding-row digest",
+    "T2-D in #458 remains red: handwritten absence mapping can be accepted without independent signed, full-tree scan issuer",
+    "PR457 Stage75 E2G geometry has source-reported 149 hypotheses but no independent genomic build/identity and perturbation validation",
+    "Reviewer reciprocity is incremental and claim-specific; Macha cannot cumulatively accept original Macha Task1/2 or Task4"
+  ],
+  "stage4_authorized": false,
+  "training_authorized": false,
+  "source_authenticated_biology": false
+}

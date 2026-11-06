@@ -1,0 +1,107 @@
+{
+  "schema": "JEPA_MACHA_MAIN_INDEPENDENT_REVIEW_RECEIPT_V1",
+  "date_utc": "2026-11-02",
+  "reviewer_lane": "Macha (independent; Claude Code)",
+  "authority_effect": "NONE",
+  "main_reviewed": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+  "main_tree": "c13c5a013a4a6621eb72aa44160c62ecd6e88232",
+  "source_blobs": {
+    "v2c_verifier": "46b813fcbf598e12a2a9f209ca254d01aaeba784",
+    "d1_producer": "edee1b8adc1b5c7ca660d52d3667d2020abdb417",
+    "v2c_reviewed_previously": "360d3bcc54142deb32f17d3dee44cfb902d62fe6"
+  },
+  "immutable_reviewer_evidence": {
+    "pr516_head": "881194aec9d99a9d42cbf206ffcb779429c4e768",
+    "pr516_test_blob": "8647c07a893d932ffa5f05a79be50c89c3c28b53",
+    "pr518_head": "32c0a22b9ae6220ed03fe7d6e944da753c0e4a0c",
+    "pr518_test_blob": "2a63a753081012e10a9c6cb39b80e79d16848ebe",
+    "pr507_test_blob": "d59814301715bbffe3e07501fe7be305358140cc",
+    "pr512_test_blob": "1a915431f871520841de551bae85729695433639"
+  },
+  "pinned_custody_heads_at_assignment": {
+    "pr322": "40aed21385e8a3171b9cb333abef4de2250a4c69",
+    "pr460": "6855dea510e2396b8566df870c90defa93a1d2f1"
+  },
+  "proposal_pr": {
+    "number": 523,
+    "base": "main",
+    "red_commit": "6f825acd07e18a51e08b54a3c85351367c5f8497",
+    "repair_commit": "bce3a35a9cd8ec364906798738c14ab3236cc583",
+    "accepted_by_macha": false,
+    "requires_gpt_review": true
+  },
+  "verdicts": {
+    "v2c_verifier": "ACCEPT_SCOPED",
+    "d1_computation_law": "ACCEPT_SCOPED",
+    "d1_upstream_source_authenticity": "NOT_AUTHENTICATED",
+    "student_container_isolation": "DEMONSTRATED_ONLY_UNDER_DOCUMENTED_FLAGS__2_DEFECTS_REPAIR_REQUIRED__HOST_KERNEL_NOT_TESTED",
+    "source_rights_authentication": "NOT_AUTHENTICATED",
+    "real_human_source_issuance": "BLOCKED",
+    "main_regression_ci": "INSUFFICIENT__PROPOSAL_IN_PR523",
+    "downstream_scientific_authority": "BLOCKED"
+  },
+  "defects": [
+    {
+      "id": "D-1",
+      "path": "deployment/student_v2c/Dockerfile.v1",
+      "test": "test_red_the_runtime_user_owns_and_can_rewrite_its_own_verifier",
+      "expected": "packaged verifier/entrypoint/manifest root-owned, not writable by uid 65534 without --read-only",
+      "observed": "COPY --chown=65534:65534; all three writable by the runtime user when --read-only is omitted",
+      "severity": "low-medium",
+      "smallest_repair": "drop --chown=65534:65534 from the three COPY lines"
+    },
+    {
+      "id": "D-2",
+      "path": "deployment/student_v2c/entrypoint_v1.py",
+      "test": "test_red_default_entrypoint_serves_receipts_when_a_mandated_restriction_is_weakened[11]",
+      "expected": "constant refusal unless the documented restrictions are observable from inside",
+      "observed": "receipt served with no flags and under 10 single weakenings incl. teacher bind mount and host tmpfs under /dev",
+      "severity": "medium",
+      "smallest_repair": "fail-closed in-container self-check before stdin (not an attestation)"
+    }
+  ],
+  "ci": {
+    "main_postmerge": {
+      "41509824640": "success",
+      "41509824659": "success"
+    },
+    "pr522_premerge_docker_same_tree": {
+      "41509613313": "success"
+    },
+    "pr523_red_commit": {
+      "41517539396": "failure_as_designed__container_12_red_9_passed__regression_ubuntu_windows_success"
+    },
+    "pr523_repair_commit": {
+      "41517891013": "success__container_21_of_21__regression_ubuntu_windows_success",
+      "41517891053": "success__author_container_9_of_9"
+    }
+  },
+  "local_evidence": {
+    "engine": "Docker Desktop 4.44.2 / engine 28.3.2 / WSL2 5.15.167.4 / cgroup v1 / seccomp only (no AppArmor); Windows and WSL clients share engine 6f2f1271",
+    "pure_main_516_518": "84 passed, 2 failed (legacy-#502 launch witnesses) on Windows numpy 2.4.6, Windows numpy 1.26.4, WSL",
+    "ephemeral_legacy_workspace_516_518": "86/86 on the same three environments",
+    "old_heads": "#507/#512 14 RED / 40; #516 4 RED / 54 against V2C 360d3bcc",
+    "main_ci_test_against_unrepaired_v2c": "75/75 passed (revert undetected)",
+    "container_main": "12 RED / 9 passed; with repair 21/21 (Windows), 20 passed + 1 skipped (WSL)",
+    "mutation_audit": "repair turns 12/12 RED green, no guard/limit regression; each guard killed by its planted defect"
+  },
+  "image_identity": {
+    "base": "python:3.11-slim-bookworm@sha256:94a8fee35252d06ab75856f15f12c7bae67b10e8a6da93c7fded82b2610926cd",
+    "ci_main_image": "sha256:b02c589654d9341b7277c9b7c6d8d1a95429fb84cff81b04d44f2a90426325f4",
+    "ci_repaired_image": "sha256:b7e5ea46937cd146f3d6b756d773a965aa57a406f345ba24d4c678fbe573dc0c",
+    "local_windows_main_image": "sha256:46589029dd200d510ac52766fa109415740961dc9de95265325cffb27b547db5",
+    "local_wsl_main_image": "sha256:462a9911e0104825d0c176f383dfaa7c3750d7c24c3785e3a76421d78ed2f677",
+    "author_ci_main_image": "sha256:e3922fe2a14072ad74db9b888b612ff9f49bd3c760c7866da345a4b9d16753f9",
+    "author_ci_base_recorded": false
+  },
+  "not_tested": [
+    "container breakout",
+    "kernel/VM/Docker Desktop compromise",
+    "side channels",
+    "GPU passthrough",
+    "hostile Docker operator",
+    "in-process concurrent mutation of V2C inputs"
+  ],
+  "data_access": "synthetic canaries only; no protected expression, NPH52 quarantined cells, DEV/SEALED or pathology",
+  "terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

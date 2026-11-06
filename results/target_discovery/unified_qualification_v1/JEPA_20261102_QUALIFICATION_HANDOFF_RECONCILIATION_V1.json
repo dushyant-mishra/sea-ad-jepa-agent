@@ -1,0 +1,106 @@
+{
+  "schema": "JEPA_20261102_QUALIFICATION_AND_HANDOFF_RECONCILIATION_V1",
+  "as_of": "2026-11-02",
+  "authority": "CUSTODY_AND_READINESS_ONLY__NO_INDEPENDENT_SCIENTIFIC_ACCEPTANCE",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "source_branch_heads": {
+    "audit_322_at_start": "6e19eed39027f4cf8bdc6e11aea21687a2b96edc",
+    "handoff_460_at_start": "61ad17b43fe5fe8feaafded80a9aed592873a078",
+    "v2c_514": "63099f6b17b14bcfcfd92b0334bf564e9cf8376d",
+    "d1_base_only_511": "5fe18a11b010b0adb857104d10329e840a9e7d4c",
+    "g7_e3_v3_500": "27d9dc450f47dbf0829922d9c22a2d5df8fd93e4",
+    "macha_512": "16b5bc6c050222c592f88c35dc65b0a256d65402",
+    "macha_513": "0b1af4f06ba423753899e7c564d3b16ce609ac6a",
+    "d1_decision_491": "9c23b689068c315eba7f215eb1ef0f4f77c4d32c"
+  },
+  "checked_source_blobs": {
+    "d1_producer_511": "e70d84383f4011010d207623c035fbcde639d2ad",
+    "v2c_standalone_514": "360d3bcc54142deb32f17d3dee44cfb902d62fe6",
+    "g7_e3_v3_500": "59740ee99826c0e7550203dfdfc7344107bd5e85"
+  },
+  "source_inspected_claims": [
+    {
+      "id": "Q1",
+      "status": "VERIFIED_CODE_EDGE",
+      "fact": "#511 observation_d1_base_only_student_fixture_v1.py imports V2B S and calls S.validate_public_student_v2b(...) before returning a view; its consumer is not V2C",
+      "scope": "fixture producer at exact PR #511 head"
+    },
+    {
+      "id": "Q2",
+      "status": "VERIFIED_CODE_EDGE",
+      "fact": "#514 introduces standalone validate_student_v2c(student_view,expected_policy), imports hashlib only besides __future__, and returns fixture-only nonauthorizing receipts; it does not change #511",
+      "scope": "standalone module at exact PR #514 head"
+    },
+    {
+      "id": "Q3",
+      "status": "VERIFIED_CODE_EDGE",
+      "fact": "#500 G7 E3→V3 composition binds fixture rows and labels external source, physical atom, donor, q-excluded library, reference issuer, and known-truth issuer authentication false",
+      "scope": "G7 composed fixture at exact PR #500 head"
+    },
+    {
+      "id": "Q4",
+      "status": "VERIFIED_REVIEW_ABSENCE_AT_CHECK",
+      "fact": "PR #514 has author CI but no PR review submissions and no newer code head; Macha independent tests-only assignment comment 6531188002 exists",
+      "scope": "GitHub PR #514 as checked 2026-11-02"
+    },
+    {
+      "id": "Q5",
+      "status": "VERIFIED_GITHUB_CI",
+      "fact": "#514 six workflow runs success on its exact head; #460 Oct30 prepend commit 61ad17b... two workflow runs success",
+      "scope": "CI mechanics/administrative checks, no scientific acceptance"
+    }
+  ],
+  "qualification_verdicts": {
+    "legacy_teacher_aware_502": "REPAIR_REQUIRED__ORACLE_PRESERVED_RED_507",
+    "v2b_student_510": "REPAIR_REQUIRED__INDEPENDENT_RED_512",
+    "standalone_v2c_514": "AUTHOR_GREEN__INDEPENDENT_REVIEW_PENDING__FIXTURE_ONLY",
+    "d1_base_only_producer_511": "AUTHOR_FIXTURE_GREEN__CALLS_V2B_NOT_V2C",
+    "v2c_deployed_student_isolation": "NOT_ESTABLISHED",
+    "independent_issuer_signing_identity": "NOT_PROVISIONED",
+    "g7_e3_v3_500": "AUTHOR_FIXTURE_COMPOSITION_ONLY__R1_R1D_R2_NOT_AUTHENTICATED",
+    "current_v2c_to_g7_integrated_path": "NOT_ESTABLISHED",
+    "ps_task3_486_review_499": "ACCEPT_INCREMENTAL_FIXTURE_MECHANICS_R1_R2__CALIBRATION_ISSUER_ABSENT",
+    "ps_task12_498_review_501": "ACCEPT_INCREMENTAL_EXACT_TYPE_EXCEPTION__T2_D_RED",
+    "unified_task4_cumulative": "NOT_ACCEPTED__465_INCREMENTAL_ONLY",
+    "complete_v3_1_1_ps_biology": "NOT_ESTABLISHED_IMPLEMENTED_OR_QUALIFIED"
+  },
+  "current_source_decisions": {
+    "d1": "SELECTED_PROSPECTIVE_V2_RELEASED_MEASURED_BASE_DEPTH_NOT_PHYSICAL_LIBRARY",
+    "d2": "NOT_AUTHORIZED_DEFAULT",
+    "nph52_real_query_issuance": false,
+    "quarantined_nph52_expression_read": false,
+    "alias_rules": "UBE2R2-AS1 joint withholding with legacy predecessor; MIR4307HG and LINC02588 blocked in affected operators (provisional)",
+    "sea_ad_sample_id": "NUCLEUS_ID_NOT_SPECIMEN",
+    "etl_513": "322 artifacts scoped no drift; >256MB checked against earlier manifest by size; 8,915 blocks presence counted, not freshly rehashed",
+    "source_signer": "JEPA_SOURCE_RIGHTS_ISSUER_ROLE_ONLY_NO_KEY"
+  },
+  "next_required_actions": [
+    "Macha tests-only independent #514 review against original #507/#512 and deployment reachability, preserving RED",
+    "Author only after reviewer evidence: versioned producer-to-standalone-V2C handoff, without exposing #502 or teacher source in student runtime; separately prove real process isolation",
+    "External governance independently provisions signer/trust root and source R1 physical, R1D donor/specimen, R2 query/QC/feature alias provenance; metadata allowlist rules apply",
+    "Cumulative Unified Task4 decision and PS Tasks1-3 prereq/T2-D reconciliation before accepted V3.1.1 production biology work",
+    "Real G7 E3 V2 source-to-decision same-code-path qualification and downstream certification only after prior evidence; no training"
+  ],
+  "no_repeat": [
+    "PR314 corrected replay",
+    "V79 Q00-Q11 failed frozen qualification",
+    "V80 qualified benchmark mechanics",
+    "PR318-321,336,369 synthetic adjudication and test-of-test",
+    "Unified Tasks 0-3 frozen",
+    "PR491 D1 selection",
+    "PR506 A4 fixture acceptance",
+    "PR505 archived Foundation contract audit",
+    "PR513 scoped ETL reuse census"
+  ],
+  "reviewer_independence": {
+    "implementation_author_cannot_self_accept": true,
+    "original_RED_tests_immutable": true,
+    "macha_requested_comment_id": 6531188002
+  },
+  "rights_and_training": {
+    "real_training_authorized": false,
+    "stage4_authorized": false,
+    "target_winner": "NONE",
+    "representation_winner": "NONE"
+  }
+}

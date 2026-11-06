@@ -1,0 +1,25 @@
+name: JEPA independent PS Task3 Macha437 RED source custody 20261028
+on:
+  pull_request:
+    paths:
+      - 'results/production_synthetic/JEPA_TASK3_CHATGPT_INDEPENDENT_REVIEW_20261028.json'
+      - 'docs/agent/JEPA_PS_TASK3_MACHA437_INDEPENDENT_REVIEW_20261028.md'
+      - 'docs/agent/review_probes/chatgpt_20261028/ps_task3_437_expected_red_probe.py.txt'
+      - 'scripts/v5/verify_ps_task3_chatgpt_review_20261028.py'
+      - 'tests/v5/test_verify_ps_task3_chatgpt_review_20261028.py'
+      - '.github/workflows/jepa-ps-task3-independent-review-custody-20261028.yml'
+permissions:
+  contents: read
+jobs:
+  original-review-red-custody:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1
+      - name: Verify verbatim reviewer source/test Git blobs and exact negative results
+        run: python scripts/v5/verify_ps_task3_chatgpt_review_20261028.py
+      - name: Reject forged acceptance and erased prior failures
+        run: python -m pytest -q tests/v5/test_verify_ps_task3_chatgpt_review_20261028.py
