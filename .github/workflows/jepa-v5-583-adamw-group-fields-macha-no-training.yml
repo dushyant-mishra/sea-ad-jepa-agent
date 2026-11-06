@@ -1,0 +1,39 @@
+name: V5 Macha #583 review - AdamW group fields bound to u0 (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - scripts/v5/jepa_v5_structured_journal_preflight_v1.py
+      - scripts/v5/jepa_v5_full_state_readonly_audit_v1.py
+      - tests/test_jepa_v5_structured_journal_preflight_v1*.py
+      - .github/workflows/jepa-v5-583-adamw-group-fields-macha-no-training.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fabricated-cpu-snapshot-no-step:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install pytest and CPU-only torch (no datasets / GPU)
+        run: |
+          python -m pip install --disable-pip-version-check pytest==9.0.2
+          python -m pip install --disable-pip-version-check --index-url https://download.pytorch.org/whl/cpu "torch==2.5.1"
+      - name: Macha #583 RED + controls, Sol #583 RED, original #575/#581 suites
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q -rA \
+            tests/test_jepa_v5_structured_journal_preflight_v1_macha_583_review_red.py \
+            tests/test_jepa_v5_structured_journal_preflight_v1_macha_583_review_controls.py \
+            tests/test_jepa_v5_structured_journal_preflight_v1_sol_optimizer_identity_red.py \
+            tests/test_jepa_v5_structured_journal_preflight_v1_macha_structure_red.py \
+            tests/test_jepa_v5_structured_journal_preflight_v1.py \
+            tests/test_jepa_v5_full_state_readonly_audit_v1.py
