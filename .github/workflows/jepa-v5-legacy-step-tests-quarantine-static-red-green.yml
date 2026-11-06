@@ -1,0 +1,30 @@
+name: Historical V5 step-capable workflow quarantine (STATIC ONLY NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - tests/test_ci_legacy_v5_step_quarantine_v1.py
+      - scripts/v5/jepa_v5_legacy_step_ci_quarantine_v1.py
+      - .github/workflows/v64-runtime-core-reconciliation.yml
+      - .github/workflows/v5-inactive-runtime-step-guard.yml
+      - .github/workflows/jepa-synth2048-v5-guarded-readiness.yml
+      - .github/workflows/current-authority-surface-guard.yml
+      - .github/workflows/jepa-v5-legacy-step-tests-quarantine-static-red-green.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-source-only-no-torch-no-pytest:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Verify legacy step-capable workflows are quarantined without importing them
+        env:
+          PYTHONPATH: .
+        run: python -m unittest -v tests.test_ci_legacy_v5_step_quarantine_v1
