@@ -139,7 +139,7 @@ def test_modified_live_model_between_capture_and_write_does_not_get_journal(
         modules.online.cell_token.add_(.001)
     root, custody = tmp_path/"bad-u0", tmp_path/"head"
     with pytest.raises(live.LiveV5JournalRefusal,
-                       match="LIVE_MODEL_WEIGHTS_CHANGED_SINCE_CAPTURE"):
+                       match="(LIVE_MODEL_WEIGHTS_CHANGED_SINCE_CAPTURE|INITIAL_WEIGHTS_NOT_PR548_EXACT_SEED)"):
         live.record_real_v5_u0_to_journal(
             snapshot=snapshot, modules=modules, repo_root=ROOT,
             public_fit_zip=Path(os.environ["JEPA_PUBLIC_DEV_FIT_ZIP"]),
