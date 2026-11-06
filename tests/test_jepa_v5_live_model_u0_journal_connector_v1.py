@@ -297,6 +297,24 @@ def test_caller_reported_probe_with_wrong_model_state_sha_refused_before_write(
     assert not root.exists() and not custody.exists()
 
 
+
+def test_legacy_toy_encoder_checkpoint_cannot_enter_the_strict_real_v5_lane():
+    """The inherited fake fixture remains valid only for its legacy tests."""
+    from scripts.v5 import jepa_v5_structured_journal_preflight_v1 as bridge
+    from tests.test_jepa_v5_structured_journal_preflight_v1 import (
+        fake_bytes, RUN_ID, PANEL, CONFIG, RIGHTS, GENES, SOURCES, PHILOX, SEED,
+    )
+    raw = fake_bytes(0)
+    with pytest.raises(bridge.StructuredJournalRefusal,
+                       match="REAL_V5_U0_CANNOT_CONTAIN_TOY_VALUE_ENCODER"):
+        bridge.check_structured_bytes(
+            raw, expected_update=0, run_id=RUN_ID, panel_sha256=PANEL,
+            config_sha256=CONFIG, rights_sha256=RIGHTS,
+            gene_axis_sha256=GENES, source_manifest_sha256=SOURCES,
+            philox_contract_sha256=PHILOX, keyed_run_seed=SEED,
+            require_original_v5=True)
+
+
 def test_post_step_connector_is_unavailable_until_separate_owner_authority():
     with pytest.raises(live.LiveV5JournalRefusal,
                        match="POST_STEP_REAL_TRAINING_NOT_AUTHORIZED"):
