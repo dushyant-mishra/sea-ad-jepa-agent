@@ -245,7 +245,8 @@ def open_synthetic_journal(*, root: Path, custody: Path,
         require_original_v5=require_original_v5, **args)
     lock = journal._run_lock(
         run_id=run_id, horizon=horizon, panel_sha256=panel_sha256,
-        config_sha256=config_sha256, rights_sha256=rights_sha256)
+        config_sha256=config_sha256, rights_sha256=rights_sha256,
+        original_v5_u0_only=require_original_v5)
     journal._validate_probe(
         reported_probe, update=0,
         state_sha256=check["snapshot_sha256"], lock=lock)
@@ -253,7 +254,8 @@ def open_synthetic_journal(*, root: Path, custody: Path,
         root, custody, run_id=run_id, horizon=horizon,
         panel_sha256=panel_sha256,
         config_sha256=config_sha256, rights_sha256=rights_sha256,
-        initial_state_bytes=state_bytes, initial_probe=reported_probe)
+        initial_state_bytes=state_bytes, initial_probe=reported_probe,
+        original_v5_u0_only=require_original_v5)
     insist(result["training_authorized"] is False,
            "JOURNAL_PROMOTED_TRAINING")
     _OPENING_CONTRACTS[(os.getpid(), str(Path(root).absolute()))] = args
