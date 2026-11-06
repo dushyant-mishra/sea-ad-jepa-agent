@@ -2103,5 +2103,26 @@
     "test_safety": "No glob collection PR224 optimizer/backward/EMA tests; strict explicit allowlist and AST precollection guard",
     "future_protocol": "Append verified Event105+ chronology/index, create identical human+machine blobs on both branches, first-read prepend and descriptions; source/CI exact heads, no merge, no self-accept.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_independent_original_u0_durable_journal_direct_writer_591_red_green_event105_20261106": {
+    "event": 105,
+    "human": "docs/agent/JEPA_20261106_EVENT105_INDEPENDENT_V5_U0_DURABLE_V2_JOURNAL_WRITER_BYPASS_RED_GREEN_REPAIR_NO_TRAINING.md",
+    "human_blob_sha1": "41bcb04206f48fc825e85af500160c107aa2e29e",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261106_EVENT105_ORIGINAL_V5_U0_DURABLE_JOURNAL_DIRECT_WRITER_RED_GREEN_REVIEW_MAP.json",
+    "machine_blob_sha1": "2c26a807f1c5f65f3217e1133c6d9931a7cda0bb",
+    "implementation_pr": 591,
+    "stacked_on": 590,
+    "head": "ff1141fefa1377ac394be530c1236b682805e5e4",
+    "red_head": "1b27037aede64e8834b67a2591aa7993691fbc0a",
+    "red_run": 42239689452,
+    "red_results": "3 failed, 67 passed per Python 3.11.9 and 3.12.7",
+    "green_hosted_workflows": "13/13",
+    "green_hosted_jobs": "26/26",
+    "durable_marker": "original_v5_u0_only in mirrored V2 run.lock and hashed record chain",
+    "dev_contract_sha256": "e3ccfa164f06ff7fd22b4d292365a12442d9fcde898f1cc8497f5d5339c8914a",
+    "biological_production_status": "NOT_AUTHORIZED__NO_QUALIFIED_TEACHER_TARGET__NO_SIGNED_RIGHTS__NO_PHYSICAL_PANEL",
+    "independent_verdict": "REPAIR_AUTHOR_GREEN__RECIPROCAL_REVIEW_PENDING",
+    "no_repeat": "Do not duplicate existing direct-journal RED; owner V80 backup resolved; no V5 steps or broad unsafe tests",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
