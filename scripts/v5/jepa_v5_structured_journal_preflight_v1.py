@@ -13,6 +13,7 @@ from __future__ import annotations
 
 from hashlib import sha256
 import json
+from math import isfinite
 import os
 from pathlib import Path
 
@@ -29,6 +30,31 @@ _OPENING_CONTRACTS: dict[tuple[int, str], dict] = {}
 # dtypes, optimizer group layout). Every later commit must match it, so a
 # reshaped or missing module cannot become the "last probe-pass" checkpoint.
 _OPENING_STRUCTURE: dict[tuple[int, str], str] = {}
+# Macha #583 review: PyTorch's positional ``load_state_dict`` copies every
+# saved group field except ``params`` into the live optimizer, so betas,
+# eps, weight_decay, maximize, foreach, fused ... are optimizer structure.
+# Only the learning rate may legitimately follow a schedule; its trajectory
+# belongs to the run's config contract, not to the u0 structure.
+SCHEDULED_GROUP_FIELDS = frozenset({"lr"})
+
+
+def _plain_scalar(value: object) -> bool:
+    return (value is None or type(value) in (bool, str)
+            or (type(value) in (int, float) and isfinite(value)))
+
+
+def _group_fields(group: dict) -> dict:
+    """Every non-scheduled group field, normalized (int->float, tuple->list)."""
+    fields = {}
+    for key, value in group.items():
+        if key == "params" or key in SCHEDULED_GROUP_FIELDS:
+            continue
+        items = list(value) if type(value) in (list, tuple) else [value]
+        insist(type(key) is str and all(_plain_scalar(v) for v in items),
+               "OPTIMIZER_GROUP_FIELD_NOT_PLAIN")
+        items = [float(v) if type(v) is int else v for v in items]
+        fields[key] = items if type(value) in (list, tuple) else items[0]
+    return fields
 
 
 def _structure_sha256(bundle: dict) -> str:
@@ -40,7 +66,15 @@ def _structure_sha256(bundle: dict) -> str:
     }
     layout = sorted((name, list(d["shape"]), d["dtype"])
                     for name, d in bundle["parameter_layout"].items())
-    groups = [len(g["params"]) for g in bundle["optimizer"]["param_groups"]]
+    # Optimizer state_dict uses integer IDs and positional param_groups.
+    # The same tensor shapes/counts are insufficient to prove that the
+    # moments still belong to the SAME named parameters at every update.
+    # Normalize IDs to names, retaining exact ordered group membership.
+    by_id = {desc["optimizer_param_id"]: name
+             for name, desc in bundle["parameter_layout"].items()}
+    groups = [{"params": [by_id[pid] for pid in group["params"]],
+               "fields": _group_fields(group)}
+              for group in bundle["optimizer"]["param_groups"]]
     raw = json.dumps({"modules": modules, "layout": layout, "groups": groups},
                      sort_keys=True, separators=(",", ":")).encode("ascii")
     return sha256(raw).hexdigest()
@@ -112,10 +146,10 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
         insist(meta.get(name) == value and
                (type(meta.get(name)) is type(value)),
                "STRUCTURED_METADATA_BINDING_" + name.upper())
-    # Actual original PR224 V5 uses GeneExpressionTokenizer.value_encoder
-    # (Sequential: Linear(1,32), GELU, Linear(32,width)); the tiny synthetic
-    # #575 fixture instead has a top-level value_encoder.weight. Keep old
-    # structural fixture tests without confusing their names with real V5.
+    # Real original PR224 V5 tokenizer is Sequential Linear-GELU-Linear
+    # at layers 0 and 2. The inherited toy checker has a separate
+    # top-level value_encoder.weight. Keep legacy synthetic journal tests
+    # but never claim that a toy alias constitutes the original V5 actor.
     names = set(bundle["parameter_names"])
     original_v5_value_encoder = {
         "online.tokenizer.value_encoder.0.weight",
@@ -126,7 +160,6 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
     synthetic_fixture_encoder = "online.value_encoder.weight" in names
     insist(original_v5_value_encoder <= names or synthetic_fixture_encoder,
            "EXPRESSION_VALUE_ENCODER_MISSING")
-    # A partial V5 tokenizer must not exploit the synthetic-only alias.
     insist(not (original_v5_value_encoder & names)
            or original_v5_value_encoder <= names,
            "INCOMPLETE_ORIGINAL_V5_EXPRESSION_VALUE_ENCODER")
@@ -139,6 +172,10 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
         insist(tuple(teacher_tensor.shape) == tuple(online_tensor.shape)
                and teacher_tensor.dtype == online_tensor.dtype,
                "TEACHER_ONLINE_TENSOR_SHAPE_DTYPE_MISMATCH")
+    # The V5 reference minimizes its loss; an ascent optimizer is not V5.
+    insist(all(g.get("maximize", False) is False
+               for g in bundle["optimizer"]["param_groups"]),
+           "OPTIMIZER_MAXIMIZE_NOT_V5_MINIMIZATION")
     insist(report["actual_step_or_bitwise_resume_proved"] is False
            and report["biological_health_proved"] is False
            and report["training_authorized"] is False,
