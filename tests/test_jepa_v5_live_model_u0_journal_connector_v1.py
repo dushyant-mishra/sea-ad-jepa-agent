@@ -255,6 +255,34 @@ def test_caller_reported_probe_with_wrong_model_state_sha_refused_before_write(
     assert not root.exists() and not custody.exists()
 
 
+
+def test_production_entrypoint_is_always_refused_not_a_toy_promotion():
+    assert live.ARTIFACT_CLASS == "QUARANTINED_PUBLIC_SYNTHETIC_DEV_U0_ONLY"
+    assert live.PRODUCTION_ELIGIBLE is False
+    assert live.REAL_DONOR_DATA_ELIGIBLE is False
+    assert live.REAL_TARGET_ISSUER_VERIFIED is False
+    assert live.REAL_PROBE_PANEL_VERIFIED is False
+    assert live.TOY_MODULES_ELIGIBLE is False
+    with pytest.raises(live.LiveV5JournalRefusal,
+                       match="PRODUCTION_PATH_NOT_IMPLEMENTED"):
+        live.assert_production_eligible(
+            source="REAL_FULL104", rights_sha256="a" * 64,
+            teacher="QUALIFIED", probe_panel="FROZEN_REAL",
+            claimed_authorized=True)
+
+
+def test_toy_expression_layer_alias_forbidden_in_real_v5_connector_source():
+    """Legacy toy checkpoint tests may use alias; the real actor cannot."""
+    import ast
+    script = ROOT / "scripts/v5/jepa_v5_live_model_u0_journal_connector_v1.py"
+    src = script.read_text()
+    ast.parse(src)
+    assert "TOY_VALUE_ENCODER_OR_INCOMPLETE_ORIGINAL_V5_FORBIDDEN" in src
+    assert '"online.value_encoder.weight" not in actual_names' in src
+    assert '"online.tokenizer.value_encoder.2.weight"' in src
+
+
+
 def test_post_step_connector_is_unavailable_until_separate_owner_authority():
     with pytest.raises(live.LiveV5JournalRefusal,
                        match="POST_STEP_REAL_TRAINING_NOT_AUTHORIZED"):
