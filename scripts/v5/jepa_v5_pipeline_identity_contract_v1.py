@@ -42,7 +42,7 @@ DATASET_CLASS = "PR547_PUBLIC_SYNTHETIC_DEV2048_FIT_ONLY"
 RIGHTS_SCOPE = "PUBLIC_SYNTHETIC_DEVELOPMENT_ONLY"
 CUSTODY_LAYER_GIT_BLOBS = {  # #582 + #586 (Macha #583 repair)
     "scripts/v5/jepa_synth2048_attempt_journal_v2.py": "d5dd8c26cf7e8e99c1d665c6482ce053997fbb09",
-    "scripts/v5/jepa_v5_structured_journal_preflight_v1.py": "a7a45fd51cf042d677c18731201f269404ff85e2",
+    "scripts/v5/jepa_v5_structured_journal_preflight_v1.py": "85de1e403818520700c5c9dd16ca28a41e4fedef",
     "scripts/v5/jepa_v5_full_state_readonly_audit_v1.py": "ae79cd1b705d33d29c7d28b5481dd0b91ee19ba9",
     "scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py": "d05a7dc4e399390d882f33e63c3534ae83498933",
 }
@@ -195,7 +195,12 @@ def build_contract(measured: dict) -> dict:
                                 "commit_synthetic_preflight ONLY (never the bare journal)",
                 "structure_binding": "u0 names/shapes/dtypes, ordered named AdamW groups, "
                                      "all group fields except lr",
-                "state_class": "FABRICATED_SYNTHETIC_ONLY",
+                "state_class": "SYNTHETIC_FAKE_POST_UPDATE_OR_REAL_PR224_INITIALIZED_U0_ONLY",
+                "real_model_initialization_only": "ORIGINAL_PR224_V5_U0_REQUIRES_STRICT_NONTOY_BRIDGE",
+                "real_model_post_step_commit": "FORBIDDEN__NO_TRAINING_AUTHORIZATION",
+                "real_model_qualified_target": "NOT_BOUND",
+                "real_model_physical_probe_panel": "NOT_BOUND",
+                "real_model_production_checkpoint": False,
                 "run_directory": "WSL ext4; D: exFAT cannot host the journal",
             },
             "policy": dict(PR525_POLICY),
