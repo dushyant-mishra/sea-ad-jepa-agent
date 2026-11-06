@@ -33,9 +33,9 @@ PANEL_KIND = "SYNTHETIC_TRAIN_ONLY_ROSTER_BOUND__NOT_FROZEN_REAL_PANEL"
 NO_ISSUER = "NO_INDEPENDENT_SOURCE_RIGHTS_OR_TARGET_ISSUER"
 FILE_PINS = {
     "scripts/v5/jepa_v5_source_data_custody_gate_v1.py":
-        "c90ece159cc3c8cfb87e9f0757e307413b829d3f",
+        "6126722a028670538204ecfebac54ffa22a73022",
     "scripts/v5/jepa_v5_structured_journal_preflight_v1.py":
-        "a70641ea8df7bfe8a20b39e8190e1c4dc3e82d93",
+        "d056da358e1d68e57d02e16a07e9c4f9ff2a2fe1",
     "scripts/v5/jepa_v5_full_state_readonly_audit_v1.py":
         "ae79cd1b705d33d29c7d28b5481dd0b91ee19ba9",
     "scripts/v5/jepa_synth2048_attempt_journal_v2.py":
@@ -108,6 +108,24 @@ def verify_source_interfaces(repo_root: Path) -> dict:
         insist(gate._git_sha1(_source_bytes(root, path)) == expected,
                "FAKE_JOURNAL_OR_GATE_SOURCE_CHANGED__" + path)
 
+    # The original 15-file declaration is only a *subset* of the actually
+    # imported V5 + PR548 dependency closure. Macha #587 independently
+    # established 35 exact in-repository modules, including legitimate V4
+    # low-level utilities and package initializers. Pin their full closure
+    # and Python's search-path resolution before accepting any live model.
+    try:
+        closure = gate.audit_executed_closure(
+            root, require_complete=True,
+            search_path=[str(root / "src"), str(root)])
+    except gate.SourceDataRefusal as exc:
+        raise PipelineContractRefusal(
+            "REFUSE_V5_PIPELINE_STATIC_CONTRACT__EXECUTED_SOURCE_CLOSURE_OR_IMPORT_SHADOW"
+        ) from exc
+    insist(closure["executed_import_closure_verified"] is True
+           and closure["executed_closure_file_count"] == 35
+           and closure["import_resolution_checked"] is True,
+           "WRONG_OR_INCOMPLETE_ORIGINAL_V5_IMPORT_CLOSURE")
+
     for path, functions in ENTRYPOINTS.items():
         tree = ast.parse(_source_bytes(root, path), filename=path)
         found = {node.name for node in tree.body
@@ -141,6 +159,8 @@ def verify_source_interfaces(repo_root: Path) -> dict:
     return {
         "original_v5_sources": result,
         "original_v5_source_count": 15,
+        "strict_executed_v5_plus_pr548_closure": closure,
+        "all_35_executed_imported_source_files_verified": True,
         "journal_and_gate_source_pins": deepcopy(FILE_PINS),
         "bounded_existing_call_paths_static_only": True,
         "post_target_pr525_v4_policy_used_as_v5_identity": False,
