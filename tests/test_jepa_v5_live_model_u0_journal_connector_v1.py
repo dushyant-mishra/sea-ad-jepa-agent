@@ -319,3 +319,67 @@ def test_post_step_connector_is_unavailable_until_separate_owner_authority():
     with pytest.raises(live.LiveV5JournalRefusal,
                        match="POST_STEP_REAL_TRAINING_NOT_AUTHORIZED"):
         live.refuse_post_step_without_separate_authority()
+
+
+# Independent durable-quarantine review tests (original #590 RED).
+# Only genuine initialized U0 capture + synthetic fake bytes are used.
+# No forward, backward, optimizer step, EMA, restore, or real-data access.
+def _record_u0_for_durable_quarantine_review(tmp_path, public_contract):
+    modules = real_v5()
+    snap = capture(modules, public_contract)
+    root, custody = tmp_path / "original-v5-u0", tmp_path / "outside-custody"
+    live.record_real_v5_u0_to_journal(
+        snapshot=snap, modules=modules, repo_root=ROOT,
+        public_fit_zip=Path(os.environ["JEPA_PUBLIC_DEV_FIT_ZIP"]),
+        expected_contract=public_contract, journal_root=root,
+        external_custody=custody, horizon=2,
+        caller_reported_probe=caller_reported_probe(snap))
+    return snap, root, custody
+
+
+def test_original_v5_u0_refuses_direct_lower_level_begin(
+        tmp_path, public_contract):
+    _, root, custody = _record_u0_for_durable_quarantine_review(
+        tmp_path, public_contract)
+    with pytest.raises(journal.JournalRefusal,
+                       match="ORIGINAL_V5_U0_ONLY_JOURNAL_NO_UPDATES"):
+        journal.begin_attempt(root, custody, update=1)
+    assert not (root / "j00000001.json").exists()
+
+
+def test_original_v5_u0_refuses_direct_lower_level_fake_commit(
+        tmp_path, public_contract):
+    snap, root, custody = _record_u0_for_durable_quarantine_review(
+        tmp_path, public_contract)
+    fake_bytes = b"SYNTHETIC_FAKE_U1_NOT_A_NEURAL_UPDATE"
+    fake_probe = caller_reported_probe(snap)
+    fake_probe["state_update"] = 1
+    fake_probe["state_payload_sha256"] = sha256(fake_bytes).hexdigest()
+    with pytest.raises(journal.JournalRefusal,
+                       match="ORIGINAL_V5_U0_ONLY_JOURNAL_NO_UPDATES"):
+        journal.commit_reported_update(
+            root, custody, update=1, state_bytes=fake_bytes,
+            panel_sha256=snap.metadata["panel_sha256"], probe=fake_probe)
+    assert not (root / "u00001.state.bin").exists()
+
+
+def test_original_v5_u0_durable_quarantine_survives_new_python_process(
+        tmp_path, public_contract):
+    import subprocess
+    import sys
+    _, root, custody = _record_u0_for_durable_quarantine_review(
+        tmp_path, public_contract)
+    # Child has no original connector's in-memory marker or writer session.
+    # It MUST see the durable original-V5 restriction, not merely fail for
+    # lacking the in-memory writer-session capability.
+    source = (
+        "from pathlib import Path; import sys; "
+        "from scripts.v5 import jepa_synth2048_attempt_journal_v2 as j; "
+        "j.begin_attempt(Path(sys.argv[1]), Path(sys.argv[2]), update=1)"
+    )
+    child = subprocess.run(
+        [sys.executable, "-c", source, str(root), str(custody)],
+        capture_output=True, text=True, timeout=20, check=False)
+    assert child.returncode != 0
+    assert "ORIGINAL_V5_U0_ONLY_JOURNAL_NO_UPDATES" in child.stderr
+    assert not (root / "j00000001.json").exists()

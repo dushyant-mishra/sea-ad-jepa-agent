@@ -41,8 +41,8 @@ ACTOR_VERSION = "V5_GUARDED_ONE_UPDATE"
 DATASET_CLASS = "PR547_PUBLIC_SYNTHETIC_DEV2048_FIT_ONLY"
 RIGHTS_SCOPE = "PUBLIC_SYNTHETIC_DEVELOPMENT_ONLY"
 CUSTODY_LAYER_GIT_BLOBS = {  # #582 + #586 (Macha #583 repair)
-    "scripts/v5/jepa_synth2048_attempt_journal_v2.py": "d5dd8c26cf7e8e99c1d665c6482ce053997fbb09",
-    "scripts/v5/jepa_v5_structured_journal_preflight_v1.py": "85de1e403818520700c5c9dd16ca28a41e4fedef",
+    "scripts/v5/jepa_synth2048_attempt_journal_v2.py": "b10dbf5a983794b79ad08b4344661d1b176a169f",
+    "scripts/v5/jepa_v5_structured_journal_preflight_v1.py": "b348d8561414842897cd9114e4727293dc5f97fb",
     "scripts/v5/jepa_v5_full_state_readonly_audit_v1.py": "ae79cd1b705d33d29c7d28b5481dd0b91ee19ba9",
     "scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py": "d05a7dc4e399390d882f33e63c3534ae83498933",
 }
@@ -197,6 +197,7 @@ def build_contract(measured: dict) -> dict:
                                      "all group fields except lr",
                 "state_class": "SYNTHETIC_FAKE_POST_UPDATE_OR_REAL_PR224_INITIALIZED_U0_ONLY",
                 "real_model_initialization_only": "ORIGINAL_PR224_V5_U0_REQUIRES_STRICT_NONTOY_BRIDGE",
+                "original_v5_u0_policy": "DURABLE_MIRRORED_UNSIGNED_RUN_LOCK_U0_ONLY__DIRECT_V2_BEGIN_AND_COMMIT_REFUSED__NOT_PRODUCTION",
                 "real_model_post_step_commit": "FORBIDDEN__NO_TRAINING_AUTHORIZATION",
                 "real_model_qualified_target": "NOT_BOUND",
                 "real_model_physical_probe_panel": "NOT_BOUND",
