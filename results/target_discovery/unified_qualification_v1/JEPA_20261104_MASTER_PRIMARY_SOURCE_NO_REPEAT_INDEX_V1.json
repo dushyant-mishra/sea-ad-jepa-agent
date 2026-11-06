@@ -2069,5 +2069,39 @@
     "result": "AdamW group fields bound to u0 (#586); 35-file executed V5 closure pinned, shadows refused (#587); DEV2048 pipeline identity contract with derived bindings (#588); PR525 identity is NON_ACTOR; #585 to reconcile.",
     "do_not_repeat": "Do not re-derive the V5 import closure or re-measure the PR547 FIT; do not bind V5 identity to 15 files or PR525's 4 V4 files; never glob tests/test_v5_* or tests/test_teacher_student_v5_* under a no-step directive.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_actual_original_224_initialized_U0_dev_journal_toy_contamination_firewall_sol589_event103_20261106": {
+    "event": 103,
+    "human": "docs/agent/JEPA_20261106_EVENT103_SOL_REAL_V5_U0_JOURNAL_PRODUCTION_QUARANTINE_AND_586_587_REVIEWS_NO_TRAINING.md",
+    "human_blob_sha1": "f7a8fd8ec12f1b82c90ea4108ca997aab364f080",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261106_EVENT103_REAL_V5_U0_DEV_JOURNAL_PRODUCTION_CONTAMINATION_FIREWALL_MAP.json",
+    "machine_blob_sha1": "18c1163d2964ada75d7e368230f146c5b0f7421b",
+    "draft": 589,
+    "head": "f5aa3f9f3a013ad4d1d0276df0c35028657cc796",
+    "hosted_workflows_success": "8/8",
+    "current_status": "PRECURSOR_TO_COMBINED_PR590__MACHA_REVIEW_PENDING",
+    "scientific_limit": "Real original V5 initialized U0 weights captured in public synthetic DEV journal, never production/biology/optimizer/EMA/RT1-RT8",
+    "negative": "Local Macha WSL Event102 accidental stepping-test collection remains historically disclosed; do not repeat or claim never happened.",
+    "no_repeat": "Do not redo original PR224 or public FIT preparation; do not reconstruct V80 sealed controller, owner backup resolved."
+  },
+  "v5_full_historical_science_data_scripts_current_consolidated_590_and_restart_guard_open_agent_handoff_event104_20261106": {
+    "event": 104,
+    "human": "docs/agent/JEPA_20261106_EVENT104_COMPLETE_NEW_AGENT_SOURCE_DATA_SCRIPT_RESULT_AND_IMPLEMENTATION_TAKEOVER_V1.md",
+    "human_blob_sha1": "208e8923c22de7a7392737370a2122513013590a",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261106_EVENT104_COMPLETE_HISTORICAL_TO_V5_U0_NEW_AGENT_SOURCE_DATA_RESULT_TAKEOVER_MAP.json",
+    "machine_blob_sha1": "704cc7c99d28b03436b15361100156117c453df0",
+    "current_combined_draft": 590,
+    "head": "a3a59eb934186a8ab329eb2b0b4385b3948d1f0a",
+    "hosted_workflows_success": "9/9",
+    "hosted_jobs_success": "18/18",
+    "contract_sha256": "b71043564f237fc7197ab6b0e5a45a4a5e2dc945d2707fa9ebe44a0633e05daf",
+    "science": "Original synthetic PR547 1440x2048x36 development only, real human FULL104 historical 4553407x41238 separate, all six current learned biology candidates UNASSESSED",
+    "peer_status": "MACHA_REVIEW_PR590_PENDING",
+    "new_unresolved_case": "DURABLE_U0_ONLY_GUARD_UNPROVED__PROCESS_LOCAL_IN_MEMORY_SET_NOT_RESTART_SAFE_EVIDENCE__REVIEW_WITH_SYNTHETIC_BYTES",
+    "rights_target_probes": "NOT_BOUND",
+    "historical_navigation": "Read Event90 original complete source/script/result audit and scientific narrative, then Events98–104; do not repeat historical target discovery, full104 data materialization, V4 step, private controller backup",
+    "test_safety": "No glob collection PR224 optimizer/backward/EMA tests; strict explicit allowlist and AST precollection guard",
+    "future_protocol": "Append verified Event105+ chronology/index, create identical human+machine blobs on both branches, first-read prepend and descriptions; source/CI exact heads, no merge, no self-accept.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
