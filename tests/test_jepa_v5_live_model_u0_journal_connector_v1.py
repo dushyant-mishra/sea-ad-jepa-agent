@@ -71,7 +71,7 @@ def test_real_original_v5_module_weights_and_empty_adam_u0_snapshot(public_contr
     assert len(modules.online.blocks) == 6
     assert len(modules.optimizer.state) == 0
     # Independent RED: legacy fake snapshot expects online.value_encoder.weight,
-    # while original PR224 real model has tokenizer.value_encoder.{0,3}.weight.
+    # while original PR224 real model has tokenizer.value_encoder.{0,2}.weight.
     with patch.object(torch.optim.AdamW, "step", side_effect=AssertionError("NO_OPTIMIZER")):
         snap = capture(modules, public_contract)
     bundle, readout = state.read_verified_bytes(
@@ -80,7 +80,7 @@ def test_real_original_v5_module_weights_and_empty_adam_u0_snapshot(public_contr
     assert readout["optimizer_tensor_count"] == 0
     assert readout["model_modules"] == ["online", "teacher", "predictor"]
     assert "online.tokenizer.value_encoder.0.weight" in bundle["parameter_names"]
-    assert "online.tokenizer.value_encoder.3.weight" in bundle["parameter_names"]
+    assert "online.tokenizer.value_encoder.2.weight" in bundle["parameter_names"]
     assert "online.value_encoder.weight" not in bundle["parameter_names"]
     assert bundle["metadata"]["training_authorized"] is False
     assert snap.training_authorized is False
