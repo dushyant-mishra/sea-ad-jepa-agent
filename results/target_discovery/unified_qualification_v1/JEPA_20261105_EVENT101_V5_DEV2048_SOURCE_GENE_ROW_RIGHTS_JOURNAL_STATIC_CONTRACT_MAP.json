@@ -1,0 +1,157 @@
+{
+  "schema": "JEPA_EVENT101_V5_DEV2048_ORIGINAL_SOURCE_PUBLIC_DATA_STATIC_JOURNAL_BINDING_V1",
+  "event": 101,
+  "date_utc": "2026-11-05",
+  "author": "Sol",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "human": {
+    "path": "docs/agent/JEPA_20261105_EVENT101_SOL_STATIC_ORIGINAL_V5_PUBLIC_DEV2048_JOURNAL_POLICY_PIPELINE_CONTRACT_NO_TRAINING.md",
+    "git_blob_sha1": "bd9248483ad35da39a3ac8a9694f1389aaea0f63"
+  },
+  "new_draft_pr": {
+    "number": 585,
+    "head": "1336899454b50c32f05d62886cffb4c493c79b09",
+    "base": "audit/v5-source-data-lock-sol-20261105",
+    "base_original_source_pr": 584,
+    "base_original_source_head": "11d8a70235cfc02d412db6b6158485732bdec246",
+    "root_journal_pr": 582,
+    "root_journal_head": "e71d864b0496de0b86fe7442ba51d53b44e0b225",
+    "draft": true,
+    "merge_performed": false,
+    "independent_macha_review": "PENDING"
+  },
+  "sources": {
+    "original_v5_pr": 224,
+    "original_v5_head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+    "canonical_original_source_files": 12,
+    "private_implementations": 2,
+    "package_initializer": 1,
+    "exact_original_source_git_blob_comparisons": "15_OF_15_MATCH_PR224_PR582",
+    "legitimate_v4_support_dependencies": [
+      "src/sea_ad_jepa/v4/ipb_jepa.py",
+      "src/sea_ad_jepa/v4/gene_tokenizer.py"
+    ],
+    "old_v4_production_runner_not_active": true,
+    "invalid_legacy_runtime_path": "src/sea_ad_jepa/v5/canonical_runtime.py",
+    "false_v5_u40_claim_corrected_to_v4_event98": true,
+    "pr548_readiness_adapter_git_blob": "6a6c219402d7acd24c1b54b3c2571133a08e4a0a",
+    "pin_journal_and_gate_git_blobs": {
+      "scripts/v5/jepa_v5_source_data_custody_gate_v1.py": "c90ece159cc3c8cfb87e9f0757e307413b829d3f",
+      "scripts/v5/jepa_v5_structured_journal_preflight_v1.py": "10b6384245158865306b600ed68c61737a965ccd",
+      "scripts/v5/jepa_v5_full_state_readonly_audit_v1.py": "ae79cd1b705d33d29c7d28b5481dd0b91ee19ba9",
+      "scripts/v5/jepa_synth2048_attempt_journal_v2.py": "d5dd8c26cf7e8e99c1d665c6482ce053997fbb09"
+    }
+  },
+  "new_code": [
+    {
+      "path": "scripts/v5/jepa_v5_dev2048_pipeline_contract_v1.py",
+      "git_blob_sha1": "3e58581bd54cb3fc427d80248ce74bed0cef9c0c",
+      "role": "READ_ONLY_EXACT_SOURCE_AST_GATE_PLUS_PUBLIC_DEV_ROW_GENE_DONOR_SOURCE_AND_FAKE_JOURNAL_IDENTITY"
+    },
+    {
+      "path": "tests/test_jepa_v5_dev2048_pipeline_contract_v1.py",
+      "git_blob_sha1": "49f5d39ddbc5993ab9e235cb5d77b610ad4dfc64",
+      "role": "35_NEW_NONEXECUTING_ADVERSARIAL_TESTS_PER_PYTHON_PLUS_10_ORIGINAL_PR584"
+    },
+    {
+      "path": ".github/workflows/jepa-v5-dev2048-static-data-to-journal-contract-no-training.yml",
+      "git_blob_sha1": "9f910d828123f6551a0555d94750b2a283ad7914",
+      "role": "TWO_HOSTED_PYTHON_VERSIONS_PUBLIC_SYNTHETIC_FIT_ACTUAL_BYTES_NO_TORCH"
+    }
+  ],
+  "public_dev_data": {
+    "pr": 547,
+    "artifact_id": 13364085153,
+    "bytes": 25023562,
+    "zip_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+    "member_sha256_verified_count": 5,
+    "student_member": "student_qexcluded.npz",
+    "evaluation_roster_member": "roster_evaluation_only.npz",
+    "real_human_rna_read": false,
+    "private_controller_read": false,
+    "synthetic_cells": 1440,
+    "synthetic_gene_addresses": 2048,
+    "synthetic_donors": 36,
+    "physical_student_base_addresses": 2044,
+    "q_ids_held_out_original_address": [
+      1672,
+      1673,
+      1674,
+      1675
+    ],
+    "exact_canonical_nonquery_address_order_verified": true,
+    "student_count_support_dtype_shape_and_projected_depth_verified": true,
+    "roster_rna_entity_ids_unique": true,
+    "donor_single_source_and_split_verified": true,
+    "source_labels": [
+      "SYNTH_A",
+      "SYNTH_B",
+      "SYNTH_C"
+    ],
+    "split_labels": [
+      "train",
+      "val",
+      "test"
+    ],
+    "C1_to_C6": "UNASSESSED",
+    "F1_to_F4_source_atac_rare_donor_limitations_remain": true,
+    "teacher_measured_member_bytes_hashed_only": true,
+    "teacher_measured_values_decoded_or_used": false
+  },
+  "contract_issued_only_as": {
+    "schema": "JEPA_ORIGINAL_V5_DEV2048_PIPELINE_STATIC_CONTRACT_V1",
+    "status": "STATIC_DEV_ONLY__NOT_A_RUN_OR_EXECUTION_AUTHORIZATION",
+    "source_manifest_sha256": "DETERMINISTIC_ARTIFICIAL_DEV_ONLY",
+    "gene_axis_sha256": "DETERMINISTIC_ARTIFICIAL_DEV_ONLY",
+    "panel_sha256": "DETERMINISTIC_ARTIFICIAL_DEV_ONLY__NOT_INDEPENDENT_FROZEN_REAL_PANEL",
+    "config_sha256": "DETERMINISTIC_ARTIFICIAL_DEV_ONLY",
+    "rights_sha256": "DETERMINISTIC_ARTIFICIAL_DEV_ONLY__NOT_VALID_REAL_RIGHTS_ISSUER",
+    "philox_contract_sha256": "SOURCE_IDENTITY_ONLY__NO_REAL_RNG_STATE",
+    "source_policy": "PR525_NONAUTHORIZING_V4_SOURCE_PLAN__NOT_V5_EXECUTOR",
+    "journal": "PR582_FAKE_SNAPSHOT_REPORTED_PROBES_ONLY",
+    "can_open_journal": false,
+    "train_authorized": false,
+    "model_execution_authorized": false,
+    "optimizer_step_allowed": false,
+    "ema_step_allowed": false,
+    "RT1_to_RT8_allowed": false,
+    "stage4_authorized": false,
+    "physical_probe_proved": false,
+    "real_RNA_authorized": false,
+    "actual_learner_to_journal_executed": false,
+    "multi_update_v5_driver_present": false
+  },
+  "ci": {
+    "workflow_run_id": 42160062128,
+    "workflow_success": 1,
+    "workflow_total": 1,
+    "hosted_python_versions": [
+      "3.11.9",
+      "3.12.7"
+    ],
+    "jobs_success": 2,
+    "jobs_total": 2,
+    "tests_passed_per_python": 45,
+    "original_pr584_tests_passed_per_python": 10,
+    "new_contract_tests_passed_per_python": 35,
+    "original_public_pr547_fit_exact_zip_sha_verified": true,
+    "real_public_roster_and_student_arrays_opened_safe_numpy_no_pickle": true,
+    "model_imported": false,
+    "torch_installed": false,
+    "actual_model_forward": false,
+    "backward": false,
+    "optimizer": false,
+    "EMA": false,
+    "GPU": false,
+    "real_data": false
+  },
+  "gaps": [
+    "Macha independent peer review #583 (named Adam ID/order) and #584 original source/FIT static source, and Sol new #585 static policy contract.",
+    "No V5 multi-update driver; future implementation separate and no execution without owner authorization",
+    "Model-to-journal actual neural state, genuine Adam/EMA/gradients, frozen biological probe, data rights issuer, complete bitwise AMP/CUDA Philox/dataloader restart remain unqualified",
+    "Public PR547 synthetic world does not grant real RNA FULL104 authority or a C1-C6 representation winner",
+    "Unchanged PR525 four-V4-file portfolio binder is separate and cannot be treated as V5 training source"
+  ],
+  "owner_v80_backup": "OWNER_CONFIRMED_PERSONAL_DOWNLOAD_COMPLETE__RESOLVED_EVENT95",
+  "no_repeat": "No historical original 535 PR recrawl, no PR547 regeneration, no original PR548 U0 reexecution, no FULL104 human expression read or protected V80 ZIP access. Append record; do not rewrite Events1–100."
+}
