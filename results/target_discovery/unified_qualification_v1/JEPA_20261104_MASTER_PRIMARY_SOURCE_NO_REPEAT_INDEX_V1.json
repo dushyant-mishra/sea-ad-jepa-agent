@@ -2155,5 +2155,31 @@
     "peer_status": "SCOPED_AUTHOR_GREEN__RECIPROCAL_REVIEW_PENDING",
     "no_repeat": "Events1-105 unchanged; don't use broad test globs, do not rerun original science or open resolved V80 private controller",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_four_legacy_step_capable_hosted_workflows_static_quarantine_593_event107_20261106": {
+    "event": 107,
+    "human": "docs/agent/JEPA_20261106_EVENT107_LEGACY_V5_STEP_CAPABLE_HOSTED_WORKFLOW_STATIC_QUARANTINE_RED_GREEN_NO_TRAINING.md",
+    "human_blob_sha1": "93fdbe2fac0c1d5fb34ca621c230c3e32976f5b5",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261106_EVENT107_LEGACY_V5_STEP_TEST_CI_QUARANTINE_AND_TWO_BRANCH_HANDOFF_MAP.json",
+    "machine_blob_sha1": "75b96288b5c12e592d2fa62614aaaadfc4a0051d",
+    "implementation_pr": 593,
+    "stacked_on": 592,
+    "head": "612c1b2ff86c225eb9ba8cba5b0db306a45b41af",
+    "red_run": 42250990432,
+    "red_head": "4404a03b429f013ec28add0ac475352b8caabad2",
+    "red": "3 pure static unittest methods, 9 expected subtest failures per Python 3.11.9/3.12.7",
+    "green": "6/6 workflow runs;9/9 hosted jobs",
+    "green_runs": [
+      42251314812,
+      42251314631,
+      42251314708,
+      42251314627,
+      42251314728,
+      42251304007
+    ],
+    "finding": "FOUR_LEGACY_V5_CI_AUTOMATIC_NUMERICAL_TEST_ROUTES_STEPCAPABLE",
+    "repair": "SOURCE_ONLY_QUARANTINE_PRESERVES_HISTORICAL_TEST_FILES",
+    "status": "AUTHOR_GREEN__RECIPROCAL_INDEPENDENT_REVIEW_PENDING__NO_MERGE",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
