@@ -1,0 +1,29 @@
+name: V5 no-training explicit pytest inventory static safety gate (NO EXECUTION)
+on:
+  pull_request:
+    paths:
+      - tests/test_ci_no_training_explicit_allowlist_v1.py
+      - scripts/v5/jepa_v5_ci_explicit_nonstepping_allowlist_v1.py
+      - .github/workflows/jepa-v5-pipeline-identity-contract-macha-no-training.yml
+      - .github/workflows/jepa-v5-journal-v2-integration-macha-no-training.yml
+      - .github/workflows/jepa-v5-journal-v2-579-thread-completion-macha-no-training.yml
+      - .github/workflows/jepa-v5-explicit-nonstepping-inventory-static-audit-no-training.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  no-neural-import-no-collection-static-only:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Static unittest only, no pytest test discovery and no torch imports
+        env:
+          PYTHONPATH: .
+        run: python -m unittest -v tests.test_ci_no_training_explicit_allowlist_v1
