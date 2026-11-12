@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+from hashlib import sha1
 import os
 from pathlib import Path
 import re
@@ -207,11 +208,20 @@ def _refuse_implicit_collection_inputs(repo_root: Path) -> None:
             _refuse("IMPLICIT_PYTEST_CONFIG_NOT_REVIEWED:" + name)
 
 
-def _workflow_triggers_are_branch_scoped(head: str) -> bool:
-    events = re.findall(r"(?m)^  (pull_request|pull_request_target|push|schedule):", head)
-    return bool(events) and "schedule" not in events and all(
-        re.search(r"(?m)^  " + e + r":\n(?:    .*\n)*?    branches:", head)
-        for e in events)
+# Preserve exactly the archived D1 CI definition as historical evidence.
+# Its old branch/manual route must NOT be dispatched without separate approval.
+# Other workflows (including push/main and pull_request/main) are examined,
+# regardless of whether they contain a branches: filter.
+LEGACY_HISTORICAL_WORKFLOW_BLOBS = {
+    "d1-independent-closure-ci.yml": "a0e3fb2622992630ce705467bfcb3aad7aa1001e",
+}
+
+
+def _exact_unchanged_legacy_workflow(workflow: Path, raw: bytes) -> bool:
+    expected = LEGACY_HISTORICAL_WORKFLOW_BLOBS.get(workflow.name)
+    return (expected is not None
+            and sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0"
+                     + raw).hexdigest() == expected)
 
 
 def verify_no_wildcard_pytest_routes(repo_root: Path = ROOT) -> list[str]:
@@ -220,11 +230,12 @@ def verify_no_wildcard_pytest_routes(repo_root: Path = ROOT) -> list[str]:
     to an old branch are reported, not executed and not refused."""
     scoped = []
     for workflow in sorted((repo_root / ".github/workflows").glob("*.y*ml")):
-        text = workflow.read_text(encoding="utf-8")
-        head, _, jobs = text.partition("\njobs:")
-        if _workflow_triggers_are_branch_scoped(head):
+        raw = workflow.read_bytes()
+        if _exact_unchanged_legacy_workflow(workflow, raw):
             scoped.append(workflow.name)
             continue
+        text = raw.decode("utf-8")
+        _, _, jobs = text.partition("\njobs:")
         command = " ".join(line.strip() for line in jobs.splitlines())
         if re.search(r"unittest\s+discover", command):
             _refuse("DISCOVERY_TEST_ROUTE:" + workflow.name)
@@ -283,7 +294,10 @@ def main() -> int:
     # Fixed, reviewed argv only, and the complete static check just ran.
     # No shells and no test globs; pytest receives explicit path literals.
     # --noconftest and no plugin autoload: only the reviewed files run.
-    env = dict(os.environ, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+    # PYTEST_ADDOPTS injects extra test argv; PYTEST_PLUGINS explicitly loads
+    # plugins even when automatic entrypoint discovery is disabled. Clear both.
+    env = dict(os.environ, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
+               PYTEST_ADDOPTS="", PYTEST_PLUGINS="")
     subprocess.run([sys.executable, "-m", "pytest", "-q", "--noconftest",
                     *paths], cwd=ROOT, check=True, env=env)
     return 0
