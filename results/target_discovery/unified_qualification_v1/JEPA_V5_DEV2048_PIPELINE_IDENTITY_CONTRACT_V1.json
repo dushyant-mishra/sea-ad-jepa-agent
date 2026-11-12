@@ -113,7 +113,7 @@
     "scripts/v5/jepa_synth2048_attempt_journal_v2.py": "b10dbf5a983794b79ad08b4344661d1b176a169f",
     "scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py": "d05a7dc4e399390d882f33e63c3534ae83498933",
     "scripts/v5/jepa_v5_full_state_readonly_audit_v1.py": "ae79cd1b705d33d29c7d28b5481dd0b91ee19ba9",
-    "scripts/v5/jepa_v5_structured_journal_preflight_v1.py": "b348d8561414842897cd9114e4727293dc5f97fb"
+    "scripts/v5/jepa_v5_structured_journal_preflight_v1.py": "3a4cd78e8e3a73983177458c6870f58a5f477c6e"
    },
    "origin": {
     "prs": [
@@ -121,15 +121,15 @@
      586
     ]
    },
+   "original_v5_u0_policy": "DURABLE_MIRRORED_UNSIGNED_RUN_LOCK_U0_ONLY__DIRECT_V2_BEGIN_AND_COMMIT_REFUSED__NOT_PRODUCTION",
+   "real_model_initialization_only": "ORIGINAL_PR224_V5_U0_REQUIRES_STRICT_NONTOY_BRIDGE",
+   "real_model_physical_probe_panel": "NOT_BOUND",
+   "real_model_post_step_commit": "FORBIDDEN__NO_TRAINING_AUTHORIZATION",
+   "real_model_production_checkpoint": false,
+   "real_model_qualified_target": "NOT_BOUND",
    "run_directory": "WSL ext4; D: exFAT cannot host the journal",
    "state_class": "SYNTHETIC_FAKE_POST_UPDATE_OR_REAL_PR224_INITIALIZED_U0_ONLY",
-   "structure_binding": "u0 names/shapes/dtypes, ordered named AdamW groups, all group fields except lr",
-   "real_model_initialization_only": "ORIGINAL_PR224_V5_U0_REQUIRES_STRICT_NONTOY_BRIDGE",
-   "original_v5_u0_policy": "DURABLE_MIRRORED_UNSIGNED_RUN_LOCK_U0_ONLY__DIRECT_V2_BEGIN_AND_COMMIT_REFUSED__NOT_PRODUCTION",
-   "real_model_post_step_commit": "FORBIDDEN__NO_TRAINING_AUTHORIZATION",
-   "real_model_qualified_target": "NOT_BOUND",
-   "real_model_physical_probe_panel": "NOT_BOUND",
-   "real_model_production_checkpoint": false
+   "structure_binding": "u0 names/shapes/dtypes, ordered named AdamW groups, all group fields except lr"
   },
   "dataset": {
    "class": "PR547_PUBLIC_SYNTHETIC_DEV2048_FIT_ONLY",
@@ -4372,12 +4372,12 @@
    }
   }
  },
- "contract_sha256": "e3ccfa164f06ff7fd22b4d292365a12442d9fcde898f1cc8497f5d5339c8914a",
+ "contract_sha256": "590e4e66b170f7219cd77fa319fc9dc441bce8b7831cf5d44eff2968b8c3c8d6",
  "journal_bindings": {
   "config_sha256": "7ce98ae874ae885c6d0284d58000000be0bad47e46e7e481f8c7df3f3bb97c92",
   "gene_axis_sha256": "74586512c4ef76b48667a974a2769a8053664c58ec9921cd95da8b92fbf29f86",
   "philox_contract_sha256": "d6cf2c6345bea4ac51ee1325523dc88738aa2105257dd0dda57c4e0650f25d87",
-  "source_manifest_sha256": "5b03b91643cd654c7469d6af82c457f541d8029c7c0a8ab66385b3d52a0b4ec1",
+  "source_manifest_sha256": "77da65b15b4e74bd87bfae2905b84c0b2b70b717850b389f49214d9b572f94ff",
   "source_rights_sha256": "1a3e7780f181ef555de7e12c9fb8a779b0f64332180a2c40365d8ce6db1aaa5c"
  },
  "schema": "JEPA_V5_DEV2048_PIPELINE_IDENTITY_CONTRACT_V1",

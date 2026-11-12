@@ -150,6 +150,37 @@ def _validate_actual_reference_modules(modules: Any) -> None:
     del expected
 
 
+def _require_loaded_from_verified_tree(repo_root: Path) -> None:
+    """Macha review of #590: authenticate the code Python actually loaded.
+
+    ``_locked_contract`` verifies the 35 executed files and the custody layer
+    *under repo_root*, but the classes checked above come from whatever
+    ``sea_ad_jepa``/``scripts`` modules sys.path/sys.modules resolved. A
+    different copy (for example an edited forward with identical
+    initialization) would otherwise be recorded as the authentic original
+    U0. Every pinned module that is loaded must be the verified file.
+    """
+    import sys
+    from scripts.v5 import jepa_v5_source_data_custody_gate_v1 as gate
+    root = Path(repo_root).resolve()
+    pinned = (*gate.EXECUTED_CLOSURE_GIT_BLOBS,
+              *contract.CUSTODY_LAYER_GIT_BLOBS,
+              "scripts/v5/jepa_v5_pipeline_identity_contract_v1.py",
+              "scripts/v5/jepa_v5_source_data_custody_gate_v1.py",
+              "scripts/v5/jepa_v5_live_model_u0_journal_connector_v1.py")
+    for relative in pinned:
+        parts = relative[:-3].split("/")
+        parts = parts[1:] if parts[0] == "src" else parts
+        parts = parts[:-1] if parts[-1] == "__init__" else parts
+        module = sys.modules.get(".".join(parts))
+        if module is None:
+            continue  # not loaded, so not part of what ran
+        origin = getattr(module, "__file__", None)
+        require(origin is not None
+                and Path(origin).resolve() == (root / relative).resolve(),
+                "LOADED_V5_MODULE_NOT_FROM_VERIFIED_TREE__" + ".".join(parts))
+
+
 def _locked_contract(*, repo_root: Path, public_fit_zip: Path,
                      expected_contract: dict) -> dict:
     """Use ONLY Macha #588's full original 35-file V5 identity contract.
@@ -231,6 +262,7 @@ def capture_real_v5_u0(*, modules: Any, repo_root: Path, public_fit_zip: Path,
         repo_root=repo_root, public_fit_zip=public_fit_zip,
         expected_contract=expected_contract)
     _validate_actual_reference_modules(modules)
+    _require_loaded_from_verified_tree(repo_root)
     from scripts.v5 import jepa_v5_full_state_readonly_audit_v1 as state
     from scripts.v5 import jepa_v5_structured_journal_preflight_v1 as bridge
 
@@ -303,6 +335,7 @@ def record_real_v5_u0_to_journal(*, snapshot: RealV5U0Snapshot,
                                 expected_contract=expected_contract)
     require(snapshot.contract_sha256 == observed["contract_sha256"],
             "CONTRACT_CHANGED_SINCE_LIVE_U0_CAPTURE")
+    _require_loaded_from_verified_tree(repo_root)
     # Verify the original tensors have not been modified since the snapshot:
     from scripts.v5 import jepa_v5_full_state_readonly_audit_v1 as state
     from scripts.v5 import jepa_v5_structured_journal_preflight_v1 as bridge

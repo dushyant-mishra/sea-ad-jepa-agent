@@ -10,7 +10,9 @@ from __future__ import annotations
 
 import argparse
 import ast
+import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 
@@ -132,6 +134,35 @@ def _refuse(message: str) -> None:
     raise RuntimeError("REFUSE_UNSAFE_NO_TRAINING_TEST_INVENTORY__" + message)
 
 
+# Macha review of #592: a modified approved test could alias a step without
+# a direct ``x.step()`` call (``s = opt.step; s()``, ``getattr(opt, "step")()``,
+# ``methodcaller("step")``, ``from torch.autograd import grad``). None of the
+# 40 approved files reads these attributes, so refusing them costs nothing.
+# Calls into project helpers that step internally remain out of scope: this
+# gate prevents accidental collection, it is not a transitive attestation.
+ALIASABLE_MUTATORS = frozenset({"step", "backward", "zero_grad"})
+
+
+def _check_references(tree: ast.AST, filename: str) -> None:
+    for node in ast.walk(tree):
+        if (isinstance(node, ast.Attribute) and node.attr in ALIASABLE_MUTATORS
+                and isinstance(node.ctx, ast.Load)):
+            _refuse(f"FORBIDDEN_REFERENCE:{filename}:{node.lineno}:{node.attr}")
+        if (isinstance(node, ast.Call)
+                and getattr(node.func, "id", getattr(node.func, "attr", None))
+                in ("getattr", "methodcaller", "attrgetter")
+                and any(isinstance(a, ast.Constant)
+                        and a.value in FORBIDDEN_CALL_NAMES | {"grad"}
+                        for a in node.args)):
+            _refuse(f"FORBIDDEN_DYNAMIC_LOOKUP:{filename}:{node.lineno}")
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            names = {alias.name.rsplit(".", 1)[-1] for alias in node.names}
+            module = getattr(node, "module", None) or ""
+            if names & FORBIDDEN_CALL_NAMES or (
+                    module.startswith("torch") and names & {"grad", "backward"}):
+                _refuse(f"FORBIDDEN_IMPORT:{filename}:{node.lineno}")
+
+
 def _check_ast(source: str, filename: str) -> None:
     tree = ast.parse(source, filename=filename)
     for node in ast.walk(tree):
@@ -153,11 +184,63 @@ def _check_ast(source: str, filename: str) -> None:
                 and isinstance(func.value, ast.Name)
                 and func.value.id in ("pytest", "unittest")):
             _refuse(f"FORBIDDEN_DYNAMIC_TEST_DISCOVERY:{filename}:{node.lineno}")
+    # Direct calls keep their original reasons; aliases are refused after.
+    _check_references(tree, filename)
+
+
+PYTEST_CONFIG_SECTIONS = {
+    "pytest.ini": "[pytest]", "tox.ini": "[pytest]",
+    "setup.cfg": "[tool:pytest]", "pyproject.toml": "[tool.pytest",
+}
+
+
+def _refuse_implicit_collection_inputs(repo_root: Path) -> None:
+    """Macha review of #592: pytest also runs conftest.py files and ini
+    ``addopts``/plugins that no explicit argv lists. Refuse both."""
+    for directory in (repo_root, repo_root / "tests"):
+        if (directory / "conftest.py").exists():
+            _refuse("IMPLICIT_CONFTEST_NOT_REVIEWED:" +
+                    (directory / "conftest.py").relative_to(repo_root).as_posix())
+    for name, marker in PYTEST_CONFIG_SECTIONS.items():
+        path = repo_root / name
+        if path.is_file() and marker in path.read_text(encoding="utf-8"):
+            _refuse("IMPLICIT_PYTEST_CONFIG_NOT_REVIEWED:" + name)
+
+
+def _workflow_triggers_are_branch_scoped(head: str) -> bool:
+    events = re.findall(r"(?m)^  (pull_request|pull_request_target|push|schedule):", head)
+    return bool(events) and "schedule" not in events and all(
+        re.search(r"(?m)^  " + e + r":\n(?:    .*\n)*?    branches:", head)
+        for e in events)
+
+
+def verify_no_wildcard_pytest_routes(repo_root: Path = ROOT) -> list[str]:
+    """No automatically triggered workflow may build pytest argv by glob,
+    directory or shell expansion. Workflows whose every trigger is limited
+    to an old branch are reported, not executed and not refused."""
+    scoped = []
+    for workflow in sorted((repo_root / ".github/workflows").glob("*.y*ml")):
+        text = workflow.read_text(encoding="utf-8")
+        head, _, jobs = text.partition("\njobs:")
+        if _workflow_triggers_are_branch_scoped(head):
+            scoped.append(workflow.name)
+            continue
+        command = " ".join(line.strip() for line in jobs.splitlines())
+        if re.search(r"unittest\s+discover", command):
+            _refuse("DISCOVERY_TEST_ROUTE:" + workflow.name)
+        for match in re.finditer(r"pytest(.*?)(?=\s-\s(?:name|uses|run):|$)", command):
+            argv = match.group(1)
+            if (re.search(r"tests/[^\s]*[*?\[]", argv) or "$(" in argv
+                    or "`" in argv or re.search(r"\stests/?(\s|$)", argv)):
+                _refuse("WILDCARD_OR_DIRECTORY_PYTEST_ROUTE:" + workflow.name)
+    return scoped
 
 
 def verify_inventory(suite: str, repo_root: Path = ROOT) -> tuple[str, ...]:
     if suite not in NO_TRAINING_TEST_INVENTORY:
         _refuse("UNKNOWN_SUITE")
+    _refuse_implicit_collection_inputs(repo_root)
+    verify_no_wildcard_pytest_routes(repo_root)
     paths = NO_TRAINING_TEST_INVENTORY[suite]
     if not paths or len(paths) != len(set(paths)):
         _refuse("EMPTY_OR_DUPLICATED_ALLOWLIST")
@@ -199,8 +282,10 @@ def main() -> int:
         return 0
     # Fixed, reviewed argv only, and the complete static check just ran.
     # No shells and no test globs; pytest receives explicit path literals.
-    subprocess.run([sys.executable, "-m", "pytest", "-q", *paths],
-                   cwd=ROOT, check=True)
+    # --noconftest and no plugin autoload: only the reviewed files run.
+    env = dict(os.environ, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+    subprocess.run([sys.executable, "-m", "pytest", "-q", "--noconftest",
+                    *paths], cwd=ROOT, check=True, env=env)
     return 0
 
 

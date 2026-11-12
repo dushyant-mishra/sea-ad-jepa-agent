@@ -173,6 +173,12 @@ def check_structured_bytes(raw: bytes, *, expected_update: int,
     insist(not (original_v5_value_encoder & names)
            or original_v5_value_encoder <= names,
            "INCOMPLETE_ORIGINAL_V5_EXPRESSION_VALUE_ENCODER")
+    # Macha review of #591: the durable U0-only policy must follow from the
+    # bytes, not from the caller's flag. Original PR224 V5 structure opened
+    # in the legacy lane gets no original_v5_u0_only lock and would then
+    # accept a fabricated UPDATE_COMMITTED u1 on authentic U0.
+    insist(require_original_v5 or not original_v5_value_encoder <= names,
+           "ORIGINAL_V5_STRUCTURE_REQUIRES_U0_ONLY_LANE")
     online_state = bundle["modules"]["online"]
     teacher_state = bundle["modules"]["teacher"]
     insist(set(online_state) == set(teacher_state),
@@ -341,7 +347,9 @@ def inspect_stored_structured_snapshot(
     raw = journal.read_forensic_opaque_state(
         root, custody, update=update)
     check = check_structured_bytes(
-        raw, expected_update=update, **_run_args(
+        raw, expected_update=update,
+        require_original_v5=lock.get("original_v5_u0_only", False) is True,
+        **_run_args(
             lock["run_id"], lock["panel_sha256"],
             lock["config_sha256"], lock["rights_sha256"],
             expected_gene_axis_sha256,

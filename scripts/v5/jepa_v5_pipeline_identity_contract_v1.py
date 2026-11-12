@@ -40,9 +40,9 @@ AUTHORIZATION = {
 ACTOR_VERSION = "V5_GUARDED_ONE_UPDATE"
 DATASET_CLASS = "PR547_PUBLIC_SYNTHETIC_DEV2048_FIT_ONLY"
 RIGHTS_SCOPE = "PUBLIC_SYNTHETIC_DEVELOPMENT_ONLY"
-CUSTODY_LAYER_GIT_BLOBS = {  # #582 + #586 (Macha #583 repair)
+CUSTODY_LAYER_GIT_BLOBS = {  # #582 + #586 + #591 + Macha review of #591 (legacy-lane refusal)
     "scripts/v5/jepa_synth2048_attempt_journal_v2.py": "b10dbf5a983794b79ad08b4344661d1b176a169f",
-    "scripts/v5/jepa_v5_structured_journal_preflight_v1.py": "b348d8561414842897cd9114e4727293dc5f97fb",
+    "scripts/v5/jepa_v5_structured_journal_preflight_v1.py": "3a4cd78e8e3a73983177458c6870f58a5f477c6e",
     "scripts/v5/jepa_v5_full_state_readonly_audit_v1.py": "ae79cd1b705d33d29c7d28b5481dd0b91ee19ba9",
     "scripts/v5/jepa_synth2048_checkpoint_capture_prefreeze_v1.py": "d05a7dc4e399390d882f33e63c3534ae83498933",
 }
