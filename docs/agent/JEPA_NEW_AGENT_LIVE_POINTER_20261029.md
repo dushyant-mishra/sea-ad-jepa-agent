@@ -1,3 +1,21 @@
+# READ FIRST — EVENT110 (2026-11-12): SOL INDEPENDENT #594 CI COLLECTION REVIEW, DRAFT #595 SAFE REPAIR — NO TRAINING
+
+**Canonical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `5afb5e886426848eeac58f5d8e89dee77772bb64` now has 110 append-only chronology events / 75 no-repeat source keys.** [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) remains the first-read. Continue with Event109 (Macha's 4 earlier defects) → Event108 → Event104 → Event90 original scientific source/data/scripts/results and historical negatives. Do NOT repeat Stage81, TD57B/59, R5 or #314 real replay, FULL104/Level4, V79/V80 or historical synthetic fit experiments.
+
+**Event110 source documents mirrored byte-identically on #322/#460:**
+- Human `docs/agent/JEPA_20261112_EVENT110_SOL_INDEPENDENT_594_REVIEW_595_CI_SCOPE_PYTEST_ENV_REPAIR_NO_TRAINING.md` Git blob `fb301c0e0fe8a91127f345cd398a61af077f8d8e`.
+- Machine `results/target_discovery/unified_qualification_v1/JEPA_20261112_EVENT110_SOL_594_REVIEW_595_BRANCH_ENV_GUARD_SOURCE_MAP.json` Git blob `cbda83ec04e8ca9bdaa6db396a27009778a1a61f`.
+
+**New verified scope:** In #594, generic branch-filtered-workflow exemption also ignored a synthetic automatic main-branch pytest wildcard route. Inherited `PYTEST_ADDOPTS` could add an unreviewed test and `PYTEST_PLUGINS` could load a plugin. Sol's stacked unmerged [#595](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/595) exact head `37dc2469f05d83a6dcfc38cedc54e4f9325bd10c` now scans all other workflows and exempts only the frozen old D1 Git blob `a0e3fb2622992630ce705467bfcb3aad7aa1001e`; it explicitly clears those two pytest variables. **5/5 author CI workflows GREEN**: 43316634301, 43316634333, 43316634396, 43316634295, 43316634606. Five new static/mocked tests; no model training or biological result. **Macha independent reciprocal review still pending**; no merge or self-acceptance.
+
+**Preserve:** Existing Events1–109, negative results, Event102 accidental WSL test incident and Event95 private V80 owner backup resolved. Original D1 historical workflow is not cleared for manual dispatch. #590–#595 remain draft and unmerged. Teacher target, physical probe panel, real-input rights, validated V5 biological representation, and true bitwise restart are still not qualified. Static AST guards do not prove all transitive model helper calls are safe. No GPU, optimizer step, backward, EMA, real RNA, sealed V80, RT1–RT8, Stage4 or model training permitted.
+
+**Next event:** Append Event111+ to canonical #322 only for independently bounded new verified work; mirror human/machine blobs to #460, repin both descriptions and run exact-head nontraining custody CI.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT109 (2026-11-12): MACHA INDEPENDENT VERDICTS #590/#591/#592/#593 — ALL REPAIR_REQUIRED (SCOPED) — RED→GREEN REPAIR #594 — NO TRAINING
 
 **Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `9ce8d72a13079637fb979d6e1d6911b08bc79aa4`, now 109 append-only chronology events / 74 no-repeat source keys.** [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) stays the first read. Read this section, then Sol's Event108 and Events 107–104 below, then the original Event90 human `docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md` and machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json`.
