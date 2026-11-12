@@ -1,0 +1,24 @@
+# Event108 — historical audit and live handoff validation recovered without altering earlier science
+
+**Date:** 2026-11-12 UTC. **Scope:** CI/custody validator maintenance only, not a new biological result, model experiment, train authorization, independent peer acceptance or merge. The latest 107 existing chronology events, historical failures, code/source inventories and Event90 human+machine history remain unchanged.
+
+## Previously completed work was found and reused
+
+The independent cold-start audit located the original Event90 complete primary source/data/script/result register, Event104 exact V5 succession, and Events105–107 scoped development safety repairs. It confirmed **107 unique date-ordered chronology records**, **72 original no-repeat index top-level keys**, and byte-identical Event90–107 human and machine documents on canonical [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) and operational [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460). No old biological target-discovery, synthetic world, Full104/Level4 read, masked q/R5 test or sealed V80 owner controller was revisited.
+
+## Two actual custody CI failures and their bounded repairs
+
+1. **#322 chronology validator, previous RED:** [42251870408](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42251870408) refused Event105/106/107 because their already-recorded three descriptive `change_type` categories were absent from the validator's explicit category set. The first patch had a temporary **syntax RED** [43311609737](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43311609737), then was corrected. The original event values were **not rewritten**. Existing strict rejection of unknown categories/false training authority remains, with new negative tests. Final pre-Event108 audit repair head `77a9dc54906223adf8b1d8b72956392425217056`: **27/27 workflows GREEN**, including the chronology and immutable Event90 audits; chronology test [43312645019](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43312645019).
+2. **#460 live first-read validator, previous RED:** [42251980869](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42251980869) assumed the latest first-read still displayed Event90's two literal filenames and one old `Audit head` wording. New Event107 correctly leads with Event107 evidence and uses `exact head`. The repaired checker verifies the actual latest EventN, canonical SHA format, unchanged authority, and separately validates the frozen Event90 manifest. The current EventN workflow independently checks the latest source blob hashes and chronology/index counts; negative tests cover a malformed canonical head or erased Event90 reference. **Both branches now have the same Git blob for this shared checker and its tests**, resolving a temporary GitHub add/add mergeability conflict. Pre-Event108 handoff head `67cbde10ec436f24ac4f1d25afb0e395a0be6358`: **4/4 workflows GREEN**, including live first-read [43312752446](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43312752446).
+
+**Exact code custody:** chronology checker `2b71c8ab2750937cb79515dc108433445571f51f`, chronology tests `8e99bf292396d002144cd631e11fbccdfec72849`, shared Event90/current-EventN checker `dac2fbfe1cd9654282e868f002446aa1719fdcb0`, shared tests `ebc185aab0d187bfd92d6701818a4400eff14c03`, #460 latest handoff workflow `2eaef7d66111c2e80e97ab7ba19cfeaaf1b669c5`. These are Git SHA1 blobs, not biological signatures.
+
+## No-repeat and limits
+
+The original Event90/104 source history and Event102's accidental local WSL broad test collection disclosure remain intact. Stage81 biological negatives, TD19, original R5, TD57B/59, corrected real replay #314, prior FULL104 and original Level4 read are NOT new work. Synthetic DEV2048 is a project-prepared engineering fixture only. Current #590 (authentic U0) and #591–#593 (durable U0 and no-training CI repairs) remain **draft, unmerged and pending independent Macha/reciprocal review**. There is still no qualified target or representation winner, physical probe panel, real data rights for this U0 execution, multi-update V5 run or bitwise restart.
+
+This Event108 appends one new **custody engineering** event to canonical #322 (total 108), one new no-repeat key (total 73), mirrors this human document and machine map exactly on both #322/#460, then updates #460's first-read and both PR descriptions with the new exact audit head. Preserve all older event content, negative results and held authority.
+
+**Review status:** author-verified static CI only; independent acceptance pending. No optimizer, backward, EMA, GPU, real RNA, model training, owner-private V80 access, protected target promotion or merge.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
