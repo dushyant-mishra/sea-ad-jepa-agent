@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - tests/test_ci_macha_review_592_593_static_red.py
+      - tests/test_ci_sol_594_scope_and_pytest_env_static_red.py
       - scripts/v5/jepa_v5_ci_explicit_nonstepping_allowlist_v1.py
       - scripts/v5/jepa_v5_legacy_step_ci_quarantine_v1.py
       - .github/workflows/*.yml
@@ -26,6 +27,10 @@ jobs:
         env:
           PYTHONPATH: .
         run: python -m unittest -v tests.test_ci_macha_review_592_593_static_red
+      - name: Sol #594 independent static branch/env regression (NO MODEL)
+        env:
+          PYTHONPATH: .
+        run: python -m unittest -v tests.test_ci_sol_594_scope_and_pytest_env_static_red
       - name: Every explicit inventory and the legacy quarantine verify on this tree
         run: |
           python scripts/v5/jepa_v5_ci_explicit_nonstepping_allowlist_v1.py --suite full --verify
