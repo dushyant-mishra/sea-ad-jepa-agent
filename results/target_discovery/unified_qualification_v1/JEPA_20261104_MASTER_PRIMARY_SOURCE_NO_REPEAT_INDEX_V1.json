@@ -2230,5 +2230,31 @@
     "result": "Connector verifies loaded modules; U0-only lane derived from bytes; conftest/ini/alias/glob routes refused; quarantine allows only exact static commands.",
     "do_not_repeat": "Do not re-review #590-#593 at these heads; do not re-scan the 33 workflows; never run broad tests/test_v5_* suites.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "event110_sol_independent_macha594_ci_main_branch_pytest_env_repair595_20261112": {
+    "date_utc": "2026-11-12",
+    "event_number": 110,
+    "implementation_pr": 595,
+    "implementation_head": "37dc2469f05d83a6dcfc38cedc54e4f9325bd10c",
+    "human_path": "docs/agent/JEPA_20261112_EVENT110_SOL_INDEPENDENT_594_REVIEW_595_CI_SCOPE_PYTEST_ENV_REPAIR_NO_TRAINING.md",
+    "human_blob_sha1": "fb301c0e0fe8a91127f345cd398a61af077f8d8e",
+    "machine_path": "results/target_discovery/unified_qualification_v1/JEPA_20261112_EVENT110_SOL_594_REVIEW_595_BRANCH_ENV_GUARD_SOURCE_MAP.json",
+    "machine_blob_sha1": "cbda83ec04e8ca9bdaa6db396a27009778a1a61f",
+    "previous_109_preserved": true,
+    "workflow_count": 5,
+    "workflow_runs": [
+      43316634301,
+      43316634333,
+      43316634396,
+      43316634295,
+      43316634606
+    ],
+    "source_git_blobs": {
+      "scripts/v5/jepa_v5_ci_explicit_nonstepping_allowlist_v1.py": "ca7cf7ac867d13494e7e2fdb861f4025a07370d6",
+      "tests/test_ci_sol_594_scope_and_pytest_env_static_red.py": "78d7caf16cf762d137e29d46d72a11fa05e85277",
+      ".github/workflows/jepa-v5-macha-review-590-593-static-no-training.yml": "5d399e1584f3792d80596f3b29d54228d91f7fab"
+    },
+    "peer_review": "SOL_AUTHOR_GREEN__MACHA_RECIPROCAL_PENDING",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }

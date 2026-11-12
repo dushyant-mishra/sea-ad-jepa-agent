@@ -4582,6 +4582,49 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/594",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/590#issuecomment-6836700456"
       ]
+    },
+    {
+      "event_id": "20261112-SOL-INDEPENDENT-594-REVIEW-595-CI-ENV-BRANCH-REPAIR-EVENT110",
+      "date_utc": "2026-11-12",
+      "workstream": "v5_static_ci_collection_and_no_training_source_custody",
+      "implementation_pr": 595,
+      "implementation_head": "37dc2469f05d83a6dcfc38cedc54e4f9325bd10c",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261112_EVENT110_SOL_INDEPENDENT_594_REVIEW_595_CI_SCOPE_PYTEST_ENV_REPAIR_NO_TRAINING.md",
+          "blob_sha1": "fb301c0e0fe8a91127f345cd398a61af077f8d8e",
+          "role": "Mirrored independent #594 finding, safe RED, #595 bounded author GREEN, limits"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261112_EVENT110_SOL_594_REVIEW_595_BRANCH_ENV_GUARD_SOURCE_MAP.json",
+          "blob_sha1": "cbda83ec04e8ca9bdaa6db396a27009778a1a61f",
+          "role": "Exact #594/#595 heads, Git source blobs, CI runs, no-repeat and authority"
+        }
+      ],
+      "change_type": "repair",
+      "what_already_existed": "Events1-109 incl Macha Event109 four review findings, Macha #594 author green, full scientific Event90 and 74 no-repeat keys.",
+      "new_work_or_result": "Independent Sol #594 RED showed all-branch scope exemption and inherited PYTEST_ADDOPTS and PYTEST_PLUGINS; #595 narrow fix exempted only frozen original D1 CI blob and cleared both env vars, five non-training stdlib static tests; 5/5 author hosted workflows green.",
+      "negative_or_counterfactual_evidence": "Harmless synthetic main-branch workflow escaped source scan, synthetic PYTEST_ADDOPTS ran 2 tests instead of 1, PYTEST_PLUGINS loaded synthetic plugin. No V5 training executed for repro.",
+      "test_review_scope": "Source-only review, sandbox synthetic pytest, mocked subprocess tests, 5/5 exact-head CI. Does not prove transitive no-step execution or biological correctness.",
+      "independent_review": "SOL_594_REPAIR_REQUIRED_SCOPED__SOL_595_AUTHOR_GREEN__MACHA_RECIPROCAL_595_REVIEW_PENDING__NO_SELF_ACCEPT",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Macha independent #595 review",
+        "AST guard not transitive execution attestation",
+        "No real biology or source rights/panel/teacher target, bitwise restart or train permission"
+      ],
+      "historical_supersession": "Append-only Event110; Events1-109, original Event102 local WSL disclosure, prior negative data/results preserved.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/594",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/594#issuecomment-6837236303",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/595",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43316634301",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43316634333",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43316634396",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43316634295",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43316634606"
+      ]
     }
   ]
 }
