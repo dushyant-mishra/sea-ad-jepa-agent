@@ -2216,5 +2216,19 @@
     "peer_review": "AUTHOR_GREEN__INDEPENDENT_REVIEW_PENDING",
     "history_immutable": true,
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_590_593_macha_review_594_loaded_source_u0_lane_ci_guards_event109_20261112": {
+    "event": 109,
+    "date_utc": "2026-11-12",
+    "scope": "MACHA_REVIEW_590_591_592_593_AND_REPAIR_594",
+    "pr": 594,
+    "head": "a3d35716d1eacb24b3fc4cf6c99fe758e0619d56",
+    "human": "docs/agent/JEPA_20261112_EVENT109_MACHA_INDEPENDENT_VERDICTS_590_591_592_593_REPAIR_594_NO_TRAINING.md",
+    "human_sha": "2695caeae7bef253c612ea3bffd25728d31fe161",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261112_EVENT109_MACHA_590_593_REVIEW_594_REPAIR_SOURCE_MAP.json",
+    "machine_sha": "e03c76f6a85e09edbc5eb5ee39f8ebe1a52b85e2",
+    "result": "Connector verifies loaded modules; U0-only lane derived from bytes; conftest/ini/alias/glob routes refused; quarantine allows only exact static commands.",
+    "do_not_repeat": "Do not re-review #590-#593 at these heads; do not re-scan the 33 workflows; never run broad tests/test_v5_* suites.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }

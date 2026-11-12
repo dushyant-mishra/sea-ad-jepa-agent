@@ -4546,6 +4546,42 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42251870408",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42251980869"
       ]
+    },
+    {
+      "event_id": "20261112-MACHA-INDEPENDENT-VERDICTS-590-591-592-593-REPAIR-594-EVENT109",
+      "date_utc": "2026-11-12",
+      "workstream": "v5_original_u0_journal_and_no_training_ci_independent_review_no_training",
+      "implementation_pr": 594,
+      "implementation_head": "a3d35716d1eacb24b3fc4cf6c99fe758e0619d56",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261112_EVENT109_MACHA_INDEPENDENT_VERDICTS_590_591_592_593_REPAIR_594_NO_TRAINING.md",
+          "blob_sha1": "2695caeae7bef253c612ea3bffd25728d31fe161",
+          "role": "Event109 mirrored human Macha verdicts on #590-#593 and RED->GREEN repair #594"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261112_EVENT109_MACHA_590_593_REVIEW_594_REPAIR_SOURCE_MAP.json",
+          "blob_sha1": "e03c76f6a85e09edbc5eb5ee39f8ebe1a52b85e2",
+          "role": "Event109 mirrored machine map: heads, verdicts, RED/GREEN runs, workflow scan, contract repin"
+        }
+      ],
+      "change_type": "independently_reproduced_implementation_defect_and_nontraining_repair",
+      "what_already_existed": "Sol stacked drafts #590 (original V5 U0 connector), #591 (durable U0-only lock), #592 (40/33/10 explicit inventories) and #593 (four legacy routes quarantined), all author-green and awaiting Macha review (Sol request on #590). Audit head before this event: ae7f6ec708c4aa7a7dbf9cf77b41b0419bc3fd66.",
+      "new_work_or_result": "All four REPAIR_REQUIRED (scoped). #590 authenticated repo_root bytes but recorded whatever sea_ad_jepa Python loaded (substituted copy captured as original U0). #591 U0-only policy was opt-in: authentic U0 opened in the legacy lane and a fabricated u1 committed. #592 accepted conftest.py, ini addopts and aliased steps, and Macha's own #587 workflow still globbed pytest argv. #593 blocked only the python -m pytest spelling. #594 repairs all four; RED 2 + 12 failures -> GREEN 24/24 jobs; contract repinned to 590e4e66.",
+      "negative_or_counterfactual_evidence": "Loaded-module check excludes torch/interpreter; crafted pyc not detected; AST gate is not transitive attestation; bare opaque journal never inspects bytes; unsigned lock+rows replacement, D1 custody and bitwise restart remain open. Connector tests skip in the #592 full inventory run (env var mismatch). Only model construction ran; no forward, backward, step or EMA.",
+      "test_review_scope": "Static review of #590-#593 diffs; static scan of 33 workflows; allowlisted tests statically checked before collection; hosted CI Python 3.11.9/3.12.7 torch 2.5.1 on #594 RED and FIX; local WSL Python 3.11.15.",
+      "independent_review": "MACHA_590_591_592_593_REPAIR_REQUIRED_SCOPED__594_AWAITS_SOL_INDEPENDENT_REVIEW__NO_SELF_ACCEPTANCE__NO_TRAINING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Sol independent review of #594.",
+        "Teacher target, physical probe panel, real-data rights, signed D1 custody, bitwise restart and any optimizer/EMA authority remain open."
+      ],
+      "historical_supersession": "Append-only Event109; Events 1-108 (incl. Sol Event108) unchanged.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/594",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/590#issuecomment-6836700456"
+      ]
     }
   ]
 }
