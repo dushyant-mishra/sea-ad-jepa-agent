@@ -19,7 +19,10 @@ NEWER = Path("docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_202611
 AUTH = "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
 TYPES = {"scientific_experiment","implementation","hostile_review","repair",
          "acceptance","rejection","source_custody","chronology_correction",
-         "custody_process"}
+         "custody_process",
+          "independently_reproduced_implementation_defect_and_nontraining_repair",
+          "confirmed_no_training_ci_collection_safety_gap_scoped_author_green_repair",
+          "independent_legacy_automatic_ci_step_eligibility_safety_repair"}}
 
 def require(condition, message: str):
     if not condition:

@@ -141,3 +141,17 @@ def test_refuse_claiming_older_external_projection_as_clean_current_benchmark(tm
     (root / C.INDEX).write_text(json.dumps(idx), encoding="utf-8")
     with pytest.raises(ValueError, match="old external cohort silently promoted"):
         C.check(root)
+
+
+@pytest.mark.parametrize("event_number", [105, 106, 107])
+def test_new_historical_repair_categories_are_explicitly_reviewed(event_number):
+    data = json.loads((C.ROOT / C.LEDGER).read_text(encoding="utf-8"))
+    assert data["records"][event_number - 1]["change_type"] in C.TYPES
+
+
+def test_refuse_unapproved_new_chronology_category(tmp_path):
+    root, data = _isolated(tmp_path)
+    data["records"][-1]["change_type"] = "UNAPPROVED_NEW_SCIENCE_AUTHORITY"
+    _save(root, data)
+    with pytest.raises(ValueError, match="unrecognized change type"):
+        C.check(root)
