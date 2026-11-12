@@ -86,3 +86,27 @@ def test_event90_machine_has_no_sealed_controller_bytes():
         "verified_private_vault"] is False
     assert source["data_and_expiry"]["v80_controller_owner_only"][
         "original_artifact_id"] == 11866917064
+
+
+def test_live_event107_first_read_has_exact_audit_head_and_original_event90():
+    pointer = (ROOT / v.HANDOFF).read_text(encoding="utf-8")
+    current = v.verify_latest_first_read(pointer)
+    assert current["latest_event"] >= 107
+    assert len(current["audit_head"]) == 40
+    report = v.validate_repository(ROOT, role="handoff")
+    assert report["role"] == "handoff"
+
+
+def test_latest_first_read_refuses_invalid_canonical_head():
+    pointer = (ROOT / v.HANDOFF).read_text(encoding="utf-8")
+    current = v.verify_latest_first_read(pointer)
+    changed = pointer.replace(current["audit_head"], "INVALID_SHA", 1)
+    with pytest.raises(ValueError, match="HANDOFF_EXACT_AUDIT_HEAD_MISSING"):
+        v.verify_latest_first_read(changed)
+
+
+def test_latest_first_read_refuses_erased_original_event90_reference():
+    pointer = (ROOT / v.HANDOFF).read_text(encoding="utf-8")
+    top = pointer.split("\\n---\\n", 1)[0].replace("Event90", "Obliterated90")
+    with pytest.raises(ValueError, match="HANDOFF_NEW_FIRST_READ_INCOMPLETE"):
+        v.verify_latest_first_read(top)

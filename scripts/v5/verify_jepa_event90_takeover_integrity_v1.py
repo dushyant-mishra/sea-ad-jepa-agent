@@ -216,6 +216,28 @@ def validate_manifest(map_data: object, human_bytes: bytes) -> dict:
     }
 
 
+def verify_latest_first_read(text: str) -> dict:
+    """Verify the CURRENT EventN header, without demanding Event90 paths there.
+
+    The original Event90 human and machine records are verified separately by
+    validate_manifest; subsequent EventN headers must lead with new evidence.
+    """
+    latest = re.match(r"# READ FIRST — EVENT([0-9]+)", text)
+    insist(latest is not None and int(latest.group(1)) >= 90,
+           "HANDOFF_NOT_PREPENDED_TO_LATEST")
+    top = text.split("\n---\n", 1)[0]
+    insist("#322" in top and "#460" in top and
+           "Event90" in top and AUTHORITY in top,
+           "HANDOFF_NEW_FIRST_READ_INCOMPLETE")
+    audit_line = next(
+        (line for line in top.splitlines()
+         if "Canonical historical audit" in line and "#322" in line), "")
+    pin = re.search(r"(?:exact head `|Audit head )([a-f0-9]{40})(?:`|\\b)",
+                    audit_line)
+    insist(pin is not None, "HANDOFF_EXACT_AUDIT_HEAD_MISSING")
+    return {"latest_event": int(latest.group(1)), "audit_head": pin.group(1)}
+
+
 def validate_repository(root: Path, *, role: str) -> dict:
     insist(role in ("audit", "handoff"), "UNSUPPORTED_REPOSITORY_ROLE")
     root = Path(root)
@@ -254,15 +276,13 @@ def validate_repository(root: Path, *, role: str) -> dict:
                    "MISSING_HISTORICAL_ORIGINAL_SOURCE")
     else:
         text = (root / HANDOFF).read_text(encoding="utf-8")
-        latest = re.match(r"# READ FIRST — EVENT([0-9]+)", text)
-        insist(latest is not None and int(latest.group(1)) >= 90,
-               "HANDOFF_NOT_PREPENDED_TO_LATEST")
-        top = text.split("\n---\n", 1)[0]
-        insist("#322" in top and "#460" in top and HUMAN in top
-               and MAP in top and AUTHORITY in top,
-               "HANDOFF_NEW_FIRST_READ_INCOMPLETE")
-        insist(re.search(r"Audit head [a-f0-9]{40}", top) is not None,
-               "HANDOFF_EXACT_AUDIT_HEAD_MISSING")
+        pointer = verify_latest_first_read(text)
+        ledger_file = root / LEDGER
+        if ledger_file.is_file():
+            entries = json.loads(ledger_file.read_text(encoding="utf-8")).get("records")
+            insist(type(entries) is list and
+                   len(entries) == pointer["latest_event"],
+                   "HANDOFF_LATEST_EVENT_COUNT_DRIFT")
     return dict(report, role=role)
 
 
