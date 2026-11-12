@@ -4505,6 +4505,47 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/592",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/591"
       ]
+    },
+    {
+      "event_id": "20261112-INDEPENDENT-CUSTODY-CHRONOLOGY-AND-LIVE-HANDOFF-CI-REPAIR-EVENT108",
+      "date_utc": "2026-11-12",
+      "workstream": "historical_custody_and_active_agent_handoff",
+      "implementation_pr": 322,
+      "implementation_head": "77a9dc54906223adf8b1d8b72956392425217056",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261112_EVENT108_TWO_BRANCH_HISTORICAL_CUSTODY_VALIDATOR_RECOVERY_NO_TRAINING.md",
+          "blob_sha1": "61cef29c15a1a3770cf10388eac9b74e2c6bd00f",
+          "role": "Event108 human source, exact CI RED and hosted GREEN, scientific and training limitations"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261112_EVENT108_TWO_BRANCH_CUSTODY_VALIDATION_REPAIR_MAP.json",
+          "blob_sha1": "6e4e58834fa1ee160aba95e25dfb248b5da8e257",
+          "role": "Event108 machine source map, both branch pre-event heads, original negative evidence, exact source Git blobs"
+        }
+      ],
+      "change_type": "repair",
+      "what_already_existed": "Event90 comprehensive source/data/script/result primary navigation, Events1-107 and 72 nonrepeat keys, independently preserved on canonical #322 and active #460. The safety PR stack #590-#593 was already authored green, independent peer review pending.",
+      "new_work_or_result": "Restored fail-closed static chronology type validation for three legitimate preserved categories; corrected current EventN first-read validation while preserving immutable Event90 checks. Shared Event90 checker and tests same Git blobs on both branches. Author hosted static CI 27/27 #322 and 4/4 #460 pre-event heads.",
+      "negative_or_counterfactual_evidence": "Original #322 validation RED 42251870408, first patch syntax RED 43311609737 then corrected; original #460 first-read RED 42251980869; previous add/add conflict after updating only one shared source, resolved by mirroring checker. No biological inference.",
+      "test_review_scope": "Static metadata-only source validators and hostile negative tests. Exact pre-event author hosted chronology 43312645019 and handoff 43312752446, overall #322 27/27 workflows, #460 4/4. No training or model execution.",
+      "independent_review": "AUTHOR_VERIFIED_STATIC_ONLY__SEPARATE_INDEPENDENT_ACCEPTANCE_PENDING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Independent Macha full #590 and reciprocal #591-#593 reviews outstanding",
+        "No authorized V5 optimizer/backward/EMA, bitwise RT1-RT8 or private biological panel/rights",
+        "Next code change requires new exact-head source inspection, no repeated prior Stage81/TD/V79/V80 scientific execution"
+      ],
+      "historical_supersession": "Additive Event108 custody-only schema and handoff validation; Events1-107 and negative scientific results unchanged; original Event102 local WSL disclosure and Event95 resolved private V80 backup preserved.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43312645019",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43312752446",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42251870408",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42251980869"
+      ]
     }
   ]
 }

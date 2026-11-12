@@ -2181,5 +2181,40 @@
     "repair": "SOURCE_ONLY_QUARANTINE_PRESERVES_HISTORICAL_TEST_FILES",
     "status": "AUTHOR_GREEN__RECIPROCAL_INDEPENDENT_REVIEW_PENDING__NO_MERGE",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "event108_independent_audit_handoff_validator_green_and_no_repeat_20261112": {
+    "date_utc": "2026-11-12",
+    "human_path": "docs/agent/JEPA_20261112_EVENT108_TWO_BRANCH_HISTORICAL_CUSTODY_VALIDATOR_RECOVERY_NO_TRAINING.md",
+    "human_blob_sha1": "61cef29c15a1a3770cf10388eac9b74e2c6bd00f",
+    "machine_path": "results/target_discovery/unified_qualification_v1/JEPA_20261112_EVENT108_TWO_BRANCH_CUSTODY_VALIDATION_REPAIR_MAP.json",
+    "machine_blob_sha1": "6e4e58834fa1ee160aba95e25dfb248b5da8e257",
+    "audit_pr": 322,
+    "audit_pre_event_repair_head": "77a9dc54906223adf8b1d8b72956392425217056",
+    "handoff_pr": 460,
+    "handoff_pre_event_repair_head": "67cbde10ec436f24ac4f1d25afb0e395a0be6358",
+    "prior_event_count": 107,
+    "event_count_after": 108,
+    "prior_index_entries": 72,
+    "index_entries_after": 73,
+    "original_red_runs": [
+      42251870408,
+      42251980869,
+      43311609737
+    ],
+    "author_green_runs": [
+      43312645019,
+      43312752446
+    ],
+    "repaired_source_blobs": {
+      "scripts/v5/verify_jepa_continuous_chronology_20261102.py": "2b71c8ab2750937cb79515dc108433445571f51f",
+      "tests/v5/test_verify_jepa_continuous_chronology_20261102.py": "8e99bf292396d002144cd631e11fbccdfec72849",
+      "scripts/v5/verify_jepa_event90_takeover_integrity_v1.py": "dac2fbfe1cd9654282e868f002446aa1719fdcb0",
+      "tests/v5/test_verify_jepa_event90_takeover_integrity_v1.py": "ebc185aab0d187bfd92d6701818a4400eff14c03",
+      ".github/workflows/jepa-event91-latest-handoff-pointer-no-training.yml": "2eaef7d66111c2e80e97ab7ba19cfeaaf1b669c5"
+    },
+    "classification": "CUSTODY_VALIDATOR_REPAIR_ONLY__NO_BIOLOGY__NO_TRAINING",
+    "peer_review": "AUTHOR_GREEN__INDEPENDENT_REVIEW_PENDING",
+    "history_immutable": true,
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
