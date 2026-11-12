@@ -95,14 +95,14 @@ def _current_or_isolated_first_read():
     if actual.is_file():
         return actual.read_text(encoding="utf-8")
     return (
-        "# READ FIRST — EVENT107 (synthetic test fixture)\\n\\n"
+        "# READ FIRST — EVENT107 (synthetic test fixture)\n\n"
         "**Canonical historical audit [#322](https://github.com/dushyant-mishra/"
         "sea-ad-jepa-agent/pull/322) exact head "
         "`aed40a3deb98932758b64785a328dd8f161ef39b`.** "
         "[Active handoff #460](https://github.com/dushyant-mishra/"
         "sea-ad-jepa-agent/pull/460). "
         "Read Event90 and retain the source record. " + v.AUTHORITY +
-        "\\n\\n---\\n"
+        "\n\n---\n"
     )
 
 
@@ -126,6 +126,6 @@ def test_latest_first_read_refuses_invalid_canonical_head():
 
 def test_latest_first_read_refuses_erased_original_event90_reference():
     pointer = _current_or_isolated_first_read()
-    top = pointer.split("\\n---\\n", 1)[0].replace("Event90", "Obliterated90")
+    top = pointer.split("\n---\n", 1)[0].replace("Event90", "Obliterated90")
     with pytest.raises(ValueError, match="HANDOFF_NEW_FIRST_READ_INCOMPLETE"):
         v.verify_latest_first_read(top)
