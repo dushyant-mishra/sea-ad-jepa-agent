@@ -1,6 +1,6 @@
 # READ FIRST — EVENT110 (2026-11-12): SOL INDEPENDENT #594 CI COLLECTION REVIEW, DRAFT #595 SAFE REPAIR — NO TRAINING
 
-**Canonical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `5afb5e886426848eeac58f5d8e89dee77772bb64` now has 110 append-only chronology events / 75 no-repeat source keys.** [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) remains the first-read. Continue with Event109 (Macha's 4 earlier defects) → Event108 → Event104 → Event90 original scientific source/data/scripts/results and historical negatives. Do NOT repeat Stage81, TD57B/59, R5 or #314 real replay, FULL104/Level4, V79/V80 or historical synthetic fit experiments.
+**Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `5afb5e886426848eeac58f5d8e89dee77772bb64` now has 110 append-only chronology events / 75 no-repeat source keys.** [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) remains the first-read. Continue with Event109 (Macha's 4 earlier defects) → Event108 → Event104 → Event90 original scientific source/data/scripts/results and historical negatives. Do NOT repeat Stage81, TD57B/59, R5 or #314 real replay, FULL104/Level4, V79/V80 or historical synthetic fit experiments.
 
 **Event110 source documents mirrored byte-identically on #322/#460:**
 - Human `docs/agent/JEPA_20261112_EVENT110_SOL_INDEPENDENT_594_REVIEW_595_CI_SCOPE_PYTEST_ENV_REPAIR_NO_TRAINING.md` Git blob `fb301c0e0fe8a91127f345cd398a61af077f8d8e`.
