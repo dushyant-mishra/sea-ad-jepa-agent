@@ -4,6 +4,7 @@ on:
     paths:
       - scripts/v5/jepa_v5_live_model_u0_journal_connector_v1.py
       - tests/test_jepa_v5_live_model_u0_journal_connector_v1.py
+      - tests/test_jepa_v5_live_model_u0_journal_connector_v1_macha_review_red.py
       - scripts/v5/jepa_v5_structured_journal_preflight_v1.py
       - scripts/v5/jepa_v5_pipeline_identity_contract_v1.py
       - results/target_discovery/unified_qualification_v1/JEPA_V5_DEV2048_PIPELINE_IDENTITY_CONTRACT_V1.json
@@ -44,6 +45,7 @@ jobs:
           from pathlib import Path
           allowlist = [
               "tests/test_jepa_v5_live_model_u0_journal_connector_v1.py",
+              "tests/test_jepa_v5_live_model_u0_journal_connector_v1_macha_review_red.py",
               "tests/test_jepa_v5_pipeline_identity_contract_v1_macha.py",
               "tests/test_jepa_v5_source_data_custody_gate_v1.py",
               "tests/test_jepa_v5_structured_journal_preflight_v1.py",
@@ -66,7 +68,7 @@ jobs:
                   assert name_at_call not in forbidden_calls, (
                       f"FORBIDDEN_OPTIMIZER_BACKWARD_EMA_CALL_IN_TEST: "
                       f"{name}:{call.lineno}:{name_at_call}")
-          print("ALL_5_EXPLICIT_NO_STEP_NO_BACKWARD_NO_EMA_TEST_FILES_AST_VERIFIED")
+          print("ALL_6_EXPLICIT_NO_STEP_NO_BACKWARD_NO_EMA_TEST_FILES_AST_VERIFIED")
           PY
       - name: Actual PR224 original V5 modules initialized U0 ONLY, read-only capture + V2 journal, hostility tests
         env:
@@ -79,6 +81,7 @@ jobs:
         run: |
           python -m pytest -q \
             tests/test_jepa_v5_live_model_u0_journal_connector_v1.py \
+            tests/test_jepa_v5_live_model_u0_journal_connector_v1_macha_review_red.py \
             tests/test_jepa_v5_pipeline_identity_contract_v1_macha.py \
             tests/test_jepa_v5_source_data_custody_gate_v1.py
       - name: Original structured journal and no-optimizer direct read-only test unchanged

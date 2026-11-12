@@ -1,0 +1,34 @@
+name: V5 Macha review of #590-#593 - static CI/quarantine checks (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - tests/test_ci_macha_review_592_593_static_red.py
+      - scripts/v5/jepa_v5_ci_explicit_nonstepping_allowlist_v1.py
+      - scripts/v5/jepa_v5_legacy_step_ci_quarantine_v1.py
+      - .github/workflows/*.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-unittest-no-torch-no-pytest:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Static unittest only (no torch, no pytest discovery, no model)
+        env:
+          PYTHONPATH: .
+        run: python -m unittest -v tests.test_ci_macha_review_592_593_static_red
+      - name: Every explicit inventory and the legacy quarantine verify on this tree
+        run: |
+          python scripts/v5/jepa_v5_ci_explicit_nonstepping_allowlist_v1.py --suite full --verify
+          python scripts/v5/jepa_v5_ci_explicit_nonstepping_allowlist_v1.py --suite integration --verify
+          python scripts/v5/jepa_v5_ci_explicit_nonstepping_allowlist_v1.py --suite thread --verify
+          python scripts/v5/jepa_v5_legacy_step_ci_quarantine_v1.py --verify

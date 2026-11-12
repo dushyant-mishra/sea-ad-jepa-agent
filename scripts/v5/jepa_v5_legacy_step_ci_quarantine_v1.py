@@ -33,6 +33,43 @@ def _refuse(message: str) -> None:
     raise RuntimeError("REFUSE_LEGACY_V5_AUTOMATIC_TRAINING_TESTS__" + message)
 
 
+# Macha review of #593: matching the literal "python -m pytest" misses
+# `pytest ...`, `python3 -m pytest`, `python -c "..."`, a local composite
+# action or a shell script. Inside a quarantined section, every command
+# must be one of these exact static forms, and only these actions are used.
+ALLOWED_ACTIONS = frozenset({"actions/checkout@v4", "actions/setup-python@v5"})
+PY_COMPILE = re.compile(r"python -m py_compile(?: src/sea_ad_jepa/[A-Za-z0-9_/]+\.py)+")
+
+
+def _run_commands(section: str) -> list[str]:
+    """Each `run:` command, block scalars joined, continuations removed."""
+    lines, commands, i = section.splitlines(), [], 0
+    while i < len(lines):
+        found = re.match(r"^(\s*)(?:-\s+)?run:\s*(.*)$", lines[i])
+        i += 1
+        if not found:
+            continue
+        indent, value = len(found.group(1)), found.group(2).strip()
+        if value[:1] in ("|", ">"):
+            block = []
+            while i < len(lines) and (not lines[i].strip() or
+                                      len(lines[i]) - len(lines[i].lstrip()) > indent):
+                block.append(lines[i].strip())
+                i += 1
+            value = " ".join(block)
+        commands.append(" ".join(value.replace("\\", " ").split()))
+    return commands
+
+
+def _require_static_only(section: str, path: str) -> None:
+    for command in _run_commands(section):
+        if command != GUARD and PY_COMPILE.fullmatch(command) is None:
+            _refuse("NON_STATIC_COMMAND_IN_QUARANTINED_ROUTE:" + path)
+    for action in re.findall(r"(?m)^\s*(?:-\s+)?uses:\s*(\S+)", section):
+        if action not in ALLOWED_ACTIONS:
+            _refuse("UNREVIEWED_ACTION_IN_QUARANTINED_ROUTE:" + path)
+
+
 def verify_quarantine(repo_root: Path = ROOT) -> dict:
     """No imports from test or V5 source; preserves original failing evidence."""
     for path in WORKFLOWS:
@@ -50,6 +87,7 @@ def verify_quarantine(repo_root: Path = ROOT) -> dict:
             _refuse("STEP_CAPABLE_TEST_EXECUTION_REMAINS:" + path)
         if re.search(r"(?m)^\s*run:\s*.*\$\(", source):
             _refuse("SHELL_DYNAMIC_EXECUTION_REMAINS:" + path)
+        _require_static_only(source.split("\njobs:", 1)[-1], path)
     signals = {}
     for path, required in HISTORICAL_STEP_TESTS.items():
         file = repo_root / path

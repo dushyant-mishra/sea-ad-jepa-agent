@@ -27,7 +27,13 @@ jobs:
       - name: Sol #584 tests + Macha #584 RED/controls (+ strict closure after repair)
         env:
           PYTHONPATH: .
-        run: python -m pytest -q -rA tests/test_jepa_v5_source_data_custody_gate_v1*.py
+        # Explicit files only (Macha review of #592: no glob-built pytest argv).
+        run: |
+          python -m pytest -q -rA --noconftest \
+            tests/test_jepa_v5_source_data_custody_gate_v1.py \
+            tests/test_jepa_v5_source_data_custody_gate_v1_macha_584_closure.py \
+            tests/test_jepa_v5_source_data_custody_gate_v1_macha_584_review_controls.py \
+            tests/test_jepa_v5_source_data_custody_gate_v1_macha_584_review_red.py
       - name: Fetch ONLY PR547's public synthetic FIT artifact
         env:
           GH_TOKEN: ${{ github.token }}
