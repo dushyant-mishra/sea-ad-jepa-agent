@@ -1,0 +1,69 @@
+{
+  "schema": "JEPA_EVENT109_MACHA_590_591_592_593_REVIEW_AND_594_REPAIR_SOURCE_MAP_V1",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "assignment": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/590#issuecomment-6690417955",
+  "reviewed_heads": {
+    "590": "a3a59eb934186a8ab329eb2b0b4385b3948d1f0a",
+    "591": "ff1141fefa1377ac394be530c1236b682805e5e4",
+    "592": "7e4c45ae7991ed79d136922fd8d157ce847f9f47",
+    "593": "612c1b2ff86c225eb9ba8cba5b0db306a45b41af"
+  },
+  "verdicts": {
+    "590": "REPAIR_REQUIRED_SCOPED__AUTHENTICATED_REPO_ROOT_NOT_LOADED_MODULES",
+    "591": "REPAIR_REQUIRED_SCOPED__U0_ONLY_POLICY_OPT_IN__LEGACY_LANE_DOWNGRADE",
+    "592": "REPAIR_REQUIRED_SCOPED__CONFTEST_INI_ALIASING_AND_587_GLOB_ROUTE",
+    "593": "REPAIR_REQUIRED_SCOPED__QUARANTINE_BLOCKS_ONLY_PYTHON_M_PYTEST_SPELLING"
+  },
+  "repair_594": {
+    "branch": "review/v5-macha-590-593-loaded-source-u0-lane-ci-guards-20261112",
+    "base": "612c1b2ff86c225eb9ba8cba5b0db306a45b41af",
+    "red": "8b58e4b7e8208a22e20110584732d3d70e2eb1de",
+    "fix": "a3d35716d1eacb24b3fc4cf6c99fe758e0619d56",
+    "preflight_blob_after": "3a4cd78e8e3a73983177458c6870f58a5f477c6e",
+    "contract_sha256_after": "590e4e66b170f7219cd77fa319fc9dc441bce8b7831cf5d44eff2968b8c3c8d6",
+    "red_runs": {
+      "43312015539": "2 failed (Macha connector REDs), 72 passed per Python",
+      "43312015400": "12 failing static subtests per Python"
+    },
+    "green_runs": {
+      "43312352683": "74 + 56 passed; 6 files AST-verified",
+      "43312352708": "480 passed, 37 skipped; contract 590e4e66 verified",
+      "43312352279": "8 static tests OK; inventories 41/33/10; quarantine verified"
+    },
+    "green_jobs": "24/24 (12 workflows)",
+    "local": "WSL Py3.11.15 torch2.7.0: connector 4 passed; full inventory 508 passed 9 skipped; #590 files 70 passed"
+  },
+  "red_evidence": {
+    "590": "copy of sea_ad_jepa with forward replaced captured as ACTUAL_ORIGINAL_V5 U0 (CAPTURED_AS_AUTHENTIC)",
+    "591": "authentic U0 opened in legacy lane without original_v5_u0_only; fabricated u1 UPDATE_COMMITTED",
+    "592": "conftest.py and ini addopts accepted; 5 alias/dynamic step forms accepted; jepa-v5-584 workflow globbed pytest argv",
+    "593": "bare pytest, python3 -m pytest, python -c and local action accepted in quarantined route"
+  },
+  "static_workflow_scan": {
+    "workflows": 33,
+    "automatic_step_routes_after_593": 0,
+    "remaining_glob_route": "jepa-v5-584-executed-closure-macha-no-training.yml (Macha #587)",
+    "branch_scoped_not_dispatched": [
+      "d1-independent-closure-ci.yml"
+    ]
+  },
+  "observation": "connector tests skip in the #592 full inventory run: JEPA_PUBLIC_DEV_FIT_ZIP not set there",
+  "comments": {
+    "590": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/590#issuecomment-6836700456",
+    "591": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/591#issuecomment-6836700947",
+    "592": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/592#issuecomment-6836701448",
+    "593": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/593#issuecomment-6836701902"
+  },
+  "execution": {
+    "forward": false,
+    "backward": false,
+    "optimizer_step": false,
+    "ema": false,
+    "model_construction_only": true,
+    "gpu": false,
+    "real_rna": false,
+    "sealed_controller": false,
+    "merges": 0,
+    "stage4": false
+  }
+}

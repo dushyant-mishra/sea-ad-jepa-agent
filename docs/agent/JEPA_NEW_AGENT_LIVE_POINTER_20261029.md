@@ -1,3 +1,38 @@
+# READ FIRST — EVENT109 (2026-11-12): MACHA INDEPENDENT VERDICTS #590/#591/#592/#593 — ALL REPAIR_REQUIRED (SCOPED) — RED→GREEN REPAIR #594 — NO TRAINING
+
+**Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `9ce8d72a13079637fb979d6e1d6911b08bc79aa4`, now 109 append-only chronology events / 74 no-repeat source keys.** [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) stays the first read. Read this section, then Sol's Event108 and Events 107–104 below, then the original Event90 human `docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md` and machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json`.
+
+**Event109 sources** (byte-identical on #322 and #460):
+- human `docs/agent/JEPA_20261112_EVENT109_MACHA_INDEPENDENT_VERDICTS_590_591_592_593_REPAIR_594_NO_TRAINING.md` (blob `2695caeae7bef253c612ea3bffd25728d31fe161`);
+- machine `results/target_discovery/unified_qualification_v1/JEPA_20261112_EVENT109_MACHA_590_593_REVIEW_594_REPAIR_SOURCE_MAP.json` (blob `e03c76f6a85e09edbc5eb5ee39f8ebe1a52b85e2`).
+
+**Verdicts (Macha, at Sol's exact heads; neither agent self-accepts):**
+
+| PR | Verdict | Defect |
+|---|---|---|
+| #590 `a3a59eb9` | REPAIR_REQUIRED (scoped) | The connector verified the 35 files under `repo_root` but recorded whatever `sea_ad_jepa` was imported. A substituted copy (edited `forward`, identical initialization) was captured as original u0. |
+| #591 `ff1141fe` | REPAIR_REQUIRED (scoped) | The u0-only policy was opt-in. Authentic u0 opened in the legacy lane without the lock, and a fabricated u1 became `UPDATE_COMMITTED`. |
+| #592 `7e4c45ae` | REPAIR_REQUIRED (scoped) | `conftest.py`, ini `addopts` and aliased steps passed the guard, and Macha's own #587 workflow still globbed pytest argv. |
+| #593 `612c1b2f` | REPAIR_REQUIRED (scoped) | Only the `python -m pytest` spelling was blocked; `pytest`, `python3 -m pytest`, `python -c` and a local action passed. |
+
+**Repair [#594](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/594), stacked on #593:**
+- the connector checks that every loaded module is the verified file;
+- the u0-only lane is derived from the bytes, and the contract is repinned (`590e4e66…`);
+- conftest, ini, alias, glob, directory and discover routes are refused;
+- the quarantine allows only exact static commands.
+
+Hosted RED `8b58e4b7` (2 + 12 intended failures) → GREEN `a3d35716`: **12/12 workflows, 24/24 jobs** on Python 3.11.9 and 3.12.7.
+
+**Execution.** Only model construction ran (as in #590's own tests), with step, backward and grad patched to raise. No forward pass, EMA update, GPU, real RNA, sealed V80 controller, merge or Stage4.
+
+**Next.**
+- Sol reviews #594.
+- Still open: teacher target, physical probe panel, real-data rights, signed D1 custody and bitwise restart, and any optimizer/EMA authority.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT108 (2026-11-12): BOTH HISTORICAL CUSTODY CHECKERS REPAIRED, EXACT-HEAD STATIC CI GREEN — NO TRAINING
 
 **Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `ae7f6ec708c4aa7a7dbf9cf77b41b0419bc3fd66`, now 108 append-only chronology events / 73 no-repeat source keys.** [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) remains the live first-read. Read Event108 → Event107 → Events106–104 → **Event90** original complete primary science, data, source, scripts/results ledger. Never redo completed TD19/TD57B/TD59/R5, original real corrected #314, Level4/FULL104, V79/V80 or historical Stage81 failures to obtain a positive metric.
