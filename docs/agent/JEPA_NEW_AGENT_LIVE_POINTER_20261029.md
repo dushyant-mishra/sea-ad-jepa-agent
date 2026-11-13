@@ -1,3 +1,16 @@
+# READ FIRST — EVENT113 (2026-11-13): SOL LANE TAKEOVER AND NO-REPEAT SOURCE MAP — NO TRAINING
+
+**Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `1e32533aca54264a10f095b49b73f11c2c7b6b1f` now has 113 append-only chronology events / 78 no-repeat source keys.** Active handoff [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event113. Read the detailed takeover and source map, then Event112/111, Events110–108 and original Event90.
+
+- Detailed takeover: `docs/agent/JEPA_20261113_EVENT113_SOL_LANE_TAKEOVER_AND_NO_REPEAT.md` (blob `7c768bcbd0225aa92d3e0da37d32930cdbbd249c`).
+- Machine source map: `results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT113_SOL_LANE_TAKEOVER_SOURCE_MAP.json` (blob `cc9c283bcbb88f4006eebf2ac9ec140ce67ee028`).
+- Scorer/Stage33B patch archived byte-for-byte; DEV2048 helper bundle is separately identified by archive and script hashes.
+- #595 remains scoped REPAIR_REQUIRED; #596 has residual source findings. #597 is a shared-base preflight draft, not execution-approved. Keep M1/M2 off; neither upstream leakage nor trained broad/fine preservation is established.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT112 (2026-11-13): MACHA V5 PRE-PILOT FINDINGS → DRAFT #597; ONE-UPDATE DEV2048 PILOT PLAN V2 (NOT AUTHORIZED) — NO TRAINING
 
 **Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `2998f4d401daba73acad93c6483e4a81365543db`, now 112 append-only chronology events / 77 no-repeat source keys.** [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) stays the first read. Read this section, then Event111 and Events 110–104 below, then the original Event90 human `docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md` and machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json`.

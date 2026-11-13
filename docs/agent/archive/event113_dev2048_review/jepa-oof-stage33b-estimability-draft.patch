@@ -1,0 +1,478 @@
+diff --git a/src/sea_ad_jepa/eval/oof_metrics.py b/src/sea_ad_jepa/eval/oof_metrics.py
+index b2792f6..09a3909 100644
+--- a/src/sea_ad_jepa/eval/oof_metrics.py
++++ b/src/sea_ad_jepa/eval/oof_metrics.py
+@@ -8,30 +8,66 @@ from scipy.stats import pearsonr, spearmanr
+ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+ 
+ 
++def _finite_pairs(y_true: np.ndarray, y_pred: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
++    truth = np.asarray(y_true, dtype=float)
++    prediction = np.asarray(y_pred, dtype=float)
++    if truth.ndim != 1 or truth.shape != prediction.shape:
++        raise ValueError("correlation inputs must be aligned one-dimensional arrays")
++    keep = np.isfinite(truth) & np.isfinite(prediction)
++    return truth[keep], prediction[keep]
++
++
++def correlation_result(
++    y_true: np.ndarray, y_pred: np.ndarray, method: str = "spearman"
++) -> dict[str, float | str | int | None]:
++    """Report finite-pair correlation without treating non-estimability as zero."""
++    if method not in {"pearson", "spearman"}:
++        raise ValueError(f"unknown correlation method: {method}")
++    truth, prediction = _finite_pairs(y_true, y_pred)
++    n = len(truth)
++    value = None
++    reason = None
++    if n < 3:  # Preserve the existing scorer's minimum pair policy.
++        reason = "INSUFFICIENT_VALID_PAIRS"
++    else:
++        constant_truth = bool(np.all(truth == truth[0]))
++        constant_prediction = bool(np.all(prediction == prediction[0]))
++        if constant_truth and constant_prediction:
++            reason = "CONSTANT_TARGET_AND_PREDICTION"
++        elif constant_truth:
++            reason = "CONSTANT_TARGET"
++        elif constant_prediction:
++            reason = "CONSTANT_PREDICTION"
++        else:
++            stat = pearsonr if method == "pearson" else spearmanr
++            candidate = float(stat(truth, prediction).statistic)
++            if math.isfinite(candidate):
++                value = candidate
++            else:
++                reason = "NONFINITE_CORRELATION"
++    return {"value": value, "status": "ESTIMATED" if value is not None else "NOT_ESTIMABLE",
++            "reason": reason, "n_valid_pairs": n}
++
++
+ def safe_corr(y_true: np.ndarray, y_pred: np.ndarray, method: str = "spearman") -> float:
+-    y_true = np.asarray(y_true, dtype=float)
+-    y_pred = np.asarray(y_pred, dtype=float)
+-    ok = np.isfinite(y_true) & np.isfinite(y_pred)
+-    y_true = y_true[ok]
+-    y_pred = y_pred[ok]
+-    if len(y_true) < 3 or np.nanstd(y_true) == 0 or np.nanstd(y_pred) == 0:
+-        return 0.0
+-    try:
+-        value = pearsonr(y_true, y_pred).statistic if method == "pearson" else spearmanr(y_true, y_pred).statistic
+-        return 0.0 if pd.isna(value) else float(value)
+-    except Exception:
+-        return 0.0
++    """Numeric compatibility adapter: undefined is NaN, never zero."""
++    value = correlation_result(y_true, y_pred, method)["value"]
++    return float(value) if value is not None else float("nan")
+ 
+ 
+-def regression_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, float]:
+-    y_true = np.asarray(y_true, dtype=float)
+-    y_pred = np.asarray(y_pred, dtype=float)
+-    ok = np.isfinite(y_true) & np.isfinite(y_pred)
+-    y_true = y_true[ok]
+-    y_pred = y_pred[ok]
++def regression_metrics(
++    y_true: np.ndarray, y_pred: np.ndarray
++) -> dict[str, float | str | int | None]:
++    y_true, y_pred = _finite_pairs(y_true, y_pred)
++    metrics = {}
++    for method in ("spearman", "pearson"):
++        result = correlation_result(y_true, y_pred, method)
++        key = f"pooled_oof_{method}"
++        metrics[key] = result["value"]
++        for field in ("status", "reason", "n_valid_pairs"):
++            metrics[f"{key}_{field}"] = result[field]
+     return {
+-        "pooled_oof_spearman": safe_corr(y_true, y_pred, "spearman"),
+-        "pooled_oof_pearson": safe_corr(y_true, y_pred, "pearson"),
++        **metrics,
+         "r2": float(r2_score(y_true, y_pred)) if len(y_true) >= 2 else float("nan"),
+         "mae": float(mean_absolute_error(y_true, y_pred)) if len(y_true) else float("nan"),
+         "rmse": float(math.sqrt(mean_squared_error(y_true, y_pred))) if len(y_true) else float("nan"),
+@@ -46,6 +82,8 @@ def donor_bootstrap_ci(
+     n_resamples: int = 500,
+     seed: int = 7,
+ ) -> pd.DataFrame:
++    if n_resamples < 1:
++        raise ValueError("n_resamples must be positive")
+     rng = np.random.default_rng(seed)
+     rows = []
+     for keys, group in predictions.groupby(group_cols, dropna=False):
+@@ -59,14 +97,21 @@ def donor_bootstrap_ci(
+             sampled_rows = pd.concat([group[group["donor_id"].astype(str) == donor] for donor in sampled], ignore_index=True)
+             values.append(safe_corr(sampled_rows[target_col].to_numpy(), sampled_rows[pred_col].to_numpy(), "spearman"))
+         arr = np.asarray(values, dtype=float)
++        n_estimable = int(np.isfinite(arr).sum())
++        # Do not publish a conditional interval as if all resamples were valid.
++        complete = n_estimable == n_resamples
++        quantiles = np.percentile(arr, [2.5, 50.0, 97.5]).tolist() if complete else [None] * 3
+         row = {col: key for col, key in zip(group_cols, keys)}
+         row.update(
+             {
+                 "n_bootstrap_resamples": int(n_resamples),
+-                "spearman_ci_low": float(np.nanpercentile(arr, 2.5)),
+-                "spearman_ci_median": float(np.nanpercentile(arr, 50.0)),
+-                "spearman_ci_high": float(np.nanpercentile(arr, 97.5)),
+-                "uncertainty_status": "complete",
++                "n_bootstrap_estimable": n_estimable,
++                "n_bootstrap_not_estimable": n_resamples - n_estimable,
++                "spearman_ci_low": quantiles[0],
++                "spearman_ci_median": quantiles[1],
++                "spearman_ci_high": quantiles[2],
++                "uncertainty_status": ("complete" if complete else
++                                       "incomplete" if n_estimable else "not_estimable"),
+             }
+         )
+         rows.append(row)
+diff --git a/tests/test_oof_correlation_estimability.py b/tests/test_oof_correlation_estimability.py
+new file mode 100644
+index 0000000..d6a36f9
+--- /dev/null
++++ b/tests/test_oof_correlation_estimability.py
+@@ -0,0 +1,55 @@
++"""Numeric OOF fixtures only; no model, training, or external data."""
++import json
++import math
++import unittest
++
++import pandas as pd
++
++from sea_ad_jepa.eval.oof_metrics import donor_bootstrap_ci, regression_metrics, safe_corr
++
++
++class OofCorrelationEstimabilityTests(unittest.TestCase):
++    def test_measured_zero_and_undefined_survive_json(self):
++        for method in ('pearson', 'spearman'):
++            key = f'pooled_oof_{method}'
++            zero = regression_metrics([-1, 0, 1], [1, -2, 1])
++            missing = regression_metrics([-1, 0, 1], [1, 1, 1])
++            for result in (zero, missing):
++                fields = {k: v for k, v in result.items() if k.startswith(key)}
++                self.assertEqual(json.loads(json.dumps(fields, allow_nan=False)), fields)
++            self.assertAlmostEqual(zero[key], 0.0, places=14)
++            self.assertEqual(zero[key + '_status'], 'ESTIMATED')
++            self.assertIsNone(missing[key])
++            self.assertEqual(missing[key + '_status'], 'NOT_ESTIMABLE')
++            self.assertEqual(missing[key + '_reason'], 'CONSTANT_PREDICTION')
++            self.assertEqual(missing[key + '_n_valid_pairs'], 3)
++
++    def test_pair_filtering_constant_target_and_scalar_adapter(self):
++        self.assertTrue(math.isnan(safe_corr([1, 2, 3], [4, 4, 4])))
++        low = regression_metrics([1, 2, 3], [3, float('inf'), 2])
++        self.assertEqual(low['pooled_oof_spearman_reason'], 'INSUFFICIENT_VALID_PAIRS')
++        self.assertEqual(low['pooled_oof_spearman_n_valid_pairs'], 2)
++        const = regression_metrics([1, 1, 1], [1, 2, 3])
++        self.assertEqual(const['pooled_oof_spearman_reason'], 'CONSTANT_TARGET')
++
++    def test_bootstrap_reports_complete_partial_and_unestimable(self):
++        def run(donors, pred):
++            data = pd.DataFrame({'group': ['a'] * 3, 'donor_id': donors,
++                                 'y_true': [1, 2, 3], 'y_pred': pred})
++            return donor_bootstrap_ci(data, ['group'], n_resamples=40).iloc[0]
++        complete = run(['a', 'a', 'a'], [1, 2, 3])
++        self.assertEqual(complete.uncertainty_status, 'complete')
++        self.assertAlmostEqual(complete.spearman_ci_median, 1.0)
++        partial = run(['a', 'b', 'c'], [1, 2, 3])
++        self.assertEqual(partial.uncertainty_status, 'incomplete')
++        self.assertGreater(partial.n_bootstrap_estimable, 0)
++        self.assertGreater(partial.n_bootstrap_not_estimable, 0)
++        self.assertTrue(pd.isna(partial.spearman_ci_median))
++        none = run(['a', 'b', 'c'], [1, 1, 1])
++        self.assertEqual(none.uncertainty_status, 'not_estimable')
++        self.assertEqual(none.n_bootstrap_estimable, 0)
++        self.assertTrue(pd.isna(none.spearman_ci_low))
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/scripts/run_stage33b_external_pretrained_jepa_v1.py b/scripts/run_stage33b_external_pretrained_jepa_v1.py
+--- a/scripts/run_stage33b_external_pretrained_jepa_v1.py
++++ b/scripts/run_stage33b_external_pretrained_jepa_v1.py
+@@ -286,3 +286,3 @@
+-def compute_metrics(oof: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
++def compute_metrics(oof: pd.DataFrame, required_targets: list[str]) -> tuple[pd.DataFrame, pd.DataFrame]:
+     rows = []
+     for keys, group in oof.groupby(["condition", "target", "target_key", "target_alias"]):
+@@ -298,14 +298,36 @@
+             }
+         )
+-    target = pd.DataFrame(rows)
+-    mean = (
+-        target.groupby("condition", as_index=False)
+-        .agg(
+-            mean_pooled_oof_spearman=("pooled_oof_spearman", "mean"),
+-            min_target_pooled_oof_spearman=("pooled_oof_spearman", "min"),
+-            n_targets=("target_key", "nunique"),
+-        )
+-        .sort_values("mean_pooled_oof_spearman", ascending=False)
+-    )
++    required = set(required_targets)
++    if not required or len(required) != len(required_targets):
++        raise ValueError("required_targets must be nonempty and unique")
++    metric = "pooled_oof_spearman"
++    status = metric + "_status"
++    target = pd.DataFrame(rows) if rows else pd.DataFrame(columns=[
++        "condition", "target", "target_key", "target_alias", "n_donors", metric, status,
++    ])
++    target[metric] = pd.to_numeric(target[metric], errors="raise")
++    summaries = []
++    for condition in dict.fromkeys([*EXTERNAL_CONDITIONS, REF27, REF31, *target["condition"]]):
++        panel = target[(target["condition"] == condition) & target["target_key"].isin(required)]
++        counts = panel["target_key"].value_counts()
++        duplicates = set(counts[counts > 1].index)
++        valid = panel[(panel[status] == "ESTIMATED") & np.isfinite(panel[metric])
++                      & ~panel["target_key"].isin(duplicates)]
++        observed, estimable = set(counts.index), set(valid["target_key"])
++        complete = estimable == required
++        summaries.append({
++            "condition": condition,
++            "mean_pooled_oof_spearman": float(valid[metric].mean()) if complete else np.nan,
++            "min_target_pooled_oof_spearman": float(valid[metric].min()) if complete else np.nan,
++            "n_targets": len(observed),
++            "n_required_targets": len(required),
++            "n_estimable_targets": len(estimable),
++            "missing_required_targets": ";".join(sorted(required - observed)),
++            "nonestimable_required_targets": ";".join(sorted(observed - estimable)),
++            "duplicate_required_targets": ";".join(sorted(duplicates)),
++            "estimability_status": "ESTIMATED" if complete else "NOT_ESTIMABLE",
++        })
++    mean = pd.DataFrame(summaries).sort_values(
++        "mean_pooled_oof_spearman", ascending=False, kind="stable")
+     return target, mean
+ 
+@@ -313,15 +335,20 @@
+ def audits_and_passfail(cfg: dict[str, Any], oof: pd.DataFrame, target: pd.DataFrame, mean: pd.DataFrame, external_audit: dict[str, Any]) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+     required = set(cfg["required_targets"])
+-    ext_mean = mean[mean["condition"].isin(EXTERNAL_CONDITIONS)].copy()
+-    best = ext_mean.iloc[0]
+     mean_map = mean.set_index("condition")["mean_pooled_oof_spearman"]
+-    graph_specific = bool(
+-        mean_map.get(EXT_REAL, -999) > mean_map.get(EXT_ID, 999)
+-        and mean_map.get(EXT_REAL, -999) > mean_map.get(EXT_STRICT, 999)
+-    )
+-    ref27_target = target[target["condition"] == REF27][["target_key", "pooled_oof_spearman"]].rename(columns={"pooled_oof_spearman": "ref27_target_spearman"})
+-    best_target = target[target["condition"] == best.condition].merge(ref27_target, on="target_key", how="left")
+-    best_target["delta_vs_stage27c"] = best_target["pooled_oof_spearman"] - best_target["ref27_target_spearman"]
+-    target_gate = bool((best_target["delta_vs_stage27c"] >= float(cfg["max_target_drop_vs_stage27c_reference"])).all())
++    external_scores = mean_map.reindex(EXTERNAL_CONDITIONS)
++    ranking_estimable = bool(np.isfinite(external_scores).all())
++    best_condition = external_scores.idxmax() if ranking_estimable else None
++    best_score = float(external_scores[best_condition]) if ranking_estimable else np.nan
++    reference_estimable = bool(np.isfinite(mean_map.get(REF27, np.nan)))
++    performance_estimable = ranking_estimable and reference_estimable
++    graph_estimable = bool(np.isfinite(mean_map.reindex([EXT_REAL, EXT_ID, EXT_STRICT])).all())
++    graph_specific = bool(graph_estimable and mean_map[EXT_REAL] > mean_map[EXT_ID]
++                          and mean_map[EXT_REAL] > mean_map[EXT_STRICT])
++    target_gate = False
++    if performance_estimable:
++        panel = target[target["target_key"].isin(required)]
++        ref = panel[panel["condition"] == REF27].set_index("target_key")["pooled_oof_spearman"]
++        best = panel[panel["condition"] == best_condition].set_index("target_key")["pooled_oof_spearman"]
++        target_gate = bool(((best - ref) >= float(cfg["max_target_drop_vs_stage27c_reference"])).all())
+     leakage_checks = {
+         "external_labels_used_for_supervised_pathology_prediction": False,
+@@ -341,5 +368,7 @@
+                 "right_condition": EXT_ID,
+                 "delta_mean_pooled_oof_spearman": float(mean_map.get(EXT_REAL, np.nan) - mean_map.get(EXT_ID, np.nan)),
+-                "graph_gate_pass": bool(mean_map.get(EXT_REAL, -999) > mean_map.get(EXT_ID, 999)),
++                "estimability_status": ("ESTIMATED" if np.isfinite(mean_map.reindex([EXT_REAL, EXT_ID])).all()
++                                        else "NOT_ESTIMABLE"),
++                "graph_gate_pass": bool(mean_map.get(EXT_REAL, np.nan) > mean_map.get(EXT_ID, np.nan)),
+             },
+             {
+@@ -348,23 +377,28 @@
+                 "right_condition": EXT_STRICT,
+                 "delta_mean_pooled_oof_spearman": float(mean_map.get(EXT_REAL, np.nan) - mean_map.get(EXT_STRICT, np.nan)),
+-                "graph_gate_pass": bool(mean_map.get(EXT_REAL, -999) > mean_map.get(EXT_STRICT, 999)),
++                "estimability_status": ("ESTIMATED" if np.isfinite(mean_map.reindex([EXT_REAL, EXT_STRICT])).all()
++                                        else "NOT_ESTIMABLE"),
++                "graph_gate_pass": bool(mean_map.get(EXT_REAL, np.nan) > mean_map.get(EXT_STRICT, np.nan)),
+             },
+         ]
+     )
+     run_pass = bool(
+-        required.issubset(set(target[target["condition"].isin(EXTERNAL_CONDITIONS)]["target_key"]))
++        performance_estimable
+         and leakage_checks["leakage_audit_pass"]
+         and external_audit["stage32c_ready"]
+     )
+     performance_pass = bool(
+-        best.mean_pooled_oof_spearman > float(cfg["stage27c_reference_mean"])
+-        and best.mean_pooled_oof_spearman >= float(cfg["minimum_success_threshold"])
++        run_pass
++        and best_score > float(cfg["stage27c_reference_mean"])
++        and best_score >= float(cfg["minimum_success_threshold"])
+         and target_gate
+     )
+-    if performance_pass and not graph_specific:
++    if not performance_estimable:
++        interpretation = "Internal performance is not estimable: at least one required external condition or Stage 27C reference lacks an estimable required target."
++    elif performance_pass and not graph_specific:
+         interpretation = "External pretraining improved the internal SEA-AD benchmark, but graph-specific utility was not established."
+     elif graph_specific:
+         interpretation = "Internal graph-control support observed under external pretraining; this is not external validation or causal evidence."
+-    elif mean_map.get(EXT_REAL, -999) > mean_map.get(EXT_STRICT, 999) and mean_map.get(EXT_REAL, -999) <= mean_map.get(EXT_ID, 999):
++    elif mean_map[EXT_REAL] > mean_map[EXT_STRICT] and mean_map[EXT_REAL] <= mean_map[EXT_ID]:
+         interpretation = "Real topology preserved more signal than strict-shuffled topology, but did not improve over the no-graph identity reference."
+     else:
+@@ -376,13 +410,16 @@
+                 "stage32c_ready": bool(external_audit["stage32c_ready"]),
+                 "matrix_path_exists": bool(external_audit["matrix_path_exists"]),
+-                "best_external_condition": best.condition,
+-                "best_external_mean_pooled_oof_spearman": float(best.mean_pooled_oof_spearman),
++                "best_external_condition": best_condition,
++                "best_external_mean_pooled_oof_spearman": float(best_score),
+                 "stage27c_reference_mean": float(cfg["stage27c_reference_mean"]),
+                 "stage31_reference_mean": float(cfg["stage31_best_reference_mean"]),
+-                "best_minus_stage27c": float(best.mean_pooled_oof_spearman - float(cfg["stage27c_reference_mean"])),
+-                "best_minus_stage31": float(best.mean_pooled_oof_spearman - float(cfg["stage31_best_reference_mean"])),
++                "best_minus_stage27c": float(best_score - float(cfg["stage27c_reference_mean"])),
++                "best_minus_stage31": float(best_score - float(cfg["stage31_best_reference_mean"])),
+                 "minimum_success_threshold": float(cfg["minimum_success_threshold"]),
+-                "all_five_targets_reported": required.issubset(set(target[target["condition"] == best.condition]["target_key"])),
++                "all_five_targets_reported": ranking_estimable,
+                 "target_degradation_gate_pass": target_gate,
++                "stage33b_ranking_status": "ESTIMATED" if ranking_estimable else "NOT_ESTIMABLE",
++                "stage33b_internal_performance_status": "ESTIMATED" if performance_estimable else "NOT_ESTIMABLE",
++                "stage33b_graph_specific_status": "ESTIMATED" if graph_estimable else "NOT_ESTIMABLE",
+                 "stage33b_run_pass": run_pass,
+                 "stage33b_internal_performance_pass": performance_pass,
+@@ -457,10 +494,12 @@
+     new = {
+         "scorecard_item": "stage33b_external_pretrained_benchmark",
+-        "status": "complete",
++        "status": "not_estimable" if row.stage33b_internal_performance_status == "NOT_ESTIMABLE" else "complete",
+         "stage": "Stage 33B",
+         "metric": "pooled donor-level OOF Spearman",
+         "threshold_or_gate": "best external > Stage 27C 0.326702; >=0.3228; graph pass requires real > no-graph and strict",
+-        "current_value": f"{row.best_external_mean_pooled_oof_spearman:.4f}",
+-        "pass_fail": "pass" if bool(row.stage33b_internal_performance_pass) else "fail",
++        "current_value": (f"{row.best_external_mean_pooled_oof_spearman:.4f}"
++                          if row.stage33b_internal_performance_status == "ESTIMATED" else "NOT_ESTIMABLE"),
++        "pass_fail": ("not_estimable" if row.stage33b_internal_performance_status == "NOT_ESTIMABLE"
++                      else "pass" if bool(row.stage33b_internal_performance_pass) else "fail"),
+         "datasets_allowed": "Stage 32C HBCA self-supervised pretraining matrix; SEA-AD locked folds for downstream only",
+         "datasets_forbidden": "clean holdouts; SEA-AD during external pretraining; external labels for pathology prediction",
+@@ -521,4 +560,4 @@
+     external_oof = run_oof(cfg, features)
+     oof = pd.concat([reference_predictions(cfg), external_oof], ignore_index=True)
+-    target, mean = compute_metrics(oof)
++    target, mean = compute_metrics(oof, cfg["required_targets"])
+     ext_audit_dict.update(
+diff --git a/tests/test_stage33b_oof_estimability.py b/tests/test_stage33b_oof_estimability.py
+new file mode 100644
+--- /dev/null
++++ b/tests/test_stage33b_oof_estimability.py
+@@ -0,0 +1,112 @@
++"""Stage 33B score/gate regression from inert predictions; no runner imports."""
++import ast
++from pathlib import Path
++from typing import Any
++import unittest
++
++import numpy as np
++import pandas as pd
++from sea_ad_jepa.eval.oof_metrics import regression_metrics
++
++
++def load_scoring_surface():
++    path = Path(__file__).resolve().parents[1] / 'scripts/run_stage33b_external_pretrained_jepa_v1.py'
++    module = ast.parse(path.read_text(encoding='utf-8'))
++    names = {'REF27', 'REF31', 'EXT_NG', 'EXT_ID', 'EXT_REAL', 'EXT_WEAK',
++             'EXT_STRICT', 'EXTERNAL_CONDITIONS'}
++    allowed = [node for node in module.body if (
++        isinstance(node, ast.Assign) and len(node.targets) == 1
++        and isinstance(node.targets[0], ast.Name) and node.targets[0].id in names
++    ) or (
++        isinstance(node, ast.FunctionDef) and node.name in {'compute_metrics', 'audits_and_passfail'}
++    )]
++    env = dict(Any=Any, np=np, pd=pd, regression_metrics=regression_metrics)
++    exec(compile(ast.Module(body=allowed, type_ignores=[]), str(path), 'exec'), env)
++    return env
++
++
++class Stage33BEstimabilityTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.scope = load_scoring_surface()
++
++    def score(self, change=None, empty=False):
++        s = self.scope
++        targets = ['AT8', '6e10/A_beta', 'GFAP', 'Iba1', 'NeuN']
++        rows = []
++        for condition in [*s['EXTERNAL_CONDITIONS'], s['REF27'], s['REF31']]:
++            for name in targets:
++                # Zero reference and non-graph, positive real graph; keep one
++                # genuinely zero real-graph target in the complete control.
++                prediction = ([-1, 0, 1] if condition == s['EXT_REAL'] and name != 'NeuN'
++                              else [1, -2, 1])
++                for i, (y, p) in enumerate(zip([-1, 0, 1], prediction)):
++                    rows.append(dict(condition=condition, target=name, target_key=name,
++                                     target_alias=name, donor_id=str(i), y_true=y, y_pred=p))
++        oof = pd.DataFrame(rows)
++        if change:
++            oof = change(oof)
++        if empty:
++            oof = oof.iloc[:0]
++        cfg = dict(required_targets=targets, stage27c_reference_mean=0.0,
++                   stage31_best_reference_mean=0.0, minimum_success_threshold=0.5,
++                   max_target_drop_vs_stage27c_reference=-0.02)
++        target, mean = s['compute_metrics'](oof, targets)
++        _, graph, result = s['audits_and_passfail'](
++            cfg, oof, target, mean, dict(stage32c_ready=True, matrix_path_exists=True))
++        return mean.set_index('condition'), graph, result.iloc[0]
++
++    def test_real_zero_counts_as_measured(self):
++        mean, graph, result = self.score()
++        real = mean.loc[self.scope['EXT_REAL']]
++        self.assertEqual(real.n_estimable_targets, 5)
++        self.assertAlmostEqual(real.mean_pooled_oof_spearman, 0.8)
++        self.assertEqual(result.best_external_condition, self.scope['EXT_REAL'])
++        self.assertTrue(result.stage33b_internal_performance_pass)
++        self.assertTrue(graph.graph_gate_pass.all())
++
++    def test_constant_prediction_cannot_raise_average_or_win(self):
++        def change(frame):
++            mask = (frame.condition == self.scope['EXT_REAL']) & (frame.target_key == 'NeuN')
++            return frame.assign(y_pred=frame.y_pred.mask(mask, 1))
++        mean, graph, result = self.score(change)
++        real = mean.loc[self.scope['EXT_REAL']]
++        self.assertEqual(real.n_estimable_targets, 4)
++        self.assertEqual(real.nonestimable_required_targets, 'NeuN')
++        self.assertTrue(pd.isna(real.mean_pooled_oof_spearman))
++        self.assertIsNone(result.best_external_condition)
++        self.assertEqual(result.stage33b_internal_performance_status, 'NOT_ESTIMABLE')
++        self.assertFalse(result.stage33b_internal_performance_pass)
++        self.assertTrue((graph.estimability_status == 'NOT_ESTIMABLE').all())
++
++    def test_missing_control_target_cannot_be_supplied_by_another_condition(self):
++        mean, graph, result = self.score(lambda f: f[~((f.condition == self.scope['EXT_ID'])
++                                                       & (f.target_key == 'GFAP'))])
++        self.assertEqual(mean.loc[self.scope['EXT_ID'], 'missing_required_targets'], 'GFAP')
++        self.assertEqual(result.stage33b_graph_specific_status, 'NOT_ESTIMABLE')
++        self.assertFalse(result.stage33b_run_pass)
++        self.assertFalse(result.stage33b_graph_specific_pass)
++
++    def test_missing_reference_blocks_performance_not_external_ranking(self):
++        _, _, result = self.score(lambda f: f[f.condition != self.scope['REF27']])
++        self.assertEqual(result.stage33b_ranking_status, 'ESTIMATED')
++        self.assertEqual(result.stage33b_internal_performance_status, 'NOT_ESTIMABLE')
++        self.assertFalse(result.target_degradation_gate_pass)
++
++    def test_duplicate_required_key_is_not_averaged(self):
++        def duplicate(frame):
++            extra = frame[(frame.condition == self.scope['EXT_REAL']) & (frame.target_key == 'AT8')]
++            return pd.concat([frame, extra.assign(target_alias='duplicate')], ignore_index=True)
++        mean, _, result = self.score(duplicate)
++        self.assertEqual(mean.loc[self.scope['EXT_REAL'], 'duplicate_required_targets'], 'AT8')
++        self.assertFalse(result.stage33b_internal_performance_pass)
++
++    def test_empty_predictions_do_not_create_a_winner(self):
++        mean, _, result = self.score(empty=True)
++        self.assertTrue((mean.n_estimable_targets == 0).all())
++        self.assertIsNone(result.best_external_condition)
++        self.assertFalse(result.stage33b_run_pass)
++
++
++if __name__ == '__main__':
++    unittest.main()
