@@ -4667,6 +4667,46 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/596",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/595#issuecomment-6864472439"
       ]
+    },
+    {
+      "event_id": "20261113-MACHA-V5-PRE-PILOT-FINDINGS-REPAIR-597-AND-ONE-UPDATE-PLAN-V2-EVENT112",
+      "date_utc": "2026-11-13",
+      "workstream": "v5_dev2048_pre_pilot_input_leakage_ema_route_lineage_review_no_training",
+      "implementation_pr": 597,
+      "implementation_head": "bfcba24ed3fcfbf146eaf7700c78ad1553fc6cee",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261113_EVENT112_MACHA_V5_PRE_PILOT_FINDINGS_AND_REPAIR_597_NO_TRAINING.md",
+          "blob_sha1": "0929a5c76addeb27b19346da628669ff301abaf4",
+          "role": "Event112 part 1: Macha V5 pre-pilot findings and repair draft #597"
+        },
+        {
+          "path": "docs/agent/JEPA_20261113_EVENT112_V5_DEV2048_ONE_UPDATE_PILOT_PLAN_V2_NOT_AUTHORIZED.md",
+          "blob_sha1": "9fc0050ddb2c2b8ae1314573d167236d8f20ce2c",
+          "role": "Event112 part 2: DEV2048 one-update pilot plan v2 (not authorized)"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT112_MACHA_V5_PRE_PILOT_597_AND_PLAN_V2_MAP.json",
+          "blob_sha1": "ebb0bbe4594e2aee2d1340b3f6ea44f1af92bcd8",
+          "role": "Event112 machine map: findings, #597 runs, plan v2 pins and decisions"
+        }
+      ],
+      "change_type": "independently_reproduced_implementation_defect_and_nontraining_repair",
+      "what_already_existed": "Event111: #595 verdict, #596 repair and pilot plan v1. No newer entries; #595/#596 heads unchanged. Audit head before this event: dac5b1c236687746746f3a4aa7b127b9fabaec1a.",
+      "new_work_or_result": "The contract declared all 2,048 address values for the teacher while the PR548 adapter and probe give both encoders the q-excluded base; #597 separates vocabulary from supplied values (shared-base mode) and records the teacher-only query mode as the owner-pending L04 decision. The pinned runtime accepts a target-block member that the student can see; #597 refuses it before the route. Mocks confirm the PR224 guard permits EMA only after a completed step, once, from the post-step student encoder. #597 binds the pilot to the presentation-EMA route with pairing/ownership checks, lineage checks, a separate dev checkpoint path and an authorization gate. RED 4+3 failures -> GREEN 14/14 jobs. Plan v2 written.",
+      "negative_or_counterfactual_evidence": "No pilot executed or authorized. The validator protects the pilot driver, not the pinned runtime. Teacher-only query mode, half-life and M1 are owner decisions. DEV2048 cannot validate Alzheimer's biology.",
+      "test_review_scope": "Static source tracing; contract tests; hook-faithful fake optimizer and recording stand-ins for the guard; PR224 module construction for pairing only; hosted CI Python 3.11.9/3.12.7; local WSL Python 3.11.15.",
+      "independent_review": "MACHA_PRE_PILOT_597_AWAITS_SOL__PLAN_V2_AWAITS_SOL_AND_OWNER__NO_TRAINING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Sol independent review of #594, #596 and #597.",
+        "Owner decisions: encoder input mode (L04), EMA half-life, M1 authorization record."
+      ],
+      "historical_supersession": "Append-only Event112; Events 1-111 unchanged; plan v2 supersedes Event111 part 2 where they differ.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/597"
+      ]
     }
   ]
 }

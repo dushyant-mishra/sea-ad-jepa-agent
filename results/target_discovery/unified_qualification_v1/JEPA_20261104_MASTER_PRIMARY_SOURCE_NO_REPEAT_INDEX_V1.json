@@ -2270,5 +2270,19 @@
     "result": "Explicit-file pytest routes and pinned runner config (#596); DEV2048 pilot M1/M2 plan with separate dev-only journal lane; nothing executed.",
     "do_not_repeat": "Do not re-review #595 at 37dc2469; do not redesign M1/M2 without new evidence; never run a pilot update without the owner authorization record.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_dev2048_pre_pilot_597_shared_base_leakage_ema_route_plan_v2_event112_20261113": {
+    "event": 112,
+    "date_utc": "2026-11-13",
+    "scope": "MACHA_V5_PRE_PILOT_REVIEW_597_AND_PLAN_V2",
+    "pr": 597,
+    "head": "bfcba24ed3fcfbf146eaf7700c78ad1553fc6cee",
+    "findings_doc": "docs/agent/JEPA_20261113_EVENT112_MACHA_V5_PRE_PILOT_FINDINGS_AND_REPAIR_597_NO_TRAINING.md",
+    "plan_doc": "docs/agent/JEPA_20261113_EVENT112_V5_DEV2048_ONE_UPDATE_PILOT_PLAN_V2_NOT_AUTHORIZED.md",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT112_MACHA_V5_PRE_PILOT_597_AND_PLAN_V2_MAP.json",
+    "machine_sha": "ebb0bbe4594e2aee2d1340b3f6ea44f1af92bcd8",
+    "result": "Shared-base teacher inputs in the contract; pre-route target-leakage refusal; canonical presentation-EMA route with pairing checks; lineage verified; one-update plan v2.",
+    "do_not_repeat": "Do not re-trace the teacher inputs, EMA guard ordering or V5 lineage at these heads; do not run the pilot without the owner M1 authorization record.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
