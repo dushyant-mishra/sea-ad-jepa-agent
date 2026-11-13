@@ -2335,5 +2335,19 @@
       "Bind trusted environment and isolated persistence; test upstream noninterference with inert fixtures."
     ],
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "event116_handoff_ci_contract_repair_20261113": {
+    "event": 116,
+    "date_utc": "2026-11-13",
+    "human": "docs/agent/JEPA_20261113_EVENT116_HANDOFF_CI_CONTRACT_REPAIR.md",
+    "human_sha": "b8740b74dc7624dfd42e8bf23aabe99034789eb3",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT116_HANDOFF_CI_CONTRACT_REPAIR_MAP.json",
+    "machine_sha": "1faab8ff634c9a54ca1d165b3059fa3eadbc85c7",
+    "open_scope": [
+      "Verify hosted checks; V80 original archive unavailable.",
+      "Repair #596 scoped guarded CI entrypoint.",
+      "Bind trusted #597 environment and isolated persistence; test producer with inert fixtures."
+    ],
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }

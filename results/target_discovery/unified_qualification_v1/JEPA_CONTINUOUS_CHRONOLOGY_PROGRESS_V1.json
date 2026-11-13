@@ -4845,6 +4845,42 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43519036581",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43519036580"
       ]
+    },
+    {
+      "event_id": "20261113-EVENT116-HANDOFF-CI-CONTRACT-REPAIR",
+      "date_utc": "2026-11-13",
+      "workstream": "handoff_ci_contract_repair",
+      "implementation_pr": 460,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261113_EVENT116_HANDOFF_CI_CONTRACT_REPAIR.md",
+          "blob_sha1": "b8740b74dc7624dfd42e8bf23aabe99034789eb3",
+          "role": "hosted finding and repair"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT116_HANDOFF_CI_CONTRACT_REPAIR_MAP.json",
+          "blob_sha1": "1faab8ff634c9a54ca1d165b3059fa3eadbc85c7",
+          "role": "machine evidence map"
+        }
+      ],
+      "change_type": "repair",
+      "what_already_existed": "Event115 chronology and first-read repair.",
+      "new_work_or_result": "Match exact count labels and mirror all latest event sources under the unchanged strict first-read check.",
+      "negative_or_counterfactual_evidence": "Event115 handoff 3/4; V80 remains unresolved.",
+      "test_review_scope": "Read hosted failure log and merge ledger; checked pointer literals, count and source coverage before publishing.",
+      "independent_review": "NOT_INDEPENDENTLY_REVIEWED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Verify hosted checks; V80 original archive unavailable.",
+        "Repair #596 scoped guarded CI entrypoint.",
+        "Bind trusted #597 environment and isolated persistence; test producer with inert fixtures."
+      ],
+      "historical_supersession": "Append only; 115 prior records and 80 keys unchanged.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43524546993"
+      ]
     }
   ]
 }
