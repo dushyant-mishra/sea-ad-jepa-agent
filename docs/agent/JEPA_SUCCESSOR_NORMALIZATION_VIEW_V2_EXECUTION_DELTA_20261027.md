@@ -1,0 +1,33 @@
+# Successor execution delta — PR #479 typed normalization view V2 (2026-10-27)
+
+**First read alongside the existing [active PR #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) handoff and [audit #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322).** This is an *append-only* new code/result pointer, not a rewrite of historical scientific verdicts. Older V8e audit head `a271164554076d0acda3bd0cf0b1bf957c0fdfd3` remains separately frozen and independently reviewed only at that old head.
+
+## Executed since last handoff: separate observable depth from private physical library mass
+
+- **[Draft PR #479](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/479)** exact head `ae762d7096a94ac663a0788f6f577ba404e37536`, base [PR #478](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/478) `b7aa56e2915d2af7dd733f0f0253e684164ce70a`, original [Macha PR #474](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/474) source unchanged. Adds `scripts/v5/td_unified/observation_normalization_view_v2_fixture.py`, strict `validate_fixture_observation_view_v2`, tests, CI, and `docs/agent/JEPA_TD_NORMALIZATION_VIEW_V2_FIXTURE_CONTRACT_20261027.md`.
+- **Hosted final [CI 40591648499](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/40591648499): 124 PASS** = original Macha #474 101 laws + ChatGPT independent #478 five limitation tests + **18 new V2 hostile cases**. **Six of six exact-head PR479 workflows SUCCESS**, including inherited Task5 and unified synthetic integrations. V1 CaseBundle source was checked with no modifications. The real G7 E3 code is in a *different stacked branch*: **G7 cross-head execution has NOT occurred** on PR479. Never imply same-code-path or HUMAN_EXECUTABLE.
+- **Preserved debugging evidence:** first run 40591276863 RED when V2 false authentication flags met Macha's correctly strict raw-count snapshot that excludes bool. Fixed by V2-specific snapshot; PR474 source untouched. Second run 40591445532 had 124 PASS, but posttest workflow tried importing G7 from another branch; this was fixed by accurately limiting the CI to available V1 CaseBundle code. All earlier RED runs are retained.
+- **Audited in #322**, exact appended head `54c618a0a72f23a94574b82f1fe2991d8e2c6392`, `docs/agent/JEPA_TD_NORMALIZATION_VIEW_V2_FIXTURE_AUDIT_20261027.md` and machine data `results/target_discovery/unified_qualification_v1/JEPA_NORMALIZATION_VIEW_V2_FIXTURE_DELTA_20261027.json`. [New audit run 40592120831](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/40592120831) **18 hostile claim/nonpromotion PASS**; **19/19 audit workflows SUCCESS**. Static GitHub evidence custody is not independent physical source authentication.
+
+## Why this change was necessary and why it is not the end
+
+Previously, original `CaseBundle V1` and G7 treated `library_size` as physical total, requiring measured count (or sum) to fit below it. Macha #474 computes a *different* quantity: `base_rights_normalization_depth = physical_source_row_total - Σ(mapped measured counts outside student base rights)`. When the teacher legitimately measures a queried gene count larger than this covariate, the old `library_size` check rejects it. We must not bypass the old safeguard or mislabeled scalar.
+
+New **`TD_OBSERVATION_NORMALIZATION_VIEW_V2_FIXTURE`** (nonregistered, fixture-only) instead:
+- Takes the physical library total privately, never returns it or a digest derived from raw/private inputs.
+- Emits separate student-base and teacher-richer views with a typed `base_rights_normalization_depth`, **not** `library_size`. The student has query *identity*, never the queried scalar.
+- Requires q to be mapped **outside** the frozen base rights. Refuses positive source-count residual (off-ledger or collision mass) rather than guessing a safe denominator. Refuses malformed source/cell data and spoofed issuer claims.
+- Hashes only the observable view, with all source/rights/donor/training authority flags explicitly false. Cannot enforce external teacher/student routing, source authenticity, or feature-to-physical-count completeness from caller objects alone.
+- Leaves original `CaseBundle V1`, PR474 producer, G7, target discovery and JEPA optimizer untouched.
+
+## Current blockers and ownership
+
+1. **Independent reviewer of PR479:** test actual V2 implementation against hostile mutable inputs, true query-rights masking, per-cell covariate stability, zero-vs-structural semantics and inadvertent public exposure of private whole-row totals. Only incremental fixture-shape acceptance can result. No actual source issuer is implemented.
+2. **Actual V2 production design:** externally certify full source feature/UMI-to-41,238-address mapping, q-specific rights policy, single deposited row, cross-source donor/specimen group, physical grouping, normalization/depth provenance, QC/selection noninterference and teacher/student routing. **Source total and student-visible depth must remain separate typed objects**. A supplied 'total equals mapped counts' is only a fixture conservation check, not external evidence.
+3. **G7 cross-head:** original R1/R1D/R2 provenance hostile remain RED; [PR #476](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/476) repaired R5X/R6 in fixture but independent Macha verdict pending. G7 was not tested by PR479, therefore no real R2 closure or same-code path. The 11 prior G7 physical/donor/depth hostiles remain preserved; do not soften original V3's physical-total validations.
+4. **Production synthetic V3.1.1:** PS Task2 T2-D external source-scan issuer RED, PS Task3 real calibration unqualified, candidate-neutral biological **PS Task4 generator still absent** on reviewed branches. PR328 and PR469 remain limited fixtures. Do not run sealed known-truth cases by adding handcrafted C1/C3 PASS worlds.
+5. **Historical biology already completed:** corrected PR314 TD replay is *spent*, TD57C nearest-third FAIL. C2 relational broad/meso viable, C3 measured R5 developmental, no real selected target. Keep ATAC/SCENIC+/perturbation pairing/independence limits and the 20-file chat-only hash custody record from previous handoff.
+
+**Next legitimate bounded step:** independent review #479; then explicit versioned *source-issued* raw-count and rights map adapter, followed by a cross-head G7 test that does not conflate physical-total library with visible normalized depth. Any missing physical data must produce `NOT_ESTIMABLE`, not a forged green receipt.
+
+**Authority unchanged:** `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
