@@ -4,7 +4,8 @@
 
 - Detailed takeover: `docs/agent/JEPA_20261113_EVENT113_SOL_LANE_TAKEOVER_AND_NO_REPEAT.md` (blob `7c768bcbd0225aa92d3e0da37d32930cdbbd249c`).
 - Machine source map: `results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT113_SOL_LANE_TAKEOVER_SOURCE_MAP.json` (blob `cc9c283bcbb88f4006eebf2ac9ec140ce67ee028`).
-- Scorer/Stage33B patch archived byte-for-byte; DEV2048 helper bundle is separately identified by archive and script hashes.
+- Byte-exact scorer/Stage33B draft: `docs/agent/archive/event113_dev2048_review/jepa-oof-stage33b-estimability-draft.patch`.
+- Archived helper-bundle notes: `docs/agent/archive/event113_dev2048_review/README.md`; the DEV2048 helper bundle is separately identified by archive and script hashes.
 - #595 remains scoped REPAIR_REQUIRED; #596 has residual source findings. #597 is a shared-base preflight draft, not execution-approved. Keep M1/M2 off; neither upstream leakage nor trained broad/fine preservation is established.
 
 `TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
