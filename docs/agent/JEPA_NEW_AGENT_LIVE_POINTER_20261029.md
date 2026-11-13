@@ -1,3 +1,15 @@
+# READ FIRST — EVENT115 (2026-11-13): HOSTED CUSTODY REPAIR — NO TRAINING
+
+**Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `8b42d75915710508df974bff3d7182d3b1e97f9b` contains 115 events / 80 no-repeat keys. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event115.** Read Event115, then Event114 and Event113; use Event90 for the original source and results crosswalk. Keep both branches current with append-only evidence.
+
+- Human: `docs/agent/JEPA_20261113_EVENT115_HOSTED_CUSTODY_REPAIR.md` (blob `263a7d54c4a86b92fdf15876a8be0573786a7b54`).
+- Machine: `results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT115_HOSTED_CUSTODY_REPAIR_MAP.json` (blob `162e384a9d143f158ec3fc8c084748836f23d566`).
+- Corrects Event114's hosted custody failures; does not resolve V80 or authorize M1/M2.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT114 (2026-11-13): HANDOFF AUDIT AND BROAD BASELINE DRAFT — NO TRAINING
 
 **[Canonical historical audit #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) is the append-only ledger (114 events / 79 no-repeat source keys). [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) is the first-read mirror.** Include both links and their distinct roles in every future handoff. After each material implementation or audit result, append on #322, mirror exact evidence and refresh this pointer on #460, then verify history, blobs and live status. Use separate drafts for implementation.
