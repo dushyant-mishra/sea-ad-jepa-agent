@@ -1,3 +1,16 @@
+# READ FIRST — EVENT114 (2026-11-13): HANDOFF AUDIT AND BROAD BASELINE DRAFT — NO TRAINING
+
+**[Canonical historical audit #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) is the append-only ledger (114 events / 79 no-repeat source keys). [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) is the first-read mirror.** Include both links and their distinct roles in every future handoff. After each material implementation or audit result, append on #322, mirror exact evidence and refresh this pointer on #460, then verify history, blobs and live status. Use separate drafts for implementation.
+
+- Human: `docs/agent/JEPA_20261113_EVENT114_HANDOFF_AUDIT_AND_BROAD_BASELINE_DRAFT.md` (blob `839acb26716028839b1d719fbf4d9e1b6f1f7148`).
+- Machine: `results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT114_HANDOFF_AUDIT_AND_BROAD_BASELINE_MAP.json` (blob `27377739a0f5885c3c74179d30c9555a017b66b1`).
+- Detached implementation: `docs/agent/archive/event114_dev2048_review/jepa-event114-broad-type-baseline-draft.patch` (blob `4d598866ccdc1372c5386dad4ea7a4bff8400807`); five inert Preservation tests passed, no learned preservation claim.
+- New open deltas: #596 YAML flow-map scanner bypass (source only); bind environment in a trusted #597 successor launcher. M1/M2 remain unauthorized. Read Event113 next, then the indexed original evidence; do not restart completed audits.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT113 (2026-11-13): SOL LANE TAKEOVER AND NO-REPEAT SOURCE MAP — NO TRAINING
 
 **Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `1e32533aca54264a10f095b49b73f11c2c7b6b1f` now has 113 append-only chronology events / 78 no-repeat source keys.** Active handoff [#460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event113. Read the detailed takeover and source map, then Event112/111, Events110–108 and original Event90.
