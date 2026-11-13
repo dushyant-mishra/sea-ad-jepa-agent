@@ -2256,5 +2256,19 @@
     },
     "peer_review": "SOL_AUTHOR_GREEN__MACHA_RECIPROCAL_PENDING",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "v5_595_review_596_repair_and_dev2048_pilot_plan_event111_20261113": {
+    "event": 111,
+    "date_utc": "2026-11-13",
+    "scope": "MACHA_REVIEW_595_REPAIR_596_AND_PILOT_PLAN",
+    "pr": 596,
+    "head": "bc9da0547f4e187969f5dc21bc7a188e9a519d8d",
+    "verdict_doc": "docs/agent/JEPA_20261113_EVENT111_MACHA_INDEPENDENT_VERDICT_595_REPAIR_596_NO_TRAINING.md",
+    "plan_doc": "docs/agent/JEPA_20261113_EVENT111_V5_DEV2048_FIRST_INTENTIONAL_TRAINING_PILOT_PLAN_NOT_AUTHORIZED.md",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT111_MACHA_595_VERDICT_AND_DEV2048_PILOT_PLAN_MAP.json",
+    "machine_sha": "f800535539b5f28871dcc93a16d6d022f7d8da39",
+    "result": "Explicit-file pytest routes and pinned runner config (#596); DEV2048 pilot M1/M2 plan with separate dev-only journal lane; nothing executed.",
+    "do_not_repeat": "Do not re-review #595 at 37dc2469; do not redesign M1/M2 without new evidence; never run a pilot update without the owner authorization record.",
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }

@@ -4625,6 +4625,48 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43316634295",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43316634606"
       ]
+    },
+    {
+      "event_id": "20261113-MACHA-VERDICT-595-REPAIR-596-AND-DEV2048-PILOT-PLAN-EVENT111",
+      "date_utc": "2026-11-13",
+      "workstream": "v5_ci_guard_review_and_dev2048_training_pilot_design_no_training",
+      "implementation_pr": 596,
+      "implementation_head": "bc9da0547f4e187969f5dc21bc7a188e9a519d8d",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261113_EVENT111_MACHA_INDEPENDENT_VERDICT_595_REPAIR_596_NO_TRAINING.md",
+          "blob_sha1": "6000d633ad28e0974868726c649536b59a4862d8",
+          "role": "Event111 part 1: Macha verdict on Sol #595 and RED->GREEN repair #596"
+        },
+        {
+          "path": "docs/agent/JEPA_20261113_EVENT111_V5_DEV2048_FIRST_INTENTIONAL_TRAINING_PILOT_PLAN_NOT_AUTHORIZED.md",
+          "blob_sha1": "30eb391fc09156c70e6d8110a1cc896d98ffa6d4",
+          "role": "Event111 part 2: DEV2048 first intentional V5 training pilot plan (not authorized)"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT111_MACHA_595_VERDICT_AND_DEV2048_PILOT_PLAN_MAP.json",
+          "blob_sha1": "f800535539b5f28871dcc93a16d6d022f7d8da39",
+          "role": "Event111 machine map: #595 checks, #596 runs, pilot pins/milestones/expectations"
+        }
+      ],
+      "change_type": "independently_reproduced_implementation_defect_and_nontraining_repair",
+      "what_already_existed": "Sol #595 (Event110) closed #594's branch-filter skip and inherited pytest env; awaiting Macha review. No V5 multi-update driver or post-update journal lane exists. Audit head before this event: 5afb5e886426848eeac58f5d8e89dee77772bb64.",
+      "new_work_or_result": "#595 REPAIR_REQUIRED (scoped): its own changes verified, but Macha's #594 scan still accepted bare/dot/directory/--pyargs pytest routes, missed .pytest.ini and tests/ config, and the runner did not pin config/rootdir. #596 repairs all three (RED 9 subtests -> GREEN 10/10 jobs). Separately, a plan for the first intentional DEV2048 V5 update (M1: 1 update, 16 SYNTH_A TRAIN cells) and a restart milestone (M2: C1/C2/R bitwise) with a dev-only post-update journal lane that leaves the u0-only journal read-only.",
+      "negative_or_counterfactual_evidence": "The plan is not executed and not authorized. DEV2048 cannot validate biology (F1-F4; identical per-source support). The proposed EMA half-life 22136 is derived from the V4 contract and needs owner confirmation. Scan does not parse scripts called from run:.",
+      "test_review_scope": "Inert temporary fixtures and mocked subprocesses for #595; static source reading for the plan; hosted CI Python 3.11.9/3.12.7 for #596; local WSL Python 3.11.15, pytest 9.1.1.",
+      "independent_review": "MACHA_595_REPAIR_REQUIRED_SCOPED__596_AWAITS_SOL__PILOT_PLAN_AWAITS_SOL_AND_OWNER__NO_TRAINING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Sol independent review of #594 and #596.",
+        "Owner decision on the pilot plan (M1 authorization, half-life confirmation).",
+        "Implement the dev2048 pilot journal lane and driver as reviewed draft code before any execution."
+      ],
+      "historical_supersession": "Append-only Event111; Events 1-110 unchanged.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/596",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/595#issuecomment-6864472439"
+      ]
     }
   ]
 }

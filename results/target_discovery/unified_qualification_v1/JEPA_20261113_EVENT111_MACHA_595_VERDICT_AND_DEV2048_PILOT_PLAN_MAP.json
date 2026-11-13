@@ -1,0 +1,129 @@
+{
+  "schema": "JEPA_EVENT111_MACHA_595_VERDICT_AND_DEV2048_PILOT_PLAN_MAP_V1",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "review_595": {
+    "head": "37dc2469f05d83a6dcfc38cedc54e4f9325bd10c",
+    "head_changed_since_assignment": false,
+    "verdict": "REPAIR_REQUIRED_SCOPED",
+    "sol_changes_verified": [
+      "push/PR-to-main glob routes refused despite branch filters",
+      "only byte-identical D1 a0e3fb2622992630ce705467bfcb3aad7aa1001e exempt",
+      "D1+1 byte and renamed D1 refused",
+      "PYTEST_ADDOPTS/PYTEST_PLUGINS cleared in guarded subprocess (mocked)"
+    ],
+    "remaining_gaps_origin": "Macha #594 code retained by #595",
+    "remaining_gaps": [
+      "bare/dot/directory/--pyargs/py.test pytest routes pass the scan",
+      ".pytest.ini and tests/ config not refused",
+      "runner config/rootdir not pinned; parent pytest.ini adds tests"
+    ],
+    "comment": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/595#issuecomment-6864472439"
+  },
+  "repair_596": {
+    "branch": "review/v5-macha-595-explicit-pytest-argv-pinned-config-20261113",
+    "red": "8c9d38b0f809722adc1fd17fdc69a2ccf1eeb489",
+    "fix": "bc9da0547f4e187969f5dc21bc7a188e9a519d8d",
+    "red_run": {
+      "43503537769": "9 subtests failed per Python"
+    },
+    "green_runs": {
+      "43503950237": "static suites OK; inventories 41/33/10; quarantine",
+      "43503950323": "480 passed, 37 skipped",
+      "43503950409": "401 + 19 passed",
+      "43503950184": "84 + 9 passed"
+    },
+    "green_jobs": "10/10 (5 workflows)"
+  },
+  "pilot_plan": {
+    "status": "PLAN_ONLY__NOT_AUTHORIZED_TO_EXECUTE",
+    "u0_only_journal": "UNCHANGED_READ_ONLY_FOR_UPDATES",
+    "new_lane": "dev2048_pilot journal (separate root; binds pilot_authorization_sha256, parent_u0_snapshot_sha256, planned_horizon)",
+    "pins": {
+      "contract_sha256": "590e4e66b170f7219cd77fa319fc9dc441bce8b7831cf5d44eff2968b8c3c8d6",
+      "fit_zip_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+      "fit_artifact_id": 13364085153,
+      "premise_state_blob": "d8d6be5f2f1d4f7f50dfc2cc38b688deff9ef1f9",
+      "init_seed": 8113002,
+      "run_seed": 8113002,
+      "target_block_seed": 8813003
+    },
+    "m1": {
+      "updates": 1,
+      "rows": [
+        1,
+        3,
+        8,
+        10,
+        28,
+        32,
+        34,
+        35,
+        49,
+        54,
+        65,
+        74,
+        79,
+        81,
+        83,
+        90
+      ],
+      "selection": "first 16 TRAIN SYNTH_A rows by row index",
+      "measured_tokens_per_cell": 1988,
+      "views": 1,
+      "mask_fraction": 0.4,
+      "block_count": 16,
+      "half_life_presentations_proposed": 22136,
+      "ema_momentum": 0.99949912,
+      "expected": {
+        "student_first_step_abs_bound": "lr*(1+wd*|theta|)",
+        "adam_step": 1,
+        "exp_avg_sq_equals": "0.1*exp_avg**2",
+        "teacher_delta_bound": 5.06e-08,
+        "loss_direction_required": false
+      },
+      "budget": "1 update, CPU 1 thread, deterministic, <=30 min, <=8 GiB"
+    },
+    "m2": {
+      "updates_per_run": 3,
+      "runs": [
+        "C1",
+        "C2",
+        "R",
+        "R_prime_optional"
+      ],
+      "bitwise_requires": [
+        "all module tensors torch.equal",
+        "named Adam state bitwise",
+        "cursors and EMA momenta equal",
+        "per-update loss/grad/plan/mask SHA equal",
+        "global RNG state bytes",
+        "canonical tensor digest"
+      ],
+      "precondition": "C1 == C2 bitwise",
+      "negative_controls": [
+        "1-ULP perturbation",
+        "presentations_seen+1",
+        "off-by-one batch schedule"
+      ]
+    },
+    "not_claimed": [
+      "biology",
+      "Alzheimer representation",
+      "target selection",
+      "GPU/AMP restart",
+      "other machines"
+    ]
+  },
+  "execution": {
+    "forward": false,
+    "backward": false,
+    "optimizer_step": false,
+    "ema": false,
+    "model_construction": false,
+    "pytest_on_inert_fixtures_only": true,
+    "d1_dispatched": false,
+    "merges": 0,
+    "real_rna": false,
+    "stage4": false
+  }
+}
