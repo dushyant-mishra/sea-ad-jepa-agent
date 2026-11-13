@@ -4802,6 +4802,49 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/596",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/597"
       ]
+    },
+    {
+      "event_id": "20261113-EVENT115-HOSTED-CUSTODY-REPAIR",
+      "date_utc": "2026-11-13",
+      "workstream": "hosted_handoff_custody_repair",
+      "implementation_pr": 322,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261113_EVENT115_HOSTED_CUSTODY_REPAIR.md",
+          "blob_sha1": "263a7d54c4a86b92fdf15876a8be0573786a7b54",
+          "role": "hosted failure evidence and repair"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT115_HOSTED_CUSTODY_REPAIR_MAP.json",
+          "blob_sha1": "162e384a9d143f158ec3fc8c084748836f23d566",
+          "role": "machine evidence map"
+        },
+        {
+          "path": "scripts/v5/verify_jepa_continuous_chronology_20261102.py",
+          "blob_sha1": "f9bddd1ab053410c48f642859cd8a5b39fd41563",
+          "role": "scoped validator repair"
+        }
+      ],
+      "change_type": "repair",
+      "what_already_existed": "Event114 published metadata and detached preservation draft.",
+      "new_work_or_result": "Diagnosed three hosted custody failures; repaired chronology enum compatibility and restored the exact canonical pin and Event90 reference in the handoff header.",
+      "negative_or_counterfactual_evidence": "Prior Event114 CI was not green; V80 original archive verification remains unresolved.",
+      "test_review_scope": "Hosted failure logs and source contract inspection; new hosted results not claimed.",
+      "independent_review": "NOT_INDEPENDENTLY_REVIEWED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Verify hosted checks at the Event115 heads; V80 original archives remain unavailable.",
+        "Repair the scoped #596 guard before relying on it.",
+        "Bind trusted environment and isolated persistence; test upstream noninterference with inert fixtures."
+      ],
+      "historical_supersession": "Append only; preserve all 114 previous events and 79 prior keys.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43519033567",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43519036581",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43519036580"
+      ]
     }
   ]
 }

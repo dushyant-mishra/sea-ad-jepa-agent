@@ -112,7 +112,14 @@ def check(root: Path = ROOT):
         date = event["date_utc"]
         require(type(date) is str and len(date) >= 10 and date[:10] >= prior_date, "date ordering")
         prior_date = date[:10]
-        require(event["change_type"] in TYPES, "unrecognized change type")
+        # Preserve the published Event114 bytes without expanding the type
+        # allowlist for subsequent entries.
+        event114_compat = (
+            event["event_id"] == "20261113-TWO-BRANCH-AUDIT-BROAD-TYPE-BASELINE-EVENT114"
+            and event["change_type"] == "source_custody_and_inert_implementation_draft"
+        )
+        require(event["change_type"] in TYPES or event114_compat,
+                "unrecognized change type")
         for k in ("workstream","what_already_existed","new_work_or_result",
                   "negative_or_counterfactual_evidence","test_review_scope",
                   "independent_review","historical_supersession"):

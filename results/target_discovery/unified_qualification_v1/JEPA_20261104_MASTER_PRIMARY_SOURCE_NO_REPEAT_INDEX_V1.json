@@ -2321,5 +2321,19 @@
       "V80 original-archive verification remains blocked."
     ],
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "event115_hosted_custody_repair_20261113": {
+    "event": 115,
+    "date_utc": "2026-11-13",
+    "human": "docs/agent/JEPA_20261113_EVENT115_HOSTED_CUSTODY_REPAIR.md",
+    "human_sha": "263a7d54c4a86b92fdf15876a8be0573786a7b54",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT115_HOSTED_CUSTODY_REPAIR_MAP.json",
+    "machine_sha": "162e384a9d143f158ec3fc8c084748836f23d566",
+    "open_scope": [
+      "Verify hosted checks at the Event115 heads; V80 original archives remain unavailable.",
+      "Repair the scoped #596 guard before relying on it.",
+      "Bind trusted environment and isolated persistence; test upstream noninterference with inert fixtures."
+    ],
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
