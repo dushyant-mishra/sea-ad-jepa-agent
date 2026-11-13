@@ -4757,6 +4757,51 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/596",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/547"
       ]
+    },
+    {
+      "event_id": "20261113-TWO-BRANCH-AUDIT-BROAD-TYPE-BASELINE-EVENT114",
+      "date_utc": "2026-11-13",
+      "workstream": "two_branch_handoff_custody_and_inert_broad_preservation_implementation",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261113_EVENT114_HANDOFF_AUDIT_AND_BROAD_BASELINE_DRAFT.md",
+          "blob_sha1": "839acb26716028839b1d719fbf4d9e1b6f1f7148",
+          "role": "audit and handoff protocol"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT114_HANDOFF_AUDIT_AND_BROAD_BASELINE_MAP.json",
+          "blob_sha1": "27377739a0f5885c3c74179d30c9555a017b66b1",
+          "role": "machine-readable exact evidence"
+        },
+        {
+          "path": "docs/agent/archive/event114_dev2048_review/jepa-event114-broad-type-baseline-draft.patch",
+          "blob_sha1": "4d598866ccdc1372c5386dad4ea7a4bff8400807",
+          "role": "detached tested implementation draft"
+        }
+      ],
+      "change_type": "source_custody_and_inert_implementation_draft",
+      "what_already_existed": "Event113 pinned takeover and standalone helper bundle; #596 and #597 drafts.",
+      "new_work_or_result": "Verified preserved Event113 history and exact mirrors; found YAML flow-map scanner gap and approval environment-pin gap; implemented detached type-only comparator with explicit estimability.",
+      "negative_or_counterfactual_evidence": "Type-only predictor broad 1.0, matched increment 0.0, fine not estimable. No pilot or learned biological evidence.",
+      "test_review_scope": "Five local inert Preservation tests passed; CI and M1 source findings not runtime-validated. Prior-hosted results separately attributed.",
+      "independent_review": "DRAFT_NOT_INDEPENDENTLY_ACCEPTED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Replace scoped #596 line-based guard with guarded-entrypoint policy; review #594 non-CI scope.",
+        "Bind environment in trusted #597 successor launcher; validate isolated continuation and actual producer noninterference without pilot.",
+        "Freeze panel and baseline provenance; independently review the preservation draft and migrate OOF consumers.",
+        "V80 original-archive verification remains blocked."
+      ],
+      "historical_supersession": "Append only; all 113 prior events and 78 keys preserved; no verdict promoted.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/596",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/597"
+      ]
     }
   ]
 }

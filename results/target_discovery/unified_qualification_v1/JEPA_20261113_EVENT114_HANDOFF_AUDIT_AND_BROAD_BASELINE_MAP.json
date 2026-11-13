@@ -1,0 +1,73 @@
+{
+  "schema": "JEPA_EVENT114_HANDOFF_AUDIT_AND_BROAD_BASELINE_V1",
+  "date": "2026-11-13",
+  "event_id": "20261113-TWO-BRANCH-AUDIT-BROAD-TYPE-BASELINE-EVENT114",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "canonical_pr": 322,
+  "active_handoff_pr": 460,
+  "pre_event_heads": {
+    "322": "1e32533aca54264a10f095b49b73f11c2c7b6b1f",
+    "460": "7d8f97c6cc4e8da5b50338eb7bc543749cd3f0c0"
+  },
+  "event113_preservation_verified": {
+    "prior_events": 112,
+    "prior_index_keys": 77,
+    "mirrored_blobs": [
+      "7c768bcbd0225aa92d3e0da37d32930cdbbd249c",
+      "cc9c283bcbb88f4006eebf2ac9ec140ce67ee028",
+      "b732a9c3a78e7c47f549d2b333cca018e6b35db6"
+    ]
+  },
+  "pre_event_hosted": {
+    "322": {
+      "success": 26,
+      "total": 27,
+      "v80_failed_run": 43513334112
+    },
+    "460": {
+      "success": 4,
+      "total": 4
+    }
+  },
+  "human": {
+    "path": "docs/agent/JEPA_20261113_EVENT114_HANDOFF_AUDIT_AND_BROAD_BASELINE_DRAFT.md",
+    "git_blob": "839acb26716028839b1d719fbf4d9e1b6f1f7148"
+  },
+  "draft": {
+    "path": "docs/agent/archive/event114_dev2048_review/jepa-event114-broad-type-baseline-draft.patch",
+    "git_blob": "4d598866ccdc1372c5386dad4ea7a4bff8400807",
+    "sha256": "9ccb0b1b5afc41f9b1e134b2155417c937de75b319613e30aa41bb4bcf88bac6",
+    "base_zip_sha256": "5773e17d6d87f603da2943d0f48e1c0a60e9f89ef0b13b9e6fe609caee771b34",
+    "command": "python -m unittest -q test_repairs.Preservation",
+    "passed": 5,
+    "integrated": false,
+    "independent_acceptance": false
+  },
+  "scoped_findings": {
+    "ci": {
+      "pr": 596,
+      "head": "bc9da0547f4e187969f5dc21bc7a188e9a519d8d",
+      "source": "scripts/v5/jepa_v5_ci_explicit_nonstepping_allowlist_v1.py",
+      "finding": "YAML flow-map steps can bypass line-based run extraction",
+      "verification": "SOURCE_ONLY"
+    },
+    "m1": {
+      "finding": "Approval helper does not sign an environment digest; reopen test mocks subprocess",
+      "verification": "SOURCE_ONLY"
+    }
+  },
+  "authorizations": {
+    "M1": false,
+    "M2": false,
+    "real_training": false,
+    "stage4": false
+  },
+  "maintenance": {
+    "chronology": "results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json",
+    "index": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
+    "first_read": "docs/agent/JEPA_NEW_AGENT_LIVE_POINTER_20261029.md",
+    "require_both_prs_in_future_handoffs": true,
+    "append_only": true,
+    "mirror_review_blobs": true
+  }
+}

@@ -2303,5 +2303,23 @@
       "V80 original archive byte verification blocked."
     ],
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "event114_two_branch_audit_and_broad_type_baseline_draft_20261113": {
+    "event": 114,
+    "date_utc": "2026-11-13",
+    "human": "docs/agent/JEPA_20261113_EVENT114_HANDOFF_AUDIT_AND_BROAD_BASELINE_DRAFT.md",
+    "human_sha": "839acb26716028839b1d719fbf4d9e1b6f1f7148",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT114_HANDOFF_AUDIT_AND_BROAD_BASELINE_MAP.json",
+    "machine_sha": "27377739a0f5885c3c74179d30c9555a017b66b1",
+    "draft_patch": "docs/agent/archive/event114_dev2048_review/jepa-event114-broad-type-baseline-draft.patch",
+    "draft_patch_sha": "4d598866ccdc1372c5386dad4ea7a4bff8400807",
+    "do_not_repeat": "Use indexed exact-head evidence; do not rerun historical science or already confirmed CI cases to re-establish custody.",
+    "open_scope": [
+      "Replace scoped #596 line-based guard with guarded-entrypoint policy; review #594 non-CI scope.",
+      "Bind environment in trusted #597 successor launcher; validate isolated continuation and actual producer noninterference without pilot.",
+      "Freeze panel and baseline provenance; independently review the preservation draft and migrate OOF consumers.",
+      "V80 original-archive verification remains blocked."
+    ],
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
