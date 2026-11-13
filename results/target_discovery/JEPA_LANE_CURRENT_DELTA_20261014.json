@@ -1,0 +1,57 @@
+{
+  "schema": "JEPA_LANE_CURRENT_DELTA_20261014_V1",
+  "status": "CURRENT_DELTA__NO_AUTHORITY_EXPANSION",
+  "binding_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "canonical_surfaces": {
+    "audit_pr": 322,
+    "audit_branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
+    "handoff_pr": 323,
+    "handoff_branch": "handoff/jepa-lane-takeover-20261013",
+    "synthetic_audit_pr": 325,
+    "synthetic_handoff_pr": 324
+  },
+  "synthetic_td": {
+    "phase1_completed": true,
+    "phase1_receipt_sha256": "e67aace8dfa8b9823cf8635155a48f5a78faed0a45bf9edb6f7adcba07737684",
+    "phase2_completed": true,
+    "phase2_repaired_head": "7659030cd2fc9a2662c67a9bf4d23e0e8f3f1606",
+    "phase2_evidence_head": "ef95199f2350d48cd1f534c21455e3de3bbcc448",
+    "phase2_receipt_sha256": "5382034332f24b0e37954b4f8e2cefe958f21ff644e6fd1ffec150d2478aa61b",
+    "qualification": "QUALIFIED",
+    "independent_audit_terminal": "PASS_PHASE2_EXECUTION_AND_CUSTODY",
+    "scope": "TEST_QUALIFICATION_ONLY",
+    "rerun_allowed": false
+  },
+  "real_gate_surfaces": {
+    "pr340_head": "42c3af6ba6d82737a465620f801e896239849184",
+    "mechanically_qualified_required_roles": 66,
+    "required_roles_outside_qualified_surface": 51,
+    "not_applicable_roles": 81,
+    "g11_g12": {"pr": 342, "head": "f7e90c41bab10c7ff4abb3e69446975634483656"},
+    "g8": {"pr": 343, "head": "82d17bfb1650d97a95d5424160126791f09d7494", "workflow_run": 38489523630, "tests_passed": 11},
+    "g6": {"pr": 345, "head": "f16ba70f7066db2928e31f31b7785831a8fc10f2", "workflow_run": 38489595232, "tests_passed": 10},
+    "g7": {"pr": 346, "head": "5a314bdeda9078d5f65e995e49d2ebf5274751f6", "workflow_run": 38490004001, "tests_passed": 9},
+    "r1": {"pr": 347, "head": "877242a6c8206ea35a73ebf111cb6b52bbe79109", "workflow_run": 38490456813, "tests_passed": 13}
+  },
+  "synthetic_surfaces": {
+    "pr328_head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+    "pr328_scope": "QUALIFIED_MECHANICS_INTERFACE_FIXTURE_ONLY",
+    "pr344_head": "f10d4f62b59a35cc443302ab8863c33d51b2b1de",
+    "pr344_status": "DESIGN_V2__USER_REVIEW_REQUIRED__IMPLEMENTATION_OFF",
+    "v79_status": "NOT_QUALIFIED__291_OF_292__Q08_SPARSE_POSITIVE_CONVERGENCE_FAIL__3_NOT_DIAGNOSED",
+    "v80": {
+      "pr": 348,
+      "head": "e4f25e65013973e737f354182457bd01aa2d3fa8",
+      "status": "PROSPECTIVE_TDD_RED_FIRST__NO_SUCCESSOR_ESTIMATOR_QUALIFICATION_YET"
+    }
+  },
+  "authority": {
+    "real_td": false,
+    "target_selection": false,
+    "representation_selection": false,
+    "td60": false,
+    "production_ema_selection": false,
+    "stage4": false,
+    "real_training": false
+  }
+}

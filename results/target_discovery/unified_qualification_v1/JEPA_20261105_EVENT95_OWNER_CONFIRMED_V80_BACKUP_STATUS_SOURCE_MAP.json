@@ -1,0 +1,48 @@
+{
+  "schema": "JEPA_EVENT95_OWNER_CONTROLLER_BACKUP_STATUS_CORRECTION_V1",
+  "event": 95,
+  "date_utc": "2026-11-05",
+  "repo": "dushyant-mishra/sea-ad-jepa-agent",
+  "canonical_audit_pr": 322,
+  "live_handoff_pr": 460,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "source_docs": [
+    {
+      "event": 65,
+      "role": "original_actions_rescue",
+      "source": "docs/agent/JEPA_20261104_V80_ORIGINAL_ARTIFACT_RESCUE_AND_FIT_ONLY_PORTABILITY_TRIAGE_EVENT65.md"
+    },
+    {
+      "event": 69,
+      "role": "FIT_AND_RECEIPT_GIT_ARCHIVED_BOTH_322_460",
+      "source": "docs/agent/JEPA_20261104_ORIGINAL_V80_GITHUB_ASSET_ARCHIVE_AND_PRIVATE_CONTROLLER_BOUNDARY_EVENT69.md"
+    },
+    {
+      "event": 70,
+      "role": "original_controller_opaque_sha_verified_owner_conversation_file_at_that_time_owner_download_unconfirmed",
+      "source": "docs/agent/JEPA_20261104_EVENT70_CONTROLLER_OWNER_COPY_AND_RECIPROCAL_K02_K03_TEST_AUDIT.md"
+    },
+    {
+      "event": 95,
+      "role": "new_owner_attestation",
+      "source": "docs/agent/JEPA_20261105_EVENT95_OWNER_CONFIRMED_V80_PRIVATE_DOWNLOAD_RESOLVED.md",
+      "git_blob_sha1": "eaf24bfa50a0d2de62cb701bc87472b89117665f"
+    }
+  ],
+  "controller": {
+    "artifact_id": 11866917064,
+    "original_zip_bytes": 6844053,
+    "original_zip_sha256": "184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46",
+    "actions_expiry_utc": "2026-11-13T03:01:58Z",
+    "owner_personal_download_completed_confirmed": true,
+    "owner_backup_status": "OWNER_CONFIRMED_PERSONAL_DOWNLOAD_COMPLETE__V80_BACKUP_RESOLVED",
+    "owner_local_copy_sha_independently_checked": false,
+    "independent_private_vault_escrow_verified": false,
+    "controller_truth_opened": false,
+    "public_repo_controller_present": false,
+    "urgent_rescue_open": false
+  },
+  "amendment": "Future agents must stop repeating the V80 Nov13 rescue warning. Event70 was correct at its timestamp, but owner confirmation now supersedes its unconfirmed-download observation. Do not access, download or open protected data.",
+  "historical_records_modified": false,
+  "science_status": "BENCHMARK_PACKAGE_ONLY__NO_WINNER__NO_TRAINING"
+}

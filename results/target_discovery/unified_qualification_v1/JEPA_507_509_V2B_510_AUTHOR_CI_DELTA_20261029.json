@@ -1,0 +1,61 @@
+{
+  "schema": "JEPA_507_509_V2B_510_AUTHOR_CI_DELTA_20261029_V1",
+  "date": "2026-10-29",
+  "original_review": {
+    "pr": 507,
+    "head": "a4894f366b9d73df03a675d0b70383dea6a36454",
+    "target_pr": 502,
+    "red": 4,
+    "green": 19,
+    "conclusion": "REPAIR_REQUIRED__TEACHER_ISSUANCE_ORACLE_AND_UNBOUND_POLICY"
+  },
+  "source_gap": {
+    "pr": 509,
+    "head": "3e5694e2c1b959c8e21f9fc6dd50cbf694ac4013",
+    "correction_to_pr": 492,
+    "correction": "CANDIDATE_DECISION_TABLE_HASH_BOUND_IN_20260902_MANIFEST__IDENTITY_ONLY_AUDIT_NOW_FEASIBLE",
+    "direct_492_comment": "ATTEMPTED_BLOCKED_BY_PERMISSIONS",
+    "issue_509_correction_comment_id": 6505197594
+  },
+  "new_mechanics": {
+    "pr": 510,
+    "head": "ef51325d0c31bbac2eb0bf74bd3f770d244657f2",
+    "base_pr": 508,
+    "new_entry": "scripts/v5/td_unified/observation_v2b_public_student_gate_v1.py",
+    "status": "NEW_STUDENT_ONLY_FIXTURE_CONTENT_CONSISTENCY__AUTHOR_GREEN__NO_INDEPENDENT_ACCEPTANCE",
+    "dedicated_ci": {
+      "run": 40932955463,
+      "platform_jobs": 4,
+      "success": 4,
+      "per_job_test_counts": {
+        "new_student_only_hostiles": 13,
+        "inherited_bound_v2": 14,
+        "inherited_private_pair": 15,
+        "macha_504_composition": 7,
+        "macha_504_a4": 28
+      }
+    },
+    "all_head_workflows": 6,
+    "all_passed": true,
+    "semantics": [
+      "No lookup of teacher issuance registry",
+      "Constant rejection for any teacher-role candidate before digest check",
+      "Student D1 base count/rights/source-cell/operator coverage checked against separately supplied expected policy",
+      "Published policy-only commitment excludes private teacher/source roster data"
+    ],
+    "remaining_blockers": [
+      "Original #502 public API still unsafe and Macha #507 RED",
+      "Expected policy can be self-supplied by attacker; no authenticated independent rights issuer",
+      "No process isolation or capability enforcement; Python code alone cannot enforce custodied teacher separation",
+      "No physical/source feature alias, donor/specimen, QC selection authentication",
+      "No real G7 V2 content law or task4/Stage4 authorization"
+    ],
+    "history": {
+      "initial_new_test_passed_broad_ci_failed_due_to_issuer_registry_collision": true,
+      "fix": "SYNTHETIC_CELL_ID_NAMESPACE_SEPARATION__NO_ISSUER_OR_HISTORICAL_REVIEW_SOURCE_CHANGED"
+    }
+  },
+  "nph52_query_issuance": "BLOCKED_UNTIL_UNAMBIGUOUS_SOURCE_ALIAS_AND_QC_IDENTITY_REVIEW",
+  "quarantined_expression": "NOT_AUTHORIZED",
+  "standing": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

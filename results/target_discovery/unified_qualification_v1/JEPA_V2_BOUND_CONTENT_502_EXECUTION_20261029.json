@@ -1,0 +1,43 @@
+{
+  "schema": "JEPA_V2_BOUND_CONTENT_502_EXECUTION_20261029_V1",
+  "date": "2026-10-29",
+  "classification": "FIXTURE_MECHANICS_AUTHOR_CI_ONLY__INDEPENDENT_MACHA_REVIEW_PENDING__NO_AUTHORITY",
+  "pr": 502,
+  "head": "0789247cdbbdfca671613b020865aba958dfd699",
+  "base_pr": 495,
+  "legacy_v2_shape_unchanged": true,
+  "versioned_content_schema": "TD_OBSERVATION_NORMALIZATION_VIEW_V2_BOUND_CONTENT_V1_FIXTURE",
+  "content_module_blob": "02c703d0dbf545b32460f54dcdfcf43ae1bc0529",
+  "macha_481_immutable_blob": "3dda6c2cc9be19d5daececfb07967e94067519f6",
+  "macha_replay_adapter_blob": "154b9718bc94b16b619f4097a947ce01a2aa18a8",
+  "independent_arithmetic_tests_blob": "2a29369d712db6b2c1d39935cf6ae9d821e5c0e4",
+  "mechanics_ci": {
+    "run_id": 40902399672,
+    "linux_job_id": 123547923825,
+    "windows_job_id": 123547924457,
+    "success": true,
+    "per_platform": {
+      "legacy_v2_shape": 22,
+      "bound_content_new": 14,
+      "macha481_adapted_non_a4": 23,
+      "source_producer_regressions": 106
+    },
+    "total_workflows_success": 6,
+    "total_workflows_failure": 0
+  },
+  "prior_failed_receipts": [
+    40901586184,
+    40901817331
+  ],
+  "known_blockers": [
+    "Macha independent review of #502 not yet executed",
+    "A4 zero-base refusal noninterference upstream #474 RED",
+    "process-local binding not authenticated real source/rights issuer",
+    "ETL R1 physical unit and R1D donor/specimen identity RED",
+    "R2 query alias/off-ledger/QC provenance RED",
+    "D2 OFF pending independent residual audit",
+    "legacy CaseBundle/G7 physical library_size unchanged",
+    "real TRAIN calibration and Task4 NOT_AUTHORIZED"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

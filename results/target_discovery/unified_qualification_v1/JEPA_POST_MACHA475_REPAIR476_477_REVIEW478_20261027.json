@@ -1,0 +1,120 @@
+{
+  "schema": "JEPA_POST_MACHA475_REPAIR476_477_REVIEW478_DELTA_V1",
+  "date": "2026-10-27",
+  "record_kind": "APPEND_ONLY_MIXED_INDEPENDENT_REVIEW_AUTHOR_REPAIR_NO_AUTHORITY",
+  "macha_review": {
+    "pr": 475,
+    "head": "b40d815290fd02ae89259e3b441eabcf7f69d5be",
+    "copied_to_audit": [
+      "docs/agent/JEPA_MACHA_REVIEW_AND_READINESS_DELTA_20261027.md",
+      "results/target_discovery/unified_qualification_v1/JEPA_MACHA_REVIEW_AND_READINESS_DELTA_20261027.json",
+      "scripts/v5/review_probes/macha_20261027/g7_470_hostile_probe.py",
+      "scripts/v5/review_probes/macha_20261027/ps_canonical_differential_probe.py",
+      "scripts/v5/review_probes/macha_20261027/q_excluded_g7_conformance_probe.py",
+      "scripts/v5/review_probes/macha_20261027/unified_task1_encoder_differential_probe.py"
+    ],
+    "original_verdicts": {
+      "464": "REJECT_INCREMENTAL",
+      "467": "ACCEPT_INCREMENTAL_WITH_LIMITATIONS",
+      "470": "REPAIR_REQUIRED"
+    },
+    "original_hostile_reviews": [
+      {
+        "pr": 472,
+        "head": "98a893f2f1b8925f6ce22b244db557b135fb0ff6",
+        "run": 40571069907,
+        "base_review_fails": 9,
+        "base_review_passes": 7
+      },
+      {
+        "pr": 473,
+        "head": "48453e4da91a1b2f595c38d730d483ef78b3b18d",
+        "run": 40573969293,
+        "linux_failures": 7,
+        "windows_failures_each": 9
+      }
+    ]
+  },
+  "chatgpt_repairs": [
+    {
+      "pr": 476,
+      "head": "26031df25b51087f2f3ec35a88eef2919d794c68",
+      "based_on_pr": 472,
+      "scope": "R5X_R6_EXACT_BUILTIN_CANONICAL_INPUT_SNAPSHOT",
+      "targeted_ci_run": 40582085162,
+      "targeted_ci_conclusion": "SUCCESS",
+      "targeted_passed": 60,
+      "targeted_deselected": 11,
+      "original_review_ci_run": 40582085077,
+      "original_review_ci_conclusion": "FAILURE",
+      "original_review_passes": 15,
+      "original_review_remaining_failed": 1,
+      "remaining_failed_reason": "R1D donor specimen pseudoreplication; R1/R2 ten further unchanged RED",
+      "original_11_external_trust_red_preserved": true,
+      "independently_accepted": false,
+      "full_g7_authorized": false
+    },
+    {
+      "pr": 477,
+      "head": "c83088de090bc4f2fc6bbee353c46070bcca7be5",
+      "based_on_pr": 473,
+      "scope": "WINDOWS_NUMPY_INTC_UINTC_PLUS_SIX_PAYLOAD_EXCEPTION_FORMATS",
+      "targeted_ci_run": 40582199779,
+      "targeted_ci_conclusion": "SUCCESS",
+      "targeted_4_platform_macha_hostile_pass_each": 23,
+      "existing_mechanical_pass_each": 12,
+      "original_T2D_red_preserved": true,
+      "inherited_ps1_ci_run": 40582199515,
+      "inherited_ps1_ci_conclusion": "FAILURE_T2D_ONLY",
+      "inherited_task3_ci_run": 40582199614,
+      "inherited_task3_ci_conclusion": "FAILURE_T2D_ONLY",
+      "independently_accepted": false,
+      "ps_task12_cumulative_authorized": false
+    }
+  ],
+  "independent_review": {
+    "reviewer_lane": "ChatGPT",
+    "pr": 478,
+    "head": "b7aa56e2915d2af7dd733f0f0253e684164ce70a",
+    "source_pr": 474,
+    "source_head": "e7635e7982e950a010d181ec6f6883a18ade0db6",
+    "code_under_review_unchanged": true,
+    "verdict": "ACCEPT_INCREMENTAL_FIXTURE_MATH_WITH_LIMITATIONS__REJECT_PHYSICAL_R2_PROMOTION",
+    "ci_run": 40583065261,
+    "ci_result": "SUCCESS",
+    "total_hostile_and_original_passed": 106,
+    "independent_new_limitation_tests": 5,
+    "bounded_true_claim": "base rights depth invariant if every outside-base withheld molecule mapped and q outside base",
+    "counterexample_limits": [
+      "q-like off-ledger molecules can change D_base",
+      "q assigned base rights can change visible depth and count",
+      "richer teacher count can exceed base depth, while unchanged CaseBundle library_size contract assumes physical total"
+    ],
+    "policy_decision": "SEPARATE_PRIVATE_PHYSICAL_LIBRARY_TOTAL_FROM_VISIBLE_BASE_RIGHTS_NORMALIZATION_DEPTH__ISSUER_ATTESTED_QUERY_RIGHTS_AND_OFFLEDGER_COMPLETENESS",
+    "externally_authenticated": false,
+    "real_g7_authorized": false
+  },
+  "existing_biological_results_preserved": {
+    "corrected_human_td_pr": 314,
+    "corrected_td_scale": "TD56_TD57B_TD59_PASS__TD57C_NEAREST_THIRD_FAIL",
+    "candidate_C2": "ACTIVE_NOT_WINNER",
+    "candidate_C3": "QUERY_MEASURED_R5_DEVELOPMENTAL_NOT_PRODUCTION",
+    "production_synthetic_task4_biology_generator": "ABSENT_IN_REVIEWED_BRANCHES",
+    "pr328": "FIXTURE_ONLY",
+    "pr469": "FIXTURE_ONLY"
+  },
+  "privacy_firewall": {
+    "source": "Macha PR475 disclosure",
+    "incident": "Limited source-level sample attributes incidentally printed during read-only review",
+    "values_preserved_or_repeated": false,
+    "used_for_scientific_decision": false,
+    "action": "No raw row detail in audit; continue required project firewall handling"
+  },
+  "invariants": [
+    "Macha475 verdicts remain historical and exact-head: repairing later code does not retroactively change their RED",
+    "No source physical donor/atom identity or Q-excluded normalizer issuer has been independently authenticated",
+    "No target construction, known-truth V3.1.1 production biological generator or human gates authorized",
+    "The older #322 qualified V8e head retains separate authority; later audit deltas require independent review"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

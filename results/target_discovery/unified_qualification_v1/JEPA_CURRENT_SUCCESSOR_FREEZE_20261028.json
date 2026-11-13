@@ -1,0 +1,264 @@
+{
+  "schema": "JEPA_CHATGPT_LANE_SUCCESSOR_FREEZE_V1",
+  "date": "2026-10-28",
+  "kind": "APPEND_ONLY_SOURCE_RECONCILIATION__NOT_NEW_BIOLOGICAL_QUALIFICATION",
+  "controlling_previous_audit_head": "dfaba7967a77d482496d1b843f4a5d666b9ce570",
+  "controlling_previous_handoff_head": "6237438d0b1e708839d4b66547129d26664ae03e",
+  "frozen_prior_independent_V8e_head": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+  "scientific_standing": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "existing_historical_no_repeat": [
+    {
+      "pr": 314,
+      "head": "c6899a2910244a0352c0c57e7aea6e3026191da1",
+      "status": "CORRECTED_TD56_TD57B_TD59_PASS_TD57C_FAIL_ONE_SHOT_SPENT",
+      "interpretation": "C2_RELATIONAL_BROAD_MESOSCALE_ACTIVE_NOT_TARGET"
+    },
+    {
+      "context": "R5",
+      "status": "DEVELOPMENTAL_MEASURED_EIGHT_OTHER_GENES_QUERY_TARGET",
+      "heldout_r2": 0.43,
+      "technical_query_r2": 0.3496,
+      "query_agnostic_r2": 0.276,
+      "query_count_only_r2": 0.161,
+      "interpretation": "C3_QUERY_MEASURED_NOT_RARE_NOT_PRODUCTION"
+    },
+    {
+      "context": "V44",
+      "status": "REAL_RNA_PROXY_TOURNAMENT",
+      "interpretation": "NOT_GENUINE_QUERY_TEACHER_WINNER"
+    },
+    {
+      "pr": 328,
+      "status": "LIMITED_SYNTHETIC_MECHANICS_FIXTURE_NOT_V3_1_1_PRODUCTION_BIOLOGY"
+    },
+    {
+      "pr": 369,
+      "status": "SEALED_TEST_OF_TEST_MECHANICS_NOT_REAL_BIOLOGY"
+    },
+    {
+      "pr": 469,
+      "head": "7a6477244dfc817d929e210c38c1ea4b2d1a1927",
+      "status": "432_SOURCE_OBSERVED_SYNTHETIC_RNA_FIXTURE_ATOMS_TO_TASK5_NOT_TQB"
+    },
+    {
+      "pr": 471,
+      "head": "7957b7578168532eabad8b2b75126bb71e6f43b7",
+      "status": "97_OF_97_HISTORICAL_FILE_HASHES_MATCH_MANIFEST_NOT_REAL_CALIBRATION"
+    },
+    {
+      "pr": 475,
+      "head": "b40d815290fd02ae89259e3b441eabcf7f69d5be",
+      "status": "INDEPENDENT_REVIEW_OLD_470_REPAIR_REQUIRED_467_INCREMENTAL_464_REJECT"
+    }
+  ],
+  "new_independent_review": {
+    "pr": 484,
+    "head": "5d84ed90417fbc1be1a13657a08491e2db6feef5",
+    "base_audit_head": "dfaba7967a77d482496d1b843f4a5d666b9ce570",
+    "ci_run": 40738537121,
+    "ci_status": "CUSTODY_SUCCESS_NOT_BIOLOGY",
+    "original_files": [
+      [
+        "docs/agent/JEPA_MACHA_V2_G7_OBSERVATION_CONTRACT_DELTA_20261028.md",
+        "fafa64b43b56c2207963d6920df0f46d5c6ebb93"
+      ],
+      [
+        "results/target_discovery/unified_qualification_v1/JEPA_MACHA_V2_G7_OBSERVATION_CONTRACT_DELTA_20261028.json",
+        "66dabe48970cda74d5843379b08853c9e10cca05"
+      ],
+      [
+        "scripts/v5/review_probes/macha_20261028/observation_source_census_probe.py",
+        "c0863c59eb6b9c69f5cca140294b41250b51552d"
+      ],
+      [
+        "scripts/v5/review_probes/macha_20261028/v2_g7_crosshead_probe.py",
+        "7bbd941674f3362462765cf253ea2dbc746f5f7e"
+      ]
+    ],
+    "verdicts": [
+      {
+        "source_pr": 479,
+        "source_head": "ae762d7096a94ac663a0788f6f577ba404e37536",
+        "review_pr": 481,
+        "review_head": "957fa4a558ce2bd219b5c2dec6dad8f65dca81ab",
+        "verdict": "REPAIR_REQUIRED",
+        "original_passed": 124,
+        "new_red_failed": 19,
+        "new_characterization_passed": 5,
+        "ci_review_run": 40734273672,
+        "findings": [
+          "A1 V2 consumer accepts forged physical/offset/scale depth",
+          "A2 V2 student label does not enforce base-rights",
+          "A3 V2 snapshot metaclass code execution",
+          "A4 empty-base refusal depends on withheld mass (inherited #474)"
+        ],
+        "preserved_positive": "240 seeded withheld-mass worlds; 123 complete views and 117 refusal outcomes invariant; 118 teacher positive controls"
+      },
+      {
+        "source_pr": 476,
+        "source_head": "26031df25b51087f2f3ec35a88eef2919d794c68",
+        "review_pr": 482,
+        "review_head": "58baa4f912c791866c1aae31eab797da9dca588a",
+        "verdict": "ACCEPT_INCREMENTAL_WITH_R1_R2_BLOCKERS",
+        "original_passed": 60,
+        "new_red_failed": 18,
+        "new_characterization_passed": 3,
+        "ci_review_run": 40735376242,
+        "remaining_external_hostiles": 11,
+        "findings": [
+          "R5X metaclass in _strict_json exact type dispatch",
+          "V3 may accept directly supplied forged rows because binder receipt never consumed",
+          "physical atom R1 and donor R1D and normalizer R2 remain RED"
+        ]
+      },
+      {
+        "source_pr": 477,
+        "source_head": "c83088de090bc4f2fc6bbee353c46070bcca7be5",
+        "review_pr": 483,
+        "review_head": "48ec018735a095571a0bfaa25b33f9b9deb40b39",
+        "verdict": "ACCEPT_INCREMENTAL_WITH_LIMITATIONS",
+        "original_hostile_passed_each_platform": 23,
+        "new_red_failed_each_platform": 8,
+        "new_characterization_passed_each_platform": 2,
+        "ci_review_run": 40736368351,
+        "findings": [
+          "isinstance __class__ payload code in semantic_sha256 and _iter_rows",
+          "chained exception __cause__ carries payload object",
+          "live iterables execute caller code by design",
+          "T2-D external issuer remains RED"
+        ]
+      }
+    ]
+  },
+  "original_red_tests_archived_outside_collection": [
+    {
+      "pr": 481,
+      "head": "957fa4a558ce2bd219b5c2dec6dad8f65dca81ab",
+      "path": "docs/agent/review_probes/macha_20261028/pr481_test_observation_normalization_view_v2_macha_479_red.py.txt",
+      "blob": "3dda6c2cc9be19d5daececfb07967e94067519f6"
+    },
+    {
+      "pr": 482,
+      "head": "58baa4f912c791866c1aae31eab797da9dca588a",
+      "path": "docs/agent/review_probes/macha_20261028/pr482_test_td_real_g7_content_enforcement_v1_macha_476_red.py.txt",
+      "blob": "fd98636f85967226af1605c376522865167c8706"
+    },
+    {
+      "pr": 483,
+      "head": "48ec018735a095571a0bfaa25b33f9b9deb40b39",
+      "path": "docs/agent/review_probes/macha_20261028/pr483_test_ps_t12_477_recheck_macha_red.py.txt",
+      "blob": "f2d10a8c4ea3620c3f46f7d6b208c07279027d56"
+    }
+  ],
+  "task3_repair_candidate": {
+    "pr": 486,
+    "head": "f17080516f77e79fb6f6cb44903cbabdb2a85dd7",
+    "base_review_pr": 480,
+    "base_review_head": "f39e605abc616cf59051a8bda9b0270cef5d6f09",
+    "original_macha_task3_pr": 437,
+    "original_review_verdict": "REPAIR_REQUIRED__R1_NUMERIC_ALIAS__R2_OBS_PARAMETER_SPOOF",
+    "original_review_tests_blob": "9f2ea674b41730faacd9801a82a20745e592d9ad",
+    "source_file": "scripts/production_synthetic/calibration_v1.py",
+    "source_git_blob": "a3406783892fe3fb016b1423ba1e3676412d235d",
+    "new_hostile_test_git_blob": "d0fff1483453eadc055866b67249c8e6cb21a9ef",
+    "ci": [
+      {
+        "run": 40741905858,
+        "result": "SUCCESS",
+        "windows": "421 passed, 1 skipped, 1 xfailed",
+        "ubuntu": "422 passed, 1 xfailed",
+        "new_repair_tests": "28 passed per platform",
+        "prior_red_tests": "4 passed per platform"
+      },
+      {
+        "run": 40741906003,
+        "result": "SUCCESS",
+        "summary": "422 passed, 1 xfailed"
+      },
+      {
+        "run": 40741905819,
+        "result": "SUCCESS",
+        "summary": "73 passed"
+      }
+    ],
+    "claimed_fix": [
+      "exact_numeric_comparison_prevents_2pow53_binary64_alias",
+      "closed_versioned_observation_parameter_registry",
+      "reject_caller_str_subclass_mapping_keys_before_hash_or_comparison"
+    ],
+    "limitations": [
+      "OBSERVATION_PARAMETER_SEMANTICS_BOUND_FALSE",
+      "_AUTHENTICATED_CALIBRATION_REGISTRY_EMPTY",
+      "COOPERATIVE_SAME_PROCESS_ONLY",
+      "NO_REAL_POST_CORRECTION_TRAIN_ISSUER",
+      "INDEPENDENT_CHATGPT_REVIEW_REQUIRED"
+    ],
+    "independently_accepted": false
+  },
+  "new_observation_decision_proposed": {
+    "status": "MACHA_PROPOSED_NOT_DECIDING_LANE_ACCEPTED",
+    "D1": {
+      "name": "VISIBLE_BASE_MAPPED_SUM_V1",
+      "definition": "sum base-rights MEASURED_SCALAR counts",
+      "private_input_needed": false,
+      "consumer_check": "strict equality for every released cell",
+      "default_recommendation": true
+    },
+    "D2": {
+      "name": "base_excluded_physical_depth",
+      "definition": "D1 plus authenticated residual mass",
+      "default_recommendation": false,
+      "requires": "per-query per-operator off-ledger alias audit from source var metadata",
+      "consumer_check": "not independently verifiable in released view"
+    },
+    "facts_as_reported": {
+      "collision_pairs_in_FULL104": 11449,
+      "collision_pairs_state_2": 11449,
+      "SEA_AD_pooled_residual_fraction": 0.0399,
+      "NPH52_pooled_residual_fraction": 0.014,
+      "HVS_pooled_residual_fraction": 0,
+      "source_census_probe": "scripts/v5/review_probes/macha_20261028/observation_source_census_probe.py"
+    },
+    "crosshead": {
+      "status": "PROBE_ONLY_NOT_AUTHORIZED",
+      "schema_compatibility": "NO",
+      "rename_adapter_accepted": 6,
+      "rename_adapter_worlds": 200,
+      "v3_reachable": false,
+      "physical_provenance_authenticated": false
+    },
+    "blocked": [
+      "off-ledger alias and per-query source policy",
+      "depositor QC and specimen donor equivalence",
+      "G7 R1/R1D/R2",
+      "T2-D",
+      "PS Task3 real issuer",
+      "PS Task4 candidate-neutral biology generator"
+    ]
+  },
+  "data_custody": {
+    "original_chat_only_inventory": "results/target_discovery/chat_exclusive_takeover_20261027/CHAT_LOCAL_SOURCE_SHA256_INVENTORY_V1.json",
+    "original_binaries_in_github": false,
+    "historical_august_calibration_manifest_member_hashes_verified": 97,
+    "human_raw_values_or_donor_identifiers_committed_by_this_freeze": false
+  },
+  "next_independent_reviewer_actions": [
+    "ChatGPT independently review Macha PR486 exact source versus immutable PR480 tests; preserve external calibration RED",
+    "ChatGPT implement tests-first PR479 A1-A3; separate Macha PR474 A4 repair",
+    "ChatGPT repair #476 exact type dispatch; design composed bind-snapshot-decide without silently modifying V3 decision law",
+    "ChatGPT repair #477 exact type checks and exception chaining; retain T2-D red",
+    "Deciding lane adjudicate D1,D2, versioned G7 E3; independent rights issuer and PS Task4 remain blocked"
+  ],
+  "additional_original_text_uploads": {
+    "classification": "HISTORICAL_VERBATIM_CUSTODY_ONLY__NOT_SCIENTIFIC_QUALIFICATION",
+    "manifest": "results/target_discovery/chat_exclusive_takeover_20261028/DUPLICATE_PASTED_TEXT_SOURCE_CUSTODY_V1.json",
+    "original_count": 2,
+    "original_names_collide": true,
+    "distinct_git_blobs": [
+      "58b4312666aae179ef0f9877c3447ab5a120ea28",
+      "c99e2927845bad6acbea2191b6c8378d65913333"
+    ],
+    "scientific_correction": "OLD_C3_RARE_SUPERSEDED_BY_C3_QUERY_MEASURED",
+    "training_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema": "JEPA_D1_BASE_ONLY_SOURCE_EDGE_511_EXECUTION_20261029_V1",
+  "date": "2026-10-29",
+  "classification": "AUTHOR_GREEN_FIXTURE_RED_EXCLUDED_INPUT__NOT_AUTHENTICATED_REAL_SOURCE",
+  "source_pr": {
+    "pr": 511,
+    "head": "5fe18a11b010b0adb857104d10329e840a9e7d4c",
+    "base_pr": 510,
+    "base_head": "ef51325d0c31bbac2eb0bf74bd3f770d244657f2",
+    "source_path": "scripts/v5/td_unified/observation_d1_base_only_student_fixture_v1.py",
+    "source_blob": "e70d84383f4011010d207623c035fbcde639d2ad",
+    "tests_path": "tests/v5/td_unified/test_observation_d1_base_only_student_fixture_v1.py",
+    "tests_blob": "10dbfc11831a1c5804462b8a04cb9ffa8bbea723",
+    "docs_path": "docs/agent/JEPA_D1_BASE_ONLY_SOURCE_EDGE_20261029.md",
+    "docs_blob": "1152ecac4d0e33c16d0bd8d13dd2cd79157a8525"
+  },
+  "mechanical_contract": {
+    "function": "produce_d1_base_only_student_fixture(*, base_observations, expected_policy)",
+    "accepts_hidden_query_count": false,
+    "accepts_full_library_total": false,
+    "accepts_source_residual": false,
+    "accepts_teacher_view": false,
+    "expects_complete_query_address_rights_operator_state_and_cell_roster": true,
+    "depth": "exact sum of MEASURED_SCALAR base-rights counts only",
+    "query_observability": "exact operator×address must be MEASURED_SCALAR for every selected source cell",
+    "output": "STUDENT_BASE_RIGHTS V2_BOUND_CONTENT_FIXTURE; checked by V2B student-only consumer; no teacher lookup",
+    "zero_depth": "one fixed refusal independent of hidden mass",
+    "competing_old_v2_conservation_refusal": "old V2 needs library_total==sum mapped count and rejects synthetic positive residual; source-total-free V2B fixture does not"
+  },
+  "author_ci": {
+    "run": 40936357384,
+    "platform_jobs": 4,
+    "passed_platform_jobs": 4,
+    "all_head_workflows": 6,
+    "head_workflows_all_passed": true,
+    "per_platform_tests": {
+      "new_source_edge": 114,
+      "student_only_v2b": 13,
+      "exact_macha_504_composition": 7,
+      "inherited_source_and_a4": 129,
+      "inherited_v2_content": 14,
+      "total": 277
+    }
+  },
+  "positive_unqualified_limitations": [
+    "Source feature aliased to q but falsely mapped to base can add q molecules to D1 and change student view",
+    "Upstream cell-roster selection dependent on q changes published student view even when q count is not passed",
+    "Self-declared expected_policy can be forged; consistency is not rights/source authentication",
+    "Physical nucleus/donor/specimen identity and source alias closure are absent",
+    "Strict NPH52 real query-issuance block and quarantined expression no-access ruling unchanged"
+  ],
+  "independent_review": "NOT_YET_REVIEWED_BY_MACHA; #510 independent review also pending",
+  "unchanged_red": "Macha #507 4 RED for old #502 teacher public validation oracle / self-issuance",
+  "not_authorized": [
+    "real source issuer",
+    "real G7 E3 V2",
+    "PS Task4 biological generation",
+    "Stage4",
+    "real model training"
+  ],
+  "standing": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

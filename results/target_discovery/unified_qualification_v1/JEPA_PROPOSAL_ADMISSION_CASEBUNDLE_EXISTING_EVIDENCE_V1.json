@@ -1,0 +1,310 @@
+{
+  "schema": "JEPA_PROPOSAL_ADMISSION_CASEBUNDLE_EXISTING_EVIDENCE_V1",
+  "date": "2026-11-03",
+  "decision_status": "NO_NEW_EXPERIMENT__EXISTING_EVIDENCE_AND_CODE_BOUNDARY_FIRST",
+  "scientific_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "user_method_rule": "Before proposing an experiment, establish what question remains unanswered, which previous experiments already addressed it, what evidence would change our current conclusion, and whether existing code can execute that test.",
+  "four_mandatory_answers": {
+    "question_unanswered": "Can an already-observed SEAAD/HVS per-cell query (count, private physical total, source/reader identity, exact address/operator structural support, aliases/rights, q-excluded D1) be authenticated into a real, versioned CaseBundle under existing Task2 rights and without q/selection leakage? No reviewed end-to-end real CaseBundle established. This is a PROVENANCE_AND_INTERFACE question first, not a new teacher-biology experiment.",
+    "prior_experiments_and_findings": [
+      {
+        "pr": 59,
+        "result": "SIX_DONOR_REAL_RAW_LEVEL4_AGGREGATES_EXACT",
+        "limit": "387 raw count blocks and 8,915 meta blocks; 17,186 core addresses, not per-cell q CaseBundle"
+      },
+      {
+        "pr": 69,
+        "result": "CORRECTED_FOUR_SOURCE_LABELS",
+        "limit": "numeric comparisons intact; rerun explicitly unnecessary"
+      },
+      {
+        "pr": 492,
+        "result": "FROZEN_50K_REAL_EXPRESSION_SAMPLE_READ",
+        "limit": "no per-cell q issuer under V3 rights"
+      },
+      {
+        "pr": 314,
+        "result": "CORRECTED_REAL_RELATIONAL_REPLAY_SPENT",
+        "limit": "not a CaseBundle source pipeline"
+      },
+      {
+        "pr": 513,
+        "result": "SOURCE_QC_METADATA_AND_ALIAS_LAW",
+        "limit": "no raw count matrices in that probe, ambiguous aliases and q-selection risks"
+      },
+      {
+        "pr": 474,
+        "result": "Q_EXCLUDED_DEPTH_FIXTURE_MATH",
+        "limit": "source rights/policies self-provided, q/off-ledger gap"
+      },
+      {
+        "pr": 478,
+        "result": "INDEPENDENT_HOSTILE_DEPTH_REVIEW",
+        "limit": "off-ledger q, q-in-base and physical-total-vs-normalization counterexamples"
+      },
+      {
+        "pr": 451,
+        "result": "CASEBUNDLE_FIXTURE_ONLY",
+        "limit": "reject real authority; library_size physical semantics"
+      },
+      {
+        "pr": 469,
+        "result": "SYNTHETIC_SEVEN_EDGE_BRIDGE",
+        "limit": "no source authentication"
+      }
+    ],
+    "evidence_that_would_change_conclusion": [
+      "An existing exact-head physically bound original source per-cell q+source_library retained artifact and operator/alias state with independent chain-of-custody and verified task2 producer-access receipt; if found, source read remains prohibited as unnecessary.",
+      "An independently reviewed source/q rights issuer that accounts for all measured/collision/off-ledger aliases and keeps q outside student base rights, or correctly returns NOT_ESTIMABLE; such an issuer must commit BEFORE observing target results.",
+      "A versioned CaseBundle real-path shape separating PRIVATE physical total and PUBLIC base_rights_normalization_depth, with source q/identity binding and derived digest re-verification, compatible with current Task2/Task5 and no silent weakening.",
+      "Hostile synthetic tests prove measured-zero vs structurally unavailable, wrong/right query, q-in-base refusal, off-ledger hidden mass refusal, donor alias spoof rejection, post-hoc policy swap, mismatched private total, no D1 full total leakage.",
+      "A retrospective inventory of old source artifacts confirms each indispensable field is missing/non-derivable; ONLY THEN a separate prospective owner-scope within earlier one-block ceiling can be considered."
+    ],
+    "existing_code_executability": {
+      "yes": "Existing scripts can read/count Level4 (already executed) and test synthetic q-excluded arithmetic, rights-ladder, main V2C/D1 fixture, Task2 session and Task5 fixture validation independently.",
+      "no": "No established reviewed code path can use only existing committed receipts to issue a per-cell real q/alias/source library authenticated CaseBundle; no real biological target qualification or training executable under current authority.",
+      "minimum_nonexperimental_next_step": "Compare existing retained artifacts/receipts at exact bytes to every required CaseBundle field; locate any accepted real producer before writing; write no-count-read fixture contract checks for missing binding only after that evidence gap is nailed down."
+    }
+  },
+  "source_recovery_scope": "PR59/69/492/513/474/478/451/469/Main/PR390 targeted source inspection; no claim all 824 branches audited",
+  "field_coverage": [
+    {
+      "field": "source_count_block_custody",
+      "status": "EXISTING_PHYSICALLY_EVIDENCED",
+      "prior_prs": [
+        59,
+        69
+      ],
+      "evidence": "PR59 checked 387 raw Level4 block bytes; PR69 corrected source labels, preserving numeric rows",
+      "limitation": "Not a universal all-8,915 count-block authentication or per-case right"
+    },
+    {
+      "field": "source_cell_selection_row_donor_source",
+      "status": "EXISTING_PHYSICALLY_EVIDENCED",
+      "prior_prs": [
+        59,
+        69
+      ],
+      "evidence": "8,915 metadata blocks SHA-verified; 4,553,407 cells accounted once; four source labels corrected",
+      "limitation": "No per-cell query/value issuer receipt or independent donor de-dup beyond established identity hierarchy"
+    },
+    {
+      "field": "source_private_physical_library_per_cell",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "prior_prs": [
+        59,
+        513,
+        528
+      ],
+      "evidence": "PR59 input metadata includes source_library, PR513 confirms SEAAD 4,118,213 deposited totals agree within same deposit; PR69 preserves per-cell libraries array value SHA",
+      "limitation": "No single atom/source-read query-bound, same-cell physical-total receipt; internal UMI agreement not external authentication"
+    },
+    {
+      "field": "raw_per_cell_q_count",
+      "status": "NOT_RETAINED_IN_OLD_RECEIPT",
+      "prior_prs": [
+        59,
+        492
+      ],
+      "evidence": "PR59 did read genuine raw per-cell sparse counts in selected 387 blocks but retained six donor×17,186 aggregates; PR492 separate 50k expression sample",
+      "limitation": "No reviewed source-cell/q raw value object joined to private library, structural state and alias class; count existence not fabricated absence"
+    },
+    {
+      "field": "source_address_feature_support",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "prior_prs": [
+        505,
+        531
+      ],
+      "evidence": "Stage81A2R & A3R 42×41238 source/operator state objects exist; collision union 11,449 pairs; proposal E1/E2 feature mask",
+      "limitation": "E1 source-specific support usage awaiting reciprocal qualification; measured zero must remain separate from unmeasured and collision"
+    },
+    {
+      "field": "q_address_alias_equivalence_and_rights",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "prior_prs": [
+        513,
+        528
+      ],
+      "evidence": "PR513 source-derived alias classifications; two ambiguous queries blocked and UBE2R2-AS1 rights linked for 18 operators",
+      "limitation": "Policy not a separately frozen authenticated q/alias issuer for every CaseBundle; NPH52 clearance absent"
+    },
+    {
+      "field": "off_ledger_hidden_q_molecule_closure",
+      "status": "NOT_ESTIMABLE",
+      "prior_prs": [
+        492,
+        505,
+        478
+      ],
+      "evidence": "PR492 residual decomposition; PR478 produced a hostile off-ledger withheld-q leakage counterexample against PR474 conditional formula",
+      "limitation": "Cannot assert q independence without explicit source feature coverage or a fail-closed nonestimability decision"
+    },
+    {
+      "field": "q_dependent_depositor_selection",
+      "status": "NOT_ESTIMABLE",
+      "prior_prs": [
+        513,
+        528
+      ],
+      "evidence": "HVS 1k detected-gene floor (query-dependent near floor); SEAAD lack of hard floor does not establish independence; doublet score expression-derived",
+      "limitation": "Need prospective source-specific selection analysis; no QC-based hidden filtering"
+    },
+    {
+      "field": "task2_population_partition_and_access",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "prior_prs": [
+        390,
+        147
+      ],
+      "evidence": "Task2 has raw-resolved reader-split and attested producer session/observed access; PR147 physically compared donor histogram",
+      "limitation": "Not linked to exact historical PR59 physical per-cell q value or per-cell source/alias issuer"
+    },
+    {
+      "field": "rights_ladder_base_depth_math",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "prior_prs": [
+        474,
+        478
+      ],
+      "evidence": "Existing PR474 function produces conditional base-q-excluded depth; PR478 accepted arithmetic under complete mapped source, red-teamed off-ledger and q-in-base",
+      "limitation": "No q parameter or external rights/physical source attestation; richer count can exceed projected depth"
+    },
+    {
+      "field": "student_D1_view_and_isolation",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "prior_prs": [
+        474,
+        478
+      ],
+      "evidence": "main D1 V2C source code enforces q outside base, emits base_rights_normalization_depth and source flags false; no physical total projected",
+      "limitation": "Caller policy and counts untrusted, no independently attested per-source q issuance; student container limitations separate"
+    },
+    {
+      "field": "casebundle_fixture_validation",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "prior_prs": [
+        451,
+        469
+      ],
+      "evidence": "Existing Task5 V1 validates KNOWN_TRUTH_CASEBUNDLE_V1 only when authority_scope FIXTURE_ONLY; PR469 synthetic interface probe succeeded",
+      "limitation": "Genuine per-cell CaseBundle absent; CaseBundle library_size physical semantic conflicts with richer-level q-excluded projected depth"
+    },
+    {
+      "field": "F1_real_source_producer_reuse",
+      "status": "PRESENT_BUT_UNQUALIFIED",
+      "prior_prs": [
+        147
+      ],
+      "evidence": "main scripts/v4/f1_real_producer_v1.py implements separately authorized reader_fit forward producer; prior historical receipts in its own line",
+      "limitation": "It is a checkpoint-forward baseline using historical log1p(count/source_library); not a V3.1 real CaseBundle issuer and not safe to transplant normalization"
+    },
+    {
+      "field": "real_source_q_casebundle_issued",
+      "status": "NOT_RETAINED_IN_OLD_RECEIPT",
+      "prior_prs": [
+        451,
+        469,
+        513
+      ],
+      "evidence": "No reviewed existing source/one-cell/q/physical library/alias/rights/current Task2-session real CaseBundle found in searched main and targeted historical PRs",
+      "limitation": "An exact independently reviewed accepted artifact/producer with source-byte provenance would reverse this gap finding"
+    }
+  ],
+  "code_reuse_inventory": [
+    {
+      "capability": "existing raw source Level4 verifier",
+      "code": "analysis/v5_full104_information_channel_redteam_20260920/scripts/qualify_donor_umi_independent_v1_20260922.py",
+      "pr": 59,
+      "head": "1bdff2a8f12d7971652dcf92b5b81ca45c37a933",
+      "can_execute": "SIX_DONOR_PHYSICAL_REAGGREGATION_ALREADY_EXECUTED",
+      "reuse": "CUSTODY_ONLY_NO_REPEAT"
+    },
+    {
+      "capability": "correct source labels",
+      "code": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_i/SIX_DONOR_SUCCESSOR_QUALIFICATION_V1.json",
+      "pr": 69,
+      "head": "83b85382f22a7672a5beb1ef9154e5b8bf36e16f",
+      "can_execute": "COMPLETED_RECEIPT",
+      "reuse": "CANONICAL_SOURCE_LABELS_REQUIRED"
+    },
+    {
+      "capability": "Task2 access and population reader split",
+      "code": "scripts/v5/td_unified/manifest_v1.py",
+      "pr": 390,
+      "head": "c7dfff1cee608e4a101855d42cf0af08491c2aaf",
+      "git_blob": "b66b2cc0e8c9a88d9a9b378b8f02447fc1c6609e",
+      "can_execute": "EXISTING_ACCESS_SESSION_AND_HARNESS_ATTESTATION_COMPONENT",
+      "reuse": "DO_NOT_CREATE_PARALLEL_CONTROLLER"
+    },
+    {
+      "capability": "conditional q-excluded depth producer",
+      "code": "scripts/v5/td_unified/q_excluded_depth_v1.py",
+      "pr": 474,
+      "head": "e7635e7982e950a010d181ec6f6883a18ade0db6",
+      "git_blob": "449b50a6d31599c87adb8cd5ecd1ee496a61f278",
+      "can_execute": "FIXTURE_ONLY_CONDITIONAL_ARITHMETIC",
+      "reuse": "DO_NOT_CREATE_NEW_DEPTH_GENERATOR"
+    },
+    {
+      "capability": "independent depth leakage review",
+      "code": "docs/agent/JEPA_PR474_INDEPENDENT_Q_EXCLUDED_DEPTH_REVIEW_20261027.md",
+      "pr": 478,
+      "head": "b7aa56e2915d2af7dd733f0f0253e684164ce70a",
+      "git_blob": "c57cbea99cfc8a9356bcd6aa4addc9aeac1a08aa",
+      "can_execute": "NEGATIVE_COUNTEREXAMPLE_ALREADY_TESTED",
+      "reuse": "PRESERVE_OFF_LEDGER_AND_Q_IN_BASE_REDS"
+    },
+    {
+      "capability": "main V2C/D1 student fixture",
+      "code": "scripts/v5/td_unified/observation_d1_base_only_student_v2c_fixture_v1.py",
+      "pr": null,
+      "head": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb",
+      "git_blob": "edee1b8adc1b5c7ca660d52d3667d2020abdb417",
+      "can_execute": "FIXTURE_ONLY_STUDENT_D1_POLICY_CONSISTENCY",
+      "reuse": "KEEP_PRIVATE_SOURCE_LIBRARY_OUT_OF_STUDENT"
+    },
+    {
+      "capability": "Task5 current fixture validator",
+      "code": "scripts/v5/td_unified/casebundle_v1.py",
+      "pr": 451,
+      "head": "bbdf9a90973303e41cee6d8bd9d05de38e9b828a",
+      "git_blob": "23bbdcfc3234b7d621beb870fa019b34822446af",
+      "can_execute": "KNOWN_TRUTH_CASEBUNDLE_FIXTURE_ONLY",
+      "reuse": "DO_NOT_SILENTLY_RENAME_LIBARY_TOTAL_TO_DEPTH"
+    },
+    {
+      "capability": "existing synthetic Task5 interop",
+      "code": "tests/v5/td_unified/pr328_to_task5_fixture_boundary_probe_v1.py",
+      "pr": 469,
+      "head": "7a6477244dfc817d929e210c38c1ea4b2d1a1927",
+      "can_execute": "SYNTHETIC_SEVEN_EDGE_INTEROP_ALREADY_EXECUTED",
+      "reuse": "NO_REPLAY"
+    },
+    {
+      "capability": "historic real forward producer not current Task5 issuer",
+      "code": "scripts/v4/f1_real_producer_v1.py",
+      "pr": null,
+      "head": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb",
+      "git_blob": "48b1665f2cb6b06d9fab446f35c497a5c26d6778",
+      "can_execute": "F1_HISTORICALLY_EXTERNAL_AUTHORIZED_FORWARD_ONLY",
+      "reuse": "DO_NOT_CONFUSE_F1_FORWARD_MECHANICS_WITH_CASEBUNDLE_SOURCE_AUTHORITY"
+    }
+  ],
+  "evaluation_order": [
+    "1. Search accepted source data receipts and code for an actual real CaseBundle producer and per-cell original query/total value",
+    "2. Populate field coverage from existing trusted receipts without any numeric data read",
+    "3. If exact indispensable missing trust edge proven, specify a minimal new binding/validator against existing code, with fail-closed synthetic fixtures",
+    "4. Independent reviewer challenge of that new code; no experiment, fitting, or additional source reads",
+    "5. Only if artifacts cannot yield indispensable per-cell values, propose a separately reviewed, prospective read under existing one-block owner scope; no automatic execute"
+  ],
+  "stop_conditions": [
+    "NO_NEW_LEVEL4_READ_BY_DEFAULT",
+    "NO_NEW_QC_REPLAY_BY_DEFAULT",
+    "NO_NEW_GENERATOR_OR_SYNTHETIC_WORLD",
+    "NO_MODEL_TRAINING",
+    "NO_TARGET_WINNER",
+    "NO_V79_V80_REOPEN",
+    "NO_STAGE4"
+  ]
+}

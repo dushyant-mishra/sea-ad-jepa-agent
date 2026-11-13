@@ -1,0 +1,84 @@
+{
+  "schema": "JEPA_NEW_AGENT_LIVE_POINTER_20261029_V1",
+  "date": "2026-10-29",
+  "classification": "LIVE_NAVIGATION_POINTER__NO_NEW_BIOLOGY__NO_NEW_AUTHORITY",
+  "audit": {
+    "pr": 322,
+    "head": "14206c06df9e6a0282ad1665e39de229c0d647dd"
+  },
+  "handoff": {
+    "pr": 460,
+    "head": "87f946ce68635e3604303ebc6c0164462f4944c9"
+  },
+  "frozen_independently_reviewed_v8e": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+  "read_first": [
+    "docs/agent/JEPA_NEW_AGENT_BOOTSTRAP_20261029.md",
+    "docs/agent/JEPA_SUCCESSOR_FINAL_FREEZE_20261028.md",
+    "docs/agent/JEPA_SUCCESSOR_MACHA_V2_G7_REVIEW_DELTA_20261028.md",
+    "docs/agent/JEPA_SUCCESSOR_TASK3_CHATGPT_INDEPENDENT_REVIEW_20261028.md"
+  ],
+  "live_prs": [
+    {
+      "code_pr": 486,
+      "head": "f17080516f77e79fb6f6cb44903cbabdb2a85dd7",
+      "owner": "INDEPENDENT_CHATGPT_REVIEW",
+      "status": "AUTHOR_GREEN__INDEPENDENT_REVIEW_PENDING",
+      "first_action": "Review exact numeric comparison, nonfinite/cross-type numerics, closed observation-parameter registry, and false authority."
+    },
+    {
+      "code_pr": 479,
+      "head": "ae762d7096a94ac663a0788f6f577ba404e37536",
+      "review_pr": 481,
+      "review_head": "957fa4a558ce2bd219b5c2dec6dad8f65dca81ab",
+      "owner": "CHATGPT_REPAIR_A1_A3",
+      "status": "REPAIR_REQUIRED",
+      "first_action": "Repair depth spoofing, self-declared student rights exposure, and metaclass route against unchanged Macha tests; coordinate A4 upstream with Macha."
+    },
+    {
+      "code_pr": 476,
+      "head": "26031df25b51087f2f3ec35a88eef2919d794c68",
+      "review_pr": 482,
+      "review_head": "58baa4f912c791866c1aae31eab797da9dca588a",
+      "owner": "CHATGPT_REPAIR",
+      "status": "ACCEPT_INCREMENTAL_WITH_R1_R2_BLOCKERS__NEW_HOSTILES_OPEN",
+      "first_action": "Repair exact-type/metaclass route and create mandatory composed bind->immutable snapshot->V3 entry; preserve R1/R1D/R2 RED."
+    },
+    {
+      "code_pr": 477,
+      "head": "c83088de090bc4f2fc6bbee353c46070bcca7be5",
+      "review_pr": 483,
+      "review_head": "48ec018735a095571a0bfaa25b33f9b9deb40b39",
+      "owner": "CHATGPT_REPAIR",
+      "status": "ACCEPT_INCREMENTAL_WITH_LIMITATIONS__NEW_HOSTILES_OPEN",
+      "first_action": "Replace payload-sensitive isinstance/__class__ routes with exact type dispatch and suppress chained payload causes; preserve T2-D RED."
+    }
+  ],
+  "decisions_pending": [
+    "Deciding lane accepts or rejects D1 VISIBLE_BASE_MAPPED_SUM_V1 as default released depth.",
+    "D2 residual-containing depth remains nondefault unless per-query/operator off-ledger alias and source-feature audit qualifies it.",
+    "Whether to version a new G7 E3 V2 content law; do not mutate V1 library_size semantics."
+  ],
+  "no_repeat": [
+    "PR314 corrected one-shot relational replay",
+    "R5 query-measured developmental experiment",
+    "V44 real-RNA teacher proxy",
+    "Stage69/70 rare program work",
+    "PR164 separate-nucleus RNA/ATAC and PR77 macrophage perturbation audits",
+    "PR328/369/451/469 fixture mechanics unless a changed interface specifically requires a regression",
+    "PR471 97/97 historical archive hashing unless original bytes are newly reacquired and need identity verification"
+  ],
+  "reaudit_only_if": [
+    "pinned Git head/blob changed",
+    "new independent executable result contradicts the archive",
+    "new authenticated physical/source evidence changes an unavailable fact",
+    "scientific question/evidence-right policy changes prospectively",
+    "new integrity/security defect invalidates an earlier receipt"
+  ],
+  "first_three_actions": [
+    "Independently review PR486 before any Task3 promotion.",
+    "Repair PR479 A1-A3 against unchanged PR481 tests; do not self-approve.",
+    "Repair PR476 composition/type boundary and PR477 exact-type/exception boundary while preserving all external-source REDs."
+  ],
+  "milestone_after_repairs": "Only after Tasks1-3, source/right semantics, observation contract and G7 qualify: implement candidate-neutral V3.1.1 production-synthetic Task4 generator, then one identifiable and one no-winner sealed known-truth challenge.",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

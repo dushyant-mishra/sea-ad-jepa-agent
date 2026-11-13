@@ -1,0 +1,215 @@
+{
+  "schema": "JEPA_AUDIT_LANE_V8_SNAPSHOT_20261027",
+  "as_of_utc_date": "2026-10-27",
+  "supersedes_current_navigation": "V7_20261017_NOT_HISTORICAL_AUDITS",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "audit_prior_head": "e9d372126503553a1d9961ef7e38afefc632b0a5",
+  "handoff_prior_head": "234ed1b048660cffcf2f9c239709fa29c029aa4c",
+  "frozen_accepted_unified_tasks_0_3": {
+    "task3_sha": "117dd51dea827e734b299982da93991b934bdc8f",
+    "meaning": "fixed historical baseline; future branches not autoaccepted"
+  },
+  "release_gates": {
+    "unified_task4": "X1_EXTERNAL_PUBLISHER_REFUSAL_RED__X3_WINDOWS_WSL_CROSS_LOCK_UNQUALIFIED__CUMULATIVE_INDEPENDENT_ACCEPTANCE_MISSING",
+    "unified_task5": "TASK5_FIXTURE_ONLY__A7_SAME_CODE_PATH_NOT_QUALIFIED",
+    "unified_tasks6_8": "NONPROMOTING_FIXTURES_ONLY__REAL_PRODUCER_AND_TARGET_RECEIPTS_MISSING",
+    "real_g7_e3": "REJECTED__PHYSICAL_ATOM_AND_Q_EXCLUDED_DEPTH_AUTHENTICATION_MISSING",
+    "ps_task1": "CHANGED_CANONICAL_DEPENDENCY__INDEPENDENT_CUMULATIVE_ACCEPTANCE_MISSING",
+    "ps_task2": "CHANGED_CUSTODY_DEPENDENCY__INDEPENDENT_CUMULATIVE_ACCEPTANCE_MISSING",
+    "ps_task3": "FIXTURE_MECHANICS_ACCEPTED_WITH_LIMITATIONS_OLD_DEPENDENCIES__RECHECK_NEEDED",
+    "ps_task4": "DO_NOT_START_PENDING_TASKS1_3_INDEPENDENT_CHECKPOINT"
+  },
+  "hostile_evidence": {
+    "ps_task1_red_17": 448,
+    "ps_task2_red_5": 455,
+    "g7_initial_red_9": 441,
+    "g7_successor_red_13": 449,
+    "representation_red_13": 442,
+    "task4_stale_red": 443,
+    "task4_x1_red": 452,
+    "downstream_original_red_7": 450
+  },
+  "records": [
+    {
+      "pr": 322,
+      "sha": "e9d372126503553a1d9961ef7e38afefc632b0a5",
+      "classification": "AUDIT_PREVIOUS_V7",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322"
+    },
+    {
+      "pr": 323,
+      "sha": "234ed1b048660cffcf2f9c239709fa29c029aa4c",
+      "classification": "HANDOFF_PREVIOUS_V7",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/323"
+    },
+    {
+      "pr": 326,
+      "sha": "2fdb1806255ec60d169830036e4514fbd0d32533",
+      "classification": "HISTORICAL_HARNESS_REUSE",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/326"
+    },
+    {
+      "pr": 351,
+      "sha": "2abcb9fe156eac340ff12adff9426ed38d929e3e",
+      "classification": "POST_TD_C4_DEPENDENCY_FIXTURE",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/351"
+    },
+    {
+      "pr": 379,
+      "sha": "3064ca545f0c94859ea989cd49a04fcbd5b9a303",
+      "classification": "GOVERNING_ARCHITECTURE",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/379"
+    },
+    {
+      "pr": 380,
+      "sha": "5b6bf07e7d8b69b286ea430b09765a5ee4743325",
+      "classification": "GOVERNING_PLAN",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/380"
+    },
+    {
+      "pr": 382,
+      "sha": "416e36d142e949d8eac16dad32e2a2917a9382ae",
+      "classification": "PS_TASK1_2_OLD_REVIEW_NOT_INDEPENDENT",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/382"
+    },
+    {
+      "pr": 400,
+      "sha": "4d434e944b2f89a1bfe8c5375204a10ed0005f69",
+      "classification": "SUPERSEDED_REJECTED_BASE",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/400"
+    },
+    {
+      "pr": 428,
+      "sha": "c8331e37d37cf14b8aeed47c1b84db0ca82df9fe",
+      "classification": "UNIFIED_TASK4_CUMULATIVE_NOT_ACCEPTED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/428"
+    },
+    {
+      "pr": 433,
+      "sha": "21c3fb3bd389f9a513ca9ed33b31acad56b0015f",
+      "classification": "G7_E3_REJECTED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/433"
+    },
+    {
+      "pr": 437,
+      "sha": "fd3242ada6f77ba09ff2d8a1c7716eb9725ced11",
+      "classification": "PS_TASK3_FIXTURE_ACCEPT_WITH_LIMITATIONS_OLD_DEPENDENCY",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/437"
+    },
+    {
+      "pr": 438,
+      "sha": "034cb8ab5a2e9ff3240404ad56289ee606feb6c0",
+      "classification": "FOUR_WORLD_SCIENCE_REJECTED_CLOSED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/438"
+    },
+    {
+      "pr": 439,
+      "sha": "57b7225217bcc61310652258f0312264a9e28a50",
+      "classification": "TASK3_HOSTILE_RED_PRESERVED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/439"
+    },
+    {
+      "pr": 440,
+      "sha": "a547c8d628bb4d44ef76bad78dfb11e083bed7c1",
+      "classification": "TASK5_FIXTURE_NOT_A7",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/440"
+    },
+    {
+      "pr": 441,
+      "sha": "771672405bf1071830300a4b235a4d6c85fa6799",
+      "classification": "G7_HOSTILE_RED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/441"
+    },
+    {
+      "pr": 442,
+      "sha": "8dcd9e2e7adb64c703647f357be2ba1d0ef28221",
+      "classification": "FOUR_WORLD_HOSTILE_RED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/442"
+    },
+    {
+      "pr": 443,
+      "sha": "56c253ed019de088326612998379d129e538c359",
+      "classification": "TASK4_STALE_WRITER_RED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/443"
+    },
+    {
+      "pr": 444,
+      "sha": "28c2bf17ae1c38e3073d4fcd152ca638e0115944",
+      "classification": "POST_TD_BRIDGE_REJECTED_ORIGINAL",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/444"
+    },
+    {
+      "pr": 445,
+      "sha": "e7d7880fe26f45cd8b0abdc19c3155f37112ef39",
+      "classification": "TASK4_INCREMENT_REJECTED_AFTER_MACHAS_RECHECK",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/445"
+    },
+    {
+      "pr": 446,
+      "sha": "f088f40625020253d4378812511e3c473063bb10",
+      "classification": "G7_E3_REPAIR_REJECTED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/446"
+    },
+    {
+      "pr": 447,
+      "sha": "729a0b4c67694baa25b46badce476df7a4c98a7d",
+      "classification": "UNIFIED_TASKS6_8_FIXTURE_CANDIDATE_NO_AUTHORITY",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/447"
+    },
+    {
+      "pr": 448,
+      "sha": "ec6e6404fdb7e876f6705dce57eee19bbe207389",
+      "classification": "PS_TASK1_AUTHOR_DISCLOSED_RED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/448"
+    },
+    {
+      "pr": 449,
+      "sha": "062bfe369348ac4d9ed89c0aa162abf0d9806397",
+      "classification": "G7_REPAIR_HOSTILE_RED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/449"
+    },
+    {
+      "pr": 450,
+      "sha": "1621c6aa5f631a1486edb25ed90c69c80801b58c",
+      "classification": "POST_TD_BRIDGE_HOSTILE_RED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/450"
+    },
+    {
+      "pr": 451,
+      "sha": "bbdf9a90973303e41cee6d8bd9d05de38e9b828a",
+      "classification": "TASK5_BRIDGE_INCREMENT_ACCEPT_LIMITS",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/451"
+    },
+    {
+      "pr": 452,
+      "sha": "7889516c9bdaac392fe451e147f9cb78e90d0f6f",
+      "classification": "TASK4_X1_X2_X3_X5_X6_HOSTILE_RED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/452"
+    },
+    {
+      "pr": 453,
+      "sha": "8641a62a3897b6c2d1dbcc52dc312bf1511fb2eb",
+      "classification": "PS_TASK1_REPAIR_GREEN_CUMULATIVE_REVIEW_OPEN",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/453"
+    },
+    {
+      "pr": 454,
+      "sha": "028ecbd8569b14b84a4f5fd0413ba0225cc9a074",
+      "classification": "TASK4_X1_RED_X3_OPEN",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/454"
+    },
+    {
+      "pr": 455,
+      "sha": "ef63a75a51b6e3a3533a87c7a08ca6318d461c10",
+      "classification": "PS_TASK2_INDEPENDENT_RED",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/455"
+    },
+    {
+      "pr": 456,
+      "sha": "3b42b6c1d7a0a94522c931069039e11e8cffcd99",
+      "classification": "PS_TASK2_REPAIR_GREEN_CUMULATIVE_REVIEW_OPEN",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/456"
+    }
+  ],
+  "live_status_note": "PR heads and states were checked 2026-10-27. This is a fixed evidence snapshot; re-fetch actual refs before taking actions. Evidence tier labels are not production authority."
+}

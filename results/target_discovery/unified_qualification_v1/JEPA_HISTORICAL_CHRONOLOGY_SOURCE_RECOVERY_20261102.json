@@ -1,0 +1,572 @@
+{
+  "schema": "JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_V1",
+  "prepared_as_of": "2026-11-02",
+  "classification": "historical_reconciliation_non_authorizing",
+  "audit_pr": 322,
+  "operational_handoff_pr": 460,
+  "historical_chronology_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_SOURCE_RECOVERY_20261102.md",
+  "source_type": "existing_repository_primary_reports_pinned_by_blob_sha1",
+  "source_evidence": [
+    {
+      "id": "v3_scorecard",
+      "path": "docs/V3_SCORECARD.md",
+      "blob_sha1": "4c43b0d4b57dd955887223d4da7a525c508bf8ed",
+      "meaning": "v3 donor-heldout pathology scorecard; non-graph Stage27C locked; constrained Stage35C positive"
+    },
+    {
+      "id": "v3_status",
+      "path": "docs/ACTIVE_V3_STATUS.md",
+      "blob_sha1": "549a89de3e0c83972a5a39e159f2ce36e3d1cc6b",
+      "meaning": "V1/V2/V3 context and Stage26C reconnaissance"
+    },
+    {
+      "id": "stage35c",
+      "path": "results/reports/stage35c_latent_module_graph_report_v1.md",
+      "blob_sha1": "2d6e9b47505c30651761e510210e7551f40b06b4",
+      "meaning": "small guarded internal graph-positive; not external topology certification"
+    },
+    {
+      "id": "stage41c",
+      "path": "results/reports/stage41c_stability_rescue_report_v1.md",
+      "blob_sha1": "591bce393576af574ad6083081bb6948413ab672",
+      "meaning": "credible unlocked 0.3681; bootstrap lower bound 0.2604"
+    },
+    {
+      "id": "stage44",
+      "path": "results/reports/stage44_pi_review_packet_v1.md",
+      "blob_sha1": "d11a815993890ed390de333d30e26244e062f7b6",
+      "meaning": "claim-bounded manuscript/PI review packet"
+    },
+    {
+      "id": "stage47",
+      "path": "results/reports/stage47_cross_version_candidate_network_drug_synthesis_report_v1.md",
+      "blob_sha1": "1ba3fc116835ced7265d280e4ce5e96affa395a6",
+      "meaning": "model-implied candidate gene/druggability dossier; no causal claims"
+    },
+    {
+      "id": "stage49",
+      "path": "results/reports/stage49_known_experimental_evidence_concordance_report_v1.md",
+      "blob_sha1": "fd1fa7c44f33440dfc18caddc529d0f97b8e849b",
+      "meaning": "post-hoc support not independent causal validation"
+    },
+    {
+      "id": "stage63",
+      "path": "results/reports/stage63_dlpfc_signal_instability_diagnosis_report_v1.md",
+      "blob_sha1": "4bbfad59453997d94c1ac413d71b0266057dc723",
+      "meaning": "negative control stronger than real DLPFC predictor; benchmark not locked"
+    },
+    {
+      "id": "stage69",
+      "path": "results/reports/stage69_rare_microglia_auxiliary_head_jepa_audit_report_v1.md",
+      "blob_sha1": "529af717e6dc4b019faaaf38a80f37422d5b6f2b",
+      "meaning": "internal rare positive 0.3591037979"
+    },
+    {
+      "id": "stage70",
+      "path": "results/reports/stage70_rare_microglia_auxiliary_head_robustness_lock_audit_report_v1.md",
+      "blob_sha1": "529fadf0e21a50b7c6541a0266b002cbad4d4d49",
+      "meaning": "Stage69 reproduced; new benchmark lock false"
+    },
+    {
+      "id": "stage75_f5c",
+      "path": "docs/stage75f_f5c_primary_tf_region_gene_evidence.md",
+      "blob_sha1": "751123ad4723ef2fbee87f3d50713973e89df75d",
+      "meaning": "primary candidate TF-region-gene motif assembly"
+    },
+    {
+      "id": "stage75_f7",
+      "path": "docs/stage75f_f7_secondary_tf_region_gene_evidence.md",
+      "blob_sha1": "1d912a680b01845778e75e896f512450dac6f212",
+      "meaning": "secondary candidate assembly and negative tiers"
+    },
+    {
+      "id": "stage75_f8",
+      "path": "docs/stage75f_f8_integrated_regulatory_evidence.md",
+      "blob_sha1": "bb09966d8a4788bc44ee3d834dfe2e41af426481",
+      "meaning": "A/B/C TF evidence tiers; not validated regulation"
+    },
+    {
+      "id": "stage81a2r",
+      "path": "docs/v4/STAGE81A2R_CLOSURE_REPORT.md",
+      "blob_sha1": "d93b9ed442213e2eda75a5c9b4cb01c37c4c0474",
+      "meaning": "43,248 foundation identities / 41,238 addresses / 2,010 nonuniversal / 42 operators"
+    },
+    {
+      "id": "c2_t1",
+      "path": "outputs/c2_t1_gradient_forensic_20260906/C2_V3_REPRODUCTION.md",
+      "blob_sha1": "90fa1893ce2ffdf57cd4475ccbc0a6ea639f4634",
+      "meaning": "48/48 dead protected routing tensors in one CUDA/fp16 condition"
+    },
+    {
+      "id": "f1_replay",
+      "path": "docs/agent/F1_REAL_PRODUCER_REPLAY_EXTERNAL_REVIEW_HANDOFF_20260907.md",
+      "blob_sha1": "ad2ccaf3e3c4685ba5e6c455c13c3a1460222c6d",
+      "meaning": "test-executed F1 complete producer, independent replay; real F1 off"
+    },
+    {
+      "id": "stage76_f9",
+      "path": "results/reports/stage76_directionality_audit_v1.json",
+      "blob_sha1": "f3102ca0dcd167d4413bd0711f6f77034351f067",
+      "meaning": "96 signed coactivity hypotheses; all 10 directions unresolved; causal sign not established"
+    },
+    {
+      "id": "stage76_f10",
+      "path": "results/reports/stage76_perturbation_readiness_v1.json",
+      "blob_sha1": "5ada8f73df921d7d407e13597df6aca20d1715e8",
+      "meaning": "archived frozen GeneJEPA epoch30/2957-feature checkpoint loaded; Tier A ready; global not"
+    },
+    {
+      "id": "stage77_f11",
+      "path": "results/reports/stage77_tier_a_perturbation_mvp_v1.json",
+      "blob_sha1": "01a2d4eb3519e9dd7182ff0ed2ef263485736bbc",
+      "meaning": "53 Tier A edges; 12 bounded input-space perturbations plus baseline; unitless"
+    },
+    {
+      "id": "stage78_f12",
+      "path": "results/reports/stage78_jepa_latent_shift_v1.json",
+      "blob_sha1": "f1011a42c4ba4984bd8ae164eab1831c0f6df987",
+      "meaning": "frozen GeneJEPA latent displacement actually executed; tiny shifts, no rescue"
+    },
+    {
+      "id": "stage79_f13",
+      "path": "results/reports/stage79_graph_controls_v1.json",
+      "blob_sha1": "9ac0adaf8d6b9ce5b90efd54abf50c49b8ea484a",
+      "meaning": "152 graph variants, 1812 nonreal scenario runs, technical PASS, no biological qualification"
+    },
+    {
+      "id": "stage81a0",
+      "path": "docs/v4/STAGE81A0_V4_FAILURE_REGISTRY_AND_DESIGN_CONTRACT.md",
+      "blob_sha1": "b3be190494ab426637f790eb941d0b93c49277a4",
+      "meaning": "V4 historical failure audit of V1-V3 and Stage75-79; expression-first redesign rationale"
+    },
+    {
+      "id": "v2_real_graph_vs_no_graph",
+      "path": "results/reports/no_graph_ablation_predictive_representation_comparison_v1.md",
+      "blob_sha1": "9a0b1b265257215a98bdb72689360821d742864d",
+      "meaning": "V2 graph 0.2892 vs no-graph 0.2514, not best simple baseline"
+    },
+    {
+      "id": "v2_strict_shuffle",
+      "path": "results/reports/strict_shuffled_graph_ablation_predictive_representation_comparison_v1.md",
+      "blob_sha1": "85baa626edb9e3c9d699f8c3150c25ca8322120b",
+      "meaning": "V2 real 0.2892 vs strict shuffle 0.2470 with degree-preserving no-overlap control"
+    },
+    {
+      "id": "v3_stage25_baselines",
+      "path": "results/reports/v3_primary_baseline_benchmark_suite_v1.md",
+      "blob_sha1": "eb33a437917de0ceadeefa506066b77f853aed1b",
+      "meaning": "Stage25 nine baseline suite 84 donor/5 folds, module mean high water 0.3325; distinct later reference"
+    },
+    {
+      "id": "v3_stage31_residual_graph",
+      "path": "results/reports/stage31_residual_graph_controls_report_v1.md",
+      "blob_sha1": "bd18428fec0a61795f30033a6c0ce141dfcefe68",
+      "meaning": "Stage31 graph-residual/anti-oversmoothing pass false; 0.326370 vs Stage27C 0.326702"
+    },
+    {
+      "id": "stage81a3_complete_qualification_record",
+      "path": "docs/v4/STAGE81A3_CALIBRATION_AND_SYNTHETIC_MECHANICS_READOUT.md",
+      "blob_sha1": "5fbd0689333b1c774908878fe2cf930dbcac4d10",
+      "meaning": "3334-line original pre-freeze record: 5000-step synthetic JEPA failure, belief alternatives, TRAIN-only PCA, rare-state, context and 4096->41238 governance"
+    },
+    {
+      "id": "gene_identity_reclassification",
+      "path": "docs/agent/JEPA_GENE_IDENTITY_RECLASSIFICATION_AUDIT_20261013.md",
+      "blob_sha1": "3cc53abf5ea8655d8f283d40f235927386ba0f61",
+      "meaning": "historical 2/4/8 teacher-view optimum unbound; distinguish 4K audited, source-native, repaired-41K and mechanics"
+    },
+    {
+      "id": "nph_repaired_feature_address_producer",
+      "path": "scripts/v4/foundation_materialize_nph_discovery_sample.R",
+      "blob_sha1": "a3ff5f739751750b8dfe3ac3abb8b91bc487a6c9",
+      "meaning": "exact source feature-index to molecular-address index and collision exclusion"
+    },
+    {
+      "id": "guide_bin1_id_keyed_v2",
+      "path": "analysis/therapeutic_perturbation_etl/PR118_AUDIT_RESPONSE_20260925.md",
+      "blob_sha1": "d58d8a952d8820a46e0fb8c270e92fb4c221d7fb",
+      "meaning": "feature-ID-keyed GSE311359 V2 physically repaired 14 BIN1 invalid rows; 2434 other units parity",
+      "repository_ref": "aaf561cfdc60ffe29c4d79094c16ce5e524f7d2d",
+      "source_location": "separate_implementation_PR121__not_present_in_audit_branch"
+    },
+    {
+      "id": "f1_wrong_mask_repair",
+      "path": "docs/agent/F1_EA35_REPAIR_RESPONSE_20260907.md",
+      "blob_sha1": "d40e71766e994937a881505848ea74af4a905f75",
+      "meaning": "old mask had wrong gene selection and query not withheld; deterministic q-excluding repair and tests"
+    },
+    {
+      "id": "qid_wrong_query_baseline_audit",
+      "path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
+      "blob_sha1": "51f0ff52288920794b06fc383edf2e6b03fb8b21",
+      "meaning": "matched-null preserves query so wrong-query margin invalid as claimed contrast"
+    },
+    {
+      "id": "stage81a3r_historical_freeze1",
+      "path": "docs/history/foundation_target_discovery_prior_20260907/stage81/docs/v4/STAGE81A3R_FREEZE1_REPRESENTATION_CONTRACT.md",
+      "blob_sha1": "2bf156f60ad5ca60fd06231c9691d371864528cb",
+      "meaning": "historical Stage81A3R Freeze1 d_global=224 declared under 149 TRAIN donors and 4726 cells; not current representation"
+    },
+    {
+      "id": "stage81a3r_freeze1_machine_contract",
+      "path": "docs/history/foundation_target_discovery_prior_20260907/stage81/results/v4/stage81a3r_freeze1_contract.json",
+      "blob_sha1": "774d641ef8f647d1c6fe5591e4694c1046f367d3",
+      "meaning": "exact old bounded freeze1 semantics, 224 selection, train-only restrictions"
+    },
+    {
+      "id": "stage81a3r_real_train_governance",
+      "path": "docs/history/foundation_target_discovery_prior_20260907/stage81/docs/v4/STAGE81A3R_REAL_TRAIN_GLOBAL_STATE_READOUT.md",
+      "blob_sha1": "007a150807ce003f964d1d4c8d97ef8bae060cf7",
+      "meaning": "range-closure audit, mixed-split transient extraction incident discarded, freeze1 qualification"
+    },
+    {
+      "id": "foundation_target_discovery_historical_import",
+      "path": "docs/history/foundation_target_discovery_prior_20260907/HISTORY_GATE.md",
+      "blob_sha1": "58fc6de917f08df721a39fa1518945af22bef1df",
+      "meaning": "old freeze1 dimension preserved as history and barred from current training authority"
+    },
+    {
+      "id": "td15_td27_decision_ledger",
+      "path": "target_discovery/iterations/TD15_TD27_DECISION_LEDGER.md",
+      "blob_sha1": "72f1432631cb33c1ddfab15bcf5fdf3f53c97dea",
+      "meaning": "real TD15-27 tests, QC pseudostate defeat, SEA-specific residual survival and measurement constraints"
+    },
+    {
+      "id": "td19_depth_pseudostate_negative_control",
+      "path": "target_discovery/iterations/td19_claude_followup/TD19_DECISION.md",
+      "blob_sha1": "bb207df987285190edf40fff6a19137cf63de0b0",
+      "meaning": "depth pseudostate 0.980-0.986 reproduces TD17/18 geometry; target withdrawn"
+    },
+    {
+      "id": "stage73r_graph_prior_controls",
+      "path": "results/reports/stage73r_context_specific_grn_control_repair_report_v1.md",
+      "blob_sha1": "b49e97016cef9af4230a58739ef0a972bfedfaee",
+      "meaning": "context graph beats no graph but loses STRING/shuffled and Stage27C; lock false"
+    },
+    {
+      "id": "stage74_directed_prior_candidate",
+      "path": "results/reports/stage74_pi_summary_v1.md",
+      "blob_sha1": "730695d07bb1238769167f012b2737b72e13b459",
+      "meaning": "directed TF-target in silico prioritization passed, causal validation false"
+    },
+    {
+      "id": "v5_within_operator_x4_redteam",
+      "path": "docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md",
+      "blob_sha1": "58d8789a65bee0a0c50c9235c863a8107806ae8b",
+      "meaning": "discarded false-positive x4 estimator; corrected operator and donor-centred cross-view results"
+    },
+    {
+      "id": "v21_morabito_frozen_encoder_external_projection",
+      "path": "results/reports/external_validation_gse174367.md",
+      "blob_sha1": "41f9d6851b1dedee862e0fe402563512efc9ab9d",
+      "meaning": "historical frozen V2.1 4126-cell 18-sample external projection; weak/non-significant tau transfer, NOT new validation",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "v21_historical_current_status_caution",
+      "path": "docs/current_status.md",
+      "blob_sha1": "8428e0d9fc19e0b918c270b7513e7781c374d836",
+      "meaning": "superseded June V2.1/2.2 status explicitly weak/negative Morabito, v2.2 mask trial; not current next action",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "v21_grubman_six_group_zero_shot",
+      "path": "results/tables/gse138852_graph_jepa_zero_shot_aligned_report.md",
+      "blob_sha1": "5c31891bd534aaf7109e8be3e29928a7c5b592fc",
+      "meaning": "completed frozen zero-shot aligned 449-cell six-group engineering smoke; high module AUC not donor-valid biology",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "stage42_external_readiness_reclassification",
+      "path": "results/reports/stage42_safe_external_support_report_v1.md",
+      "blob_sha1": "2e54b14d119ada5885252270e31b60a1e287fd59",
+      "meaning": "historical older external outputs support/readiness only; not clean validation",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "v22_external_mask_five_epoch_history",
+      "path": "results/tables/v2_2_topology_dropout_test_history.csv",
+      "blob_sha1": "41366c1ad4f7a198a12f976182e5d89e24e64f20",
+      "meaning": "executed five-epoch topology/feature dropout smoke mechanics, not qualified new representation",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "v22_rexach_olah_cellxgene_alignment",
+      "path": "results/reports/v2_2_cellxgene_alignment_stats.md",
+      "blob_sha1": "8b97d931bf8e854b423654f0f1236e0e72e2f331",
+      "meaning": "completed Rexach/Olah 2957-gene alignment adapters; not untouched independent holdouts",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "discovery_atlas_final_artifact_audit",
+      "path": "results/reports/discovery_atlas_final_state_audit.md",
+      "blob_sha1": "f9f9a9e88cb7a6f4c8383e0c5009eb756ea54c30",
+      "meaning": "38 artifact checks pass; module-mean benchmark leads old graph; mechanics only",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "discovery_atlas_targeted_45_gene_manifold_qc",
+      "path": "results/reports/discovery_targeted_manifold_audit_v1.md",
+      "blob_sha1": "82d2c6246de8ea19abaa4b44660d2880a66b9464",
+      "meaning": "45/45 sampled latent manifold QC; not biological causality",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "stage72a_morabito_processed_resource_readiness",
+      "path": "results/reports/stage72a_external_multiomic_grn_resource_eligibility_audit_report_v1.md",
+      "blob_sha1": "ebfbaf496b5f001c4d8434bf95c08937ad410257",
+      "meaning": "acquired GSE174367 processed snRNA/snATAC resources, no GRN proof",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "stage72b_morabito_541_pseudobulk_coactivity_edges",
+      "path": "results/reports/stage72b_external_morabito_micro_pvm_grn_construction_report_v1.md",
+      "blob_sha1": "a864cefccc9544b759bec0557944245093abeb8a",
+      "meaning": "541 RNA pseudobulk coactivity edges from 18 sample units, no TF-peak-gene/motif validation",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    },
+    {
+      "id": "stage74_directed_perturbation_hypothesis_audit",
+      "path": "results/reports/stage74_directed_micro_pvm_grn_in_silico_perturbation_audit_report_v1.md",
+      "blob_sha1": "894d8afc9f9b51712f744ffb66f14c50af84fd12",
+      "meaning": "in-silico regulator controls IRF8/STAT1 candidate priority; no causal validation or benchmark update",
+      "source_head": "e4925cffc9a9da2e4c05e79f000c1233e63ff4bf",
+      "recovered_rounds": "25-29"
+    }
+  ],
+  "milestones": {
+    "pre_september_graph_jepa": {
+      "official_locked_internal_model": "Stage27C module_pca_ridge",
+      "mean_oof_spearman": 0.3267024400121495,
+      "stage35c_internal_graph_positive": 0.32726536397691613,
+      "stage35c_matched_vs_no_graph_delta": 0.0005629239647666484,
+      "external_graph_truth_authorized": false
+    },
+    "rare_aux": {
+      "stage69_internal_positive": 0.3591037979163019,
+      "stage70_exact_reproduction": true,
+      "stage70_new_locked_benchmark_pass": false,
+      "stage71_graph_specific_biology_established": false
+    },
+    "manuscript_and_candidates": {
+      "stage44_pi_review_packet_completed": true,
+      "stage47_candidate_hypotheses_completed": true,
+      "causal_drug_evidence_established": false
+    },
+    "stage75f": {
+      "tier_A": [
+        "STAT1",
+        "ELF1",
+        "SPI1"
+      ],
+      "tier_B": [
+        "IRF8",
+        "BACH1",
+        "CEBPA",
+        "RELA"
+      ],
+      "tier_C": [
+        "MITF",
+        "NRF1",
+        "STAT3"
+      ],
+      "validated_egrn": false
+    },
+    "stage81a2r": {
+      "foundation_biological_identities": 43248,
+      "universal_addresses": 41238,
+      "preserved_nonuniversal": 2010,
+      "foundation_operators": 42,
+      "project_datasets": 47,
+      "project_truly_identifier_poor": 41719
+    },
+    "f1": {
+      "test_executed_producer_and_independent_replay": true,
+      "real_f1_authorized": false
+    },
+    "stage76_79_frozen_gene_jepa": {
+      "old_program": "Graph-JEPA Stages76-79 F9-F13; distinct from synthetic V79",
+      "signed_tf_target_hypotheses": 96,
+      "regulator_desired_directions_resolved": 0,
+      "frozen_checkpoint_loaded": true,
+      "frozen_checkpoint_feature_count": 2957,
+      "tier_a_edges": 53,
+      "perturbation_scenarios": 12,
+      "baseline_cells": 32,
+      "stage79_graph_variants": 152,
+      "stage79_nonreal_scenario_runs": 1812,
+      "technical_execution_verified_from_archived_receipts": true,
+      "validated_intervention_or_causal_regulation": false,
+      "full104_jepa_authority": false
+    },
+    "v2_graph_to_v3_baseline": {
+      "v2_real": 0.2892,
+      "v2_no_graph": 0.2514,
+      "v2_strict_shuffled": 0.247,
+      "v2_module_mean": 0.2999,
+      "stage25_baseline_intermediate": 0.3325,
+      "stage27c_later": 0.3267024400121495,
+      "qualified_external_graph_benefit": false
+    },
+    "stage81a3_historical_science": {
+      "historical_v4_a3_finished": false,
+      "final_je_pa_information_preservation_qualification_10_trajectories_500_updates_each": true,
+      "engineering_healthy": true,
+      "scientific_gates_pass": false,
+      "masked_target_r2_balanced": -0.507,
+      "masked_target_r2_dominant": -0.407,
+      "real_diagnostic_pca_frozen": false,
+      "donor_recurring_annotation_rare_labels_qualified": 14,
+      "discovered_rare_biology_saturated": false,
+      "ucdq_qualified_same_entity_slide_tags": true,
+      "real_context_benefit_executed": false,
+      "frozen_4096_gene_universes_full_mask": true,
+      "generalizable_to_41238": false
+    },
+    "identity_alignment_and_comparator_repair": {
+      "reconciliation": "docs/agent/JEPA_IDENTITY_ALIGNMENT_AND_COMPARATOR_FAILURE_RECONCILIATION_20261102.md",
+      "unbound_old_teacher_view_preference": "GENE_IDENTITY_PROVENANCE_UNRESOLVED",
+      "nph_source_feature_to_universal_address_explicit": true,
+      "full104_september17_row_donor_artifact": "INVALID_FOR_CURRENT_ROLE",
+      "full104_pass1_corrected_pr": 31,
+      "full104_clean_head_byte_reproduction_pr": 32,
+      "gse311359_bin1_display_name_collision_v1": true,
+      "bin1_feature_id_keyed_physical_v2_pr": 121,
+      "bin1_v1_zero_count_rows_wrong": 14,
+      "non_bin1_exact_parity_units": 2434,
+      "morabito_PAR_Y_ambiguity_repaired_pr": 175,
+      "f1_old_evidence_mask_wrong": true,
+      "f1_real_run_authorized": false,
+      "old_qid_matched_null_equals_wrong_query": false,
+      "projectwide_baseline_recompute_proven": false
+    },
+    "historical_stage81a3r_freeze1": {
+      "declared": true,
+      "historical_only": true,
+      "d_global": 224,
+      "d_gene_token_width": 160,
+      "universal_addresses": 41238,
+      "scalar_observable_somewhere_in_train": 40949,
+      "collision_only_scalar_unobservable": 289,
+      "train_donors": 149,
+      "phase_a_operators": 42,
+      "qualification_cells": 4726,
+      "best_prefix": 336,
+      "best_mean_r2": 0.2708166,
+      "one_se_selected": 224,
+      "donor_refit_canonical_corr": 0.9949065,
+      "donor_refit_projector_similarity": 0.860974,
+      "U_BIO_U_MEAS_calibrated": false,
+      "production_basis_fitted": false,
+      "stage81b_started": false,
+      "stage81c_started": false,
+      "mixed_split_deserialization_discarded_incident": true,
+      "accepted_lineage_protected_outcomes_accessed": false,
+      "current_representation_winner": false
+    },
+    "td19_depth_pseudostate_control": {
+      "depth_only_cross_source_geometry_r_min": 0.98,
+      "depth_only_cross_source_geometry_r_max": 0.986,
+      "td17_td18_target_status": "SUPERSEDED_AS_TARGET_EVIDENCE",
+      "sea_ad_source_conditional_subspace_survived_some_controls": true,
+      "current_target_winner": false
+    },
+    "stage73r_and_stage74": {
+      "stage73_context_graph_mean": 0.323611,
+      "stage73_no_graph_mean": 0.311254,
+      "stage73_string_graph_mean": 0.331809,
+      "stage73_target_shuffled_mean": 0.33229,
+      "stage73_prediction_lock": false,
+      "stage74_candidate_prioritization_pass": true,
+      "stage74_causal_validation_pass": false
+    },
+    "v5_x4_estimator_repair": {
+      "initial_x4_within_estimator_discarded": true,
+      "replacement_operator_null_r2": -0.0068,
+      "donor_centered_cell_heldout_r2": {
+        "HVS": 0.1906,
+        "NPH52": 0.2646,
+        "SEA_AD": 0.2487
+      },
+      "source_transfer_model_class_specific": true,
+      "current_target_winner": false
+    },
+    "round25_early_external_cohort_tests": {
+      "executed": true,
+      "morabito_tau_spearman": 0.2237,
+      "morabito_p": 0.3723,
+      "morabito_early_late_auc": 0.6234,
+      "grubman_external_groups": 6,
+      "current_clean_benchmark_authority": false
+    },
+    "round26_old_v22_adapters": {
+      "executed": true,
+      "rexach_microglia": 21575,
+      "olah_microglia": 16099,
+      "qualifies_current_41k": false
+    },
+    "round27_discovery_manifold_qc": {
+      "executed": true,
+      "genes_passed": 45,
+      "genes_tested": 45,
+      "causal_authority": false
+    },
+    "round28_morabito_regulatory_ancestry": {
+      "executed": true,
+      "stage72b_candidate_edges": 541,
+      "stage74_in_silico_run": true,
+      "validated_regulation": false,
+      "causal_authority": false
+    },
+    "round29_source_index_reachability": {
+      "original_source_count": 41,
+      "on_main_matching": 39,
+      "audit_only_matching": 1,
+      "original_repair_branch_matching": 1,
+      "missing_git_blob_count": 0,
+      "branch_specific_source_for_pr118": "repair/pr118-audit-fixes-20260925",
+      "current_implementation_authority_effect": "NONE"
+    }
+  },
+  "no_repeat": [
+    "historical Stage27-75 internal and negative results",
+    "Stage69 positive and Stage70 nonlock both remain",
+    "Stage75F F5c-F8 executed evidence tiers",
+    "Stage81A2R molecular identity and NPH operator accounting",
+    "F1 producer/replay test mechanics, not real sweep",
+    "C2 gradient forensics historical result",
+    "Stage76-F9/Stage76-F10 through Stage79-F13 previous generation frozen GeneJEPA perturbation/graph-control path",
+    "V2 real graph vs no graph and strict shuffle; V3 Stage25/27/31 comparator chronology and distinct threshold context",
+    "Stage81A3 original comprehensive synthetic compression/uncertainty, 149-donor TRAIN-only real bridge, 14 annotation-rare states and spatial UCDQ; original source is not production authorization",
+    "Differentiate NPH gene feature ambiguity, invalid FULL104 cell row/donor join, GSE311359 BIN1 label keying, Morabito PAR_Y mapping, and F1 wrong-query/mask comparator defects; record exact correction and original result scope",
+    "Stage81A3R historical Freeze1 d_global=224 was actually DECLARED but later historical-only for current FULL104; correct earlier 'never frozen' shorthand",
+    "TD19 depth-only pseudostate null defeated TD17/18 label-defined high cross-source geometry, while narrower SEA source-conditional pilot survived different attacks",
+    "Stage73R context graph controlled prediction failed STRING and target-shuffled controls; Stage74 prioritized hypotheses without causal proof",
+    "Discarded September V5 x4_within operator-only false-positive estimator; only corrected source-specific within-donor and operator-centred model-class reports remain"
+  ],
+  "excluded_from_authority": [
+    "target_winner",
+    "representation_winner",
+    "real_training",
+    "Stage4",
+    "human_issuer",
+    "independent_external_validation",
+    "causal_TF_binding",
+    "therapeutic_gene"
+  ],
+  "terminal": "HISTORICAL_CHRONOLOGY_EXTENDED__NO_SCIENTIFIC_PROMOTION__NO_REEXECUTION__TRAINING_OFF",
+  "future_custody_protocol_path": "docs/agent/JEPA_CONTINUOUS_CHRONOLOGY_AND_IMPLEMENTATION_CUSTODY_20261102.md",
+  "additional_recovery_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_17_20_20261102.md",
+  "latest_historical_reconciliation_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_21_24_20261102.md",
+  "additional_recovery_rounds_25_29_path": "docs/agent/JEPA_HISTORICAL_CHRONOLOGY_RECOVERY_ROUNDS_25_29_20261102.md"
+}

@@ -1,0 +1,24 @@
+name: JEPA normalization view V2 fixture exact-head science nonpromotion audit
+on:
+  pull_request:
+    paths:
+      - 'results/target_discovery/unified_qualification_v1/JEPA_NORMALIZATION_VIEW_V2_FIXTURE_DELTA_20261027.json'
+      - 'docs/agent/JEPA_TD_NORMALIZATION_VIEW_V2_FIXTURE_AUDIT_20261027.md'
+      - 'scripts/v5/verify_observation_normalization_v2_delta_v1.py'
+      - 'tests/v5/test_verify_observation_normalization_v2_delta_v1.py'
+      - '.github/workflows/jepa-td-normalization-v2-fixture-audit.yml'
+permissions:
+  contents: read
+jobs:
+  nonpromoting-source-custody:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1
+      - name: Verify exact upstream source, all six CI, preserved RED and no production promotion
+        run: python scripts/v5/verify_observation_normalization_v2_delta_v1.py
+      - name: Run hostile false-acceptance and erased-failure mutations
+        run: python -m pytest -q tests/v5/test_verify_observation_normalization_v2_delta_v1.py

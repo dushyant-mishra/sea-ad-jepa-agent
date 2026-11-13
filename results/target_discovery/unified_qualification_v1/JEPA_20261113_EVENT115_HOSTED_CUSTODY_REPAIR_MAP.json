@@ -1,0 +1,29 @@
+{
+  "schema": "JEPA_EVENT115_HOSTED_CUSTODY_REPAIR_V1",
+  "event": 115,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "prior_heads": {
+    "322": "2a7eb301f3b036e022308aa7a02907345879ba49",
+    "460": "a33bd7ece36fdd1bb05d1f4f7baac3993b2f5d16"
+  },
+  "prior_failed_runs": {
+    "chronology": 43519033567,
+    "v80": 43519033563,
+    "first_read": [
+      43519036581,
+      43519036580
+    ]
+  },
+  "human": {
+    "path": "docs/agent/JEPA_20261113_EVENT115_HOSTED_CUSTODY_REPAIR.md",
+    "git_blob": "263a7d54c4a86b92fdf15876a8be0573786a7b54"
+  },
+  "validator": {
+    "path": "scripts/v5/verify_jepa_continuous_chronology_20261102.py",
+    "git_blob": "f9bddd1ab053410c48f642859cd8a5b39fd41563",
+    "compatibility_event_id": "20261113-TWO-BRANCH-AUDIT-BROAD-TYPE-BASELINE-EVENT114"
+  },
+  "validation": "HOSTED_REVALIDATION_NOT_YET_CLAIMED",
+  "m1": false,
+  "m2": false
+}

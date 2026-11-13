@@ -1,0 +1,85 @@
+{
+  "schema": "JEPA_20261029_R2_ARCHIVE_AND_A4_V2_COMPOSITION_DELTA_V1",
+  "date": "2026-10-29",
+  "classification": "EXECUTION_DELTA__NOT_NEW_BIOLOGY_OR_SOURCE_AUTHORITY",
+  "historical_uploaded_source_audit": {
+    "pr": 505,
+    "head": "3eecdd464c9b43f01490c250852dba18185b3844",
+    "evidence_kind": "LOCAL_UPLOADED_ARCHIVE_AGGREGATE_READ_ONLY",
+    "archive_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "loader_code_sha256": "267fa42a5fa6f8b5f8199c68add1ffe0c8b49142095b7d980d1af27a8a31154a",
+    "manifest_sha256": "da7c3daf507a66118131e88ae6685cf43eb14d4163539ade5e0705f6fb845cef",
+    "matrices": 42,
+    "addresses": 41238,
+    "support_matrix_address_records": 1731996,
+    "main_collision_pairs": 11435,
+    "supplemental_nonoverlap_collision_pairs": 14,
+    "final_unresolved_collision_pairs": 11449,
+    "final_measured_scalar_pairs": 1061903,
+    "final_structurally_unmeasured_pairs": 658644,
+    "exact_index_address_namespace_crosswalk_verified": true,
+    "source_feature_alias_completeness_authenticated": false,
+    "observed_archive_loader_claim": "supplemental ledger union and unresolved override is present; source_library scaled log1p CP10K is present",
+    "conditional_q_denominator_witness": {
+      "base": 3,
+      "q_low": 7,
+      "q_high": 100,
+      "base_log1p_cp10k_low": 8.006700845440367,
+      "base_log1p_cp10k_high": 5.677651125314915,
+      "note": "synthetic if denominator carries query molecules; no claim of particular human cell leakage"
+    },
+    "github_synthetic_ci": {
+      "run": 40907288365,
+      "linux_windows_passed": true,
+      "cases_per_os": 16
+    },
+    "no_real_human_expression_reopened": true,
+    "source_authentication": false
+  },
+  "upstream_a4_repair_independent_review": {
+    "source_pr": 504,
+    "source_head": "b66c23e589249360b20103dff8cdc88b9df72a19",
+    "source_blob": "10a02426e0b8ec079831c26bfae972586533d4f1",
+    "review_pr": 506,
+    "review_head": "61da252cea0201d3d51f4519534322c803d9aa26",
+    "review_run": 40907800828,
+    "review_jobs_passed": 4,
+    "independent_tests_per_os": 10,
+    "macha_original_a4_tests_per_os": 28,
+    "original_producer_tests_per_os": 101,
+    "verdict": "ACCEPT_INCREMENTAL_A4_REFUSAL_NONINTERFERENCE__FIXTURE_ONLY",
+    "excluded_domain": "at and beyond 2**53 numeric bound",
+    "physical_provenance_authenticated": false,
+    "note": "Macha author Windows workflow checkout failed on long historical paths; independent scoped Windows checks passed"
+  },
+  "combined_v2_integration": {
+    "pr": 508,
+    "head": "414cee7b448c94c7479a437cddd19f4b2298af4c",
+    "stacked_on_pr": 503,
+    "exact_macha_producer_blob": "10a02426e0b8ec079831c26bfae972586533d4f1",
+    "original_macha_a4_test_blob": "c84a4791bd911ba179a5f56d315b258d37830ef1",
+    "run": 40908710258,
+    "jobs_passed": 4,
+    "total_workflows_passed": 7,
+    "counts_per_os": {
+      "composed_a4_v2": 7,
+      "macha_a4": 28,
+      "producer_original": 106,
+      "legacy_and_bound_and_pair": 70
+    },
+    "tested": "Macha #481 A4 original test via explicit new bound adapter; V2 old shape and new content; student/teacher pair",
+    "versioned_v2_independent_macha_review_pending": true,
+    "g7_v2_source_rights_authenticated": false,
+    "production_training_authorized": false
+  },
+  "outstanding": [
+    "physical source-feature alias closure, R1/R1D/R2",
+    "source_library and depositor QC query independence",
+    "durable q/evidence-rights issuer",
+    "G7 E3 V2 external producer and complete source-to-decision integration",
+    "Task2 T2-D scan issuer",
+    "empirical Task3 TRAIN calibration",
+    "PS Task4 biological known-truth source"
+  ],
+  "standing": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

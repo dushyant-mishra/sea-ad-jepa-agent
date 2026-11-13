@@ -1,0 +1,109 @@
+{
+  "schema": "JEPA_EVENT106_V5_NO_TRAINING_CI_EXPLICIT_ALLOWLIST_RED_GREEN_AGENT_HANDOFF_V1",
+  "event": 106,
+  "date_utc": "2026-11-06",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "human_path": "docs/agent/JEPA_20261106_EVENT106_INDEPENDENT_V5_NO_TRAINING_CI_EXPLICIT_TEST_INVENTORY_RED_GREEN_AND_TWO_BRANCH_TAKEOVER.md",
+  "canonical_audit_pr": 322,
+  "active_handoff_pr": 460,
+  "original_baseline": {
+    "current_source_pr": 590,
+    "source_head": "a3a59eb934186a8ab329eb2b0b4385b3948d1f0a",
+    "prior_scoped_repair_pr": 591,
+    "repair_head": "ff1141fefa1377ac394be530c1236b682805e5e4"
+  },
+  "finding": {
+    "id": "NO_TRAINING_CI_GLOB_DISCOVERY_NOT_CONSTRAINED_BY_EXPLICIT_ALLOWLIST",
+    "status": "REPRODUCED_SOURCE_AND_HOSTED_STATIC_RED",
+    "affected_workflows": [
+      ".github/workflows/jepa-v5-pipeline-identity-contract-macha-no-training.yml",
+      ".github/workflows/jepa-v5-journal-v2-integration-macha-no-training.yml",
+      ".github/workflows/jepa-v5-journal-v2-579-thread-completion-macha-no-training.yml"
+    ],
+    "violation": "Future unreviewed test file could enter CI purely by filename glob, direct grep does not certify transitive no-step behavior",
+    "actual_optimizer_or_backward_executed_in_red": false,
+    "possible_future_risk_not_existing_exploit": true
+  },
+  "repair": {
+    "pr": 592,
+    "draft": true,
+    "base_pr": 591,
+    "red_head": "a14ec64556208a48ac69a19d4091959cbd5581c3",
+    "green_head": "7e4c45ae7991ed79d136922fd8d157ce847f9f47",
+    "merged": false,
+    "explicit_suite_sizes": {
+      "full": 40,
+      "integration": 33,
+      "thread": 10
+    },
+    "preflight": "literal test manifest + inventory scope novelty refusal + stdlib AST non-stepping check before any pytest collection",
+    "safe_executor": "fixed subprocess argv of literal reviewed test files, no shell or pytest filename glob, rechecks before collection",
+    "first_green_attempt_failure": "Overbroad eval AST rule incorrectly blocked nn.Module.eval() in real frozen-teacher fixture; repaired with static regression",
+    "files": {
+      "scripts/v5/jepa_v5_ci_explicit_nonstepping_allowlist_v1.py": "1c742735c2f06c671d86ea7d5954f7a4e99d5442",
+      "tests/test_ci_no_training_explicit_allowlist_v1.py": "fecda5640df671420aa02aaae56fbeb58aef3a28",
+      ".github/workflows/jepa-v5-explicit-nonstepping-inventory-static-audit-no-training.yml": "19c5e1ea80a24860b1722b54c92d15c9ae7b9e69",
+      ".github/workflows/jepa-v5-pipeline-identity-contract-macha-no-training.yml": "7d05c59f14f5e49e47face9111bfcd3f79becb16",
+      ".github/workflows/jepa-v5-journal-v2-integration-macha-no-training.yml": "69fe230d69020c4c5ecb4272d8da17cf28013181",
+      ".github/workflows/jepa-v5-journal-v2-579-thread-completion-macha-no-training.yml": "4edfea1ef71d0ba52d856f63619e7cd2293e065f"
+    }
+  },
+  "evidence": {
+    "red": {
+      "head": "a14ec64556208a48ac69a19d4091959cbd5581c3",
+      "run": 42248519185,
+      "python_versions": [
+        "3.11.9",
+        "3.12.7"
+      ],
+      "static_unittest_methods": 3,
+      "expected_assertion_failures_per_python": 7,
+      "torch_imported": false,
+      "pytest_collected": false
+    },
+    "initial_fail_closed_green_attempt": {
+      "head": "952e18685459f67d67ec98957f367176ef9dd51d",
+      "reason": "incorrectly flags nn.Module.eval as builtin eval",
+      "failure_runs": [
+        42248931129,
+        42248931396
+      ]
+    },
+    "green": {
+      "head": "7e4c45ae7991ed79d136922fd8d157ce847f9f47",
+      "runs": [
+        42249241987,
+        42249241979,
+        42249242013,
+        42249242012
+      ],
+      "workflows_passed": 4,
+      "workflows_total": 4,
+      "jobs_passed": 8,
+      "jobs_total": 8,
+      "python_versions": [
+        "3.11.9",
+        "3.12.7"
+      ]
+    }
+  },
+  "restrictions": [
+    "NOT_PRODUCTION",
+    "NO_REAL_RNA_OR_RIGHTS",
+    "NO_TRAINING_OR_GUARDED_V5_STEP",
+    "NO_PHYSICAL_PROBE",
+    "NO_QUALIFIED_TEACHER",
+    "NO_BITWISE_RESTART",
+    "AST_DOES_NOT_PROVE_INDIRECT_CALLEE_SAFETY",
+    "D1_EXTERNAL_CUSTODY_UNSIGNED"
+  ],
+  "prior_history": [
+    "EVENT90_ORIGINAL_COMPLETED_HISTORICAL_SOURCE_AUDIT",
+    "EVENT104_FULL_TAKEOVER",
+    "EVENT105_DURABLE_U0_ONLY_REPAIR",
+    "EVENT102_LOCAL_WSL_ACCIDENTAL_STEP_SUITES_PRESERVED",
+    "EVENT95_OWNER_V80_BACKUP_RESOLVED"
+  ],
+  "permanent_protocol": "Read #460 first-read then #322 event and index; implement confirmed new work; append verified Event107+ on #322, identical human and machine on BOTH #322/#460, exact-head blob+CI evidence, prepend #460 first-read and BOTH PR descriptions; no self-accept, no merge, no unapproved training",
+  "verdict": "CONFIRMED_CI_SAFETY_GAP_REPAIRED_AUTHOR_GREEN__RECIPROCAL_REVIEW_PENDING"
+}

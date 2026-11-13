@@ -1,0 +1,30 @@
+name: TD real teacher information probe V1
+
+on:
+  push:
+    branches:
+      - implementation/td-real-teacher-info-probe-v1-20261014
+  pull_request:
+    paths:
+      - 'scripts/v5/td_real_teacher_information_probe_v1.py'
+      - 'tests/v5/test_td_real_teacher_information_probe_v1.py'
+      - '.github/workflows/td-real-teacher-info-probe-v1.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: scripts/v5:.
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.17'
+      - run: python -m pip install pytest==9.1.1 numpy==2.4.6
+      - name: Run G6 matched probe tests
+        run: python -m pytest -q tests/v5/test_td_real_teacher_information_probe_v1.py
+      - name: Authority guard
+        run: |
+          echo BIOLOGICAL_OUTCOME_INPUTS_DOWNLOADED=false
+          echo REAL_TOURNAMENT_EXECUTED=false
+          echo AUTHORITY_ALL_FALSE=true

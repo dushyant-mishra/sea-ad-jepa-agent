@@ -1,0 +1,25 @@
+name: JEPA V8a post-snapshot custody/no-promotion audit
+on:
+  pull_request:
+    paths:
+      - 'docs/agent/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.md'
+      - 'results/target_discovery/unified_qualification_v1/JEPA_POST_V8_SNAPSHOT_DELTA_V8A_20261027.json'
+      - 'results/target_discovery/unified_qualification_v1/JEPA_COMPLETE_TAKEOVER_FILE_INDEX_V8A_20261027.json'
+      - 'scripts/v5/verify_jepa_lane_audit_v8a.py'
+      - 'tests/v5/test_verify_jepa_lane_audit_v8a.py'
+      - '.github/workflows/jepa-lane-v8a-delta-audit.yml'
+permissions:
+  contents: read
+jobs:
+  immutable-v8-plus-v8a:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1
+      - name: Audit base V8 and additive current V8a
+        run: |
+          python -m scripts.v5.verify_jepa_lane_audit_v8a
+          python -m pytest -q tests/v5/test_verify_jepa_lane_audit_v8.py tests/v5/test_verify_jepa_lane_audit_v8a.py

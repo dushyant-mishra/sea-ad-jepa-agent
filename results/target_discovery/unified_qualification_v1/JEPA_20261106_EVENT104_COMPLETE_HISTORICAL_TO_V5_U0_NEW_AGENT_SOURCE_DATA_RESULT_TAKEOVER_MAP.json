@@ -1,0 +1,269 @@
+{
+  "schema": "JEPA_EVENT104_COMPLETE_HISTORICAL_TO_CURRENT_V5_DEV_U0_TWO_BRANCH_AGENT_TAKEOVER_V1",
+  "event": 104,
+  "date_utc": "2026-11-06",
+  "author": "Sol",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "human": {
+    "path": "docs/agent/JEPA_20261106_EVENT104_COMPLETE_NEW_AGENT_SOURCE_DATA_SCRIPT_RESULT_AND_IMPLEMENTATION_TAKEOVER_V1.md",
+    "blob_sha1": "208e8923c22de7a7392737370a2122513013590a"
+  },
+  "canonical_branches": {
+    "audit_pr": 322,
+    "audit_branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
+    "handoff_pr": 460,
+    "handoff_branch": "handoff/jepa-v8-clean-successor-from-audit-20261027",
+    "chronology": "results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json",
+    "expected_event_count_after_append": 104,
+    "no_repeat_index": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
+    "expected_no_repeat_keys_after_append": 69,
+    "first_read": "docs/agent/JEPA_NEW_AGENT_LIVE_POINTER_20261029.md",
+    "source_memo_mirror_required": true,
+    "matching_git_blobs_required": true,
+    "PR_descriptions_prepend_required": true,
+    "all_old_events_and_RED_preserved": true
+  },
+  "historical_first_read": {
+    "event90_human": "docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md",
+    "event90_human_git_sha1": "a33ed0cdd8af86e078dc115d3e7c820ebb2da94a",
+    "event90_machine": "results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json",
+    "scientific_narrative": "docs/agent/JEPA_20261104_END_TO_END_SCIENTIFIC_NARRATIVE_AND_DECISION_LINEAGE_V1.md",
+    "scientific_narrative_blob_sha1": "67e58755cde72e0fc9447a42422510dae793fb79",
+    "completed_historic_data": {
+      "FULL104_cells": 4553407,
+      "expression_blocks": 8915,
+      "expression_gene_addresses": 41238
+    },
+    "historical_science": [
+      "18 candidate gene dossiers /103 primary papers/770 annotations already compiled",
+      "TD57B 24 of 24 donor controlled and TD59 p95 24/24 but stricter 22/24",
+      "TD19 depth-confounded r approximately .98-.986",
+      "Stage81B anchor drift approx 7.618x worse; loss-only Stage81A3 >99% improvement lost biology",
+      "V4 40-step qualification protocol not a proved V5 40-step run",
+      "Synthetic C1-C6 outcome not genuine learned current representation",
+      "Event5 and Event35 source identity/labels/BIN1 PAR_Y errors",
+      "42 TRAIN shards not FULL104; q-excluded 2044 gene addresses cannot be renumbered to 2048"
+    ],
+    "target_winner": "NONE",
+    "representation_winner": "NONE",
+    "current_v5_dimensional_authority": "UNQUALIFIED"
+  },
+  "original_v5": {
+    "original_pr": 224,
+    "original_head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+    "entrypoint": "src/sea_ad_jepa/v5/inactive_guarded_update_v1.py:run_guarded_inactive_reference_update",
+    "invalid_historical_path": "src/sea_ad_jepa/v5/canonical_runtime.py",
+    "old_main_unguarded_entrypoint_not_allowed": true,
+    "old_v4_40_step_misidentification_repaired_event98": true,
+    "declared_canonical": 12,
+    "private_impl": 2,
+    "initializer": 1,
+    "complete_inrepo_v5_plus_pr548_imported_closure": 35,
+    "legitimate_v4_dependencies": 15,
+    "v4_gene_identity_dim_48_source": "src/sea_ad_jepa/v4/contracts.py",
+    "v4_target_block_sampler": "src/sea_ad_jepa/v4/teacher_student_runtime.py:sample_uniform_target_blocks",
+    "v4_trainer_not_active": true,
+    "model_width": 160,
+    "heads": 4,
+    "blocks": 6,
+    "FFN_width": 320,
+    "original_gene_axis": 2048,
+    "original_U0_seed": 8113002
+  },
+  "dev_input": {
+    "PR": 547,
+    "artifact_id": 13364085153,
+    "zip_bytes": 25023562,
+    "zip_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+    "five_members_individually_hashed": true,
+    "synthetic_cell_rows": 1440,
+    "synthetic_donors": 36,
+    "original_gene_addresses": 2048,
+    "student_physical_addresses": 2044,
+    "q_ids": [
+      1672,
+      1673,
+      1674,
+      1675
+    ],
+    "PR548_adapter": "scripts/v5/jepa_synth2048_v5_readiness.py",
+    "adapter_blob_sha1": "6a6c219402d7acd24c1b54b3c2571133a08e4a0a",
+    "artificial_F1_F4_shortcuts_known": true,
+    "PR547_public_teacher_member_not_private_V80": true,
+    "real_FULL104_not_authorized": true,
+    "Actions_artifact_retention_reverification_needed": true
+  },
+  "lineage": [
+    {
+      "pr": 582,
+      "head": "e71d864b0496de0b86fe7442ba51d53b44e0b225",
+      "role": "Macha synthetic V2 journal, teacher structure, manually seeded Adam; original 20/20 jobs green but inherited optimizer-ID bug",
+      "verdict": "REPAIR_REQUIRED_IN_ORIGINAL_FORM"
+    },
+    {
+      "pr": 583,
+      "head": "76eddf86ea7d8e5d66731a36d889e502d633b181",
+      "role": "Sol named Adam ID and group order repair",
+      "verdict": "MACHA_REPAIR_REQUIRED_FOR_GROUP_SETTINGS"
+    },
+    {
+      "pr": 584,
+      "head": "11d8a70235cfc02d412db6b6158485732bdec246",
+      "role": "Sol original declared 15 V5 files and public PR547 ZIP SHA gate",
+      "verdict": "MACHA_REPAIR_REQUIRED_FOR_35_FILE_CLOSURE"
+    },
+    {
+      "pr": 585,
+      "head": "1336899454b50c32f05d62886cffb4c493c79b09",
+      "role": "Sol parallel static contract, tested, but incomplete source/optimizer/teacher binding",
+      "verdict": "MACHA_REPAIR_REQUIRED__HISTORIC_PRECURSOR_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "pr": 586,
+      "head": "810c34fbb368cc571e9d98dcf3be30f477cb6c96",
+      "role": "Macha optimizer group non-LR fields, maximize ascent and Adam identity",
+      "verdict": "SOL_ACCEPT_SCOPED__NOT_REAL_RESTORE_OR_TRAIN"
+    },
+    {
+      "pr": 587,
+      "head": "c0ff2b675ec60c5a3f63db781118f4df6f7be78e",
+      "role": "Macha exact 35-file imported closure/import-shadow gate",
+      "verdict": "SOL_ACCEPT_SCOPED__NOT_COMPLETE_ENVIRONMENT_PROVENANCE"
+    },
+    {
+      "pr": 588,
+      "head": "48a9fce2642b736009b3a00b429e886d26dc72d2",
+      "role": "Macha integrated synthetic V5 source/data/teacher/optimizer/rights contract, no model import",
+      "verdict": "AUTHOR_GREEN__PEER_WHOLE_INTEGRATION_NOT_ACCEPTED"
+    },
+    {
+      "pr": 589,
+      "head": "f5aa3f9f3a013ad4d1d0276df0c35028657cc796",
+      "role": "Sol original real V5 online frozen teacher predictor and empty initialized Adam U0 snapshot to development journal, stacked on old #585",
+      "verdict": "AUTHOR_GREEN_8_OF_8__PRECURSOR_SUPERSEDED_BY_COMBINED_590"
+    },
+    {
+      "pr": 590,
+      "head": "a3a59eb934186a8ab329eb2b0b4385b3948d1f0a",
+      "role": "Sol combined original authentic V5 U0 to V2 development journal over Macha #588 single contract, strict real model check",
+      "verdict": "AUTHOR_GREEN_9_OF_9__MACHA_INDEPENDENT_REVIEW_PENDING__CURRENT_COMBINED_CANDIDATE"
+    }
+  ],
+  "latest_590": {
+    "draft": true,
+    "no_main_merge": true,
+    "base_historical_582": "e71d864b0496de0b86fe7442ba51d53b44e0b225",
+    "complete_contract_script": "scripts/v5/jepa_v5_pipeline_identity_contract_v1.py",
+    "complete_contract_script_git_blob_sha1": "4d3d4d2b665e9227afd3122c57e5e1a3339b6ce7",
+    "machine_contract": "results/target_discovery/unified_qualification_v1/JEPA_V5_DEV2048_PIPELINE_IDENTITY_CONTRACT_V1.json",
+    "machine_contract_sha256": "b71043564f237fc7197ab6b0e5a45a4a5e2dc945d2707fa9ebe44a0633e05daf",
+    "preflight": "scripts/v5/jepa_v5_structured_journal_preflight_v1.py",
+    "preflight_blob_sha1": "85de1e403818520700c5c9dd16ca28a41e4fedef",
+    "connector": "scripts/v5/jepa_v5_live_model_u0_journal_connector_v1.py",
+    "connector_blob_sha1": "be324afa58b663f54bd25ed91e6f8386bda9b24e",
+    "tests": "tests/test_jepa_v5_live_model_u0_journal_connector_v1.py",
+    "tests_blob_sha1": "0282d1b5029829da76083592d76aef8b9abbbc0b",
+    "source_gate": "scripts/v5/jepa_v5_source_data_custody_gate_v1.py",
+    "read_only_full_state": "scripts/v5/jepa_v5_full_state_readonly_audit_v1.py",
+    "attempt_journal": "scripts/v5/jepa_synth2048_attempt_journal_v2.py",
+    "U0_initialized_real_model_module_weights_recorded_in_synthetic_journal": true,
+    "original_frozen_teacher_state_verified": true,
+    "original_Adam_slots_empty": true,
+    "original_source_init_seed_verified": true,
+    "require_original_v5_true_disallows_toy_expression_alias": true,
+    "original_U0_fake_U1_in_same_process_refused": true,
+    "checkpoint_production_eligible": false,
+    "caller_probes_physically_verified": false,
+    "qualified_teacher_target_bound": false,
+    "real_rights_issuer_bound": false,
+    "multi_update_trainer_exists": false,
+    "peer_review_status": "MACHA_PENDING",
+    "CI": {
+      "workflow_runs_success": 9,
+      "workflow_runs_total": 9,
+      "jobs_success": 18,
+      "jobs_total": 18,
+      "original_model_U0_run_id": 42165667163,
+      "U0_test_count_first_stage_per_python": 67,
+      "U0_test_count_second_stage_per_python": 56,
+      "static_contract_run_id": 42165667072,
+      "contract_pass_per_python": 480,
+      "contract_skipped_per_python": 30,
+      "python_versions": [
+        "3.11.9",
+        "3.12.7"
+      ],
+      "CPU_only": true,
+      "actual_optimizer_step": false,
+      "backward": false,
+      "EMA": false,
+      "model_forward": false,
+      "real_patient_data": false,
+      "private_V80_controller": false
+    }
+  },
+  "additional_open_gaps": [
+    {
+      "id": "DURABLE_U0_ONLY_GUARD_UNPROVED",
+      "finding": "_ORIGINAL_V5_U0_ONLY and _OPENING_STRUCTURE are process-local maps/sets; same-process refusal not proof across crash/new process or direct bare journal API; independently RED-test without any real optimizer",
+      "priority": "HIGH",
+      "owner": "Macha cross-review of #590"
+    },
+    {
+      "id": "PRODUCTION_ENVIRONMENT_BOM_UNQUALIFIED",
+      "finding": "35 in-repo imported Git blobs do not pin external Python/Torch binary/library environment, crafted pyc corner; static import checks not runtime safety certification",
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "TARGET_TEACHER_PROBE_RIGHTS_NOT_BOUND",
+      "finding": "Synthetic roster panel hash and self-derived rights SHA not real issuer/frozen panel; caller-reported probes not physical measurements; no C1-C6 qualification",
+      "priority": "HIGH"
+    },
+    {
+      "id": "FULL_RESTART_MULTI_UPDATE_ABSENT",
+      "finding": "No real optimizer gradient EMA/post-U0 journal/bitwise RNG AMP data-position restore or V5 multi-update training authorization",
+      "priority": "HIGH"
+    },
+    {
+      "id": "D1_CUSTODY_HEAD_PENDING",
+      "finding": "External trusted custody head location/ownership still undecided",
+      "priority": "OPEN"
+    },
+    {
+      "id": "CI_TEST_ALLOWLIST",
+      "finding": "Do not repeat Event102 one-off Macha local WSL broad-glob stepping-capable PR224 suite; exact test allowlist with AST and monkeypatch mandatory",
+      "priority": "HARD_SAFETY"
+    }
+  ],
+  "historical_incident": {
+    "event": 102,
+    "agent": "Macha",
+    "host": "LOCAL_WSL_CPU",
+    "test_run_failed": 96,
+    "test_run_passed": 550,
+    "number_training_capable_PR224_test_files_collected": 9,
+    "actual_backward_optimizer_or_ema_calls_possible": true,
+    "hosted_training_calls": false,
+    "no_real_RNA_GPU_checkpoint": true,
+    "do_not_claim_never_happened": true
+  },
+  "owner_V80_backup": {
+    "resolved_event": 95,
+    "owner_personal_download_complete": true,
+    "private_zip_opened": false,
+    "do_not_repeat_alert": true,
+    "original_public_FIT_receipt_archived_on_both_branches": true,
+    "old_frozen_original_cross_host_SHA_red_PR": 534
+  },
+  "permanent_new_event_protocol": {
+    "append_only_after_new_verified_work": true,
+    "mirror_human_and_machine_git_blob_shas_across_two_branches": true,
+    "update_first_read_and_both_PR_descriptions": true,
+    "add_no_repeat_index_key": true,
+    "verify_chronology_enum_and_both_head_workflows": true,
+    "peer_review_required": true,
+    "no_self_accept": true,
+    "no_event_for_routine_recheck": true
+  },
+  "not_to_repeat": "Do not redo Events1–102, original human FULL104 materialization, TD57B/TD59, historical V4 40-step, PR547 synthetic generation, PR548 zero-update forward, old source alias/cell-label fixes or Event95 private controller backup rescue."
+}
