@@ -1,3 +1,34 @@
+# READ FIRST — EVENT111 (2026-11-13): MACHA VERDICT #595 REPAIR_REQUIRED (SCOPED) → REPAIR #596; SEPARATE DEV2048 FIRST-TRAINING PILOT PLAN (NOT AUTHORIZED) — NO TRAINING
+
+**Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `dac5b1c236687746746f3a4aa7b127b9fabaec1a`, now 111 append-only chronology events / 76 no-repeat source keys.** [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) stays the first read. Read this section, then Event110 and Events 109–104 below, then the original Event90 human `docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md` and machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json`.
+
+**Event111 sources** (byte-identical on #322 and #460):
+- part 1, verdict: `docs/agent/JEPA_20261113_EVENT111_MACHA_INDEPENDENT_VERDICT_595_REPAIR_596_NO_TRAINING.md` (blob `6000d633ad28e0974868726c649536b59a4862d8`);
+- part 2, pilot plan: `docs/agent/JEPA_20261113_EVENT111_V5_DEV2048_FIRST_INTENTIONAL_TRAINING_PILOT_PLAN_NOT_AUTHORIZED.md` (blob `30eb391fc09156c70e6d8110a1cc896d98ffa6d4`);
+- machine: `results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT111_MACHA_595_VERDICT_AND_DEV2048_PILOT_PLAN_MAP.json` (blob `f800535539b5f28871dcc93a16d6d022f7d8da39`).
+
+**#595 (`37dc2469`, unchanged): REPAIR_REQUIRED (scoped).**
+- **Sol's changes verified:** push/PR-to-`main` glob routes are refused despite branch filters; only the byte-identical D1 is exempt; inherited `PYTEST_ADDOPTS`/`PYTEST_PLUGINS` are cleared.
+- **Remaining gaps, from Macha's own #594 code:** bare, dot, directory and `--pyargs` pytest routes passed the scan; `.pytest.ini` and `tests/` config were not refused; and the runner did not pin its config or rootdir.
+- **Repair:** [#596](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/596) RED `8c9d38b0` (9 subtests) → GREEN `bc9da054`, 10/10 jobs.
+
+**Pilot plan (design only; execution needs separate owner authorization).**
+- **M1:** exactly 1 update on the first 16 SYNTH_A TRAIN rows, through the pinned PR224 guarded presentation-EMA path. Predicted changes are written down in advance: student moves ≤ lr per element, `exp_avg_sq = 0.1·exp_avg²`, teacher Δ ≤ about 5e-8. Stop conditions use existing gates only.
+- **Checkpoint:** written into a **new dev-only pilot journal lane**. The u0-only journal stays read-only for updates.
+- **M2 (separate):** C1/C2/R bitwise restart comparison with negative controls.
+- **Owner must confirm:** the EMA half-life (proposed 22,136 presentations).
+
+**Execution:** none. No forward, backward, step, EMA, GPU, real RNA, D1 dispatch, merge or Stage4.
+
+**Next:**
+- Sol reviews #594 and #596.
+- Owner decides on M1.
+- The pilot lane and driver are implemented as reviewed draft code before any run.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT110 (2026-11-12): SOL INDEPENDENT #594 CI COLLECTION REVIEW, DRAFT #595 SAFE REPAIR — NO TRAINING
 
 **Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `5afb5e886426848eeac58f5d8e89dee77772bb64` now has 110 append-only chronology events / 75 no-repeat source keys.** [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) remains the first-read. Continue with Event109 (Macha's 4 earlier defects) → Event108 → Event104 → Event90 original scientific source/data/scripts/results and historical negatives. Do NOT repeat Stage81, TD57B/59, R5 or #314 real replay, FULL104/Level4, V79/V80 or historical synthetic fit experiments.
