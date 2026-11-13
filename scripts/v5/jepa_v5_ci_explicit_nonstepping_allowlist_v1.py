@@ -28,6 +28,7 @@ NO_TRAINING_TEST_INVENTORY = {
         "tests/test_jepa_v5_live_model_u0_journal_connector_v1.py",
         "tests/test_jepa_v5_live_model_u0_journal_connector_v1_macha_review_red.py",
         "tests/test_jepa_v5_pipeline_identity_contract_v1_macha.py",
+        "tests/test_jepa_v5_pipeline_identity_contract_v1_macha_teacher_inputs.py",
         "tests/test_jepa_v5_source_data_custody_gate_v1.py",
         "tests/test_jepa_v5_source_data_custody_gate_v1_macha_584_closure.py",
         "tests/test_jepa_v5_source_data_custody_gate_v1_macha_584_review_controls.py",

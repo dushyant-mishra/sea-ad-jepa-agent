@@ -1,0 +1,50 @@
+name: V5 DEV2048 pilot pre-flight - inputs, leakage, EMA route, lineage (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - scripts/v5/jepa_v5_dev2048_pilot_preflight_v1.py
+      - scripts/v5/jepa_v5_pipeline_identity_contract_v1.py
+      - results/target_discovery/unified_qualification_v1/JEPA_V5_DEV2048_PIPELINE_IDENTITY_CONTRACT_V1.json
+      - tests/test_jepa_v5_dev2048_pilot_preflight_v1_macha.py
+      - tests/test_jepa_v5_pipeline_identity_contract_v1_macha_teacher_inputs.py
+      - tests/test_dev2048_pilot_guard_ema_order_macha.py
+      - .github/workflows/jepa-v5-dev2048-pilot-preflight-macha-no-training.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  preflight-mocks-no-step:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11.9", "3.12.7"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install pytest, numpy and CPU-only torch (no GPU)
+        run: |
+          python -m pip install --disable-pip-version-check pytest==9.0.2 "numpy<2.3"
+          python -m pip install --disable-pip-version-check --index-url https://download.pytorch.org/whl/cpu "torch==2.5.1"
+      - name: Static no-step inventory check before any collection
+        run: python scripts/v5/jepa_v5_ci_explicit_nonstepping_allowlist_v1.py --suite full --verify
+      - name: Fetch ONLY PR547's public synthetic FIT artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${{ github.repository }}/actions/artifacts/13364085153/zip" > /tmp/fit.zip
+          echo "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f  /tmp/fit.zip" | sha256sum --check -
+      - name: Contract teacher-input reconciliation and guard/EMA mocks (explicit files)
+        env:
+          PYTHONPATH: .:src
+          CUDA_VISIBLE_DEVICES: ""
+          JEPA_PUBLIC_DEV_FIT_ZIP: /tmp/fit.zip
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+        run: |
+          python -m pytest -q -rA --noconftest \
+            tests/test_jepa_v5_pipeline_identity_contract_v1_macha_teacher_inputs.py \
+            tests/test_dev2048_pilot_guard_ema_order_macha.py
