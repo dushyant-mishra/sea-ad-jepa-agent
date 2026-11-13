@@ -2284,5 +2284,24 @@
     "result": "Shared-base teacher inputs in the contract; pre-route target-leakage refusal; canonical presentation-EMA route with pairing checks; lineage verified; one-update plan v2.",
     "do_not_repeat": "Do not re-trace the teacher inputs, EMA guard ordering or V5 lineage at these heads; do not run the pilot without the owner M1 authorization record.",
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "event113_sol_lane_takeover_dev2048_leakage_preservation_scorer_20261113": {
+    "event": 113,
+    "date_utc": "2026-11-13",
+    "human": "docs/agent/JEPA_20261113_EVENT113_SOL_LANE_TAKEOVER_AND_NO_REPEAT.md",
+    "human_sha": "7c768bcbd0225aa92d3e0da37d32930cdbbd249c",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT113_SOL_LANE_TAKEOVER_SOURCE_MAP.json",
+    "machine_sha": "cc9c283bcbb88f4006eebf2ac9ec140ce67ee028",
+    "draft_pr": 597,
+    "head": "bfcba24ed3fcfbf146eaf7700c78ad1553fc6cee",
+    "do_not_repeat": "Start with Event90 and the indexed exact evidence. Do not rerun TD57B/C/59, G7, S174, C2 48-feature refusal, historical Stage81A3, or already reviewed CI fixtures without a named delta.",
+    "open_scope": [
+      "Review remaining #594 and #596 scope.",
+      "Bind trusted launcher and persisted continuation before any separately authorized M1.",
+      "Verify actual upstream noninterference and freeze permissible broad/fine panel.",
+      "Migrate other shared OOF consumers; never reinterpret bare historical zero.",
+      "V80 original archive byte verification blocked."
+    ],
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }

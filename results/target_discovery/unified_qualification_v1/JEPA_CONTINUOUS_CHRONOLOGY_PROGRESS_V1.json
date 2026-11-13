@@ -4707,6 +4707,56 @@
       "evidence_links": [
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/597"
       ]
+    },
+    {
+      "event_id": "20261113-SOL-LANE-TAKEOVER-DEV2048-LEAKAGE-SCORER-EVENT113",
+      "date_utc": "2026-11-13",
+      "workstream": "sol_lane_historical_no_repeat_and_unintegrated_review_custody",
+      "implementation_pr": 597,
+      "implementation_head": "bfcba24ed3fcfbf146eaf7700c78ad1553fc6cee",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261113_EVENT113_SOL_LANE_TAKEOVER_AND_NO_REPEAT.md",
+          "blob_sha1": "7c768bcbd0225aa92d3e0da37d32930cdbbd249c",
+          "role": "detailed takeover and no-repeat crosswalk"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT113_SOL_LANE_TAKEOVER_SOURCE_MAP.json",
+          "blob_sha1": "cc9c283bcbb88f4006eebf2ac9ec140ce67ee028",
+          "role": "machine map and artifact pins"
+        },
+        {
+          "path": "docs/agent/archive/event113_dev2048_review/jepa-oof-stage33b-estimability-draft.patch",
+          "blob_sha1": "b732a9c3a78e7c47f549d2b333cca018e6b35db6",
+          "role": "byte-exact unintegrated OOF scorer and Stage33B draft patch"
+        },
+        {
+          "path": "docs/agent/archive/event113_dev2048_review/README.md",
+          "blob_sha1": "8b9d37ee980ed2654128bf00acf1fc2ecc0632e2",
+          "role": "archived review-bundle README; three standalone Python files delivered separately"
+        }
+      ],
+      "change_type": "source_custody",
+      "what_already_existed": "Events1–112, Event90 original source map, Event111 #595/#596 review and Event112 #597 plus M1 plan.",
+      "new_work_or_result": "Preserved source-pinned no-repeat handoff, #596 and #597 independent source findings, archive/actor identities, separate broad/fine and leakage review scope, and exact scorer/Stage33B draft patch.",
+      "negative_or_counterfactual_evidence": "Draft helpers are not integrated or authorized. No learned V5 result, upstream producer leak qualification, U1, restart, biology promotion or private V80 archive access.",
+      "test_review_scope": "Source read; 10 inert Python tests rechecked locally. Earlier nine scorer/Stage33B tests recorded as reported. No benchmark or model updates.",
+      "independent_review": "SOL_SOURCE_FINDINGS_RECORDED__597_NOT_ACCEPTED_FOR_EXECUTION__HELPERS_NOT_INTEGRATED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Review remaining #594 and #596 scope.",
+        "Bind trusted launcher and persisted continuation before any separately authorized M1.",
+        "Verify actual upstream noninterference and freeze permissible broad/fine panel.",
+        "Migrate other shared OOF consumers; never reinterpret bare historical zero.",
+        "V80 original archive byte verification blocked."
+      ],
+      "historical_supersession": "Append only; Events1–112 and 77 prior no-repeat entries unchanged. Updates recommendations, not existing verdicts or authority.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/597",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/596",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/547"
+      ]
     }
   ]
 }
