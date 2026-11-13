@@ -1,3 +1,15 @@
+# READ FIRST — EVENT116 (2026-11-13): FIRST-READ CHECK REPAIR — NO TRAINING
+
+**Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `f4d8d2d7cbb8ee5e0d6b203960b9ab0fae7ba115` has 116 chronology events and 81 no-repeat source keys. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event116.** Read Event116, then Events115–113 and the Event90 original source crosswalk. Keep both branches current.
+
+- Human: `docs/agent/JEPA_20261113_EVENT116_HANDOFF_CI_CONTRACT_REPAIR.md` (blob `b8740b74dc7624dfd42e8bf23aabe99034789eb3`).
+- Machine: `results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT116_HANDOFF_CI_CONTRACT_REPAIR_MAP.json` (blob `1faab8ff634c9a54ca1d165b3059fa3eadbc85c7`).
+- V80 unresolved; M1/M2 unauthorized.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT115 (2026-11-13): HOSTED CUSTODY REPAIR — NO TRAINING
 
 **Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `8b42d75915710508df974bff3d7182d3b1e97f9b` contains 115 events / 80 no-repeat keys. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event115.** Read Event115, then Event114 and Event113; use Event90 for the original source and results crosswalk. Keep both branches current with append-only evidence.
