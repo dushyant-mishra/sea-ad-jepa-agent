@@ -38,7 +38,7 @@ jobs:
         run: |
           gh api "repos/${{ github.repository }}/actions/artifacts/13364085153/zip" > /tmp/fit.zip
           echo "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f  /tmp/fit.zip" | sha256sum --check -
-      - name: Contract teacher-input reconciliation and guard/EMA mocks (explicit files)
+      - name: Contract teacher inputs, pilot pre-flight and guard/EMA mocks (explicit files)
         env:
           PYTHONPATH: .:src
           CUDA_VISIBLE_DEVICES: ""
@@ -47,4 +47,5 @@ jobs:
         run: |
           python -m pytest -q -rA --noconftest \
             tests/test_jepa_v5_pipeline_identity_contract_v1_macha_teacher_inputs.py \
+            tests/test_jepa_v5_dev2048_pilot_preflight_v1_macha.py \
             tests/test_dev2048_pilot_guard_ema_order_macha.py
