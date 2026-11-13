@@ -1,3 +1,31 @@
+# READ FIRST — EVENT112 (2026-11-13): MACHA V5 PRE-PILOT FINDINGS → DRAFT #597; ONE-UPDATE DEV2048 PILOT PLAN V2 (NOT AUTHORIZED) — NO TRAINING
+
+**Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `2998f4d401daba73acad93c6483e4a81365543db`, now 112 append-only chronology events / 77 no-repeat source keys.** [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) stays the first read. Read this section, then Event111 and Events 110–104 below, then the original Event90 human `docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md` and machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json`.
+
+**Event112 sources** (byte-identical on #322 and #460):
+- part 1, findings: `docs/agent/JEPA_20261113_EVENT112_MACHA_V5_PRE_PILOT_FINDINGS_AND_REPAIR_597_NO_TRAINING.md` (blob `0929a5c76addeb27b19346da628669ff301abaf4`);
+- part 2, plan v2: `docs/agent/JEPA_20261113_EVENT112_V5_DEV2048_ONE_UPDATE_PILOT_PLAN_V2_NOT_AUTHORIZED.md` (blob `9fc0050ddb2c2b8ae1314573d167236d8f20ce2c`);
+- machine: `results/target_discovery/unified_qualification_v1/JEPA_20261113_EVENT112_MACHA_V5_PRE_PILOT_597_AND_PLAN_V2_MAP.json` (blob `ebb0bbe4594e2aee2d1340b3f6ea44f1af92bcd8`).
+
+**#595:** unchanged at `37dc2469`; the Event111 verdict stands (REPAIR_REQUIRED, scoped; repaired in #596 `bc9da054`).
+
+**Findings repaired in [#597](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/597)** (RED `0ab2b1d7` → GREEN `bfcba24e`, 14/14 jobs):
+- **Teacher inputs.** The contract said the teacher gets all 2,048 address values, but the code gives **both encoders the same q-excluded 2,044-address base**. The contract now separates vocabulary from supplied values (`SHARED_BASE_MASKED_BLOCK_JEPA`, contract `4536ce82…`). Teacher-only query mode is the **owner-pending L04 decision**.
+- **Target leakage.** The pinned runtime accepts a block member the student can see. The pilot pre-flight now refuses it before the route is called.
+- **EMA route.** Mocks confirm the PR224 guard allows EMA only after a completed step, exactly once, from the post-step student encoder (never the predictor). The pilot is bound to the presentation-EMA route, with pairing and ownership checks and the recorded EMA fields.
+- **Lineage.** The route reaches the PR224 actor; the V4 trainer, legacy EMA and toy actor are not called. The u0-only journal is untouched.
+
+**Plan v2 (not authorized):**
+- M1 is exactly one update on 16 SYNTH_A TRAIN cells through the canonical route, with a written acceptance test.
+- M2 restart is a separate milestone.
+- **Owner decisions:** input mode (L04), EMA half-life, and the M1 authorization record.
+
+**Execution:** none. No pilot, forward, backward, step, EMA, GPU, real data or merge.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT111 (2026-11-13): MACHA VERDICT #595 REPAIR_REQUIRED (SCOPED) → REPAIR #596; SEPARATE DEV2048 FIRST-TRAINING PILOT PLAN (NOT AUTHORIZED) — NO TRAINING
 
 **Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `dac5b1c236687746746f3a4aa7b127b9fabaec1a`, now 111 append-only chronology events / 76 no-repeat source keys.** [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) stays the first read. Read this section, then Event110 and Events 109–104 below, then the original Event90 human `docs/agent/JEPA_20261105_EVENT90_COMPLETE_SOURCE_SCRIPT_DATA_RESULT_AND_AGENT_TAKEOVER.md` and machine `results/target_discovery/unified_qualification_v1/JEPA_20261105_EVENT90_TWO_BRANCH_TAKEOVER_MAP.json`.
