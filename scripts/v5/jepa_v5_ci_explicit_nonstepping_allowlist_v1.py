@@ -16,6 +16,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import tempfile
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -190,22 +191,26 @@ def _check_ast(source: str, filename: str) -> None:
 
 
 PYTEST_CONFIG_SECTIONS = {
-    "pytest.ini": "[pytest]", "tox.ini": "[pytest]",
+    "pytest.ini": "[pytest]", ".pytest.ini": "[pytest]", "tox.ini": "[pytest]",
     "setup.cfg": "[tool:pytest]", "pyproject.toml": "[tool.pytest",
 }
 
 
 def _refuse_implicit_collection_inputs(repo_root: Path) -> None:
     """Macha review of #592: pytest also runs conftest.py files and ini
-    ``addopts``/plugins that no explicit argv lists. Refuse both."""
+    ``addopts``/plugins that no explicit argv lists. Refuse both.
+    Macha review of #595: include hidden ``.pytest.ini`` and config files in
+    tests/, which pytest finds first when the explicit paths live there."""
     for directory in (repo_root, repo_root / "tests"):
         if (directory / "conftest.py").exists():
             _refuse("IMPLICIT_CONFTEST_NOT_REVIEWED:" +
                     (directory / "conftest.py").relative_to(repo_root).as_posix())
-    for name, marker in PYTEST_CONFIG_SECTIONS.items():
-        path = repo_root / name
-        if path.is_file() and marker in path.read_text(encoding="utf-8"):
-            _refuse("IMPLICIT_PYTEST_CONFIG_NOT_REVIEWED:" + name)
+        for name, marker in PYTEST_CONFIG_SECTIONS.items():
+            path = directory / name
+            if path.is_file() and (name.endswith("pytest.ini") or
+                                   marker in path.read_text(encoding="utf-8")):
+                _refuse("IMPLICIT_PYTEST_CONFIG_NOT_REVIEWED:" +
+                        path.relative_to(repo_root).as_posix())
 
 
 # Preserve exactly the archived D1 CI definition as historical evidence.
@@ -224,10 +229,76 @@ def _exact_unchanged_legacy_workflow(workflow: Path, raw: bytes) -> bool:
                      + raw).hexdigest() == expected)
 
 
+# Macha review of #595: refusing known-bad argv shapes missed `pytest -q`,
+# `pytest .`, `pytest tests/v5` and `--pyargs`, each of which collects whole
+# directories. Every pytest invocation must instead name explicit test files.
+_PYTEST_CALL = re.compile(r"(?:^|[\s;&|(])(?:python3?\s+-m\s+pytest|py\.test|pytest)(?=\s|$)")
+_VALUE_OPTIONS = frozenset({
+    "-k", "-m", "-p", "-c", "-o", "-r", "-W", "--rootdir", "--basetemp",
+    "--config-file", "--confcutdir", "--deselect", "--ignore", "--junitxml",
+    "--tb", "--maxfail", "--durations", "--import-mode", "--log-level"})
+_EXPLICIT_TEST = re.compile(r"tests/[A-Za-z0-9_./-]+\.py(?:::[A-Za-z0-9_\[\].-]+)*")
+
+
+def _logical_run_lines(jobs: str) -> list[str]:
+    """Each shell line of every ``run:`` step; backslash continuations joined."""
+    lines, out, i = jobs.splitlines(), [], 0
+    while i < len(lines):
+        found = re.match(r"^(\s*)(?:-\s+)?run:\s*(.*)$", lines[i])
+        i += 1
+        if not found:
+            continue
+        indent, value = len(found.group(1)), found.group(2).strip()
+        block = [value]
+        if value[:1] in ("|", ">"):
+            block = []
+            while i < len(lines) and (not lines[i].strip() or
+                                      len(lines[i]) - len(lines[i].lstrip()) > indent):
+                block.append(lines[i].strip())
+                i += 1
+        if value[:1] == ">":  # YAML folded block: one shell line per paragraph
+            block = " ".join(line if line else "\n" for line in block).split("\n")
+        current = ""
+        for line in block:
+            line = line.strip()
+            if line.endswith("\\"):
+                current += line[:-1] + " "
+                continue
+            out.append(current + line)
+            current = ""
+        if current:
+            out.append(current)
+    return [line for line in out if line.strip()]
+
+
+def _require_explicit_pytest_argv(line: str, workflow: str) -> None:
+    for segment in re.split(r"\s*(?:;|&&|\|\||\||>)\s*", line):
+        if re.search(r"\bpip3?\s+install\b", segment):
+            continue  # installing the pytest package is not a test route
+        call = _PYTEST_CALL.search(segment)
+        if call is None:
+            continue
+        tokens, paths, skip = segment[call.end():].split(), [], False
+        for token in tokens:
+            if skip:
+                skip = False
+                continue
+            if token in _VALUE_OPTIONS:
+                skip = True
+            elif token == "--pyargs":
+                _refuse("PACKAGE_COLLECTION_PYTEST_ROUTE:" + workflow)
+            elif not token.startswith("-"):
+                paths.append(token)
+        if not paths or any(_EXPLICIT_TEST.fullmatch(p) is None or
+                            re.search(r"[*?\[]", p.split("::")[0]) for p in paths):
+            _refuse("WILDCARD_OR_DIRECTORY_PYTEST_ROUTE:" + workflow)
+
+
 def verify_no_wildcard_pytest_routes(repo_root: Path = ROOT) -> list[str]:
-    """No automatically triggered workflow may build pytest argv by glob,
-    directory or shell expansion. Workflows whose every trigger is limited
-    to an old branch are reported, not executed and not refused."""
+    """No automatically triggered workflow may let pytest collect anything
+    but explicitly named test files: no glob, directory, package, bare
+    invocation or shell expansion. Only the byte-identical archived D1
+    workflow is reported instead of examined (and must not be dispatched)."""
     scoped = []
     for workflow in sorted((repo_root / ".github/workflows").glob("*.y*ml")):
         raw = workflow.read_bytes()
@@ -236,14 +307,12 @@ def verify_no_wildcard_pytest_routes(repo_root: Path = ROOT) -> list[str]:
             continue
         text = raw.decode("utf-8")
         _, _, jobs = text.partition("\njobs:")
-        command = " ".join(line.strip() for line in jobs.splitlines())
-        if re.search(r"unittest\s+discover", command):
-            _refuse("DISCOVERY_TEST_ROUTE:" + workflow.name)
-        for match in re.finditer(r"pytest(.*?)(?=\s-\s(?:name|uses|run):|$)", command):
-            argv = match.group(1)
-            if (re.search(r"tests/[^\s]*[*?\[]", argv) or "$(" in argv
-                    or "`" in argv or re.search(r"\stests/?(\s|$)", argv)):
+        for line in _logical_run_lines(jobs):
+            if re.search(r"unittest\s+discover", line):
+                _refuse("DISCOVERY_TEST_ROUTE:" + workflow.name)
+            if _PYTEST_CALL.search(line) and ("$(" in line or "`" in line):
                 _refuse("WILDCARD_OR_DIRECTORY_PYTEST_ROUTE:" + workflow.name)
+            _require_explicit_pytest_argv(line, workflow.name)
     return scoped
 
 
@@ -298,8 +367,15 @@ def main() -> int:
     # plugins even when automatic entrypoint discovery is disabled. Clear both.
     env = dict(os.environ, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
                PYTEST_ADDOPTS="", PYTEST_PLUGINS="")
-    subprocess.run([sys.executable, "-m", "pytest", "-q", "--noconftest",
-                    *paths], cwd=ROOT, check=True, env=env)
+    # Macha review of #595: pytest searches upward from the test paths for an
+    # ini file, so a pytest.ini/.pytest.ini outside the reviewed tree could
+    # still add tests. Pin an empty reviewed config and the rootdir.
+    with tempfile.TemporaryDirectory() as reviewed:
+        config = Path(reviewed) / "pytest.ini"
+        config.write_text("[pytest]\n", encoding="ascii")
+        subprocess.run([sys.executable, "-m", "pytest", "-q", "--noconftest",
+                        "-c", str(config), "--rootdir", str(ROOT), *paths],
+                       cwd=ROOT, check=True, env=env)
     return 0
 
 
