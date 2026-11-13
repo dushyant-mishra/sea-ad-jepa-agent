@@ -108,11 +108,25 @@ def canonical_sha256(value: object) -> str:
                              ensure_ascii=True).encode("utf-8")).hexdigest()
 
 
+# Macha pre-pilot reconciliation: the 2,048-address *vocabulary* (positions
+# and identity embeddings) is not the set of addresses whose *values* an
+# encoder receives. The PR548 adapter and forward probe give BOTH encoders
+# the same q-excluded base values; the teacher never receives 1672-1675.
+# A teacher-only query mode is the owner-pending L04 decision, not built.
+ENCODER_INPUT_MODE = "SHARED_BASE_MASKED_BLOCK_JEPA"
+TEACHER_ONLY_QUERY_MODE = "L04_OWNER_DECISION_PENDING__NOT_IMPLEMENTED"
+
+
 def _axes() -> dict:
     q = list(gate.DEV_QUERY_GENE_ADDRESSES)
-    teacher = list(range(gate.DEV_ROSTER["genes"]))
-    return {"teacher_address_ids": teacher, "query_withheld": q,
-            "student_address_ids": [a for a in teacher if a not in q]}
+    vocabulary = list(range(gate.DEV_ROSTER["genes"]))
+    base = [a for a in vocabulary if a not in q]
+    return {"vocabulary_address_ids": vocabulary,
+            "teacher_address_ids": list(base),      # values the teacher receives
+            "student_address_ids": list(base),      # before target-block hiding
+            "query_withheld": q,
+            "encoder_input_mode": ENCODER_INPUT_MODE,
+            "teacher_only_query_mode": TEACHER_ONLY_QUERY_MODE}
 
 
 def build_contract(measured: dict) -> dict:
@@ -183,6 +197,10 @@ def build_contract(measured: dict) -> dict:
             },
             "held_out_panels": {
                 "query_addresses_withheld_from_student": axes["query_withheld"],
+                "query_values_withheld_from_both_encoders": axes["query_withheld"],
+                "fit_teacher_member_role": ("teacher_measured.npz carries 2,048 columns "
+                                            "including q; hashed for custody, never "
+                                            "supplied to either V5 encoder in this mode"),
                 "evaluation_only_roster_fields": [
                     "donor_id", "synthetic_source", "split", "perturbation_arm",
                     "rna_entity_id", "atac_same_entity_id", "atac_separate_entity_id"],
@@ -219,11 +237,14 @@ def derive_bindings(contract: dict) -> dict:
     closure = c["actor_runtime"]["executed_closure_git_blobs"]
     return {
         "gene_axis_sha256": canonical_sha256({
-            "schema": "JEPA_V5_DEV2048_GENE_AXIS_V1",
+            "schema": "JEPA_V5_DEV2048_GENE_AXIS_V2",
             "dataset_zip_sha256": c["dataset"]["zip_sha256"],
+            "vocabulary_address_ids": axis["vocabulary_address_ids"],
             "teacher_address_ids": axis["teacher_address_ids"],
             "student_address_ids": axis["student_address_ids"],
-            "query_withheld": axis["query_withheld"]}),
+            "query_withheld": axis["query_withheld"],
+            "encoder_input_mode": axis["encoder_input_mode"],
+            "teacher_only_query_mode": axis["teacher_only_query_mode"]}),
         "source_manifest_sha256": canonical_sha256({
             "schema": "JEPA_V5_SOURCE_MANIFEST_V1",
             "executed_closure": closure,
