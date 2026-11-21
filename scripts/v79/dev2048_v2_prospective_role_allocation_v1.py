@@ -36,7 +36,7 @@ def _ranked(addresses: list[int], label: str) -> list[int]:
     ))
 
 
-def frozen_metadata_plan() -> dict[str, object]:
+def _frozen_metadata_plan_unchecked() -> dict[str, object]:
     physical = support_only_roles()
     views = physical["views"]
     queries = physical["queries"]
@@ -131,6 +131,12 @@ def frozen_metadata_plan() -> dict[str, object]:
         "world_generated": False,
         "model_trained": False,
     }
+    return result
+
+
+def frozen_metadata_plan() -> dict[str, object]:
+    """Expose only self-consistent deterministic metadata, never unvalidated."""
+    result = _frozen_metadata_plan_unchecked()
     validate_plan(result)
     return result
 
@@ -186,6 +192,12 @@ def validate_plan(plan: dict[str, object]) -> None:
                       for seq in [*views, *panels, q] for a in seq),
                   "UNMEASURED_OR_INVALID_ADDRESS")
 
+    # Reserve programme members are not in view/query/panel lists; support
+    # and integer bounds must apply to *all* original biology genes too.
+    _require_role(all(type(a) is int and 0 <= a < N_GENES and
+                      all((a + offset) % 37 != 0 for offset in (0, 5, 11))
+                      for group in genes for a in group),
+                  "UNMEASURED_OR_INVALID_PROGRAM_MEMBER")
     _require_role(len(genes) == 4, "PROGRAM_COUNT")
     _require_role(all(len(g) == len(set(g)) == GENES_PER_RARE_PROGRAM
                       for g in genes), "PROGRAM_SIZE")
@@ -241,6 +253,12 @@ def validate_plan(plan: dict[str, object]) -> None:
         _require_role(plan[key] is False, "UNLAWFUL_AUTHORITY:" + key)
     _require_role(plan["real_data_similarity"] == "NOT_EVALUATED",
                   "REALISM_NOT_EVALUATED")
+
+    # Quotas and seed labels alone cannot bind an exact address allocation:
+    # reject equivalent-count swaps, reserve substitutions and extra keys.
+    # This recomputes source-only integers; it never executes the generator.
+    _require_role(plan == _frozen_metadata_plan_unchecked(),
+                  "FROZEN_PLAN_MEMBER_IDENTITY")
 
 def main() -> None:
     verify_original_sources()
