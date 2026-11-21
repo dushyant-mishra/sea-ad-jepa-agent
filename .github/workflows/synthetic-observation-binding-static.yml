@@ -1,0 +1,25 @@
+name: Synthetic real-QC Task3 binding source-only audit (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - 'scripts/production_synthetic/synthetic_observation_binding_static_v1.py'
+      - 'tests/production_synthetic/test_synthetic_observation_binding_static_v1.py'
+      - '.github/workflows/synthetic-observation-binding-static.yml'
+permissions:
+  contents: read
+jobs:
+  source-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fixed explicit source-only unittest
+        env:
+          PYTHONPATH: .
+          PYTEST_ADDOPTS: ''
+          PYTEST_PLUGINS: ''
+        run: python -m unittest discover -s tests/production_synthetic -p test_synthetic_observation_binding_static_v1.py -v
+      - name: Read exact pinned source; do not run producer
+        run: python scripts/production_synthetic/synthetic_observation_binding_static_v1.py
