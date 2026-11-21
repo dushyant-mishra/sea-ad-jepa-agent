@@ -1,0 +1,75 @@
+{
+  "schema": "JEPA_CURRENT_SUCCESSOR_POINTER_20261028_V1",
+  "date": "2026-10-28",
+  "classification": "READONLY_HANDOFF_NAVIGATION__NOT_SCIENTIFIC_ACCEPTANCE",
+  "audit": {
+    "pr": 322,
+    "head": "d973907e0f97576e87c6778400b5695b6f60364f",
+    "current_report": "docs/agent/JEPA_COMPLETE_LANE_TAKEOVER_FREEZE_20261028.md",
+    "current_machine": "results/target_discovery/unified_qualification_v1/JEPA_CURRENT_SUCCESSOR_FREEZE_20261028.json",
+    "source_validator": "scripts/v5/verify_jepa_successor_freeze_20261028.py",
+    "source_test": "tests/v5/test_verify_jepa_successor_freeze_20261028.py",
+    "source_workflow": ".github/workflows/jepa-oct28-complete-takeover-freeze.yml",
+    "historical_frozen_independently_reviewed_head": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+    "new_workflow": 40743485429,
+    "source_verification": "CI_SUCCESS__STATIC_SOURCE_AND_HOSTILE_CUSTODY_ONLY",
+    "whole_branch_CI": "CHECK_LIVE_HEAD__OTHER_WORKFLOWS_PENDING_AT_RECORD_CREATION"
+  },
+  "handoff": {
+    "pr": 460,
+    "start_here": "docs/agent/JEPA_SUCCESSOR_FINAL_FREEZE_20261028.md",
+    "previous_handoff_head": "6237438d0b1e708839d4b66547129d26664ae03e"
+  },
+  "latest_review": [
+    {
+      "pr": 479,
+      "review": 481,
+      "verdict": "REPAIR_REQUIRED",
+      "ci_run": 40734273672
+    },
+    {
+      "pr": 476,
+      "review": 482,
+      "verdict": "ACCEPT_INCREMENTAL_WITH_R1_R2_BLOCKERS",
+      "ci_run": 40735376242
+    },
+    {
+      "pr": 477,
+      "review": 483,
+      "verdict": "ACCEPT_INCREMENTAL_WITH_LIMITATIONS",
+      "ci_run": 40736368351
+    }
+  ],
+  "task3": {
+    "original_source_pr": 437,
+    "independent_review_pr": 480,
+    "original_review_verdict": "REPAIR_REQUIRED",
+    "author_repair_pr": 486,
+    "author_repair_head": "f17080516f77e79fb6f6cb44903cbabdb2a85dd7",
+    "author_CI_success": [
+      40741905858,
+      40741906003,
+      40741905819
+    ],
+    "independent_acceptance": false,
+    "current_real_calibration_issuer": false
+  },
+  "controlling_stops": [
+    "G7_R1_R1D_R2_EXTERNAL_PHYSICAL_DONOR_NORMALIZER_RED",
+    "PS_TASK2_T2D_ISSUER_RED",
+    "PS_TASK3_EMPIRICAL_SOURCE_NOT_AUTHENTICATED",
+    "PS_TASK4_CANDIDATE_NEUTRAL_BIOLOGY_GENERATOR_ABSENT",
+    "G7_V2_SCHEMA_NOT_AUTHORIZED",
+    "V79_V80_FROZEN_POLICY_UNRESOLVED",
+    "NO_SELECTED_JEPA_TARGET_OR_REAL_TRAINING"
+  ],
+  "live_next_actions": [
+    "REVIEW_MACHA_PR486_INDEPENDENTLY",
+    "REPAIR_PR479_A1_A2_A3_AND_COORDINATE_PR474_A4",
+    "REPAIR_PR476_METACLASS_AND_COMPOSE_BIND_TO_V3",
+    "REPAIR_PR477_TYPE_AND_CAUSE_LEAKS",
+    "DECIDING_LANE_ADJUDICATE_D1_D2_AND_G7_V2",
+    "REAL_SOURCE_RIGHTS_AND_PSTASK4_BLOCKERS_AFTER_AUTHORITY"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

@@ -1,0 +1,30 @@
+# JEPA live handoff — historical reconciliation still INCOMPLETE (2026-11-04)
+
+**Mandatory first read:** canonical [audit #322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) current audited source snapshot `65acf21825b7298fdff0ebbf55ce0042ea390350`, **46 chronology events**, checks were RUNNING at initial fresh-head check. Source documents in #322:
+- `docs/agent/JEPA_20261104_RECONCILIATION_INCOMPLETE_MAJOR_UNDERINDEXED_FOUNDATION_DIMENSION_S174.md`
+- `results/target_discovery/unified_qualification_v1/JEPA_20261104_MAJOR_UNRECONCILED_FOUNDATION_DIMENSIONS_S174_CUSTODY_V1.json`
+
+**This supersedes any "complete historical assimilation" or "PR537 is next" language.** Current summary coverage is demonstrably INCOMPLETE. This is an additional 5-lane primary-source discovery, not a claim that the project itself lacks the information. Original per-lane audits are existing authority at their exact heads and must be reused, not repeated.
+
+## Substantial completed work newly restored to active synthesis
+
+1. **Original FHRA real observation audit** (`main:docs/history/preservation_20260902/results/v4/stage81a3_foundation_heterogeneity_reality_audit.json`): 13 datasets/36 matrices/149 TRAIN donors, 6,351,753 matrix-entry cells, one unique structural support mask for 4,096 frozen features. Even with that same structural feature mask, measurement operators and acquisition states are biologically relevant; this does not extend to 41K masks. No directly paired higher-evidence privileged truth in that original FHRA.
+2. **Foundation V4 PRs #269/#271/#276:** evaluated actual u205 41K source imprint, not just code. Held-TRAIN donor u205 source BA 1.0, operator BA .763206, support-count R² .999800, broad class BA .495018; independent 84-cell bounded replay source BA .96875 after broad-class residualization, broad class donor/matrix BA .493464/.477591. Source confounded with biology; current representation invariance **NOT QUALIFIED**. Native V2 broad-class matrix identifiability 34/42, 8 unavailable in ontology (not RNA). Existing SUBSPACE_ONLY basis, two-axis uncertainty and hierarchical transfer/sampling rules must be folded into any new JEPA target program rather than reinvented.
+3. **FULL104 dataset-first dimension authority:** earlier September12 plan `planning/v5-dataset-first-production-closure-20260912` recorded real source-reader/cache loopholes and missing numerical executor+Monte Carlo rule. Latter was subsequently resolved at **PR #270**, independently audited **#273** and handed off **#274**: prospective Hoeffding/Bonferroni precision, crypto-bound full-stream metric receipts and frozen D_shared/D_private/D_obs selectors. **No physical 4,553,407-cell/8,915-block closure receipt or actual numeric dimension selection** was established by these engineering results. Macha controls physical store; don't demand redundant reads.
+4. **Physical V79 exact-S174 source/depth/class/operator/donor replay:** PR #279 built authenticated 84-shard 4,726-cell/149-donor cache; PR #280 original operator fit failed closed before metrics; PR #283 repaired a prospective regularization choice; **PR #285 executed 200-gene three-fold held-donor analysis**: depth+class+source effects, donor residuals, operator detection PRIOR_SENSITIVE, fixed operator positive magnitude NOT_SUPPORTED. PR #286/#287 subsequently showed 5.76% of V3 assumed measured zeros were structurally missing and built a masked correction. The masked physical successor and subsequent V79/V80 gates must be read at their original heads before new statistical claims.
+5. **Real TD source custody PRs #277/#281/#282/#284/#296/#298/#304:** historical G6 schema attempt failed before a value read; repaired G6 *actually physically ran once* and was externally accepted for 25,000 Sample-A rows, 23,690 HVS+SEA physical rereads plus 1,310 NPH pass-through. G7 later successor custody and the one-spent PR314 corrected real C2 replay must be reconciled; no new arbitrary Level4 read or TD replay.
+
+**Already known**: Graph-JEPA 18 gene atlas and regulatory/perturbations, TD56/57B/59 positives vs TD57C fine negatives, C1–C6 portfolio, R5 measured q-conditional target, V65/V67 positive planted supervised recovery, Stage81B JEPA-only causal arms, F1B gradients, V79 frozen Q08 negative, V80 benchmark, original PR336 9/9 sealed known truth, source/CaseBundle and D1 fixture. These results remain valid in original scopes. No "first teacher", "first multimodal", "first 100K", "first 41K support" or "first synthetic model" proposals.
+
+## Remaining *reconciliation* tasks before new experiment assignment
+
+- Trace post-PR287 **physical masked S174** original result, V79 Q08 qualification and V80 later selection-law amendments at their exact frozen bytes.
+- Trace latest actual **FULL104 dimension binder and returned rank-metric receipts** on canonical GPU data machine if generated after PR274, reusing old source/metadata and avoiding bulk transfers.
+- Verify original **G7 accepted terminal and source comparison** with PR284 accepted G6, then PR314 corrected real outcome; no new G7 run.
+- Compare real Foundation V4 u205 transfer failure and FHRA observation-operator findings to current C2/C3 learned-teacher and source-rights null/uncertainty constraints; do not interpret low JEPA loss or source invariance naively.
+- Verify Stage81B JEPA_ONLY original architecture/fixture/seed/results against draft [PR537](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/537) before dispatching any new 4×500 GPU fits. PR537 has 2/2 **CPU** preflight only and may be redundant.
+- Continue source-indexed remaining branches and original local experiment receipts without claiming one new five-lane audit makes overall history complete.
+
+**No new model, no new source read, no synthetic rerun, no human-data training authority, no selected target or representation** from this historical correction.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`.
