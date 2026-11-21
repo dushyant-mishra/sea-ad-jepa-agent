@@ -1,0 +1,106 @@
+{
+  "schema": "JEPA_20261121_EVENT123_COUNT_NULL_RARE_BIOLOGY_SOURCE_MAP_V1",
+  "date_utc": "2026-11-21",
+  "status": "SOURCE_ONLY_PREFREEZE__NO_DATA_READ__NO_WORLD__NO_TRAINING",
+  "canonical_audit_pr": 322,
+  "active_handoff_pr": 460,
+  "implementation_pr": 599,
+  "implementation_head": "c0c0b40c007c09850d8aca91cbbe45581687e26a",
+  "historical_completed": [
+    "V74_50K_REAL_SAMPLED_QC",
+    "V77_REAL_SYNTHETIC_RECONCILIATION",
+    "V78_V79_FAILED_JOINT_REALISM",
+    "V80_BENCHMARK_ONLY",
+    "V3_1_1_ACCEPTED_DESIGN",
+    "Task3_R1_R4_AND_598_STATIC",
+    "PR531_SUPPORT_STATES",
+    "Task4_K04_HOLD",
+    "PR547_DEV2048_V1",
+    "PR597_V5_NO_TRAINING_PREFLIGHT",
+    "Event117",
+    "Event118",
+    "Event119",
+    "Event120",
+    "Event121",
+    "Event122"
+  ],
+  "sources": [
+    {
+      "path": "scripts/v79/dev2048_v2_prospective_role_allocation_v1.py",
+      "blob_sha1": "a88c20e2a06469436df20331073d6f3e5b78f7e4"
+    },
+    {
+      "path": "tests/v79/test_dev2048_v2_prospective_role_allocation_v1.py",
+      "blob_sha1": "7442c4eb124d0d2811175c1b04f253cebd98974f"
+    },
+    {
+      "path": "scripts/v79/dev2048_v2_count_null_joint_gate_v1.py",
+      "blob_sha1": "8a95f37a0b3c2366b88bb662bacf31285439cb80"
+    },
+    {
+      "path": "tests/v79/test_dev2048_v2_count_null_joint_gate_v1.py",
+      "blob_sha1": "2760be1d7633084b5dbcf67877bef689ad553fa0"
+    },
+    {
+      "path": "docs/agent/JEPA_DEV2048_V2_COUNT_NULL_RARE_BIOLOGY_JOINT_GATES_20261121.md",
+      "blob_sha1": "40c675841502f5c0bb09a98a445f309d6b7c6389"
+    },
+    {
+      "path": ".github/workflows/dev2048-v2-count-null-source-only.yml",
+      "blob_sha1": "a0053b55601ba7326aa5c0900fe3e5004226eef9"
+    }
+  ],
+  "ci": [
+    {
+      "id": 44935640551,
+      "conclusion": "success",
+      "tests": 13
+    },
+    {
+      "id": 44935640546,
+      "conclusion": "success",
+      "tests": 6
+    },
+    {
+      "id": 44935640604,
+      "conclusion": "success",
+      "tests": 8
+    },
+    {
+      "id": 44935640564,
+      "conclusion": "failure_before_generator",
+      "cause": "setup-python"
+    },
+    {
+      "id": 44935640541,
+      "conclusion": "failure_before_generator",
+      "cause": "setup-python"
+    }
+  ],
+  "frozen_gates": [
+    "G0_RIGHTS",
+    "G1_SUPPORT_AND_UNITS",
+    "G2_MARGINAL_COUNTS",
+    "G3_JOINT_COVARIANCE_CLASS_DONOR_SOURCE",
+    "G4_COUNT_TECHNICAL_NULL",
+    "G5_RARE_MULTIGENE_FALSE_POSITIVE_CONTROL",
+    "G6_HELDOUT_REPLICATION"
+  ],
+  "no_scientific_pass": {
+    "real_match": false,
+    "rare_biology_detection": false,
+    "world_generated": false,
+    "count_model_fitted": false,
+    "model_trained": false
+  },
+  "open": [
+    "independent_C3",
+    "raw_count_rights",
+    "operator_semantics",
+    "physical_effect_remap",
+    "freeze_numeric_bands",
+    "heldout_recurrence",
+    "combined_596_guard"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
