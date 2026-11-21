@@ -1,3 +1,20 @@
+# READ FIRST — EVENT122 (2026-11-21): DEV2048 V2 GUARD RED→GREEN + RNA COUNT-NULL NEXT CHECK — NO TRAINING
+
+**Canonical historical audit #322 exact head `34ced84f70fcc374371e025051306ac13904035a` contains 122 chronology events and retains 85 no-repeat source keys.** [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event122. Read Event122, then Event121/120/119, Event117–118, and original Event90. Maintain **both** branches after each evidenced implementation result, preserving all historical negative studies.
+
+- Human: `docs/agent/JEPA_20261121_EVENT122_DEV2048_V2_ROLE_GUARD_REPAIR_AND_RNA_DENSITY_NULL_PLAN_NO_TRAINING.md` (Git blob `418e7d98cc1450ea44ee7e453dc5ab88ffd0ad0d`).
+- Machine: `results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT122_DEV2048_ROLE_GUARD_AND_COUNT_NULL_SOURCE_MAP.json` (Git blob `de47e0b49bb22d8c7d9b51faea7d580ba969cd5b`).
+- Draft [#599](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/599) exact `7edc9a07767ba3d455526648c636fb3bbe8bb870`: both V2 workflows now execute explicit test files instead of discovery. Three source-only hostile tests RED on optimized-Python bypass / q label / planted panel identity; explicit fail-closed repair has 11/11 hosted GREEN [44932507291](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44932507291), separate prospective contradiction 6/6 [44932507237](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44932507237). Two inherited 3.11.9/Ubuntu26.04 workflow setup failures remain; no generator ran.
+- **Independent approval still missing:** cross-query reuse of non-q C3 panels, combined-tree #596 CI scanner test, physically versioned PR328-preserving gene-effect remap, donor×source×split support and q RNA/ATAC exclusion. No new V2 data or biological PASS.
+- **Rare biology / distributions:** old real/synthetic nonzero proportions 0.111/0.105 but median absolute HVG correlation 0.329/0.068; no verified matched density/PDF for the **new ungenerated** V2. Future Poisson/NB/depth-conditioned technical-null and donor-recurrent gene-program test requires authenticated TRAIN real counts, frozen strata/metrics, corrected support states and independent known-truth qualification. Do not interpret isolated tail counts as rare states or re-run frozen V78/V79 failures.
+- **Checkpoint source boundary:** uploaded read-only M1/reopening helper is not an owner-authorized launcher, a persisted U1 or an M2 bitwise resume. Withheld-gene noninterference remains a production-adapter check, not proven by detached toy fixtures. Keep owner authorization and independent review gates.
+
+No real RNA opened, no model forward/backward, optimizer, EMA, M1/M2, Stage4, PR merge or production authority.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT121 (2026-11-21): TWO-BRANCH DEV2048 V2 ASSIMILATION AND CI-GUARD COMPOSITION AUDIT — NO TRAINING
 
 **Canonical historical audit #322 exact head `ec8b16a0459573297b4601820871fcb4e4334d8b` contains 121 chronology events and retains 85 no-repeat source keys.** [Draft #599](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/599) exact `1f669d3b1d4a3dfddab48797b269af2a618c85df` remains source-only. Start with Event121, then Event120, Event119, Events118–113 and Event90. Do not duplicate frozen historical science.
