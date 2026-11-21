@@ -135,37 +135,112 @@ def frozen_metadata_plan() -> dict[str, object]:
     return result
 
 
+def _require_role(ok: bool, reason: str) -> None:
+    """Never use assert for a future boundary: Python -O removes assertions."""
+    if not ok:
+        raise ValueError("DEV2048_V2_ROLE_REFUSAL:" + reason)
+
+
 def validate_plan(plan: dict[str, object]) -> None:
+    """Fail-closed, source-only checks of the proposed *unapproved* V2 layout."""
     q = plan["query_address_ids"]
     panels = plan["query_other8_panels"]
     views = plan["view_address_ids"]
     genes = plan["rare_program_address_ids"]
     labels = plan["query_labels"]
-    assert len(views) == N_VIEWS and all(len(v) == VIEW_SIZE for v in views)
-    assert len(set(sum(views, []))) == 3 * VIEW_SIZE
-    assert len(q) == len(set(q)) == len(panels) == len(labels) == 8
-    assert not set(q).intersection(set(sum(views, [])))
-    assert all(len(panel) == len(set(panel)) == PANEL_SIZE for panel in panels)
-    assert not set(q).intersection(set(sum(panels, [])))
-    assert not set(sum(views, [])).intersection(set(q + sum(panels, [])))
-    for seq in [*views, *panels, q]:
-        assert all(0 <= a < N_GENES and all((a+o) % 37 != 0 for o in (0,5,11)) for a in seq)
-    assert len(genes) == 4
-    assert all(len(g) == len(set(g)) == GENES_PER_RARE_PROGRAM for g in genes)
-    assert len(set(sum(genes, []))) == 4 * GENES_PER_RARE_PROGRAM
-    for pg in genes:
-        assert all(len(set(pg).intersection(v)) == 3 for v in views)
-    assert [len(set(g).intersection(q)) for g in genes] == [3,1,1,1]
-    for idx, p in enumerate(plan["query_program"]):
-        if p is None:
-            assert q[idx] not in set(sum(genes, []))
-            assert set(panels[idx]).intersection(genes[1 if idx == 6 else 2])
-        else:
-            assert q[idx] in genes[p]
-            assert len(set(panels[idx]).intersection(genes[p])) >= 3
-    assert labels[1:3] == ["PERTURB_0","PERTURB_0"]
-    assert all(not plan[k] for k in ("world_generated","generator_authorized","model_trained","C1_C6_scored"))
+    q_program = plan["query_program"]
+    planted = plan["rare_program_panel_gene_ids"]
 
+    source_roles = support_only_roles()
+    _require_role(plan["schema"] == SCHEMA, "SCHEMA")
+    _require_role(plan["seed"] == SEED and
+                  plan["salt_commitment_sha256"] == SEED_COMMITMENT_SHA256,
+                  "FROZEN_SEED")
+    _require_role(plan["status"] ==
+                  "PROSPECTIVE_ADDRESS_LAYOUT_FEASIBLE__WORLD_NOT_GENERATED",
+                  "STATUS_NOT_SOURCE_ONLY")
+    _require_role(plan["parent_v1_unchanged"] is True, "V1_PRESERVATION")
+    _require_role(plan["mechanism"] ==
+                  "PR328_4_RARE_15GENE_PROGRAMS__PERTURB_OVERLAPS_RARE0",
+                  "PLANTED_MECHANISM")
+    _require_role(labels == list(QUERY_LABELS), "QUERY_LABELS")
+    _require_role(q_program == [0, 0, 0, 1, 2, 3, None, None],
+                  "QUERY_PROGRAM")
+    _require_role(views == source_roles["views"], "VIEWS_NOT_FROZEN")
+    _require_role(q == source_roles["queries"], "QUERIES_NOT_FROZEN")
+    _require_role(len(views) == N_VIEWS and
+                  all(len(v) == VIEW_SIZE for v in views), "VIEW_SIZE")
+    view_union = sum(views, [])
+    panel_union = sum(panels, [])
+    _require_role(len(set(view_union)) == N_VIEWS * VIEW_SIZE,
+                  "VIEWS_NOT_DISJOINT")
+    _require_role(len(q) == len(set(q)) == len(panels) == len(labels) == 8,
+                  "QUERY_COUNT")
+    _require_role(not set(q).intersection(view_union), "QUERY_IN_VIEW")
+    _require_role(all(len(panel) == len(set(panel)) == PANEL_SIZE
+                      for panel in panels), "PANEL_SIZE_OR_DUPLICATE")
+    _require_role(not set(q).intersection(panel_union), "Q_LEAKS_IN_PANEL")
+    _require_role(not set(view_union).intersection(panel_union), "PANEL_IN_VIEW")
+    _require_role(all(type(a) is int and 0 <= a < N_GENES and
+                      all((a + offset) % 37 != 0 for offset in (0, 5, 11))
+                      for seq in [*views, *panels, q] for a in seq),
+                  "UNMEASURED_OR_INVALID_ADDRESS")
+
+    _require_role(len(genes) == 4, "PROGRAM_COUNT")
+    _require_role(all(len(g) == len(set(g)) == GENES_PER_RARE_PROGRAM
+                      for g in genes), "PROGRAM_SIZE")
+    _require_role(len(set(sum(genes, []))) ==
+                  4 * GENES_PER_RARE_PROGRAM, "PROGRAM_MEMBERS_OVERLAP")
+    _require_role(all(len(set(g).intersection(v)) == 3
+                      for g in genes for v in views), "PROGRAM_VIEW_QUOTAS")
+    _require_role([len(set(g).intersection(q)) for g in genes] ==
+                  [3, 1, 1, 1], "PROGRAM_QUERY_QUOTAS")
+    _require_role(len(planted) == 4 and all(
+                  len(p) == len(set(p)) == 3 and set(p).issubset(genes[i]) and
+                  not set(p).intersection(q) and
+                  not set(p).intersection(view_union)
+                  for i, p in enumerate(planted)), "PANEL_PROGRAM")
+
+    for idx, p in enumerate(q_program):
+        expected = (1 if idx == 6 else 2) if p is None else p
+        if p is None:
+            _require_role(q[idx] not in set(sum(genes, [])),
+                          "NULL_QUERY_IS_PLANTED")
+        else:
+            _require_role(q[idx] in genes[p],
+                          "POSITIVE_QUERY_NOT_IN_PROGRAM")
+        _require_role(set(planted[expected]).issubset(panels[idx]) and
+                      len(set(panels[idx]).intersection(genes[expected])) == 3,
+                      "QUERY_PANEL_PROGRAM_BINDING")
+
+    # Only the explicitly prospective shared NON-q members can overlap
+    # between the three rare0 q panels and rare/null counterpart panels.
+    for i in range(8):
+        for j in range(i + 1, 8):
+            allowed = set()
+            if i in (0, 1, 2) and j in (0, 1, 2):
+                allowed = set(planted[0])
+            elif (i, j) == (3, 6):
+                allowed = set(planted[1])
+            elif (i, j) == (4, 7):
+                allowed = set(planted[2])
+            _require_role(set(panels[i]).intersection(panels[j]) == allowed,
+                          "UNDECLARED_CROSS_QUERY_PANEL_REUSE")
+
+    _require_role(plan["shared_cross_query_panel_policy"] ==
+                  "ALLOWED_ONLY_WITHIN_V2__Q_NEVER_PANEL",
+                  "UNAPPROVED_PANEL_POLICY")
+    for flag in ("same_query_panel_distinct_8", "student_must_exclude_all_8_q",
+                 "student_must_exclude_q_locus_atac"):
+        _require_role(plan[flag] is True, "MISSING_RIGHTS_FLAG:" + flag)
+    _require_role(plan["physical_common_address_count"] ==
+                  source_roles["common_measured_addresses"],
+                  "PHYSICAL_SUPPORT_COUNT")
+    for key in ("world_generated", "generator_authorized", "model_trained",
+                "C1_C6_scored"):
+        _require_role(plan[key] is False, "UNLAWFUL_AUTHORITY:" + key)
+    _require_role(plan["real_data_similarity"] == "NOT_EVALUATED",
+                  "REALISM_NOT_EVALUATED")
 
 def main() -> None:
     verify_original_sources()
