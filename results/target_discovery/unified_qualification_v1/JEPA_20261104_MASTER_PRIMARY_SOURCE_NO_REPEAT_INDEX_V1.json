@@ -2398,5 +2398,22 @@
       "Owner authorization and independent gate before generation; M1/M2 and any learning remain OFF."
     ],
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "event120_dev2048_v2_prospective_role_allocation_20261121": {
+    "event": 120,
+    "date_utc": "2026-11-21",
+    "human": "docs/agent/JEPA_20261121_EVENT120_DEV2048_V2_ROLE_ALLOCATION_SOURCE_ONLY.md",
+    "human_sha": "787c734fcf6ca665a7818655e3daac974438dc1b",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT120_DEV2048_V2_ROLE_ALLOCATION_MAP.json",
+    "machine_sha": "d86e30e8ee96a2073dfefdca33422381cd932085",
+    "implementation_pr": 599,
+    "implementation_head": "1f669d3b1d4a3dfddab48797b269af2a618c85df",
+    "open_scope": [
+      "Independent C3 review of shared observed non-q genes across q-specific eight-other panels and all-q RNA/ATAC exclusion.",
+      "Separately versioned physical v2 generator with known rare/perturb gene effects and controller-only donor×source×split activity; no generation before owner approval.",
+      "Authenticated TRAIN-only reference issuer, Task3 actual producer parameter mapping, and prospectively frozen finite joint real-data realism gates.",
+      "Inherited exact Python 3.11.9 Ubuntu26.04 setup failures must be scoped to CI environment and not treated as source/test failures."
+    ],
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
