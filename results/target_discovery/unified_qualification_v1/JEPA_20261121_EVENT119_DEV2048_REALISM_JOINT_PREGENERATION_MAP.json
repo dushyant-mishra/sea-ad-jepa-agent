@@ -1,0 +1,51 @@
+{
+  "schema": "JEPA_EVENT119_DEV2048_REALISM_JOINT_PREGENERATION_V1",
+  "date_utc": "2026-11-21",
+  "event": 119,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "prior_heads": {
+    "audit": "391face82152d24ebf23e441097434dbaff74772",
+    "handoff": "88131bbd66a6fb08a313caf89db899e41df6ae05"
+  },
+  "draft": {
+    "pr": 599,
+    "head": "2d737248041e3885db787304a2e12425755de0d5",
+    "base_pr": 547,
+    "source_only": true
+  },
+  "scientific_goal": "REAL_RNA_JOINT_REALISM_AND_PLANTED_TRUTH_OBSERVABILITY_TOGETHER",
+  "new_finding": {
+    "rare_program_size": 15,
+    "proposed_per_view": [
+      4,
+      4,
+      4
+    ],
+    "proposed_tail": 3,
+    "minimum_one_q_other3_distinct_gene_members": 16,
+    "perturb_response_overlaps_original_rare0": true,
+    "minimum_disjoint_three_positive_queries_with_four_per_view": 24,
+    "structural_addresses_feasible": true,
+    "program_biology_qualification": false
+  },
+  "hosted": {
+    "source_only": {
+      "run": 44927416268,
+      "status": "success",
+      "tests": 6
+    },
+    "inherited": {
+      "runs": [
+        44927416182,
+        44927416197
+      ],
+      "status": "failure_before_tests__missing_python_3_11_9_on_ubuntu26_04",
+      "realization_step_reached": false
+    }
+  },
+  "next": "INDEPENDENT_C3_QUERY_PANEL_SEMANTICS_REVIEW__FREEZE_V2_AND_REALISM_CONTRACT",
+  "synthetic_world_generated": false,
+  "real_RNA_read": false,
+  "model_trained": false,
+  "realism_qualified": false
+}

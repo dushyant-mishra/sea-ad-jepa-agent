@@ -1,3 +1,17 @@
+# READ FIRST — EVENT119 (2026-11-21): DEV2048 RARE/PERTURB + REALISM JOINT QUALIFICATION — NO TRAINING
+
+**Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `77103f0b8d51dccf407bdb7462b02d9ec376be43` has 119 chronology events and 84 no-repeat source keys. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event119.** Read Event119, then Events118–113 and Event90 original crosswalk. No completed synthetic science is to be repeated.
+
+- Human: `docs/agent/JEPA_20261121_EVENT119_DEV2048_RARE_PERTURB_REALISM_JOINT_PREGENERATION.md` (blob `5e0504cb960e93c56c6fb6fe473a44696f602102`).
+- Machine: `results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT119_DEV2048_REALISM_JOINT_PREGENERATION_MAP.json` (blob `6e997054068a08f69a9216cd75e8fd9601767ce9`).
+- [Draft #599](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/599) exact `2d737248041e3885db787304a2e12425755de0d5` found v2 role/q/panel capacity contradiction and perturb/rare0 overlap. Inert tests 6/6 passed; two inherited 3.11.9 workflow setup failures before generation. Not independently accepted.
+- Same goal: known planted rare/perturb truth in all three views **and** simultaneous real RNA distribution/covariance/class/donor realism. Continue only under frozen versioned finite iteration/heldout controls; original DEV2048 remains development-only; no world generation or training.
+- Owner #531 support-semantic ruling, #549 Task4 K04 and #598 real-calibration binding remain open. Event95 owner private V80 backup already resolved; separate archive CI remains unverified.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT118 (2026-11-21): REAL-QC TO SYNTHETIC TASK3 STATIC BINDING — NO TRAINING
 
 **Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `391face82152d24ebf23e441097434dbaff74772` has 118 chronology events and 83 no-repeat source keys. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event118.** Read Event118, then Events117–113 and Event90 original source crosswalk; do not repeat completed real/synthetic work.
