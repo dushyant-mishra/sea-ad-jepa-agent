@@ -89,5 +89,22 @@ class ProspectiveV2RoleTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "PANEL_PROGRAM"):
             P.validate_plan(plan)
 
+    def test_hostile_unmeasured_reserve_gene_rejected(self):
+        # The view/q/panel-only support scan must not omit reserve biology.
+        plan = copy.deepcopy(self.plan)
+        plan["rare_program_address_ids"][1][-1] = 0  # physically unsupported
+        with self.assertRaisesRegex(ValueError, "DEV2048_V2_ROLE_REFUSAL"):
+            P.validate_plan(plan)
+
+    def test_hostile_valid_view_gene_swap_breaks_frozen_seed(self):
+        # Quotas still hold, but the committed source-only layout changed.
+        plan = copy.deepcopy(self.plan)
+        all_program = set(sum(plan["rare_program_address_ids"], []))
+        replacement = next(g for g in plan["view_address_ids"][0]
+                           if g not in all_program)
+        plan["rare_program_address_ids"][2][0] = replacement
+        with self.assertRaisesRegex(ValueError, "DEV2048_V2_ROLE_REFUSAL"):
+            P.validate_plan(plan)
+
 if __name__ == "__main__":
     unittest.main()
