@@ -1,0 +1,49 @@
+{
+ "schema": "JEPA_MACHA_R1_R2_SOURCE_ETL_GAP_MATRIX_V1",
+ "date": "2026-10-29",
+ "author_lane": "Macha",
+ "classification": "SOURCE_ETL_GAP_MATRIX__IDENTITY_AND_CODE_EVIDENCE_ONLY__NO_AUTHORITY",
+ "document": "docs/agent/JEPA_MACHA_R1_R2_SOURCE_ETL_GAP_MATRIX_20261029.md",
+ "probe": {
+  "code": "scripts/v5/review_probes/macha_20261029/r1_r2_source_gap_probe.py",
+  "output": "results/target_discovery/unified_qualification_v1/JEPA_MACHA_R1_R2_SOURCE_GAP_PROBE_20261029.json",
+  "bound_inputs_sha256": {
+   "results/v4/stage81a2r_authoritative_source_mapping_decisions_candidate.csv.gz": "e3106248ac77f8840f5ea6035dc765d8e09feeba1f6da21c830b3945d694c773",
+   "results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
+   "exports/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  },
+  "data_read": "identity tables, state matrix, reader_fit lineage source/matrix/donor columns aggregated to counts, declared H5AD matrix shapes; no count values"
+ },
+ "builds_on": {"pr492": "79d2f936", "pr505": "3eecdd46"},
+ "correction_to_pr492": {
+  "claim": "final all-feature decision table SHA-256 not exposed in GitHub history; bytes not acceptable by name alone",
+  "status": "CONTRADICTED",
+  "evidence": "docs/history/JEPA_COMPLETE_PRESERVATION_MANIFEST_20260902.csv line 5536 binds the path to e3106248 and 17002348 bytes (commit 2c000ecc, on origin/main and on 79d2f936); exact bytes at docs/history/exact_bytes/results/v4/stage81a2r_authoritative_source_mapping_decisions_candidate.csv.gz in the same trees"
+ },
+ "rows": [
+  {"id": "A1", "requirement": "reader-fit row is one deposited count-matrix row with a stable key", "class": "AUTHENTICATED", "scope": "deposited row", "evidence_kind": ["code", "source-backed"]},
+  {"id": "A2", "requirement": "count values are integers before normalization", "class": "AUTHENTICATED", "scope": "50k sample bytes (#492); uncorrected-UMI status UNAVAILABLE", "evidence_kind": ["source-backed"]},
+  {"id": "A3", "requirement": "one row is one physical nucleus", "class": "UNAVAILABLE", "route": "depositor doublet/ambient calls; BAM/FASTQ prohibited", "evidence_kind": ["unavailable"]},
+  {"id": "A4", "requirement": "cell keys unique across sources and libraries", "class": "AUTHENTICATED", "scope": "project keys only; raw barcodes repeat", "evidence_kind": ["code"]},
+  {"id": "B1", "requirement": "donor IDs denote distinct people", "class": "UNAVAILABLE", "evidence_kind": ["unavailable"]},
+  {"id": "B2", "requirement": "donor equals replication unit (specimen)", "class": "CONTRADICTED", "scope": "SEA-AD: 46/46 donors span multiple region matrices, median 10 of 11", "evidence_kind": ["source-backed"]},
+  {"id": "B3", "requirement": "specimen identity for HVS and NPH52", "class": "UNAVAILABLE", "scope": "matrices are dataset or cell-type partitions, not specimens", "evidence_kind": ["source-backed", "unavailable"]},
+  {"id": "B4", "requirement": "no pseudodonor or pooled sample", "class": "UNAVAILABLE", "evidence_kind": ["unavailable"]},
+  {"id": "C1", "requirement": "every deposited source feature has one disposition", "class": "AUTHENTICATED", "scope": "bound decision table; HVS 18736 and SEA-AD 36601 equal declared H5AD widths", "evidence_kind": ["source-backed"]},
+  {"id": "C2", "requirement": "no off-ledger alias of an addressed gene (HVS, SEA-AD)", "class": "AUTHENTICATED", "scope": "complete accounting against depositor Ensembl IDs: 0 off-ledger features; SEA-AD 1525 collision-blocked features per matrix into 710 collision-unresolved addresses", "evidence_kind": ["source-backed"]},
+  {"id": "C3", "requirement": "no off-ledger alias of an addressed gene (NPH52)", "class": "CONTRADICTED_CANDIDATE_LEVEL", "scope": "1085-1867 off-ledger features per object; identities reach 348 addresses (260 MS, 95 SU, 4 MCU in the same operator); 341/347 symbols equal; strict #492 rule clears no NPH52 operator", "evidence_kind": ["source-backed", "inference"]},
+  {"id": "C4", "requirement": "no in-ledger alias", "class": "CONTRADICTED_CANDIDATE_LEVEL", "scope": "46 mapped legacy-multiple-replacement features, 18 address pairs, 11 current addresses at risk", "evidence_kind": ["source-backed"]},
+  {"id": "C5", "requirement": "query identity keyed by symbol", "class": "CONTRADICTED", "scope": "275 duplicated symbols over 551 addresses", "evidence_kind": ["source-backed"]},
+  {"id": "D1", "requirement": "source_library is the whole deposited row before mapping", "class": "AUTHENTICATED", "scope": "materialize_full104_phase2_expression.py:222", "evidence_kind": ["code"]},
+  {"id": "D2", "requirement": "residual composition per source", "class": "AUTHENTICATED_HVS_SEA_AD__UNAVAILABLE_NPH52_PER_ROW", "scope": "HVS none; SEA-AD collision mass only; NPH52 off-ledger plus collision", "evidence_kind": ["source-backed"]},
+  {"id": "D3", "requirement": "library total is a whole-transcriptome physical total", "class": "CONTRADICTED_HVS__UNAVAILABLE_SEA_AD_NPH52", "scope": "HVS deposit lacks ACTB, RPL13, RPS18, RPL10, RPS12, RPL23", "evidence_kind": ["source-backed", "inference"]},
+  {"id": "D4", "requirement": "V2 conservation gate holds on real rows", "class": "CONTRADICTED", "scope": "every SEA-AD and NPH52 operator carries collision-blocked or off-ledger features", "evidence_kind": ["source-backed"]},
+  {"id": "E1", "requirement": "project selection uses no expression or QC statistic (HVS, SEA-AD)", "class": "AUTHENTICATED", "scope": "code", "evidence_kind": ["code"]},
+  {"id": "E2", "requirement": "project selection uses no expression or QC statistic (NPH52)", "class": "CONTRADICTED", "scope": "eligibility is exact membership in the depositor final annotation; 22715 reader-fit cells quarantined; excluded bytes held", "evidence_kind": ["code"]},
+  {"id": "E3", "requirement": "depositor QC independent of the query", "class": "UNAVAILABLE", "scope": "rules unrecorded; QC-entangled addresses are measured-scalar in every operator (HVS 124, SEA-AD 114, NPH52 131 of 154)", "evidence_kind": ["unavailable", "source-backed"]},
+  {"id": "E4", "requirement": "query observability independent of the query's expression", "class": "CONTRADICTED_INFERENCE_NPH52", "scope": "per cell-type object measured-scalar sets 30294-34405 versus uniform HVS 18736 and SEA-AD 35076", "evidence_kind": ["inference"]},
+  {"id": "F1", "requirement": "real issuer binds rights, ladder and query to a view", "class": "UNAVAILABLE", "scope": "process-local fixture only (#502; Macha #507)", "evidence_kind": ["unavailable"]}
+ ],
+ "authority_effect": "NONE",
+ "standing_stop": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
