@@ -1,3 +1,17 @@
+# READ FIRST — EVENT121 (2026-11-21): TWO-BRANCH DEV2048 V2 ASSIMILATION AND CI-GUARD COMPOSITION AUDIT — NO TRAINING
+
+**Canonical #322 exact head `ec8b16a0459573297b4601820871fcb4e4334d8b` contains 121 append-only events and retains 85 no-repeat source keys.** [Draft #599](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/599) exact `1f669d3b1d4a3dfddab48797b269af2a618c85df` remains source-only. Start with Event121, then Event120, Event119, Events118–113 and Event90. Do not duplicate frozen historical science.
+
+- Human Event121 `docs/agent/JEPA_20261121_EVENT121_DEV2048_V2_TWO_BRANCH_AND_CI_GUARD_AUDIT_NO_TRAINING.md` Git blob `d2543e58f6c73c201127ea009c30e12979a50aa3`, byte-exact on #322 and #460.
+- Machine Event121 `results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT121_DEV2048_V2_TWO_BRANCH_GUARD_AUDIT_MAP.json` Git blob `9736d6d07ca48348a530a9ed04a062693ed5abe5`, byte-exact on #322 and #460.
+- **Verified historical custody:** Event120 human/map blobs identical on both branches, new #599 8/8 role tests and 6/6 old contradiction preflight PASS, two inherited workflow Python setup failures before generation. #322 original-public V80 artifact preservation run `44930168974` HTTP 404, separate from owner-resolved Event95 private backup. #460 previous exact-head four handoff workflows succeeded.
+- **New integration blocker:** both of #599's new source-only workflows use `unittest discover`. The still-unmerged #596 guard (`bc9da054`) refuses `DISCOVERY_TEST_ROUTE`. If these two PR trees are combined unchanged, the CI collection firewall rejects them. Correct with literal reviewed unittest entrypoints, retain static test scope, then run cross-head guard regression and independent reviewer check. This is a prospective integration finding, not evidence existing tests performed optimization.
+- **Scientific BLOCKED:** non-q panel sharing across queries is a new V2 rule awaiting independent C3 review; physical PR328-preserving 4×15 biology placement, donor/source/split support, q-locus ATAC exclusion, authenticated real TRAIN reference and Task3 observation binding, finite joint realism gates and owner-approved generation are not complete. No new world, real RNA, model/optimizer/backward/EMA, M1/M2, Stage4, production or PR merge.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT120 (2026-11-21): DEV2048 V2 SOURCE-ONLY ROLE LAYOUT — NO TRAINING
 
 **Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `0386aa99809f1ddca43749f91f4657ecb8bc4de2` has 120 chronology events and 85 no-repeat source keys. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event120.** Read Event120 then Events119–113 and Event90 original crosswalk; do not duplicate completed real/synthetic calibrations.
