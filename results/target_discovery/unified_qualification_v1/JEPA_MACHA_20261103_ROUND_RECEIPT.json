@@ -1,0 +1,68 @@
+{
+  "schema": "JEPA_MACHA_ROUND_RECEIPT_V1",
+  "date_utc": "2026-11-03",
+  "reviewer_lane": "Macha (independent; Claude Code)",
+  "authority_effect": "NONE",
+  "deliverables": {
+    "pr528_public_source_erratum": {
+      "commit": "7f7dee82a264ec2e7780c5849154be4074d759ec",
+      "ci": {
+        "41586401638": "custody-audit success"
+      },
+      "review": "AWAITING_GPT"
+    },
+    "pr528_admission_repair": {
+      "commit": "1a4fda758936a3cc3868948b44d25694de216bd9",
+      "gpt_red_blob": "49a86421d478218c99001a2ba04e21f6db764b74",
+      "original_13_test_blob": "9719b532697e23fb442070c9bf54c1104d326de1",
+      "ci": {
+        "41586401678": "ubuntu 24/24, windows 24/24, symlinks OK on both"
+      },
+      "local": {
+        "wsl": "24/24",
+        "windows": "21 pass, 2 skipped, GPT R01 error (no symlink privilege)",
+        "mutation": "7/7 new + 11/11 original killed"
+      },
+      "review": "AWAITING_GPT"
+    },
+    "pr525_new_head_review": {
+      "pr": 530,
+      "reviewed_head": "315c378d08f3266b33e04aca95a230041320b4f7",
+      "commit": "0a1310adb4df24a50422d3c60dc27b0f6e4fa28a",
+      "ci": {
+        "41586882935": "517 replay 5 unexpected successes; inherited 86/86; guards+limits 8/8; REDs 11 subcases fail by design (py3.11, py3.12)"
+      },
+      "verdict": "REPAIR_REQUIRED",
+      "reds": [
+        "N01",
+        "N02",
+        "N03"
+      ],
+      "limits": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05"
+      ],
+      "satisfiability_local": "97/97 with throwaway reference repair"
+    },
+    "pr526_review_and_matrix": {
+      "pr": 531,
+      "reviewed_head": "0e1c539a8fa5aa2f5e117b6224b535980ed728cb",
+      "commit": "db0b198dbd00ec13d40052324d18a8d5c3f2fdc3",
+      "ci": {
+        "41587988669": "independent replication success (numpy 2.3.5)",
+        "41587988560": "inherited PR328 success"
+      },
+      "verdict": {
+        "arithmetic": "REPLICATED",
+        "software": "ACCEPT_SCOPED",
+        "interpretation": "CORRECTION_REQUIRED"
+      }
+    }
+  },
+  "new_scientific_finding": "PR328 fit view support = VISIBILITY > 0 converts microglia detection-fraction zeros into structural absence; synthetic source geometry inverts the real sources",
+  "data_access": "public metadata snapshots and fixture data only; no protected expression, no QC-probe replay (hold), NPH52 restriction retained",
+  "terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

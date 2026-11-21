@@ -1,0 +1,171 @@
+{
+  "schema": "JEPA_20261104_MAJOR_UNRECONCILED_FOUNDATION_DIMENSIONS_S174_CUSTODY_V1",
+  "date_utc": "2026-11-04",
+  "reconciliation_status": "INCOMPLETE__FIVE_MAJOR_UNDERINDEXED_LANES_FOUND",
+  "scientific_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "source_report": "docs/agent/JEPA_20261104_RECONCILIATION_INCOMPLETE_MAJOR_UNDERINDEXED_FOUNDATION_DIMENSION_S174.md",
+  "new_scientific_execution": false,
+  "lanes": [
+    {
+      "lane": "FHRA_REAL_HETEROGENEOUS_MEASUREMENT",
+      "source": "main:docs/history/preservation_20260902/results/v4/stage81a3_foundation_heterogeneity_reality_audit.json",
+      "period": "2026-08/09",
+      "status": "HISTORIC_REPORT_ACTUALLY_EXECUTED__NOT_CURRENT_REAL_TEACHER_QUALIFICATION",
+      "observed": {
+        "datasets": 13,
+        "matrices": 36,
+        "train_donors": 149,
+        "train_matrix_entry_cells": 6351753,
+        "frozen_vocabulary": 4096,
+        "unique_structural_feature_masks": 1,
+        "direct_paired_higher_evidence_edges": 0,
+        "neural_optimizer_updates": 0
+      },
+      "inference_boundary": "SAME_4096_MASK_DOES_NOT_MEAN_SAME_OBSERVATION_OPERATOR; 41K_SUPPORT_DIFFERS",
+      "reconciliation_next": "BRIDGE_AUTHENTIC_PHYSICAL_ASSAY_OPERATORS_TO_CURRENT_JEPA_EVIDENCE_RIGHTS_AND_CANDIDATE_GATES"
+    },
+    {
+      "lane": "FOUNDATION_REPRESENTATION_V4_REAL_U205_TRANSFER",
+      "source_pr_heads": {
+        "269": "f0044c8b37991375aeeee56e1e47bfbaff7af528",
+        "271": "e039e72dc64a39b83acb1a7b9a303580f839cf38",
+        "276": "083f640bbf6ca438cbf2e38d1ef4c7ffbba49bb7"
+      },
+      "status": "FRAMEWORK_ENGINEERING_GREEN__CURRENT_U205_EMPIRICAL_SOURCE_INVARIANCE_NEGATIVE__NO_REPRESENTATION_FREEZE",
+      "runtime_citation": "PR271_FOUNDATION_CURRENT_TRANSFER_REPLAY_AND_MATRIX_V2_AUDIT_20261011",
+      "observed": {
+        "held_train_donors": 45,
+        "source_balanced_accuracy": 1,
+        "operator_balanced_accuracy": 0.763206,
+        "support_count_r2": 0.9998,
+        "broad_class_balanced_accuracy": 0.495018,
+        "bounded_source_test_cells": 68,
+        "bounded_source_ba_held_donor": 0.96875,
+        "bounded_source_ba_held_matrix": 0.96875,
+        "canonical_matrix_endpoint_available": 34,
+        "canonical_matrix_endpoint_unavailable": 8,
+        "matrices": 42
+      },
+      "caveats": [
+        "BOUNDED_84_CELL_REPLAY_TWO_CELLS_PER_MATRIX",
+        "SOURCE_BA_CAN_INCLUDE_CONFOUNDED_BIOLOGY_AND_MEASUREMENT",
+        "8_UNAVAILABLE_IS_BROAD_CLASS_ONTOLOGY_NOT_MEASURED_RNA_ABSENCE"
+      ],
+      "reconciliation_next": "MAP_SUBSPACE_ONLY_STABILITY_AND_TWO_AXIS_UNCERTAINTY_TO_EXISTING_C1_C2_C3_GATE_EVIDENCE; NO_RETROFIT"
+    },
+    {
+      "lane": "FULL104_DATASET_FIRST_DIMENSION_SELECTION",
+      "source_pr_heads": {
+        "270": "e7362af9271927b02169b594c41249c1a5927016",
+        "273": "43caf73b1da28a0d800b7c5ac67698f6426a2dfb",
+        "274": "fb84acdd8df8af3e59091ef85fd718d143afc2d3"
+      },
+      "source_planning_head": "planning/v5-dataset-first-production-closure-20260912@43d499e83b374c317747bb71faa5164b9da1870f",
+      "status": "STATISTICAL_PRECISION_METRIC_RECEIPT_AND_DIMENSION_SELECTOR_ENGINEERING_DONE__NUMERICAL_DIMENSIONS_NOT_QUALIFIED",
+      "physically_needed": {
+        "cells": 4553407,
+        "addresses": 41238,
+        "blocks": 8915,
+        "verified_binder_terminal": "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE"
+      },
+      "independent_ci": "PR270_38149052609_AND_PR273_17_FOCUSED_PASS",
+      "source_identity_rule": "FULL_STREAM_PHYSICAL_BINDER_PLUS_PRECISION_AUTHORITY_REQUIRED; 50K_PROXY_FORBIDDEN",
+      "reconciliation_next": "RECONCILE_NEWER_GPU_PHYSICAL_BINDER_AND_METRIC_RECEIPTS_IF_ANY_WITH_PR270_CERTIFIED_SOURCE; DO_NOT_RERUN_ALREADY_SPENT_READ"
+    },
+    {
+      "lane": "V79_S174_OBSERVATION_HIERARCHY_DEVELOPMENT",
+      "source_pr_heads": {
+        "279": "615b55eb03b95630484b18d47de0ef7340368d37",
+        "280": "2f4b77e7290397130d681c47b82337115e9e9585",
+        "283": "02fb78c36473d9863ae9482619133c052ba4a480",
+        "285": "2c230a70d9151e27b14ec2788d1309eb2ac81468",
+        "286": "ae706096244b38e7691a3103fcb8dcd445745533",
+        "287": "edd8b02bd0be785768c9594cc341f91167e763c0"
+      },
+      "status": "ACTUAL_200_GENE_HELD_DONOR_3FOLD_S174_REPLAY_COMPLETED_IN_PR285__FOLLOWON_STRUCTURAL_SUPPORT_FIX_ENGINEERING_GREEN__V79_Q08_LATER_FAILED",
+      "observed": {
+        "cells": 4726,
+        "donors": 149,
+        "operators": 42,
+        "genes": 200,
+        "support_genes": 50,
+        "primary_operator_lambda": 1,
+        "sensitivity_lambdas": [
+          0.25,
+          1,
+          4
+        ],
+        "operator_positive_median_increment": -0.0094,
+        "operator_positive_fixed_effect": "NOT_SUPPORTED",
+        "operator_detection_effect": "PRIOR_SENSITIVE_UNRESOLVED",
+        "measured_zero_conflation_fraction": 0.0576
+      },
+      "source_report": "docs/agent/V79_S174_STRUCTURE_REPLAY_V3_RESULT_20261011.md",
+      "reconciliation_next": "TRACE_PR287_CORRECTED_MASKED_PHYSICAL_REPLAY_THROUGH_LATER_FROZEN_V79_V80_AND_PR533_TERMINAL_LAW; NEVER_ADOPT_DEVELOPMENT_V3_AS_CONFIRMED"
+    },
+    {
+      "lane": "REAL_TD_G6_G7_CUSTODY_TO_CORRECTED_REPLAY",
+      "source_prs": [
+        277,
+        281,
+        282,
+        284,
+        296,
+        298,
+        304,
+        314
+      ],
+      "status": "G6_REPLACEMENT_EXACT_SOURCE_25000_ROW_PASS_AND_EXTERNAL_ACCEPTANCE__G7_LAST_TERMINAL_NEEDS_EXACT_RECEIPT_RECHECK__TD314_ONE_REAL_REPLAY_SPENT",
+      "observed": {
+        "g6_rows": 25000,
+        "hvs_sea_physical_reread": 23690,
+        "nph_pass_through": 1310,
+        "g6_terminal": "PASS_TD_G6_SOURCE_LIBRARY_EXACT"
+      },
+      "reconciliation_next": "READ_G7_ORIGINAL_RECEIPT_AND_PROVENANCE_THEN_RELATE_TO_SPENT_PR314_HUMAN_TD_CORRECTED_REPLAY; NO_NEW_VALUE_READ"
+    }
+  ],
+  "project_asset_manifest_scope": {
+    "source": "mounted Project attachments as inspected in current turn",
+    "calibration_bundle": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+    "discovery_expression": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001+part002 and parts.sha256.csv",
+    "sample_expression_audit": {
+      "cells": 50000,
+      "addresses": 41238,
+      "nnz": 246702069,
+      "normalization": "log1p(count*10000/physical_full_source_library) once"
+    },
+    "checkpoints_manifest": {
+      "updates": [
+        0,
+        10,
+        25,
+        50,
+        100,
+        200,
+        205
+      ],
+      "u0_features_sha256": "9e5aa079b12c7ffbe7c9b27557e660356520d4b776bc216b58c580ea163d5dd7"
+    },
+    "claim_boundary": "ASSET_MANIFEST_INSPECTED_ONLY__NO_FULL_4p55M_STREAM_RUN__NO_OLD_CHECKPOINT_PROMOTION"
+  },
+  "remaining_open": [
+    "CHECK_STAGE81B_PREEXISTING_JEPA_ONLY_FULL_ORIGINAL_RECEIPT_VS_PR537_BEFORE_GPU_REPETITION",
+    "CHECK_POST_PR287_MASKED_S174_PHYSICAL_EXECUTION_AND_FROZEN_V79_RESULTS",
+    "CHECK_RECENT_PHYSICAL_FULL104_DIMENSION_METRIC_RECEIPTS_ON_CANONICAL_DATA_MACHINE_BEFORE_ANY_REPEAT",
+    "RECONCILE_G7_EXACT_TERMINAL_RECEIPT_AND_SPENT_PR314",
+    "RECONCILE_FOUNDATION_REAL_U205_NONINVARIANCE_WITH_ACTUAL_C2_C3_TEACHER_OBSERVATION_OPERATORS",
+    "CONTINUE_SOURCE_PINNED_824_BRANCH_33_LANE_COVERAGE_WITHOUT_DECLARING_FINAL_COMPLETENESS"
+  ],
+  "no_repeat": [
+    "PR199_V65_PLANTED_SUPERVISED_RECOVERY",
+    "PR236_V77_EMA_ONE_STEP",
+    "PR314_SINGLE_CORRECTED_TD_REPLAY",
+    "PR336_9_RELATIONAL_KNOWN_TRUTH",
+    "PR469_OLD_TASK5_BRIDGE",
+    "PR536_SOURCE_NEGATIVE_ADMISSION",
+    "PR285_PHYSICAL_S174_V3_REPLAY",
+    "PR270_PROSPECTIVE_PRECISION_ENGINEERING"
+  ],
+  "training_or_target_selection_authorized": false
+}

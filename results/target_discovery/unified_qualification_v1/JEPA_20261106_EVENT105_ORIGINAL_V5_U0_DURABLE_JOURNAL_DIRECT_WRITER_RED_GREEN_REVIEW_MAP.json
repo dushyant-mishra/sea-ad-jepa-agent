@@ -1,0 +1,106 @@
+{
+  "schema": "JEPA_EVENT105_ORIGINAL_V5_U0_DURABLE_JOURNAL_DIRECT_WRITER_RED_GREEN_REVIEW_V1",
+  "event": 105,
+  "date_utc": "2026-11-06",
+  "reviewer": "NEW_INDEPENDENT_TAKEOVER_AGENT__NOT_SOL_NOT_MACHA",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "scope": "REPRODUCIBLE_DEV_ONLY_JOURNAL_INTEGRITY_FIX__NO_REAL_TRAINING_NO_PRODUCTION_PROMOTION",
+  "human_path": "docs/agent/JEPA_20261106_EVENT105_INDEPENDENT_V5_U0_DURABLE_V2_JOURNAL_WRITER_BYPASS_RED_GREEN_REPAIR_NO_TRAINING.md",
+  "original_canonical_audit_pr": 322,
+  "active_handoff_pr": 460,
+  "original_review_target": {
+    "pr": 590,
+    "head": "a3a59eb934186a8ab329eb2b0b4385b3948d1f0a",
+    "draft": true,
+    "review_status": "MACHA_INDEPENDENT_FULL_REVIEW_PENDING"
+  },
+  "defect": {
+    "status": "CONFIRMED",
+    "id": "ORIGINAL_V5_U0_ONLY_PROCESS_LOCAL_BYPASS_VIA_BARE_V2_WRITER",
+    "original_guard": "scripts/v5/jepa_v5_structured_journal_preflight_v1.py:_ORIGINAL_V5_U0_ONLY",
+    "exposed_paths": [
+      "scripts/v5/jepa_synth2048_attempt_journal_v2.py:begin_attempt",
+      "scripts/v5/jepa_synth2048_attempt_journal_v2.py:commit_reported_update"
+    ],
+    "exact_scoped_evidence": "Direct begin on genuine original-V5 journal did not raise; standalone direct commit denied only due to no BEGIN; fresh process denied only by writer-session policy, not persisted V5 class.",
+    "actual_fake_u1_written_in_red_tests": false,
+    "actual_optimizer_or_ema_performed": false
+  },
+  "repair": {
+    "pr": 591,
+    "base_pr": 590,
+    "red_head": "1b27037aede64e8834b67a2591aa7993691fbc0a",
+    "green_head": "ff1141fefa1377ac394be530c1236b682805e5e4",
+    "draft": true,
+    "merged": false,
+    "persistence": "run.lock.json mirrored outside run; optional original_v5_u0_only=true hashed into record chain; default generic fake lock unchanged",
+    "enforcement": [
+      "V2 begin_attempt",
+      "V2 commit_reported_update",
+      "V2 _check_structure ordinary and forensic chain reads",
+      "strict bridge open_synthetic_journal require_original_v5=True"
+    ],
+    "git_blobs": {
+      "scripts/v5/jepa_synth2048_attempt_journal_v2.py": "b10dbf5a983794b79ad08b4344661d1b176a169f",
+      "scripts/v5/jepa_v5_structured_journal_preflight_v1.py": "b348d8561414842897cd9114e4727293dc5f97fb",
+      "scripts/v5/jepa_v5_pipeline_identity_contract_v1.py": "902bd98119f9bdce22fe20354982fffe7ac3df0f",
+      "tests/test_jepa_v5_live_model_u0_journal_connector_v1.py": "6424095acaffc0bdb4f99e688c02dde71b42ab69",
+      "results/target_discovery/unified_qualification_v1/JEPA_V5_DEV2048_PIPELINE_IDENTITY_CONTRACT_V1.json": "d5734123c54706a751c59c921479e600dd1a5513"
+    },
+    "source_manifest_sha256": "5b03b91643cd654c7469d6af82c457f541d8029c7c0a8ab66385b3d52a0b4ec1",
+    "contract_sha256": "e3ccfa164f06ff7fd22b4d292365a12442d9fcde898f1cc8497f5d5339c8914a"
+  },
+  "evidence": {
+    "red": {
+      "run": 42239689452,
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/42239689452",
+      "python_3_11": {
+        "failed": 3,
+        "passed": 67
+      },
+      "python_3_12": {
+        "failed": 3,
+        "passed": 67
+      }
+    },
+    "green": {
+      "head": "ff1141fefa1377ac394be530c1236b682805e5e4",
+      "workflows_passed": 13,
+      "workflows_total": 13,
+      "jobs_passed": 26,
+      "jobs_total": 26,
+      "run_ids": [
+        42241141227,
+        42241140796,
+        42241140839,
+        42241140811,
+        42241140819,
+        42241141028,
+        42241140958,
+        42241140923,
+        42241141044,
+        42241141281,
+        42241140885,
+        42241140902,
+        42241140771
+      ]
+    }
+  },
+  "dataset": "ORIGINAL_PR547_PUBLIC_SYNTHETIC_DEV2048_ONLY__1440_CELLS_36_DONORS_2048_GENE_ADDRESSES",
+  "remaining_limits": [
+    "NO_TRAINING_OR_POST_STEP_AUTHORITY",
+    "NO_REAL_RNA_RIGHTS_OR_QUALIFIED_TEACHER_TARGET",
+    "NO_PHYSICAL_FROZEN_PANEL_OR_C1_C6_OUTCOME",
+    "D1_EXTERNAL_CUSTODY_UNSIGNED_AND_NOT_INDEPENDENTLY_AUTHENTICATED",
+    "NO_BITWISE_RESTART_OR_CRASH_RECOVERY_CLAIM",
+    "FRESH_INTERPRETER_POLICY_OBSERVED_BUT_WRITER_SESSION_STILL_PROCESS_LOCAL",
+    "INDEPENDENT_RECIPROCAL_REVIEW_PENDING"
+  ],
+  "prior_context": [
+    "EVENT90_FULL_HISTORICAL_AUDIT",
+    "EVENT104_COMPLETE_AGENT_TAKEOVER",
+    "EVENT95_PRIVATE_V80_BACKUP_RESOLVED",
+    "EVENT102_LOCAL_NONALLOWLISTED_TEST_INCIDENT_PRESERVED"
+  ],
+  "verdict": "CONFIRMED_DEFECT_REPAIRED_AUTHOR_GREEN__RECIPROCAL_REVIEW_PENDING__PRODUCTION_HELD"
+}

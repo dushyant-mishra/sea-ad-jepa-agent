@@ -1,0 +1,74 @@
+{
+  "schema": "JEPA_NPH52_AND_PUBLIC_RIGHTS_ISSUER_DECISION_20261029_V1",
+  "date": "2026-10-29",
+  "scope": "PROSPECTIVE_QUERY_ISSUANCE_AND_PRIVATE_DATA_ACCESS",
+  "basis": {
+    "macha_507": {
+      "pr": 507,
+      "head": "a4894f366b9d73df03a675d0b70383dea6a36454",
+      "review_test_blob": "d59814301715bbffe3e07501fe7be305358140cc",
+      "target_pr": 502,
+      "target_head": "0789247cdbbdfca671613b020865aba958dfd699",
+      "red_tests": 4,
+      "other_tests_passed": 19,
+      "run": 40908327307,
+      "verdict": "REPAIR_REQUIRED__PUBLIC_TEACHER_ORACLE_AND_SELF_POLICY_ISSUANCE"
+    },
+    "macha_509": {
+      "pr": 509,
+      "head": "3e5694e2c1b959c8e21f9fc6dd50cbf694ac4013",
+      "probe_file": "scripts/v5/review_probes/macha_20261029/r1_r2_source_gap_probe.py",
+      "identity_only": true,
+      "expression_accessed": false
+    },
+    "prior_chatgpt_492": {
+      "pr": 492,
+      "head": "79d2f9364970c0e5b678caae94b92a803ff03623",
+      "superseded_claim": "NO_HASH_FOR_FINAL_MAPPING_TABLE__ALIAS_AUDIT_UNAVAILABLE"
+    },
+    "final_table": {
+      "path": "docs/history/exact_bytes/results/v4/stage81a2r_authoritative_source_mapping_decisions_candidate.csv.gz",
+      "preservation_manifest": "docs/history/JEPA_COMPLETE_PRESERVATION_MANIFEST_20260902.csv",
+      "manifest_line_reported": 5536,
+      "sha256": "e3106248ac77f8840f5ea6035dc765d8e09feeba1f6da21c830b3945d694c773",
+      "bytes": 17002348,
+      "assertion_source": "Macha #509 pinned probe and documented manifest read; candidate-level identity only"
+    }
+  },
+  "correction_to_492": {
+    "disposition": "SUPERSEDED__CANDIDATE_DECISION_TABLE_HASH_BOUND_IN_REPOSITORY",
+    "alias_identity_audit_eligible_without_expression": true,
+    "direct_492_comment_status": "ATTEMPTED_BUT_BLOCKED_BY_GITHUB_TOOL_PERMISSION",
+    "correction_recorded_in_509_comment_id": 6505197594,
+    "not_equivalent_to_external_physical_source_authentication": true
+  },
+  "decisions": {
+    "nph52_symbol_only_negative_clearance": "PROHIBITED",
+    "nph52_real_query_issuance": "BLOCKED_PENDING_UNAMBIGUOUS_SOURCE_ID_ALIAS_QC_ISSUER_REVIEW",
+    "nph52_metadata_only_use": "PERMITTED_SUBJECT_TO_EXISTING_SOURCE_FIREWALL",
+    "quarantined_nph52_reader_fit_expression_access": "NOT_AUTHORIZED_BY_THIS_DECISION",
+    "quarantined_cell_count_reported": 22715,
+    "next_allowed_step": "RECOVER_SOURCE_METADATA_ONLY_QC_AND_ANNOTATION_SELECTION_PROVENANCE_WITHOUT_EXPRESSION_OR_PROTECTED_ROWS",
+    "expression_access_if_later_proposed": "SEPARATE_EXPLICIT_APPROVAL_WITH_NARROW_SOURCE_SCOPE_PROTECTED_PARTITION_FIREWALL_REVIEW_AND_AUDIT_RECEIPT",
+    "alias_classes": {
+      "pairs_reported": 18,
+      "at_risk_query_addresses_reported": 11,
+      "disposition": "SHARE_RIGHTS_AS_UNRESOLVED_EQUIVALENCE_CANDIDATES_OR_EXCLUDE_UNTIL_IDENTITIES_ADJUDICATED"
+    },
+    "sea_ad_replication": "DONOR_IS_BETWEEN_PERSON_CLUSTER; REGION_SPECIMEN_REPEATED_WITHIN_DONOR; REGION_NOT_INDEPENDENT_DONOR",
+    "specimen_identity": "NOT_AUTHENTICATED_BY_MATRIX_LABEL_ALONE",
+    "source_rights_issuer": "UNAVAILABLE",
+    "student_public_validator_502": "UNSAFE__DO_NOT_DEPLOY",
+    "v2b_prospective_boundary": {
+      "pr": 510,
+      "notes": "New pure student-only consistency gate, non-authoritative until independent source issuer; historical #502 remains RED"
+    }
+  },
+  "evidence_notes": [
+    "Source-feature alias closure conclusions from #509 apply to byte-bound candidate decision tables; no general gene-semantic source authority implied.",
+    "NPH52 off-ledger symbol-only features cannot negatively clear any query under the strict #492 rule; symbol equality is not proof.",
+    "SEA-AD donors can be independent people for between-person inference but regions nested within donor must not inflate independent N.",
+    "No actor is authorized by this decision to read quarantined NPH52 expression or protected partitions."
+  ],
+  "standing": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

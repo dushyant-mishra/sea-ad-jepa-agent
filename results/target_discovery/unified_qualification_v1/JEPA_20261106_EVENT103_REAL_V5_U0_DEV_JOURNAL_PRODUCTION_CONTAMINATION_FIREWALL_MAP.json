@@ -1,0 +1,113 @@
+{
+  "schema": "JEPA_EVENT103_REAL_V5_U0_DEV_JOURNAL_PRODUCTION_FIREWALL_V1",
+  "event": 103,
+  "date_utc": "2026-11-06",
+  "author": "Sol",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "human_source": {
+    "path": "docs/agent/JEPA_20261106_EVENT103_SOL_REAL_V5_U0_JOURNAL_PRODUCTION_QUARANTINE_AND_586_587_REVIEWS_NO_TRAINING.md",
+    "git_blob_sha1": "f7a8fd8ec12f1b82c90ea4108ca997aab364f080"
+  },
+  "implementation": {
+    "pr": 589,
+    "head": "f5aa3f9f3a013ad4d1d0276df0c35028657cc796",
+    "source": "scripts/v5/jepa_v5_live_model_u0_journal_connector_v1.py",
+    "source_blob_sha1": "be6c72328d4df61a77fede95656b6cb0b496235d",
+    "test": "tests/test_jepa_v5_live_model_u0_journal_connector_v1.py",
+    "test_blob_sha1": "1b85661a99b194f715531716a02c364c6b41e75d",
+    "workflow": ".github/workflows/jepa-v5-real-original-u0-to-v2-journal-no-training.yml",
+    "workflow_blob_sha1": "d0fb2f989a9ae272135305ab52940522893e674a",
+    "exact_head_workflows_success": 8,
+    "exact_head_workflows_total": 8,
+    "python_versions": [
+      "3.11.9",
+      "3.12.7"
+    ],
+    "peer_macha_review": "PENDING",
+    "later_combined_pr_590": "NOT_PART_OF_EVENT103__READ_EVENT104"
+  },
+  "correct_source": {
+    "original_model_pr": 224,
+    "original_model_head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+    "canonical_declared": 12,
+    "private_impl": 2,
+    "package_init": 1,
+    "executed_import_closure_files": 35,
+    "legitimate_v4_support_imports": true,
+    "old_v4_trainer_active": false,
+    "model_class": "V5ReferenceModules",
+    "online_teacher_class": "KeyedIPBEncoderV2Reference",
+    "predictor_class": "BlockPredictor",
+    "optimizer_class": "torch.optim.AdamW",
+    "gene_addresses": 2048,
+    "gene_identity_embedding_width": 48,
+    "model_width": 160,
+    "heads": 4,
+    "blocks": 6,
+    "original_PR548_seed": 8113002,
+    "expression_value_encoder_layers": [
+      0,
+      2
+    ],
+    "frozen_teacher_tensors_in_module_state_not_trainable_names": true,
+    "AdamW_state_U0_empty": true
+  },
+  "correct_data": {
+    "original_pr": 547,
+    "artifact_id": 13364085153,
+    "zip_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+    "synthetic_cells": 1440,
+    "synthetic_gene_addresses": 2048,
+    "synthetic_donors": 36,
+    "hidden_query_addresses": [
+      1672,
+      1673,
+      1674,
+      1675
+    ],
+    "real_human_data_accessed": false,
+    "sealed_private_controller_accessed": false
+  },
+  "scope": {
+    "actual_initialized_model_u0_tensors_snapshotted": true,
+    "checkpoint_in_development_V2_journal": true,
+    "model_forward_executed": false,
+    "backward_executed": false,
+    "optimizer_step_executed": false,
+    "EMA_update_executed": false,
+    "post_update_u1_connection": false,
+    "bitwise_restore_proved": false,
+    "qualified_teacher_target_bound": false,
+    "physical_frozen_panel_bound": false,
+    "probe_measurement_origin": "CALLER_REPORTED__NOT_PHYSICALLY_PROVED",
+    "training_authority": false,
+    "production_artifact": false
+  },
+  "safety": {
+    "explicit_five_file_test_allowlist": true,
+    "AST_test_callsite_refusal_before_collection": true,
+    "legacy_fake_toy_journal_tests_allowed_only_in_development": true,
+    "actual_live_connector_refuses_wrong_module_classes": true,
+    "U0_production_promotion_prohibited": true,
+    "local_test_policy_incident_event102": "Macha WSL wildcard 96 failed 550 passed, nine PR224 unit test files contain CPU optimizer/backward/EMA calls; some unauthorized local steps possibly executed; not repeated by Sol CI."
+  },
+  "peer_reviews": {
+    "macha_586": {
+      "verdict": "SOL_ACCEPT_SCOPED__ADAM_GROUP_STRUCTURE_ONLY",
+      "comment_id": 6677103234
+    },
+    "macha_587": {
+      "verdict": "SOL_ACCEPT_SCOPED__35_EXECUTED_SOURCE_FILES_ONLY",
+      "comment_id": 6677103740
+    },
+    "macha_588": "NEEDS_COMBINED_INDEPENDENT_REVIEW"
+  },
+  "no_repeat": "Do not rerun old V4 u40, original PR548 U0 readiness, PR547 creation, FULL104 materialization, controller rescue; Event95 private V80 backup resolved. Do not rerun a PR224 wildcard stepping test suite.",
+  "holds": [
+    "Later PR590 may supersede competing #585/#588 static contract and #589 branch; see Event104",
+    "Independent Macha code review of actual U0 connector pending",
+    "No real target/right issuer, frozen biological probe, multi-update V5 driver, real optimizer or teacher EMA/RT1–RT8 authorized",
+    "D1 external custody head policy not decided",
+    "No PR merged to main"
+  ]
+}

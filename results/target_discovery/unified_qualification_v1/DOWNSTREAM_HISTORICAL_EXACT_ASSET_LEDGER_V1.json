@@ -1,0 +1,170 @@
+{
+  "schema": "DOWNSTREAM_HISTORICAL_EXACT_ASSET_LEDGER_V1",
+  "date": "2026-10-14",
+  "authority": "HISTORICAL_EVIDENCE_CUSTODY_ONLY__NO_DOWNSTREAM_OR_TRAINING_AUTHORITY",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "assets": [
+    {
+      "asset_id": "TARGET_IDENTITY_SHORTCUT_DRAFT_SPEC",
+      "package_ids": ["D", "P"],
+      "branch": "planning/v5-teacher-target-redteam-20260915",
+      "commit": "d9a678f261797f5dfc7a6e6b7a281e413ae7e0ae",
+      "path": "docs/agent/V5_TARGET_IDENTITY_SHORTCUT_AUDIT_SPEC_DRAFT_20260915.md",
+      "blob_sha": "8e871957330d1419dfab75b44f2e8cdbbd7dd523",
+      "historical_status": "DRAFT_FOR_REVIEW_NOT_FROZEN",
+      "retain": [
+        "DIRECT_SHARED_PARAMETER_PATH_THREAT_MODEL",
+        "IDENTITY_ONLY_TARGET_PREDICTABILITY_THREAT_MODEL",
+        "IDENTITY_ONLY_SHARED_CURRENT_COMPARATOR",
+        "IDENTITY_ONLY_FIXED_ADDRESS_COMPARATOR",
+        "FULL_SHARED_CURRENT_COMPARATOR",
+        "FULL_FIXED_ADDRESS_COMPARATOR",
+        "FULL_STOPGRAD_ONLINE_ID_COMPARATOR",
+        "NO_TARGET_ID_CONTROL_WHEN_IDENTIFIABLE",
+        "CELL_MEMORY_AND_TARGET_ID_SHUFFLE_CONTROLS",
+        "OUTCOME_BLIND_THRESHOLD_FREEZE_REQUIREMENT"
+      ],
+      "do_not_promote": "Draft/specification evidence does not resolve target-identity shortcut authority."
+    },
+    {
+      "asset_id": "LAYER2_CROSS_VIEW_SHORTCUT_CLOSEOUT",
+      "package_ids": ["E", "H", "P"],
+      "branch": "planning/v5-teacher-target-redteam-20260915",
+      "commit": "219831b899b914984369c7a41828bf750554d1d9",
+      "path": "analysis/v5_layer2_cross_view_shortcut_20260915/V5_LAYER2_CROSS_VIEW_SHORTCUT_CLOSEOUT.json",
+      "blob_sha": "bdc4966d53da42d0b19f3080695806f3c41b2e0b",
+      "historical_status": "CLOSED_FOR_TESTED_LINEAR_MODEL_CLASS",
+      "retain": [
+        "MEASUREMENT_STATE_SHORTCUT_SMALL_AT_TESTED_MODEL_CLASS",
+        "WITHIN_DONOR_MOLECULAR_VIEW_SIGNAL_RECURS_ACROSS_SOURCES",
+        "DO_NOT_CALL_SIGNAL_BIOLOGY_OR_NONTECHNICAL_TRUTH",
+        "HVS_NPH52_DONOR_GENERALIZATION_NOT_DEMONSTRATED_AT_TESTED_LINEAR_MODEL_CLASS",
+        "POOLED_CONTEXT_DOMINANCE_ESTIMAND_SENSITIVE",
+        "DISCARDED_DEFECTIVE_X4_WITHIN_NOT_AUTHORITY"
+      ],
+      "do_not_promote": "Historical linear-model result does not qualify deep objective-aligned measurement robustness or masking authority."
+    },
+    {
+      "asset_id": "SEMANTIC_AND_SCOPE_CARRYOVER_AUDIT",
+      "package_ids": ["B", "G", "M", "P"],
+      "branch": "planning/v5-teacher-student-ema-canonical-20260915",
+      "commit": "88c45b97b3e9a4ad3c0fd178c992f844fd58dbab",
+      "path": "docs/agent/V5_SEMANTIC_AND_SCOPE_CARRYOVER_AUDIT_20260915.md",
+      "blob_sha": "99ac33114a29713a55aa7c745566d421ffa1ddb1",
+      "historical_status": "ACTIVE_DESIGN_AUDIT_NOT_FROZEN",
+      "retain": [
+        "NAMES_DO_NOT_CREATE_CAUSAL_OR_BIOLOGICAL_AUTHORITY",
+        "COMMON_CORE_SUPPORT_IS_COMPARABILITY_NOT_BIOLOGY_AUTHORITY",
+        "NATIVE_SUPPORT_NE_AUTOMATIC_PRIVATE_BIOLOGY",
+        "DIMENSION_ESTIMAND_AUTHORITY_NE_BASE_TRAINING_ESTIMAND_AUTHORITY",
+        "QUALIFICATION_RANK_CEILING_NE_PRODUCTION_MODEL_WIDTH",
+        "OBSERVATION_GRADIENT_FIREWALL_NE_PROOF_OF_MEASUREMENT_FREE_PRIMARY_STATE"
+      ],
+      "do_not_promote": "Semantic audit limits interpretation; it does not qualify a representation or training target."
+    },
+    {
+      "asset_id": "PREEXECUTION_HARDCODED_CARRYOVER_NEGATIVE",
+      "package_ids": ["J", "M"],
+      "branch": "planning/v5-teacher-student-ema-canonical-20260915",
+      "commit": "88c45b97b3e9a4ad3c0fd178c992f844fd58dbab",
+      "path": "src/sea_ad_jepa/v5/trainer_preexecution_contract_v2.py",
+      "blob_sha": "8a861f13bc0e020d323803d7949613737078d984",
+      "historical_status": "OPEN_REPAIR__NEGATIVE_CONTROL",
+      "retain": [
+        "MECHANICS_CHAIN_ORDER",
+        "CRITICAL_TEST_EXECUTION_FAIL_CLOSED_PATTERN",
+        "AUTHORITY_BUNDLE_PATTERN",
+        "NO_FLEX_AFTER_FREEZE_OR_OPTIMIZER_START"
+      ],
+      "superseded_or_forbidden": [
+        "PROTECTED_48_GRADIENT_GATE_NAME",
+        "EXACT_48_TENSOR_REGISTRY",
+        "SIX_BLOCK_CROSS_PRODUCT",
+        "HISTORICAL_128X8_CORRECTED_UPDATE_REGRESSION_AS_CURRENT_AUTHORITY"
+      ]
+    },
+    {
+      "asset_id": "DEPTH_DERIVED_PROTECTED_REGISTRY_PATTERN",
+      "package_ids": ["J", "L", "M"],
+      "branch": "planning/v5-teacher-student-ema-canonical-20260915",
+      "commit": "88c45b97b3e9a4ad3c0fd178c992f844fd58dbab",
+      "path": "src/sea_ad_jepa/v5/production_protected_registry_authority_v1.py",
+      "blob_sha": "d6b46738a9cd99b5e42f577c934954336c8e7145",
+      "historical_status": "SUCCESSFUL_PATTERN__NO_TRAINING_AUTHORITY",
+      "retain": [
+        "PROTECTED_TENSOR_COUNT_DERIVED_FROM_MODEL_DEPTH",
+        "EXACT_DEPTH_X_ROLE_X_PARAMETER_CROSS_PRODUCT",
+        "REGISTRY_DIGEST_SHARED_WITH_RUNTIME_AND_CHECKPOINT",
+        "TRAINING_AUTHORIZED_FALSE"
+      ]
+    },
+    {
+      "asset_id": "CURRENT_REGISTRY_CHECKPOINT_GUARD_PATTERN",
+      "package_ids": ["J", "L", "M", "O"],
+      "branch": "planning/v5-teacher-student-ema-canonical-20260915",
+      "commit": "88c45b97b3e9a4ad3c0fd178c992f844fd58dbab",
+      "path": "src/sea_ad_jepa/v5/atomic_checkpoint_guard_v3.py",
+      "blob_sha": "f1f3ed3b46faa202a9f2131150fae5b1ed14530d",
+      "historical_status": "SUCCESSFUL_PATTERN_WITH_PARTIAL_V2_VOCABULARY_CARRYOVER",
+      "retain": [
+        "CURRENT_REGISTRY_SHA_AND_EXPECTED_TENSOR_BINDING",
+        "PROTECTED_GRADIENT_PARAMETER_MOTION_ADAM_MOMENT_GATES",
+        "EMA_PRESENTATION_CLOCK_CHRONOLOGY",
+        "AUTHORITY_BINDING_FAIL_CLOSED",
+        "FORBIDDEN_GATE_FIREWALL_PATTERN"
+      ],
+      "requires_requalification": [
+        "REMOVE_REMAINING_V2_AUTHORITY_VOCABULARY",
+        "REBIND_THRESHOLDS_TO_CURRENT_NEUTRAL_SEMANTICS",
+        "REBIND_TQB_DOWNSTREAM_RUNTIME_IDENTITIES"
+      ]
+    },
+    {
+      "asset_id": "V4_RUNTIME_ACTIVE_ATTACK_SET",
+      "package_ids": ["J", "L", "O", "P"],
+      "branch": "historical/default-tree",
+      "commit": "c2bd13e8389dd25dc61612ef2aea88dc53099029",
+      "path": "docs/agent/TEACHER_STUDENT_ACTIVE_TEST_SELECTION_V4.txt",
+      "historical_status": "HISTORICAL_ACTIVE_TEST_SELECTION",
+      "tests": [
+        "tests/test_c2_mandatory_gradient_gate_v1.py",
+        "tests/test_f1b_successor_attack_suite_v1.py",
+        "tests/test_population_access_registry_v1.py",
+        "tests/test_healthy_teacher_training_contract_v1.py",
+        "tests/test_teacher_student_unified_runtime_v1.py",
+        "tests/test_teacher_student_relational_v2.py",
+        "tests/test_teacher_student_integration_freeze_v4.py"
+      ],
+      "do_not_promote": "Historical active tests must be rerun/adapted against current joined configuration where inputs changed."
+    },
+    {
+      "asset_id": "V5_DATA_FIRST_ACTIVE_ATTACK_SET",
+      "package_ids": ["A", "B", "E", "F", "J", "N"],
+      "branch": "historical/default-tree",
+      "commit": "c2bd13e8389dd25dc61612ef2aea88dc53099029",
+      "path": "docs/agent/TEACHER_STUDENT_V5_ACTIVE_TEST_SELECTION.txt",
+      "historical_status": "HISTORICAL_PROSPECTIVE_TEST_SELECTION",
+      "tests": [
+        "tests/test_teacher_student_data_first_v1.py",
+        "tests/test_teacher_student_packed_equivalence_v1.py",
+        "tests/test_teacher_student_v5_finite_triplets_v1.py",
+        "tests/test_teacher_student_v5_inactive_update_reference.py",
+        "tests/test_teacher_student_v5_numerical_boundary_v1.py",
+        "tests/test_teacher_student_v5_objective_schedule_v2.py",
+        "tests/test_teacher_student_v5_proposal_policy_v1.py",
+        "tests/test_teacher_student_v5_rng_contract_v2.py",
+        "tests/test_teacher_student_v5_rng_dense_packed_v2.py",
+        "tests/test_teacher_student_v5_scientific_target_v2.py",
+        "tests/test_teacher_student_v5_support_schedule_v1.py"
+      ],
+      "do_not_promote": "Data-first/prospective tests do not authorize production execution or current merged runtime."
+    }
+  ],
+  "next_asset_recovery": [
+    "EXACT_V5_WRAPPER_TO_V4_PRODUCTION_UPDATE_FILE_AND_TEST",
+    "EXACT_LEGACY_TARGET_RECEIPT_OPTIMIZER_GUARD_FILE_AND_TEST",
+    "EXACT_TARGET_IDENTITY_CODE_PATH_FILE_AND_ANY_STATIC_TESTS",
+    "EXACT_CHECKPOINT_V3_TESTS",
+    "EXACT_SEMANTIC_CARRYOVER_TEST_OR_REVIEW_ARTIFACTS_IF_ANY"
+  ]
+}

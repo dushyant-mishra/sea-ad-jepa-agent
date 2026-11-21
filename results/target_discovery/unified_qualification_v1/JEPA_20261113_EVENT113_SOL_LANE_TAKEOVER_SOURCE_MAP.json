@@ -1,0 +1,83 @@
+{
+  "schema": "JEPA_EVENT113_SOL_LANE_TAKEOVER_SOURCE_MAP_V1",
+  "date": "2026-11-13",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "canonical_pr": 322,
+  "handoff_pr": 460,
+  "prior_heads": {
+    "322": "2998f4d401daba73acad93c6483e4a81365543db",
+    "460": "490fab3b18ef93fe16003fb4a2a3fc7b6c55725e"
+  },
+  "prior_history": {
+    "events": 112,
+    "index_keys": 77,
+    "preserve_values": true,
+    "bootstrap": "Event90 and exact Event108–112 maps"
+  },
+  "human": {
+    "path": "docs/agent/JEPA_20261113_EVENT113_SOL_LANE_TAKEOVER_AND_NO_REPEAT.md",
+    "git_blob": "7c768bcbd0225aa92d3e0da37d32930cdbbd249c"
+  },
+  "source_pins": {
+    "actor_pr224": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+    "adapter_pr548": "cde03f738c758694aa66211b5021603af943675b",
+    "generator_pr547": "4bc7f9f31eaf1a7ccac49fdf45df7db9b0eef569",
+    "guard_pr596": "bc9da0547f4e187969f5dc21bc7a188e9a519d8d",
+    "draft_pr597": "bfcba24ed3fcfbf146eaf7700c78ad1553fc6cee",
+    "scorer_patch_base": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb"
+  },
+  "fit": {
+    "sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+    "artifact": 13364085153,
+    "bytes": 25023562,
+    "cells": 1440,
+    "addresses": 2048,
+    "donors": 36,
+    "withheld": [
+      1672,
+      1673,
+      1674,
+      1675
+    ],
+    "scope": "SYNTHETIC_FIT_ONLY",
+    "availability_reverified": false
+  },
+  "archive": {
+    "patch": {
+      "path": "docs/agent/archive/event113_dev2048_review/jepa-oof-stage33b-estimability-draft.patch",
+      "git_blob": "b732a9c3a78e7c47f549d2b333cca018e6b35db6"
+    },
+    "readme": {
+      "path": "docs/agent/archive/event113_dev2048_review/README.md",
+      "git_blob": "8b9d37ee980ed2654128bf00acf1fc2ecc0632e2",
+      "transport": "text copy"
+    },
+    "conversation_bundle": {
+      "name": "jepa-dev2048-repair-review.zip",
+      "sha256": "5773e17d6d87f603da2943d0f48e1c0a60e9f89ef0b13b9e6fe609caee771b34",
+      "file_id": "file_0000000085c08212a3ba52732b9090ce",
+      "scripts_git_blobs": {
+        "m1_evidence.py": "84368a4de2353245480776af8e1d6eaba3a2a5a6",
+        "preservation.py": "7fafdf9542d8119018288df5b5447092300a0199",
+        "test_repairs.py": "d9971749fe397e81cb4c22a2cf31c9d147664541"
+      }
+    }
+  },
+  "validation": {
+    "local_inert_rechecked": 10,
+    "scorer_inert_previously_passed": 9,
+    "real_or_synthetic_update": false,
+    "integrated": false,
+    "independent_acceptance": false
+  },
+  "blockers": {
+    "m1_owner_approval": false,
+    "m1_live_checkpoint_verified": false,
+    "physical_fine_panel_frozen": false,
+    "actual_upstream_leakage_test": false,
+    "v80_artifact_ids_unavailable": [
+      11867590706,
+      11867366245
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema": "JEPA_HISTORICAL_FOUNDATION_CALIBRATION_INTAKE_DELTA_V1",
+  "date": "2026-10-27",
+  "record_kind": "APPEND_ONLY_ACTUAL_HISTORICAL_SOURCE_HASH_AUDIT__NO_CURRENT_AUTHORITY",
+  "frozen_v8e_head": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+  "new_impl_pr": 471,
+  "new_impl_head": "7957b7578168532eabad8b2b75126bb71e6f43b7",
+  "new_impl_base_pr": 437,
+  "new_impl_source": "scripts/production_synthetic/foundation_calibration_split_intake_v1.py",
+  "new_impl_tests": "tests/production_synthetic/test_foundation_calibration_split_intake_v1.py",
+  "new_impl_aggregate_receipt": "results/production_synthetic/foundation_calibration_split_intake_20261027.json",
+  "physical_verification": {
+    "method": "LOCAL_USER_UPLOADED_ARCHIVES_SHA256_ALL_UNCOMPRESSED_MEMBERS_AND_PARTS__NO_RAW_DATA_PUBLISHED",
+    "historical_manifest_sha256": "da7c3daf507a66118131e88ae6685cf43eb14d4163539ade5e0705f6fb845cef",
+    "split_expression_combined_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "split_expression_zip_bytes": 607959761,
+    "logical_file_count": 97,
+    "verified_member_sha256_count": 97,
+    "members_by_archive": {
+      "main": 48,
+      "expression": 45,
+      "checkpoints": 3,
+      "split_41k_expression": 1
+    },
+    "declared_metadata_cells": 6351753,
+    "declared_expression_sample_cells": 50000,
+    "addresses": 41238,
+    "operators": 42,
+    "reader_donors": {
+      "fit": 104,
+      "validation": 22,
+      "oracle": 23
+    },
+    "protected_expression_excluded": "BUNDLE_STATUS_DECLARATION_ONLY__NOT_SEPARATELY_VERIFIED",
+    "source_calibration_time": "2026-08-24__PRE_LATER_CORRECTIONS"
+  },
+  "ci": {
+    "head": "7957b7578168532eabad8b2b75126bb71e6f43b7",
+    "synthetic_archive_hostile_run": 40571088557,
+    "synthetic_archive_hostile_conclusion": "SUCCESS",
+    "synthetic_archive_hostile_cases_passed": 7,
+    "historical_receipt_nonpromotion": "PASS",
+    "inherited_ps_task3_run": 40571088348,
+    "inherited_ps_task3_conclusion": "SUCCESS",
+    "inherited_unified_synthetic_run": 40571088468,
+    "inherited_unified_synthetic_conclusion": "SUCCESS",
+    "initial_technical_ci_failure": 40570882673,
+    "initial_failure_explanation": "Inherited production synthetic pytest conftest imported NumPy; workflow tooling repaired to match Task3 numpy==1.26.4; no science source modified",
+    "independent_scientific_acceptance": false,
+    "real_source_reauthentication_by_ci": false
+  },
+  "restrictions": [
+    "Hash completeness proves that these historical archive bytes match their historical manifest, not that the manifest is independently trusted or biologically current",
+    "Task3 PR437 authenticated calibration registry is empty in scoped code; no artifact is enrolled",
+    "50K expression sample is not the full 6.35M rawcount observation population",
+    "August HVS/SEA feature/source geometry cannot supersede later corrected real source",
+    "No real TRAIN observation-statistic producer, physical G7 atom identity or q-excluded normalized denominator is independently authenticated here",
+    "V3.1.1 candidate-neutral hidden mechanism, generator freeze, withheld family, true known-truth producer-executor and actual human target gates remain unqualified"
+  ],
+  "source_bounded_next_action": "Identify and independently review current post-repair TRAIN-only observation statistics and issuer; do not automatically promote historical archive. Then bind Task3 calibration producer to genuine shared known-truth execution.",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

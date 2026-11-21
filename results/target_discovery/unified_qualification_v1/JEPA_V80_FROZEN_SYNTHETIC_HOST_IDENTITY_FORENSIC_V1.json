@@ -1,0 +1,176 @@
+{
+  "schema": "JEPA_V80_FROZEN_SYNTHETIC_HOST_IDENTITY_FORENSIC_V1",
+  "date": "2026-11-03",
+  "source_pr": 534,
+  "source_head": "165447a8bbdef8b427ca9cd0d29b51c36b9c1c1a",
+  "immutable_source_head": "e99d1f214e76a5e3911eea438c32a1e60f70754f",
+  "frozen_benchmark_expected": "16a08b29c7e083377f4dde6e16ac6d55a3358ed45475c74161fbaba29a4afc38",
+  "same_head_prior_pass_run": 41664040630,
+  "same_head_prior_failed_run": 41664052640,
+  "current_runs": [
+    {
+      "run": 41665045822,
+      "CI_conclusion": "failure",
+      "field_digests": {
+        "families": [
+          {
+            "design_digest": "0aae73bdf9423c92abd82b6f96069540e39c5f4630d0a837ed0e35af4ffb2353",
+            "detected_digest": "450e9041034e13c2e7de5ba21b53fedff9793908b8f1abd687de61bcf8bc4ca8",
+            "family": "SP00_BALANCED_ESTIMABLE",
+            "positive_value_digest": "375f1d8e483a45f6296ade933b47a271d2f8bdf5b60f8836cea5448021ca0164",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          },
+          {
+            "design_digest": "35e22f8d994f2877398a101aaeee7bb0fb29cb81666d275a5fa988d28be44694",
+            "detected_digest": "b9143bdbbaa88312bc94a93486058002c162936b8dc157e47d37941fe798cdea",
+            "family": "SP01_ULTRASPARSE_ESTIMABLE",
+            "positive_value_digest": "bb69886cd8c94d0eae4613c601318d73c6d09fb845a2199d455a28850029388d",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          },
+          {
+            "design_digest": "47e58201d2499666823a65b8e0545ccf1a1c7fb820a65e7abd5703838c2f4f80",
+            "detected_digest": "32adb2a698a39e06b3f98e151e98f5c891b96ea989feee48518f0c25d583cf9e",
+            "family": "SP02_DONOR_IMBALANCED_ESTIMABLE",
+            "positive_value_digest": "ab7e9f8c809fd17a29dca103a141f5b79e34f463db1df9526f1e2b4450f9e802",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          },
+          {
+            "design_digest": "b62247a1457626c8a91b50f335884941458b3904ec619e5215a82531b2d7a751",
+            "detected_digest": "488fe92249040377d6066c8a400cd814a6563f764443ede9afccb4855634f6fb",
+            "family": "SP03_SOURCE_SHIFT_ESTIMABLE",
+            "positive_value_digest": "0aaf7b42fe2c911ac8490393a548e2dc4dedfd69a328b51fd6ec8ad473ecba45",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          },
+          {
+            "design_digest": "ff6bd662946506a4f6cb32c417357bb27063b9fa0433c67e7ed9d3dc08f074a4",
+            "detected_digest": "2f6ea490aa09b18e294f163cbec26483bbe022cc29283b12bde2ef35643281fd",
+            "family": "SP04_SUPPORT_THINNED_ESTIMABLE",
+            "positive_value_digest": "de7b27c0a01d90b9c85f934985bcc73bbbc6f0c50e69bed93a970fd66cb78a28",
+            "support_digest": "126e2f0670ffbdca7b784c65b19f9a86d93d5f5fa36f4614a02206a6dba15fab"
+          },
+          {
+            "design_digest": "8e6dd76ffa2b5567be32a7a7754295cb31f59d3110fd0226a759d29c28325c56",
+            "detected_digest": "7e36bec0af80ff78cd2cba3643b862a6c0e3ec56e52acabe92b246dcd6ad4816",
+            "family": "SP05_NO_POSITIVE_SUPPORT_NOT_ESTIMABLE",
+            "positive_value_digest": "36bd753facc985aad613c884a2040210d208b1aa520e957b31ba2e1e19cd4185",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          },
+          {
+            "design_digest": "b8e3f35f38ea007ad0c0648df337d9dd607fb0ef64d96e70b8a2258eb787ccea",
+            "detected_digest": "b2d00d3985701f2b0584f3818cb290f64a20809f995cec3f28708d84a92680ca",
+            "family": "SP06_RANK_DEFICIENT_NOT_ESTIMABLE",
+            "positive_value_digest": "080e6f521d0be26887ea7df269109a2c215bf034242a9d5771bbacdaa3dd15c3",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          },
+          {
+            "design_digest": "90325d675bdd7b3e9dda629aef6f68bb20d5ad18fe661251379c942de11f3241",
+            "detected_digest": "7db3852a11ab235107bdf5bc2bf6ed3e9cfe3bd3ddca1ce16d1cd099c5c83165",
+            "family": "SP07_NEW_DONOR_ESTIMABLE",
+            "positive_value_digest": "d02338ee4f12ee50cb08da58abbd914317e38899453d4c4199afdfc032ab55e0",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          }
+        ],
+        "numpy": "2.3.5",
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "processor": "x86_64",
+        "python": "3.11.9"
+      },
+      "bitwise_identity": {
+        "actual": "faf80c897ab6f568ec2ca243471b1e3329950ce86e9ab69b7b5c3e3891c7b769",
+        "expected": "16a08b29c7e083377f4dde6e16ac6d55a3358ed45475c74161fbaba29a4afc38",
+        "fit_sha256": "b33e72a6852b9ec5696d6184f05f2b448419e22242c8535147ab7dd866c361ab",
+        "numpy": "2.3.5",
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "processor": "x86_64",
+        "python": "3.11.9"
+      }
+    },
+    {
+      "run": 41665058401,
+      "CI_conclusion": "failure",
+      "field_digests": {
+        "families": [
+          {
+            "design_digest": "0aae73bdf9423c92abd82b6f96069540e39c5f4630d0a837ed0e35af4ffb2353",
+            "detected_digest": "450e9041034e13c2e7de5ba21b53fedff9793908b8f1abd687de61bcf8bc4ca8",
+            "family": "SP00_BALANCED_ESTIMABLE",
+            "positive_value_digest": "375f1d8e483a45f6296ade933b47a271d2f8bdf5b60f8836cea5448021ca0164",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          },
+          {
+            "design_digest": "35e22f8d994f2877398a101aaeee7bb0fb29cb81666d275a5fa988d28be44694",
+            "detected_digest": "b9143bdbbaa88312bc94a93486058002c162936b8dc157e47d37941fe798cdea",
+            "family": "SP01_ULTRASPARSE_ESTIMABLE",
+            "positive_value_digest": "bb69886cd8c94d0eae4613c601318d73c6d09fb845a2199d455a28850029388d",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          },
+          {
+            "design_digest": "47e58201d2499666823a65b8e0545ccf1a1c7fb820a65e7abd5703838c2f4f80",
+            "detected_digest": "32adb2a698a39e06b3f98e151e98f5c891b96ea989feee48518f0c25d583cf9e",
+            "family": "SP02_DONOR_IMBALANCED_ESTIMABLE",
+            "positive_value_digest": "ab7e9f8c809fd17a29dca103a141f5b79e34f463db1df9526f1e2b4450f9e802",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          },
+          {
+            "design_digest": "b62247a1457626c8a91b50f335884941458b3904ec619e5215a82531b2d7a751",
+            "detected_digest": "488fe92249040377d6066c8a400cd814a6563f764443ede9afccb4855634f6fb",
+            "family": "SP03_SOURCE_SHIFT_ESTIMABLE",
+            "positive_value_digest": "0aaf7b42fe2c911ac8490393a548e2dc4dedfd69a328b51fd6ec8ad473ecba45",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          },
+          {
+            "design_digest": "ff6bd662946506a4f6cb32c417357bb27063b9fa0433c67e7ed9d3dc08f074a4",
+            "detected_digest": "2f6ea490aa09b18e294f163cbec26483bbe022cc29283b12bde2ef35643281fd",
+            "family": "SP04_SUPPORT_THINNED_ESTIMABLE",
+            "positive_value_digest": "de7b27c0a01d90b9c85f934985bcc73bbbc6f0c50e69bed93a970fd66cb78a28",
+            "support_digest": "126e2f0670ffbdca7b784c65b19f9a86d93d5f5fa36f4614a02206a6dba15fab"
+          },
+          {
+            "design_digest": "8e6dd76ffa2b5567be32a7a7754295cb31f59d3110fd0226a759d29c28325c56",
+            "detected_digest": "7e36bec0af80ff78cd2cba3643b862a6c0e3ec56e52acabe92b246dcd6ad4816",
+            "family": "SP05_NO_POSITIVE_SUPPORT_NOT_ESTIMABLE",
+            "positive_value_digest": "36bd753facc985aad613c884a2040210d208b1aa520e957b31ba2e1e19cd4185",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          },
+          {
+            "design_digest": "b8e3f35f38ea007ad0c0648df337d9dd607fb0ef64d96e70b8a2258eb787ccea",
+            "detected_digest": "b2d00d3985701f2b0584f3818cb290f64a20809f995cec3f28708d84a92680ca",
+            "family": "SP06_RANK_DEFICIENT_NOT_ESTIMABLE",
+            "positive_value_digest": "080e6f521d0be26887ea7df269109a2c215bf034242a9d5771bbacdaa3dd15c3",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          },
+          {
+            "design_digest": "90325d675bdd7b3e9dda629aef6f68bb20d5ad18fe661251379c942de11f3241",
+            "detected_digest": "7db3852a11ab235107bdf5bc2bf6ed3e9cfe3bd3ddca1ce16d1cd099c5c83165",
+            "family": "SP07_NEW_DONOR_ESTIMABLE",
+            "positive_value_digest": "d02338ee4f12ee50cb08da58abbd914317e38899453d4c4199afdfc032ab55e0",
+            "support_digest": "391f0a597f6f0daa5166bf008a62af1133e90eabd1d2470a29c0b61f29e3da82"
+          }
+        ],
+        "numpy": "2.3.5",
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "processor": "x86_64",
+        "python": "3.11.9"
+      },
+      "bitwise_identity": {
+        "actual": "faf80c897ab6f568ec2ca243471b1e3329950ce86e9ab69b7b5c3e3891c7b769",
+        "expected": "16a08b29c7e083377f4dde6e16ac6d55a3358ed45475c74161fbaba29a4afc38",
+        "fit_sha256": "b33e72a6852b9ec5696d6184f05f2b448419e22242c8535147ab7dd866c361ab",
+        "numpy": "2.3.5",
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "processor": "x86_64",
+        "python": "3.11.9"
+      }
+    }
+  ],
+  "current_two_failed_runs_frozen_hash_same": true,
+  "current_two_failed_runs_fit_visible_field_hashes_same": true,
+  "status": "BLOCKED_CROSS_RUN_BYTE_IDENTITY__HOST_OR_FP_CAUSE_NOT_YET_ESTABLISHED",
+  "limitations": [
+    "This is a reproducibility diagnostic, not model qualification or outcome retuning",
+    "Current two failures agree on support/detection/design/positive-value raw-byte digests; no comparable raw-byte digests were recorded in earlier successful run",
+    "Do not infer which floating operation, hardware CPU, BLAS or RNG step differs without a controlled original-source comparison",
+    "Do not waive frozen V80 digest or modify original V80 world/receipt/seed"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

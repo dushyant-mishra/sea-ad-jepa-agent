@@ -1,0 +1,125 @@
+{
+  "schema": "JEPA_LANE_TAKEOVER_CHECKPOINT_V1",
+  "date": "2026-10-14",
+  "authority_terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "real_biological_outcomes_opened": false,
+  "real_td_authorized": false,
+  "target_selection_authorized": false,
+  "representation_selection_authorized": false,
+  "td60_authorized": false,
+  "stage4_authorized": false,
+  "production_ema_selection_authorized": false,
+  "training_authorized": false,
+  "synthetic_td": {
+    "phase1_receipt_sha256": "e67aace8dfa8b9823cf8635155a48f5a78faed0a45bf9edb6f7adcba07737684",
+    "phase2_repair_pr": 330,
+    "phase2_repair_head": "7659030cd2fc9a2662c67a9bf4d23e0e8f3f1606",
+    "phase2_receipt_sha256": "5382034332f24b0e37954b4f8e2cefe958f21ff644e6fd1ffec150d2478aa61b",
+    "phase2_status": "QUALIFIED",
+    "phase2_audit_pr": 336,
+    "phase2_audit_head": "b92f335b53a93805a5d05330dc0d61f0479b1dcf",
+    "phase2_audit_terminal": "PASS_PHASE2_EXECUTION_AND_CUSTODY",
+    "scope": "TEST_QUALIFICATION_ONLY",
+    "rerun_allowed": false
+  },
+  "real_gate_engineering": {
+    "framework_pr": 313,
+    "framework_head": "206167a1eb86f1dec5f8285db56accbcd469bce9",
+    "matrix_rows": 198,
+    "required_roles": 117,
+    "not_applicable_roles": 81,
+    "mechanically_qualified_required_roles": 66,
+    "required_roles_outside_current_qualified_surface": 51,
+    "directional_structural_pr": 340,
+    "directional_structural_head": "42c3af6ba6d82737a465620f801e896239849184",
+    "directional_structural_run": 38488323508,
+    "g11_g12": {
+      "pr": 342,
+      "head": "f7e90c41bab10c7ff4abb3e69446975634483656",
+      "run": 38488917170,
+      "state": "STATIC_CONTRACT_GREEN__REAL_REGISTRY_NOT_FROZEN"
+    },
+    "g8": {
+      "pr": 343,
+      "head": "82d17bfb1650d97a95d5424160126791f09d7494",
+      "run": 38489523630,
+      "state": "MEASUREMENT_REFERENCE_MECHANICS_GREEN__HUMAN_TECHNICAL_CALIBRATION_REQUIRED"
+    },
+    "g6": {
+      "pr": 345,
+      "head": "f16ba70f7066db2928e31f31b7785831a8fc10f2",
+      "run": 38489595232,
+      "state": "DIAGNOSTIC_PROBE_GREEN__HUMAN_TARGET_AND_EVIDENCE_RIGHTS_NOT_FROZEN"
+    },
+    "g7": {
+      "pr": 346,
+      "head": "5a314bdeda9078d5f65e995e49d2ebf5274751f6",
+      "run": 38490004001,
+      "state": "STATIC_EVIDENCE_LADDER_GREEN__TERMINAL_STABILITY_LAW_REQUIRED"
+    },
+    "r1": {
+      "pr": 347,
+      "head": "877242a6c8206ea35a73ebf111cb6b52bbe79109",
+      "run": 38490456813,
+      "state": "REPAIRED_SCALE_FREE_RELATIONAL_MANIFEST_GREEN__RECURRENCE_SCALAR_NULL_AND_DECISION_RULE_REQUIRED"
+    },
+    "remaining_scientific_design": [
+      "G2 same-metric substantive biological-content magnitude law",
+      "G7 terminal stability law",
+      "G9/S1/S2 target-geometry alignment/null/reference laws",
+      "R1 recurrence scalar/adverse-null summary/substantive recurrence law",
+      "R4 matched C2-vs-C1 increment law",
+      "C6 separate matched increments over C1 and C3",
+      "C4 matched increment over independently qualified C6",
+      "G11/G12 real frozen population/evidence/support registry",
+      "G8 lawful human technical calibration",
+      "G6 frozen human teacher target and evidence-right matrices"
+    ]
+  },
+  "target_portfolio": {
+    "pr": 332,
+    "head": "902054ad62eede84086fc2e0a90ceb27e2191da7",
+    "state": "MULTIBLOCK_CONTRACT_GREEN__NO_TARGET_AUTHORITY"
+  },
+  "post_td_harness": {
+    "source_head": "97dd73f49e1554053bbfab6c5369377a23a72ceb",
+    "run": 38448458550,
+    "job": 115472916925,
+    "state": "IMPLEMENTATION_READY__NO_ARCHITECTURE_OR_EMA_WINNER"
+  },
+  "synthetic_lanes": {
+    "pr328": "QUALIFIED_MECHANICS_INTERFACE_FIXTURE_ONLY",
+    "pr344": "LINEAGE_COMPOSITE_PRODUCTION_SYNTHETIC_DESIGN_V2__IMPLEMENTATION_OFF",
+    "v79": "NOT_QUALIFIED__291_OF_292_HARD_GATES__Q08_FAIL__3_NOT_DIAGNOSED",
+    "v80": {
+      "pr": 348,
+      "head": "9ad04d43ffe7bd387da8d2315f63b5758df4f9f8",
+      "qualified_source_head": "b840067e4c9439e4cb4aa9e8c649ef2f6064a142",
+      "run": 38504094639,
+      "benchmark_package_status": "QUALIFIED",
+      "successor_estimator_status": "NOT_YET_QUALIFIED",
+      "receipt_sha256": "346407af801a7fabc5dbd27136dcf5c9abe61e87d438018b98da192333eb9c32"
+    }
+  },
+  "no_repeat": [
+    "PR314 corrected replay",
+    "synthetic TD phase1",
+    "current synthetic TD phase2",
+    "defective T1 checkpoints",
+    "TD57C nearest-third fine-locality",
+    "hidden-RNA/CELL",
+    "ANCHOR_ONLY",
+    "T0/T1/TCTX as production targets",
+    "V6R5B rescue",
+    "historical 0.50 alignment thresholds as human authority",
+    "historical .996 EMA as production choice",
+    "V79 as a rerunnable qualification"
+  ],
+  "read_first": [
+    "docs/agent/JEPA_LANE_MASTER_AUDIT_INDEX_20261014.md",
+    "docs/agent/JEPA_LANE_NEXT_ACTIONS_AND_TAKEOVER_CHECKLIST_20261014.md",
+    "docs/agent/JEPA_LANE_NO_REPEAT_MATRIX_20261014.csv",
+    "docs/agent/JEPA_LANE_CUSTODY_FILE_INDEX_20261014.csv",
+    "docs/agent/JEPA_EXTERNAL_ARTIFACT_CUSTODY_MANIFEST_20261013.csv"
+  ]
+}

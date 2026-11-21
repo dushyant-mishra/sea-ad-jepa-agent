@@ -1,0 +1,115 @@
+{
+  "schema": "JEPA_20261103_HISTORICAL_REAL_LEVEL4_READ_RECOVERY_NO_REPEAT_V1",
+  "date": "2026-11-03",
+  "correction_class": "APPEND_ONLY_PLAN_SUPERSESSION__NO_NEW_READ",
+  "owner_delegated_scope_prior": "JEPA_OWNER_DELEGATED_NARROW_QC_AND_SINGLE_LEVEL4_DECISION_V1",
+  "owner_permission_status": "RETAINED_AS_MAX_SCOPE_NOT_EXECUTION_INSTRUCTION",
+  "execution_status": "NO_NEW_LEVEL4_READ_ASSIGNED__REUSE_PR59_PR69_PR492_PR513_EVIDENCE_FIRST",
+  "original_physical_read": {
+    "pr": 59,
+    "head": "1bdff2a8f12d7971652dcf92b5b81ca45c37a933",
+    "receipt": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_i/DONOR_UMI_INDEPENDENT_QUALIFICATION_V1.json",
+    "receipt_git_blob": "e3a0926a81a278f49f155906a11c1eb35baa95cb",
+    "execution_script": "analysis/v5_full104_information_channel_redteam_20260920/scripts/qualify_donor_umi_independent_v1_20260922.py",
+    "script_git_blob": "4193cfed494bf5c18968d813ee3553a41adb84db",
+    "raw_count_level4_blocks_opened_and_sha_verified": 387,
+    "level4_metadata_blocks_sha_verified": 8915,
+    "metadata_cells_accounted_once": 4553407,
+    "subset_donors": 6,
+    "subset_donors_per_source": 2,
+    "strict_core_addresses": 17186,
+    "donor_nnz_exact_match": true,
+    "donor_umi_exact_match": true,
+    "source_level4_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "heavy_artifact_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+    "raw_reaggregation_all_104_donors": false,
+    "per_cell_casebundle_issued": false,
+    "scope": "SIX_DONOR_STRICT_CORE_AGGREGATE_PROOF_NOT_FULL104_NOT_PER_CELL_QUERY_OUTPUT"
+  },
+  "corrected_source_labels": {
+    "pr": 69,
+    "head": "83b85382f22a7672a5beb1ef9154e5b8bf36e16f",
+    "receipt": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_i/SIX_DONOR_SUCCESSOR_QUALIFICATION_V1.json",
+    "receipt_git_blob": "28418462bf4e4ddab0794bc8d7c759d121b67476",
+    "original_source_order": [
+      "HVS",
+      "SEA_AD",
+      "NPH52"
+    ],
+    "canonical_source_order": [
+      "HVS",
+      "NPH52",
+      "SEA_AD"
+    ],
+    "transposed_original_donor_codes": [
+      64,
+      76,
+      94,
+      96
+    ],
+    "corrected_source_by_donor_code": {
+      "64": "SEA_AD",
+      "76": "SEA_AD",
+      "94": "NPH52",
+      "96": "NPH52"
+    },
+    "numeric_rows_unchanged": true,
+    "raw_count_rerun_needed": false,
+    "all104_proof": false
+  },
+  "other_prior_reads": [
+    {
+      "pr": 492,
+      "head": "79d2f9364970c0e5b678caae94b92a803ff03623",
+      "scope": "FROZEN_50K_CELL_41K_ADDRESS_EXPRESSION_SAMPLE",
+      "nonzero_values_inverted": 246702069,
+      "real_per_cell_casebundle": false
+    },
+    {
+      "pr": 314,
+      "head": "c6899a2910244a0352c0c57e7aea6e3026191da1",
+      "scope": "SPENT_AUTHORIZED_CORRECTED_REAL_RELATIONAL_REPLAY",
+      "must_not_repeat": true
+    },
+    {
+      "pr": 513,
+      "head": "0b1af4f06ba423753899e7c564d3b16ce609ac6a",
+      "correction_pr": 528,
+      "scope": "SEA_AD_HVS_DEPOSITOR_QC_AND_LIBRARY_METADATA_AGGREGATES",
+      "count_matrices_read_in_this_pr": false
+    },
+    {
+      "pr": 147,
+      "head": "9f7818472bdf515680b85eddbbf761eae2208020",
+      "scope": "104_DONOR_METADATA_PASS1_HISTOGRAM_BRIDGE",
+      "raw_level4_count_blocks_read": 0
+    }
+  ],
+  "casebundle_next_step": "EXACT_FIELD_BY_FIELD_PROVENANCE_COVERAGE_AUDIT_OVER_EXISTING_RECEIPTS_NO_NUMERIC_READ",
+  "fields_to_test": [
+    "source_operator_matrix_block_row_binding",
+    "donor_library_keys",
+    "per_cell_private_source_library",
+    "per_cell_query_raw_count",
+    "operator_address_measurement_state",
+    "collision_alias_rights",
+    "q_excluded_student_D1",
+    "access_session_parent_hashes",
+    "real_casebundle_output"
+  ],
+  "required_status_vocabulary": [
+    "EXISTING_PHYSICALLY_EVIDENCED",
+    "PRESENT_BUT_UNQUALIFIED",
+    "NOT_RETAINED_IN_OLD_RECEIPT",
+    "NOT_ESTIMABLE"
+  ],
+  "no_repeat": [
+    "DO_NOT_REPEAT_PR59_RAW_387_BLOCK_READ",
+    "DO_NOT_REPEAT_PR69_LABEL_CORRECTION",
+    "DO_NOT_RERUN_SPENT_PR314",
+    "DO_NOT_RERUN_PR513_QC_WITHOUT_NEW_MISSING_FIELD",
+    "DO_NOT_MISTAKE_8915_METADATA_FILES_FOR_8915_READ_COUNT_BLOCKS"
+  ],
+  "conditional_future_read": "Only after a recorded indispensable field is missing and cannot be derived from already qualified evidence; then separately reviewed no-outcomes precommit and limited original owner-delegated single-block ceiling; no auto-run.",
+  "terminal_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

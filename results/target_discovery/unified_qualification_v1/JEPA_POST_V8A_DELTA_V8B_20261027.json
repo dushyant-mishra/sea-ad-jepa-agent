@@ -1,0 +1,55 @@
+{
+  "schema": "JEPA_POST_V8A_DELTA_V8B_20261027",
+  "as_of_utc": "2026-10-27T15:25:00Z",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "prior_audit_head": "d35b3decb97350ad69437ed5776d96a6499a99b9",
+  "changes": [
+    {
+      "pr": 457,
+      "head": "17e7cc8818d27222fac5c0a3e91677640ea81153",
+      "classification": "E2G_PUBLIC_REFERENCE_CURRENT_CI_GREEN__NONCAUSAL_NONAUTHORIZING_CONTEXT_ONLY",
+      "ci": [
+        40530132817,
+        40530132741
+      ],
+      "notes": "Moved after V8a from earlier RED result-receipt head. Current source/readout workflows green. Does not establish TF-bound enhancer→gene causality, microglia-specific validation, canonical gene identity, SEA-AD ATAC acquisition, target selection, Stage4 or training."
+    },
+    {
+      "pr": 458,
+      "head": "3b08081d7fb3fa99cf1459b13cbe47d5b0962547",
+      "classification": "PS_TASK1_2_13_HOSTILE_RED_CURRENT",
+      "ci": [
+        40516953763,
+        40516953772,
+        40516953617
+      ],
+      "notes": "13 hostile failures remain controlling against #453/#456; cumulative Tasks1–2 acceptance blocked."
+    },
+    {
+      "pr": 459,
+      "head": "57e707149b46ca011eee096f01dc08b64aeb8f9f",
+      "classification": "TASK4_X1_AUTHOR_CANDIDATE_GREEN__INDEPENDENT_CUMULATIVE_REVIEW_PENDING__X3_OPEN",
+      "ci": [
+        40518058012
+      ],
+      "notes": "Macha-authored write-ahead transaction candidate; author CI green. X3 mixed Windows/WSL and external trust remain open."
+    },
+    {
+      "pr": 460,
+      "head": "a081f8d719372b14ab95120f4f7ba290a0940e4a",
+      "classification": "ACTIVE_CLEAN_SUCCESSOR_HANDOFF_GREEN__NO_SCIENTIFIC_AUTHORITY",
+      "ci": [
+        40527188414,
+        40527188357
+      ],
+      "notes": "Operational navigation branch only; old PR323 is historical custody."
+    }
+  ],
+  "next_actions": [
+    "Do not rerun broad historical audits; consult complete V8a file index first.",
+    "Independently adversarially review PR459; do not implement a second X1.",
+    "Treat PR458 RED as current for Production Synthetic Tasks1–2; no PS Task4.",
+    "Treat PR457 as public contextual annotation only despite current green CI.",
+    "Use PR460 as operational handoff and PR322 as durable audit source."
+  ]
+}

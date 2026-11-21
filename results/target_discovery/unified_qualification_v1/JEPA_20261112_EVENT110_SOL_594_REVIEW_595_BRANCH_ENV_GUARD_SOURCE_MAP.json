@@ -1,0 +1,47 @@
+{
+  "schema": "JEPA_EVENT110_SOL_594_REVIEW_595_CI_COLLECTION_BYPASS_REPAIR_V1",
+  "event_number": 110,
+  "date_utc": "2026-11-12",
+  "canonical_prior_head": "9ce8d72a13079637fb979d6e1d6911b08bc79aa4",
+  "handoff_prior_head": "cda5ad445b0380f323dc629e3bcd72c24b382536",
+  "prior_events": 109,
+  "new_events": 110,
+  "prior_no_repeat_keys": 74,
+  "new_no_repeat_keys": 75,
+  "reviewed": {
+    "pr": 594,
+    "head": "a3d35716d1eacb24b3fc4cf6c99fe758e0619d56",
+    "verdict": "REPAIR_REQUIRED_SCOPED",
+    "confirmed": [
+      "main branch filtered automatic workflow escaped scan",
+      "PYTEST_ADDOPTS can collect unlisted tests",
+      "PYTEST_PLUGINS can load explicit plugin"
+    ]
+  },
+  "repair": {
+    "pr": 595,
+    "head": "37dc2469f05d83a6dcfc38cedc54e4f9325bd10c",
+    "status": "AUTHOR_GREEN__MACHA_RECIPROCAL_REVIEW_PENDING",
+    "workflow_runs": [
+      43316634301,
+      43316634333,
+      43316634396,
+      43316634295,
+      43316634606
+    ],
+    "workflow_green": 5,
+    "source_git_blobs": {
+      "scripts/v5/jepa_v5_ci_explicit_nonstepping_allowlist_v1.py": "ca7cf7ac867d13494e7e2fdb861f4025a07370d6",
+      "tests/test_ci_sol_594_scope_and_pytest_env_static_red.py": "78d7caf16cf762d137e29d46d72a11fa05e85277",
+      ".github/workflows/jepa-v5-macha-review-590-593-static-no-training.yml": "5d399e1584f3792d80596f3b29d54228d91f7fab"
+    },
+    "legacy_d1_git_blob_sha1": "a0e3fb2622992630ce705467bfcb3aad7aa1001e",
+    "d1_dispatch_authorized": false,
+    "static_regression_tests": 5
+  },
+  "history_preserved": true,
+  "training_authorized": false,
+  "biological_qualification_proven": false,
+  "merged": false,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

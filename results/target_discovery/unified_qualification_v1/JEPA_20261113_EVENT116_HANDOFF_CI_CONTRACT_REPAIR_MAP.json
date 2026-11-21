@@ -1,0 +1,31 @@
+{
+  "schema": "JEPA_EVENT116_HANDOFF_CI_CONTRACT_REPAIR_V1",
+  "event": 116,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "prior_heads": {
+    "322": "8b42d75915710508df974bff3d7182d3b1e97f9b",
+    "460": "1b7dfb7af4a60391e0d0938d6ea007172804752a"
+  },
+  "prior_hosted": {
+    "322": {
+      "success": 26,
+      "total": 27,
+      "v80_failed_run": 43524534107
+    },
+    "460": {
+      "success": 3,
+      "total": 4,
+      "failed_run": 43524546993,
+      "merge_checkout": "fb3815df53603bd4766979da707e9bd91869f727",
+      "checkout_events": 115
+    }
+  },
+  "human": {
+    "path": "docs/agent/JEPA_20261113_EVENT116_HANDOFF_CI_CONTRACT_REPAIR.md",
+    "git_blob": "b8740b74dc7624dfd42e8bf23aabe99034789eb3"
+  },
+  "ci_validators_changed": false,
+  "hosted_revalidation_claimed": false,
+  "M1": false,
+  "M2": false
+}

@@ -1,0 +1,296 @@
+{
+  "schema": "JEPA_SEP_NOV_TWO_MONTH_DECISION_MAP_V1",
+  "period": {
+    "start": "2026-09-04",
+    "end": "2026-11-04",
+    "review_date": "2026-11-04"
+  },
+  "record_class": "ORIGINAL_SOURCE_SCOPED_SYNTHESIS__NO_REPLAY__NO_CODE_OR_DATA_EXECUTION",
+  "canonical": {
+    "audit_pr": 322,
+    "handoff_pr": 460,
+    "prior_chronology_events": 52,
+    "closed_duplicate_document_pr": 539
+  },
+  "human_report": "docs/agent/JEPA_20261104_SEP_NOV_TWO_MONTH_SCIENCE_ENGINEERING_AUDIT_AND_DECISION_V1.md",
+  "sources": [
+    {
+      "claim": "depth-only source geometry strong null",
+      "path": "target_discovery/iterations/td19_claude_followup/TD19_DECISION.md",
+      "ref": "main",
+      "result": "SOURCE_PSEUDOSTATE_DEPTH_ONLY_R_0p980_TO_0p986",
+      "grade": "PRIMARY_REOPENED"
+    },
+    {
+      "claim": "matched donor/operator/depth/detection null and 24/24 global relations",
+      "path": "target_discovery/iterations/td57b_independent_triplet_recurrence/TD57B_RESULT.md",
+      "ref": "main",
+      "result": "24_OF_24_BROAD_RELATION_PASS__NO_LEARNED_TEACHER",
+      "grade": "PRIMARY_REOPENED"
+    },
+    {
+      "claim": "nearest-half limited support and fine negative",
+      "path": "target_discovery/iterations/td59_mesoscale_half_locality/TD59_RESULT.md",
+      "ref": "main",
+      "result": "24_OF_24_P95_PASS__22_OF_24_NULL_MAX__FINE_THIRD_FAIL",
+      "grade": "PRIMARY_REOPENED"
+    },
+    {
+      "claim": "exact spent real corrected replay",
+      "pr": 314,
+      "head": "c6899a2910244a0352c0c57e7aea6e3026191da1",
+      "result": "TD56_57B_59_PASS__TD57C_FAIL__SOURCE_HETEROGENEITY_UNRESOLVED",
+      "grade": "PRIMARY_PR_RESULT"
+    },
+    {
+      "claim": "existing TD60 teacher design",
+      "path": "target_discovery/iterations/td60_learned_teacher_continuity/TD60_PROSPECTIVE_SCREEN.md",
+      "ref": "main",
+      "result": "48_CASES_FROZEN_DESIGN__U40_CLOCK_OBSOLETE_FOR_BIOLOGY__NO_RESULT",
+      "grade": "PRIMARY_REOPENED"
+    },
+    {
+      "claim": "later V5 full reader biological exposure clock guidance",
+      "path": "docs/agent/TEACHER_STUDENT_V5_CONVERGENCE_RECOMMENDATION_20260908.md",
+      "ref": "main",
+      "result": "Q40_MECHANICS_NOT_BIOLOGY__FULL_READER_EXPOSURE_CLOCK_RECOMMENDED",
+      "grade": "PRIMARY_REOPENED__RECOMMENDATION_NOT_FORMAL_EXEC_AUTHORITY"
+    },
+    {
+      "claim": "target construction before training and four representation candidates",
+      "path": "docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md",
+      "ref": "main",
+      "result": "ZERO_OPTIMIZER_FORWARD_TARGET_GATE__NO_PRODUCTION_TARGET",
+      "grade": "PRIMARY_PLUS_RECONCILED"
+    },
+    {
+      "claim": "R5 q-aware developmental donor-heldout score",
+      "pr": 322,
+      "head": "78b5431b2c7d144b1778000ef4f4f0f19cbb4a6b",
+      "result": "R2_0p4300_vs_TECHQ_0p3496_vs_NOQ_0p2760__ORIGINAL_PRIMARY_RECEIPT_NOT_REOPENED",
+      "grade": "RECONCILED_HISTORY_ONLY"
+    },
+    {
+      "claim": "Stage81B and six IPB experiment nonrepeat",
+      "path": "docs/agent/JEPA_20261104_STAGE81B_INTRINSIC_RARE_CONTEXT_AND_TARGET_LEARNABILITY_NO_REPEAT.md",
+      "ref": "canonical_audit_pr322",
+      "result": "JEPA_ONLY_DONE__ANCHOR_REJECTED__SIX_IPB_ONLY_THREE_OF_EIGHT__NO_BIO_WINNER",
+      "grade": "PRIMARY_HISTORY_RECONCILIATION"
+    },
+    {
+      "claim": "twenty-eight rules fifteen specified thirteen blocked",
+      "pr": 338,
+      "head": "0e54de6a7212ddc85292b7bbc3774a5aabaf4ee2",
+      "result": "28_RULES_15_PARTIAL_13_BLOCKED__REAL_TD_OFF",
+      "grade": "PRIMARY_PR_RESULT"
+    },
+    {
+      "claim": "V80 benchmark not estimator",
+      "pr": 348,
+      "head": "e99d1f214e76a5e3911eea438c32a1e60f70754f",
+      "result": "BENCHMARK_QUALIFIED__ESTIMATOR_NONE__V79_NOT_QUALIFIED",
+      "grade": "PRIMARY_PR_RESULT"
+    },
+    {
+      "claim": "HVS SEA metadata alias closure NPH query issuance restrictions",
+      "pr": 513,
+      "head": "0b1af4f06ba423753899e7c564d3b16ce609ac6a",
+      "result": "HVS_SEA_SOURCE_SCOPE_OK__NPH_QUERY_ISSUER_BLOCKED__WHOLE_SOURCE_ETL_REUSE",
+      "grade": "PRIMARY_PR_RESULT__LIMITED_SOURCE_SCOPE"
+    },
+    {
+      "claim": "independent Phase2 9 cases test of test",
+      "pr": 336,
+      "head": "b92f335b53a93805a5d05330dc0d61f0479b1dcf",
+      "result": "9_OF_9_SCOPED_SYNTHETIC_AUDIT__NO_HUMAN_LEARNED_STUDENT",
+      "grade": "PRIMARY_PR_RESULT"
+    },
+    {
+      "claim": "scoped V2C D1 main land and review",
+      "pr": 523,
+      "head": "bce3a35a9cd8ec364906798738c14ab3236cc583",
+      "result": "ACCEPT_SCOPED_FIXTURE_ONLY__NO_AUTHENTIC_SOURCE_ISSUER",
+      "grade": "MAIN_LANDING_AND_AUDIT_RECONCILED"
+    },
+    {
+      "claim": "V79 selection conflict",
+      "pr": 533,
+      "head": "b531b81ec4e08779a974214ec9ba9905f0498294",
+      "result": "207_TERMINAL_CONFIRMATORY_INCLUDES_FAIL__85_POSTTERMINAL_FORENSIC",
+      "grade": "PRIMARY_PR_RESULT"
+    },
+    {
+      "claim": "V80 SHA portability regression",
+      "pr": 534,
+      "head": "165447a8bbdef8b427ca9cd0d29b51c36b9c1c1a",
+      "result": "CROSS_HOST_SHA_RED__NO_NEW_BIOLOGY",
+      "grade": "PRIMARY_PR_RESULT"
+    },
+    {
+      "claim": "Stage81B duplicate GPU risk",
+      "pr": 537,
+      "head": "7e8ff44120fd7acda9046d0f509fab504b4f73f3",
+      "result": "CPU_PREFLIGHT_ONLY__GPU_HOLD",
+      "grade": "PRIMARY_PR_RESULT"
+    }
+  ],
+  "independent_new_gap_checks": [
+    {
+      "id": "G1",
+      "state": "UNRESOLVED",
+      "test": "Formal prospectively reviewed TD60 biological-checkpoint amendment from u40 to full-reader exposure; no teacher result yet"
+    },
+    {
+      "id": "G2",
+      "state": "UNRESOLVED",
+      "test": "TD60 candidate-specific 160D cell_state does not establish representation winner"
+    },
+    {
+      "id": "G3",
+      "state": "UNRESOLVED",
+      "test": "TD60 3-source 48/48 must not be silently weakened to omit NPH52 under real query-issuer restrictions"
+    },
+    {
+      "id": "G4",
+      "state": "UNRESOLVED",
+      "test": "Teacher/student correct-cell relational gain against matched depth-only, wrong-cell, source/operator/donor; distinguish C3 wrong-q"
+    },
+    {
+      "id": "G5",
+      "state": "UNRESOLVED",
+      "test": "Original PR338 13 blocked real gate rules and authentic physical issuer only for selected candidate"
+    },
+    {
+      "id": "G6",
+      "state": "PRIMARY_PROVENANCE_NOT_NEWLY_RECOVERED",
+      "test": "Original R5 receipt and exact donor/control estimand if needed for decision"
+    },
+    {
+      "id": "G7",
+      "state": "RECONCILED",
+      "test": "Nov 2-4 retroactive audit events are not Sept-Oct execution dates"
+    }
+  ],
+  "next_order": [
+    "READ_ONLY_FULL_C1_C2_C3_C6_C4_C5_EVIDENCE_AND_KNOWN_TRUTH_MATRIX",
+    "VERIFY_SOURCE_SHAPES_AND_CANDIDATE_INDEPENDENT_FALSIFIERS_BEFORE_CHOOSING_ANY_TEST",
+    "INDEPENDENT_MACHA_REVIEW_OF_FIRST_UNRESOLVED_DECIDING_COMPARISON",
+    "REUSE_FROZEN_SYNTHETIC_AND_REAL_PRIMARY_RECEIPTS__ONLY_NOVEL_TEST_IF_SEPARATELY_AUTHORIZED",
+    "AFTER_CANDIDATE_SELECTION__LAWFUL_MEASURED_TEACHER_AND_STUDENT_QUALIFICATION",
+    "DEFER_ORTHOGONAL_PR533_534_537_AND_ISSUES_54_55"
+  ],
+  "no_repeat": [
+    "FULL_4p55M_ETL",
+    "ORIGINAL_387_LEVEL4_READS",
+    "REAL_TD314",
+    "PHASE2_336",
+    "STAGE81B_JEPA_ONLY",
+    "PR526_536_SCOPED_ADMISSION",
+    "V79_V80_WORLDS",
+    "NEW_D1_V2C_FIXTURE",
+    "PUBLIC_E2G_7TRACK"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "full_candidate_lattice_corrected_20261104": {
+    "status": "ALL_FIVE_FOUNDATION_PLUS_ONE_SPECIALIST_IN_SCOPE__NO_WINNER__NO_EXECUTION",
+    "source_pr_275": "816f480d5af5074b5b570c91b13e887fe8064b9c",
+    "candidate_routes": [
+      {
+        "id": "C1_SHARED_EMERGENT",
+        "role": "foundation",
+        "scientific_claim": "shared emergent biological state",
+        "dependency": [],
+        "relational_screen": "INDEPENDENT"
+      },
+      {
+        "id": "C2_RELATIONAL_SHARED",
+        "role": "foundation",
+        "scientific_claim": "shared relational state",
+        "dependency": [],
+        "relational_screen": "APPLIES"
+      },
+      {
+        "id": "C3_QUERY_MEASURED",
+        "role": "foundation",
+        "scientific_claim": "query conditioned measured other-gene context",
+        "dependency": [],
+        "relational_screen": "INDEPENDENT"
+      },
+      {
+        "id": "C6_SHARED_QUERY_COMPOSITE",
+        "role": "foundation",
+        "scientific_claim": "shared plus query",
+        "dependency": [
+          "C1_SHARED_EMERGENT",
+          "C3_QUERY_MEASURED"
+        ],
+        "relational_screen": "INDEPENDENT"
+      },
+      {
+        "id": "C4_STRUCTURED_COMPOSITE",
+        "role": "foundation",
+        "scientific_claim": "shared plus relation plus query",
+        "dependency": [
+          "C2_RELATIONAL_SHARED",
+          "C3_QUERY_MEASURED"
+        ],
+        "increment_reference": "C6_SHARED_QUERY_COMPOSITE_INDEPENDENTLY_QUALIFIED_REQUIRED",
+        "relational_screen": "APPLIES"
+      },
+      {
+        "id": "C5_REGULATORY_SPECIALIST",
+        "role": "specialist",
+        "scientific_claim": "regulatory measured evidence",
+        "dependency": [],
+        "status": "CANNOT_RESCUE_FOUNDATION_FAILURE"
+      }
+    ],
+    "selection_law": "ZERO_ONE_MULTI_UNRESOLVED_SURVIVOR_RULES__PROTECTED_HEAD_TO_HEAD_OR_CONFIRMATION_AND_OWNER_DECISION_REQUIRED",
+    "real_gate_status": "PR338_28_UNIQUE_RULES_15_SPECIFIED_FOR_FUTURE_PLAN_13_BLOCKED",
+    "current_prioritization": "ALL_CANDIDATE_SOURCE_AND_STUDENT_INPUTS_COMPARED_BEFORE_SELECTION__NO_C2_C3_PREFAVORED",
+    "synthetic_evidence": [
+      {
+        "id": "V79_Q00_Q11",
+        "scope": "12 frozen realized statistical/mechanism worlds; Q08 convergence FAIL",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "V80_PR348",
+        "scope": "8 frozen estimator-independent benchmark worlds / 192 fits; NOT estimator qualification",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "PR328",
+        "scope": "480 cells x 48 addresses candidate-agnostic mechanics fixture with RNA/ATAC/rare/perturbation and controller separated truth",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "PR336",
+        "scope": "9/9 independent known-truth test-of-test",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "PR469",
+        "scope": "actual generated RNA to Task5 fixture execution",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "PR526_PR531",
+        "scope": "measured q-other8 toy producer source-ranking withdrawn detection-not-structural-support",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "PR536",
+        "scope": "actual q-other8 synthetic target producer; 48-feature source refused C2 three 512 panels; missing student refused",
+        "learned_c1_c6_winner": false
+      },
+      {
+        "id": "HISTORIC_STAGE81B",
+        "scope": "synthetic JEPA_ONLY/CURRENT/ANCHOR_ONLY and T0/T1/TCTX executed; no target winner",
+        "learned_c1_c6_winner": false
+      }
+    ],
+    "what_current_agent_executed": "GITHUB_READ_ONLY_SOURCE_ANALYSIS_AND_DOC_CUSTODY_ONLY__NO_NEW_SYNTH_WORLD_FIT_OR_LEARNER_EXECUTION",
+    "next": "MAKE_C1_C2_C3_C6_C4_C5_BY_FROZEN_DATA_BY_REAL_GATE_BY_LEARNER_EVIDENCE_COVERAGE_TABLE__MATCH_SYNTHETIC_INPUT_SHAPE__INDEPENDENT_SCIENTIFIC_REVIEW__NO_AUTO_GENERATOR_OR_GPU_RUN"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "schema": "JEPA_TD_OBSERVATION_NORMALIZATION_VIEW_V2_FIXTURE_AUDIT_DELTA_V1",
+  "date": "2026-10-27",
+  "classification": "APPEND_ONLY_SOURCE_EXECUTED_MECHANICS__NO_SCIENTIFIC_AUTHORITY",
+  "historical_v8e_qualified_head": "a271164554076d0acda3bd0cf0b1bf957c0fdfd3",
+  "source_work": {
+    "pr": 479,
+    "head": "ae762d7096a94ac663a0788f6f577ba404e37536",
+    "base_review_pr": 478,
+    "base_review_head": "b7aa56e2915d2af7dd733f0f0253e684164ce70a",
+    "base_producer_pr": 474,
+    "original_producer_unchanged": true,
+    "legacy_casebundle_git_blob": "23bbdcfc3234b7d621beb870fa019b34822446af",
+    "related_external_g7_review_pr": 476,
+    "related_external_g7_git_blob": "5bebe43dacd465bb4b884a6a1a61c6c41613adb3",
+    "new_files": [
+      {
+        "path": "scripts/v5/td_unified/observation_normalization_view_v2_fixture.py",
+        "git_blob": "fd573764d8c7d19b8cbbf12683d3e79065385cef",
+        "kind": "UNREGISTERED_FIXTURE_PRODUCER_AND_VALIDATOR"
+      },
+      {
+        "path": "tests/v5/td_unified/test_observation_normalization_view_v2_fixture.py",
+        "git_blob": "61349d4a69a1ace95d7f9d714e983e4aeb0fefd7",
+        "kind": "FIXTURE_ONLY_ADVERSARIAL_TESTS"
+      },
+      {
+        "path": "docs/agent/JEPA_TD_NORMALIZATION_VIEW_V2_FIXTURE_CONTRACT_20261027.md",
+        "git_blob": "08a85a9f4459b0d5f58965390b0cc9664d8160c6",
+        "kind": "SCIENCE_CONTRACT_LIMITATIONS"
+      },
+      {
+        "path": ".github/workflows/td-observation-normalization-view-v2-fixture.yml",
+        "git_blob": "8a91bf44022e279723770858487df17398fc8fde",
+        "kind": "HOSTED_CI"
+      }
+    ]
+  },
+  "mechanics": {
+    "separate_student_and_teacher_functions": true,
+    "canonical_exact_builtins_source_snapshot": true,
+    "private_whole_physical_total_never_returned": true,
+    "observable_hash_excludes_private_whole_library": true,
+    "visible_covariate": "base_rights_normalization_depth",
+    "legacy_library_size_field_reused": false,
+    "original_casebundle_v1_modified": false,
+    "original_g7_modified": false,
+    "explicit_query_outside_base_required": true,
+    "unaccounted_source_mass": "NOT_ESTIMABLE",
+    "unresolved_collision": "NOT_ESTIMABLE",
+    "real_issuer_authenticated": false,
+    "independent_scientific_acceptance": false
+  },
+  "run_receipts": {
+    "initial_red_run": 40591276863,
+    "initial_red_reason": "FIXTURE_RECEIPT_CONTAINS_EXACT_FALSE_FLAGS_BUT_ORIGINAL_RAW_COUNT_SNAPSHOT_DISALLOWS_BOOL",
+    "second_red_run": 40591445532,
+    "second_red_result": "124_PASSED_BUT_WORKFLOW_FAILED_IMPORTING_G7_MODULE_NOT_PRESENT_ON_THIS_STACKED_BRANCH",
+    "final_exact_head": "ae762d7096a94ac663a0788f6f577ba404e37536",
+    "final_run": 40591648499,
+    "final_conclusion": "SUCCESS",
+    "original_producer_and_prior_independent_tests": 106,
+    "new_v2_tests": 18,
+    "total_tests_passed": 124,
+    "commit_workflow_count": 6,
+    "commit_workflow_successes": 6,
+    "v1_casebundle_legacy_semantics_asserted": true,
+    "g7_cross_head_executed": false
+  },
+  "scientific_constraints": [
+    "Full source-row physical total is not lawful student normalization depth because queried/outside-base mass can be included",
+    "Equality of caller-provided source total and mapped measured sum is conservative fixture refusal policy, not external physical mapping proof",
+    "No proof of source physical unit, single-nucleus uniqueness, donor/specimen independence, mapped off-ledger aliases, per-q authorized rights or QC selection independence",
+    "The actual same-code-path authentic G7 E3 consumer lives on a different stacked branch and was NOT run by this PR's CI",
+    "No hidden biological truth, production synthetic Task4 candidate-neutral generator, C1/C2/C3 target qualification or JEPA optimizer was executed",
+    "Macha PR474 original producer and PR478 independent math limits preserved, no substitute for production issuer"
+  ],
+  "upstream_blockers": {
+    "g7_R1_R1D_R2": "RED",
+    "ps_T2D": "RED",
+    "ps_task3_calibration_issuer": "NOT_AUTHENTICATED",
+    "ps_task4_biological_generator": "ABSENT_IN_REVIEWED_BRANCHES",
+    "g7_independent_r5x_r6_recheck": "PENDING",
+    "cross_head_g7_v2": "NOT_TESTED"
+  },
+  "standing_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

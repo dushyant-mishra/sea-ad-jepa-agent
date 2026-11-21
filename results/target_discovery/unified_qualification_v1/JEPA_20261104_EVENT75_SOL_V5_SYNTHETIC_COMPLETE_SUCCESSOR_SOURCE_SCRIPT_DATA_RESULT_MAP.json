@@ -1,0 +1,419 @@
+{
+  "schema": "JEPA_EVENT75_SOL_V5_SYNTHETIC_COLD_START_SOURCE_SCRIPT_DATA_RESULT_MAP_V1",
+  "date_utc": "2026-11-04",
+  "snapshot_utc": "2026-11-04T21:50:00Z",
+  "repo": "dushyant-mishra/sea-ad-jepa-agent",
+  "purpose": "Exact verified source/code/data/result maps for a future biological-JEPA Sol lane agent; use established 535-PR/108-PR original indexes rather than repeat historical audits.",
+  "scope": "SOURCE_CUSTODY_AND_ACTUAL_U0_MECHANICS__NO_LEARNED_BIOLOGY_OR_TRAINING",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "reviewers": {
+    "implementing_lane": "Sol/GPT",
+    "independent_counterparty": "Macha",
+    "owner": "scientific decision/authorization; not a third code reviewer"
+  },
+  "historical_read_first": [
+    {
+      "role": "active pointer (newest top)",
+      "pr": 460,
+      "path": "docs/agent/JEPA_NEW_AGENT_LIVE_POINTER_20261029.md"
+    },
+    {
+      "role": "detailed existing Event68 handoff (34k chars)",
+      "pr": 322,
+      "path": "docs/agent/JEPA_20261104_SOL_LANE_SUCCESSOR_DETAILED_OPERATIONAL_HANDOFF_EVENT68.md"
+    },
+    {
+      "role": "60-source script/data/result original locator",
+      "pr": 322,
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_SOL_LANE_SUCCESSOR_SOURCE_SCRIPT_DATA_RESULT_LOCATOR_EVENT68.json"
+    },
+    {
+      "role": "canonical 74+ event append-only ledger",
+      "pr": 322,
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json"
+    },
+    {
+      "role": "machine-curated source/no-repeat master index",
+      "pr": 322,
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json"
+    },
+    {
+      "role": "535 original PR metadata census, not 535 diff reviews",
+      "pr": 322,
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_COMPLETE_535_PR_AND_OPEN_ISSUE_METADATA_CENSUS_V1.json"
+    },
+    {
+      "role": "108 recent PR original-result supersession map",
+      "pr": 322,
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_LAST_14_DAYS_108_PR_RESULT_PRECEDENCE_AND_NO_REPEAT_V1.json"
+    },
+    {
+      "role": "original attachments filename and SHA custody",
+      "pr": 322,
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_PROJECT_LOCAL_ASSET_SHA256_CUSTODY_V1.json"
+    },
+    {
+      "role": "original end-to-end June-November biological lineage",
+      "pr": 322,
+      "path": "docs/agent/JEPA_20261104_END_TO_END_SCIENTIFIC_NARRATIVE_AND_DECISION_LINEAGE_V1.md"
+    },
+    {
+      "role": "Event73 completed TD19–59, #314 real replay and production synthetic Task1–3",
+      "pr": 322,
+      "path": "docs/agent/JEPA_20261104_EVENT73_COMPLETED_TARGET_DISCOVERY_AND_STARTED_SYNTHETIC_LINEAGE_CORRECTION.md"
+    },
+    {
+      "role": "Event74 actual generated and independently verified synthetic FIT archive",
+      "pr": 322,
+      "path": "docs/agent/JEPA_20261104_EVENT74_EXPANDED_SYNTHETIC_DEVELOPMENT_FIT_2048_SHA_CUSTODY.md"
+    }
+  ],
+  "exact_branches_snapshot": [
+    {
+      "pr": 322,
+      "branch": "science/jepa-robust-pipeline-post-jepa-anything-audit-20261013",
+      "pre_event75_head": "8f0f11419374e42ad6413ab0d0385a910cf71d75",
+      "exact_head_ci": "25/25 SUCCESS",
+      "source": "canonical"
+    },
+    {
+      "pr": 460,
+      "branch": "handoff/jepa-v8-clean-successor-from-audit-20261027",
+      "pre_event75_head": "75c5ba52b830d7c00e6a9e9e6f422d8e6ca5d2bd",
+      "exact_head_ci": "2/2 SUCCESS",
+      "source": "operational"
+    }
+  ],
+  "synthetic_fit_dev": {
+    "pr": 547,
+    "head": "4bc7f9f31eaf1a7ccac49fdf45df7db9b0eef569",
+    "parent_pr": 328,
+    "parent_head": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+    "status": "DRAFT_OPEN__AUTHOR_ONLY_CI_2_OF_2_GREEN__MACHA_REVIEW_NOT_RECEIVED",
+    "git_files": [
+      {
+        "pr": 547,
+        "head": "4bc7f9f31eaf1a7ccac49fdf45df7db9b0eef569",
+        "path": "scripts/v79/expanded_common_world_development_v1.py",
+        "blob_sha1": "8763f3743db90698fd1bef79bd0810eeecac1052",
+        "role": "versioned neutral PR328 development generator/fit-only exporter"
+      },
+      {
+        "pr": 547,
+        "head": "4bc7f9f31eaf1a7ccac49fdf45df7db9b0eef569",
+        "path": "tests/v79/test_expanded_common_world_development_v1.py",
+        "blob_sha1": "83f8b67ab0bf3e7359dbbed5dc53406d03bce6aa",
+        "role": "query, support, 3x512, ATAC and hash tests"
+      },
+      {
+        "pr": 547,
+        "head": "4bc7f9f31eaf1a7ccac49fdf45df7db9b0eef569",
+        "path": ".github/workflows/jepa-expanded-synthetic-development-2048.yml",
+        "blob_sha1": "f454b80dfc1afa9391ee72abaa9711bd564a0253",
+        "role": "actual GitHub generator and artifact workflow"
+      },
+      {
+        "pr": 547,
+        "head": "4bc7f9f31eaf1a7ccac49fdf45df7db9b0eef569",
+        "path": "docs/agent/JEPA_EXPANDED_2048_DEVELOPMENT_SYNTHETIC_FIT_ONLY_20261104.md",
+        "blob_sha1": "4c8b6b122d9e00b375224c9ead903adb5142337d",
+        "role": "scope/biology/limitations"
+      }
+    ],
+    "original_frozen_fixture": {
+      "cells": 480,
+      "genes": 48,
+      "donors": 16,
+      "world_sha256": "dedd53c3b93eecdf28b73f229574a0cda4971371a3a6282f4b9e12fa44d09e66",
+      "fit_sha256": "fc5fa5c071903460da8c0d4644a3b18022f45b178f2c60a727710cadc2fb350a",
+      "preserved": true
+    },
+    "new_dimensions": {
+      "cells": 1440,
+      "genes": 2048,
+      "donors": 36,
+      "sources": 3,
+      "train_donors": 21,
+      "validation_donors": 7,
+      "test_donors": 8,
+      "structurally_common_genes": 1882
+    },
+    "roles": {
+      "C2": "three 512-gene nonoverlapping physically supported relational views: available only, no C2 biological qualification",
+      "C3": "four per-cell eight-other-gene panels with queries 1672–1675 excluded from student",
+      "C5": "synthetic same- and separate-nucleus ATAC observation and evaluation metadata",
+      "C4_C6": "no measured nonadditive fusion result",
+      "gene_ids": "2048 artificial addresses, not human repaired canonical 41238 registry"
+    },
+    "world_sha256": "30073c84b32f57ef65cbb5749e6a7ebdf79d95ad8837d25c9898cbd0e35c1eb5",
+    "observed_csr_sha256": "818047eb8b959fe87d51926e4bcd5a51e889dafb702eaa3ae576aabd542bb14f",
+    "artifact": {
+      "id": 13364085153,
+      "workflow_id": 41912111013,
+      "expires_utc": "2026-12-04T21:02:06Z",
+      "zip_size_bytes": 25023562,
+      "zip_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+      "members": {
+        "teacher_measured.npz": "f38133844359017174e070fb5e4b5afc48334db86c80f17e99ef7b54014d6cc1",
+        "student_qexcluded.npz": "a1fce3b79beb0d7632a0ffcdc9f28e94aadb4a594e9c76a8f6f6c48d1b99a0b5",
+        "roster_evaluation_only.npz": "0427f1221f55e607cf32abb827db1be1026274b2acf3134f3a05e9f513a48c18",
+        "atac_separate_nucleus_negative.npz": "26b35ab4e43ad3ee3e98c81d017b300dab2e70945a608e25154d9346ba2df321"
+      },
+      "sha_verification": "downloaded locally and receipt members verified in earlier Event74",
+      "owner_longterm_escrow": "NOT_VERIFIED"
+    },
+    "ci": [
+      {
+        "run": 41912111013,
+        "result": "SUCCESS"
+      },
+      {
+        "run": 41912111007,
+        "result": "SUCCESS"
+      },
+      {
+        "run": 41911945739,
+        "result": "HISTORICAL_EXPECTED_HARNESS_RED_74_PASS_1_FAIL__FIXED_ONLY_ASSERTION"
+      }
+    ],
+    "status_all_six": "UNASSESSED",
+    "training_performed": false,
+    "private_controller_exported": false
+  },
+  "v5_readiness": {
+    "pr": 548,
+    "head": "cde03f738c758694aa66211b5021603af943675b",
+    "base_pr": 224,
+    "base_head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+    "status": "DRAFT_OPEN__AUTHOR_CI_1_OF_1_GREEN__NO_INDEPENDENT_REVIEW__U0_ONLY",
+    "git_files": [
+      {
+        "pr": 548,
+        "head": "cde03f738c758694aa66211b5021603af943675b",
+        "path": "scripts/v5/jepa_synth2048_v5_readiness.py",
+        "blob_sha1": "6a6c219402d7acd24c1b54b3c2571133a08e4a0a",
+        "role": "exact SHA-bound FIT loader, q-gene canonical-axis restoration and guarded V5 u0 encoder/predictor forward"
+      },
+      {
+        "pr": 548,
+        "head": "cde03f738c758694aa66211b5021603af943675b",
+        "path": "scripts/v5/jepa_synth2048_collapse_sentinel_v1.py",
+        "blob_sha1": "9ac596d0be0ce2c03ecfe061b00fb829ae619594",
+        "role": "fail-only historical collapse/C2 48-gradient/anchor/gene-token sentinels"
+      },
+      {
+        "pr": 548,
+        "head": "cde03f738c758694aa66211b5021603af943675b",
+        "path": "tests/test_jepa_synth2048_v5_readiness.py",
+        "blob_sha1": "2d4eb4d5aa8bb806cc857e6581554dba3e69ef7d",
+        "role": "FIT SHA/negative queries/source identity/six-block u0"
+      },
+      {
+        "pr": 548,
+        "head": "cde03f738c758694aa66211b5021603af943675b",
+        "path": "tests/test_jepa_synth2048_collapse_sentinel_v1.py",
+        "blob_sha1": "0f0a94be7d237f48d98dd78ef75fe0da3c0533c6",
+        "role": "dead gradient, exact token/CELL collapse, low-rank abstention, absent biology"
+      },
+      {
+        "pr": 548,
+        "head": "cde03f738c758694aa66211b5021603af943675b",
+        "path": ".github/workflows/jepa-synth2048-v5-guarded-readiness.yml",
+        "blob_sha1": "f3e225fb9c044ce01331fa0470f1d7ebfbcef6ef",
+        "role": "pinned torch2.7 CPU test plus GitHub FIT fetch"
+      },
+      {
+        "pr": 548,
+        "head": "cde03f738c758694aa66211b5021603af943675b",
+        "path": "docs/agent/JEPA_20261104_SYNTH2048_EXACT_LATEST_MODEL_RUNTIME_AUDIT.md",
+        "blob_sha1": "6aed686ba7b942862f68cc603c537251cd9b21ac",
+        "role": "specific #224/#228/#234/#525 V5 source identity comparison"
+      },
+      {
+        "pr": 548,
+        "head": "cde03f738c758694aa66211b5021603af943675b",
+        "path": "docs/agent/JEPA_20261104_SYNTH2048_HISTORICAL_COLLAPSE_PREVENTION_AND_V5_EXECUTION_GATE.md",
+        "blob_sha1": "532afc1ae694671992f68eb4a1ec458d89ff3b9e",
+        "role": "historical collapses and actual STOP gate"
+      }
+    ],
+    "runtime_components": [
+      {
+        "pr": 224,
+        "head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+        "path": "src/sea_ad_jepa/v5/keyed_dropout_prototype_v2.py",
+        "blob_sha1": "0fd06ae0891625924761ef097b20ba6e11495cb3",
+        "role": "keyed six-IPB encoder 160w four heads V5 Philox reference"
+      },
+      {
+        "pr": 224,
+        "head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+        "path": "src/sea_ad_jepa/v4/ipb_jepa.py",
+        "blob_sha1": "3bd9d601a6779818a45c437cc21fd4a64749eb6e",
+        "role": "unchanged BlockPredictor and block-JEPA loss mechanics; low-level V4 filename not older actor"
+      },
+      {
+        "pr": 224,
+        "head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+        "path": "src/sea_ad_jepa/v5/inactive_guarded_update_v1.py",
+        "blob_sha1": "59647eb0122dfd98068844f68b6d48c2c33d67ca",
+        "role": "sole V5 guarded single optimizer/EMA proof route"
+      },
+      {
+        "pr": 224,
+        "head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+        "path": "src/sea_ad_jepa/v5/ema_presentation_v1.py",
+        "blob_sha1": "6f4442e25a6f891b9548b11403154233f616d842",
+        "role": "presentation EMA logic"
+      }
+    ],
+    "newer_comparison": "#228 #234 and #525 share identical selected encoder/predictor/guard/EMA blobs, but #525 supplies newer post-TD scientific target portfolio policy. Do not assert these were line-by-line audits of all later 535 PRs.",
+    "ci": {
+      "run": 41919004065,
+      "result": "SUCCESS",
+      "original_v5_tests": 103,
+      "new_integration_and_collapse_tests": 41,
+      "total_tests": 144
+    },
+    "u0": {
+      "actor": "KeyedIPBEncoderV2Reference+BlockPredictor",
+      "blocks": 6,
+      "width": 160,
+      "heads": 4,
+      "full_input_genes": 2048,
+      "hidden_query_genes": [
+        1672,
+        1673,
+        1674,
+        1675
+      ],
+      "test_cells": 2,
+      "training_cells": "TRAIN-only",
+      "measured_tokens_per_cell": 1988,
+      "student_visible_tokens_per_cell": 1193,
+      "jepa_loss_numeric_diagnostic": 2.069324493408203,
+      "optimizer_steps": 0,
+      "ema_steps": 0,
+      "teacher_gradients": 0,
+      "model_mutation": false,
+      "cell_rank": "NOT_ESTIMABLE_TWO_CELLS",
+      "teacher_gene_token_exact_collapse": 0,
+      "student_gene_token_exact_collapse": 0,
+      "biology_passes": 0,
+      "gpu_tested": false
+    },
+    "artifact": {
+      "id": 13365264230,
+      "run": 41919004065,
+      "expires_utc": "2026-12-04T21:46:13Z",
+      "zip_sha256": "2d8f9845f3e12b70d9f14ac43e95acc70998b5fb250fd621cc0379bf3d6226a6",
+      "members": {
+        "v5_synth2048_preflight.json": "e8fb6d5ee64d22227fb0f87737262d2fd6b1151f92abd4ce1945d87efa1fd029",
+        "v5_synth2048_u0.json": "37567d0d55d69f9761ef59b59ef35e8bf192a1154ca5152328c751bfcde65072"
+      },
+      "locally_downloaded_and_sha_verified": true
+    },
+    "known_limitations": [
+      "one-step inactive guarded V5 reference is not a multi-update trainer or authority issuer",
+      "Philox keyed dropout currently slow scalar CPU reference not qualified CUDA kernel",
+      "U0 two-cell geometry rank mathematically not estimable; do not report rank-one collapse",
+      "C2 and C3 views mechanically feasible, not learned teacher/student correct-cell biology",
+      "learned CELL factor collapse possible despite >99% fall in old loss",
+      "48 mandatory attention gradients were previously exact-zero under one old FP16 backward-inside-autocast path",
+      "low rank alone does not imply failed biology; retain independent real low-rank controls",
+      "full-dataset held-donor and source effect baselines yet to be run",
+      "separate controller private biological scoring/issuer not present in development FIT data"
+    ]
+  },
+  "scientific_target_lattice": {
+    "mission": "Alzheimer-related microglial cellular and molecular biology, donor/source-robust, transferable, rare/regulatory/query-local mechanisms; NOT missing gene reconstruction",
+    "coexistence": "C1 C2 C3 C5 can coexist; C6=C1+C3; C4=C1+C2+C3 with qualified C6 comparator; do not force a single C winner",
+    "completed_history": [
+      "TD19 source/depth shortcut and no universal same-gene prediction",
+      "TD57B 24/24 donor/source broad relational geometry",
+      "TD57C original fine one-third HVS FAIL",
+      "TD59 24/24 p95 mesoscopic geometry and 22/24 null maximum",
+      "PR314 spent once corrected real TD56 PASS TD57B PASS TD57C FAIL TD59 PASS",
+      "historical R5 per-cell q-excluded eight-other gene real donor-heldout evidence",
+      "Stage81A3 V4A 10x500 lower loss but planted factors FAIL; six-IPB only 3/8 arms physically trained",
+      "Stage81B JEPA_ONLY/ANCHOR_ONLY/CURRENT u100/u300/u500 anchor harmful 7.618x gene identity",
+      "PR336 9/9 independently audited C2 known-truth gate test-of-test (not learned C2)",
+      "PR341 designed the 13 prior blocking gate laws, PR340–369 implemented and hostile-tested gates",
+      "production synthetic V3.1.1 #344/#356 and Tasks1–3 reviewed/implemented, Task4 biology generator NOT inferred present",
+      "Original PR328 480x48 C1–C6 controller descriptions unqualified",
+      "PR348 V80 8-world/192-fit benchmark package preserved and no estimator; PR534 cross-host SHA RED"
+    ],
+    "prospective_missing": [
+      "authentic learned EMA teacher C2 broader/mesoscopic relation continuity",
+      "lawful partial evidence student recovers biology above wrong-cell/visible RNA and nuisance",
+      "held-donor/source-specific effects and rare programs",
+      "right-query versus wrong-query C3 learned incremental claim",
+      "independent C5 regulatory/perturbation validation",
+      "C6 and C4 nonadditive incremental and all-head interference",
+      "synthetic production Task4 formal STOP_A/B/C and external independently scored teacher/student learner"
+    ]
+  },
+  "active_scope_and_reviewer_queue": [
+    {
+      "pr": 547,
+      "owner": "Sol",
+      "head": "4bc7f9f31eaf1a7ccac49fdf45df7db9b0eef569",
+      "state": "AUTHOR_CI_GREEN__INDEPENDENT_MACHA_REVIEW_PENDING"
+    },
+    {
+      "pr": 548,
+      "owner": "Sol",
+      "head": "cde03f738c758694aa66211b5021603af943675b",
+      "state": "AUTHOR_CI_GREEN__INDEPENDENT_MACHA_REVIEW_PENDING"
+    },
+    {
+      "pr": 525,
+      "owner": "Sol",
+      "head": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "state": "MACHA_ACCEPT_SCOPED_INCREMENTAL_WITH_LIMITATIONS__P01_PORTFOLIO_IDENTITY_SELF_DECLARED__EXTERNAL_EXPECTED_PORTFOLIO_SHA_REQUIRED__L06_EXTERNAL_COMMIT_POINT_REQUIRED",
+      "review_url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525#issuecomment-6642956092"
+    },
+    {
+      "pr": 541,
+      "owner": "Macha",
+      "head": "3b86b9467506539776e04a6470fa8f2f7363f129",
+      "state": "HOLD_NEEDS_EVIDENCE_NO_TASK4_AUTHORITY"
+    },
+    {
+      "pr": 545,
+      "owner": "Sol",
+      "head": "f68513aeae83aaff7eae81dfda569fed3dd8359c",
+      "state": "AUTHOR_CI_GREEN__MACHA_REVIEW_PENDING_K02_K03"
+    },
+    {
+      "pr": 546,
+      "owner": "Sol",
+      "head": "97594b419d31ad746402d74307bf3b0a845c22c4",
+      "state": "INTENTIONALLY_RED_TESTS__MACHA_REVIEW_PENDING__FROZEN_TASK3_UNCHANGED"
+    },
+    {
+      "pr": 534,
+      "owner": "other",
+      "head": "165447a8bbdef8b427ca9cd0d29b51c36b9c1c1a",
+      "state": "EXACT_HEAD_CI_RED__FROZEN_V80_PORTABILITY_SHA_MISMATCH_NO_REPAIR_BY_REGENERATION"
+    },
+    {
+      "pr": 537,
+      "owner": "Sol",
+      "head": "7e8ff44120fd7acda9046d0f509fab504b4f73f3",
+      "state": "OLD_STAGE81A3_4K_GPU_JEPA_ONLY_PROPOSED_UNEXECUTED; NOT LATEST V5; NO_AUTO_RERUN"
+    }
+  ],
+  "next_agent_constraints": [
+    "READ Event75 handoff + this map and original Event68 before any new history audit",
+    "CHECK latest Github PR heads/comments/reviews; this is a snapshot, not a live monitoring agent",
+    "DO NOT rerun any completed TD real, 9/9 known truth, Stage81B, V79/V80 benchmark or source ETL",
+    "DO NOT merge independent tests/production or change accepted frozen Task3 originals in place",
+    "BEFORE any synthetic training, require independently reviewed finite/nonzero 48 gradients and moments, V5 multi-update guarded runtime, proof of no q descendants, GPU parity, donor-heldout biological baselines and separate decision",
+    "DO NOT open sealed V80 private controller; its original ZIP only known by byte size/hash and owner conversation link, separate escrow not established",
+    "DO NOT call the 1440x2048 fit fixture a calibrated human 41K world; absence of controller truth prevents genuine hidden-truth C1–C6 scoring",
+    "Keep user-facing reports concise; detailed provenance belongs in GitHub handoff and source map"
+  ],
+  "source_human_handoff_event75": "docs/agent/JEPA_20261104_EVENT75_SOL_COMPLETE_SYNTHETIC_V5_COLD_START_TAKEOVER_AND_NO_REPEAT.md",
+  "source_machine_handoff_event75": "results/target_discovery/unified_qualification_v1/JEPA_20261104_EVENT75_SOL_V5_SYNTHETIC_COMPLETE_SUCCESSOR_SOURCE_SCRIPT_DATA_RESULT_MAP.json"
+}

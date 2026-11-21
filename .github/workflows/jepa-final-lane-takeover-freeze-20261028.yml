@@ -1,0 +1,28 @@
+name: JEPA final lane takeover freeze custody and no-promotion
+on:
+  pull_request:
+    paths:
+      - 'docs/agent/JEPA_FINAL_LANE_TAKEOVER_FREEZE_20261028.md'
+      - 'docs/agent/chat_exclusive_20261028/PASTED_TEXT_V8A_SUCCESSOR_20261027_TEXT_EXTRACT.md'
+      - 'docs/agent/chat_exclusive_20261028/PASTED_TEXT_SYNTH_DOWNSTREAM_20261027_TEXT_EXTRACT.md'
+      - 'docs/agent/chat_exclusive_20261028/PASTED_SOURCES_CUSTODY_AND_SUPERSESSION.md'
+      - 'results/target_discovery/chat_exclusive_takeover_20261028/DUPLICATE_PASTED_TEXT_SOURCE_CUSTODY_V1.json'
+      - 'results/target_discovery/unified_qualification_v1/JEPA_FINAL_LANE_TAKEOVER_FREEZE_20261028.json'
+      - 'scripts/v5/verify_jepa_final_lane_takeover_freeze_20261028.py'
+      - 'tests/v5/test_verify_jepa_final_lane_takeover_freeze_20261028.py'
+      - '.github/workflows/jepa-final-lane-takeover-freeze-20261028.yml'
+permissions:
+  contents: read
+jobs:
+  final-source-custody:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==9.1.1
+      - name: Validate final no-repeat source and decision freeze
+        run: python scripts/v5/verify_jepa_final_lane_takeover_freeze_20261028.py
+      - name: Reject false acceptance, erased REDs and invented binary custody
+        run: python -m pytest -q tests/v5/test_verify_jepa_final_lane_takeover_freeze_20261028.py

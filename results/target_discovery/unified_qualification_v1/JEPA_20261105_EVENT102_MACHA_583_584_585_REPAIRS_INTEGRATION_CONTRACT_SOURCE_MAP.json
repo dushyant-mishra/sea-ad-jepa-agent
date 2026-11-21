@@ -1,0 +1,145 @@
+{
+  "schema": "JEPA_EVENT102_MACHA_583_584_585_REPAIRS_INTEGRATION_CONTRACT_SOURCE_MAP_V1",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "reviewed_heads": {
+    "sol_583": "76eddf86ea7d8e5d66731a36d889e502d633b181",
+    "sol_584": "11d8a70235cfc02d412db6b6158485732bdec246",
+    "sol_585": "1336899454b50c32f05d62886cffb4c493c79b09",
+    "base_582": "e71d864b0496de0b86fe7442ba51d53b44e0b225"
+  },
+  "verdicts": {
+    "583": "REPAIR_REQUIRED_SCOPED__ADAMW_GROUP_FIELDS_NOT_BOUND_TO_U0",
+    "584": "REPAIR_REQUIRED_SCOPED__19_EXECUTED_FILES_UNPINNED_AND_IMPORT_SHADOWS",
+    "585": "REPAIR_REQUIRED_SCOPED__PARTIAL_MANIFEST_PRE583_PREFLIGHT_PIN_PARTIAL_CONFIG__RECONCILE_WITH_588"
+  },
+  "repairs": {
+    "586": {
+      "branch": "fix/v5-583-adamw-group-fields-macha-20261105",
+      "red": "1479c2f153500c49902263117f30fc0c9865ab7f",
+      "fix": "810c34fbb368cc571e9d98dcf3be30f477cb6c96",
+      "preflight_blob_after": "a7a45fd51cf042d677c18731201f269404ff85e2",
+      "red_runs": {
+        "42160173779": "6 failed, 67 passed per Python",
+        "42160173677": "6 failed, 395 passed, 9 skipped per Python"
+      },
+      "green_runs": {
+        "42160859872": "73 passed",
+        "42160859863": "6 passed",
+        "42160859963": "19 + 401 passed, 9 skipped"
+      },
+      "green_jobs": "10/10"
+    },
+    "587": {
+      "branch": "fix/v5-584-executed-closure-macha-20261105",
+      "red": "d84d2ff6b9f7426bcda7f44775ec85c29d3306bd",
+      "fix": "c0ff2b675ec60c5a3f63db781118f4df6f7be78e",
+      "gate_blob_after": "6126722a028670538204ecfebac54ffa22a73022",
+      "red_runs": {
+        "42161726446": "5 failed, 13 passed per Python"
+      },
+      "green_runs": {
+        "42161932929": "24 passed + strict CLI FIT",
+        "42161932977": "pass"
+      },
+      "green_jobs": "4/4"
+    }
+  },
+  "integration_588": {
+    "branch": "integrate/v5-583-584-repairs-pipeline-identity-contract-macha-20261105",
+    "merge": "592c9a6b875dcadc5e415fb260d0348b59e9d20d",
+    "head": "48a9fce2642b736009b3a00b429e886d26dc72d2",
+    "contract_path": "results/target_discovery/unified_qualification_v1/JEPA_V5_DEV2048_PIPELINE_IDENTITY_CONTRACT_V1.json",
+    "contract_blob": "8cda74792b33d1cf861b7119c8c6c8faf12cb191",
+    "contract_sha256": "b43d0165654de2facf3ad97beb9215fe3c4df8054a59a968c171855901956b02",
+    "checker_blob": "91ef741d0c08a8bb4c0d5551d448cf97c712564b",
+    "journal_bindings": {
+      "gene_axis_sha256": "74586512c4ef76b48667a974a2769a8053664c58ec9921cd95da8b92fbf29f86",
+      "source_manifest_sha256": "b3032f1e3146742fb842f2add0b286d1add81cc89d3c734201e1feea5e5b1d8e",
+      "source_rights_sha256": "1a3e7780f181ef555de7e12c9fb8a779b0f64332180a2c40365d8ce6db1aaa5c",
+      "philox_contract_sha256": "d6cf2c6345bea4ac51ee1325523dc88738aa2105257dd0dda57c4e0650f25d87",
+      "config_sha256": "7ce98ae874ae885c6d0284d58000000be0bad47e46e7e481f8c7df3f3bb97c92"
+    },
+    "hosted": {
+      "jobs": "16/16 SUCCESS",
+      "contract_run": 42163086618,
+      "contract_run_result": "478 passed, 9 skipped per Python; CLI verified b43d0165"
+    },
+    "local": "34 contract tests; 478 passed 9 skipped non-stepping suites (WSL Python 3.11.15)"
+  },
+  "executed_closure": {
+    "declared_roots": 12,
+    "actor_closure_files": 31,
+    "with_pr548_adapter": 35,
+    "unpinned_by_584": 19,
+    "computational_v4": [
+      "src/sea_ad_jepa/v4/ipb_jepa.py",
+      "src/sea_ad_jepa/v4/gene_tokenizer.py",
+      "src/sea_ad_jepa/v4/contracts.py",
+      "src/sea_ad_jepa/v4/masking.py",
+      "src/sea_ad_jepa/v4/teacher_student_runtime.py"
+    ],
+    "identical_at": [
+      "PR224 9d00684e",
+      "#582 e71d864b",
+      "#584 11d8a702"
+    ],
+    "import_time_global_side_effects_in_unpinned": 0
+  },
+  "pr525_runtime_identity": {
+    "sha256": "ae5d7d753501debffcb1d868fa6289ed0ef49d65448514011377807b695c7710",
+    "identical_at": [
+      "origin/main",
+      "PR224",
+      "PR525",
+      "#582"
+    ],
+    "consequence": "cannot distinguish main's unguarded V5 from the guarded V5; recorded as NON_ACTOR"
+  },
+  "fit_measured": {
+    "zip_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+    "cells": 1440,
+    "donors": 36,
+    "addresses": 2048,
+    "q": [
+      1672,
+      1673,
+      1674,
+      1675
+    ],
+    "student_equals_teacher_at_same_address": true,
+    "naive_compaction_equals_student": false,
+    "split_cells": {
+      "train": 840,
+      "val": 280,
+      "test": 320
+    },
+    "measured_zero_count": 661484,
+    "unmeasured_nonzero_count": 0
+  },
+  "process_deviation": {
+    "what": "local WSL regression glob included PR224 tests/test_v5_*.py and tests/test_teacher_student_v5_*.py",
+    "files_with_step_backward_ema_call_sites": 9,
+    "test_functions_in_those_files": 74,
+    "run_outcome": "96 failed, 550 passed overall; passing tests in the 9 files may have executed tiny CPU steps",
+    "data_gpu_checkpoint": "none",
+    "repeated": false,
+    "hosted_ci_exposure": "none; #586/#587/#588 do not trigger jepa-synth2048-v5-guarded-readiness.yml or v5-inactive-runtime-step-guard.yml",
+    "corrective": "explicit non-stepping allowlist with static guard in #588 workflow"
+  },
+  "comments": {
+    "583": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/583#issuecomment-6677013450",
+    "584": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/584#issuecomment-6677013744",
+    "585": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/585#issuecomment-6677014033"
+  },
+  "not_reviewed": [
+    "Sol #589 4cb0717b"
+  ],
+  "execution": {
+    "merges": 0,
+    "training": false,
+    "gpu": false,
+    "real_rna": false,
+    "sealed_controller": false,
+    "stage4": false
+  }
+}

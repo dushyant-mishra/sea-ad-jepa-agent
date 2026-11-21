@@ -1,0 +1,100 @@
+{
+  "schema": "JEPA_20261103_MINI_C2_C3_TO_REAL_SYNTHETIC_TRUTH_INTEGRATION_STATUS_V1",
+  "date_utc": "2026-11-03",
+  "scope": "SOURCE_SELECTIVE_INTEGRATION_CLOSURE_AUDIT__NOT_EXECUTION_AUTHORIZATION",
+  "question": "Whether miniature C2 weak-student, C3 technical shortcut and q-leak observations were integrated and original synthetic observations tested through actual TD biological target producers+gates versus independent hidden truth",
+  "reported_mini_claims": [
+    {
+      "finding": "C2_WEAK_STUDENT_RECOVERY",
+      "record_status": "USER_REPORTED__EXACT_MINI_RECEIPT_NOT_LINKED_THIS_TURN",
+      "related_original": "TD56/57B/59 and PR314 relational measured geometry positive; learned C2 student recovery remains open"
+    },
+    {
+      "finding": "C3_TECHNICAL_SHORTCUT",
+      "record_status": "USER_REPORTED__EXACT_MINI_RECEIPT_NOT_LINKED_THIS_TURN",
+      "related_original": "R5 positive heldout measured q-other target vs technical+q, TD50S/55S negative q-coordinate transfer; no real current qualified C3"
+    },
+    {
+      "finding": "QUERY_INFORMATION_LEAKAGE",
+      "record_status": "USER_REPORTED__EXACT_MINI_RECEIPT_NOT_LINKED_THIS_TURN",
+      "related_original": "PR163/178 historical teacher leaks, PR474/478 and PR534 fixture hostile rights failures; main PR523 D1/V2C fixture scoped"
+    }
+  ],
+  "integration_records": [
+    {
+      "pr": 336,
+      "head": "b92f335b53a93805a5d05330dc0d61f0479b1dcf",
+      "component": "SEALED_NINE_SYNTHETIC_RELATIONAL_KNOWN_TRUTH_TEST_OF_TEST",
+      "performed": true,
+      "against_truth": true,
+      "biological_teacher_target_construction": false,
+      "full_actual_td_chain": false,
+      "learned_student": false,
+      "scope": "TEST_QUALIFICATION_ONLY"
+    },
+    {
+      "pr": 369,
+      "head": "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+      "component": "ISOLATED_G2_G6_G8_R1_GEOMETRY_SEALED_CROSSGATE_BATTERY",
+      "performed": true,
+      "against_truth": true,
+      "biological_teacher_target_construction": false,
+      "full_actual_td_chain": false,
+      "learned_student": false,
+      "scope": "TEST_OF_TEST_REPAIR_NOT_REAL_PRODUCER"
+    },
+    {
+      "pr": 469,
+      "head": "7a6477244dfc817d929e210c38c1ea4b2d1a1927",
+      "run": 40559858670,
+      "component": "PR328_EPHEMERAL_120x24_SYNTHETIC_FIT_TO_ACTUAL_TASK5_CASEBUNDLE_AND_PORTFOLIO_BRIDGE",
+      "performed": true,
+      "against_truth": false,
+      "biological_teacher_target_construction": false,
+      "full_actual_td_chain": false,
+      "learned_student": false,
+      "scope": "PLANTED_C1_LABEL__NO_CONTROLLER_TRUTH_CONSUMED"
+    },
+    {
+      "pr": 534,
+      "head": "165447a8bbdef8b427ca9cd0d29b51c36b9c1c1a",
+      "component": "FROZEN_PR328_480x48_OBSERVATIONS_30_TRAIN_FIT_ONLY_TO_Q_EXCLUDED_DEPTH_AND_TASK5_PLUS_V80_SUPPORT_STRESS",
+      "performed": "PR328_RIGHTS_COMPOSITION_AND_SUPPORT_CHECKS_EXECUTED; V80_IDENTITY_EXACT_HEAD_FAILED",
+      "against_truth": false,
+      "biological_teacher_target_construction": false,
+      "full_actual_td_chain": false,
+      "learned_student": false,
+      "scope": "CI_TWO_FAILURES_V80_FROZEN_HASH__FIXTURE_NO_ESTIMATOR"
+    },
+    {
+      "pr": 526,
+      "head": "b7761a3e7578f51db17fea26dae607aec299c1de",
+      "component": "FIXED_SYNTHETIC_Q_OTHER_EIGHT_OBSERVABILITY",
+      "performed": true,
+      "against_truth": false,
+      "biological_teacher_target_construction": "PANEL_CONSTRUCTION_ARITHMETIC_ONLY_SUPPORT_PROXY_FLAW",
+      "full_actual_td_chain": false,
+      "learned_student": false,
+      "scope": "PR531_SEMANTICS_CORRECTION_APPLIES"
+    }
+  ],
+  "prior_existing_science_guard": "PR460_20261027_COMMENTS_6450069779_6449538165_AND_PR469_SOURCE_AUDIT__TEACHER_CONSTRUCTS_MEASURED_TARGET_NOT_SURROGATE_PREDICTOR",
+  "gap": "NOT_DEMONSTRATED__SAME_EXISTING_SYNTHETIC_FIT_OBS_TO_MEASURED_C2_C3_TARGET_PRODUCER_TO_REAL_GATE_RESULTS_TO_SEPARATELY_SEALED_CONTROLLER_TRUTH; NO_LEARNED_STUDENT_RECOVERY",
+  "narrow_next_task": "USE_EXISTING_PR328_FIT_AND_PR318_321_SEALED_TRUTH_AND_PR313_369_GATE_INTERFACE; ADD_ONLY_MISSING_ACTUAL_MEASURED_TARGET_CONSTRUCTION_AND_RECEIPTED_SCORED_INTEGRATION; ZERO_OPTIMIZER_FIRST; LEARNED_STUDENT_ONLY_SEPARATE_AUTHORITY",
+  "control_issues": [
+    "PR328_SUPPORT_IS_DETECTION_PROXY_NOT_TRUE_SOURCE_ASSAY_SUPPORT",
+    "PR534_V80_HASH_REPLAY_RED_ORIGINAL_PRECEDENT_PR294",
+    "PR338_REAL_GATE_COMPARATORS_AND_MARGINS_13_BLOCKED",
+    "NO_AUTHENTICATED_REAL_SOURCE_RIGHTS_ISSUER",
+    "FIXTURE_LABEL_NOT_BIOLOGICAL_QUALIFICATION"
+  ],
+  "no_repeat": [
+    "DO_NOT_REBUILD_SYNTHETIC_WORLD",
+    "DO_NOT_REPEAT_PHASE2_NINE_CHALLENGE",
+    "DO_NOT_REPEAT_PR469_FIXTURE_BRIDGE",
+    "DO_NOT_COUNT_PR534_WRONG_Q_VIEW_CHANGE_AS_LEARNED_SPECIFICITY",
+    "DO_NOT_RERUN_PR314"
+  ],
+  "source_doc": "docs/agent/JEPA_20261103_MINIATURE_C2_C3_AND_SYNTHETIC_TRUTH_INTEGRATION_STATUS.md",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

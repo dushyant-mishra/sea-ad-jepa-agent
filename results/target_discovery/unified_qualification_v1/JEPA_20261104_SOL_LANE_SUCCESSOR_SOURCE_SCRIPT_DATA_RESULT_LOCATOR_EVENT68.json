@@ -1,0 +1,580 @@
+{
+  "schema": "JEPA_SOL_LANE_SUCCESSOR_SOURCE_SCRIPT_DATA_RESULT_LOCATOR_EVENT68_V1",
+  "created_date": "2026-11-04",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "purpose": "Searchable source locator for existing historical audits, scripts, data, results and active defects, not a raw-data escrow or new review",
+  "status": "SOURCE_SCOPED_CURATED_INDEX__NOT_FULL_PR_DIFF_REVIEW__NO_NEW_SCIENCE",
+  "source_human_handoff": "docs/agent/JEPA_20261104_SOL_LANE_SUCCESSOR_DETAILED_OPERATIONAL_HANDOFF_EVENT68.md",
+  "source_canonical_index": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "reviewers": {
+    "count": 2,
+    "sol": "review Macha-authored code/tests only",
+    "macha": "review Sol-authored code/tests only",
+    "third_reviewer": false,
+    "owner": "separate decision/authorization lane"
+  },
+  "coverage": {
+    "historical_pr_metadata": 535,
+    "nearterm_prs": 108,
+    "chronology_pre_event68": 67,
+    "source_locator_entries": 60,
+    "original_binary_bytes_in_git": false
+  },
+  "current_head_snapshot": {
+    "audit_before_event68": "8ec4a5545b29def5edfdb48b18501c41b355d744",
+    "handoff_before_event68": "ed682a0b64b05a1bd152ea23112485914f3c109f",
+    "task4_K02K03": "f68513aeae83aaff7eae81dfda569fed3dd8359c",
+    "task3_test_only": "97594b419d31ad746402d74307bf3b0a845c22c4"
+  },
+  "identity_note": "PR322/PR460 heads advance when this document is written. Read live GitHub heads, not these static parent snapshots.",
+  "source_locator": [
+    {
+      "id": "canon_chronology",
+      "kind": "AUDIT",
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_CONTINUOUS_CHRONOLOGY_PROGRESS_V1.json",
+      "ref": "PR322",
+      "classification": "APPEND_ONLY_SOURCE",
+      "note": "67 prior events; event68 added in this turn"
+    },
+    {
+      "id": "canon_master_index",
+      "kind": "AUDIT",
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json",
+      "ref": "PR322",
+      "classification": "CURATED_NO_REPEAT",
+      "note": "Contains source-scoped audits and 28 code/data/results references; not exhaustive directory"
+    },
+    {
+      "id": "canon_science_narrative",
+      "kind": "AUDIT",
+      "path": "docs/agent/JEPA_20261104_END_TO_END_SCIENTIFIC_NARRATIVE_AND_DECISION_LINEAGE_V1.md",
+      "ref": "PR322",
+      "classification": "SOURCE_GROUNDED",
+      "note": "June-Nov project biological and architecture evolution"
+    },
+    {
+      "id": "canon_history_census_535",
+      "kind": "AUDIT",
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_COMPLETE_535_PR_AND_OPEN_ISSUE_METADATA_CENSUS_V1.json",
+      "ref": "PR322",
+      "classification": "METADATA_ONLY",
+      "note": "535 PR metadata objects at snapshot, not full diff or science review"
+    },
+    {
+      "id": "canon_pr_description_535",
+      "kind": "AUDIT",
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_ALL_535_PR_DESCRIPTION_DISPOSITION_REGISTER_V1.json",
+      "ref": "PR322",
+      "classification": "METADATA_ONLY",
+      "note": "Do not infer scientific claims from PR body alone"
+    },
+    {
+      "id": "canon_recent_108",
+      "kind": "AUDIT",
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_LAST_14_DAYS_108_PR_RESULT_PRECEDENCE_AND_NO_REPEAT_V1.json",
+      "ref": "PR322",
+      "classification": "SUPERSESSION_REGISTER",
+      "note": "108 PRs Oct24-Nov4; corrected work-incomplete claims"
+    },
+    {
+      "id": "canon_recent_correction",
+      "kind": "AUDIT",
+      "path": "docs/agent/JEPA_20261104_RECENT_TWO_WEEK_SCIENCE_RESOLUTIONS_AND_CORRECTED_NEXT_WORK_V1.md",
+      "ref": "PR322",
+      "classification": "CONTROLLING_CORRECTION",
+      "note": "Supersedes earlier wrong next-actions"
+    },
+    {
+      "id": "canon_event59_takeover",
+      "kind": "AUDIT",
+      "path": "docs/agent/JEPA_20261104_GPT_LANE_COMPLETE_COLD_START_TAKEOVER_AND_NO_REPEAT_V1.md",
+      "ref": "PR322",
+      "classification": "OLDER_COLD_START",
+      "note": "Read if deeper source needed; newer event63-68 supersede live queue"
+    },
+    {
+      "id": "canon_event62_macha",
+      "kind": "AUDIT",
+      "path": "docs/agent/JEPA_UNIFIED_LANE_CHRONOLOGY_AND_NEXT_ACTIONS_20261104.md",
+      "ref": "PR322",
+      "classification": "TASK0_12_FORMAL_PLAN",
+      "note": "Tasks 6-12 formal qualification distinct from already implemented downstream mechanics"
+    },
+    {
+      "id": "canon_event63_downstream",
+      "kind": "AUDIT",
+      "path": "docs/agent/JEPA_20261104_ORIGINAL_DOWNSTREAM_IMPLEMENTATION_RECOVERY_AND_EXACT_NEXT_JOINS_V1.md",
+      "ref": "PR322",
+      "classification": "DO_NOT_REBUILD",
+      "note": "Original V4/V5 runtime, portfolio, synthetic experiments and joins"
+    },
+    {
+      "id": "canon_event66_task4",
+      "kind": "AUDIT",
+      "path": "docs/agent/JEPA_20261104_TASK4_K02_K03_AND_FROZEN_TASK3_HISTORY_RED_EVENT66.md",
+      "ref": "PR322",
+      "classification": "LATEST_VERIFIED_DEFECT_SOURCE",
+      "note": "K02/K03 green author CI, Task3 helper R1/R2 RED"
+    },
+    {
+      "id": "canon_event67_two_reviewer",
+      "kind": "AUDIT",
+      "path": "docs/agent/JEPA_20261104_TWO_REVIEWER_ONLY_CORRECTION_EVENT67.md",
+      "ref": "PR322",
+      "classification": "OWNER_CONTROLLING_RULE",
+      "note": "Only Sol/GPT and Macha review source; no third reviewer"
+    },
+    {
+      "id": "canon_asset_hash_12",
+      "kind": "AUDIT",
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_PROJECT_LOCAL_ASSET_SHA256_CUSTODY_V1.json",
+      "ref": "PR322",
+      "classification": "HASH_ONLY",
+      "note": "Original 12 project upload identities; no binary data committed"
+    },
+    {
+      "id": "canon_event65_v80",
+      "kind": "AUDIT",
+      "path": "docs/agent/JEPA_20261104_V80_ORIGINAL_ARTIFACT_RESCUE_AND_FIT_ONLY_PORTABILITY_TRIAGE_EVENT65.md",
+      "ref": "PR322",
+      "classification": "BYTE_RECOVERED_NOT_ESCROWED",
+      "note": "V80 ZIP SHA exact; controller sealed only, separate durable vault not verified"
+    },
+    {
+      "id": "canon_event68_successor",
+      "kind": "AUDIT",
+      "path": "docs/agent/JEPA_20261104_SOL_LANE_SUCCESSOR_DETAILED_OPERATIONAL_HANDOFF_EVENT68.md",
+      "ref": "PR322",
+      "classification": "DETAILED_NEXT_AGENT",
+      "note": "Chronological and operational guide, current RED and review queue"
+    },
+    {
+      "id": "canon_live_handoff",
+      "kind": "AUDIT",
+      "path": "docs/agent/JEPA_NEW_AGENT_LIVE_POINTER_20261029.md",
+      "ref": "PR460",
+      "classification": "LATEST_PREPENDED_FIRST_READ",
+      "note": "Live pointer should always start with latest date and current #322 SHA"
+    },
+    {
+      "id": "spec_unified_379",
+      "kind": "PLAN",
+      "path": "docs/superpowers/specs/2026-10-14-unified-td-qualification-downstream-custody-architecture-v1.md",
+      "ref": "3064ca545f0c94859ea989cd49a04fcbd5b9a303",
+      "classification": "EXTERNAL_PR_REF",
+      "note": "Fetch PR379 ref; absent audit branch"
+    },
+    {
+      "id": "plan_unified_380",
+      "kind": "PLAN",
+      "path": "docs/superpowers/plans/2026-10-14-unified-td-qualification-downstream-custody-v1-implementation.md",
+      "ref": "5b6bf07e7d8b69b286ea430b09765a5ee4743325",
+      "classification": "EXTERNAL_PR_REF",
+      "note": "Original Tasks0–12 not a green training grant"
+    },
+    {
+      "id": "stage81b_source",
+      "kind": "BIOLOGY",
+      "path": "docs/history/docs/v4/CURRENT_STATE_HANDOFF.md",
+      "ref": "main",
+      "classification": "ORIGINAL_EXECUTION",
+      "note": "JEPA_ONLY/CURRENT/ANCHOR arms already run; anchor harmful"
+    },
+    {
+      "id": "stage81b_no_repeat",
+      "kind": "BIOLOGY",
+      "path": "docs/agent/JEPA_20261104_STAGE81B_INTRINSIC_RARE_CONTEXT_AND_TARGET_LEARNABILITY_NO_REPEAT.md",
+      "ref": "PR322",
+      "classification": "CORRECTED_HISTORICAL",
+      "note": "No rerun Stage81B for a supposed first student"
+    },
+    {
+      "id": "real_td_replay",
+      "kind": "BIOLOGY",
+      "path": "docs/agent/TD_CORRECTED_REPLAY_OUTCOME_7819aabd_20261012/TD_CORRECTED_REPLAY_OUTCOME.md",
+      "ref": "c6899a2910244a0352c0c57e7aea6e3026191da1",
+      "classification": "SPENT_REAL_RUN",
+      "note": "Corrected real broad/meso result, negative fine-local; no rerun"
+    },
+    {
+      "id": "g7_terminal",
+      "kind": "BIOLOGY",
+      "path": "docs/agent/TARGET_DISCOVERY_NEW_AGENT_HANDOFF_20261012.md",
+      "ref": "188b86386660e43513ba494e60bd2d3cd736232e",
+      "classification": "SPENT_REAL_RUN",
+      "note": "Original G7 real NOT_ESTIMABLE due disjoint structural cell overlap"
+    },
+    {
+      "id": "stage81a3_jepa",
+      "kind": "SCRIPT",
+      "path": "scripts/v4/stage81a3_ipb_jepa_feasibility.py",
+      "ref": "main",
+      "classification": "EXISTING_EXPERIMENT",
+      "note": "Original stopped six-IPB three-arm source, not new GPU"
+    },
+    {
+      "id": "stage81a3_biology",
+      "kind": "SCRIPT",
+      "path": "scripts/v4/stage81a3_synthetic_geometry_escape.py",
+      "ref": "main",
+      "classification": "EXISTING_EXPERIMENT",
+      "note": "V4A early negative recovery"
+    },
+    {
+      "id": "stage81a3_ema",
+      "kind": "SCRIPT",
+      "path": "scripts/v4/stage81a3_ema_bootstrap_disambiguation.py",
+      "ref": "main",
+      "classification": "EXISTING_EXPERIMENT",
+      "note": "Faster EMA non-rescue source"
+    },
+    {
+      "id": "stage81a3_causal",
+      "kind": "SCRIPT",
+      "path": "scripts/v4/stage81a3_rlc_causal_fast_probe.py",
+      "ref": "main",
+      "classification": "EXISTING_EXPERIMENT",
+      "note": "Three completed RLC arms only"
+    },
+    {
+      "id": "full104_expression",
+      "kind": "SCRIPT",
+      "path": "scripts/v4/materialize_full104_phase2_expression.py",
+      "ref": "main",
+      "classification": "NOT_PRODUCTION_ACCEPTED",
+      "note": "4.55M scale producer, not new permission to read"
+    },
+    {
+      "id": "full104_metadata",
+      "kind": "SCRIPT",
+      "path": "scripts/v4/build_full104_production_adapter_metadata.py",
+      "ref": "main",
+      "classification": "EXISTING_PARTIAL",
+      "note": "Adapter metadata 50/47 rows still distinct"
+    },
+    {
+      "id": "full104_binder",
+      "kind": "SCRIPT",
+      "path": "scripts/v5_anticheat/bind_full104_expression_blocks_v4.py",
+      "ref": "PR274",
+      "classification": "EXISTING_CODE",
+      "note": "8,915 blocks binding full104 source"
+    },
+    {
+      "id": "full104_dimensions",
+      "kind": "SCRIPT",
+      "path": "scripts/v5_anticheat/derive_full_stream_dimension_family_v1.py",
+      "ref": "PR270",
+      "classification": "EXISTING_CODE",
+      "note": "D shared/private/obs law, no final numeric dimension"
+    },
+    {
+      "id": "canonical_v5_runtime",
+      "kind": "SCRIPT",
+      "path": "src/sea_ad_jepa/v5/canonical_runtime.py",
+      "ref": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+      "classification": "GUARDED_MECHANICS",
+      "note": "Actual optimizer/EMA/source state and restart implemented"
+    },
+    {
+      "id": "v4_runtime",
+      "kind": "SCRIPT",
+      "path": "src/sea_ad_jepa/v4/teacher_student_runtime.py",
+      "ref": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "classification": "EXISTING_CODE",
+      "note": "Teacher/student runtime; external training permission not integrated"
+    },
+    {
+      "id": "v4_checkpoint",
+      "kind": "SCRIPT",
+      "path": "src/sea_ad_jepa/v4/teacher_student_checkpoint.py",
+      "ref": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "classification": "EXISTING_CODE",
+      "note": "Checkpoint restart and chronological safeguards"
+    },
+    {
+      "id": "v4_ema",
+      "kind": "SCRIPT",
+      "path": "src/sea_ad_jepa/v4/ema.py",
+      "ref": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "classification": "EXISTING_CODE",
+      "note": "Do not author new presentation EMA"
+    },
+    {
+      "id": "v4_ipb",
+      "kind": "SCRIPT",
+      "path": "src/sea_ad_jepa/v4/ipb_jepa.py",
+      "ref": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "classification": "EXISTING_CODE",
+      "note": "Original six-block molecular encoder"
+    },
+    {
+      "id": "case_bundle",
+      "kind": "SCRIPT",
+      "path": "scripts/v5/td_unified/casebundle_v1.py",
+      "ref": "bbdf9a90973303e41cee6d8bd9d05de38e9b828a",
+      "classification": "FIXTURE_ONLY",
+      "note": "Task5 9-field observation states; no A7 external auth"
+    },
+    {
+      "id": "mode_equivalence",
+      "kind": "SCRIPT",
+      "path": "scripts/v5/td_unified/mode_equivalence_v1.py",
+      "ref": "bbdf9a90973303e41cee6d8bd9d05de38e9b828a",
+      "classification": "FIXTURE_ONLY",
+      "note": "Same-process mode roster not independent parity"
+    },
+    {
+      "id": "post_td_bridge",
+      "kind": "SCRIPT",
+      "path": "scripts/v5/td_unified/post_td_fixture_bridge_v1.py",
+      "ref": "bbdf9a90973303e41cee6d8bd9d05de38e9b828a",
+      "classification": "FIXTURE_ONLY",
+      "note": "#469 actually executed PR328 observables→portfolio"
+    },
+    {
+      "id": "gate_registry",
+      "kind": "SCRIPT",
+      "path": "scripts/v5/td_unified/gate_registration_v1.py",
+      "ref": "729a0b4c67694baa25b46badce476df7a4c98a7d",
+      "classification": "NOT_REGISTERED",
+      "note": "Task6 nine units metadata-only"
+    },
+    {
+      "id": "target_bundle",
+      "kind": "SCRIPT",
+      "path": "scripts/v5/td_unified/target_bundle_v1.py",
+      "ref": "729a0b4c67694baa25b46badce476df7a4c98a7d",
+      "classification": "FIXTURE_NONE",
+      "note": "Content verified NONAUTHOR none; selected source refuses"
+    },
+    {
+      "id": "downstream_contract",
+      "kind": "SCRIPT",
+      "path": "scripts/v5/td_unified/downstream_contract_v1.py",
+      "ref": "729a0b4c67694baa25b46badce476df7a4c98a7d",
+      "classification": "FIXTURE_ABSTENTION",
+      "note": "No optimizer, no EMA, no training"
+    },
+    {
+      "id": "posttd_harness",
+      "kind": "SCRIPT",
+      "path": "scripts/v5/jepa_post_td_harness_contract_v1.py",
+      "ref": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "classification": "AUTHOR_CI_GREEN_REVIEW_PENDING",
+      "note": "TargetPortfolio/C6-C4/teacher/student policy already exists"
+    },
+    {
+      "id": "posttd_tournament",
+      "kind": "SCRIPT",
+      "path": "scripts/v5/jepa_post_td_tournament_controller_v1.py",
+      "ref": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "classification": "AUTHOR_CI_GREEN_REVIEW_PENDING",
+      "note": "Wrong-q, rare, NE and matched compute controls"
+    },
+    {
+      "id": "posttd_ema",
+      "kind": "SCRIPT",
+      "path": "scripts/v5/jepa_post_td_presentation_ema_v1.py",
+      "ref": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "classification": "AUTHOR_CI_GREEN_REVIEW_PENDING",
+      "note": "Exact integer presentation count and resume"
+    },
+    {
+      "id": "task4_barrier_K02K03",
+      "kind": "SCRIPT",
+      "path": "scripts/v5/td_unified/task4_authority_barrier_v1.py",
+      "ref": "f68513aeae83aaff7eae81dfda569fed3dd8359c",
+      "classification": "4_WORKFLOWS_GREEN_REVIEW_PENDING",
+      "note": "Sol repair on Macha #544 test-only RED, no authority"
+    },
+    {
+      "id": "task3_red_only",
+      "kind": "TEST",
+      "path": "tests/v5/td_unified/test_task3_frozen_history_custody_provenance_sol_red.py",
+      "ref": "97594b419d31ad746402d74307bf3b0a845c22c4",
+      "classification": "INTENTIONAL_RED",
+      "note": "2 failures in original Task3 test suites, no code changed"
+    },
+    {
+      "id": "task4_K02_test",
+      "kind": "TEST",
+      "path": "tests/v5/td_unified/test_task4_k02_forged_history_custody_macha_red.py",
+      "ref": "b6295751246da82f823712c7c91dc71d86dc34d4",
+      "classification": "ORIGINAL_RED_PRESERVED",
+      "note": "4 false C3 PASS cases, now green on #545"
+    },
+    {
+      "id": "task4_K03_test",
+      "kind": "TEST",
+      "path": "tests/v5/td_unified/test_task4_k03_caller_supplied_custody_store_macha_red.py",
+      "ref": "b6295751246da82f823712c7c91dc71d86dc34d4",
+      "classification": "ORIGINAL_RED_PRESERVED",
+      "note": "2 false C1 PERSISTENT_EXTERNAL cases, now green on #545"
+    },
+    {
+      "id": "v79_masked_script",
+      "kind": "SCRIPT",
+      "path": "scripts/v79/run_v79_s174_structure_replay_masked.py",
+      "ref": "PR287",
+      "classification": "SPENT_DEVELOPMENT",
+      "note": "S174 measured-zero differs from structural absence"
+    },
+    {
+      "id": "v79_immutable_worlds",
+      "kind": "RESULT",
+      "path": "results/v79/v2_core_realization_audit_freeze_v1/REALIZED_WORLDS_V1_COMPLETE_SHA256_LEDGER.tsv",
+      "ref": "PR297",
+      "classification": "IMMUTABLE_ORIGINAL",
+      "note": "498 world files, original Windows realization ledger"
+    },
+    {
+      "id": "v80_benchmark_script",
+      "kind": "SCRIPT",
+      "path": "scripts/v80/v80_sparse_positive_benchmark.py",
+      "ref": "e99d1f214e76a5e3911eea438c32a1e60f70754f",
+      "classification": "ORIGINAL_FROZEN",
+      "note": "Benchmark family eight worlds, no estimator qualified"
+    },
+    {
+      "id": "v80_original_receipt",
+      "kind": "RESULT",
+      "path": "results/v80/sparse_positive/V80_SPARSE_POSITIVE_PACKAGE_RECEIPT_V1.json",
+      "ref": "e99d1f214e76a5e3911eea438c32a1e60f70754f",
+      "classification": "ORIGINAL_IMMUTABLE",
+      "note": "Original benchmark 16a08b29 and fit 77f89e83; original controller sealed"
+    },
+    {
+      "id": "v80_current_sha_red",
+      "kind": "RESULT",
+      "path": "docs/agent/JEPA_20261104_V80_ORIGINAL_ARTIFACT_RESCUE_AND_FIT_ONLY_PORTABILITY_TRIAGE_EVENT65.md",
+      "ref": "PR322",
+      "classification": "RED_UNEXPLAINED",
+      "note": "#534 cross-host SHA faf80c89 differs despite Python/NumPy pinned"
+    },
+    {
+      "id": "foundation_matrix",
+      "kind": "RESULT",
+      "path": "results/v4/FOUNDATION_MATRIX_LABEL_IDENTIFIABILITY_V2.csv",
+      "ref": "PR276",
+      "classification": "HISTORICAL_RESULT",
+      "note": "34/42 broad ontology available, not source invariance"
+    },
+    {
+      "id": "local_checkpoint_result",
+      "kind": "RESULT",
+      "path": "results/v4/stage81a3_ipb_jepa_feasibility.json",
+      "ref": "OWNER_HISTORICAL_LOCAL",
+      "classification": "LOCAL_SOURCE_NOT_PROVEN_MAIN",
+      "note": "Only 3 original completed arms, exact SHA in master index"
+    },
+    {
+      "id": "project_asset_manifest",
+      "kind": "ASSET",
+      "path": "results/target_discovery/unified_qualification_v1/JEPA_20261104_PROJECT_LOCAL_ASSET_SHA256_CUSTODY_V1.json",
+      "ref": "PR322",
+      "classification": "SHA_ONLY",
+      "note": "All uploaded archives including 410MB calibration and 608MB two-part discovery source"
+    },
+    {
+      "id": "original_v80_fit_zip",
+      "kind": "ASSET",
+      "path": "V80-original-fit-transport-artifact.zip",
+      "ref": "OWNER_CONVERSATION_FILES",
+      "classification": "RECOVERED_SHA_VERIFIED",
+      "note": "Archive ZIP SHA 4cec8966...; not verified external escrow"
+    },
+    {
+      "id": "original_v80_controller_zip",
+      "kind": "ASSET",
+      "path": "V80-original-controller-transport-SEALED.zip",
+      "ref": "OWNER_CONTROLLER_ONLY_CONVERSATION_FILE",
+      "classification": "OPAQUE_ZIP_SHA_ONLY",
+      "note": "ZIP SHA 184d58c6...; controller CONTENT NEVER opened; independent secure vault still required"
+    },
+    {
+      "id": "original_v80_receipt_zip",
+      "kind": "ASSET",
+      "path": "V80-original-receipt-artifact.zip",
+      "ref": "OWNER_CONVERSATION_FILES",
+      "classification": "RECOVERED_SHA_VERIFIED",
+      "note": "Receipt ZIP SHA 97e264cf...; no controller disclosure"
+    },
+    {
+      "id": "casebundle_source_map",
+      "kind": "REVIEW",
+      "path": "docs/agent/JEPA_20261104_ORIGINAL_DOWNSTREAM_IMPLEMENTATION_RECOVERY_AND_EXACT_NEXT_JOINS_V1.md",
+      "ref": "PR322",
+      "classification": "NO_NEW_ADAPTER",
+      "note": "#535 15-field mapping no Level4 read by default"
+    }
+  ],
+  "open_review_queue": [
+    {
+      "pr": 545,
+      "author": "Sol",
+      "reviewer": "Macha",
+      "status": "HOSTED_4_OF_4_GREEN__INDEPENDENT_REVIEW_PENDING"
+    },
+    {
+      "pr": 546,
+      "author": "Sol",
+      "reviewer": "Macha",
+      "status": "TEST_ONLY_INTENTIONAL_RED__TASK3_FREEZE_UNCHANGED"
+    },
+    {
+      "pr": 544,
+      "author": "Macha",
+      "reviewer": "Sol",
+      "status": "ORIGINAL_K02_K03_TESTS__RECIPROCAL_REVIEW_PENDING"
+    },
+    {
+      "pr": 525,
+      "author": "Sol",
+      "reviewer": "Macha",
+      "status": "HOSTED_3_OF_3_GREEN__LATEST_HEAD_INDEPENDENT_REVIEW_PENDING"
+    },
+    {
+      "pr": 538,
+      "author": "Sol",
+      "reviewer": "Macha",
+      "status": "SCOPED_D1_ALIAS_INCREMENT__INDEPENDENT_REVIEW_PENDING"
+    },
+    {
+      "pr": 536,
+      "author": "Sol",
+      "reviewer": "Macha",
+      "status": "C3_MEASURED_C2_REFUSAL__INDEPENDENT_REVIEW_PENDING"
+    }
+  ],
+  "hard_gates": {
+    "task4": "HOLD_NEEDS_EVIDENCE",
+    "task5_external_A7": false,
+    "task6_authoritative_units": 0,
+    "task7_selected": false,
+    "task8_selected_certification": false,
+    "training_authorized": false,
+    "stage4_authorized": false
+  },
+  "source_access": {
+    "new_Level4_read_authorized": false,
+    "new_synthetic_world_authorized": false,
+    "training_authorized": false,
+    "v80_original_controller_external_durable_vault_verified": false,
+    "v80_github_expiry": "2026-11-13T03:02:00Z"
+  },
+  "no_repeat": [
+    "Stage81B existing u100,u300,u500 JEPA_ONLY/CURRENT/ANCHOR",
+    "V5 #147 actual bounded synthetic training and #224 guarded runtime",
+    "Task5 #451 fixture and #469 real synthetic fixture interoperability",
+    "Task6 #447 nine-unit inventory, Task7 none, Task8 abstention",
+    "#535 15-field CaseBundle mapping; no new adapter until decision-bearing experiment",
+    "Original PR59/69 387 counts/8915 metadata reads",
+    "PR314 corrected real TD replay, G7 original NOT_ESTIMABLE",
+    "PR336 nine-case test of test, V79 Q08, V80 frozen 8/192 benchmark",
+    "Existing #525 architecture/EMA, #522-524 D1/V2C",
+    "Original HVS/SEA-AD mapping #509, NPH52 source/rights #513/#528"
+  ],
+  "append_only_protocol": "Add source-pinned event to chronology; add machine index key; prepend short current READ FIRST to PR460; preserve old events and original RED tests; check exact-head CI; no authority promotion."
+}

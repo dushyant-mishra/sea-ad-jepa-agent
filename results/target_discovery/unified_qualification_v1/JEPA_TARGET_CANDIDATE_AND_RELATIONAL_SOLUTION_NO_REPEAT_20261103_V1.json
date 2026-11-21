@@ -1,0 +1,227 @@
+{
+  "schema": "JEPA_TARGET_CANDIDATE_AND_RELATIONAL_SOLUTION_NO_REPEAT_20261103_V1",
+  "date_utc": "2026-11-03",
+  "canonical_audit_pr": 322,
+  "active_handoff_pr": 460,
+  "source_snapshot_main": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb",
+  "type": "ORIGINAL_SOURCE_SELECTIVE_RECONCILIATION__NO_NEW_RESULT",
+  "distinct_target_domains": [
+    "BIOLOGICAL_CANDIDATE_GENES_AND_MECHANISMS",
+    "JEPA_MEASURED_RELATIONAL_OR_EMERGENT_TRAINING_TARGETS"
+  ],
+  "biology": {
+    "candidate_stage_law": "Stage36C/D/E -> Stage38C -> Stage47 -> Stage48 -> Stage49 -> Stage50",
+    "candidate_genes": [
+      "APOE",
+      "BSG",
+      "CST7",
+      "CTSB",
+      "CTSD",
+      "GPX4",
+      "HMOX1",
+      "IL27RA",
+      "LAMP2",
+      "LAPTM5",
+      "LGALS3",
+      "NFKBIA",
+      "NPC2",
+      "NQO1",
+      "SLC6A12",
+      "SOD1",
+      "SOD2",
+      "TREM2"
+    ],
+    "n_source_traceable": 18,
+    "source_stage48_blob": "c7e70ca7797a565a7369ace93509008c11d4314e",
+    "mechanisms": [
+      {
+        "id": "M1",
+        "label": "endolysosomal_autophagy_proteostasis",
+        "genes": [
+          "CTSD",
+          "CTSB",
+          "LAPTM5",
+          "NPC2",
+          "LAMP2"
+        ],
+        "rank": 1
+      },
+      {
+        "id": "M2",
+        "label": "glial_disease_associated_state",
+        "genes": [
+          "TREM2",
+          "CST7",
+          "APOE",
+          "LGALS3",
+          "CTSD"
+        ],
+        "rank": 2
+      },
+      {
+        "id": "M3",
+        "label": "oxidative_stress",
+        "genes": [
+          "HMOX1",
+          "NQO1",
+          "SOD2",
+          "SOD1",
+          "GPX4"
+        ],
+        "rank": 3
+      },
+      {
+        "id": "M4",
+        "label": "inflammation_transport",
+        "genes": [
+          "BSG",
+          "SLC6A12",
+          "IL27RA",
+          "NFKBIA"
+        ],
+        "rank": 4
+      }
+    ],
+    "stage47_pi_top10": [
+      "APOE",
+      "BSG",
+      "CST7",
+      "CTSB",
+      "CTSD",
+      "GPX4",
+      "HMOX1",
+      "IL27RA",
+      "LAMP2",
+      "LAPTM5"
+    ],
+    "stage49_known_evidence_top10": [
+      "APOE",
+      "BSG",
+      "CTSB",
+      "CTSD",
+      "GPX4",
+      "HMOX1",
+      "LAMP2",
+      "LGALS3",
+      "NFKBIA",
+      "NQO1"
+    ],
+    "stage48_broad_rediscovery": "DO_NOT_RERUN_BROAD_GENE_DISCOVERY",
+    "stage38c_external_support_not_testable": true,
+    "stage50_topology_specific_proof": false,
+    "causal_or_therapeutic_qualification": false
+  },
+  "relational": {
+    "td56": {
+      "status": "PASS_ALL_3_SOURCES_PILOT",
+      "hvs_obs": 0.7975611,
+      "nph_obs": 0.8007195,
+      "seaad_obs": 0.878225,
+      "hvs_null_p95": 0.5541568,
+      "nph_null_p95": 0.5990585,
+      "seaad_null_p95": 0.7526606,
+      "source_blob": "41976554b30aaae913d09ef86b6d29ac329bc45e"
+    },
+    "td57b": {
+      "status": "24_24_PASS",
+      "minimum_p95_margin": 0.0375178074843,
+      "minimum_nullmax_margin": 0.0326836261591,
+      "source_blob": "c2da6d60de57d15e773961a03fd3ca4a88331f4c"
+    },
+    "td57c": {
+      "status": "FINE_NEAREST_THIRD_FAIL",
+      "hvs_pass": 2,
+      "hvs_total": 4,
+      "remaining_sources_unopened": true
+    },
+    "td59": {
+      "status": "24_24_PASS__WEAKER_MESOSCALE",
+      "minimum_p95_margin": 0.0011566307718604563,
+      "nullmax_pass": 22,
+      "nullmax_total": 24,
+      "source_blob": "782480b828ec79f94efd83c2a52563ec67118307"
+    },
+    "td50s": {
+      "status": "POSTGATE_WRONG_CELL_EVALUATION_ATTACK_FAIL",
+      "cross_source_delta": 0.1172847013,
+      "null_max_exceeds_observed": true,
+      "source_blob": "50cb6531f61feb43a5367e51bd96beac455b3277"
+    },
+    "td55s": {
+      "status": "NPH52_CROSS_SOURCE_FAIL",
+      "shortcut_mse": 3.805781426,
+      "molecular_mse": 3.8809372533,
+      "source_blob": "170ec679003709eb4b595fa0cf41e33ca6625eac"
+    },
+    "candidate_robust_solution": "EMA_TEACHER_WITH_LAWFUL_RICH_TO_PARTIAL_RNA_PLUS_DONOR_BLOCK_DISTANCE_ANGLE_RANK_MATCHING_AND_ANTICOLLAPSE__DESIGNED_NOT_LEARNED",
+    "td60_latent_continuity_authorized": false,
+    "real_td314_spent": true
+  },
+  "portfolio": {
+    "C1": "SHARED_EMERGENT",
+    "C2": "RELATIONAL_SHARED",
+    "C3": "QUERY_MEASURED",
+    "C6": "SHARED_QUERY_COMPOSITE_C1_C3_REQUIRED",
+    "C4": "STRUCTURED_COMPOSITE_C2_C3_C6_REQUIRED",
+    "C5": "REGULATORY_SPECIALIST_NO_FOUNDATION_RESCUE",
+    "independent_constituent_coexistence": true,
+    "zero_one_many_no_forced_winner": true,
+    "pr275_author_regression_tests": 322,
+    "pr337_synthetic_phase2_nine_qualified": true,
+    "pr338_rules_total": 28,
+    "pr338_rules_scientifically_specified": 15,
+    "pr338_rules_blocked": 13,
+    "real_candidate_outcomes_authorized": false
+  },
+  "provenance": [
+    {
+      "path": "results/reports/stage36e_pi_scientific_rationale_v1.md",
+      "blob": "be327235f1651ff588e98f740348c52335773c0b"
+    },
+    {
+      "path": "results/tables/stage47_candidate_gene_consensus_v1.csv",
+      "blob": "1bf9a9247e21d18998498b5d586b4c73338cd492"
+    },
+    {
+      "path": "results/tables/stage48_final_candidate_traceability_v1.csv",
+      "blob": "c7e70ca7797a565a7369ace93509008c11d4314e"
+    },
+    {
+      "path": "results/reports/stage48_gene_discovery_rerun_decision_v1.md",
+      "blob": "c09e170b7b4704fe76c73f562504159d92d7fc97"
+    },
+    {
+      "path": "results/reports/stage49_pi_summary_v1.md",
+      "blob": "f504bcad8eadeddd491681a13233aa984bf1da61"
+    },
+    {
+      "path": "target_discovery/HANDOFF_CURRENT_20260908.md",
+      "blob": "6d6e9a28228e4efb86b145ca83571af0a1ce3f43"
+    },
+    {
+      "path": "target_discovery/RELATIONAL_JEPA_PROTOCOL_REFRAME_20260908.md",
+      "blob": "0dfb932e597ad396aae38c71b9ec7eaeb7af4172"
+    }
+  ],
+  "source_prs": [
+    163,
+    178,
+    275,
+    313,
+    314,
+    331,
+    332,
+    337,
+    338,
+    351
+  ],
+  "forbidden_duplicate_assignments": [
+    "BROAD_GENE_REDISCOVERY",
+    "NEW_C1_C6_PORTFOLIO_FROM_SCRATCH",
+    "NEW_GENERIC_ORDINAL_OR_RELATIONAL_TARGET_SEARCH",
+    "REPEAT_TD56_57B_57C_59",
+    "RESELECT_GENE_RANKS_WITHOUT_NEW_FROZEN_VALIDATION",
+    "RETRAIN_HISTORICAL_TEACHER_TO_ASSUME_TARGET"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

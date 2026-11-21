@@ -1,0 +1,1772 @@
+{
+  "schema": "JEPA_20261104_LAST_14_DAYS_108_PR_RESULT_PRECEDENCE_AND_NO_REPEAT_V1",
+  "date": "2026-11-04",
+  "period": [
+    "2026-10-21",
+    "2026-11-04"
+  ],
+  "repo": "dushyant-mishra/sea-ad-jepa-agent",
+  "snapshot": {
+    "recent_pr_count": 108,
+    "first": 430,
+    "last": 538,
+    "threads": 13,
+    "multi_thread_related_pr_count": 6,
+    "not_thread_assigned": [],
+    "note": "PR description metadata indexed; thread findings derive from fetched original reports/PR review/errata. No claim 108 complete diffs independently source-audited. PR442 frozen-JEPA-quality hostile review is subsumed under original synthetic Task3 diagnostics by topic only; its actual findings remain at original PR442."
+  },
+  "threads": [
+    {
+      "id": "T01",
+      "label": "Production synthetic Task3 and earlier rejected four-world diagnostic",
+      "related_prs": [
+        430,
+        431,
+        432,
+        434,
+        437,
+        438,
+        439,
+        442,
+        480,
+        486,
+        487,
+        493,
+        499
+      ],
+      "controlling_primary_results_or_later_corrections": [
+        437,
+        438,
+        439,
+        493
+      ],
+      "ruling": "Already implemented and adversarially tested at differing scopes; PR438 rejected; Task3 authentic calibration/hostile caller not granted. No first-time implementation."
+    },
+    {
+      "id": "T02",
+      "label": "Unified Task4 durable custody",
+      "related_prs": [
+        435,
+        436,
+        443,
+        445,
+        452,
+        454,
+        459,
+        462,
+        465
+      ],
+      "controlling_primary_results_or_later_corrections": [
+        445,
+        454,
+        459,
+        465
+      ],
+      "ruling": "X1 transaction and short-write repairs authored; X3 Windows/WSL shared lock and nonauthor independent cumulative acceptance not presumed. Existing implementation/reviews must be reused."
+    },
+    {
+      "id": "T03",
+      "label": "Original real G7 and E3 fixtures",
+      "related_prs": [
+        433,
+        441,
+        446,
+        449,
+        470,
+        472,
+        476,
+        482,
+        489,
+        497,
+        500
+      ],
+      "controlling_primary_results_or_later_corrections": [
+        304,
+        314,
+        476,
+        484,
+        500
+      ],
+      "ruling": "Original real G7 ran once NOT_ESTIMABLE and is closed. October E3 R3/R5/R6 mechanics were repaired/accepted only incrementally; real physical R1/R1D/R2 source/rights not proven by fixture."
+    },
+    {
+      "id": "T04",
+      "label": "Unified Task5, downstream NONE and Task6-8",
+      "related_prs": [
+        440,
+        444,
+        447,
+        450,
+        451,
+        469,
+        517,
+        525,
+        527,
+        530,
+        532
+      ],
+      "controlling_primary_results_or_later_corrections": [
+        447,
+        451,
+        469,
+        525,
+        532,
+        535
+      ],
+      "ruling": "Task5/Target NONE, C1 fixture integration and original Macha hostile RED repairs exist; no new Task5/adapter from PR535. PR525 latest-head source repair is author CI, independent latest-head review only if that code is advanced."
+    },
+    {
+      "id": "T05",
+      "label": "Production synthetic Task1/2 canonical and security",
+      "related_prs": [
+        448,
+        453,
+        455,
+        456,
+        458,
+        461,
+        463,
+        464,
+        466,
+        467,
+        473,
+        477,
+        483,
+        490,
+        498,
+        501
+      ],
+      "controlling_primary_results_or_later_corrections": [
+        467,
+        477,
+        498,
+        501
+      ],
+      "ruling": "Numerous exact-type, cross-platform and refusal problems were repaired/reviewed; independent external scan/custody remains separate. Do not restart Tasks1/2 as missing."
+    },
+    {
+      "id": "T06",
+      "label": "Public e2g regulatory source executed survey",
+      "related_prs": [
+        457
+      ],
+      "controlling_primary_results_or_later_corrections": [
+        457
+      ],
+      "ruling": "Seven-track/27-gene public E2G source survey physically executed with frozen sources; gene-symbol overlap only, not causal TF or microglia-specific proof."
+    },
+    {
+      "id": "T07",
+      "label": "Read-only source/ETL reconciliation and D1",
+      "related_prs": [
+        471,
+        474,
+        475,
+        478,
+        479,
+        481,
+        484,
+        491,
+        492,
+        505,
+        509,
+        513,
+        528,
+        529
+      ],
+      "controlling_primary_results_or_later_corrections": [
+        491,
+        492,
+        505,
+        509,
+        513,
+        528
+      ],
+      "ruling": "97/97 archive members checked; 50k residuals and 11,449 collision pairs analyzed. Final source mapping SHA and archived bytes FOUND, not missing. HVS and SEA-AD off-ledger alias accounting CLOSED; NPH52 feature alias/selection restricted. D1 selected, D2 excluded. Public SEA/HVS/NPH access/terms RESOLVED; independent signer optional governance not science prerequisite. QC interpretation corrected and 529 hostile path admission review remains a scoped code concern."
+    },
+    {
+      "id": "T08",
+      "label": "V2 rights D1 content and student deployment",
+      "related_prs": [
+        502,
+        503,
+        504,
+        506,
+        507,
+        508,
+        510,
+        511,
+        512,
+        514,
+        515,
+        516,
+        518,
+        519,
+        520,
+        521,
+        522,
+        523,
+        524,
+        538
+      ],
+      "controlling_primary_results_or_later_corrections": [
+        518,
+        519,
+        522,
+        523,
+        524,
+        538
+      ],
+      "ruling": "Legacy #502/#510 oracle RED preserved. V2C+D1 main fixture implementation and Docker guard independently reviewed and landed via #522/#523, and #524 explicitly updates main to ACCEPT_SCOPED_FIXTURE_ONLY. Do not rebuild student gate/launcher. #538 is a newer author-scoped conservative five-address restriction; not the first issuer and not blanket source-identity closure."
+    },
+    {
+      "id": "T09",
+      "label": "Original synthetic panel availability and test-of-test custody",
+      "related_prs": [
+        526,
+        531,
+        536
+      ],
+      "controlling_primary_results_or_later_corrections": [
+        336,
+        526,
+        531,
+        536
+      ],
+      "ruling": "Phase-2 relational nine-case independent audit #336 DONE, explicitly recovered by #531 erratum. #526 source-measurability claim WITHDRAWN due VISIBILITY>0, only synthetic arithmetic survives; #536 actual C3 10/30 fit and C2 48-address refusal/no fake student are already executed. Do not repeat those diagnostic executions."
+    },
+    {
+      "id": "T10",
+      "label": "V79/V80 controller law and cross-world pinned regression",
+      "related_prs": [
+        533,
+        534
+      ],
+      "controlling_primary_results_or_later_corrections": [
+        533,
+        534
+      ],
+      "ruling": "Original frozen V79/V80 worlds already executed. #533 source-audited Q08 as first failure (207 include Q08; 85 later forensic nonselecting), not a demand to rerun V79. #534 integrated replay RED due V80 full-benchmark digest difference (actual faf80c..., expected 16a08b...); isolated test identity, not missing real target science."
+    },
+    {
+      "id": "T11",
+      "label": "Original Level4 receipts vs CaseBundle",
+      "related_prs": [
+        535
+      ],
+      "controlling_primary_results_or_later_corrections": [
+        535
+      ],
+      "ruling": "PR535 first-page correction explicitly withdraws its own proposed next source fixture, adapter, student redactor and repeat Level4 read; original #59/#69, #469, #509/#513 and main D1 V2C are reused. Its 15-field matrix is retrospective, not a new implementation assignment."
+    },
+    {
+      "id": "T12",
+      "label": "GPU planted synthetic post-anchor proposal",
+      "related_prs": [
+        537
+      ],
+      "controlling_primary_results_or_later_corrections": [
+        537
+      ],
+      "ruling": "Original Stage81B JEPA_ONLY/CURRENT/ANCHOR_ONLY at u100/u300/u500 already executed and rejected hidden anchor; proposed #537 GPU 2x2x500 NOT RUN and only worth considering if distinct original world/metric/seed contrast proven. Not the project next required experiment."
+    },
+    {
+      "id": "T13",
+      "label": "Cross-lane startup and audit continuity",
+      "related_prs": [
+        460,
+        468,
+        485,
+        488,
+        495,
+        496,
+        502,
+        503,
+        508,
+        520,
+        522,
+        524
+      ],
+      "controlling_primary_results_or_later_corrections": [
+        468,
+        522,
+        524,
+        535
+      ],
+      "ruling": "Historic #314 one-shot TD corrected replay done, V9 pointer and main updated; newer corrected statuses override old handoff/issue text. No new history reconstruction experiment."
+    }
+  ],
+  "critical_precedence": [
+    {
+      "earlier": "#492 implies final source mapping SHA absent",
+      "later": "#509 exact 2026-09-02 preservation manifest + original Git file bind it; #513 confirms no ETL drift",
+      "correction": "CLOSED_ORIGINAL_MAPPING_REACQUISITION_AND_HVS_SEA_ALIAS; NPH52 remains restricted"
+    },
+    {
+      "earlier": "#528 initial R1-R3 imply signer hardware and public source access still missing",
+      "later": "#528 same-PR append-only public provenance erratum, HVS public CELLxGENE, NPH52 Zenodo v2 CC-BY-4.0, SEA-AD public AWS",
+      "correction": "ACCESS_AND_TERMS_RESOLVED__SIGNER_OPTIONAL__SCIENTIFIC_QC_AND_RELEASE_CONSUMER_SEPARATE"
+    },
+    {
+      "earlier": "#535 lower section proposes fresh CaseBundle fixture, producer, D1 redactor",
+      "later": "#535 top correction and #469/#522/#523 existing code/results",
+      "correction": "WITHDRAW_AS_NEXT_TASK__REUSE_EXISTING_IMPLEMENTATIONS"
+    },
+    {
+      "earlier": "#519/#520 historic pending Macha V2C original PR514/515 review",
+      "later": "#522/#523 merged into main and #524 changed current main to ACCEPT_SCOPED_FIXTURE_ONLY",
+      "correction": "MAIN_FIXTURE_SCOPED_INDEPENDENT_ACCEPTANCE_DONE__NO_REAL_SOURCE_ISSUER"
+    },
+    {
+      "earlier": "#531 ranked Phase2 independent audit as missing",
+      "later": "#531 append-only erratum identifies #336 9/9 independently audited already on 2026-10-13",
+      "correction": "CLOSED_TEST_OF_TEST__REAL_TEACHER_BIOLOGY_SEPARATE"
+    },
+    {
+      "earlier": "#526 0/180 0/150 149/150 might rank sources by measured target availability",
+      "later": "#531 erratum and #526 corrective source withdrawal",
+      "correction": "ARITHMETIC_ONLY__MEASURABILITY_INTERPRETATION_WITHDRAWN"
+    },
+    {
+      "earlier": "Issue #55 described as missing rare-tail read-free preflight and Windows fix",
+      "later": "PR57/60/61/65/66/70 real read-free preflight performed and Windows fsync fixed, molecular outcome not run",
+      "correction": "PREFLIGHT_AND_WINDOWS_REPAIR_DONE__DIRECT_OLD_RUNNER_BYPASS_STILL_NOT_ISSUED"
+    },
+    {
+      "earlier": "Issue #54 N1 preexecution describes missing donor_umi/materialization",
+      "later": "#59 independently physically checked donor_umi, #69/#74 corrected and byte-reproduced source derivative, #83 qualified scoped preflight",
+      "correction": "SOURCE_AGGREGATE_QUALIFICATION_DONE__N1_RESULT_PRECISION_BIOLOGICAL_RUN_NOT_DONE_AND_NOT_ACTIVE_RECONCILIATION"
+    },
+    {
+      "earlier": "Stage81B JEPA_ONLY missing; #537 automatically next GPU job",
+      "later": "Original Stage81B u100/u300/u500 JEPA_ONLY/ANCHOR_ONLY completed and anchor rejected",
+      "correction": "HOLD_DUPLICATE_RISK; only new matched contrast if original objective/seed/world differs and science merits"
+    },
+    {
+      "earlier": "#533 green means original controller repaired",
+      "later": "#533 source-scope records V79 Q08 (207th) and 85 later forensic; frozen original artifacts unchanged",
+      "correction": "SELECTION_INTERPRETATION_RECOVERED__PROSPECTIVE_SUCCESSOR_NOT_AUTOMATIC"
+    }
+  ],
+  "remaining_distinctions": [
+    "Original publicly acquired source =! externally attested real CaseBundle release; do not condition general research on optional signer bureaucracy",
+    "HVS and SEA-AD alias accounting COMPLETE at deposited feature scope, NPH52 not cleared for real query issuance",
+    "Existing independent main V2C/D1 fixture ACCEPT_SCOPED; latest PR525/538 author-only increments have no fresh specific independent reviewer acceptance",
+    "Old source gate/QC NPH52 and sample selection effects unresolved; do not rerun public ETL",
+    "Original measured teacher R5 and real corrected TD56/57B/59 have run; novel learned student biological discriminant not demonstrated by 9/9 synthetic test or current fixture",
+    "Reject new training authorization; first decide exact new test that changes biology rather than another implementation round"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "prs": [
+    {
+      "pr": 430,
+      "created_utc": "2026-10-24T05:09:38Z",
+      "head_sha": "2812a692d027997459eb1b38fb2392c63deec87c",
+      "title": "Audit: reconcile Task4 cumulative review and production synthetic implementation status",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T01"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/430"
+    },
+    {
+      "pr": 431,
+      "created_utc": "2026-10-26T14:05:25Z",
+      "head_sha": "0edd1509fe4bfb295e78d195ad29c6acd58b19bd",
+      "title": "Audit: production synthetic, real TD and unified no-repeat reconciliation",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T01"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/431"
+    },
+    {
+      "pr": 432,
+      "created_utc": "2026-10-26T14:20:36Z",
+      "head_sha": "1f2b7f1fab7a952ffd4aee11d5ef7af827cf6b47",
+      "title": "Production synthetic Task 3: fixture calibration firewall GREEN (independent review needed)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T01"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/432"
+    },
+    {
+      "pr": 433,
+      "created_utc": "2026-10-26T14:40:06Z",
+      "head_sha": "21c3fb3bd389f9a513ca9ed33b31acad56b0015f",
+      "title": "Real G7 E3: content-hashed rights and terminal support binding (GREEN candidate)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T03"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/433"
+    },
+    {
+      "pr": 434,
+      "created_utc": "2026-10-26T14:42:21Z",
+      "head_sha": "ac6bb3b0443f2f6ac2882d32420b2a8b0ec152aa",
+      "title": "Macha independent hostile RED: production-synthetic Task 3 at 1f2b7f1f (tests only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T01"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/434"
+    },
+    {
+      "pr": 435,
+      "created_utc": "2026-10-26T14:48:27Z",
+      "head_sha": "6d3eab8df68bfe2962369e5865eedeae84f7c7a2",
+      "title": "Independent Task4 RED: stale-process custody writer can poison persisted ledger",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T02"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/435"
+    },
+    {
+      "pr": 436,
+      "created_utc": "2026-10-26T14:50:48Z",
+      "head_sha": "d1c247a8d96bf9a400eadf3a49f24ec56ac22fcd",
+      "title": "Task4 custody: cross-process stale-writer lock and live-head CAS (CI candidate)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T02"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/436"
+    },
+    {
+      "pr": 437,
+      "created_utc": "2026-10-26T14:54:41Z",
+      "head_sha": "fd3242ada6f77ba09ff2d8a1c7716eb9725ced11",
+      "title": "Production-synthetic Task 3: fail-closed calibration authority repair (Macha-authored; fresh independent review required)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T01"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/437"
+    },
+    {
+      "pr": 438,
+      "created_utc": "2026-10-26T15:14:04Z",
+      "head_sha": "034cb8ab5a2e9ff3240404ad56289ee606feb6c0",
+      "title": "REJECTED scientific discriminator — frozen four-world fixture PR #438 (preserve negative evidence)",
+      "merged": false,
+      "status": "closed",
+      "threads": [
+        "T01"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/438"
+    },
+    {
+      "pr": 439,
+      "created_utc": "2026-10-26T15:39:10Z",
+      "head_sha": "57b7225217bcc61310652258f0312264a9e28a50",
+      "title": "Independent RED: production-synthetic Task3 273f4a18 calibration/custody hostile cases",
+      "merged": true,
+      "status": "closed",
+      "threads": [
+        "T01"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/439"
+    },
+    {
+      "pr": 440,
+      "created_utc": "2026-10-26T15:48:37Z",
+      "head_sha": "a547c8d628bb4d44ef76bad78dfb11e083bed7c1",
+      "title": "Unified Task5 prospective fixture code: truth separation + mode path equivalence, 26 tests GREEN",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T04"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/440"
+    },
+    {
+      "pr": 441,
+      "created_utc": "2026-10-26T16:01:28Z",
+      "head_sha": "771672405bf1071830300a4b235a4d6c85fa6799",
+      "title": "Macha independent hostile RED: Real G7 E3 at 21c3fb3b (tests only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T03"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/441"
+    },
+    {
+      "pr": 442,
+      "created_utc": "2026-10-26T16:02:42Z",
+      "head_sha": "8dcd9e2e7adb64c703647f357be2ba1d0ef28221",
+      "title": "Macha independent hostile RED: frozen JEPA quality diagnostic at 034cb8ab (tests only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T01"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/442"
+    },
+    {
+      "pr": 443,
+      "created_utc": "2026-10-26T16:14:40Z",
+      "head_sha": "56c253ed019de088326612998379d129e538c359",
+      "title": "Macha independent hostile RED: Task 4 stale-writer increment at d1c247a8 (tests only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T02"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/443"
+    },
+    {
+      "pr": 444,
+      "created_utc": "2026-10-26T16:25:34Z",
+      "head_sha": "28c2bf17ae1c38e3073d4fcd152ca638e0115944",
+      "title": "Integration: existing post-TD harness + Unified Task5 fixture; CI all green",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T04"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/444"
+    },
+    {
+      "pr": 445,
+      "created_utc": "2026-10-26T16:41:46Z",
+      "head_sha": "e7d7880fe26f45cd8b0abdc19c3155f37112ef39",
+      "title": "Task4 custody reader/writer mechanics: Macha hostile RED repaired, Linux+Windows CI GREEN",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T02"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/445"
+    },
+    {
+      "pr": 446,
+      "created_utc": "2026-10-26T16:44:36Z",
+      "head_sha": "f088f40625020253d4378812511e3c473063bb10",
+      "title": "Real G7 E3 negative-screen repair: 32 hostile/fixture tests GREEN; physical provenance still open",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T03"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/446"
+    },
+    {
+      "pr": 447,
+      "created_utc": "2026-10-26T17:58:28Z",
+      "head_sha": "729a0b4c67694baa25b46badce476df7a4c98a7d",
+      "title": "Unified Tasks 6–8: fixture-only gate inventory, verified TARGET=NONE and fail-closed abstention (53 GREEN)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T04"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/447"
+    },
+    {
+      "pr": 448,
+      "created_utc": "2026-10-26T19:51:30Z",
+      "head_sha": "ec6e6404fdb7e876f6705dce57eee19bbe207389",
+      "title": "RED (author-disclosed): PS Task 1 canonical identity forgeable by subclasses; integer domain runtime-dependent",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/448"
+    },
+    {
+      "pr": 449,
+      "created_utc": "2026-10-26T19:53:11Z",
+      "head_sha": "062bfe369348ac4d9ed89c0aa162abf0d9806397",
+      "title": "RED: independent recheck of #446 G7 E3 repair (opaque-ID split, offset depth, V3 key collision)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T03"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/449"
+    },
+    {
+      "pr": 450,
+      "created_utc": "2026-10-26T19:56:12Z",
+      "head_sha": "1621c6aa5f631a1486edb25ed90c69c80801b58c",
+      "title": "RED: independent compatibility probes for #444 post-TD fixture bridge (F1 fixture PASS indistinguishable, F2 NONE without evidence)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T04"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/450"
+    },
+    {
+      "pr": 451,
+      "created_utc": "2026-10-26T20:01:50Z",
+      "head_sha": "bbdf9a90973303e41cee6d8bd9d05de38e9b828a",
+      "title": "Repair (Macha, needs independent recheck): #444 bridge keeps fixture provenance; evidence-backed TARGET_NONE",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T04"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/451"
+    },
+    {
+      "pr": 452,
+      "created_utc": "2026-10-26T20:05:27Z",
+      "head_sha": "7889516c9bdaac392fe451e147f9cb78e90d0f6f",
+      "title": "RED: independent recheck of #445 Task 4 increment (POSIX re-entry deadlock, dir replacement, Windows/WSL lock domains)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T02"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/452"
+    },
+    {
+      "pr": 453,
+      "created_utc": "2026-10-26T20:19:41Z",
+      "head_sha": "8641a62a3897b6c2d1dbcc52dc312bf1511fb2eb",
+      "title": "PS Task1 canonical anti-forgery + portable 4300-digit domain: 407 tests GREEN (independent review pending)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/453"
+    },
+    {
+      "pr": 454,
+      "created_utc": "2026-10-26T20:26:48Z",
+      "head_sha": "028ecbd8569b14b84a4f5fd0413ba0225cc9a074",
+      "title": "Task4 X2/X4/X5/X6/X7 bounded fixes; X1 publisher transaction still RED",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T02"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/454"
+    },
+    {
+      "pr": 455,
+      "created_utc": "2026-10-26T20:41:19Z",
+      "head_sha": "ef63a75a51b6e3a3533a87c7a08ca6318d461c10",
+      "title": "Independent PS Task 2 hostile RED: forged bytes/int identity across custody boundaries",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/455"
+    },
+    {
+      "pr": 456,
+      "created_utc": "2026-10-26T20:42:52Z",
+      "head_sha": "3b42b6c1d7a0a94522c931069039e11e8cffcd99",
+      "title": "PS Task2 exact-type custody repair: 289 hostile/custody GREEN; full Task2 acceptance still open",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/456"
+    },
+    {
+      "pr": 457,
+      "created_utc": "2026-10-27T04:26:42Z",
+      "head_sha": "5dd02b0954906618202459dd89f36a62f2f02de7",
+      "title": "Audit: public E2G reference concordance and uploaded Stage75 peak compatibility (non-authorizing)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T06"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/457"
+    },
+    {
+      "pr": 458,
+      "created_utc": "2026-10-27T13:59:30Z",
+      "head_sha": "3b08081d7fb3fa99cf1459b13cbe47d5b0962547",
+      "title": "Independent hostile RED recheck of PS Task1/2 repairs #453/#456: 13 tests (numpy dtype/duck, metaclass eq, scanner subclass, hand-written attestations)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/458"
+    },
+    {
+      "pr": 459,
+      "created_utc": "2026-10-27T14:07:01Z",
+      "head_sha": "57e707149b46ca011eee096f01dc08b64aeb8f9f",
+      "title": "Task4 X1 publish transaction: acknowledgement commit point, write-ahead intent, recovery; X3 cross-OS lease (Macha; independent review required)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T02"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/459"
+    },
+    {
+      "pr": 460,
+      "created_utc": "2026-10-27T14:12:34Z",
+      "head_sha": "3cb2ad291b0923b20fd69145860ff7d227391e7e",
+      "title": "ACTIVE JEPA V9 successor — audited science, data/source custody and exact new-agent handoff",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T13"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460"
+    },
+    {
+      "pr": 461,
+      "created_utc": "2026-10-27T14:13:58Z",
+      "head_sha": "495350d477a0b7ba65c13dcab5032d443f939cd5",
+      "title": "RED (tests-only): accepted Unified Task 1 encoder forgeable via numpy dtype, impostor, metaclass eq; runtime int domain",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/461"
+    },
+    {
+      "pr": 462,
+      "created_utc": "2026-10-27T15:25:03Z",
+      "head_sha": "67d2336155624a8657d2ef3320c9bfff175951ee",
+      "title": "RED: independent Task4 X1 short-write attack against #459 (intent and acknowledged log)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T02"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/462"
+    },
+    {
+      "pr": 463,
+      "created_utc": "2026-10-27T15:40:50Z",
+      "head_sha": "84b05952112ca405436ee3ccf35cc1c0df53c14d",
+      "title": "Repair Unified Task1 canonical encoder against #461 exact-type and int-domain RED (independent review required)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/463"
+    },
+    {
+      "pr": 464,
+      "created_utc": "2026-10-27T15:58:01Z",
+      "head_sha": "f6ee226c146c4c31d88ce5b845449ce21758cdeb",
+      "title": "PS Task1/2 scoped mechanics repair for #458 — preserve T2-D authority RED",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/464"
+    },
+    {
+      "pr": 465,
+      "created_utc": "2026-10-27T16:01:34Z",
+      "head_sha": "3b86b9467506539776e04a6470fa8f2f7363f129",
+      "title": "Task4 X1-S1/S2 short-write repair: exact writes, verified temp files, log fsync before roll-forward (Macha; ChatGPT review required)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T02"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/465"
+    },
+    {
+      "pr": 466,
+      "created_utc": "2026-10-27T16:27:18Z",
+      "head_sha": "db69cd0a5777b4a23f0140de9f38980b3e5b95a9",
+      "title": "RED (tests only): #463 encoder refuses NumPy C-int scalars on Windows; payload-chosen exception escapes (Macha independent review)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/466"
+    },
+    {
+      "pr": 467,
+      "created_utc": "2026-10-27T16:41:25Z",
+      "head_sha": "180b550e96b786ddfc53faa29bc81c1d3b503877",
+      "title": "Repair #466 hostile V1/V2: portable NumPy C integers and fail-closed refusal",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/467"
+    },
+    {
+      "pr": 468,
+      "created_utc": "2026-10-27T17:38:58Z",
+      "head_sha": "6459ba217eb062ed9bf4eaeb43de0838f76cde3a",
+      "title": "Historical post-Oct12 audit correction: PR314 replay complete; preserve Macha and unified successors",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T13"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/468"
+    },
+    {
+      "pr": 469,
+      "created_utc": "2026-10-27T18:23:50Z",
+      "head_sha": "7a6477244dfc817d929e210c38c1ea4b2d1a1927",
+      "title": "Integration probe: PR328 generated RNA to existing PR451 Task5 fixture boundary (no authority)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T04"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/469"
+    },
+    {
+      "pr": 470,
+      "created_utc": "2026-10-27T19:09:20Z",
+      "head_sha": "2e173fa4889531ba686aa439707cf86effd6cc95",
+      "title": "G7 E3: scoped Macha #449 R3–R5 repair; preserve R1/R2 physical trust RED",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T03"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/470"
+    },
+    {
+      "pr": 471,
+      "created_utc": "2026-10-27T19:38:01Z",
+      "head_sha": "7957b7578168532eabad8b2b75126bb71e6f43b7",
+      "title": "Synthetic calibration source intake: verify historical 97-file split archive, no authority",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/471"
+    },
+    {
+      "pr": 472,
+      "created_utc": "2026-10-27T19:39:19Z",
+      "head_sha": "98a893f2f1b8925f6ce22b244db557b135fb0ff6",
+      "title": "RED (tests only): Macha review of #470 — R3/R5-depth closed; R5X payload exceptions, R6 validate-in-place receipt forgery, R1D donor pseudo-replication",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T03"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/472"
+    },
+    {
+      "pr": 473,
+      "created_utc": "2026-10-27T19:59:07Z",
+      "head_sha": "48453e4da91a1b2f595c38d730d483ef78b3b18d",
+      "title": "RED (tests only): #464 PS encoder refuses NumPy C-int scalars on Windows (introduced); payload-chosen exception escapes (pre-existing) — Macha review",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/473"
+    },
+    {
+      "pr": 474,
+      "created_utc": "2026-10-27T20:15:08Z",
+      "head_sha": "e7635e7982e950a010d181ec6f6883a18ade0db6",
+      "title": "Query-excluded depth producer for the shared observation edge (G7 R2 semantic half; fixture scope; Macha-authored, review required)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/474"
+    },
+    {
+      "pr": 475,
+      "created_utc": "2026-10-27T20:24:11Z",
+      "head_sha": "b40d815290fd02ae89259e3b441eabcf7f69d5be",
+      "title": "Audit delta (append-only): Macha verdicts #470/#467/#464, R1/R2 feasibility, PS V3.1.1 matrix, known-truth readiness",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/475"
+    },
+    {
+      "pr": 476,
+      "created_utc": "2026-10-27T20:53:48Z",
+      "head_sha": "26031df25b51087f2f3ec35a88eef2919d794c68",
+      "title": "G7 E3 R5X/R6: canonical deciding-input snapshot; preserve Macha R1/R2/R1D RED",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T03"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/476"
+    },
+    {
+      "pr": 477,
+      "created_utc": "2026-10-27T20:54:32Z",
+      "head_sha": "c83088de090bc4f2fc6bbee353c46070bcca7be5",
+      "title": "PS Task1/2 #473 V1/V2 repair: Windows intc/uintc + fixed exception paths; T2-D RED",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/477"
+    },
+    {
+      "pr": 478,
+      "created_utc": "2026-10-27T20:58:41Z",
+      "head_sha": "b7aa56e2915d2af7dd733f0f0253e684164ce70a",
+      "title": "Independent PR474 scientific contract review: q-excluded depth conditional, off-ledger and physical-total limitations",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/478"
+    },
+    {
+      "pr": 479,
+      "created_utc": "2026-10-27T21:59:36Z",
+      "head_sha": "ae762d7096a94ac663a0788f6f577ba404e37536",
+      "title": "Fixture observation V2: distinguish private physical library from query-excluded normalization depth; keep V1/G7 unchanged",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/479"
+    },
+    {
+      "pr": 480,
+      "created_utc": "2026-10-28T17:10:38Z",
+      "head_sha": "f39e605abc616cf59051a8bda9b0270cef5d6f09",
+      "title": "Independent PS Task3 #437 RED: float-universe alias and OBS-prefix tunable spoof",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T01"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/480"
+    },
+    {
+      "pr": 481,
+      "created_utc": "2026-10-28T17:17:18Z",
+      "head_sha": "957fa4a558ce2bd219b5c2dec6dad8f65dca81ab",
+      "title": "Macha #479 review: V2 normalization view hostile/noninterference cases (tests only; RED expected)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/481"
+    },
+    {
+      "pr": 482,
+      "created_utc": "2026-10-28T17:24:09Z",
+      "head_sha": "58baa4f912c791866c1aae31eab797da9dca588a",
+      "title": "Macha #476 review: metaclass R5X route + V3 composition gap (tests only; RED expected)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T03"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/482"
+    },
+    {
+      "pr": 483,
+      "created_utc": "2026-10-28T17:30:24Z",
+      "head_sha": "48ec018735a095571a0bfaa25b33f9b9deb40b39",
+      "title": "Macha #477 review: isinstance __class__ routes + chained payload cause (tests only; RED expected)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/483"
+    },
+    {
+      "pr": 484,
+      "created_utc": "2026-10-28T17:44:13Z",
+      "head_sha": "5d84ed90417fbc1be1a13657a08491e2db6feef5",
+      "title": "Macha audit delta 2026-10-28: #479/#476/#477 verdicts, observation contract, G7 cross-head (append-only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/484"
+    },
+    {
+      "pr": 485,
+      "created_utc": "2026-10-28T17:46:08Z",
+      "head_sha": "af0296f2b3dc749c2c07c243f0130f038af077f1",
+      "title": "Successor handoff pointer: Macha #479/#476/#477 verdicts + observation contract (append-only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T13"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/485"
+    },
+    {
+      "pr": 486,
+      "created_utc": "2026-10-28T17:57:11Z",
+      "head_sha": "f17080516f77e79fb6f6cb44903cbabdb2a85dd7",
+      "title": "PS Task3 #437 R1/R2 repair against immutable #480 tests (Macha author; review required)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T01"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/486"
+    },
+    {
+      "pr": 487,
+      "created_utc": "2026-10-29T03:36:34Z",
+      "head_sha": "e8d0bd1523bb377bc8b832bf28df45047f33a817",
+      "title": "Independent PS Task3 #486 RED: registry identity and prevalidation payload route",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T01"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/487"
+    },
+    {
+      "pr": 488,
+      "created_utc": "2026-10-29T03:39:43Z",
+      "head_sha": "0f4d8a87a0a76b3d8d3ed5ec28f129a40b0cc70e",
+      "title": "Repair PR479 A1-A3 against immutable #481; preserve inherited A4 RED",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T13"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/488"
+    },
+    {
+      "pr": 489,
+      "created_utc": "2026-10-29T03:43:46Z",
+      "head_sha": "5052782b4f10371abc91b2fb6a83d020f08c112b",
+      "title": "Repair G7 #476 metaclass route and compose bind→snapshot→V3 against #482",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T03"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/489"
+    },
+    {
+      "pr": 490,
+      "created_utc": "2026-10-29T03:45:34Z",
+      "head_sha": "3d9ec6cf5d033e1bb7941405d3e78cd804e427ae",
+      "title": "Repair PS #477 payload __class__ and exception-cause routes against #483",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/490"
+    },
+    {
+      "pr": 491,
+      "created_utc": "2026-10-29T03:47:51Z",
+      "head_sha": "9c23b689068c315eba7f215eb1ef0f4f77c4d32c",
+      "title": "Decision: adopt D1 released-depth contract; reject D2 from current version",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/491"
+    },
+    {
+      "pr": 492,
+      "created_utc": "2026-10-29T03:58:37Z",
+      "head_sha": "79d2f9364970c0e5b678caae94b92a803ff03623",
+      "title": "Source/ETL audit: reacquired 97/97 custody, 50k residual decomposition, blockers",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/492"
+    },
+    {
+      "pr": 493,
+      "created_utc": "2026-10-29T04:06:30Z",
+      "head_sha": "a93d56d453ee835790c26d733145cb6a588dc409",
+      "title": "Repair PS Task3 #486 R3/R4 against independent #487",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T01"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/493"
+    },
+    {
+      "pr": 495,
+      "created_utc": "2026-10-29T14:29:15Z",
+      "head_sha": "d2e430d739e1ef16806120752b867c6aeeba4972",
+      "title": "V2 #479 A3 exact-type dispatch repair (A1/A2/A4 remain RED)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T13"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/495"
+    },
+    {
+      "pr": 496,
+      "created_utc": "2026-10-29T14:34:24Z",
+      "head_sha": "ee0e6ca983a693240830a0ba361d45768bab8521",
+      "title": "V2 #479 A1/A2 fixture depth equality + producer-bound rights (no real authority)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T13"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/496"
+    },
+    {
+      "pr": 497,
+      "created_utc": "2026-10-29T14:43:09Z",
+      "head_sha": "a8ad4111906a6de8b3faa7292b432ba934df3499",
+      "title": "G7 #476 exact-type metaclass repair against untouched Macha #482 hostiles",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T03"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/497"
+    },
+    {
+      "pr": 498,
+      "created_utc": "2026-10-29T14:45:49Z",
+      "head_sha": "34543d8fbb08b91d662476403dd98018fdecad36",
+      "title": "PS #477 canonical payload-__class__ and exception-cause repair (T2-D RED)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/498"
+    },
+    {
+      "pr": 499,
+      "created_utc": "2026-10-29T14:49:21Z",
+      "head_sha": "f97af8f669752e1a34cf62a9e1e6069089b28644",
+      "title": "Independent Task3 #486 hostile review: exact numerics, registry and no-authority (tests only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T01"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/499"
+    },
+    {
+      "pr": 500,
+      "created_utc": "2026-10-29T15:04:34Z",
+      "head_sha": "27d9dc450f47dbf0829922d9c22a2d5df8fd93e4",
+      "title": "G7 #476: composed E3-bound snapshot → V3 fixture execution (R1/R1D/R2 remain RED)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T03"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/500"
+    },
+    {
+      "pr": 501,
+      "created_utc": "2026-10-29T15:08:18Z",
+      "head_sha": "abf65eb758efe98fa1f43e702d3f1f0dec82a31d",
+      "title": "Independent PS #498 canonical class/cause adversarial review (tests only, T2-D RED)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T05"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/501"
+    },
+    {
+      "pr": 502,
+      "created_utc": "2026-10-29T15:26:25Z",
+      "head_sha": "0789247cdbbdfca671613b020865aba958dfd699",
+      "title": "V2 rights-bound D1 content consumer as distinct versioned fixture (legacy shape unchanged)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T08",
+        "T13"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/502"
+    },
+    {
+      "pr": 503,
+      "created_utc": "2026-10-29T15:39:24Z",
+      "head_sha": "f93aa8a7132fa02fa2c7be7c7ddfca4dfec6f325",
+      "title": "V2 private student/teacher coherence preflight (D1 invariant, no G7/issuer authority)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T08",
+        "T13"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/503"
+    },
+    {
+      "pr": 504,
+      "created_utc": "2026-10-29T15:54:14Z",
+      "head_sha": "f52246fbc90436de219885e0abfbbe05e8024a41",
+      "title": "Repair #474 A4: refusals obey noninterference in the q-excluded depth producer (Macha author; fixture only; review required)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/504"
+    },
+    {
+      "pr": 505,
+      "created_utc": "2026-10-29T15:57:48Z",
+      "head_sha": "3eecdd464c9b43f01490c250852dba18185b3844",
+      "title": "Audit Aug Foundation archive: R2 collision mask union + conditional full-library denominator leak (local source, no authority)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/505"
+    },
+    {
+      "pr": 506,
+      "created_utc": "2026-10-29T16:03:36Z",
+      "head_sha": "61da252cea0201d3d51f4519534322c803d9aa26",
+      "title": "Independent #504 A4 review: refusal noninterference, exact-domain hostiles (tests only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/506"
+    },
+    {
+      "pr": 507,
+      "created_utc": "2026-10-29T16:05:52Z",
+      "head_sha": "a4894f366b9d73df03a675d0b70383dea6a36454",
+      "title": "Macha #502 review: teacher-view validator oracle + uncommitted rights policy (tests only; RED expected)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/507"
+    },
+    {
+      "pr": 508,
+      "created_utc": "2026-10-29T16:09:01Z",
+      "head_sha": "414cee7b448c94c7479a437cddd19f4b2298af4c",
+      "title": "Compose independently reviewed Macha #504 A4 into V2 #502/#503 with exact source blob",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T08",
+        "T13"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/508"
+    },
+    {
+      "pr": 509,
+      "created_utc": "2026-10-29T16:29:13Z",
+      "head_sha": "3e5694e2c1b959c8e21f9fc6dd50cbf694ac4013",
+      "title": "Macha R1/R1D/R2 source and ETL gap matrix: authenticated / contradicted / unavailable (append-only; identity evidence only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/509"
+    },
+    {
+      "pr": 510,
+      "created_utc": "2026-10-29T18:35:10Z",
+      "head_sha": "ef51325d0c31bbac2eb0bf74bd3f770d244657f2",
+      "title": "V2B student-only validation gate: eliminate #507 teacher membership oracle (issuer still required)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/510"
+    },
+    {
+      "pr": 511,
+      "created_utc": "2026-10-29T18:58:40Z",
+      "head_sha": "5fe18a11b010b0adb857104d10329e840a9e7d4c",
+      "title": "D1 redacted-base-only student source edge: no library_total, residual or hidden query input",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/511"
+    },
+    {
+      "pr": 512,
+      "created_utc": "2026-10-29T19:02:02Z",
+      "head_sha": "16b5bc6c050222c592f88c35dc65b0a256d65402",
+      "title": "Macha #510 review: old oracle still reachable; receipt binds neither roster nor view (tests only; RED expected)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/512"
+    },
+    {
+      "pr": 513,
+      "created_utc": "2026-10-29T19:24:59Z",
+      "head_sha": "0b1af4f06ba423753899e7c564d3b16ce609ac6a",
+      "title": "Macha source qualification: ETL reuse ledger, alias rights table, specimen/QC evidence, issuer contract (append-only; metadata only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/513"
+    },
+    {
+      "pr": 514,
+      "created_utc": "2026-10-30T03:23:58Z",
+      "head_sha": "df83525b25ac1278fcb331b078f8c59e84097404",
+      "title": "V2C standalone student review repair",
+      "merged": false,
+      "status": "closed",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/514"
+    },
+    {
+      "pr": 515,
+      "created_utc": "2026-11-02T17:11:17Z",
+      "head_sha": "6c74ba41ef4537dc4474d36fd966538976451089",
+      "title": "D1 → standalone V2C: base-only student fixture composition and hostile integration tests",
+      "merged": false,
+      "status": "closed",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/515"
+    },
+    {
+      "pr": 516,
+      "created_utc": "2026-11-02T17:57:15Z",
+      "head_sha": "881194aec9d99a9d42cbf206ffcb779429c4e768",
+      "title": "Macha #514 review: V2C role check runs attacker code before the snapshot; receipted snapshot's role never checked (tests only; RED expected)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/516"
+    },
+    {
+      "pr": 517,
+      "created_utc": "2026-11-02T18:02:47Z",
+      "head_sha": "0bf0de060e6cb13496fb95e193deb63591258ceb",
+      "title": "GPT post-TD #351 hostile source probe: nonfinite compute, mutable digests, gene ID alias (tests only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T04"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/517"
+    },
+    {
+      "pr": 518,
+      "created_utc": "2026-11-02T18:06:26Z",
+      "head_sha": "32c0a22b9ae6220ed03fe7d6e944da753c0e4a0c",
+      "title": "Macha #515 review: D1->V2C composition ACCEPT_SCOPED (delta only; inherits #514 REPAIR_REQUIRED); synthetic counterexamples for open upstream boundaries (tests only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/518"
+    },
+    {
+      "pr": 519,
+      "created_utc": "2026-11-02T18:13:07Z",
+      "head_sha": "bc788e9b9ce138da29f20e024b03f52fe9c99889",
+      "title": "Macha audit delta 2026-11-02: independent V2C review of #514 (REPAIR_REQUIRED) and #515 (ACCEPT_SCOPED, composition only) — append-only",
+      "merged": true,
+      "status": "closed",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/519"
+    },
+    {
+      "pr": 520,
+      "created_utc": "2026-11-02T18:13:10Z",
+      "head_sha": "0bbd3d6c837b7bcd29262c57a54b6785aa86d1e4",
+      "title": "Successor pointer: Macha #516/#518 V2C review status and next actions (append-only)",
+      "merged": true,
+      "status": "closed",
+      "threads": [
+        "T08",
+        "T13"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/520"
+    },
+    {
+      "pr": 521,
+      "created_utc": "2026-11-02T18:53:13Z",
+      "head_sha": "09a5fc58f3690bef7a8a317d92d0f4b97a267a03",
+      "title": "Student runtime V1: frozen V2C-only Docker package and executable OS-boundary tests",
+      "merged": false,
+      "status": "closed",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/521"
+    },
+    {
+      "pr": 522,
+      "created_utc": "2026-11-02T19:15:32Z",
+      "head_sha": "5f6e81aa1cb47eb512c7786cc40d0f2fc233c764",
+      "title": "Main reconciliation: current JEPA startup, flat V2C/D1 fixture and nonpromotion CI",
+      "merged": true,
+      "status": "closed",
+      "threads": [
+        "T08",
+        "T13"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/522"
+    },
+    {
+      "pr": 523,
+      "created_utc": "2026-11-02T20:15:18Z",
+      "head_sha": "bce3a35a9cd8ec364906798738c14ab3236cc583",
+      "title": "Macha main e4925cff review: hostile V2C/D1 regression on main + student container fail-closed repair proposal (RED first)",
+      "merged": true,
+      "status": "closed",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/523"
+    },
+    {
+      "pr": 524,
+      "created_utc": "2026-11-02T22:15:04Z",
+      "head_sha": "b9072905245cf408d521d6b9f574facf0ac9936f",
+      "title": "Current JEPA main startup: supersede completed Macha review and pin scoped PR523 status",
+      "merged": true,
+      "status": "closed",
+      "threads": [
+        "T08",
+        "T13"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/524"
+    },
+    {
+      "pr": 525,
+      "created_utc": "2026-11-03T04:06:44Z",
+      "head_sha": "b493efc35af20bcf2adee29c47376e1dbf4b6dcd",
+      "title": "Repair five #517 post-TD contract failures without authorizing biology or training",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T04"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/525"
+    },
+    {
+      "pr": 526,
+      "created_utc": "2026-11-03T04:44:00Z",
+      "head_sha": "b7761a3e7578f51db17fea26dae607aec299c1de",
+      "title": "Synthetic science: measure R5-style teacher panel availability in frozen PR328 world",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T09"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/526"
+    },
+    {
+      "pr": 527,
+      "created_utc": "2026-11-03T04:45:17Z",
+      "head_sha": "ac9215c256275dfa35687cc7a4ac1d1d25ec34a5",
+      "title": "Macha review of #525: re-hashed records and tournament side door (RED-first, tests only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T04"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/527"
+    },
+    {
+      "pr": 528,
+      "created_utc": "2026-11-03T04:56:35Z",
+      "head_sha": "1a4fda758936a3cc3868948b44d25694de216bd9",
+      "title": "Macha #513 amendment: corrected verification and biology claims, QC input admission, issuer requirements",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/528"
+    },
+    {
+      "pr": 529,
+      "created_utc": "2026-11-03T05:08:21Z",
+      "head_sha": "cf0330e4da9e9c647b22c2fc1a7445dac16da865",
+      "title": "Independent RED: #528 QC admission path escape and mismatched probe replay (tests only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T07"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/529"
+    },
+    {
+      "pr": 530,
+      "created_utc": "2026-11-03T05:57:12Z",
+      "head_sha": "0a1310adb4df24a50422d3c60dc27b0f6e4fa28a",
+      "title": "Macha review of #525 at 315c378d: query controls unenforced at reduction, EMA caller coercion (RED-first, tests only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T04"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/530"
+    },
+    {
+      "pr": 531,
+      "created_utc": "2026-11-03T06:08:07Z",
+      "head_sha": "270bc33c291e1934d9fcfb32138bff298c64f5cb",
+      "title": "Macha review of #526: replication, PR328 support-semantics correction, reuse-first evaluation matrix",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T09"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531"
+    },
+    {
+      "pr": 532,
+      "created_utc": "2026-11-03T06:34:58Z",
+      "head_sha": "ccf0239d861bab9686fdfa3d863e8c81ef14e4bf",
+      "title": "Macha review of #525 at 0588788f: manifest roster not bound to verified portfolio; second PASS path (RED-first, tests only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T04"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/532"
+    },
+    {
+      "pr": 533,
+      "created_utc": "2026-11-03T06:40:58Z",
+      "head_sha": "b531b81ec4e08779a974214ec9ba9905f0498294",
+      "title": "Audit: exact V79/V80 207-confirmatory / 85-forensic terminal selection conflict (BLOCKED only)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T10"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/533"
+    },
+    {
+      "pr": 534,
+      "created_utc": "2026-11-03T15:23:26Z",
+      "head_sha": "165447a8bbdef8b427ca9cd0d29b51c36b9c1c1a",
+      "title": "Synthetic-first: frozen PR328/V80 banks against existing q-rights and CaseBundle contracts (no training)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T10"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534"
+    },
+    {
+      "pr": 535,
+      "created_utc": "2026-11-03T15:51:11Z",
+      "head_sha": "af7acbcf6d2244764e17f44686b94a72199c7d9c",
+      "title": "Read-free: reconcile original Level-4 physical receipts to real CaseBundle fields (no new read)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T11"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/535"
+    },
+    {
+      "pr": 536,
+      "created_utc": "2026-11-03T16:39:53Z",
+      "head_sha": "b723b9d522a013554a0a53cf600e6e9812c35935",
+      "title": "Synthetic target admission: actual C3 measured producer, C2 48→512 hard refusal, no fake student",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T09"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/536"
+    },
+    {
+      "pr": 537,
+      "created_utc": "2026-11-04T05:29:56Z",
+      "head_sha": "7e8ff44120fd7acda9046d0f509fab504b4f73f3",
+      "title": "GPU synthetic controlled rerun: original planted IPB biology, JEPA-only after anchor rejection",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T12"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/537"
+    },
+    {
+      "pr": 538,
+      "created_utc": "2026-11-04T06:53:15Z",
+      "head_sha": "b901d3fe25857a09f7e0cbc48d4e75d75d9ca3e0",
+      "title": "V9 conservative query-address rights at existing D1/V2C boundaries (no issuer or training)",
+      "merged": false,
+      "status": "open",
+      "threads": [
+        "T08"
+      ],
+      "assessment": "PR_METADATA_RECORD__FOR_SCIENTIFIC_RESULT_USE_CORRESPONDING_ORIGINAL_RESULT_AND_LATER_ERRATUM",
+      "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/538"
+    }
+  ]
+}

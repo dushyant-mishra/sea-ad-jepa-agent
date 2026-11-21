@@ -1,0 +1,111 @@
+{
+  "schema": "JEPA_EVENT107_LEGACY_V5_STEP_CAPABLE_CI_QUARANTINE_V1",
+  "event": 107,
+  "date_utc": "2026-11-06",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "audit_pr": 322,
+  "active_handoff_pr": 460,
+  "human_path": "docs/agent/JEPA_20261106_EVENT107_LEGACY_V5_STEP_CAPABLE_HOSTED_WORKFLOW_STATIC_QUARANTINE_RED_GREEN_NO_TRAINING.md",
+  "finding": {
+    "id": "FOUR_LEGACY_AUTOMATIC_V5_WORKFLOWS_EXECUTE_HISTORICAL_STEP_CAPABLE_TESTS",
+    "source_evidence": [
+      ".github/workflows/v64-runtime-core-reconciliation.yml",
+      ".github/workflows/v5-inactive-runtime-step-guard.yml",
+      ".github/workflows/jepa-synth2048-v5-guarded-readiness.yml",
+      ".github/workflows/current-authority-surface-guard.yml"
+    ],
+    "historic_executable_calls": {
+      "tests/test_v5_prefreeze_runtime_torch_integration.py": [
+        "loss.backward()",
+        "guard.run_optimizer_step(token)"
+      ],
+      "tests/test_v5_prefreeze_checkpoint_binding_v1.py": [
+        "modules.optimizer.step()"
+      ],
+      "tests/test_v5_prefreeze_runtime_authority_reconciliation.py": [
+        "run_optimizer_step",
+        "run_ema"
+      ]
+    },
+    "prior_actions_run_proven_training_now": false,
+    "scope": "FUTURE_AUTOMATIC_CI_STEP_RISK_NOT_PROOF_OF_CURRENT_STEP"
+  },
+  "repair": {
+    "pr": 593,
+    "stacked_on": [
+      592,
+      591,
+      590
+    ],
+    "draft": true,
+    "merged": false,
+    "red_head": "4404a03b429f013ec28add0ac475352b8caabad2",
+    "green_head": "612c1b2ff86c225eb9ba8cba5b0db306a45b41af",
+    "method": "source_only_stdlib_workflow_validator_and_AST_witness_preserving_historical_test_source",
+    "test_mode": "NO_TORCH_IMPORT_NO_PYTEST_COLLECTION_NO_ACTUAL_V5_STEP",
+    "git_blobs": {
+      "scripts/v5/jepa_v5_legacy_step_ci_quarantine_v1.py": "7f250ddc464e45f1c61f319777eb62a17c8bd5ab",
+      ".github/workflows/v64-runtime-core-reconciliation.yml": "f6a8d815ec858bbec3fed2e9a709df78f4da7d4c",
+      ".github/workflows/v5-inactive-runtime-step-guard.yml": "b0bdcee44483b69984d81b5a4a0ad89cf0c912bb",
+      ".github/workflows/jepa-synth2048-v5-guarded-readiness.yml": "f370205c2d694fe80367803b8129784175290210",
+      ".github/workflows/current-authority-surface-guard.yml": "2ecb56be36c0929ba0dfcbf4c199a86adb76d8ec"
+    },
+    "source_evidence_unmodified": true
+  },
+  "red": {
+    "run": 42250990432,
+    "head": "4404a03b429f013ec28add0ac475352b8caabad2",
+    "python_versions": [
+      "3.11.9",
+      "3.12.7"
+    ],
+    "static_unittest_methods": 3,
+    "expected_failed_assertions_per_python": 9,
+    "torch_imported": false,
+    "pytest_collected": false
+  },
+  "green": {
+    "head": "612c1b2ff86c225eb9ba8cba5b0db306a45b41af",
+    "workflows_total": 6,
+    "workflows_success": 6,
+    "jobs_total": 9,
+    "jobs_success": 9,
+    "runs": [
+      42251314812,
+      42251314631,
+      42251314708,
+      42251314627,
+      42251314728,
+      42251304007
+    ]
+  },
+  "prior_continuity": {
+    "event106": {
+      "pr": 592,
+      "head": "7e4c45ae7991ed79d136922fd8d157ce847f9f47",
+      "workflows": "4/4",
+      "jobs": "8/8"
+    },
+    "event105": {
+      "pr": 591,
+      "head": "ff1141fefa1377ac394be530c1236b682805e5e4",
+      "workflows": "13/13",
+      "jobs": "26/26"
+    },
+    "event104": {
+      "combined_original_pr": 590,
+      "head": "a3a59eb934186a8ab329eb2b0b4385b3948d1f0a"
+    }
+  },
+  "reviewer_status": "AUTHOR_GREEN_ONLY__FULL_MACHA_590_AND_RECIPROCAL_591_592_593_PENDING",
+  "limits": [
+    "NOT_A_PRODUCTION_V5_TRAINER",
+    "NO_ANY_OPTIMIZER_BACKWARD_OR_EMA_AUTHORITY",
+    "NO_REAL_RNA_RIGHTS_OR_QUALIFIED_TEACHER_TARGET",
+    "NO_PHYSICAL_FROZEN_BIOLOGICAL_PANEL",
+    "NO_SIGNED_D1_CUSTODY_OR_BITWISE_RESTART",
+    "OTHER_OLDER_D1_AND_TEACHER_STUDENT_WORKFLOWS_NOT_FULLY_COVERED"
+  ],
+  "permanent_next_agent_protocol": "Read #460 top Event107 then #322 chronology/no-repeat Event107 through Event90; append Event108+ on #322 FIRST, mirror identical human+machine to both #322/#460, verify SHA1, prepend first-read and both PR descriptions with audited head and RED/GREEN evidence, never merge or step without new owner authority",
+  "verdict": "FOUR_AUTOMATIC_LEGACY_STEP_CI_ROUTES_QUARANTINED__GREEN__RECIPROCAL_REVIEW_PENDING"
+}

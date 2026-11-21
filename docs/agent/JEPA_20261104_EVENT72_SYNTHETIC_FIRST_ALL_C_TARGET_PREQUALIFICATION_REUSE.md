@@ -1,0 +1,43 @@
+# Event72 — reuse existing synthetic pipeline to prequalify coexisting C1–C6 biology
+
+**2026-11-04 — READ-ONLY original-asset audit.** No new generation, fit, controller-truth access, learner training, synthetic/real result scoring, scientific threshold revision, or authority. Original experiments remain immutable.
+
+## Conclusion
+
+**Yes: synthetic qualification is the correct initial tier, before new human-source reads.** Original [PR #315](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/315) already designs a **single candidate-agnostic biological population** supporting all six nonexclusive target families. The original design explicitly tests single biological heads, complementary heads, fused/shared heads, specialist-augmented portfolios, no-target outcomes and *interference* between coexisting heads. **Do not recreate that plan or the existing generator.**
+
+But it would be scientifically wrong to mark all six C targets **PASS** already: current frozen #328 controller source literally sets `recoverability[candidate] = "UNASSESSED_PENDING_RECOVERABILITY_QUALIFICATION"` for every C. C1/C2/C3/C5 summaries and C4/C6 component descriptors are *hidden truth definitions*, not outputs of a learned teacher or student.
+
+## Existing actual execution; retain original limits
+
+| Existing original source | Actually qualified or executed | Does not yet prove |
+|---|---|---|
+| [#315](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/315) revised 573-line V2 | Full *prospective design* linking Stage81A3 biological programs + V79 measurement/null worlds + PR311 rare/context/perturbation; candidate-agnostic truth and additive/nonadditive interaction tests explicitly specified | Full production substrate generated or any C fit |
+| [#328](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/328) receipt V2 | Frozen **480 cells × 48 addresses × 16 donors**; common/rare/context/perturbation and RNA+ATAC, fixed world/fit/controller hashes; mechanics fixture independently scoped reviewed #339 | Production modern 41K world; all-C learned recoverability; physically separated fit/controller runs; authentic human-like support |
+| [#318–#321](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/321) + [#336](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/336) | Separate, original **three × 512-feature** relational known-truth TD fixture with nine control cases; blinded two-phase run **9/9 expected statuses** independently audited **PASS_PHASE2_EXECUTION_AND_CUSTODY** at head b92f335b | Learned EMA teacher, student recovery, other five candidate qualification, single combined C2+C3 world |
+| [#369](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/369) | Existing sealed cross-gate positive/null/NOT_ESTIMABLE test-of-test and hostile fixes for G2, G6, G7, G8, G9/S1/S2, R1, R4/C6/C4; V3 hosted qualification | Real-human magnitude, evidence issuer, any new trained C pass |
+| [#348](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/348) V80 | Frozen 8-world / 192-fit sparse-positive **benchmark and adjudicator** QUALIFIED; original ZIP preserved to audit/handoff | **No estimator qualified**; V79 original Q08 failed; #533 207/85 selection conflict and #534 cross-host benchmark SHA RED remain |
+| [#438](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/438) | Four-world donor-heldout discriminators for actual biology, collapse, nuisance shortcut and genuine low-rank biology; 14 tests GREEN, but PR rejected as scientific winner | JEPA/Bayesian model or representation PASS; never reuse as a production learned-state authority |
+| [#469](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/469), [#534](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/534) | Existing observed-RNA→Task5 fixture and q-exclusion/CaseBundle negative/blocked admission; #534 original V80 portability failure kept RED | Authenticated production source, qualified target, student or V80 portability fix |
+| [#526/#531](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531) and [#536](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/536) | Actual q-excluded eight-other-gene measured C3 producer, q-invariance/abstention; independently identified #328 `VISIBILITY>0` conflation; actual 48→3×512 C2 executor refusal; missing student refusal | Valid human source support; C3 learned correct-q recovery; padded or artificially downsized C2; positive same-world qualification |
+
+## Current specific scientific blockers
+
+1. **Truth/estimand mismatch:** #328 C2 truth is the ordering of a one-dimensional shared-state score, *not* original C2's three independently measured 512-feature views; #328 C3 truth is **population mean** `expected[:,0].mean()`, not R5's **per-cell q-excluded eight-other-gene target**. Do not score these against each other as though identical. #328 C4/C6 are component labels, not prospectively independent interaction-increment outcomes.
+2. **Support error:** Macha #531 showed #328 uses detection fraction `VISIBILITY>0` as structural support, yielding synthetic source patterns that contradict real assay support. Retain V2 unchanged as mechanics evidence; any prospective corrected science world must be a **versioned successor**, with separately approved seed/support semantics, not a retroactive repair of V2.
+3. **No learned candidate demonstration:** C1 shared information recovery, C2 relational teacher/student recovery, C3 right-q versus wrong-q improvement, C5 regulatory program/perturbation-versus-null and C6/C4 positive-vs-additive-null increments have **not** been shown in one blinded controlled learned-encoder battery. Historical Stage81B trained JEPA arms and Phase2 9/9 are already done but ask different questions; do not claim there was never any synthetic JEPA training.
+4. **Custody/threshold limitations:** all six Cs may coexist; no candidate PASS by copying a controller-truth value or model self-report. Distinguish a test-of-test PASS from synthetic fitted biological target PASS and from human biological claim. Existing PR338 real gates 15 partly specified/13 blocked; synthetic gates must not invent real-human effect margins. #534 V80 SHA RED and #533 V79 forensic conflict do not disappear.
+
+## Minimal allowed sequence (reuse-first; **not execution authorization**)
+
+**A. Exact frozen-source feasibility review, no compute-heavy fit.** Index current #315 design, #328 V2, #318/321 512-feature C2, #369 gates, #438 negative controls, #469/#534 source bridge, #526/#531/#536 C3 rights/producer, and original Stage81B. Check whether one **already-frozen** source provides a truthful common-world C2 three-view + C3 measured query + C5 perturbation program and C4/C6 nonadditivity. If none, report the exact missing one-world observables—not another generic generator plan.
+
+**B. Prospectively correct only demonstrated minimal mismatch if authorized.** Freeze assay support independently of detection, hold donor/view splits, fit/controller physical domain isolation, candidate-agnostic biology, real callable gate identity, correct C2 triplets and per-cell C3 complement, matched wrong-cell/wrong-query, technical/depth/source, matched perturbation-null and additive-vs-nonadditive contrasts **before** any scoring. Preserve original frozen V2/TD/V79/V80.
+
+**C. Independent synthetic-only candidate pass *per component*.** Use genuine learner/teacher view built from fit-side observations, never sealed truth; compare each C1/C2/C3/C5 against matched controls on held donors with truthful `PASS / FAIL / NOT_ESTIMABLE`, not forced successes. **Only when parents pass** test C6 fusion increment over C1/C3 and C4 relational increment over independently qualified C6, preserving constituent signals. Test all-head interference. A model may pass several Cs together.
+
+**D. Protected test and separate authority.** Controller opens independent truth *after* exact model outputs, preregistered gates and reviewer source freeze. Macha and Sol reciprocally review code; owner authorizes any new synthetic generation/training/scoring. All such hypothetical passes remain **SYNTHETIC_ONLY**, not production/real-data biological qualification or Stage4 permission.
+
+**Priority:** This is an opportunity to avoid real-data risk while answering which target information types can **actually be learned together**. But first establish the exact missing shared-source benchmark and whether earlier frozen assets can support it—without rerunning or retuning prior experiments.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`

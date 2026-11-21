@@ -1,0 +1,136 @@
+{
+  "schema": "JEPA_OWNER_DELEGATED_NARROW_QC_AND_SINGLE_LEVEL4_DECISION_V1",
+  "decision_date": "2026-11-03",
+  "decision_origin": "PROJECT_OWNER_IN_CHAT_EXPLICITLY_DEFERRED_TWO_LIMITED_SCOPE_DECISIONS_TO_GPT",
+  "decision_maker": "GPT_ON_OWNER_DELEGATION",
+  "attestation_class": "OWNER_DELEGATED_TEXT_DECISION__NOT_CRYPTOGRAPHIC_SIGNATURE_OR_EXTERNAL_PROVIDER_AUTHORITY",
+  "status": "APPROVED_NARROW_WITH_CONDITIONS",
+  "source_document": "docs/agent/JEPA_OWNER_DELEGATED_NARROW_QC_AND_SINGLE_LEVEL4_DECISION_20261103.md",
+  "authority": {
+    "target_winner": null,
+    "representation_winner": null,
+    "real_training": false,
+    "stage4": false,
+    "qualifies_biology": false,
+    "qualifies_source_independence": false,
+    "permits_DEV": false,
+    "permits_SEALED": false,
+    "permits_NPH52_quarantined_expression": false
+  },
+  "qc_only_allowlist": {
+    "name": "JEPA_QC_ONLY_ANALYTIC_ALLOWLIST_V1",
+    "decision": "APPROVE_LIMITED",
+    "allowed_fields": [
+      {
+        "source": "SEA_AD",
+        "column": "Doublet score"
+      },
+      {
+        "source": "HVS",
+        "column": "is_primary_data"
+      }
+    ],
+    "allowed_operations": [
+      "aggregate_source_qc_distributions",
+      "depositor_selection_characterization",
+      "duplicate_cell_checks",
+      "missingness_and_floor_descriptive_analysis"
+    ],
+    "forbidden": [
+      "teacher_student_model_inputs",
+      "covariates_or_model_loss",
+      "target_representation_or_query_selection",
+      "donor_split_selection",
+      "outcome_pathology_joins",
+      "expression_derived_cell_filter_before_query_independence_test",
+      "DEV_SEALED",
+      "NPH52_quarantine",
+      "any_additional_fields"
+    ],
+    "reuse_prior_513_aggregates_first": true,
+    "versioned_replay_may_be_proposed": true,
+    "existing_REPLAY_HOLD_software_guard_still_enforced": true,
+    "frozen_513_probe_must_not_change": true,
+    "read_new_matrix_values_for_QC_not_permitted": true,
+    "publish_only_aggregates": true,
+    "before_new_replay_require": [
+      "versioned narrowly scoped software gate",
+      "pinned source and current #528 admission",
+      "same output hash or explicit refusal",
+      "new hostile tests and independent review"
+    ],
+    "no_replay_required_when_prior_receipt_suffices": true
+  },
+  "single_block_casebundle": {
+    "name": "SINGLE_SEA_AD_READER_FIT_LEVEL4_SOURCE_TO_CASEBUNDLE_PREFLIGHT_V1",
+    "decision": "APPROVE_ONE_PREDECLARED_BLOCK",
+    "source": "SEA_AD",
+    "source_tier": "PUBLIC_PROCESSED",
+    "split": "reader_fit",
+    "max_blocks": 1,
+    "block_selection": "FIRST_ELIGIBLE_LEXICOGRAPHIC_SOURCE_MATRIX_BLOCK_BY_FROZEN_METADATA_BEFORE_NUMERIC_READ",
+    "metadata_precommit_fields": [
+      "frozen_level4_manifest_sha256",
+      "source",
+      "matrix_id",
+      "block_id",
+      "operator",
+      "source_content_receipt",
+      "reader_split_receipt",
+      "eligible_query_address_and_alias_rights"
+    ],
+    "selection_requires_expression_values": false,
+    "no_post_result_reselection": true,
+    "only_permitted_reads": [
+      "one_frozen_level4_reader_fit_block_counts",
+      "source_native_private_physical_library_values_for_same_rows",
+      "source_address_operator_measurement_support",
+      "minimal_internal_donor_library_identity_for_joins"
+    ],
+    "forbidden": [
+      "DEV",
+      "SEALED",
+      "reader_validation",
+      "reader_oracle",
+      "pathology_or_disease",
+      "NPH52_quarantine",
+      "other_blocks",
+      "other_sources",
+      "unapproved_columns",
+      "model_training",
+      "biological_target_selection"
+    ],
+    "physical_source_library_private": true,
+    "D1_student_view_computed_separately": true,
+    "cannot_substitute_D1_for_physical_library": true,
+    "casebundle_v1_remains_fixture_only": true,
+    "requires_versioned_real_casebundle_successor": true,
+    "requires": [
+      "existing_task2_access_receipt",
+      "existing_513_eight_field_q_rights_and_alias_contract",
+      "exact_address_and_operator_feature_state",
+      "source_parent_digest_binding",
+      "fail_closed_regression_tests",
+      "independent_review_before_expansion"
+    ],
+    "output": [
+      "aggregate_and_hash_only_scoped_receipt",
+      "pass_fail_not_estimable_for_mechanical_boundary",
+      "no_identifying_rows_or_count_payload_in_GitHub"
+    ],
+    "stop_after_one_block": true,
+    "expand_only_under_new_explicit_scope": true
+  },
+  "notes": [
+    "SEA_AD same-file matrix UMIs consistency is not independent source authentication",
+    "QC-only permission removes internal policy hold but does not bypass #528 REPLAY_HOLD in code",
+    "Public processed source acquisition resolved; signer hardware is optional governance hardening",
+    "No new qualification authority is issued; ongoing model selection and Stage4 remain blocked"
+  ],
+  "source_heads": {
+    "pr_513": "0b1af4f06ba423753899e7c564d3b16ce609ac6a",
+    "pr_528": "1a4fda758936a3cc3868948b44d25694de216bd9",
+    "audit_322_prior": "299d501d817e182509d781294a42698d5534471e",
+    "handoff_460_prior": "ef9d227036a64a14ecc4c4dae23072a034d13827"
+  }
+}

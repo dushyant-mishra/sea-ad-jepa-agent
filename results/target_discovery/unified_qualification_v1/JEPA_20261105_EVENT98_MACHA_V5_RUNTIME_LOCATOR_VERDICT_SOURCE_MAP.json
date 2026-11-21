@@ -1,0 +1,126 @@
+{
+  "schema": "JEPA_EVENT98_MACHA_V5_RUNTIME_LOCATOR_VERDICT_SOURCE_MAP_V1",
+  "event": 98,
+  "date_utc": "2026-11-05",
+  "author": "Macha",
+  "method": "STATIC_GIT_SOURCE_AND_BLOB_CHECKS_ONLY__NO_IMPORT_NO_EXECUTION",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "human": "docs/agent/JEPA_20261105_EVENT98_MACHA_VERDICT_EVENT96_V5_RUNTIME_LOCATOR_12_FILES_V4_40_STEP_NO_EXECUTION.md",
+  "verdict_on_event96": "ACCEPT_SCOPED_WITH_TWO_CORRECTIONS",
+  "canonical_runtime_py": {
+    "status": "LEGACY_PATH_INVALID",
+    "absent_at": {
+      "PR224": "ABSENT",
+      "PR525": "ABSENT",
+      "PR548": "ABSENT",
+      "PR570": "ABSENT",
+      "PR579": "ABSENT",
+      "PR582": "ABSENT",
+      "main": "ABSENT"
+    }
+  },
+  "entrypoint": {
+    "file": "src/sea_ad_jepa/v5/inactive_guarded_update_v1.py",
+    "function": "run_guarded_inactive_reference_update",
+    "requires": "PrefreezeMechanicalAuthorityV1",
+    "returns": {
+      "training_authorized": false,
+      "execution_authorized": false
+    },
+    "in_repo_callers": [
+      "src/sea_ad_jepa/v5/_ema_bound_runtime_proof_impl_v1.py",
+      "tests/test_teacher_student_v5_inactive_update_reference.py"
+    ]
+  },
+  "correction_1_canonical_file_set": {
+    "defined_by": "CANONICAL_RUNTIME_SOURCE_FILES in src/sea_ad_jepa/v5/_inactive_checkpoint_binding_impl_v1.py at PR224",
+    "count": 12,
+    "plus_private_impl": 2,
+    "event96_listed": 5,
+    "identical_across": [
+      "PR224",
+      "PR525",
+      "PR548",
+      "PR582"
+    ],
+    "blobs": {
+      "src/sea_ad_jepa/v5/inactive_update_reference.py": {
+        "lineage_blob": "ab266faa31ac7d3e51acf695a7deff1702368cde",
+        "main": "3dc61b629c1d4723e7df058f72c1497c4b4c6c20"
+      },
+      "src/sea_ad_jepa/v5/inactive_guarded_update_v1.py": {
+        "lineage_blob": "59647eb0122dfd98068844f68b6d48c2c33d67ca",
+        "main": "ABSENT"
+      },
+      "src/sea_ad_jepa/v5/prefreeze_runtime_authority.py": {
+        "lineage_blob": "41a6ebde613ee3ec5c898fa39e5a212c14eaac66",
+        "main": "ABSENT"
+      },
+      "src/sea_ad_jepa/v5/inactive_checkpoint_binding_v1.py": {
+        "lineage_blob": "8d7ad56a4cefe011f95d491511d3c165386e4020",
+        "main": "ABSENT"
+      },
+      "src/sea_ad_jepa/v5/ema_presentation_v1.py": {
+        "lineage_blob": "6f4442e25a6f891b9548b11403154233f616d842",
+        "main": "ABSENT"
+      },
+      "src/sea_ad_jepa/v5/ema_bound_runtime_proof_v1.py": {
+        "lineage_blob": "b6bf21cc129358c0708fbd3cc08977cf90191003",
+        "main": "ABSENT"
+      },
+      "src/sea_ad_jepa/v5/ema_persisted_continuation_v2.py": {
+        "lineage_blob": "865f6991dd5822a37aa223604799eefcf0eddb9f",
+        "main": "ABSENT"
+      },
+      "src/sea_ad_jepa/v5/data_first_geometry.py": {
+        "lineage_blob": "93b08f49f9d92b5c158e1a53fd5331b964f0e13f",
+        "main": "93b08f49f9d92b5c158e1a53fd5331b964f0e13f"
+      },
+      "src/sea_ad_jepa/v5/keyed_dropout_prototype_v2.py": {
+        "lineage_blob": "0fd06ae0891625924761ef097b20ba6e11495cb3",
+        "main": "0fd06ae0891625924761ef097b20ba6e11495cb3"
+      },
+      "src/sea_ad_jepa/v5/keyed_rng_contract_v2.py": {
+        "lineage_blob": "dcd4abf9790f25db1f576fbf821a75e13057a03e",
+        "main": "dcd4abf9790f25db1f576fbf821a75e13057a03e"
+      },
+      "src/sea_ad_jepa/v4/ipb_jepa.py": {
+        "lineage_blob": "3bd9d601a6779818a45c437cc21fd4a64749eb6e",
+        "main": "3bd9d601a6779818a45c437cc21fd4a64749eb6e"
+      },
+      "src/sea_ad_jepa/v4/gene_tokenizer.py": {
+        "lineage_blob": "0fd283136323a49b5554f2fb33d0c65ee31be576",
+        "main": "0fd283136323a49b5554f2fb33d0c65ee31be576"
+      },
+      "src/sea_ad_jepa/v5/_inactive_checkpoint_binding_impl_v1.py": {
+        "lineage_blob": "5be5177a0d5893ddc1140d69844549cd76c95bf0",
+        "main": "ABSENT"
+      },
+      "src/sea_ad_jepa/v5/_ema_bound_runtime_proof_impl_v1.py": {
+        "lineage_blob": "fac5f7c704c8e303f52c04ade91e8acc364dae9d",
+        "main": "ABSENT"
+      },
+      "src/sea_ad_jepa/v5/__init__.py": {
+        "lineage_blob": "5b80f3e917fc7f319f4340ad8cde16c99a20a538",
+        "main": "255e6599590df4d1e4e9bcc0c54bd3d125f40f0f"
+      }
+    },
+    "main": "lacks 6 canonical files; inactive_update_reference.py is older 3dc61b62 with optimizer.step(); never take runtime from main"
+  },
+  "correction_2_forty_step": {
+    "event68_row_101_claim": "Original 40-step bounded synthetic V5 optimizer/EMA/checkpoint already executed",
+    "finding": "V5 canonical runtime is a one-update guarded rehearsal (tests run update 0 and continuation to next_update_index=1; no V5 multi-update loop). 40 steps belong to the V4 healthy-teacher u0->u40 runner/contract requiring separate execution authority.",
+    "v4_sources": [
+      "scripts/v4/healthy_teacher_qualification_runner_v1.py",
+      "tests/test_teacher_student_unified_runtime_v1.py",
+      "docs/agent/HEALTHY_TEACHER_TRAINING_CONTRACT_V1_20260907.json"
+    ],
+    "execution_receipt_search": "keyword search of docs/agent and results at PR224 and PR226 e83bb8d9 found no u40 execution receipt; NOT a claim that no 40-step run ever occurred anywhere"
+  },
+  "consequence": "No V5 code to rebuild. A multi-update V5 driver (journal BEGIN before each guarded update, structured bytes and probe after, #571 telemetry) is genuinely new; running it, even synthetically for RT1-RT8, needs separate owner authorization.",
+  "not_done": [
+    "no module imported",
+    "no forward/backward, optimizer step or EMA update",
+    "no tests run for this event"
+  ]
+}

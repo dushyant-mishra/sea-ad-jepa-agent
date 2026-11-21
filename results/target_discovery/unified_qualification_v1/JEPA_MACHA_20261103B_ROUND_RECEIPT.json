@@ -1,0 +1,67 @@
+{
+  "schema": "JEPA_MACHA_ROUND_RECEIPT_V1",
+  "date_utc": "2026-11-03",
+  "round": "second",
+  "reviewer_lane": "Macha (independent; Claude Code)",
+  "authority_effect": "NONE",
+  "deliverables": {
+    "pr525_fresh_head_review": {
+      "pr": 532,
+      "reviewed_head": "0588788f6e8b17b549f1674277571c5611c90253",
+      "commit": "ccf0239d861bab9686fdfa3d863e8c81ef14e4bf",
+      "preserved_blobs": {
+        "527": "123e6c92f5dac0fb39e6d3023ec3c6093cfa56b3",
+        "530": "577944c0d058f5eb329b21fd6e18134bed9a9ca1"
+      },
+      "ci": {
+        "41590792957": "py3.11+3.12: 517 replay 5 unexpected successes; existing 98/98; guards+limit 4/4; REDs 6 failing subcases by design"
+      },
+      "verdict": "REPAIR_REQUIRED",
+      "reds": [
+        "M01",
+        "M02",
+        "S01"
+      ],
+      "limits": [
+        "L06"
+      ],
+      "satisfiability_local": "embed verified portfolio in manifest: review 7/7, #527/#530 green; 2 inherited adjudicate_noncompensation tests need migration"
+    },
+    "pr531_erratum_and_amendment": {
+      "commit": "270bc33c291e1934d9fcfb32138bff298c64f5cb",
+      "pr336_audit": {
+        "head": "b92f335b53a93805a5d05330dc0d61f0479b1dcf",
+        "run": 38478444632,
+        "terminal": "PASS_PHASE2_EXECUTION_AND_CUSTODY",
+        "scope": "TEST_QUALIFICATION_ONLY"
+      },
+      "gpt_526_correction": "b7761a3e7578f51db17fea26dae607aec299c1de",
+      "self_correction": "reverse-geometry claim overstated; real measured addresses per matrix HVS 18736, SEA-AD 35786, NPH52 30760-34969 of 41238 (Stage81A2R authority ee5d12c1)",
+      "amendment": "five-rule versioned observation semantics reusing A3R 852cb3ec, Stage81A2R ee5d12c1, V79 join, V3.1.1 four-state rights, owner alias decision 457b689b; P1-P6 prospective tests"
+    },
+    "source_to_casebundle_inventory": {
+      "1_raw_counts": "IMPLEMENTED_NOT_ACCEPTED",
+      "2_support_states": "IMPLEMENTED_NOT_ACCEPTED",
+      "3_identity": "IMPLEMENTED_NOT_ACCEPTED",
+      "4_alias_restrictions": "SPECIFIED_NOT_IMPLEMENTED (owner decision adopted 457b689b; no enforcement code)",
+      "5_private_library_size": "IMPLEMENTED_NOT_ACCEPTED",
+      "6_d1_student_view": "IMPLEMENTED_AND_ACCEPTED_FIXTURE_SCOPE",
+      "7_task2_access_receipt": "IMPLEMENTED_AND_ACCEPTED_INTERFACE",
+      "8_resolvable_provenance": "SPECIFIED_NOT_IMPLEMENTED",
+      "smallest_edge": "versioned real-path CaseBundle successor validator + minimal source-bound adapter over one FULL104 Level-4 block",
+      "real_value_use_blocked_by": [
+        "value-read authority for Level-4 counts",
+        "selection/QC decisions",
+        "alias enforcement code"
+      ]
+    }
+  },
+  "corrections": [
+    "#528 erratum R4 'open' superseded: owner adopted provisional alias restrictions 2026-10-30 (457b689b); enforcement absent",
+    "#531 'independent Phase-2 audit missing' withdrawn (#336)",
+    "#531 'reverse geometry' overstated",
+    "event-28 register: #523 merged to main 971ec6a1 with GPT ACCEPT_SCOPED"
+  ],
+  "data_access": "code, git objects, manifest headers and the Stage81A2R support-authority metadata only; no expression values; no QC-probe replay",
+  "terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

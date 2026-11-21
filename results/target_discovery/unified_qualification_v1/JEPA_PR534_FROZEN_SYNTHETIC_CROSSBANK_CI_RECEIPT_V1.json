@@ -1,0 +1,149 @@
+{
+  "schema": "JEPA_PR534_FROZEN_SYNTHETIC_CROSSBANK_CI_RECEIPT_V1",
+  "date": "2026-11-03",
+  "source_pr": 534,
+  "exact_head": "63dad948007c728839798f3c2e06eb035ec38eff",
+  "original_frozen_heads": {
+    "PR328": "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+    "PR474": "e7635e7982e950a010d181ec6f6883a18ade0db6",
+    "V80": "e99d1f214e76a5e3911eea438c32a1e60f70754f"
+  },
+  "author_hosted_results": [
+    {
+      "run": 41664040630,
+      "ci_event": "push",
+      "verdict": "SUCCESS",
+      "PR328_source_to_Task5_mechanics": {
+        "all_original_cells": 480,
+        "authority": {
+          "real_source_qualified": false,
+          "real_training_authorized": false,
+          "representation_selection_authorized": false,
+          "stage4_authorized": false,
+          "target_selection_authorized": false
+        },
+        "fixture_cell_not_estimable": 0,
+        "fixture_cell_passes": 30,
+        "metadata_selected_fixture_cells": 30,
+        "offledger_hidden_mass_changes_student_depth": true,
+        "original_fit_sha256": "fc5fa5c071903460da8c0d4644a3b18022f45b178f2c60a727710cadc2fb350a",
+        "original_measured_zero": 9432,
+        "original_structurally_unmeasured": 4770,
+        "original_world_sha256": "dedd53c3b93eecdf28b73f229574a0cda4971371a3a6282f4b9e12fa44d09e66",
+        "outside_base_collision_refused_not_estimable": true,
+        "positive_richer_query_perturbation": true,
+        "pr474_head": "e7635e7982e950a010d181ec6f6883a18ade0db6",
+        "q_in_base_accepted_by_unauthenticated_fixture": true,
+        "rich_view_falsely_uses_student_depth_as_physical_total_and_is_refused": true,
+        "schema": "PR328_FROZEN_SYNTHETIC_CASEBUNDLE_CROSS_COMPONENT_DIAGNOSTIC_V1",
+        "scientific_limits": [
+          "Original PR328 VISIBILITY>0 source-support semantics cannot infer real assay support",
+          "Source labels are synthetic regimes, not authentic human provider IDs",
+          "Output uses only recorded frozen fit-side synthetic integer RNA; no controller truth or fitting",
+          "PR474 and Task5 code tested unchanged; no real source issuance, q rights, target, or Stage4"
+        ],
+        "source_id_forgery_accepted_by_unauthenticated_fixture": true,
+        "source_strata": [
+          "PR328_SYNTH_HVS",
+          "PR328_SYNTH_NPH52",
+          "PR328_SYNTH_SEA_AD"
+        ],
+        "status": "EXISTING_FIXTURE_MATH_PASSES__SOURCE_BINDING_AND_RICH_CASEBUNDLE_NOT_QUALIFIED",
+        "synthetic_hidden_query_base_invariance": true,
+        "wrong_query_changes_fixture_view_only_not_a_learned_control": true
+      },
+      "V80_frozen_eight_family_support_diagnostic": {
+        "authority": {
+          "real_source_qualified": false,
+          "real_training_authorized": false,
+          "representation_selection_authorized": false,
+          "stage4_authorized": false,
+          "target_selection_authorized": false
+        },
+        "benchmark_identity_sha256": "16a08b29c7e083377f4dde6e16ac6d55a3358ed45475c74161fbaba29a4afc38",
+        "cases": [
+          {
+            "detected_measured_atoms": 5132,
+            "estimability_truth_scope": "CONTROLLER_DIAGNOSTIC_SUMMARY_ONLY_NOT_FIT_TRANSPORT",
+            "family": "SP00_BALANCED_ESTIMABLE",
+            "measured_zero_atoms": 40948,
+            "structural_missing_atoms": 0
+          },
+          {
+            "detected_measured_atoms": 1643,
+            "estimability_truth_scope": "CONTROLLER_DIAGNOSTIC_SUMMARY_ONLY_NOT_FIT_TRANSPORT",
+            "family": "SP01_ULTRASPARSE_ESTIMABLE",
+            "measured_zero_atoms": 44437,
+            "structural_missing_atoms": 0
+          },
+          {
+            "detected_measured_atoms": 3748,
+            "estimability_truth_scope": "CONTROLLER_DIAGNOSTIC_SUMMARY_ONLY_NOT_FIT_TRANSPORT",
+            "family": "SP02_DONOR_IMBALANCED_ESTIMABLE",
+            "measured_zero_atoms": 42332,
+            "structural_missing_atoms": 0
+          },
+          {
+            "detected_measured_atoms": 4138,
+            "estimability_truth_scope": "CONTROLLER_DIAGNOSTIC_SUMMARY_ONLY_NOT_FIT_TRANSPORT",
+            "family": "SP03_SOURCE_SHIFT_ESTIMABLE",
+            "measured_zero_atoms": 41942,
+            "structural_missing_atoms": 0
+          },
+          {
+            "detected_measured_atoms": 2613,
+            "estimability_truth_scope": "CONTROLLER_DIAGNOSTIC_SUMMARY_ONLY_NOT_FIT_TRANSPORT",
+            "family": "SP04_SUPPORT_THINNED_ESTIMABLE",
+            "measured_zero_atoms": 24400,
+            "structural_missing_atoms": 19067
+          },
+          {
+            "detected_measured_atoms": 0,
+            "estimability_truth_scope": "CONTROLLER_DIAGNOSTIC_SUMMARY_ONLY_NOT_FIT_TRANSPORT",
+            "family": "SP05_NO_POSITIVE_SUPPORT_NOT_ESTIMABLE",
+            "measured_zero_atoms": 46080,
+            "structural_missing_atoms": 0
+          },
+          {
+            "detected_measured_atoms": 4813,
+            "estimability_truth_scope": "CONTROLLER_DIAGNOSTIC_SUMMARY_ONLY_NOT_FIT_TRANSPORT",
+            "family": "SP06_RANK_DEFICIENT_NOT_ESTIMABLE",
+            "measured_zero_atoms": 41267,
+            "structural_missing_atoms": 0
+          },
+          {
+            "detected_measured_atoms": 3184,
+            "estimability_truth_scope": "CONTROLLER_DIAGNOSTIC_SUMMARY_ONLY_NOT_FIT_TRANSPORT",
+            "family": "SP07_NEW_DONOR_ESTIMABLE",
+            "measured_zero_atoms": 42896,
+            "structural_missing_atoms": 0
+          }
+        ],
+        "fit_transport_schema": "V80_SPARSE_POSITIVE_FIT_TRANSPORT_V1",
+        "note": "V80 positives are continuous fit outcomes, NOT raw integer physical RNA; never cast into CaseBundle or use 85 V79 forensic results for model selection",
+        "original_seed_root": 41000000,
+        "schema": "V80_FROZEN_EIGHT_FAMILY_SUPPORT_DETECTION_DIAGNOSTIC_V1",
+        "status": "EIGHT_FROZEN_STRESS_FAMILIES_REPLAYED__NO_ESTIMATOR_RUN"
+      }
+    },
+    {
+      "run": 41664052640,
+      "ci_event": "pull_request",
+      "verdict": "FAILED_CLOSED",
+      "failure_gate": "V80_ORIGINAL_BENCHMARK_EXACT_SHA",
+      "observed_digest_and_runtime": {
+        "actual": "faf80c897ab6f568ec2ca243471b1e3329950ce86e9ab69b7b5c3e3891c7b769",
+        "expected": "16a08b29c7e083377f4dde6e16ac6d55a3358ed45475c74161fbaba29a4afc38",
+        "fit_sha256": "b33e72a6852b9ec5696d6184f05f2b448419e22242c8535147ab7dd866c361ab",
+        "numpy": "2.3.5",
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "processor": "x86_64",
+        "python": "3.11.9"
+      },
+      "PR328_and_PR474_reached": "EXISTING_FIXTURE_MATH_PASSES__SOURCE_BINDING_AND_RICH_CASEBUNDLE_NOT_QUALIFIED",
+      "no_waiver": true
+    }
+  ],
+  "interpretation": "Identical tested head, original source heads, seed roots and required Python/NumPy versions produced both original V80 benchmark identity and different SHA across hosted runners. Original benchmark not universally byte-stable in this observed configuration. Underlying cause unestablished; no changed seeds or source accepted. Real biology/model authority remains OFF.",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

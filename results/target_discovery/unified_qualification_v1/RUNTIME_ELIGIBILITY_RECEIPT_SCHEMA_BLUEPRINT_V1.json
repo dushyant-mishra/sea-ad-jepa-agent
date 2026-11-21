@@ -1,0 +1,122 @@
+{
+  "schema": "RUNTIME_ELIGIBILITY_RECEIPT_SCHEMA_BLUEPRINT_V1",
+  "date": "2026-10-14",
+  "authority": "ANALYSIS_ONLY__POST_DOWNSTREAM_RUNTIME_BRIDGE__NO_TRAINING_ELIGIBILITY_ISSUED",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "purpose": "Separate runtime/continuation safety qualification from downstream scientific certification before any TRAINING_ELIGIBLE promotion.",
+  "required_parent_stage": "DOWNSTREAM_CERTIFIED",
+  "produced_stage_if_valid_and_separately_promoted": "TRAINING_ELIGIBLE",
+  "does_not_produce": "TRAINING_AUTHORIZED",
+  "required_fields": [
+    "receipt_schema",
+    "receipt_identity",
+    "downstream_certification_receipt_digest",
+    "target_qualification_bundle_digest",
+    "execution_manifest_digest",
+    "qualification_registry_digest",
+    "runtime_source_identity",
+    "training_step_or_update_contract_digest",
+    "typed_checkpoint_or_continuation_identity",
+    "optimizer_completion_before_ema_receipt_digest",
+    "no_ema_on_rejected_or_incomplete_update_receipt_digest",
+    "coordinate_value_coupling_receipt_digest",
+    "q_safety_final_join_receipt_digest",
+    "deterministic_runtime_policy_digest",
+    "checkpoint_provenance_digest",
+    "runtime_access_receipt_digest",
+    "scientific_scope_snapshot_digest",
+    "scientific_scope_unchanged",
+    "known_runtime_limitations",
+    "parent_receipt_digests",
+    "qualification_stage",
+    "active_lineage_status",
+    "authority_scope",
+    "independent_review_identity"
+  ],
+  "required_runtime_invariants": [
+    "OPTIMIZER_COMPLETION_BEFORE_EMA",
+    "NO_EMA_ADVANCE_ON_REJECTED_OR_INCOMPLETE_UPDATE",
+    "TYPED_AUTHENTICATED_CHECKPOINT_CONTINUATION",
+    "RUNTIME_SOURCE_PROVENANCE_BOUND",
+    "COORDINATE_VALUE_COUPLING",
+    "Q_SAFETY_EXECUTED_ON_FINAL_JOINED_PATH",
+    "DETERMINISTIC_RUNTIME_POLICY_BOUND",
+    "RUNTIME_RECEIPT_CANNOT_WIDEN_TARGET_REPRESENTATION_SUPPORT_OR_EVIDENCE_SCOPE"
+  ],
+  "optimizer_ema_law": {
+    "required_sequence": [
+      "FORWARD_AND_LOSS_COMPLETE",
+      "BACKWARD_COMPLETE",
+      "UNSCALE_WHERE_APPLICABLE",
+      "MANDATORY_GRADIENT_OR_UPDATE_GUARDS_PASS",
+      "OPTIMIZER_STEP_COMPLETES",
+      "UPDATE_ACCEPTED",
+      "EMA_TEACHER_ADVANCES"
+    ],
+    "forbidden": [
+      "EMA_BEFORE_OPTIMIZER_COMPLETION",
+      "EMA_AFTER_REJECTED_UPDATE",
+      "EMA_AFTER_INCOMPLETE_UPDATE",
+      "EMA_ADVANCE_WITHOUT_BOUND_ONLINE_STATE_IDENTITY"
+    ]
+  },
+  "checkpoint_continuation_law": [
+    "CHECKPOINT_BYTES_AUTHENTICATED",
+    "CHECKPOINT_SCHEMA_AND_RUNTIME_SOURCE_IDENTITIES_BOUND",
+    "MODEL_OPTIMIZER_SCALER_EMA_AND_REQUIRED_COUNTER_STATE_TYPED",
+    "CONTINUATION_REFUSES_MOVED_RUNTIME_OR_INCOMPATIBLE_CHECKPOINT",
+    "HISTORICAL_DEFECTIVE_CHECKPOINTS_REMAIN_FORENSIC_ONLY"
+  ],
+  "coordinate_value_coupling_law": [
+    "GLOBAL_ROW_OR_CELL_IDENTITY_BOUND",
+    "LOCAL_OR_BLOCK_ROW_IDENTITY_BOUND",
+    "LOGICAL_QUERY_OR_ADDRESS_IDENTITY_BOUND",
+    "AUTHENTICATED_PAYLOAD_BYTES_BOUND",
+    "ACTUALLY_CONSUMED_VALUES_BOUND",
+    "SOURCE_VALUE_PROVENANCE_BOUND_WHERE_MATCHED_NULL_OR_PAIRING_USED",
+    "IDENTITY_LABEL_CANNOT_BE_PAIRED_WITH_FREE_OR_UNAUTHENTICATED_VALUE_ARRAY"
+  ],
+  "q_safety_law": [
+    "FINAL_JOINED_ADAPTER_INTERFACE_RUNTIME_PATH_EXECUTED",
+    "EVERY_REQUIRED_QUERY_CHANNEL_EXERCISED",
+    "QUERY_IDENTITY_AND_VALUE_ACCESS_POLICY_BOUND",
+    "NO_HIDDEN_QUERY_OR_TOTAL_CHANNEL_INTRODUCED_BY_RUNTIME_ADAPTER",
+    "PARTIAL_OR_UNIT_TEST_Q_SAFETY_DOES_NOT_SATISFY_FINAL_JOIN"
+  ],
+  "scientific_scope_nonexpansion": [
+    "TARGET_IDENTITY_UNCHANGED",
+    "TARGET_RELATION_SEMANTICS_UNCHANGED",
+    "REPRESENTATION_SCOPE_UNCHANGED",
+    "SUPPORT_SCOPE_NOT_WIDENED",
+    "ESTIMABILITY_SCOPE_NOT_WIDENED",
+    "EVIDENCE_RIGHTS_UNCHANGED",
+    "OBSERVATION_CONTRACT_UNCHANGED",
+    "NEGATIVE_CONTROLS_AND_FALSIFIERS_NOT_DROPPED"
+  ],
+  "fail_closed_cases": [
+    "DOWNSTREAM_CERTIFICATION_RECEIPT_MOVED_OR_REVOKED",
+    "CHECKPOINT_BYTES_OR_SCHEMA_MISMATCH",
+    "RUNTIME_SOURCE_MOVED",
+    "OPTIMIZER_COMPLETION_UNPROVEN",
+    "EMA_ADVANCED_ON_REJECTED_OR_INCOMPLETE_UPDATE",
+    "COORDINATE_VALUE_COUPLING_UNPROVEN",
+    "Q_SAFETY_FINAL_JOIN_MISSING",
+    "RUNTIME_ACCESS_RECEIPT_INVALID",
+    "SCIENTIFIC_SCOPE_WIDENED",
+    "INDEPENDENT_REVIEW_MISSING"
+  ],
+  "hostile_tests": [
+    "EMA_BEFORE_OPTIMIZER_COMPLETION_REJECTED",
+    "EMA_AFTER_REJECTED_UPDATE_REJECTED",
+    "EMA_AFTER_INCOMPLETE_UPDATE_REJECTED",
+    "CHECKPOINT_WITH_CORRECT_SHAPE_BUT_WRONG_RUNTIME_SOURCE_REJECTED",
+    "IDENTITY_CORRECT_BUT_CONSUMED_VALUE_FROM_DIFFERENT_ROW_REJECTED",
+    "UNAUTHENTICATED_FREE_SOURCE_VECTOR_REJECTED",
+    "Q_SAFETY_UNIT_TEST_WITHOUT_FINAL_JOIN_REJECTED",
+    "RUNTIME_RECEIPT_WIDENING_SUBSPACE_ONLY_TO_AXIS_SEMANTICS_REJECTED",
+    "RUNTIME_RECEIPT_WIDENING_SUPPORT_OR_ESTIMABILITY_REJECTED",
+    "VALID_RUNTIME_RECEIPT_STILL_DOES_NOT_SET_TRAINING_AUTHORIZED"
+  ],
+  "authority_scope": "PROJECT:TRAINING_ELIGIBILITY_REVIEW",
+  "terminal": "RUNTIME_ELIGIBILITY_SCHEMA_BLUEPRINT_FROZEN__DOWNSTREAM_CERTIFIED_NOT_ENOUGH__TRAINING_AUTHORIZED_REMAINS_SEPARATE_OWNER_GATE"
+}

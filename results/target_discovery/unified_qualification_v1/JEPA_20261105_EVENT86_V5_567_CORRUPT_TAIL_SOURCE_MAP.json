@@ -1,0 +1,27 @@
+{
+  "schema": "JEPA_EVENT86_MATERIAL_CUSTODY_V1",
+  "event": 86,
+  "date_utc": "2026-11-05",
+  "repo": "dushyant-mishra/sea-ad-jepa-agent",
+  "pr": 568,
+  "head": "eab59fea8002cd18d4989e8b741051de588c48d6",
+  "base_macha_pr": 567,
+  "base_macha_head": "55aba0cfe4df492c18e5b268081cebbc6ac0e33e",
+  "original_macha_test_blob_unchanged": "c513693fa11b2c0ef72b68601ca83dcd5a0a5b2f",
+  "scoped_source_blob": "169ec630f24c16f4568408be024f07cb138e4489",
+  "author_ci": {
+    "run": 42053444473,
+    "python_3_11_9": "130 PASSED",
+    "python_3_12_7": "130 PASSED"
+  },
+  "review": "MACHA_INDEPENDENT_REVIEW_PENDING",
+  "evidence_scope": "BYTE_SHA_VERIFIED_FORENSIC_PREFIX_UP_TO_FIRST_DAMAGE__STRICT_STORAGE_STILL_REFUSES",
+  "critical_limits": [
+    "No true physical neural state or validated healthy checkpoint",
+    "No pre-optimizer attempt/outcome/close state journal yet",
+    "No protected external independent head copy; full tail deletion remains possible",
+    "No real optimizer updates, restart parity or training authority",
+    "Original Macha RED tests unchanged; author tests only"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

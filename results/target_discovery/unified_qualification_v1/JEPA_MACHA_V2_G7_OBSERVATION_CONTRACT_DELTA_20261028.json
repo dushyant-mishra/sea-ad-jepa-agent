@@ -1,0 +1,66 @@
+{
+  "schema": "JEPA_MACHA_V2_G7_OBSERVATION_CONTRACT_DELTA_V1",
+  "date": "2026-10-28",
+  "author_lane": "MACHA",
+  "append_only": true,
+  "audit_base_head": "dfaba7967a77",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "evidence_labels": {"tested": "executed code behavior (LOCAL or CI as stated)", "source": "repository source/artifact", "inference": "scientific reasoning", "unavailable": "cannot be authenticated with data on hand"},
+  "local_environments": ["Windows py3.11 numpy 2.4.6", "Windows py3.11 numpy 1.26.4", "WSL jepa-full104 numpy 1.26.4"],
+  "verdicts": [
+    {"pr": 479, "head": "ae762d7096a94ac663a0788f6f577ba404e37536", "author_lane": "CHATGPT", "verdict": "REPAIR_REQUIRED",
+     "comment": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/479#issuecomment-6476172941",
+     "red_pr": {"pr": 481, "head": "957fa4a558ce2bd219b5c2dec6dad8f65dca81ab", "ci_run": 40734273672,
+                "ci": {"inherited": "124 passed", "review": "19 failed / 5 passed", "task2_task3_workflows": "19 failed / 414 passed (all failures in review file)"}},
+     "holds": {"student_outcome_noninterference": {"worlds": 240, "views": 123, "refusals": 117, "teacher_moved": 118}},
+     "red": {"A1": "consumer validates depth carrying physical total/offset/scale (8)",
+             "A2": "student label self-declared; non-base rights and relabelled query exposable (2)",
+             "A3": "metaclass __eq__ runs in _view_snapshot `kind in (str,int,bool)` (8)",
+             "A4": "empty-base refusal class depends on withheld mass (1); inherited from Macha #474"},
+     "limitations": ["conservation equality blind to in-ledger alias", "conservation refuses every real cell with residual mass", "depth == sum of student-visible counts inside V2 domain", "teacher digest unkeyed commitment openable by enumeration", "barcode reuse fails closed"]},
+    {"pr": 476, "head": "26031df25b51087f2f3ec35a88eef2919d794c68", "author_lane": "CHATGPT", "verdict": "ACCEPT_INCREMENTAL_WITH_R1_R2_BLOCKERS",
+     "comment": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/476#issuecomment-6476197505",
+     "red_pr": {"pr": 482, "head": "58baa4f912c791866c1aae31eab797da9dca588a", "ci_run": 40735376242,
+                "ci": {"inherited": "60 passed / 11 deselected", "review": "18 failed / 3 passed", "macha472_workflow_run_40735376047": "15 passed / 1 failed (R1D preserved)"}},
+     "fixed": ["472 R5X six routes", "R6a", "R6b"], "still_red": ["R1", "R1D", "R2"],
+     "open": {"R5X_metaclass": "_strict_json `type(obj) in (bool,int,str)`; RuntimeError escape on 7 binder args and 2 entry points; pre-existing since 7452243f",
+              "composition_gap": "V3 takes no binder receipt; binder-refused forged rows decide PASS via V3 directly"}},
+    {"pr": 477, "head": "c83088de090bc4f2fc6bbee353c46070bcca7be5", "author_lane": "CHATGPT", "verdict": "ACCEPT_INCREMENTAL_WITH_LIMITATIONS",
+     "comment": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/477#issuecomment-6476198046",
+     "red_pr": {"pr": 483, "head": "48ec01873", "ci_run": 40736368351,
+                "ci": {"inherited_x4": "35 passed / 1 deselected", "review_x4": "8 failed / 2 passed", "task3_calibration_fixture_run_40736368161": "9 failed (8 review + T2-D) / 449 passed"}},
+     "fixed": ["473 V1 intc/uintc", "473 V2 type names"], "preserved_red": ["T2-D"],
+     "open": {"isinstance_class_route": "semantic_sha256 (5ea1c2e6, Macha lane) and _iter_rows (f2c7de76)", "chained_cause": "_iter_rows `from exc`", "live_iterables": "by design"}}
+  ],
+  "observation_contract_recommendation": {
+    "released_depth": {"name": "normalization_depth", "rule": "VISIBLE_BASE_MAPPED_SUM_V1", "definition": "sum of base-visible MEASURED_SCALAR counts", "consumer_law": "exact equality per cell", "private_input": false},
+    "optional_depth": {"name": "base_excluded_physical_depth", "definition": "D1 + collision_blocked_mass + off_ledger_mass", "admissible_only_after": "per (query, operator) off-ledger alias audit from var metadata", "consumer_verifiable": false, "default": false},
+    "source_facts": {
+      "physical_total_includes_query_and_residual": "scripts/v4/materialize_full104_phase2_expression.py:222",
+      "collision_pairs_full104": 11449, "collision_pairs_state_2": 11449, "state_matrix_state_2_total": 11449,
+      "residual_pooled": {"SEA_AD": 0.0399, "SEA_AD_row_max": 0.25, "NPH52": 0.014, "HVS": 0.0},
+      "our_roster_value_independent": "scripts/v4/build_full104_phase2_metadata_selection.py (keyed identity hash, per-donor cap, no_expression_opened)",
+      "depositor_qc_rules": "NOT_RECORDED",
+      "qc_entangled_candidates": {"mitochondrial": 30, "ribosomal_RPS_RPL": 122, "other": ["MALAT1", "NEAT1"]}
+    },
+    "preserved": ["CaseBundle V1 physical library semantics", "G7 E3 V1 count<=library_size for physical views"],
+    "not_proposed": ["renaming library_size", "weakening count<=library_size"]
+  },
+  "g7_cross_head": {
+    "v2_tree": "ae762d70 (review head 957fa4a5, tests-only difference)", "g7_tree": "26031df2 (review head 58baa4f9, tests-only difference)",
+    "source_blob_sha256": {"observation_normalization_view_v2_fixture.py": "e5e1f325ec6d693062e058727f7e8551426157342f1f5119ab358d8875126680",
+                           "q_excluded_depth_v1.py": "985ba0cf4e02ead36f489f6851559e7e0628952e4b5e9e99641d3d0658aaca3f",
+                           "td_real_g7_content_enforcement_v1.py": "ec536ed4c32b3544982797270df3d86c82f725e3d007347b6c4411a398e89f81",
+                           "td_real_g7_terminal_decision_v3.py": "307fb15ae9cffdba0feef2e31a059a1760806d5bfa00f768348fe5bb84c5296c"},
+    "categories": {
+      "1_schema_compatibility": "NO (atom fields not exact; two-view ladder < 3 levels; no cell_id in G7 atoms)",
+      "2_same_code_path_mechanics": {"probe_rename_adapter_random": {"accepted": 6, "refused_count_le_library": 194},
+                                     "probe_rename_adapter_zero_withheld_units": {"refused_count_le_library": 174, "refused_pooled_total_screen": 26},
+                                     "binder_on_accepted_package": "E3_TERMINAL_INPUTS_BOUND_FIXTURE_ONLY", "v3_reachable": false},
+      "3_authenticated_physical_provenance": "NOT_ESTABLISHED", "4_known_truth_qualification": "NOT_AVAILABLE", "5_human_execution_authorization": "NONE"},
+    "conclusion": "rename adapter not justified; a versioned G7 E3 content law (per-cell atoms, D1 law) is a deciding-lane contract change"
+  },
+  "probes": {"scripts/v5/review_probes/macha_20261028/v2_g7_crosshead_probe.py": "eb4e79f1fcfe198b5965713f174860dfa2f3b7744cd7d2a3b3f4cc2f3c908502",
+             "scripts/v5/review_probes/macha_20261028/observation_source_census_probe.py": "d1ff8f0ece4cc7142775c0fa431e105a2debd53aa0b2dad6779aab94d674fecc"},
+  "remaining": ["ChatGPT #479 repair (A1-A3); A4 in Macha #474 on request", "ChatGPT #476/#477 follow-ups", "deciding lane: D1/D2, versioned G7 E3 law", "ETL residual decomposition (reader_fit)", "external: depositor QC methods, SEA-AD specimen keys", "Macha: PS Task3 #437 R1/R2 repair vs immutable #480 tests", "PS Task4 absent; T2-D RED"]
+}

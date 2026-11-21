@@ -1,0 +1,73 @@
+name: JEPA V80 original fit-only archive preservation
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/jepa-v80-original-public-fit-archive-once.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: v80-original-fit-archive-pr-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: false
+jobs:
+  preserve-original-fit-only:
+    if: github.event_name == 'pull_request' && github.event.pull_request.number == 322 && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact same-repository audit branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          persist-credentials: true
+      - name: Download original fit and receipt ZIPs from run 38504094639; verify frozen bytes
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/v80/original
+          curl --fail --silent --show-error --location --retry 3 \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            --header 'Accept: application/vnd.github+json' \
+            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/artifacts/11867590706/zip" \
+            --output artifacts/v80/original/V80-original-fit-transport-artifact.zip
+          curl --fail --silent --show-error --location --retry 3 \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            --header 'Accept: application/vnd.github+json' \
+            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/artifacts/11867366245/zip" \
+            --output artifacts/v80/original/V80-original-receipt-artifact.zip
+          echo '4cec8966cff7bdddb3640903f4525328d23ed3482e2b232ead1bc440993fca71  artifacts/v80/original/V80-original-fit-transport-artifact.zip' | sha256sum -c -
+          echo '97e264cfe76709f5098b346e56130716640e6c8ce8562974d6ab126ac82a47fe  artifacts/v80/original/V80-original-receipt-artifact.zip' | sha256sum -c -
+          python - <<'PY'
+          import hashlib, zipfile
+          from pathlib import Path
+          folder=Path('artifacts/v80/original')
+          expected=[
+              ('V80-original-fit-transport-artifact.zip',660628,'fit_transport.json',8935002,'77f89e8336ec2a2d0184abbd81bfd7d6ff04f2dc57aa80891b6d8021869737b3'),
+              ('V80-original-receipt-artifact.zip',1274,'V80_SPARSE_POSITIVE_PACKAGE_RECEIPT_V1.json',1922,'346407af801a7fabc5dbd27136dcf5c9abe61e87d438018b98da192333eb9c32'),
+          ]
+          for filename,size,member,raw_size,sha in expected:
+              p=folder/filename
+              assert p.stat().st_size==size, 'original ZIP size mismatch: '+filename
+              with zipfile.ZipFile(p) as z:
+                  assert z.namelist()==[member], 'unexpected ZIP members: '+filename
+                  data=z.read(member)
+                  assert len(data)==raw_size and hashlib.sha256(data).hexdigest()==sha, 'original transport digest mismatch: '+filename
+              print('VERIFIED original, fit-permitted artifact:',filename,'size:',size)
+          print('CONTROLLER ZIP IS DELIBERATELY NOT DOWNLOADED OR STORED IN THIS PUBLIC REPOSITORY')
+          PY
+      - name: Commit only the verified original FIT and RECEIPT ZIP blobs to audit PR
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f -- artifacts/v80/original/V80-original-fit-transport-artifact.zip artifacts/v80/original/V80-original-receipt-artifact.zip
+          if git diff --cached --quiet; then
+            echo 'Frozen fit and receipt ZIPs already in Git; nothing changed.'
+            exit 0
+          fi
+          git commit -m 'custody(v80): preserve SHA-verified original FIT and receipt ZIPs only; no controller truth'
+          git push origin "HEAD:${{ github.event.pull_request.head.ref }}"

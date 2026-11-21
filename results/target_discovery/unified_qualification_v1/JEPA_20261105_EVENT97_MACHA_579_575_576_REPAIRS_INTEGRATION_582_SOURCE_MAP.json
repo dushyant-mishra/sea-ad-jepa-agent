@@ -1,0 +1,143 @@
+{
+  "schema": "JEPA_EVENT97_MACHA_579_575_576_REPAIRS_INTEGRATION_SOURCE_MAP_V1",
+  "event": 97,
+  "date_utc": "2026-11-05",
+  "author": "Macha (independent reviewer and repair engineer)",
+  "scope": "SYNTHETIC_ONLY__NO_FORWARD_BACKWARD_OPTIMIZER_EMA_RT_GPU_RNA_CONTROLLER_OR_MERGE",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "human": "docs/agent/JEPA_20261105_EVENT97_MACHA_REVIEW_579_575_576_REPAIRS_580_581_INTEGRATION_582_NO_TRAINING.md",
+  "verdicts": [
+    {
+      "item": "PR579",
+      "head": "676c991f9ca2a4b6b2424d1da070b73b1fb46c01",
+      "verdict": "REPAIR_REQUIRED",
+      "repaired_in": 580,
+      "note": "Sol fixes confirmed; sibling-thread recovery and completion mirror over damage remained"
+    },
+    {
+      "item": "PR575",
+      "head": "41e7c556e61e313253b7e839e948328b47ab88dc",
+      "verdict": "REPAIR_REQUIRED__OTHERWISE_ACCEPT_SCOPED",
+      "repaired_in": 581,
+      "note": "model/optimizer structure not bound across commits"
+    },
+    {
+      "item": "PR576",
+      "head": "227a957c6997dc0e99233b1e4eedff3e9bb0f683",
+      "verdict": "ACCEPT_SCOPED"
+    },
+    {
+      "item": "PR578",
+      "head": "9cfe01c4fea40100e0f837cf8ece88392efd93db",
+      "verdict": "SOL_ACCEPT_SCOPED_EVENT94__NOT_RETESTED"
+    },
+    {
+      "item": "EVENT96_SOURCE_LOCATOR",
+      "head": "9d00684e08ba34ef8d7b04e478b9c380cd36d537",
+      "verdict": "ACCEPT_SCOPED_STATIC_SOURCE_IDENTITY_ONLY",
+      "checked": {
+        "blobs_identical_at": [
+          "9d00684e (PR224)",
+          "b493efc3 (PR525)",
+          "cde03f73 (PR548)"
+        ],
+        "inactive_guarded_update_v1.py": "59647eb0122dfd98068844f68b6d48c2c33d67ca",
+        "inactive_update_reference.py": "ab266faa31ac7d3e51acf695a7deff1702368cde",
+        "prefreeze_runtime_authority.py": "41a6ebde613ee3ec5c898fa39e5a212c14eaac66",
+        "keyed_dropout_prototype_v2.py": "0fd06ae0891625924761ef097b20ba6e11495cb3",
+        "test_v5_canonical_runtime_convergence_red.py": "33d62e1a96e44b375467da3d88ee49f8430fc2fd",
+        "canonical_runtime.py": "ABSENT_AT_ALL_THREE",
+        "main": "inactive_update_reference.py 3dc61b62 contains optimizer.step(); guarded wrapper absent"
+      }
+    }
+  ],
+  "repairs": [
+    {
+      "pr": 580,
+      "base_pr": 579,
+      "branch": "fix/v5-579-attempt-thread-completion-mirror-macha-20261105",
+      "red_commit": "0ecc0d7858bd5e2a9cbb9a9d64c1d26b16c4ccdc",
+      "red_ci": {
+        "run": 42109490027,
+        "result": "2 failed DID NOT RAISE, 7 passed, Python 3.11.9 and 3.12.7"
+      },
+      "repair_commit": "63bf1bdc8eea276d144e5f33a5828c137fe3217f",
+      "green_ci": {
+        "42110388184": "9+84 passed + read budget x2",
+        "42110388397": "57 passed x2",
+        "42110388176": "248 passed x2",
+        "jobs": "12/12"
+      },
+      "refusals_added": [
+        "ATTEMPT_THREAD_STILL_ALIVE__RECOVERY_REFUSED",
+        "UNMIRRORED_COMPLETION_HAS_DAMAGED_HISTORY"
+      ],
+      "controls": [
+        "torch DataLoader fork/spawn workers",
+        "multiprocessing fork/spawn/forkserver",
+        "dead attempt thread",
+        "dead opener with lingering forked loader"
+      ]
+    },
+    {
+      "pr": 581,
+      "base_pr": 575,
+      "branch": "fix/v5-575-model-structure-constant-macha-20261105",
+      "red_commit": "2af9f8d3a1311fc6da9ecd7551b122b89258e162",
+      "red_ci": {
+        "run": 42109496747,
+        "result": "2 failed DID NOT RAISE, 56 passed, Python 3.11.9 and 3.12.7"
+      },
+      "repair_commit": "86d96fc1450038c1482d4cfd8389682d0f085d62",
+      "green_ci": {
+        "42110395980": "58 passed x2",
+        "42110395951": "55+57 passed x2",
+        "jobs": "4/4"
+      },
+      "refusals_added": [
+        "MODEL_OR_OPTIMIZER_STRUCTURE_CHANGED_SINCE_U0"
+      ]
+    }
+  ],
+  "integration": {
+    "pr": 582,
+    "branch": "integrate/v5-journal-v2-575-576-577-578-579-580-581-macha-20261105",
+    "head": "e71d864b0496de0b86fe7442ba51d53b44e0b225",
+    "merge_commit": "265c9e59d2b4a9ea438ef9af0dd467bf558f198f",
+    "inputs": {
+      "576": "227a957c6997dc0e99233b1e4eedff3e9bb0f683",
+      "580": "63bf1bdc8eea276d144e5f33a5828c137fe3217f",
+      "581": "86d96fc1450038c1482d4cfd8389682d0f085d62",
+      "578": "9cfe01c4fea40100e0f837cf8ece88392efd93db"
+    },
+    "conflicts": {
+      "scripts/v5/jepa_v5_full_state_readonly_audit_v1.py": "add/add; #575 carries #571 fea60030; resolved to #578 ae79cd1b"
+    },
+    "ci": {
+      "42110895354": "19 integration + 387 passed / 9 skipped + read budget, Python 3.11.9 and 3.12.7",
+      "workflows": "10/10",
+      "jobs": "20/20"
+    },
+    "local": "406 passed / 9 skipped, WSL2 Python 3.11.15, torch 2.7.0 CPU",
+    "io_local": {
+      "1KiBx40_reads": 73,
+      "budget": 73,
+      "23MiBx33_reads": 66,
+      "budget_23": 66,
+      "writer_seconds_23MiB": 6.2,
+      "u32_scrub_seconds": 0.62,
+      "peak_rss_mib": 134.5
+    }
+  },
+  "original_tests_unchanged": true,
+  "not_tested": [
+    "real model measurements",
+    "physical gradient origin, real Adam moments, EMA arithmetic",
+    "frozen-panel CELL and gene-token probes",
+    "complete RNG/cursor/AMP state",
+    "restore and RT1-RT8",
+    "Windows-native and exFAT",
+    "step handed to another thread while the beginning thread itself recovers"
+  ],
+  "next_slice": "Sol cross-review #580/#581/#582; then bind PR224 guarded one-update wrapper to the integrated journal as a non-executing contract; any optimizer step or RT1-RT8 needs separate owner authority"
+}

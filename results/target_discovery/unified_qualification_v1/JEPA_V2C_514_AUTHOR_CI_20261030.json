@@ -1,0 +1,43 @@
+{
+  "schema": "JEPA_V2C_STANDALONE_514_AUTHOR_CI_20261030_V1",
+  "date": "2026-10-30",
+  "pr": 514,
+  "head": "63099f6b17b14bcfcfd92b0334bf564e9cf8376d",
+  "base_pr": 511,
+  "review_target": {
+    "macha_pr": 512,
+    "macha_head": "16b5bc6c050222c592f88c35dc65b0a256d65402",
+    "original_review_red": 14,
+    "review_preserved": true
+  },
+  "source": "scripts/v5/td_unified/observation_v2c_standalone_student_gate_v1.py",
+  "tests": "tests/v5/td_unified/test_observation_v2c_standalone_student_gate_v1.py",
+  "mechanics": [
+    "new standalone stdlib-only verifier does not import old teacher-aware validator or issuer registry",
+    "constant teacher-role refusal even for hostile role types",
+    "receipt binds exact validated student view digest and COMPLETE enforced policy including roster and operator states",
+    "unhashable/malformed rights yield domain refusal",
+    "separate interpreter test without old producer package"
+  ],
+  "author_ci": {
+    "run": 40997285142,
+    "linux_windows_numpy_matrix_jobs": 4,
+    "passed_jobs": 4,
+    "per_job_tests": {
+      "new_v2c": 18,
+      "inherited_v2b": 13,
+      "inherited_d1": 114
+    },
+    "head_workflows": 6,
+    "passed_head_workflows": 6
+  },
+  "limitations": [
+    "Old #502 and #510 public oracle remains accessible whenever deployed in same Python environment",
+    "No real process isolation or external issuer signature",
+    "Forged policy plus forged view may consistently validate",
+    "No authenticated physical unit, donor/specimen, source feature aliases or depositor QC"
+  ],
+  "independent_acceptance": "NOT_YET",
+  "authority_effect": "NONE",
+  "standing": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

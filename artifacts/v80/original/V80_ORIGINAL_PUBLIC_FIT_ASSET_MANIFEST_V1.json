@@ -1,0 +1,62 @@
+{
+  "schema": "V80_ORIGINAL_PUBLIC_FIT_ASSET_MANIFEST_V1",
+  "created_utc": "2026-11-04",
+  "source_repo": "dushyant-mishra/sea-ad-jepa-agent",
+  "repo_visibility": "PUBLIC",
+  "original_actions_run_id": 38504094639,
+  "original_source_pr": 348,
+  "original_source_head": "e99d1f214e76a5e3911eea438c32a1e60f70754f",
+  "classification": "FROZEN_ORIGINAL_FIT_PERMITTED_SYNTHETIC_ZIPS_AND_RECEIPT_ONLY__NOT_CONTROLLER",
+  "assets": [
+    {
+      "role": "FIT_TRANSPORT",
+      "artifact_id": 11867590706,
+      "path": "artifacts/v80/original/V80-original-fit-transport-artifact.zip",
+      "size_bytes": 660628,
+      "zip_sha256": "4cec8966cff7bdddb3640903f4525328d23ed3482e2b232ead1bc440993fca71",
+      "git_blob_sha1": "8b81742b66dfd7d2d40940933c7775a515e0610d",
+      "zip_members": [
+        {
+          "name": "fit_transport.json",
+          "size_bytes": 8935002,
+          "sha256": "77f89e8336ec2a2d0184abbd81bfd7d6ff04f2dc57aa80891b6d8021869737b3"
+        }
+      ],
+      "original_actions_expires_at": "2026-11-13T03:01:56Z"
+    },
+    {
+      "role": "PACKAGE_RECEIPT",
+      "artifact_id": 11867366245,
+      "path": "artifacts/v80/original/V80-original-receipt-artifact.zip",
+      "size_bytes": 1274,
+      "zip_sha256": "97e264cfe76709f5098b346e56130716640e6c8ce8562974d6ab126ac82a47fe",
+      "git_blob_sha1": "4ec0e2eed6eba099645638232f3962482ae2dc26",
+      "zip_members": [
+        {
+          "name": "V80_SPARSE_POSITIVE_PACKAGE_RECEIPT_V1.json",
+          "size_bytes": 1922,
+          "sha256": "346407af801a7fabc5dbd27136dcf5c9abe61e87d438018b98da192333eb9c32"
+        }
+      ],
+      "original_actions_expires_at": "2026-11-13T03:02:00Z"
+    }
+  ],
+  "public_archive_workflow": ".github/workflows/jepa-v80-original-public-fit-archive-once.yml",
+  "public_archive_workflow_run_id": 41900549918,
+  "public_archive_workflow_conclusion": "SUCCESS",
+  "public_archive_git_commit_short": "b49af44",
+  "controller": {
+    "artifact_id": 11866917064,
+    "original_zip_size_bytes": 6844053,
+    "original_zip_sha256": "184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46",
+    "original_actions_expires_at": "2026-11-13T03:01:58Z",
+    "public_github_repo_blob_present": false,
+    "public_github_upload_allowed": false,
+    "owner_conversation_sha_verified": true,
+    "separate_private_controller_durable_escrow_verified": false,
+    "required_next_owner_action": "Transfer original unopened controller ZIP into a separate access-controlled controller-only PRIVATE GitHub repository/vault, verify retrieval and original ZIP SHA; never add to this public repository or fit side."
+  },
+  "qualification": "BENCHMARK_PACKAGE_ONLY__NO_ESTIMATOR_RUN__NO_TRAINING_AUTHORIZATION",
+  "cross_host_portability": "PR534_FAILED_ORIGINAL_BENCHMARK_IDENTITY__DO_NOT_REBASE_PINNED_SHA",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

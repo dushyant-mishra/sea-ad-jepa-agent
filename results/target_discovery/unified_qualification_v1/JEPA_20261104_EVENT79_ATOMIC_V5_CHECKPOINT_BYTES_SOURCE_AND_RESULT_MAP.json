@@ -1,0 +1,103 @@
+{
+  "schema": "JEPA_EVENT79_ACTUAL_OPAQUE_CHECKPOINT_BYTES_SOURCE_RESULT_CUSTODY_V1",
+  "date_local": "2026-11-04",
+  "ci_date_utc": "2026-11-05",
+  "scope": "PHYSICAL_POSIX_BYTE_STORAGE__NO_NEURAL_CHECKPOINT_OR_OPTIMIZER_OR_EMA",
+  "canonical_reference": {
+    "audit_pr": 322,
+    "handoff_pr": 460,
+    "human": "docs/agent/JEPA_20261104_EVENT79_ACTUAL_ATOMIC_V5_CHECKPOINT_BYTES_AND_NEXT_AGENT_HANDOFF.md"
+  },
+  "new_pr": {
+    "number": 555,
+    "head": "30b8848c95a10fc9e733daf2f7e0a8da906bb6d7",
+    "base_pr": 553,
+    "base_head": "f6590e28a3c39f7cd270831d7d7a217223dec23e",
+    "state": "DRAFT__INDEPENDENT_REVIEW_PENDING",
+    "files": [
+      {
+        "path": "scripts/v5/jepa_synth2048_atomic_checkpoint_bytes_v1.py",
+        "blob_sha1": "559ba4f7fbbc2d2864d1029fcd5a97b25da48368",
+        "role": "actual POSIX exclusive physical opaque byte storage/checksum/receipt-chain"
+      },
+      {
+        "path": "tests/test_jepa_synth2048_atomic_checkpoint_bytes_v1.py",
+        "blob_sha1": "e3b720720ded6e6367e286ade72050d0972a2ec9",
+        "role": "actual fresh-process byte read, abrupt child exit, concurrent writers, orphan/tamper/gap/symlink checks"
+      },
+      {
+        "path": "docs/agent/JEPA_20261104_V5_ATOMIC_OPAQUE_CHECKPOINT_BYTES_IMPLEMENTATION_NO_TRAINING.md",
+        "blob_sha1": "637a49a17d66af09c3eaa59886e824e38949e8b3",
+        "role": "scope/history/limitations"
+      },
+      {
+        "path": ".github/workflows/jepa-synth2048-atomic-checkpoint-bytes.yml",
+        "blob_sha1": "dd78d457e916bd2bdf3471541e57f6ea4c43e93b",
+        "role": "two pinned Python GitHub jobs actual filesystem tests"
+      }
+    ]
+  },
+  "ci": {
+    "exact_head": "30b8848c95a10fc9e733daf2f7e0a8da906bb6d7",
+    "run_id": 41966929210,
+    "conclusion": "SUCCESS",
+    "jobs": [
+      {
+        "python": "3.11.9",
+        "job_id": 127045977021,
+        "pytest": "86 passed"
+      },
+      {
+        "python": "3.12.7",
+        "job_id": 127045977072,
+        "pytest": "86 passed"
+      }
+    ],
+    "prior_green_run": 41966737531,
+    "prior_test_count_per_python": 84,
+    "latest_test_count_per_python": 86
+  },
+  "actual_verified": {
+    "posix_no_clobber_file_write": true,
+    "file_and_directory_fsync_invoked": true,
+    "opaque_bytes_sha256_verified": true,
+    "per_file_parent_receipt_SHA_chain_verified": true,
+    "real_abrupt_child_process_exit_after_payload_before_receipt_refused": true,
+    "two_concurrent_processes_exactly_one_u0_writer": true,
+    "fresh_process_byte_digest_verification": true,
+    "strict_original_prefreeze_checkpoint_schedule": true,
+    "source_and_fit_sha_binding": true,
+    "model_state_serialized": false,
+    "optimizer_ema_update_performed": false,
+    "checkpoint_full_neural_content_authenticated": false,
+    "external_trust_anchor_present": false,
+    "learned_biology_qualified": false,
+    "gpu_execution": false
+  },
+  "source_fit_original_zip_sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f",
+  "source_v5_original_head": "cde03f738c758694aa66211b5021603af943675b",
+  "owner_checkpoint_requirement": "PROPOSED_u0_AND_EACH_COMPLETED_u1_TO_u40__THEN_u45_TO_u100_EVERY_5__THEN_u110_PLUS_EVERY_10__TERMINAL__EVERY_ATTEMPT_REAL_TELEMETRY",
+  "not_yet_authorized": [
+    "actual V5 model serialization and complete optimizer/EMA/GradScaler/RNG/mask payload",
+    "full actual V5 fresh-process model forward and next-update replay",
+    "out-of-process source/history signed trust anchor and durable owner storage",
+    "physical per-step 48 gradient and both Adam moment verification",
+    "L04 query rights and EMERGENT/TRANSFER owner decision",
+    "PR547 generic-state-only C2/C3 versus reviewed v2 distributed biological program choice",
+    "new owner training scope GPU and biology adjudication"
+  ],
+  "review_queue": {
+    "pr553": "Macha independent review pending",
+    "pr554": "Macha independent T1 review pending",
+    "pr555": "Macha independent byte writer review pending",
+    "pr541": "Task4 HOLD; K04 RED #549",
+    "pr551": "frozen Task3 public authority forgery; versioned externally authenticated successor owner decision"
+  },
+  "completed_prior_work_read_first": [
+    "docs/agent/JEPA_20261104_EVENT78_V5_FINE_GRAIN_CHECKPOINTS_MACHA_NEW_RED_AND_SUCCESSOR_HANDOFF.md",
+    "docs/agent/JEPA_20261104_EVENT75_SOL_COMPLETE_SYNTHETIC_V5_COLD_START_TAKEOVER_AND_NO_REPEAT.md",
+    "docs/agent/JEPA_20261104_SOL_LANE_SUCCESSOR_DETAILED_OPERATIONAL_HANDOFF_EVENT68.md",
+    "results/target_discovery/unified_qualification_v1/JEPA_20261104_MASTER_PRIMARY_SOURCE_NO_REPEAT_INDEX_V1.json"
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

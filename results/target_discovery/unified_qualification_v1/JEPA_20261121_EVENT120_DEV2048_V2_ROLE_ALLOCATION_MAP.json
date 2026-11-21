@@ -1,0 +1,64 @@
+{
+  "schema": "JEPA_EVENT120_DEV2048_V2_ROLE_LAYOUT_NONPROMOTING_V1",
+  "event": 120,
+  "date_utc": "2026-11-21",
+  "implementation": {
+    "pr": 599,
+    "head": "1f669d3b1d4a3dfddab48797b269af2a618c85df",
+    "draft": true,
+    "files": [
+      [
+        "scripts/v79/dev2048_v2_prospective_role_allocation_v1.py",
+        "ecad4eb484f704865811bd10b64c10fbdd2640bf"
+      ],
+      [
+        "tests/v79/test_dev2048_v2_prospective_role_allocation_v1.py",
+        "37dbf7906925835b945a279c3c81bfabf77e9057"
+      ],
+      [
+        "docs/agent/JEPA_DEV2048_V2_PROSPECTIVE_ROLE_LAYOUT_RESOLUTION_20261121.md",
+        "133943a7a954cdbebbcec050a8a8eabafed75cfa"
+      ],
+      [
+        ".github/workflows/dev2048-v2-prospective-role-allocation.yml",
+        "37f9904fe0cf6006fa8b6ee9cca01942dd1021e1"
+      ]
+    ]
+  },
+  "design": {
+    "rare_programmes": 4,
+    "genes_each": 15,
+    "view_count": 3,
+    "view_size": 512,
+    "program_per_view": 3,
+    "q_rare0": 1,
+    "q_perturb_same_rare0": 2,
+    "q_other_rare": 3,
+    "q_null": 2,
+    "q_panel_other_genes": 8,
+    "cross_q_panel_nonquery_reuse": true,
+    "all_q_excluded_from_panels": true,
+    "globally_disjoint_panels": false
+  },
+  "hosted": {
+    "source_role_check": {
+      "run": 44929694541,
+      "result": "success",
+      "tests": 8
+    },
+    "old_proposal_contradiction": {
+      "run": 44929694542,
+      "result": "success",
+      "tests": 6
+    },
+    "inherited_env_setup_failure": [
+      44929694559,
+      44929694537
+    ]
+  },
+  "realism_qualified": false,
+  "new_dataset_generated": false,
+  "independent_C3_review": "PENDING",
+  "training_executed": false,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

@@ -1,0 +1,191 @@
+{
+  "schema": "JEPA_CHAT_ONLY_HISTORICAL_SOURCE_ASSET_LEDGER_V1",
+  "observed_at": "2026-10-27",
+  "total_local_files": 20,
+  "original_attached_inputs": [
+    "Status and Repair Plan.txt",
+    "WSL execution issue.txt",
+    "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+    "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+    "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+    "checkpoints.zip",
+    "expression.zip",
+    "t1_checkpoint_u0200.zip",
+    "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz"
+  ],
+  "files": [
+    {
+      "name": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "classif": "historical_calibration_zip",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": true
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+      "classif": "historical_large_expression_part",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": true
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+      "classif": "historical_large_expression_part",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": true
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "bytes": 437,
+      "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+      "classif": "parts_manifest",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": false
+    },
+    {
+      "name": "checkpoints.zip",
+      "bytes": 71356460,
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+      "classif": "historical_binary_checkpoints",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": true
+    },
+    {
+      "name": "expression.zip",
+      "bytes": 3599456,
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+      "classif": "historical_normalized_expression",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": true
+    },
+    {
+      "name": "t1_checkpoint_u0200.zip",
+      "bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+      "classif": "historical_binary_checkpoints",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": true
+    },
+    {
+      "name": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "bytes": 1531109,
+      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+      "classif": "unclassified_binary_npz_no_execution",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": true
+    },
+    {
+      "name": "Status and Repair Plan.txt",
+      "bytes": 5233,
+      "sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56",
+      "classif": "superseded_september12_plan",
+      "custody": "docs/agent/chat_exclusive_20261027/20260912_STATUS_AND_REPAIR_PLAN_ORIGINAL.txt",
+      "human_content_frozen": false
+    },
+    {
+      "name": "WSL execution issue.txt",
+      "bytes": 14576,
+      "sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e",
+      "classif": "historical_biology_observation_operator_ideas",
+      "custody": "docs/agent/chat_exclusive_20261027/20260811_WSL_EXECUTION_ISSUE_ARCHITECTURE_NOTES_ORIGINAL.txt",
+      "human_content_frozen": false
+    },
+    {
+      "name": "Pasted text.txt",
+      "bytes": 12541,
+      "sha256": "d08e24d481e77a89ebf07428601fe6c54759a9050adf58346d0fa6cb5281a549",
+      "classif": "october27_superseded_handoff_review",
+      "custody": "PR460 comment 6449538165 plus PR468 corrected crosswalk; raw local text indexed by SHA",
+      "human_content_frozen": false
+    },
+    {
+      "name": "foundation_calibration_split_intake_20261027.json",
+      "bytes": 1955,
+      "sha256": "4f70fe093d676b55c57b264985db23b026540e0a0a7d5739444b9c2adf3f6e52",
+      "classif": "pr471_receipt_exists_in_repo",
+      "custody": "PR471 results/production_synthetic/foundation_calibration_split_intake_20261027.json",
+      "human_content_frozen": false
+    },
+    {
+      "name": "foundation_calibration_split_intake_v1.py",
+      "bytes": 10571,
+      "sha256": "92ed89ff24e0092aaed42f2e30c3caad636d61a881f622844376fb5af2c18beb",
+      "classif": "pr471_source_exists_in_repo",
+      "custody": "PR471 scripts/production_synthetic/foundation_calibration_split_intake_v1.py",
+      "human_content_frozen": false
+    },
+    {
+      "name": "test_foundation_calibration_split_intake_v1.py",
+      "bytes": 5862,
+      "sha256": "77337ed41a4e0ec4b655d00bcb6eb8160e8dca2363b16a9485b1d8bffd22918a",
+      "classif": "pr471_tests_exist_in_repo",
+      "custody": "PR471 tests/production_synthetic/test_foundation_calibration_split_intake_v1.py",
+      "human_content_frozen": false
+    },
+    {
+      "name": "g7_local_input_admissibility_20261027.json",
+      "bytes": 2835,
+      "sha256": "c89ad29b43f2f4823dc0e65d8c920cb15af861ac6f27fbe7971627caa0a32d85",
+      "classif": "initial_probe_superseded",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": false
+    },
+    {
+      "name": "g7_local_input_admissibility_20261027.md",
+      "bytes": 3188,
+      "sha256": "6642a9673e7d71ae7314e7858016c682019d06e46fe9d3c6140b00fbbdd33c2f",
+      "classif": "initial_probe_superseded",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": false
+    },
+    {
+      "name": "g7_local_input_probe_20261027.py",
+      "bytes": 4391,
+      "sha256": "7950aff2d60da0a183458a2e4fdb61b79ade5d13457b410652ced83436ed701a",
+      "classif": "initial_probe_superseded",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": false
+    },
+    {
+      "name": "g7_local_input_admissibility_v2_20261027.json",
+      "bytes": 2952,
+      "sha256": "bec516bd425bb88cd4fcc394babe864e386afedde6b1552bbd1ffe24459c1670",
+      "classif": "corrected_nonpromoting_probe",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": false
+    },
+    {
+      "name": "g7_local_input_admissibility_v2_20261027.md",
+      "bytes": 3844,
+      "sha256": "bcfc9fe5c254f5a038d4a24a02c7a66c5800fc239066014612ae7d1f0e231128",
+      "classif": "corrected_nonpromoting_probe",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": false
+    },
+    {
+      "name": "g7_local_input_probe_v2_20261027.py",
+      "bytes": 4539,
+      "sha256": "0ab516508d416ac54493774fa862c639b670e6260edbc4586ebd5e36a075f9af",
+      "classif": "corrected_nonpromoting_probe",
+      "custody": "HASH_ONLY_IN_THIS_REPO__RAW_BYTES_ONLY_IN_ORIGINAL_CHAT_ATTACHMENT",
+      "human_content_frozen": false
+    }
+  ],
+  "archival_scope": "CHAT_LOCAL_FILE_SHA256_INVENTORY_NOT_A_PERMANENT_BINARY_STORAGE_COPY",
+  "known_promotions_prohibited": [
+    "large binaries not uploaded to GitHub",
+    "original T1 checkpoints never executed",
+    "historical normalized expression not raw molecule proof",
+    "August calibration archive older than corrected G7/TD physical mapping",
+    "G7 V1 probe pass message superseded by V2 insufficiency",
+    "PR471 full 97/97 archive SHA verification cannot authenticate external manifest issuer",
+    "40K matrix is not a real known-truth target qualification",
+    "No protected human target results opened by inventory"
+  ],
+  "origin_locator": "historical user-attached files in October 2026 JEPA Project ChatGPT conversation; future agents must reacquire original binaries from authorized source or ask for reattachment",
+  "current_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

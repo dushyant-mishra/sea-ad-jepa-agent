@@ -1,0 +1,226 @@
+{
+  "schema": "JEPA_20261104_ADDITIONAL_PRIOR_WORK_CROSSWALK_AND_OPEN_ISSUES_V1",
+  "date": "2026-11-04",
+  "source_pr_census": "results/target_discovery/unified_qualification_v1/JEPA_20261104_COMPLETE_535_PR_AND_OPEN_ISSUE_METADATA_CENSUS_V1.json",
+  "disposition": "PRIOR_COMPLETED_OR_BLOCKED_NO_REPEAT__NOT_A_BIOLOGY_QUALIFICATION",
+  "count": 15,
+  "items": [
+    {
+      "key": "REAL_FULL104_105553_CELL_SAMPLE",
+      "class": "EXECUTED_METADATA_ONLY",
+      "finding": "Original 105,553-cell cap-balanced metadata sample traversed 4,553,407 FULL104 rows over 104 donors, with all 42 operators. It did not read expression or test rare-tail biology.",
+      "evidence": [
+        {
+          "pr": 42,
+          "head_sha": "87de6cfd91e4a1f23e02467ca24e9cacf8a32582",
+          "path": "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/sample_receipt.json",
+          "git_blob_sha1": "34a10b132e420283a4cdc02161f665fb0dac6ecf"
+        }
+      ],
+      "next": "No resampling. Preserve metadata receipt; rare-tail molecular gate stays distinct."
+    },
+    {
+      "key": "N1_PRECISION_AND_N2_CONSUMER",
+      "class": "UNRESOLVED_ISSUE_54",
+      "finding": "Original N1 256-target hybrid precision formula and typed receipts exist. Independent consumer did not fully reauthenticate 256 outcome values, donor-source roster and precision recomputation. Issue #54 remains open.",
+      "evidence": [
+        {
+          "issue": 54,
+          "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/issues/54"
+        }
+      ],
+      "next": "Source-scoped reviewer repair prior to N1/N2 execution; do not execute N1 now."
+    },
+    {
+      "key": "RARE_TAIL_MOLECULAR_EXECUTOR_CONTRACT",
+      "class": "UNRESOLVED_ISSUE_55",
+      "finding": "Original prospective 24-case rare-tail molecular gate and metadata sample exist, but frozen runner omitted live contract verification before raw-count access. Original molecular outcome not executed in this lineage.",
+      "evidence": [
+        {
+          "pr": 51,
+          "head_sha": "bc0fb71e9bd34ba37709ac2f5e04895e2403d096",
+          "path": "scripts/agent/run_full104_rare_tail_molecular_prequalification_v1_20260922.py",
+          "git_blob_sha1": "1a55f140b18a890c5da580457b793a9dadcaa078"
+        },
+        {
+          "issue": 55,
+          "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/issues/55"
+        }
+      ],
+      "next": "Fresh read-only preflight and reviewer-approved successor contract; no old runner launch."
+    },
+    {
+      "key": "EIGHT_STUDY_THERAPEUTIC_CRISPR_PHASE0",
+      "class": "AUDITED_METADATA_AND_PROSPECTIVE_BENCHMARK",
+      "finding": "Original eight-study/16-asset perturbation inventory plus guide/control/measurement distinctions and testable target-heldout development baselines. Results not automatically causal or independent.",
+      "evidence": [
+        {
+          "pr": 71,
+          "head_sha": "9cc98fbee75fa513491e45d6110773c206fe2813",
+          "path": "docs/therapeutic/THERAPEUTIC_CRISPR_LANE_PHASE0_AUDIT_20260923.md",
+          "git_blob_sha1": "4c311b2c20417635f6f58c29dfbe115f76d0b58b"
+        }
+      ],
+      "next": "Retain per-study source status and assay exposure; no renewed broad ETL."
+    },
+    {
+      "key": "PERTURBATION_OUTCOME_EXPOSURE_LEDGER",
+      "class": "EXISTING_SOURCE_GUARD__NO_PROOF_OF_UNSEEN",
+      "finding": "Original exposure ledger tracks study, arm and outcome family. Six documented GSE301119, GSE293118 and GSE254205 families were already inspected; missing exposure is UNKNOWN, not HELD_OUT.",
+      "evidence": [
+        {
+          "pr": 90,
+          "head_sha": "3669e5c2a9f3e9466ce269efcbd696c4c28746b2",
+          "path": "src/sea_ad_jepa/perturbation/outcome_exposure_ledger_v1.py",
+          "git_blob_sha1": "f1706bdd445256017ccdcb45f8bafc6ff9cc2a0e"
+        }
+      ],
+      "next": "No reused inspected outcome may be presented as clean prospective validation."
+    },
+    {
+      "key": "GSE178317_33_TARGET_SUPPORT_DEVELOPMENT",
+      "class": "DEVELOPMENTAL_RECOMPUTATION_ONLY",
+      "finding": "Original 35→33 support-qualified same-experiment matched-well comparison: descriptive direction 33/33, Spearman approximately .7473, Pearson .6398; four capture wells are not four biological donors.",
+      "evidence": [
+        {
+          "pr": 113,
+          "head_sha": "747aad259e4260b1efb6add3ff99aa1e722ad571",
+          "path": "analysis/therapeutic_perturbation_etl/scripts/build_gse178317_support33_reference_v2.py",
+          "git_blob_sha1": "2f7da17c014c49501262fe723d000a5254facc35"
+        }
+      ],
+      "next": "Retain exact measurement unit and development-only status; no independent biological validation claim."
+    },
+    {
+      "key": "FULL104_REGION_TRANSPORT_FEATURE_SUPPORT",
+      "class": "REAL_METADATA_SCOPE__TRANSPORT_NOT_EXECUTED",
+      "finding": "Original HVS∩SEA-AD strict scalar feature intersection 17,757 vs three-source shared 17,186; SEA-AD MTG/MEC/PFC 46/44/42 donor populations with 40 common. Original full-data MTG leave-one-donor-out transport not completed in this branch.",
+      "evidence": [
+        {
+          "pr": 128,
+          "head_sha": "be676442bab703eecb063d1fe9c40c4f8fba91d3",
+          "path": "docs/agent/FULL104_TRANSPORT_REGION_SUPPORT_PREFLIGHT_20260925.md",
+          "git_blob_sha1": "79260db11d49d3499ab7acad8b77abd312243acb"
+        }
+      ],
+      "next": "Re-use the prior support/cell-budget designs; only a genuinely new transport estimand merits new physical work."
+    },
+    {
+      "key": "V29_33_ROOT_AUTHORITY_GRAPH",
+      "class": "ROOTS_0_OF_33_CLOSED_HISTORICAL",
+      "finding": "Original 33-root authority closure graph audits found 0 of 33 fully closed, six substrate consumers with differing binding, and a genuine V3/V1 scientific disagreement separate from naming mismatches.",
+      "evidence": [
+        {
+          "pr": 160,
+          "head_sha": "d4d286518bdb6a73242e3b768218b2aad37e3904",
+          "path": "docs/agent/LANEB_V29_ROOT_STATUS_MATRIX_20260926.md",
+          "git_blob_sha1": "41cf9d4501cdebd4143ec7810334efe4c4320eba"
+        }
+      ],
+      "next": "This is a historical closure status, not a current source/teacher acceptance verdict; keep original RED failures."
+    },
+    {
+      "key": "V43_COMPLEMENTARY_TEACHER_EXPERIMENTAL_DESIGN",
+      "class": "PREEXISTING_PROSPECTIVE_DESIGN",
+      "finding": "Original three-arm rich-teacher vs shared multi-head vs complementary teacher-team design and 25 hostile guards; no model winner selected.",
+      "evidence": [
+        {
+          "pr": 176,
+          "head_sha": "e7555ed0cc4dea07a2425da4185924a2d5728359",
+          "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/176",
+          "role": "original proposal metadata; see files on PR head"
+        }
+      ],
+      "next": "Do not reinvent teacher-team tournament; compare any new learned JEPA test against original design."
+    },
+    {
+      "key": "V44_REAL_RNA_15_ARM_PROXY_TOURNAMENT",
+      "class": "ORIGINAL_EXECUTED_PROXY__NO_ARCHITECTURE_WINNER",
+      "finding": "Original 2,600-cell real RNA sample, 3 seeds×5 PCA/ridge proxy arms, 48 held-out donor IDs. Shared three-head proxy .40782 vs single .40267 under shared T input; V5-like control .41588 saw extra inputs, so was not a fair winner. Same-cell RNA proxy, no neural JEPA teacher.",
+      "evidence": [
+        {
+          "pr": 177,
+          "head_sha": "b9beadd5d718e538846772bfe43389e508dcff6d",
+          "path": "analysis/v44_tiny_teacher_team_tournament_20260926/tournament_machine_state_v1.json",
+          "git_blob_sha1": "1dfd66c73a1888c0eee5dd889dca39a361ca062d"
+        }
+      ],
+      "next": "Preserve original 15-run receipts; no second short proxy tournament absent changed biological claim."
+    },
+    {
+      "key": "V50_MULTIMODAL_REGULATORY_TRIANGULATION",
+      "class": "PROVISIONAL_DESIGN__NOT_CROSSMODAL_EXECUTION",
+      "finding": "Original triangulation framework explicitly combined RNA relational, chromatin, perturbation, spatial and source transport with evidence-dependence accounting. No cross-modal causal result or validated eRegulon was produced.",
+      "evidence": [
+        {
+          "pr": 189,
+          "head_sha": "6f78b04a88a950ab74366aa3a619beea428ecd3c",
+          "path": "docs/agent/V50_REGULATORY_TRIANGULATION_AND_TRANSPORT_FRAMEWORK_20260928.md",
+          "git_blob_sha1": "cf1f67ee3b1867e5c2993762dfd02b2d01368f2e"
+        }
+      ],
+      "next": "Do not restart as first multimodal architecture proposal; subject design to independent biological critique."
+    },
+    {
+      "key": "PUBLIC_E2G_SEVEN_TRACK_EXECUTED_SURVEY",
+      "class": "PUBLIC_SOURCE_EXECUTED__SYMBOL_CONCORDANCE_ONLY",
+      "finding": "PR457 prospectively surveyed 7 public rE2G/scE2G browser tracks for 27 frozen Stage75 target symbols and preserved exact source and run receipts; no directly microglia-labelled track, no causal TF edge. SEA-AD controlled fragments not established.",
+      "evidence": [
+        {
+          "pr": 457,
+          "head_sha": "5dd02b0954906618202459dd89f36a62f2f02de7",
+          "path": "docs/agent/JEPA_E2G_PUBLIC_SEVEN_TRACK_SURVEY_READOUT_20261027.md",
+          "git_blob_sha1": "0a347bc6e65365e4da9a237858cb5e91cb1c471e"
+        },
+        {
+          "pr": 457,
+          "head_sha": "5dd02b0954906618202459dd89f36a62f2f02de7",
+          "path": "results/regulatory/e2g_public_7track_provisional_result_receipt_v1_20261027.json",
+          "git_blob_sha1": "c686b754fb14bc8cebb7e21e8875dcf3b94ba65d"
+        }
+      ],
+      "next": "Reuse completed seven-track survey; verify authentic gene coordinates and independent microglial regulatory support only for new narrow hypothesis."
+    },
+    {
+      "key": "G7_R5X_R6_CONTENT_SECURITY",
+      "class": "SCOPED_FIXTURE_REPAIR__EXTERNAL_RIGHTS_RED",
+      "finding": "Original G7 E3 R5X/R6 snapshot/JSON-type hardening prevents specific forged-in-place fixture paths; external physical atom, donor identity, q-excluded depth/issuer R1/R2/R1D remain RED.",
+      "evidence": [
+        {
+          "pr": 476,
+          "head_sha": "26031df25b51087f2f3ec35a88eef2919d794c68",
+          "path": "scripts/v5/td_real_g7_content_enforcement_v1.py",
+          "git_blob_sha1": "5bebe43dacd465bb4b884a6a1a61c6c41613adb3"
+        }
+      ],
+      "next": "No real G7/CaseBundle human issuer authority from intra-process validation alone."
+    },
+    {
+      "key": "V2_PRIVATE_STUDENT_RICH_TEACHER_PAIR",
+      "class": "SCOPED_FIXTURE_COHERENCE__SOURCE_AUTHENTICATION_RED",
+      "finding": "Existing V2 pair-coherence validator checked q roster/base D1/withheld teacher presentation, while explicit twin physical q worlds still passed. It cannot authenticate a real external source or source-library normalization.",
+      "evidence": [
+        {
+          "pr": 503,
+          "head_sha": "f93aa8a7132fa02fa2c7be7c7ddfca4dfec6f325",
+          "path": "docs/agent/JEPA_V2_PRIVATE_PAIR_COHERENCE_G7_BOUNDARY_20261029.md",
+          "git_blob_sha1": "6456320d29ed0ae50fc3969784d600766172b2e4"
+        }
+      ],
+      "next": "Reuse coherence mechanics; fix original-source authenticated issuer, not another pair schema."
+    },
+    {
+      "key": "OFF_LEDGER_ALIAS_QC_SPECIMEN",
+      "class": "UNRESOLVED_ISSUE_494",
+      "finding": "Original source rights missing exact final candidate mapping SHA, some compact NPH feature caches, authenticated QC/specimen fields; matrix/component names do not establish specimen identity.",
+      "evidence": [
+        {
+          "issue": 494,
+          "url": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/issues/494"
+        }
+      ],
+      "next": "Targeted metadata-only provenance receipts, no re-download/re-ETL of immense expression stores."
+    }
+  ],
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

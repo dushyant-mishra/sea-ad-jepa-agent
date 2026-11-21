@@ -1,0 +1,52 @@
+{
+  "schema": "JEPA_GPT_EXECUTION_BOUNDARY_TAKEOVER_RECHECK_V1",
+  "date_utc": "2026-11-02",
+  "review_class": "SOURCE_HEAD_AND_MAIN_TREE_INSPECTION__SCOPED_NO_EXECUTION",
+  "main_sha": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb",
+  "audit_before": "125e294bc8fa733d14b6ffbf4e8717e765ba5a46",
+  "handoff_before": "3f747ad85768040dc7c473c8e43e9f879caade63",
+  "source_pr_heads": {
+    "351": "2abcb9fe156eac340ff12adff9426ed38d929e3e",
+    "469": "7a6477244dfc817d929e210c38c1ea4b2d1a1927",
+    "513": "0b1af4f06ba423753899e7c564d3b16ce609ac6a",
+    "517": "0bf0de060e6cb13496fb95e193deb63591258ceb"
+  },
+  "original_ci_at_review": {
+    "audit_322": {
+      "head": "125e294bc8fa733d14b6ffbf4e8717e765ba5a46",
+      "success": 24,
+      "total": 24
+    },
+    "handoff_460": {
+      "head": "3f747ad85768040dc7c473c8e43e9f879caade63",
+      "success": 2,
+      "total": 2
+    }
+  },
+  "main_scope": {
+    "student_v2c_d1_fixture_present": true,
+    "task5_casebundle_v1_present_in_main_td_unified": false,
+    "jepa_post_td_harness_contract_v1_present_main": false,
+    "other_branches_not_negated": true
+  },
+  "existing_edges": {
+    "source_issuer_provisioned_by_513": false,
+    "source_issuer_specified_as_eight_part_role": true,
+    "cross_head_synthetic_casebundle_fixture_executed_469": true,
+    "production_source_to_casebundle_authentication": false,
+    "post_td_351_mechanics_exist": true,
+    "post_td_517_known_red_count": 5
+  },
+  "new_scientific_qualifications": {
+    "hvs_24_matrices_are_subclass_partitions": true,
+    "hvs_43_libraries_span_partitions": true,
+    "hvs_holdout_operator_is_not_independent_assay_or_study": true,
+    "hvs_observed_9_threshold_cells_do_not_bound_unobserved_selection_effect": true,
+    "sea_ad_sample_id_is_per_nucleus": true,
+    "sea_ad_query_independent_selection_not_established": true,
+    "nph52_real_query_blocked": true
+  },
+  "decision": "NO_DUPLICATE_PRODUCER_OR_FAKE_ISSUER__WAIT_AUTHENTICATED_SOURCE_RELEASE_OR_ADVANCE_NARROW_REVIEW",
+  "review_limits": "No raw data, human experiment, new source ETL recomputation, physical issuer, issuer secret, 824 branch diffs or training; source-head and GitHub CI metadata only.",
+  "terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

@@ -1,0 +1,189 @@
+{
+  "schema": "JEPA_DOWNSTREAM_IMPLEMENTATION_READINESS_AUDIT_V1",
+  "date": "2026-10-13",
+  "summary_status": "RUNTIME_MATURE__POST_TD_ARCHITECTURE_INTEGRATION_INCOMPLETE__TRAINING_OFF",
+  "authority": {
+    "target_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "multimodal_training_authorized": false,
+    "training_authorized": false
+  },
+  "canonical_runtime": {
+    "status": "IMPLEMENTED_HISTORICAL_CANONICAL_RUNTIME__EXECUTION_AUTHORITY_SEPARATE",
+    "documentation": "docs/agent/TEACHER_STUDENT_CANONICAL_RUNTIME_V1_20260907.md",
+    "api": "sea_ad_jepa.v4.teacher_student_runtime",
+    "modules": [
+      "src/sea_ad_jepa/v4/teacher_student_runtime.py",
+      "src/sea_ad_jepa/v4/teacher_student_checkpoint.py",
+      "src/sea_ad_jepa/v4/teacher_student_movement.py",
+      "src/sea_ad_jepa/v4/teacher_student_diagnostics.py"
+    ],
+    "properties": [
+      "trainable IPBEncoder student",
+      "eval-only EMATargetEncoder teacher",
+      "BlockPredictor",
+      "scaled backward with autocast disabled",
+      "GradScaler unscale before mandatory gradient gates",
+      "optimizer step proof before EMA",
+      "EMA never advances on invalid/skipped optimizer step",
+      "write-once restart-bound checkpoints",
+      "biological evaluator imports excluded from trainer"
+    ]
+  },
+  "active_design_space": {
+    "teacher_target_construction": [
+      {
+        "name": "rich_value_visible_reference",
+        "status": "CONTROL_REFERENCE",
+        "reason": "Useful upper/reference construction but may encode the queried scalar directly through contextual mixing."
+      },
+      {
+        "name": "rich_value_blind_complementary_teacher",
+        "status": "ACTIVE_ZERO_UPDATE_CANDIDATE",
+        "reason": "Constructs target from complementary lawful biology while preventing direct query-value target leakage."
+      },
+      {
+        "name": "same_evidence_value_blind_control",
+        "status": "CONTROL_ONLY",
+        "reason": "Tests whether richer teacher evidence adds anything beyond EMA/capacity asymmetry."
+      },
+      {
+        "name": "block_blind_teacher",
+        "status": "CONDITIONAL",
+        "reason": "Relevant only if final TD portfolio contains block/program targets rather than address-local targets."
+      },
+      {
+        "name": "residual_diagnostic_teacher",
+        "status": "DIAGNOSTIC_ONLY",
+        "reason": "Residualization can leave nonlinear leakage and historical residual target did not rescue the target."
+      }
+    ],
+    "teacher_topology": [
+      {
+        "name": "single_rich_ema_teacher",
+        "status": "PRIMARY"
+      },
+      {
+        "name": "shared_ema_backbone_typed_heads",
+        "status": "PRIMARY_POSITIVE_PRIOR",
+        "evidence": "V44 repaired-41K proxy modestly favored shared multi-head over equal-evidence single teacher."
+      },
+      {
+        "name": "independent_complementary_teacher_team",
+        "status": "CONDITIONAL_CHALLENGER",
+        "activation_rule": "Only if a prospective interference test shows material biological loss in the shared teacher."
+      },
+      {
+        "name": "rna_teacher_plus_privileged_auxiliary_critics",
+        "status": "CONDITIONAL_MULTIMODAL_DESIGN",
+        "activation_rule": "Only after RNA target freeze and separate multimodal authorization; privileged information must not become an impossible deterministic RNA point target."
+      }
+    ],
+    "student_topology": [
+      {
+        "name": "shared_full_capacity_backbone_typed_heads",
+        "status": "PRIMARY"
+      },
+      {
+        "name": "core_plus_specialist_students",
+        "status": "CONDITIONAL_CHALLENGER",
+        "activation_rule": "Only after measured negative transfer/interference in the shared student. Historical rare-specialist/graph lineages did not earn default status."
+      }
+    ],
+    "student_prediction_semantics": [
+      {
+        "name": "point_or_conditional_mean",
+        "status": "ACTIVE_WHEN_IDENTIFIABLE"
+      },
+      {
+        "name": "state_plus_calibrated_biological_uncertainty",
+        "status": "ACTIVE_WHEN_TEACHER_INFORMATION_PARTLY_RECOVERABLE"
+      },
+      {
+        "name": "conditional_distribution",
+        "status": "ACTIVE_OPTION_WHEN_POINT_REALIZATION_NOT_IDENTIFIABLE"
+      },
+      {
+        "name": "teacher_private_auxiliary_only",
+        "status": "ACTIVE_WHEN_STUDENT_CANNOT_IDENTIFY_COMPONENT"
+      },
+      {
+        "name": "abstention_not_estimable",
+        "status": "MANDATORY_FAIL_CLOSED_OPTION"
+      }
+    ],
+    "ema_policy": {
+      "native_parameter": "half_life_in_successful_base_cell_presentations",
+      "status": "ACTIVE_RUNTIME_PRINCIPLE__PRODUCTION_VALUE_UNSELECTED",
+      "historical_fixed_betas": "CONTROL_HISTORY_ONLY",
+      "historical_schedules": "CONTROL_HISTORY_ONLY",
+      "recommended_future_screen": "compact short/intermediate/long presentation-half-life ladder after target and topology are sufficiently fixed"
+    },
+    "internal_factorization": {
+      "plain_typed_heads": "PRIMARY",
+      "capacity_matched_multihead_control": "PRIMARY_CONTROL",
+      "fixed_orthogonal_basis": "OPTIONAL_MECHANISM_CONTROL",
+      "opf_like_factorization_within_qualified_block": "OPTIONAL_FUTURE_CHALLENGER",
+      "global_opf_across_biological_blocks": "NOT_RECOMMENDED_AS_DEFAULT"
+    }
+  },
+  "historically_closed_from_active_tournament": [
+    "hidden_gene_anchor",
+    "address_exposure_debugging",
+    "core_only_evidence",
+    "tier_hiding_evidence_starvation",
+    "random_u0_as_biological_teacher",
+    "T0_T1_TCTX_as_production_targets",
+    "V6R5B_residual_target_rescue",
+    "historical_PROD41K_T1_training",
+    "rare_auxiliary_head_as_default_student",
+    "graph_auxiliary_as_default_foundation_arm",
+    "variance_regularizer_as_default_objective",
+    "old_numeric_teacher_view_count_preference"
+  ],
+  "missing_integration_components": [
+    {
+      "name": "target_portfolio_adapter",
+      "need": "Instantiate teacher/student target blocks from the frozen TD portfolio without manual scientific code edits."
+    },
+    {
+      "name": "teacher_target_policy_registry",
+      "need": "Versioned zero-update constructors for lawful target-construction policies and controls."
+    },
+    {
+      "name": "teacher_topology_registry",
+      "need": "Single/shared-typed/conditional-independent teacher implementations behind one interface."
+    },
+    {
+      "name": "student_output_semantics_registry",
+      "need": "Point, distributional, uncertainty and abstention heads with eligibility/support masks."
+    },
+    {
+      "name": "loss_and_noncompensation_ledger",
+      "need": "Optimization may aggregate losses, but evaluation/authority must retain block-specific failure scopes so one block cannot rescue another."
+    },
+    {
+      "name": "matched_compute_tournament_controller",
+      "need": "Bind parameters/FLOPs/cell presentations/evidence budgets/optimizer updates across architecture arms."
+    },
+    {
+      "name": "architecture_evaluator",
+      "need": "Reuse TD biological gates: donor/source transport, q-specificity, rare preservation, evidence/depth curves, support and abstention."
+    },
+    {
+      "name": "one_command_synthetic_rehearsal",
+      "need": "Known-truth target package -> portfolio constructor -> canonical runtime -> EMA/checkpoint -> evaluation receipt, still with no real-data authority."
+    }
+  ],
+  "current_td_dependency": {
+    "status": "WAITING_FOR_BLINDED_SYNTHETIC_TEST_OF_TEST_PHASE1",
+    "td_repair_sha": "1f474a44a6baabc667dbfda726e0755426c732e7",
+    "synthetic_v2_1_sha": "15f519c00137d581e25232c16be52c2b9badd83e",
+    "package_sha256": "0977c30f6551df72e244423e1b37733cafa9178099bd0b9ab796beb8a52d2115",
+    "prefit_archive_sha256": "ba0fa56a49ffa009a0225606fb48d8fb30c3bd410a6a264ef905db5d4bb18803",
+    "certification_receipt_sha256": "fbcf2d589ec05ff67914a890f465d39cdc8f9f53363129d98b4b7f0a00213ee9",
+    "next_step": "independent phase-1 blinded fit -> freeze V4 receipt -> STOP -> independent receipt audit",
+    "controller_adjudication_authorized": false
+  }
+}

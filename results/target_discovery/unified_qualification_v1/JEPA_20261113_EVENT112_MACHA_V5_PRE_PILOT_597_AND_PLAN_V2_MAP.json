@@ -1,0 +1,123 @@
+{
+  "schema": "JEPA_EVENT112_MACHA_V5_PRE_PILOT_597_AND_PLAN_V2_MAP_V1",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "newer_entry_check": {
+    "audit_head_at_start": "dac5b1c236687746746f3a4aa7b127b9fabaec1a",
+    "pr595_head": "37dc2469f05d83a6dcfc38cedc54e4f9325bd10c",
+    "pr596_head": "bc9da0547f4e187969f5dc21bc7a188e9a519d8d",
+    "pr595_verdict": "UNCHANGED_FROM_EVENT111__REPAIR_REQUIRED_SCOPED__REPAIRED_IN_596"
+  },
+  "findings": {
+    "teacher_inputs": {
+      "code": "PR548 adapter parses only student_qexcluded; probe refuses q in teacher and student packed ids",
+      "contract_before": "teacher_address_ids = all 2048 (vocabulary confused with supplied values)",
+      "contract_after": {
+        "vocabulary_address_ids": 2048,
+        "teacher_address_ids": 2044,
+        "student_address_ids": 2044,
+        "encoder_input_mode": "SHARED_BASE_MASKED_BLOCK_JEPA",
+        "teacher_only_query_mode": "L04_OWNER_DECISION_PENDING__NOT_IMPLEMENTED"
+      },
+      "historical_source": "JEPA_SYNTH2048_V5_FINE_GRAIN_CHECKPOINT_PREFREEZE_V1.json teacher_query_visibility = L04_OWNER_DECISION_PENDING__NO_IMPLICIT_SHARED_Q_DESCENDANT_TO_C3",
+      "contract_sha256_after": "4536ce82f4dae6eaef94db24a5dc8bbcdcc62664105100e821e4ff8455cdd613"
+    },
+    "target_leakage": {
+      "runtime_gap": "run_inactive_reference_update checks only hidden within measured support; a member moved to a visible gene reaches the teacher forward",
+      "repair": "validate_target_blocks before the route: members == hidden genes, once, measured, no q, -1 padding"
+    },
+    "ema_route": {
+      "existing_guard_mocks": [
+        "failed step -> no EMA",
+        "skipped step -> no EMA",
+        "successful step -> exactly one EMA",
+        "EMA pairs teacher with post-step student encoder, not predictor"
+      ],
+      "repair": [
+        "only run_presentation_ema_bound_guarded_reference_update",
+        "pairing/ownership validator",
+        "record half-life, base cells, presentations, momentum, step 0->1, completion proof SHA-256"
+      ]
+    },
+    "lineage": {
+      "chain": [
+        "pilot",
+        "ema_bound_runtime_proof_v1",
+        "_ema_bound_runtime_proof_impl_v1",
+        "inactive_guarded_update_v1",
+        "inactive_update_reference",
+        "KeyedIPBEncoderV2Reference+BlockPredictor"
+      ],
+      "intentional_v4": [
+        "ipb_jepa",
+        "gene_tokenizer",
+        "contracts",
+        "masking",
+        "teacher_student_runtime.sample_uniform_target_blocks"
+      ],
+      "not_called": [
+        "V4 trainer",
+        "legacy V4 EMA",
+        "toy actor"
+      ]
+    }
+  },
+  "pr597": {
+    "branch": "review/v5-macha-dev2048-pilot-preflight-20261113",
+    "base": "bc9da0547f4e187969f5dc21bc7a188e9a519d8d",
+    "red": "0ab2b1d735a7bc687709c1b0d8b6e83fda7d6651",
+    "fix": "bfcba24ed3fcfbf146eaf7700c78ad1553fc6cee",
+    "red_runs": {
+      "43509850943": "4 failed, 6 passed per Python",
+      "43509850768": "3 failed, 480 passed, 37 skipped"
+    },
+    "green_runs": {
+      "43510149310": "40 passed; inventory full 43",
+      "43510149246": "513 passed, 37 skipped; contract 4536ce82",
+      "43510149267": "74 + 56 passed"
+    },
+    "green_jobs": "14/14 (7 workflows)",
+    "local": "full inventory via runner 541 passed, 9 skipped"
+  },
+  "plan_v2": {
+    "status": "PLAN_ONLY__NOT_AUTHORIZED",
+    "mode": "SHARED_BASE_MASKED_BLOCK_JEPA",
+    "m1_updates": 1,
+    "rows": [
+      1,
+      3,
+      8,
+      10,
+      28,
+      32,
+      34,
+      35,
+      49,
+      54,
+      65,
+      74,
+      79,
+      81,
+      83,
+      90
+    ],
+    "half_life_proposed": 22136,
+    "momentum_at_16": 0.99949912,
+    "owner_decisions": [
+      "encoder input mode / L04",
+      "half-life",
+      "M1 authorization record"
+    ],
+    "m2_restart": "separate milestone and authorization"
+  },
+  "execution": {
+    "forward": false,
+    "backward": false,
+    "optimizer_step": false,
+    "ema": false,
+    "model_construction_for_pairing_only": true,
+    "pilot_launched": false,
+    "gpu": false,
+    "real_data": false,
+    "merges": 0
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "JEPA_EVENT92_RECIPROCAL_REPAIR_HISTORICAL_CONTEXT_NO_REPEAT_V1",
+  "event": 92,
+  "date_utc": "2026-11-05",
+  "repo": "dushyant-mishra/sea-ad-jepa-agent",
+  "canonical_audit_pr": 322,
+  "active_handoff_pr": 460,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "human": {
+    "path": "docs/agent/JEPA_20261105_EVENT92_CROSS_REVIEW_FORENSIC_FIX_AND_HISTORICAL_NONREPEAT.md",
+    "git_blob_sha1": "9ca97b0c60203038e60348c5b8c489f6f66eb8db"
+  },
+  "implementation": {
+    "pr": 576,
+    "base_pr": 575,
+    "head": "227a957c6997dc0e99233b1e4eedff3e9bb0f683",
+    "red_commit": "97bb47e3126604b6fba7cca8329222e2f03c7cdd",
+    "result": "EVIDENCE_DAMAGED_PROBED_RECORD_STATE_READ_REFUSED__LATER_INTACT_READABLE",
+    "source": {
+      "path": "scripts/v5/jepa_synth2048_attempt_journal_v2.py",
+      "git_blob_sha1": "839e8da59a5f618701b42b40b04d4bb4ac7e227a"
+    },
+    "test": {
+      "path": "tests/test_jepa_v5_structured_journal_preflight_v1.py",
+      "git_blob_sha1": "42cf5e928b4f57bb0bfbc107e07fca3096315ca9"
+    },
+    "red_run": 42092747862,
+    "green_runs": [
+      42093122875,
+      42093122835,
+      42093122803,
+      42093122673
+    ],
+    "green_workflows": 4,
+    "green_jobs": 8,
+    "review": "AUTHOR_CI_GREEN__MACHA_INDEPENDENT_REVIEW_PENDING",
+    "no_optimizer_steps": true
+  },
+  "historical_sources": [
+    {
+      "path": "docs/superpowers/specs/2026-10-06-premise-qualification-contract-v3-design.md",
+      "sha1": "b7493a1f54012d5168b3bc9b1382e70fe2169755",
+      "scope": "Existing observation-operator, biological-vs-measurement, basis and domain prefreeze contracts; NOT an executed proof"
+    },
+    {
+      "path": "docs/agent/JEPA_REPRESENTATION_FAMILY_QUALIFICATION_V3_PREFREEZE_20261006.md",
+      "sha1": "c8177d0a1182fff413c38477bd24c2748909f426",
+      "scope": "Existing representation-family prefreeze criteria"
+    },
+    {
+      "path": "docs/history/docs/v4/CURRENT_STATE_HANDOFF.md",
+      "sha1": "67b6cf83174dbce53e0a948e216aec04a538709c",
+      "scope": "Historical PCA160 and REP160 evaluation; no biological dimension selection"
+    },
+    {
+      "path": "docs/agent/V5_DIMENSION_NUMERIC_AUTHORITY_BLOCKERS_20260912.md",
+      "ref": "planning/v5-dataset-first-production-closure-20260912",
+      "sha1": "138ac3c30e8adebb6883d2626cc33a9bd2183fd7",
+      "scope": "Older report identifies historical FULL104 materialization/ALL analysis and leaves current V5 numeric dimension authority open"
+    },
+    {
+      "path": "scripts/v5_anticheat/derive_full_stream_dimension_family_v1.py",
+      "ref": "planning/v5-dataset-first-production-closure-20260912",
+      "sha1": "42816cd84bc93ced3af7c7c7ffca4e4b048bf035",
+      "scope": "Historic selection mechanics, not a current FULL104 result"
+    }
+  ],
+  "still_open": [
+    "Independent Macha review #574-#576 and actual WSL2 laptop 205-update I/O/time/metadata benchmark",
+    "Full real state/optimizer+EMA execution provenance and fixed TRAIN panel physical probes",
+    "V2 source/seed/RNG rights+data identity persisted independently and external journal authenticity",
+    "Fresh-process RT1–RT8 require separate owner permission",
+    "Event90 stale runtime locator and 4 owner-only locators still exceptions",
+    "Owner-only private V80 controller artifact preservation before 2026-11-13 03:01:58Z"
+  ],
+  "controller": {
+    "artifact_id": 11866917064,
+    "expires_at": "2026-11-13T03:01:58Z",
+    "sha256": "184d58c6988c81f8f23597510c2113542d1fc55af04409448c14adb8892d3f46",
+    "private_backup_verified": false
+  },
+  "dev2048": {
+    "artifact_id": 13364085153,
+    "expires_at": "2026-12-04T21:02:06Z",
+    "sha256": "87fe3ec2038305c797c439cd9780036fe22cc22b647242749b1af0bfb444c06f"
+  },
+  "reciprocal_review": {
+    "agents": [
+      "Macha",
+      "Sol"
+    ],
+    "author_self_acceptance_forbidden": true,
+    "other_agent_may_fix_major_defects_on_separate_draft": true,
+    "red_first": true,
+    "preserve_original_macha_reds": true,
+    "required_verdicts": [
+      "ACCEPT_SCOPED",
+      "REPAIR_REQUIRED",
+      "HOLD"
+    ],
+    "mirror_both_branches": true,
+    "append_only": true
+  },
+  "no_repeat": "Preserve Event1–91 and historic completed TD Stage81 V79 V80 R5 source/result evidence; do not treat proposed Oct6 controls or old Sep12 status as new completed learning; no model promotion"
+}

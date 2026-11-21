@@ -1,0 +1,162 @@
+{
+  "schema": "UNIFIED_TASK2_PRELAUNCH_READINESS_V1",
+  "date": "2026-10-15",
+  "status": "PREPARED__BLOCKED_ON_TASK1_INDEPENDENT_ACCEPTANCE",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "task0_freeze": "e37a22b8059c0a4a93a789a8ca916fb7acde9fe3",
+  "task1_current_review_candidate": "86fa996f609bec3f39d0f6a12d7f040b2544af39",
+  "task1_state": "CONTROLLER_VERIFIED__INDEPENDENT_REVIEW_PENDING__NOT_FROZEN",
+  "accepted_architecture_head": "3064ca545f0c94859ea989cd49a04fcbd5b9a303",
+  "controlling_plan_head": "5b6bf07e7d8b69b286ea430b09765a5ee4743325",
+  "task2_scope": "TD_EXECUTION_MANIFEST_V1_AND_CURRENT_TD_POPULATION_ACCESS_LAW_A4",
+  "launch_gate": {
+    "required": "FRESH_INDEPENDENT_MACHA_ACCEPTANCE_OF_EXACT_TASK1_HEAD",
+    "if_task1_changes": "REBIND_PRELAUNCH_BASE_AND_REVIEW_BEFORE_CREATING_TASK2_RED",
+    "task2_implementation_started": false,
+    "task2_execution_started": false,
+    "protected_values_opened": false
+  },
+  "planned_files": [
+    "scripts/v5/td_unified/manifest_v1.py",
+    "schemas/target_discovery/unified_v1/td_execution_manifest_v1.json",
+    "schemas/target_discovery/unified_v1/population_access_policy_v1.json",
+    "tests/v5/td_unified/test_manifest_v1.py"
+  ],
+  "planned_interfaces": [
+    "PopulationAccessPolicy",
+    "ProducerAccessReceipt",
+    "TDExecutionManifest",
+    "build_current_td_access_policy",
+    "validate_manifest",
+    "validate_producer_access"
+  ],
+  "required_task1_dependencies": [
+    "canonical_sha256",
+    "verify_scientific_receipt",
+    "AuthorityRecord"
+  ],
+  "manifest_required_identity_classes": [
+    "canonical_registry",
+    "observation_contract",
+    "support_contract",
+    "controller_code",
+    "controller_policy",
+    "candidate_registry",
+    "endpoint_registry",
+    "source_registry",
+    "qualification_registry",
+    "population_split_registry",
+    "data_access_policy",
+    "reader_fit_policy",
+    "reader_validation_policy",
+    "reader_oracle_policy",
+    "cross_fitting_policy",
+    "protected_partition_policy",
+    "per_unit_code_policy_schema_metric_reference_authority"
+  ],
+  "current_td_access_precommitment": {
+    "reader_fit": {
+      "outcome_bearing_values": "ALLOWED_ONLY_BY_DECLARED_STAGE_PURPOSE",
+      "metadata": "ALLOWED_WHEN_DECLARED",
+      "support_only_summaries": "ALLOWED_WHEN_DECLARED",
+      "calibration_only_statistics": "ALLOWED_WHEN_DECLARED",
+      "heldout_semantics": "DETERMINISTIC_CROSSFIT_WITHIN_READER_FIT"
+    },
+    "reader_validation": {
+      "partition_identity_custody": "ALLOWED_FROM_ALREADY_FROZEN_SPLIT_REGISTRY",
+      "biological_values": "PROHIBITED",
+      "candidate_specific_summaries": "PROHIBITED",
+      "rescue_statistics": "PROHIBITED",
+      "upstream_protected_aggregates": "PROHIBITED"
+    },
+    "reader_oracle": {
+      "partition_identity_custody": "ALLOWED_FROM_ALREADY_FROZEN_SPLIT_REGISTRY",
+      "biological_values": "PROHIBITED",
+      "summaries": "PROHIBITED",
+      "calibration_statistics": "PROHIBITED",
+      "future_access": "REQUIRES_EXPLICIT_LATER_AUTHORITY_TRANSITION"
+    },
+    "actual_access_receipt_required": true,
+    "forbidden_observed_access_invalidates_numeric_success": true,
+    "donor_train_holdout_overlap_within_fold": "PROHIBITED"
+  },
+  "crossfit_design_item": {
+    "deterministic_within_reader_fit": "FROZEN_REQUIREMENT",
+    "exact_fold_count": "PRELAUNCH_REVIEW_REQUIRED",
+    "why_not_preselected_here": "CONTROLLING_MATERIALS_DO_NOT_ESTABLISH_ONE_FOLD_COUNT; HISTORICAL LODO FEASIBILITY DOES_NOT_BY_ITSELF_DEFINE_UNIFIED_LAW",
+    "must_be_frozen_before_outcome_bearing_execution": true,
+    "post_outcome_change_requires_new_manifest_and_requalification": true
+  },
+  "population_custody": {
+    "historical_head": "1ab453e5cb60efb209a8eee2aecb61c5ea0fbfc7",
+    "canonical_population_registry_payload_sha256": "50b29d7e1137c5a457fd0b528580030dedfbeff1b809e2b426f8f640ae38486d",
+    "split_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+    "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "metadata_db_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "rows": 6351753,
+    "donors": 149,
+    "operators": 42,
+    "sources": 3,
+    "donor_operator_strata": 2028,
+    "reader_fit_donors": 104,
+    "reader_validation_donors": 22,
+    "reader_oracle_donors": 23,
+    "recompute_for_task2_prep": false
+  },
+  "old_task2_reuse": {
+    "classification": "ADAPT_AND_WRAP__SEALED_CUSTODY_RNG_SUBSTRATE",
+    "source_head": "ff597faf2182522a320ec5322f8db9b67c9c6094",
+    "implementation": {
+      "path": "scripts/production_synthetic/custody_v1.py",
+      "blob": "8efb7622eb2773305f9159cafdb19ccae8946fef"
+    },
+    "tests": [
+      {"path": "tests/production_synthetic/custody_fixtures_v1.py", "blob": "23fb531077942223f4b4169853403de380af0b89"},
+      {"path": "tests/production_synthetic/test_custody_v1.py", "blob": "3d27802f60ff026aef8b6d1a07bb879e55a3a39b"},
+      {"path": "tests/production_synthetic/test_custody_v1_hostile.py", "blob": "8f22cd69e3332f4f6f4129b3099673472317520a"}
+    ],
+    "unified_task2_completion_conferred": false,
+    "primary_future_destination": "UNIFIED_SEALED_CHALLENGE_AND_FINALIZER_INFRASTRUCTURE",
+    "reusable_lessons": [
+      "EXACT_IDENTITY",
+      "FREEZE_BEFORE_USE",
+      "ACTUAL_EXPOSURE_ACCOUNTING",
+      "IDENTITY_KEYED_RANDOMNESS",
+      "FAIL_CLOSED_CUSTODY",
+      "IMMUTABLE_LINEAGE",
+      "ANTI_REROLL_ANTI_RETUNE"
+    ]
+  },
+  "required_red_tests": [
+    "current_td_policy_crossfits_only_within_reader_fit",
+    "reader_validation_access_cannot_rescue_estimability",
+    "reader_oracle_access_is_protected_until_later_authority_transition",
+    "producer_receipt_must_enumerate_actual_partitions_and_access_classes",
+    "numeric_success_with_forbidden_partition_access_is_invalid",
+    "held_out_token_has_no_authority_without_bound_policy",
+    "manifest_binds_exact_code_policy_schema_registry_and_population_identities",
+    "branch_or_pr_number_cannot_serve_as_scientific_identity",
+    "moved_decision_bearing_identity_requires_new_manifest_digest"
+  ],
+  "preplanned_hostile_tests": [
+    "FORGED_DECLARED_ACCESS_VS_OBSERVED_ACCESS",
+    "VALIDATION_AGGREGATE_RELABELLED_AS_FIT_SUMMARY",
+    "ORACLE_CALIBRATION_RELABELLED_AS_METADATA",
+    "DONOR_CROSSFIT_LEAKAGE",
+    "DUPLICATE_OR_CONFLICTING_PARTITION_IDENTITY",
+    "MUTATED_ACCESS_POLICY_BEHIND_UNCHANGED_DIGEST_STRING",
+    "NUMERIC_EQUIVALENCE_DOES_NOT_EXCUSE_FORBIDDEN_ACCESS",
+    "UNKNOWN_PARTITION_OR_ACCESS_CLASS_FAILS_CLOSED"
+  ],
+  "forbidden_actions": [
+    "OPEN_READER_VALIDATION_VALUES",
+    "OPEN_READER_ORACLE_VALUES",
+    "USE_PROTECTED_PARTITION_TO_RESCUE_ESTIMABILITY",
+    "RECOMPUTE_AUTHENTICATED_SUPPORT_CENSUS_FOR_TASK2_PREP",
+    "CHOOSE_TARGET_OR_REPRESENTATION",
+    "PROMOTE_HUMAN_OR_TRAINING_AUTHORITY",
+    "TREAT_OLD_SYNTH_TASK2_AS_UNIFIED_TASK2",
+    "USE_BRANCH_PR_FILENAME_HELDOUT_TOKEN_OR_DIGEST_STRING_AS_SCIENTIFIC_AUTHORITY",
+    "CHOOSE_FOLD_COUNT_OR_ACCESS_POLICY_AFTER_OUTCOMES"
+  ]
+}

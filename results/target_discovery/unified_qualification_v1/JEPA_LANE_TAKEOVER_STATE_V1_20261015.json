@@ -1,0 +1,59 @@
+{
+  "schema": "JEPA_LANE_TAKEOVER_STATE_V1",
+  "date": "2026-10-15",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "frozen": {
+    "task0": "e37a22b8059c0a4a93a789a8ca916fb7acde9fe3",
+    "task1": "799d2e235901dfad9ce3b305c767a1c989e362f6",
+    "task2": "c7dfff1cee608e4a101855d42cf0af08491c2aaf"
+  },
+  "task3": {
+    "status": "REJECTED_OPEN_REPAIR_REQUIRED",
+    "rejected_head": "851544e8dc2a3881193a4d5bbcf07933e1d61149",
+    "pr": 392,
+    "independent_review_head": "869ca777a498181c519ccfc04b8bf5db0f2888c7",
+    "verdict": "REJECT_UNIFIED_TASK3",
+    "freeze_state": "TASK3_REMAINS_OPEN__UNIFIED_TASK4_REMAINS_BLOCKED",
+    "blockers": ["T3-B1", "T3-B2", "T3-B3", "T3-B4", "T3-B5", "T3-B6"],
+    "repair_order": [
+      "T3-B6 disarm/delete write-capable self-rewriting workflows before any repair push",
+      "preserve Macha H1-H6 and actor-alias probes as RED tests",
+      "T3-B1 apply frozen Task1 authority validation on every promotion",
+      "T3-B2 closed per-stage evidence-gate table; fail closed for evidence types not yet defined",
+      "T3-B3 identity-bound frozen actor registry with strict ASCII canonical IDs and permitted roles",
+      "T3-B4 internal per-call/context-bound verification cache only; never trust caller cache",
+      "T3-B5 replay-validated append-only registry history from genesis plus external head anchor",
+      "remove dead asserted_ready and prerequisite_evidence_verifier compatibility parameters",
+      "run focused and inherited regressions, then obtain focused independent Macha recheck"
+    ]
+  },
+  "task4": {
+    "status": "DESIGN_APPROVED_PREPARED_IMPLEMENTATION_BLOCKED",
+    "controlling_spec": "docs/superpowers/specs/2026-10-15-unified-task4-sealed-challenge-custody-design.md",
+    "implementation_gate": "independent exact-head Task3 acceptance and freeze",
+    "old_task2_substrate_head": "ff597faf2182522a320ec5322f8db9b67c9c6094",
+    "substrate_class": "ADAPT_AND_WRAP__SEALED_CUSTODY_RNG_SUBSTRATE",
+    "mandatory_historical_attacks": 13,
+    "authority_effect": "NONE"
+  },
+  "no_repeat": {
+    "old_task1_task2_code_head": "ff597faf2182522a320ec5322f8db9b67c9c6094",
+    "old_task1_task2_checkpoint": "f53c13e6eed329651b1088775782fea399ba1bf6",
+    "population_registry_pr349_head": "1ab453e5cb60efb209a8eee2aecb61c5ea0fbfc7",
+    "population_registry_sha256": "50b29d7e1137c5a457fd0b528580030dedfbeff1b809e2b426f8f640ae38486d",
+    "repaired_units": {
+      "G8": 364,
+      "G6": 365,
+      "geometry_G9_S1_S2": 366,
+      "R1": 367,
+      "G2": 368,
+      "G7": 362,
+      "R4_C6_C4": 358,
+      "C4_to_C6_firewall": 351,
+      "G12": 360,
+      "system_battery": 369
+    },
+    "superseded_duplicate_prs": [375, 376, 377, 378],
+    "rule": "do not repeat settled historical audits absent changed bytes, changed authority/scientific context, or a concrete uncovered defect"
+  }
+}

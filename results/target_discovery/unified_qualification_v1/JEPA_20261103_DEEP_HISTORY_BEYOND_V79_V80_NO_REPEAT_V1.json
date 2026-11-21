@@ -1,0 +1,187 @@
+{
+  "schema": "JEPA_20261103_DEEP_HISTORY_BEYOND_V79_V80_NO_REPEAT_V1",
+  "date_utc": "2026-11-03",
+  "canonical_pr": 322,
+  "handoff_pr": 460,
+  "source_class": "ORIGINAL_GIT_PR_HEAD_AND_EXISTING_SOURCE_INDEX__NO_NEW_DATA_READ_OR_FIT",
+  "recovery_passes": [
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "primary_groups": [
+    {
+      "scope": "teacher_student_mechanics",
+      "original": [
+        163,
+        178,
+        199
+      ],
+      "heads": [
+        "560a92cb3bf463f3f9506c303b452649bbb37493",
+        "5d49a970030fc7e783b822437ac4761b3f9e4865",
+        "4fd4305395c4da0c025f336006be7c9dbbe6dd70"
+      ],
+      "established": "Existing privilege/recoverability design, 104-donor aggregate count bridge and leakage controls",
+      "boundary": "No source-authenticated real issuer, no real trained representation, old T1 scalar leakage negative"
+    },
+    {
+      "scope": "measured_query_target",
+      "original": [
+        "R5",
+        "V44"
+      ],
+      "established": "Developmental R5 measured eight-other-gene target query-aware donor held-out R2 0.4300 vs technical+q 0.3496 vs q-agnostic 0.2760; V44 48 donor RNA proxy tournament no winner",
+      "boundary": "R5 not present production C3 winner or independently issued target"
+    },
+    {
+      "scope": "perturbation_data",
+      "original": [
+        77,
+        87,
+        117,
+        131,
+        137
+      ],
+      "heads": [
+        "9a2a30e4c4c99be2a8f948aba680524c786d2737",
+        "f1cb98bf895e16b275c99228c20c7dc750aa4369",
+        "9c524f49dd1486e6c7f4a4b211ef70bff4082db6",
+        "8647d21174c5e7eab2ad01fc6b9251b069ba0e03",
+        "e130f55c7471b74b387f0bd0aca586c4a1614921"
+      ],
+      "established": "16 physical assets; nested CRISPRa/CRISPRi feature universes; Day8 effects; 179384 original bulk result rows independently precision-reproduced",
+      "boundary": "CRISPRbrain pair 1/31 joint engagement not valid benchmark truth, bulk reproducibility not biology"
+    },
+    {
+      "scope": "coupled_synthetic",
+      "original": [
+        201,
+        207,
+        242,
+        311,
+        328,
+        339,
+        469,
+        534
+      ],
+      "heads": [
+        "6cb5e234886b6a240c2ef9bda6162377feaef7f8",
+        "189e62092e095efba71ffaa23522f627b819e37e",
+        "e959d9a732698ae9a41e8cb1f6c10052d7390326",
+        "2b6d3439105e087acdab53a318c57bbb468eae26",
+        "25bbdbe18aa5ed3c8a39a7e4295bc36de1e328ec",
+        "7e955445f938d24dec9cf177e27d60433b8ab97e",
+        "7a6477244dfc817d929e210c38c1ea4b2d1a1927",
+        "165447a8bbdef8b427ca9cd0d29b51c36b9c1c1a"
+      ],
+      "established": "Coupled RNA/ATAC/guide/spatial/truth/twin assets; provider-backed 2K then 100K qualification 42 operators; V78 negative; integrated 480x48 fixture and executed Task5 bridge and source-rights hosts",
+      "boundary": "500K not qualified; PR328 support=VISIBILITY>0 semantics invalid for human feature support; no learned JEPA recovery"
+    },
+    {
+      "scope": "relational_and_real_td",
+      "original": [
+        314,
+        318,
+        321,
+        336,
+        349,
+        369,
+        379,
+        401
+      ],
+      "heads": [
+        "c6899a2910244a0352c0c57e7aea6e3026191da1",
+        "8e8dd583c912aa78c637b0afa0652853017e6fae",
+        "15f519c00137d581e25232c16be52c2b9badd83e",
+        "b92f335b53a93805a5d05330dc0d61f0479b1dcf",
+        "1ab453e5cb60efb209a8eee2aecb61c5ea0fbfc7",
+        "651d7a5a1d4f4047d5ac875cc603f9151c2fed36",
+        "3064ca545f0c94859ea989cd49a04fcbd5b9a303",
+        "2448cbcec0964e692c52a24a8b1324e2d388314e"
+      ],
+      "established": "One-shot TD real replay; relational phase2 independent audit already done; source support 6351753 cells 149 donors 42 operators; unified Task3 accepted",
+      "boundary": "Fine TD57C failed, broad/meso C2 active not selected, real reference and Task4 cumulative pending"
+    },
+    {
+      "scope": "external_validation_regulatory",
+      "original": [
+        "V2.1",
+        "V2.2",
+        "Stage72B",
+        "Stage73R",
+        "Stage74",
+        "Stage75F",
+        "E2G"
+      ],
+      "established": "Morabito 4126 microglia 18 sample units actual weak external projection; Rexach/Olah alignment; 541 pseudobulk regulatory coactivity candidates; true TF/region/gene tiers; prior in-silico graph controls",
+      "boundary": "Not unseen Morabito, not causal TF binding, no independently validated eRegulon, 2957-gene old feature IDs not 41238 registry"
+    },
+    {
+      "scope": "representation_lineage",
+      "original": [
+        "Stage81A3R",
+        "TD19",
+        "Stage73R"
+      ],
+      "established": "224-dimensional historical real TRAIN Freeze1 with one-SE; depth-only pseudostate TD19 negative; positive narrower real residuals",
+      "boundary": "Stage81B refit not run, not current representation winner; depth confounding prevents universal relational promotion"
+    }
+  ],
+  "reviewed_primary_prs": [
+    77,
+    84,
+    87,
+    117,
+    131,
+    137,
+    163,
+    178,
+    199,
+    201,
+    207,
+    242,
+    264,
+    294,
+    312,
+    314,
+    318,
+    321,
+    328,
+    336,
+    339,
+    349,
+    369,
+    379,
+    401,
+    440,
+    447,
+    469
+  ],
+  "historical_previously_recorded": true,
+  "task_corrections": [
+    "DO_NOT_REDESIGN_BASIC_MEASURED_QUERY_TARGET",
+    "DO_NOT_RECREATE_FULL_MULTIMODAL_SYNTHETIC_ECOSYSTEM",
+    "DO_NOT_REEXECUTE_100K_PROVIDER_MEASUREMENT_QUALIFICATION",
+    "DO_NOT_REPEAT_REAL_TD314_OR_RELATIONAL_AUDIT336",
+    "DO_NOT_TREAT_PERTURBATION_NEGATIVE_AS_TRUTH_BENCHMARK",
+    "DO_NOT_REVIEW_SCENIC_ATAC_AS_IF_UNSTUDIED",
+    "DO_NOT_ASSIGN_HISTORICAL_224D_AS_CURRENT_WINNER"
+  ],
+  "open_specific_deltas": [
+    "independent exact-head reviews #525/#533/#534",
+    "V80 root cause open, original V79 platform precedent and original V80 archived artifacts first",
+    "source-authenticated real CaseBundle only if unimplemented edge independently demonstrated against existing 8-field inventory",
+    "prospective learned wrong-query with matched null and donor/source controls needs separate authorization"
+  ],
+  "no_repeat": {
+    "new_data_read": false,
+    "new_ETL": false,
+    "new_synthetic_world": false,
+    "new_CaseBundle_adapter_assigned": false,
+    "new_model_fit": false
+  },
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

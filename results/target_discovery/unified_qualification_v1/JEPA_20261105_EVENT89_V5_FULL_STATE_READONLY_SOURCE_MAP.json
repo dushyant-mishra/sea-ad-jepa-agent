@@ -1,0 +1,75 @@
+{
+  "schema": "JEPA_EVENT89_READ_ONLY_V5_MODEL_ADAM_AND_ALL_GRADIENT_SOURCE_MAP_V1",
+  "event": 89,
+  "date_utc": "2026-11-05",
+  "repo": "dushyant-mishra/sea-ad-jepa-agent",
+  "pr": 571,
+  "head": "8656adcf7e96b1e9c52a598beb844f8f8f548644",
+  "base_pr": 570,
+  "base_head": "0e2deffa0191ddfc8b11161a85224e6367d97c22",
+  "scope": "READ_ONLY_EXISTING_CPU_TENSOR_ADAM_AND_GRADIENT_SHAPE_AUDIT_NO_OPTIMIZER_STEP",
+  "files": [
+    [
+      "scripts/v5/jepa_v5_full_state_readonly_audit_v1.py",
+      "fea600306364adb4d23f333b61e45f622686b3b1"
+    ],
+    [
+      "tests/test_jepa_v5_full_state_readonly_audit_v1.py",
+      "3247a0de6e33f49d708d82422c254211b6d18ac5"
+    ],
+    [
+      ".github/workflows/jepa-v5-full-state-readonly-audit-no-optimizer.yml",
+      "615b833a9eb9143eb64f53ad1636ef1476e6571a"
+    ],
+    [
+      "docs/agent/JEPA_20261105_V5_FULL_STATE_READONLY_ADAM_PREFLIGHT_NO_STEPS.md",
+      "6d53371914db0f41aea79c62f8f8a27ef29ebd2b"
+    ]
+  ],
+  "original_macha_test_blobs_unchanged": [
+    {
+      "pr": 557,
+      "blob": "bfa5345775570205def66eb19a98efc207d28d90"
+    },
+    {
+      "pr": 560,
+      "blob": "3ab6c208206251728116debda1edb226cb5b647a"
+    },
+    {
+      "pr": 561,
+      "blob": "be259ab4cdcf035d7bf05134f68b6fe8d09f8833"
+    },
+    {
+      "pr": 566,
+      "blob": "60a16378c22b35ec5d52837c7c641cf6a59e0935"
+    },
+    {
+      "pr": 567,
+      "blob": "c513693fa11b2c0ef72b68601ca83dcd5a0a5b2f"
+    }
+  ],
+  "ci": {
+    "run": 42066951548,
+    "status": "SUCCESS",
+    "python_311": "28 PASSED",
+    "python_312": "28 PASSED",
+    "jobs_success": 2
+  },
+  "mechanics": [
+    "all online/predictor trainable parameters including value_encoder physically inspected",
+    "AdamW full param coverage and named ID/shape/dtype binding after u0 with step, exp_avg, exp_avg_sq",
+    "read-only cloned module and optimizer states with frozen declared source/gene/rights SHA and keyed seed",
+    "SHA-verified weights-only safe PyTorch blob read",
+    "existing .grad observed per tensor with missing/zero/nonfinite/tiny positive and teacher grads"
+  ],
+  "not_proven": [
+    "No actual optimizer or backward or teacher EMA step",
+    "Supplied gradient origin and scientific panel not established",
+    "Not all live V5 RNG/AMP/data iterator/authenticated rights state",
+    "No model restore or fresh process next optimizer RT1–RT8 replay",
+    "No V2 journal integration of these tensors",
+    "No biological state health or training authority"
+  ],
+  "review": "MACHA_INDEPENDENT_PR571_REVIEW_PENDING",
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

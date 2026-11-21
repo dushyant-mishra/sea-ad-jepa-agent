@@ -1,0 +1,27 @@
+name: JEPA chat-exclusive source custody and no-repeat takeover V1
+on:
+  pull_request:
+    paths:
+      - 'docs/agent/JEPA_CHAT_EXCLUSIVE_LANE_TAKEOVER_V1_20261027.md'
+      - 'docs/agent/chat_exclusive_20261027/**'
+      - 'results/target_discovery/chat_exclusive_takeover_20261027/**'
+      - 'results/production_synthetic/JEPA_HISTORICAL_FOUNDATION_CALIBRATION_INTAKE_DELTA_20261027.json'
+      - 'scripts/v5/verify_chat_exclusive_takeover_v1.py'
+      - 'tests/v5/test_verify_chat_exclusive_takeover_v1.py'
+      - '.github/workflows/jepa-chat-exclusive-no-repeat-takeover-v1.yml'
+permissions:
+  contents: read
+jobs:
+  no-repeat-and-no-authority:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Set up test toolkit
+        run: python -m pip install pytest==9.1.1
+      - name: Validate 20 physical attachment identities and preserved V1/V2 G7 correction
+        run: python scripts/v5/verify_chat_exclusive_takeover_v1.py
+      - name: Hostile record forgery and false-promotion tests
+        run: python -m pytest -q tests/v5/test_verify_chat_exclusive_takeover_v1.py

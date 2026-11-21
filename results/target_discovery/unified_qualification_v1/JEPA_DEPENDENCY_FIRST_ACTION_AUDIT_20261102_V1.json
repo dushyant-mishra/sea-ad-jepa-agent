@@ -1,0 +1,50 @@
+{
+  "schema": "JEPA_DEPENDENCY_FIRST_ACTION_AUDIT_V1",
+  "date_utc": "2026-11-02",
+  "review_class": "SOURCE_LEVEL_PLUS_EXISTING_INDEPENDENT_VERDICTS__NO_NEW_PHYSICAL_OR_BIOLOGICAL_EXECUTION",
+  "main": "28cbe3b23cfcbd4365b2b7cf19f7b7ea8c0fd1bb",
+  "audit_before": "cb84ded6119c07c31c3ae4abe876cce9a249f8b5",
+  "handoff_before": "d836667c3a469db273d4ec65a6dc12f8e963e171",
+  "source_heads": {
+    "task4_repair_465": "3b86b9467506539776e04a6470fa8f2f7363f129",
+    "task4_reviewer_red_462": "67d2336155624a8657d2ef3320c9bfff175951ee",
+    "post_td_source_351": "2abcb9fe156eac340ff12adff9426ed38d929e3e",
+    "post_td_review_517": "0bf0de060e6cb13496fb95e193deb63591258ceb",
+    "source_513": "0b1af4f06ba423753899e7c564d3b16ce609ac6a",
+    "synthetic_to_task5_probe_469": "7a6477244dfc817d929e210c38c1ea4b2d1a1927"
+  },
+  "review_results": {
+    "task4_465": "ACCEPT_INCREMENTAL_WITH_LIMITATIONS__NOT_CUMULATIVE",
+    "task4_465_review_comment": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/465#issuecomment-6447851888",
+    "task4_465_ci": {
+      "success": 5,
+      "total": 5
+    },
+    "post_td_517": "FIVE_KNOWN_EXPECTED_RED_NOT_REPAIRED",
+    "post_td_517_ci": {
+      "success": 1,
+      "total": 1
+    },
+    "source_513": "EIGHT_PART_ISSUER_CONTRACT__NOT_PROVISIONED",
+    "unified_task4": "NOT_CUMULATIVELY_ACCEPTED",
+    "synthetic_v3_1_1_task4": "NOT_COMPLETE"
+  },
+  "critical_path": [
+    "external_source_issuer_trust_and_query_rights",
+    "cumulative_task4_independent_scope_review",
+    "post_td_517_exact_source_repair_independent_review",
+    "authenticated_source_to_existing_casebundle_boundary",
+    "measured_teacher_qualification_then_downstream"
+  ],
+  "scientific_restrictions": [
+    "HVS subclass partitions not independently held-out studies/platforms",
+    "HVS included 1000-gene-threshold 9 nuclei do not bound excluded-cell selection",
+    "SEA-AD sample_id not specimen, selection rules unavailable",
+    "NPH52 no real query issuance",
+    "Task4 ExternalSigner is not the source-rights issuer",
+    "C2 and R5 existing results remain developmental, no target winner"
+  ],
+  "go_no_go": "SOURCE_RELEASE_NOT_PROVISIONED__NO_REAL_CASEBUNDLE__REAL_TRAINING_OFF",
+  "scope": "No raw expression, sealed results, external signer, new physical Task4 experiment, new training or biology. Read exact source/reviewer comments and CI.",
+  "terminal": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

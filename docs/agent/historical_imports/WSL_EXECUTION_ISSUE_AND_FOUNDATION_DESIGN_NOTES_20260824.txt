@@ -1,0 +1,93 @@
+Yes. But at this point I would **not keep adding features**. I see about **four remaining improvements with genuinely high scientific value**. After those, additional complexity is more likely to hurt than help.
+
+The most important one is a conceptual upgrade to how we represent heterogeneous experiments.
+
+## 1. Treat technology as an **observation operator**, not a biological covariate
+
+Right now we have been thinking approximately:
+
+X + assay context -> z_biology.
+
+The cleaner formulation is:
+
+z_biology --measurement process O_t--> X_observed
+
+and inference runs in the opposite direction:
+
+q(z_biology | X_observed, O_t)
+
+Here O_t describes how technology t observes biology.
+
+Even when every matrix contains all 4,096 vocabulary genes, technologies can still differ in capture efficiency, dropout/count sampling, relative sensitivity, nucleus versus whole-cell composition, sequencing depth and technical variance. Their masks can therefore be identical while their observation processes are different.
+
+Allowed observation-operator information: scRNA versus snRNA, platform/chemistry, measured vocabulary, sequencing depth, detected-gene characteristics, count-split estimated noise properties and other documented acquisition characteristics. Disallow donor ID, arbitrary matrix ID and unrestricted dataset embeddings.
+
+## 2. Distinguish invariance from legitimate biological change
+
+The state should be approximately invariant to measurement realization, sequencing noise, technical replicate and irrelevant assay differences, while remaining sensitive/equivariant to cell state, cell type, tissue environment, brain region, donor biology, age-related biology and genuine molecular context.
+
+Do not optimize merely to make technology impossible to predict. Ask instead: after controlling for comparable biology, how much unnecessary technology information remains?
+
+## 3. Audit axis stability of the global basis
+
+A 160-D subspace can be stable while its individual axes rotate. Coordinate-specific uncertainty is scientifically suspect if axes are unstable.
+
+Before freezing the real state basis, audit donor-balanced resamples / leave-donor-group-out fits with principal angles, canonical correlations, Procrustes-aligned similarity, coordinate stability and eigenvalue gaps. If the subspace is stable but axes rotate, treat stable groups as subspaces rather than assigning independent biological meaning to every coordinate.
+
+## 4. Define biological uncertainty by an evidence-response curve
+
+Instead of only comparing 100% versus one arbitrary evidence fraction, evaluate the same cell across increasing evidence fractions (for example 20/40/60/80/100%). Let z_i(p) be the inferred state. Inspect convergence to the high-evidence reference and changes between evidence levels.
+
+Biological uncertainty should mean: how much is the inferred biological state expected to change if substantially more relevant molecular evidence becomes available?
+
+## 5. Separate the measurement-quality response curve
+
+For the same cell, vary count depth while preserving the information definition. This gives a separate response curve for better measurement of the same evidence.
+
+Use the evidence curve to supervise biological uncertainty and the depth curve to supervise measurement uncertainty.
+
+## 6. Information efficiency
+
+Different cells may require different amounts of evidence before their state stabilizes. A future scientific quantity may be the minimum evidence required to enter a stable neighborhood of the high-evidence reference. Do not promote this to a production metric without prospective qualification.
+
+## 7. Stronger transfer tests
+
+Use increasingly difficult transfer tests: held-out donor -> held-out matrix -> held-out dataset/study -> held-out technology where scientifically possible. Held-out dataset/technology is much stronger evidence for a reusable biological coordinate system than matrix-only transfer.
+
+## 8. Separate interpolation from extrapolation and measurement OOD from biological novelty
+
+Domain support should eventually have at least two axes: measurement-domain support and biological support. Rare or unusual biology should not automatically be corrected away as technical OOD.
+
+## 9. Preserve donor variability
+
+Some donor variation is nuisance, but some may be exactly the biology of interest. A model should be able to state that a donor has an unusual but well-measured biological state rather than forcing it toward the population average.
+
+## 10. Hierarchical sampling before production training
+
+Avoid both uniform-cell sampling (large datasets dominate) and uniform-dataset sampling (small datasets become overweighted). Use a hierarchical dataset -> donor -> cell design with prospectively frozen bounded weighting. Do not tune weighting exponents on biological outcomes.
+
+## 11. Preserve the molecular ledger as the fine-resolution escape hatch
+
+The 4096 x 160 molecular ledger is the fine molecular state; the 160-D global state is the accountable global coordinate system. The global state does not need to contain every transcriptomic detail if the ledger retains it.
+
+## 12. Shared/context latent decomposition only if evidence demands it
+
+A possible future decomposition is z=(z_shared,z_context), where shared biology recurs across donors/tissues/technologies and context state contains legitimate context-dependent biology. Measurement/domain effects remain outside both. Do not add this preemptively.
+
+## Priority summary
+
+Very high: observation-process/operator abstraction; donor+matrix balanced reproducible basis; basis/subspace stability audit; evidence-vs-depth convergence curves; conditional technology-imprint analysis; held-out dataset/technology transfer.
+
+High: QC must earn measurement-channel access; separate biological novelty from measurement OOD.
+
+Before real training: hierarchical production sampling.
+
+Only if evidence demands it: shared/context latent decomposition.
+
+Do not add a new nonlinear architecture or pathology yet.
+
+Conceptual promise to preserve:
+
+The molecular ledger preserves what was measured. The global state captures reproducible biology. The observation model knows how the experiment measured it. Biological uncertainty says how much the state could change with better biological evidence. Measurement uncertainty says how much it could change if the same biology were remeasured. Domain support says whether the observation regime itself is familiar.
+
+If those properties can be demonstrated pathology-blind across donors, matrices and technologies, the architecture is scientifically mature enough to consider real foundation optimization.

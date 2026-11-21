@@ -1,0 +1,68 @@
+{
+  "schema": "JEPA_EVENT108_TWO_BRANCH_CUSTODY_VALIDATOR_RECOVERY_V1",
+  "event_number": 108,
+  "date_utc": "2026-11-12",
+  "scope": "STATIC_CUSTODY_ONLY__NO_TRAINING",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "canonical": {
+    "pr": 322,
+    "pre_event_repair_head": "77a9dc54906223adf8b1d8b72956392425217056",
+    "green_workflow_count": 27,
+    "green_total": 27,
+    "chronology_green_run": 43312645019,
+    "old_red_run": 42251870408,
+    "intermediate_syntax_red_run": 43311609737
+  },
+  "handoff": {
+    "pr": 460,
+    "pre_event_repair_head": "67cbde10ec436f24ac4f1d25afb0e395a0be6358",
+    "green_workflow_count": 4,
+    "green_total": 4,
+    "first_read_green_run": 43312752446,
+    "old_red_run": 42251980869
+  },
+  "repairs": [
+    {
+      "problem": "EXPLICIT_CHRONOLOGY_CATEGORY_SCHEMA_DRIFT",
+      "fixed_event_types": [
+        105,
+        106,
+        107
+      ],
+      "historical_event_payloads_unchanged": true,
+      "unknown_category_negative_test_retained": true,
+      "training_authority_negative_test_retained": true
+    },
+    {
+      "problem": "EVENT90_TOKEN_EXPECTATION_IN_EVENT107_LIVE_FIRST_READ",
+      "latest_event_number_verified": true,
+      "canonical_audit_hash_format_verified": true,
+      "live_latest_source_sha_verified_in_hosted_workflow": true,
+      "immutable_Event90_manifest_still_validated": true,
+      "shared_checker_sha_equal_on_both": true
+    }
+  ],
+  "source_blobs": {
+    "scripts/v5/verify_jepa_continuous_chronology_20261102.py": "2b71c8ab2750937cb79515dc108433445571f51f",
+    "tests/v5/test_verify_jepa_continuous_chronology_20261102.py": "8e99bf292396d002144cd631e11fbccdfec72849",
+    "scripts/v5/verify_jepa_event90_takeover_integrity_v1.py": "dac2fbfe1cd9654282e868f002446aa1719fdcb0",
+    "tests/v5/test_verify_jepa_event90_takeover_integrity_v1.py": "ebc185aab0d187bfd92d6701818a4400eff14c03",
+    ".github/workflows/jepa-event91-latest-handoff-pointer-no-training.yml": "2eaef7d66111c2e80e97ab7ba19cfeaaf1b669c5"
+  },
+  "prior_event_count": 107,
+  "event_count_after": 108,
+  "prior_no_repeat_top_level_keys": 72,
+  "no_repeat_top_level_keys_after": 73,
+  "old_event90_107_both_branches_blob_identical": true,
+  "original_local_incident_event102_preserved": true,
+  "synthetic_dataset": "PROJECT_PREPARED_DEV2048_ENGINEERING_ONLY",
+  "peer_review": "AUTHOR_SCOPE_GREEN__INDEPENDENT_MACHA_AND_RECIPROCAL_REVIEW_PENDING",
+  "unresolved": [
+    "review #590-#593 independently",
+    "no qualified biological teacher target",
+    "no real target/panel/rights",
+    "no authorized training or bitwise restart"
+  ],
+  "no_merge": true,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

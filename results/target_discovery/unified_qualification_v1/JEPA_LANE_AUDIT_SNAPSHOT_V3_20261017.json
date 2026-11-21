@@ -1,0 +1,66 @@
+{
+  "object_role": "JEPA_LANE_AUDIT_SNAPSHOT_V3",
+  "date": "2026-10-17",
+  "status": "DURABLE_AUDIT_CUSTODY__NON_AUTHORIZING__NO_REPEAT",
+  "frozen_authority": {
+    "task0": "e37a22b8059c0a4a93a789a8ca916fb7acde9fe3",
+    "task1": "799d2e235901dfad9ce3b305c767a1c989e362f6",
+    "task2": "c7dfff1cee608e4a101855d42cf0af08491c2aaf",
+    "task3": "117dd51dea827e734b299982da93991b934bdc8f",
+    "task3_freeze_branch": "freeze/unified-task3-accepted-117dd51d-20261016",
+    "task3_acceptance_pr": 401,
+    "task3_review_head": "c33f2bd2",
+    "task3_verdict": "ACCEPT_UNIFIED_TASK3"
+  },
+  "task3_rejected_lineage": [
+    "851544e8dc2a3881193a4d5bbcf07933e1d61149",
+    "68df31584d17f91da2635cdf8e03bbe93695f9d1",
+    "d9e58a18da5bcfc95d9b9e7484e5686d403c55d4"
+  ],
+  "task4": {
+    "design_plan_pr": 402,
+    "design_plan_head": "979833a51391248f568426f508cce1d01e3e32a5",
+    "red_pr": 403,
+    "red_head": "c5e40b04c6dcbb07d3a92edc9f9677ceb7f584ff",
+    "initial_red_run": 38938697657,
+    "initial_red_job": 117100597615,
+    "implementation_pr": 404,
+    "implementation_branch": "work/unified-task4-impl-20261016",
+    "live_observed_head": "b31371d62f3270c965d321e61c35898ca6be3721",
+    "last_verified_code_test_head": "cfa3b7c4f92a1569639b6733a6956c516d7f4cf4",
+    "delta_from_last_verified_to_live": "DOCS_RESULTS_ONLY",
+    "last_verified_task4_run": 38946411134,
+    "last_verified_task4_job": 117126540739,
+    "same_head_regressions": {
+      "task1": 38946411299,
+      "task2": 38946411331,
+      "task3_registry": 38946411463,
+      "synthetic_integration": 38946411400
+    },
+    "status": "CANDIDATE_ONLY__INDEPENDENT_EXACT_HEAD_REVIEW_REQUIRED",
+    "external_context": "FAIL_CLOSED_C5_C9_NOT_WIRED"
+  },
+  "preserved_task4_red_runs": [
+    {"class":"INITIAL_MISSING_INTERFACES","run":38938697657,"job":117100597615},
+    {"class":"TERMINAL_ACCOUNTING","run":38943608912,"job":117117078319},
+    {"class":"SCHEMA_DRIFT","run":38944319232,"job":117119472176},
+    {"class":"C1_C9_CLOSED_VOCABULARY","run":38944836349,"job":117121219990},
+    {"class":"ACTOR_ACTION_SIGNER_BINDING","run":38945592644,"job":117123776998},
+    {"class":"SELF_ASSERTED_AUTHORITY_CONTEXT","run":38946266116,"job":117126036930}
+  ],
+  "historical_indexes": [
+    "docs/agent/JEPA_LANE_CURRENT_CUSTODY_NO_REPEAT_20261016.md",
+    "docs/agent/JEPA_HISTORICAL_NO_REPEAT_INDEX_20261015.md",
+    "results/target_discovery/unified_qualification_v1/INDEPENDENT_REVIEW_CUSTODY_INDEX_20261015.json",
+    "docs/agent/TASK3_REJECTED_LINEAGE_CUSTODY_HAZARDS_20261015.md",
+    "docs/agent/TD_MOTIF_PROGRAM_EVIDENCE_LAYER_CHROMVAR_LIMMA_V1_20261015.md"
+  ],
+  "local_artifact_manifest": "results/target_discovery/unified_qualification_v1/LOCAL_ARTIFACT_CUSTODY_MANIFEST_V3_20261017.json",
+  "known_inherited_ci_environment_failures": [
+    {"workflow":"TASK0_MIGRATION_AUDIT","run":38946411227,"cause":"MISSING_NUMPY_BEFORE_IMPORT"},
+    {"workflow":"TASK0_B1_B5_VERIFICATION","run":38946411361,"cause":"MISSING_NUMPY_BEFORE_IMPORT"},
+    {"workflow":"TASK3_B6_WORKFLOW_POLICY","run":38946411617,"cause":"MISSING_NUMPY_BEFORE_IMPORT"}
+  ],
+  "no_repeat_rule": "Classify work as ALREADY_AUDITED, SUPERSEDED, OPEN, or CHANGED_INPUT_REQUIRES_REQUALIFICATION before starting. Do not repeat settled audits absent changed bytes/context or a concrete uncovered defect.",
+  "global_authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}

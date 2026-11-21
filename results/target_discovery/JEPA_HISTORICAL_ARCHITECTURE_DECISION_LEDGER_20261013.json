@@ -1,0 +1,279 @@
+{
+  "schema": "JEPA_HISTORICAL_ARCHITECTURE_DECISION_LEDGER_V1",
+  "date": "2026-10-13",
+  "purpose": "Prevent re-running closed historical JEPA target/teacher/student/EMA experiments and reclassify their evidence under the later gene-identity repair.",
+  "authority": {
+    "target_selection_authorized": false,
+    "td60_authorized": false,
+    "stage4_authorized": false,
+    "multimodal_training_authorized": false,
+    "training_authorized": false
+  },
+  "identity_classes": {
+    "SOURCE_NATIVE_SAFE": "Source-native experiment whose relevant gene identities were not in the later NPH identifier-poor class; preserve original scientific scope.",
+    "FROZEN_4K_IDENTITY_AUDITED": "Experiment bound to the frozen 4,096 canonical Ensembl vocabulary later revisited by Stage81A2R protected-identity audit.",
+    "REPAIRED_41K_ADDRESS_BOUND": "Experiment uses the repaired 41,238 molecular-address registry/materialization with explicit source-feature to molecular_address_index mapping.",
+    "SEMANTICS_FREE_MECHANICS": "Result concerns optimizer/EMA/checkpoint/numerical mechanics rather than gene biological identity.",
+    "GENE_IDENTITY_PROVENANCE_UNRESOLVED": "Pre-repair gene-semantic result without sufficient address binding; cannot be active biological architecture evidence without replay.",
+    "NOT_GENE_SEMANTIC": "Result is a governance/design/custody conclusion rather than a gene-semantic biological result."
+  },
+  "master_sources": [
+    "docs/agent/memory-os/DECISION_REGISTRY.csv",
+    "docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md",
+    "docs/agent/JEPA_HISTORICAL_HANDOFF_TARGET_AUTHORITY_AUDIT_20261005.md",
+    "docs/agent/JEPA_REPOSITORY_AUTHORITY_CLEANUP_AUDIT_20261005.md",
+    "docs/agent/CURRENT_SUPERSESSION_MAP.md",
+    "docs/agent/CURRENT_AUTHORITY_INDEX_20261005_SUPERSESSION_NOTICE.md",
+    "docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md",
+    "results/tables/project_file_inventory_v1.csv",
+    "results/tables/project_script_dependency_inventory_v1.csv",
+    "results/tables/project_doc_config_index_v1.csv",
+    "results/tables/v3_scorecard_status_v1.csv"
+  ],
+  "entries": [
+    {
+      "id": "H01_HIDDEN_GENE_ANCHOR",
+      "question": "Should hidden-gene/CELL anchor supervision be part of the encoder objective?",
+      "result": "Rejected; matched causal history favored JEPA_ONLY and ANCHOR_ONLY strongly degraded the shared identity representation.",
+      "historical_status": "CLOSED",
+      "current_status": "CLOSED_DO_NOT_REPEAT",
+      "identity_class": "FROZEN_4K_IDENTITY_AUDITED",
+      "carry_forward": "Keep anchor-free JEPA as the reference mechanics; do not revive absent genuinely new causal evidence.",
+      "sources": ["docs/agent/memory-os/DECISION_REGISTRY.csv"]
+    },
+    {
+      "id": "H02_ADDRESS_EXPOSURE",
+      "question": "Was insufficient query/address exposure the V6 bottleneck?",
+      "result": "No; exposure-dose diagnostic showed near-zero exposure slope.",
+      "historical_status": "CLOSED",
+      "current_status": "CLOSED_DO_NOT_REPEAT",
+      "identity_class": "FROZEN_4K_IDENTITY_AUDITED",
+      "carry_forward": "Do not repeat address-exposure debugging as a target rescue.",
+      "sources": ["docs/agent/memory-os/DECISION_REGISTRY.csv"]
+    },
+    {
+      "id": "H03_CORE_ONLY_EVIDENCE",
+      "question": "Is common/core evidence alone sufficient for difficult and rare biology?",
+      "result": "No; historical core+halo work showed complementary/distributed halo evidence improved difficult rare-state inference.",
+      "historical_status": "CLOSED",
+      "current_status": "CLOSED_PRINCIPLE_RETAINED",
+      "identity_class": "FROZEN_4K_IDENTITY_AUDITED",
+      "carry_forward": "Preserve complementary lawful evidence; do not starve the student to create artificial difficulty.",
+      "sources": ["docs/agent/memory-os/DECISION_REGISTRY.csv"]
+    },
+    {
+      "id": "H04_TIER_HIDING_CASCADE",
+      "question": "Should production curriculum/cascade work by hiding evidence tiers?",
+      "result": "Rejected; apparent low-dimensional gains failed with stronger teachers and balanced tier hiding hurt biology.",
+      "historical_status": "CLOSED",
+      "current_status": "CLOSED_DO_NOT_REPEAT",
+      "identity_class": "FROZEN_4K_IDENTITY_AUDITED",
+      "carry_forward": "Cascade targets/queries if justified; do not use evidence starvation as the production cascade.",
+      "sources": ["docs/agent/memory-os/DECISION_REGISTRY.csv"]
+    },
+    {
+      "id": "H05_RANDOM_U0_TEACHER",
+      "question": "Can frozen/random u0 teacher failures establish the biological teacher verdict?",
+      "result": "No; u0 is a mechanics fixture, not a qualified biological teacher.",
+      "historical_status": "CLOSED",
+      "current_status": "CONTROL_ONLY",
+      "identity_class": "SEMANTICS_FREE_MECHANICS",
+      "carry_forward": "Use only as mechanics/control history; never as final biological teacher authority.",
+      "sources": ["docs/agent/memory-os/DECISION_REGISTRY.csv"]
+    },
+    {
+      "id": "H06_T0_T1_TCTX_TARGETS",
+      "question": "Did historical forward-only T0/T1/TCTX targets establish biological state beyond address identity?",
+      "result": "No production target qualified; T1/TCTX row prediction was reported as almost completely explained by gene/address identity.",
+      "historical_status": "REJECTED_OR_NOT_QUALIFIED",
+      "current_status": "CLOSED_DO_NOT_RENAME_AND_REPEAT",
+      "identity_class": "FROZEN_4K_IDENTITY_AUDITED",
+      "carry_forward": "Any successor target must prove incremental biology over identity; do not recreate T0/T1/TCTX under new names.",
+      "sources": ["docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md", "docs/agent/JEPA_NEW_CHAT_HANDOFF_20261005_TARGET_AUTHORITY_RESET.md"]
+    },
+    {
+      "id": "H07_STATIC_CONTEXT_DECOMPOSITION",
+      "question": "Did contextual RNA add enough beyond static identity to authorize the target?",
+      "result": "Context retained information but did not establish sufficient incremental information beyond identity.",
+      "historical_status": "STOP",
+      "current_status": "CLOSED_AS_SUFFICIENT_TARGET_ARGUMENT",
+      "identity_class": "FROZEN_4K_IDENTITY_AUDITED",
+      "carry_forward": "Context existence alone is insufficient; require material incremental biology.",
+      "sources": ["docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md"]
+    },
+    {
+      "id": "H08_V6R5B_RESIDUAL_TARGET",
+      "question": "Does donor-cross-fitted per-address residualization rescue the target?",
+      "result": "RESIDUAL_TARGET_DOES_NOT_RESCUE; numerical residual-H improved but gains were overwhelmingly cell-global and molecular recovery remained poor.",
+      "historical_status": "CLOSED",
+      "current_status": "CLOSED_DO_NOT_REPEAT",
+      "identity_class": "FROZEN_4K_IDENTITY_AUDITED",
+      "carry_forward": "Preserve the negative result; do not rerun residual target capacity diagnostics without genuinely new reauthorization.",
+      "sources": ["docs/agent/JEPA_TERMINAL_TARGET_LINEAGE_RECONSTRUCTION_20261005_V3_FINAL.md", "docs/agent/memory-os/DECISION_REGISTRY.csv"]
+    },
+    {
+      "id": "H09_PROD41K_T1",
+      "question": "Did the bounded historical PROD41K T1 training establish a teacher architecture?",
+      "result": "No. Biological qualification failed and later audit established a mechanics defect: 48 attention-related optimizer moment tensors remained exactly zero under the historical fp16-autocast backward condition.",
+      "historical_status": "SUPERSEDED_MECHANICS_INTERPRETATION",
+      "current_status": "CLOSED_DEFECTIVE_TRAINING_EVIDENCE",
+      "identity_class": "SEMANTICS_FREE_MECHANICS",
+      "carry_forward": "Do not rehabilitate, extend, resume or retrain T1. Preserve the mandatory post-unscale gradient/optimizer gate in successors.",
+      "sources": ["docs/agent/memory-os/DECISION_REGISTRY.csv"]
+    },
+    {
+      "id": "H10_STAGE69_70_RARE_AUX",
+      "question": "Did a rare-microglia auxiliary student head earn production/benchmark status?",
+      "result": "Stage69 showed an internal signal, but Stage70 reproduced only part of it and the benchmark-lock gate remained false.",
+      "historical_status": "NOT_BENCHMARK_QUALIFIED",
+      "current_status": "NEGATIVE_PRIOR_CONTROL_ONLY",
+      "identity_class": "SOURCE_NATIVE_SAFE",
+      "carry_forward": "Do not make a rare specialist student a default arm. Reintroduce only if new qualified rare target evidence demonstrates shared-student interference.",
+      "sources": ["scripts/run_stage70_rare_microglia_auxiliary_head_robustness_lock_audit_v1.py", "results/reports/stage70_rare_microglia_auxiliary_head_robustness_lock_audit_report_v1.md"]
+    },
+    {
+      "id": "H11_STAGE71_GRAPH_AUX",
+      "question": "Did graph-aware auxiliary supervision add graph-specific biological value?",
+      "result": "No production lock; randomized graph control outperformed the real graph auxiliary in the historical internal benchmark.",
+      "historical_status": "NEGATIVE",
+      "current_status": "NEGATIVE_PRIOR_CONTROL_ONLY",
+      "identity_class": "SOURCE_NATIVE_SAFE",
+      "carry_forward": "Do not make graph-JEPA auxiliary training a default foundation arm; regulatory graphs may remain critics/corroboration if independently qualified.",
+      "sources": ["scripts/run_stage71_full_rare_microglia_graph_jepa_hierarchical_benchmark_v1.py", "configs/agent/stage71_full_rare_microglia_graph_jepa_hierarchical_benchmark_v1.yaml"]
+    },
+    {
+      "id": "H12_V43_TEACHER_TEAM_DESIGN",
+      "question": "Should a single rich teacher, shared multi-head teacher, or complementary independent teacher team be compared?",
+      "result": "Prospective research-only design with matched-compute controls; no architecture selected.",
+      "historical_status": "DESIGN_ONLY",
+      "current_status": "DESIGN_REFERENCE",
+      "identity_class": "NOT_GENE_SEMANTIC",
+      "carry_forward": "Use as design provenance, not as evidence that independent teacher teams are required.",
+      "sources": ["PR#176"]
+    },
+    {
+      "id": "H13_V44_TEACHER_TEAM_PROXY",
+      "question": "What did a tiny original-RNA proxy say about teacher topology?",
+      "result": "On matched T-only teacher evidence, shared multi-head B modestly exceeded single A; independent C and rare-tail D did not improve. Rich R had an unfair C+T evidence advantage. No neural/EMA winner.",
+      "historical_status": "EXPLORATORY_PROXY",
+      "current_status": "POSITIVE_PRIOR_SHARED_MULTIHEAD__NO_WINNER",
+      "identity_class": "REPAIRED_41K_ADDRESS_BOUND",
+      "carry_forward": "Shared typed-head teacher deserves primary challenger status; independent teacher team should be conditional on demonstrated interference, not co-equal by default.",
+      "sources": ["PR#177", "analysis/v44_tiny_teacher_team_tournament_20260926/README.md"]
+    },
+    {
+      "id": "H14_TA_TB1_TB2_TC_TD",
+      "question": "How should a teacher construct query/block targets with or without the queried value?",
+      "result": "Several target-construction policies were specified; the corrected synthetic T_A/T_B comparison was explicitly NOT_INFORMATIVE for real biology and no construction was selected.",
+      "historical_status": "UNRESOLVED_DESIGN",
+      "current_status": "ACTIVE_ZERO_UPDATE_TARGET_CONSTRUCTION_QUESTION",
+      "identity_class": "NOT_GENE_SEMANTIC",
+      "carry_forward": "Screen lawful target constructions on repaired real TRAIN evidence with zero optimizer/EMA updates after TD target semantics are known; do not treat the old synthetic comparison as selection evidence.",
+      "sources": ["PR#163", "Lane A historical target-construction audit"]
+    },
+    {
+      "id": "H15_RICH_TEACHER_PARTIAL_STUDENT_IDENTIFIABILITY",
+      "question": "Can an RNA-only student be forced to point-predict teacher-private information?",
+      "result": "No general identifiability guarantee; target components may require conditional mean, distributional uncertainty, teacher-private classification or abstention.",
+      "historical_status": "SCIENTIFIC_CONTRACT",
+      "current_status": "ACTIVE_PRINCIPLE",
+      "identity_class": "NOT_GENE_SEMANTIC",
+      "carry_forward": "Typed recoverability/uncertainty remains mandatory in downstream implementation.",
+      "sources": ["V64 privileged-information/teacher-student audit"]
+    },
+    {
+      "id": "H16_EMA_FIXED_AND_SCHEDULED_SWEEPS",
+      "question": "Which per-update EMA momentum/schedule is best?",
+      "result": "Mechanics sweeps showed expected responsiveness/lag tradeoffs across fixed and scheduled variants; no production EMA was selected because exposure horizon was unfrozen.",
+      "historical_status": "MECHANICS_ONLY_NO_WINNER",
+      "current_status": "CONTROL_HISTORY",
+      "identity_class": "SEMANTICS_FREE_MECHANICS",
+      "carry_forward": "Do not inherit historical .996/.99925/etc as authority. Use a compact exposure-normalized timescale comparison on the final target/runtime.",
+      "sources": ["Stage81A3 calibration and synthetic mechanics readout"]
+    },
+    {
+      "id": "H17_PRESENTATION_NORMALIZED_EMA",
+      "question": "What should the native EMA parameterization be?",
+      "result": "V5 runtime moved from per-step momentum to half-life in successful base-cell presentations, making teacher age portable across batching/accumulation changes.",
+      "historical_status": "IMPLEMENTED_MECHANICS",
+      "current_status": "ACTIVE_RUNTIME_PRINCIPLE",
+      "identity_class": "SEMANTICS_FREE_MECHANICS",
+      "carry_forward": "Keep presentation half-life as the native EMA control; production half-life remains unselected.",
+      "sources": ["canonical V5 optimizer/EMA/checkpoint lineage"]
+    },
+    {
+      "id": "H18_VARIANCE_ANTI_COLLAPSE",
+      "question": "Should a weak per-slot variance/std loss be part of the objective?",
+      "result": "Studied prospectively; evidence did not earn production objective inclusion.",
+      "historical_status": "NOT_SELECTED",
+      "current_status": "TELEMETRY_ONLY",
+      "identity_class": "SEMANTICS_FREE_MECHANICS",
+      "carry_forward": "Keep rank/std/geometry/cosine telemetry; add a variance penalty only after an actual collapse mechanism is demonstrated.",
+      "sources": ["Stage81A3 mechanics readout"]
+    },
+    {
+      "id": "H19_TEACHER_VIEW_COUNT",
+      "question": "Are 2/4/8 teacher views optimal?",
+      "result": "Old local runs suggested different optima by latent width, but the decision registry left the result provisional.",
+      "historical_status": "PROVISIONAL",
+      "current_status": "REPLAY_REQUIRED",
+      "identity_class": "GENE_IDENTITY_PROVENANCE_UNRESOLVED",
+      "carry_forward": "Do not inherit old 4-view/8-view numeric preferences. Re-test only on repaired/bound FOUNDATION TRAIN if view count remains material.",
+      "sources": ["docs/agent/memory-os/DECISION_REGISTRY.csv"]
+    },
+    {
+      "id": "H20_STAGE81A2R_GENE_IDENTITY_RECOVERY",
+      "question": "Which historical gene-semantic evidence is safe after the identifier recovery?",
+      "result": "Later authoritative recovery isolated an identifier-poor remainder concentrated in NPH52 and established repaired source-feature to 41,238 molecular-address mappings for foundation materialization.",
+      "historical_status": "CLOSED_RECOVERY",
+      "current_status": "CURRENT_IDENTITY_CLASSIFICATION_AUTHORITY",
+      "identity_class": "NOT_GENE_SEMANTIC",
+      "carry_forward": "Classify every historical biological architecture result before reuse; pre-repair NPH/cross-source semantic evidence is not active authority without address binding/replay.",
+      "sources": ["scripts/v4/stage81a2r_authoritative_gene_identity_recovery.py", "scripts/v4/stage81a2r_close_authoritative_identity_audit.py", "scripts/v4/foundation_materialize_nph_discovery_sample.R"]
+    },
+    {
+      "id": "H21_TD314_CORRECTED_REPLAY",
+      "question": "What did the spent corrected relational replay establish?",
+      "result": "TD56 PASS, TD57B PASS, TD57C failed only the universal nearest-third fine-local recurrence claim at HVS P0 under sequential stop, and TD59 PASS. The route remained broad/mesoscale relational viable; no target winner.",
+      "historical_status": "FROZEN_SPENT",
+      "current_status": "FROZEN_DO_NOT_RERUN",
+      "identity_class": "NOT_GENE_SEMANTIC",
+      "carry_forward": "Do not generalize TD57C to absence of rare/local biology or dataset invalidity; #314 cannot be rerun under the same authority.",
+      "sources": ["PR#314"]
+    },
+    {
+      "id": "H22_TD_SUCCESSOR_AND_SYNTHETIC_V21",
+      "question": "Is the TD relational successor ready for blind known-truth test-of-test execution?",
+      "result": "Yes for phase-1 execution only after custody repair/cross-certification; biological test-of-test has not run and controller truth remains unopened.",
+      "historical_status": "CURRENT",
+      "current_status": "READY_FOR_PHASE1_BLINDED_FIT_ONLY",
+      "identity_class": "NOT_GENE_SEMANTIC",
+      "carry_forward": "Run exact PR #320/#321 phase 1, freeze V4 blinded receipt, STOP, independently audit receipt, then separately authorize controller adjudication.",
+      "sources": ["PR#320", "PR#321", "PR#316 comment 6151325707"]
+    },
+    {
+      "id": "H23_JEPA_ANYTHING_OPF_AUDIT",
+      "question": "Should JEPA-Anything OPF redefine the target pipeline?",
+      "result": "No. OPF is a useful capacity-allocation/coordinate mechanism but does not solve target semantics, rare-state fidelity, recoverability, relational claims or uncertainty. Current smoke work is non-authorizing.",
+      "historical_status": "CURRENT_NON_AUTHORIZING_AUDIT",
+      "current_status": "OPTIONAL_FUTURE_NUMERICAL_CHALLENGER",
+      "identity_class": "REPAIRED_41K_ADDRESS_BOUND",
+      "carry_forward": "Keep biologically typed target blocks; test OPF-like factorization only inside qualified blocks after target portfolio freeze and with capacity-matched controls.",
+      "sources": ["docs/agent/JEPA_ROBUST_PIPELINE_POST_JEPA_ANYTHING_AUDIT_20261013.md", "results/target_discovery/JEPA_ROBUST_PIPELINE_SMOKE_AUDIT_V1.json", "PR#322"]
+    }
+  ],
+  "current_td_chain": {
+    "frozen_design_pr316_sha": "2397ab83d8ae9d0c762a8fd5f3919edc350d137f",
+    "td_repair_pr320_sha": "1f474a44a6baabc667dbfda726e0755426c732e7",
+    "synthetic_v2_1_pr321_sha": "15f519c00137d581e25232c16be52c2b9badd83e",
+    "package_sha256": "0977c30f6551df72e244423e1b37733cafa9178099bd0b9ab796beb8a52d2115",
+    "prefit_archive_sha256": "ba0fa56a49ffa009a0225606fb48d8fb30c3bd410a6a264ef905db5d4bb18803",
+    "controller_archive_sha256": "f554e2a95315bb39cc8f7e366620bca5cb2126a4896b3790ed2c632e5cc6a328",
+    "controller_manifest_raw_sha256": "87219ad5f2bc1c514c6771c52dbf0e2529645a7221aaafd0774a8d3e186d03f9",
+    "controller_semantic_commitment_sha256": "a3d8ea34339aa06d995d498c2651d4dfd4e1058eec3640a7cd7ea1128efce293",
+    "compatibility_certification_receipt_sha256": "fbcf2d589ec05ff67914a890f465d39cdc8f9f53363129d98b4b7f0a00213ee9",
+    "preflight_terminal": "READY_TO_EXECUTE_BLIND_FIT",
+    "biological_test_of_test_executed": false,
+    "controller_truth_opened": false
+  }
+}
