@@ -1,6 +1,6 @@
 # READ FIRST — EVENT121 (2026-11-21): TWO-BRANCH DEV2048 V2 ASSIMILATION AND CI-GUARD COMPOSITION AUDIT — NO TRAINING
 
-**Canonical #322 exact head `ec8b16a0459573297b4601820871fcb4e4334d8b` contains 121 append-only events and retains 85 no-repeat source keys.** [Draft #599](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/599) exact `1f669d3b1d4a3dfddab48797b269af2a618c85df` remains source-only. Start with Event121, then Event120, Event119, Events118–113 and Event90. Do not duplicate frozen historical science.
+**Canonical historical audit #322 exact head `ec8b16a0459573297b4601820871fcb4e4334d8b` contains 121 append-only events and retains 85 no-repeat source keys.** [Draft #599](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/599) exact `1f669d3b1d4a3dfddab48797b269af2a618c85df` remains source-only. Start with Event121, then Event120, Event119, Events118–113 and Event90. Do not duplicate frozen historical science.
 
 - Human Event121 `docs/agent/JEPA_20261121_EVENT121_DEV2048_V2_TWO_BRANCH_AND_CI_GUARD_AUDIT_NO_TRAINING.md` Git blob `d2543e58f6c73c201127ea009c30e12979a50aa3`, byte-exact on #322 and #460.
 - Machine Event121 `results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT121_DEV2048_V2_TWO_BRANCH_GUARD_AUDIT_MAP.json` Git blob `9736d6d07ca48348a530a9ed04a062693ed5abe5`, byte-exact on #322 and #460.
