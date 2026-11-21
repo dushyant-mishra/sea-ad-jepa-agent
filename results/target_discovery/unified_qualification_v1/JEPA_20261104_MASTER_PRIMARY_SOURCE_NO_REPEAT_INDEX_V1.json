@@ -2364,5 +2364,22 @@
       "No student/model training; no new private real RNA or sealed controller reads."
     ],
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "event118_v74_v77_task3_static_source_binding_20261121": {
+    "event": 118,
+    "date_utc": "2026-11-21",
+    "human": "docs/agent/JEPA_20261121_EVENT118_V74_V77_TASK3_SOURCE_BINDING_IMPLEMENTATION_AND_CI.md",
+    "human_sha": "94a1524122a3681b6c268d515ab8a274795ed245",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT118_V74_V77_TASK3_SOURCE_BINDING_MAP.json",
+    "machine_sha": "48ec379cd70ab9aa6f3dd9f3b03b1576c8d9718f",
+    "implementation_pr": 598,
+    "implementation_head": "000b8396338b08dceefaa69729636f0bc58c97f8",
+    "open_scope": [
+      "Independent scoped source-only PR598 review; do not merge without review.",
+      "Separate restricted CI environment repair for inherited 3.11.9/Ubuntu26.04 setup failure if workflow required.",
+      "Future actual authenticated issuer and Task3 observation-operator parameter semantics binding; rights and five-state measurement support.",
+      "Only after separate owner authorization may a new synthetic version be realized and evaluated prospectively; no M1/M2 training."
+    ],
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
