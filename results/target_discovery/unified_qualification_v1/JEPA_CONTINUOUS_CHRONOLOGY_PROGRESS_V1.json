@@ -5092,6 +5092,48 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44929694541",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44930168974"
       ]
+    },
+    {
+      "event_id": "20261121-EVENT122-DEV2048-V2-ROLE-GUARD-RED-GREEN-COUNT-NULL-PREFREEZE",
+      "date_utc": "2026-11-21",
+      "workstream": "dev2048_v2_safe_layout_validation_and_real_synthetic_count_null_qualification_design",
+      "implementation_pr": 599,
+      "implementation_head": "7edc9a07767ba3d455526648c636fb3bbe8bb870",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261121_EVENT122_DEV2048_V2_ROLE_GUARD_REPAIR_AND_RNA_DENSITY_NULL_PLAN_NO_TRAINING.md",
+          "blob_sha1": "418e7d98cc1450ea44ee7e453dc5ab88ffd0ad0d",
+          "role": "nonpromoting RED-GREEN role guard implementation and count null design"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT122_DEV2048_ROLE_GUARD_AND_COUNT_NULL_SOURCE_MAP.json",
+          "blob_sha1": "de47e0b49bb22d8c7d9b51faea7d580ba969cd5b",
+          "role": "exact-head source, hosted and joint realism unverified status map"
+        }
+      ],
+      "change_type": "source_custody",
+      "what_already_existed": "Event121 two-branch source identity matched, provisional #599 8/8 DEV2048 allocation, unmerged #596 collection guard, completed V74 sampled real QC/V77/S174/#239, V78/V79 failed joint realism, no verified comparable RNA expression PDF.",
+      "new_work_or_result": "Changed both #599 workflows from unittest discover to exact inert test files. Hostile RED exposed three real holes in metadata plan validation (optimized Python -O bypass, query label forgery, programme panel identity forgery); source-only repair added explicit fail-closed validation and constrained cross-q panel identities. Added prospective, non-executed count-noise-vs-rare-program detection/real-vs-synthetic density and covariance comparison acceptance outline, reusing frozen real source summaries without fresh extraction.",
+      "negative_or_counterfactual_evidence": "One V2 known-truth world remains ungenerated and unapproved. Old corrected real/synthetic historical nonzero fractions 0.111/0.105 had very unequal HVG correlation 0.329/0.068, so comparable sparsity did not establish realism. No verified comparable real-vs-synthetic PDF; no real-RNA read, NB fit, rare-state significance, matched null, C3 biological pass, optimizers, model forward/backward, EMA, M1/M2, generator execution or Stage4. Two inherited workflows still fail Python setup before tests.",
+      "test_review_scope": "Exact red #599 6906fc833baaddcc0aa59279ff45e0e2e176dce4 role run 44932411655 had three intentionally failing hostile assertions; exact green #599 7edc9a07767ba3d455526648c636fb3bbe8bb870 role 44932507291 had 11/11 inert tests PASS, old contradiction 44932507237 6/6 PASS; inherited 44932507281/44932507230 fail actions/setup-python, not biological outcomes. #596 combined-tree scanner has NOT run on the integrated source tree.",
+      "independent_review": "SOURCE_ONLY_HOSTILE_RED_AND_AUTHOR_GREEN__INDEPENDENT_C3_AND_COMBINED_TREE_CI_PEER_REVIEW_PENDING",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Independent scientific review of reused nonquery genes in C3 panels and right-q/wrong-q/null tests; actual generated role remapping/causal mechanism is not built.",
+        "Run the #596 CI collection guard on a reviewed combined tree, preserving no-auto-broad-test collection; inherited Python3.11.9 Ubuntu26.04 setup failures remain.",
+        "Confirm real TRAIN rights/issuer, five-state support rules, count units and operator/donor/cell-class strata, freeze NB/Poisson/conditional-depth null family and joint real-synthetic PDF+covariance+rare known-truth decision protocol before any new fitting.",
+        "Review-only V5 checkpoint helper and noninterference tests do not establish owner-authorized M1, authenticated checkpoint reopening, or production withheld-value nonleakage; keep M1/M2 off."
+      ],
+      "historical_supersession": "Append-only new event, preserve 121 prior events, 85 prior no-repeat source keys and original frozen V1/V74/V78/V79 negatives. Event121 conflict is repaired at #599 branch source only, not independently accepted across unmerged #596.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/599",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/596",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44932411655",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44932507291",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44932507237",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/205"
+      ]
     }
   ]
 }
