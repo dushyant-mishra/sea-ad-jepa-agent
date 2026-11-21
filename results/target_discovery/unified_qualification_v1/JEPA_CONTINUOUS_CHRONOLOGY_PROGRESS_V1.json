@@ -4881,6 +4881,59 @@
       "evidence_links": [
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/43524546993"
       ]
+    },
+    {
+      "event_id": "20261121-EVENT117-SYNTHETIC-REALISM-COMPLETED-HISTORY-NONREPEAT-SOURCE-AUDIT",
+      "date_utc": "2026-11-21",
+      "workstream": "synthetic_real_calibration_history_nonrepeat_source_audit",
+      "implementation_pr": null,
+      "implementation_head": null,
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261121_EVENT117_SYNTHETIC_REALISM_COMPLETED_WORK_NONREPEAT_AUDIT.md",
+          "blob_sha1": "a1534de7e7ff6b27a97db99952e641258c035af7",
+          "role": "source-grounded read-only completed-work audit"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT117_SYNTHETIC_REALISM_NONREPEAT_SOURCE_MAP.json",
+          "blob_sha1": "0fd6b661bdc6bca05587cb1c50ede2bdf5bbe295",
+          "role": "machine exact-head source crosswalk"
+        }
+      ],
+      "change_type": "source_custody",
+      "what_already_existed": "V74/78/79/80 real/synthetic calibration, V3.1.1 accepted design, #356 plan/#379 pivot, Task3 R1-R4 repair, Task4 K04 RED and DEV2048 F1 review already existed.",
+      "new_work_or_result": "Corrected prior incomplete takeover summary; source-pinned the 17 original PR scopes and the exact bounded metadata-only frontier before any new synthetic work.",
+      "negative_or_counterfactual_evidence": "V78 covariance remained inadequate; V79 Q08 fail; V80 benchmark is not biology; Task4 K04 HOLD; DEV2048 generic-only C2/C3. No training/world generated.",
+      "test_review_scope": "Read-only historical PR bodies/comments, frozen receipts, source-only calibration code and Event1–116 no-repeat index; no experiment or new physical data read.",
+      "independent_review": "READ_ONLY_SOURCE_AUDIT_NOT_INDEPENDENT_ACCEPTANCE",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Metadata-only static mapping of existing real calibrations to actual producer observation parameters; no duplicate #239 reconciliation.",
+        "Resolve K04 Task4 scoped review and trusted issuer before any new simulation authority.",
+        "Owner must separately authorize any newly generated v2 biology world and its frozen biological qualification; keep V79/V80 negatives.",
+        "No student/model training; no new private real RNA or sealed controller reads."
+      ],
+      "historical_supersession": "Append-only correction to prior incomplete synthetic history descriptions; prior 116 chronology events and 81 source keys preserved.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/205",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/239",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/242",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/265",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/348",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/344",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/356",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/379",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/493",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/499",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/541",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/549",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/531",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/547",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/550",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/533",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/597"
+      ]
     }
   ]
 }

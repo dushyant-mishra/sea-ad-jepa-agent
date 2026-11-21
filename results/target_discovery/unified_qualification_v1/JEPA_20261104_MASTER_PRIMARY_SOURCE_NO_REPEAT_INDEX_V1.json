@@ -2349,5 +2349,20 @@
       "Bind trusted #597 environment and isolated persistence; test producer with inert fixtures."
     ],
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "event117_synthetic_realism_historical_nonrepeat_20261121": {
+    "event": 117,
+    "date_utc": "2026-11-21",
+    "human": "docs/agent/JEPA_20261121_EVENT117_SYNTHETIC_REALISM_COMPLETED_WORK_NONREPEAT_AUDIT.md",
+    "human_sha": "a1534de7e7ff6b27a97db99952e641258c035af7",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT117_SYNTHETIC_REALISM_NONREPEAT_SOURCE_MAP.json",
+    "machine_sha": "0fd6b661bdc6bca05587cb1c50ede2bdf5bbe295",
+    "open_scope": [
+      "Metadata-only static mapping of existing real calibrations to actual producer observation parameters; no duplicate #239 reconciliation.",
+      "Resolve K04 Task4 scoped review and trusted issuer before any new simulation authority.",
+      "Owner must separately authorize any newly generated v2 biology world and its frozen biological qualification; keep V79/V80 negatives.",
+      "No student/model training; no new private real RNA or sealed controller reads."
+    ],
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }
