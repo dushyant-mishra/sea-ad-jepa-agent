@@ -122,7 +122,8 @@ def audit(s: dict[str, str]) -> dict:
             "population source/operator/donor quotas disconnected")
     require({"F.operator_availability", "F.empirical_targets", "F.exact_counts"} <=
             calls(s["extended"], "observe"), "V77 observer no longer inherits frozen V74 measurements")
-    require("cell_class_counts" in literals(s["real_train"], "extract"),
+    require(any(isinstance(n, ast.keyword) and n.arg == "cell_class_counts"
+                for n in ast.walk(function_node(s["real_train"], "extract"))),
             "V77 real class composition measurement lost")
 
     require(isinstance(assignment(s["task3"], "OBSERVATION_PARAMETER_SEMANTICS_BOUND"),
