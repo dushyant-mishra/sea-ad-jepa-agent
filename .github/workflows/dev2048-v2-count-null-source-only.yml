@@ -1,0 +1,19 @@
+name: DEV2048 V2 count-null and joint-realism prefreeze contract (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v79/dev2048_v2_count_null_joint_gate_v1.py'
+      - 'tests/v79/test_dev2048_v2_count_null_joint_gate_v1.py'
+      - 'docs/agent/JEPA_DEV2048_V2_COUNT_NULL_RARE_BIOLOGY_JOINT_GATES_20261121.md'
+      - '.github/workflows/dev2048-v2-count-null-source-only.yml'
+permissions:
+  contents: read
+jobs:
+  source-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Only named stdlib source-contract tests (no discovery / model / training)
+        run: |
+          python3 --version
+          PYTHONPATH=. python3 tests/v79/test_dev2048_v2_count_null_joint_gate_v1.py -v
