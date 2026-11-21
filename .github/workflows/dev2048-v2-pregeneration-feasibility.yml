@@ -16,6 +16,6 @@ jobs:
         with:
           python-version: '3.11'
       - name: Source-only Python unittest exact file
-        run: python -m unittest discover -s tests/v79 -p test_dev2048_v2_pregeneration_feasibility_v1.py -v
+        run: PYTHONPATH=. python tests/v79/test_dev2048_v2_pregeneration_feasibility_v1.py -v
       - name: Execute only prospective integer arithmetic and source blob checks
         run: python scripts/v79/dev2048_v2_pregeneration_feasibility_v1.py
