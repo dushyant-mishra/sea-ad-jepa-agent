@@ -1,0 +1,21 @@
+name: DEV2048 v2 prospective role geometry source-only (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v79/dev2048_v2_prospective_role_allocation_v1.py'
+      - 'tests/v79/test_dev2048_v2_prospective_role_allocation_v1.py'
+      - '.github/workflows/dev2048-v2-prospective-role-allocation.yml'
+permissions:
+  contents: read
+jobs:
+  source-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Exact read-only metadata layout tests
+        run: PYTHONPATH=. python tests/v79/test_dev2048_v2_prospective_role_allocation_v1.py -v
+      - name: Frozen sources and prospective role receipt only
+        run: python -m scripts.v79.dev2048_v2_prospective_role_allocation_v1

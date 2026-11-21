@@ -1,0 +1,21 @@
+name: DEV2048 v2 known-truth + realism source-only preflight (NO TRAINING)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v79/dev2048_v2_pregeneration_feasibility_v1.py'
+      - 'tests/v79/test_dev2048_v2_pregeneration_feasibility_v1.py'
+      - '.github/workflows/dev2048-v2-pregeneration-feasibility.yml'
+permissions:
+  contents: read
+jobs:
+  inert-source-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Source-only Python unittest exact file
+        run: PYTHONPATH=. python tests/v79/test_dev2048_v2_pregeneration_feasibility_v1.py -v
+      - name: Execute only prospective integer arithmetic and source blob checks
+        run: python scripts/v79/dev2048_v2_pregeneration_feasibility_v1.py
