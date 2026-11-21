@@ -1,3 +1,20 @@
+# READ FIRST — EVENT123 (2026-11-21): HISTORICAL NO-REPEAT RECHECK + RNA COUNT-NULL / RARE-BIOLOGY JOINT SOURCE GATE — NO TRAINING
+
+**Canonical historical audit #322 exact head `682d7f673efa08227ac70ac6bc581afaec8d7d83` contains 123 chronology events and retains 85 no-repeat source keys.** The active handoff #460 now mirrors Event123 byte-exact; Event122 and all prior Event90–121 source history remain below. Read Event123, then Events122–117 and the original Event90 source crosswalk before touching old synthetic biology, distributions or checkpoint code. Continue updating **both** #322 and #460 only for distinct new work.
+
+- Event123 human: `docs/agent/JEPA_20261121_EVENT123_COUNT_NULL_JOINT_REALISM_RARE_BIOLOGY_SOURCE_GATE_NO_TRAINING.md`, Git blob `a866d6ef5384a03ec400154384cd42abe4fbebf0`.
+- Event123 machine: `results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT123_COUNT_NULL_JOINT_REALISM_RARE_BIOLOGY_SOURCE_MAP.json`, Git blob `fa4875307215e9175980d24ed5ada2542effa062`.
+- **Recent exact #599 head** `c0c0b40c007c09850d8aca91cbbe45581687e26a` (still unmerged): role guard now rejects physically unsupported reserve members and seeded identity substitutions (13/13 inert tests [44935640551](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44935640551)); original 6/6 feasibility [44935640546](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44935640546). Two inherited workflows fail Python setup, **not** generated world science.
+- **G0–G6 new prefreeze manifest:** `scripts/v79/dev2048_v2_count_null_joint_gate_v1.py` requires rights, raw-unit/source/support correctness, zero/depth/per-gene tails, signed gene covariance/donor/class/operator topology, ordinary-coexpression-preserving Poisson/NB technical null, heldout multi-gene rare vs pseudo-rarity/wrong-q/null controls, independent donor/source recurrence, preregistered multiplicity. Hosted [44935640604](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44935640604): 8/8 inert tests success. **No RNA counts were fitted and every gate is NOT_ESTIMABLE.**
+- **Why synthetic:** controlled planted rare/perturbation *known truth* to test JEPA against count/technical noise, while matching real measurement and joint distributions enough for relevant evaluation without cloning human rare outcomes. Historical earlier real/synthetic nonzeros 0.111/0.105 but median absolute HVG correlation 0.329/0.068; marginal match did not establish joint realism. No matched proposed V2 density/PDF exists in verified evidence.
+- **Only new next steps:** independently review cross-query shared non-q C3 policy, physical gene-effect remap, #596 combined no-discovery guard, #531 five-state support and #598 source-to-generator semantics; authenticate real TRAIN source issuer/rights and freeze finite numeric count-density/covariance/null and rare-program criteria before any separately authorized V2 generation or distribution fitting. Avoid redoing V74/V77/V78/V79/V80 samples, Task3 R1–R4, Task4 K01–K03 or V5 U0 source engineering.
+
+Nothing merged; no real RNA opened, new synthetic world, JEPA model/optimizer/EMA/M1/M2, protected controller, Stage4, target or representation selection, or production promotion is authorized.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT122 (2026-11-21): DEV2048 V2 GUARD RED→GREEN + RNA COUNT-NULL NEXT CHECK — NO TRAINING
 
 **Canonical historical audit #322 exact head `34ced84f70fcc374371e025051306ac13904035a` contains 122 chronology events and retains 85 no-repeat source keys.** [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event122. Read Event122, then Event121/120/119, Event117–118, and original Event90. Maintain **both** branches after each evidenced implementation result, preserving all historical negative studies.
