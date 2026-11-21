@@ -1,3 +1,16 @@
+# READ FIRST — EVENT117 (2026-11-21): SYNTHETIC REALISM NONREPEAT AUDIT — NO TRAINING
+
+**Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `4603423fb04e0ddea7211faf42c94487662ab195` has 117 chronology events and 82 no-repeat source keys. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event117.** Read Event117, then Events116–113 and the Event90 original crosswalk. Preserve all source history and no-repeat controls.
+
+- Human: `docs/agent/JEPA_20261121_EVENT117_SYNTHETIC_REALISM_COMPLETED_WORK_NONREPEAT_AUDIT.md` (blob `a1534de7e7ff6b27a97db99952e641258c035af7`).
+- Machine: `results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT117_SYNTHETIC_REALISM_NONREPEAT_SOURCE_MAP.json` (blob `0fd6b661bdc6bca05587cb1c50ede2bdf5bbe295`).
+- Completed and not to repeat: V74 QC, V78/V79 falsification, V80 benchmark, V3.1.1 accepted design/#356 plan/#379 pivot, Task3 R1–R4, Task4 K01–K03 reviews, DEV2048 v1 and F1 audit.
+- Next scoped work only: metadata-only executable observation-parameter/real-calibration mapping (existing #493 registry remains semantics-unbound). No world generation or training. Task4 K04 and real issuer remain blocked. Event95 owner V80 backup settled; do not reopen as urgent download.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT116 (2026-11-13): FIRST-READ CHECK REPAIR — NO TRAINING
 
 **Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `f4d8d2d7cbb8ee5e0d6b203960b9ab0fae7ba115` has 116 chronology events and 81 no-repeat source keys. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event116.** Read Event116, then Events115–113 and the Event90 original source crosswalk. Keep both branches current.
