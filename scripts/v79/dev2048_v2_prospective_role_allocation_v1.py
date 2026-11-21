@@ -48,8 +48,12 @@ def frozen_metadata_plan() -> dict[str, object]:
         i for i in range(N_GENES)
         if all((i + o) % 37 != 0 for o in (0, 5, 11))
     ]
-    used = set(sum(views, []) + queries)
-    tail = [i for i in common if i not in used]
+    # Views are RESERVED for programme assignment, not already taken by
+    # biological members. Track q first; the remaining source-common tail
+    # excludes all physically reserved view addresses.
+    reserved_views = set(sum(views, []))
+    used = set(queries)
+    tail = [i for i in common if i not in reserved_views and i not in used]
     program: list[list[int]] = []
     for p in range(4):
         members = []
