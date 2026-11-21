@@ -1,6 +1,9 @@
 """No RNA/model/seed search: inspect v2 candidate address metadata only."""
 from __future__ import annotations
 import unittest
+import copy
+import subprocess
+import sys
 from pathlib import Path
 from scripts.v79 import dev2048_v2_prospective_role_allocation_v1 as P
 
@@ -55,6 +58,36 @@ class ProspectiveV2RoleTests(unittest.TestCase):
     def test_plan_reproducible_from_frozen_metadata_not_search(self):
         self.assertEqual(self.plan,P.frozen_metadata_plan())
         P.validate_plan(self.plan)
+
+
+    def test_hostile_invalid_query_panel_rejected_under_optimized_python(self):
+        # -O removes bare assert statements; a future validator must refuse
+        # the same invalid panel independent of interpreter optimization.
+        script = (
+            "from scripts.v79 import dev2048_v2_prospective_role_allocation_v1 as p;"
+            "x=p.frozen_metadata_plan();"
+            "x['query_other8_panels'][0][0]=x['query_address_ids'][0];"
+            "p.validate_plan(x)"
+        )
+        proc = subprocess.run(
+            [sys.executable, "-O", "-c", script],
+            cwd=Path(P.__file__).resolve().parents[2],
+            text=True, capture_output=True, check=False)
+        self.assertNotEqual(proc.returncode, 0,
+                            "optimized Python silently accepted a q-leaking panel")
+        self.assertIn("DEV2048_V2_ROLE_REFUSAL", proc.stderr)
+
+    def test_hostile_query_labels_must_not_be_relabelled(self):
+        plan = copy.deepcopy(self.plan)
+        plan["query_labels"][6] = "RARE_2"
+        with self.assertRaisesRegex(ValueError, "QUERY_LABELS"):
+            P.validate_plan(plan)
+
+    def test_hostile_planted_panel_metadata_must_remain_bound(self):
+        plan = copy.deepcopy(self.plan)
+        plan["rare_program_panel_gene_ids"][0] = plan["rare_program_panel_gene_ids"][0][:2]
+        with self.assertRaisesRegex(ValueError, "PANEL_PROGRAM"):
+            P.validate_plan(plan)
 
 if __name__ == "__main__":
     unittest.main()
