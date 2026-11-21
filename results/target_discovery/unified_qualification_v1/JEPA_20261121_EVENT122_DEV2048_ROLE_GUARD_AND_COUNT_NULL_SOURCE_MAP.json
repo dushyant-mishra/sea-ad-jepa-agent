@@ -1,0 +1,71 @@
+{
+  "schema": "JEPA_EVENT122_V2_GUARD_AND_RNA_DISTRIBUTION_NULL_SOURCE_ONLY_V1",
+  "event": 122,
+  "date_utc": "2026-11-21",
+  "implementation": {
+    "pr": 599,
+    "head": "7edc9a07767ba3d455526648c636fb3bbe8bb870",
+    "draft": true,
+    "merged": false,
+    "files": [
+      [
+        "scripts/v79/dev2048_v2_prospective_role_allocation_v1.py",
+        "8bf34ca6f7f545c3595de1498c39276e5260ac21"
+      ],
+      [
+        "tests/v79/test_dev2048_v2_prospective_role_allocation_v1.py",
+        "62a285c48e4c14e7d1fa3d32830ebb075ea5b088"
+      ],
+      [
+        ".github/workflows/dev2048-v2-prospective-role-allocation.yml",
+        "8e0b97055951396e45a604eb9927d6762878eb7b"
+      ],
+      [
+        ".github/workflows/dev2048-v2-pregeneration-feasibility.yml",
+        "f8483daa92c84f5cec03b3a6c339c1030f4d20d6"
+      ]
+    ]
+  },
+  "source_only_ci": {
+    "red": {
+      "head": "6906fc833baaddcc0aa59279ff45e0e2e176dce4",
+      "run": 44932411655,
+      "hostile_failures": 3
+    },
+    "green": {
+      "head": "7edc9a07767ba3d455526648c636fb3bbe8bb870",
+      "role_run": 44932507291,
+      "passed": 11,
+      "contradiction_run": 44932507237,
+      "contradiction_passed": 6
+    },
+    "inherited_python_setup_failures": [
+      44932507281,
+      44932507230
+    ]
+  },
+  "previous_event121_conflict": "REPAIRED_IN_PR599_BRANCH_ONLY__COMBINED_TREE_PR596_CHECK_PENDING",
+  "count_distribution": {
+    "historical_geometry": "CORRECTED_TRAIN_4726_CELLS_149_DONORS_HISTORICAL_VERSION_SPECIFIC",
+    "historical_nonzero_fraction": {
+      "synthetic": 0.105,
+      "real": 0.111
+    },
+    "historical_abs_hvg_correlation": {
+      "synthetic": 0.068,
+      "real": 0.329
+    },
+    "matched_real_synthetic_expression_pdf_verified": false,
+    "raw_rna_read_in_event": false,
+    "prospective_rare_count_null_executed": false
+  },
+  "scientific_gates": {
+    "independent_panel_policy": "PENDING",
+    "synthetic_v2_generated": false,
+    "authenticated_train_reference_for_v2": "PENDING",
+    "joint_realism_qualified": false,
+    "known_truth_rare_detector_qualified": false,
+    "training_authorized": false
+  },
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
