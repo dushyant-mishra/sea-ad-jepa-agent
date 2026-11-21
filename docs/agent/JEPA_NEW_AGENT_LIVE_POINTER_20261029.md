@@ -1,3 +1,16 @@
+# READ FIRST — EVENT120 (2026-11-21): DEV2048 V2 SOURCE-ONLY ROLE LAYOUT — NO TRAINING
+
+**Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `0386aa99809f1ddca43749f91f4657ecb8bc4de2` has 120 chronology events and 85 no-repeat source keys. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event120.** Read Event120 then Events119–113 and Event90 original crosswalk; do not duplicate completed real/synthetic calibrations.
+
+- Human: `docs/agent/JEPA_20261121_EVENT120_DEV2048_V2_ROLE_ALLOCATION_SOURCE_ONLY.md` (blob `787c734fcf6ca665a7818655e3daac974438dc1b`).
+- Machine: `results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT120_DEV2048_V2_ROLE_ALLOCATION_MAP.json` (blob `d86e30e8ee96a2073dfefdca33422381cd932085`).
+- [Draft #599](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/599) exact `1f669d3b1d4a3dfddab48797b269af2a618c85df`: 3 rare program genes per each 512-gene view, q rare/perturb/null, reused NONQUERY panel members across query-specific panels. 8/8 new source-only tests passed [44929694541](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44929694541); old 4/view contradiction retained in Event119 (6/6).
+- Independent C3 q-panel sharing review, actual new generator, real-data realism and trusted Task3 semantics remain open. Two inherited 3.11.9/Ubuntu26.04 workflows failed setup before generation. No synthetic world, private source read, optimizer/EMA, M1/M2, model or Stage4 authorized.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT119 (2026-11-21): DEV2048 RARE/PERTURB + REALISM JOINT QUALIFICATION — NO TRAINING
 
 **Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `77103f0b8d51dccf407bdb7462b02d9ec376be43` has 119 chronology events and 84 no-repeat source keys. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event119.** Read Event119, then Events118–113 and Event90 original crosswalk. No completed synthetic science is to be repeated.
