@@ -1,0 +1,44 @@
+{
+  "schema": "JEPA_20261121_EVENT118_V74_V77_TASK3_STATIC_BINDING_V1",
+  "date_utc": "2026-11-21",
+  "event": 118,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+  "implementation": {
+    "pr": 598,
+    "head": "000b8396338b08dceefaa69729636f0bc58c97f8",
+    "draft": true,
+    "base_pr": 493,
+    "script": "scripts/production_synthetic/synthetic_observation_binding_static_v1.py",
+    "script_blob": "622679575063337796d265f1144b8f9d53a94b72",
+    "test": "tests/production_synthetic/test_synthetic_observation_binding_static_v1.py",
+    "test_blob": "b08b73a708da79887a738364471273506b3b684c",
+    "workflow": ".github/workflows/synthetic-observation-binding-static.yml",
+    "workflow_blob": "f57728d9d3647fd3496bfee510edc42a7986e915",
+    "review": "docs/agent/SYNTHETIC_REAL_QC_TASK3_STATIC_BINDING_REVIEW_20261121.md",
+    "review_blob": "98b2f2d583da9ee0b8dc33d25a7f664f5df1ee62"
+  },
+  "scope": "SOURCE_TEXT_ONLY__NO_IMPORT_OF_INSPECTED_MODULES",
+  "results": {
+    "historical_V74_V77": "SOURCE_CALL_PATH_CONFIRMED__96_FEATURE_PROJECTION",
+    "task3_parameter_registry": "SEVEN_NAMES__NO_PHYSICAL_SEMANTICS_BINDING",
+    "authenticated_calibration_registry": "EMPTY",
+    "new_world_authorized": false
+  },
+  "not_checked": [
+    "RNA-independent fragment multiplicity",
+    "RNA-independent modality availability",
+    "real physical cross-source rights issuer",
+    "current new generator elsewhere"
+  ],
+  "hosted": {
+    "source_only_run": 44925941120,
+    "source_only_status": "success",
+    "inert_tests": 6,
+    "other_run": 44925941127,
+    "other_status": "failure_before_tests__python_3_11_9_unavailable_on_ubuntu_26_04",
+    "event117_audit": "26_success_1_inherited_V80_archive_failure",
+    "event117_handoff": "4_success"
+  },
+  "no_training": true,
+  "no_real_data_read": true
+}

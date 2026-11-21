@@ -1,3 +1,17 @@
+# READ FIRST — EVENT118 (2026-11-21): REAL-QC TO SYNTHETIC TASK3 STATIC BINDING — NO TRAINING
+
+**Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `391face82152d24ebf23e441097434dbaff74772` has 118 chronology events and 83 no-repeat source keys. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event118.** Read Event118, then Events117–113 and Event90 original source crosswalk; do not repeat completed real/synthetic work.
+
+- Human: `docs/agent/JEPA_20261121_EVENT118_V74_V77_TASK3_SOURCE_BINDING_IMPLEMENTATION_AND_CI.md` (blob `94a1524122a3681b6c268d515ab8a274795ed245`).
+- Machine: `results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT118_V74_V77_TASK3_SOURCE_BINDING_MAP.json` (blob `48ec379cd70ab9aa6f3dd9f3b03b1576c8d9718f`).
+- [Draft source-only implementation #598](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/598) exact `000b8396338b08dceefaa69729636f0bc58c97f8`, 6/6 inert tests and source audit success, independent review pending.
+- V74/V77 real sampled QC already fed synthetic RNA counts; Task3's seven new observation parameters have no trusted producer semantic binding. 96-address legacy projection is not 41K biology. #531 five-state support rules and #549 K04 remain required.
+- Inherited #598 CI environment failure was Python3.11.9 setup on Ubuntu26.04 before tests; do not report all green. Event95 V80 private backup is owner-resolved; original-archive CI remains distinct.
+
+`TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED`
+
+---
+
 # READ FIRST — EVENT117 (2026-11-21): SYNTHETIC REALISM NONREPEAT AUDIT — NO TRAINING
 
 **Canonical historical audit [#322](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/322) exact head `4603423fb04e0ddea7211faf42c94487662ab195` has 117 chronology events and 82 no-repeat source keys. [Active handoff #460](https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/460) mirrors Event117.** Read Event117, then Events116–113 and the Event90 original crosswalk. Preserve all source history and no-repeat controls.
