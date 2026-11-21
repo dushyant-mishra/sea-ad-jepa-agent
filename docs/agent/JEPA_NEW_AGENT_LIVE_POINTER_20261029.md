@@ -1,6 +1,6 @@
 # READ FIRST — EVENT123 (2026-11-21): HISTORICAL NO-REPEAT RECHECK + RNA COUNT-NULL / RARE-BIOLOGY JOINT SOURCE GATE — NO TRAINING
 
-**Canonical historical audit #322 exact head `682d7f673efa08227ac70ac6bc581afaec8d7d83` contains 123 chronology events and retains 85 no-repeat source keys.** The active handoff #460 now mirrors Event123 byte-exact; Event122 and all prior Event90–121 source history remain below. Read Event123, then Events122–117 and the original Event90 source crosswalk before touching old synthetic biology, distributions or checkpoint code. Continue updating **both** #322 and #460 only for distinct new work.
+**Canonical historical audit #322 exact head `ef23606b9e53fc7a28bfc115f81bf04767d1a452` contains 123 chronology events and retains 85 no-repeat source keys.** The active handoff #460 now mirrors Event123 byte-exact; Event122 and all prior Event90–121 source history remain below. Read Event123, then Events122–117 and the original Event90 source crosswalk before touching old synthetic biology, distributions or checkpoint code. Continue updating **both** #322 and #460 only for distinct new work.
 
 - Event123 human: `docs/agent/JEPA_20261121_EVENT123_COUNT_NULL_JOINT_REALISM_RARE_BIOLOGY_SOURCE_GATE_NO_TRAINING.md`, Git blob `a866d6ef5384a03ec400154384cd42abe4fbebf0`.
 - Event123 machine: `results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT123_COUNT_NULL_JOINT_REALISM_RARE_BIOLOGY_SOURCE_MAP.json`, Git blob `fa4875307215e9175980d24ed5ada2542effa062`.
