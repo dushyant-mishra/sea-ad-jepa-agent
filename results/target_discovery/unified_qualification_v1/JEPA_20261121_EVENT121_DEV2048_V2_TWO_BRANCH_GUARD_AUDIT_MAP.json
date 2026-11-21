@@ -1,0 +1,59 @@
+{
+  "schema": "JEPA_EVENT121_DEV2048_V2_TWO_BRANCH_SOURCE_ONLY_GUARD_AUDIT_V1",
+  "event": 121,
+  "date_utc": "2026-11-21",
+  "scope": "EXACT_SOURCE_AND_HOSTED_LOG_METADATA_ONLY__NOT_C3_APPROVAL",
+  "prior_heads": {
+    "canonical_322": "0386aa99809f1ddca43749f91f4657ecb8bc4de2",
+    "active_460": "eaa389b8031b60df6baec30292da3fe49baa76ee",
+    "prospective_599": "1f669d3b1d4a3dfddab48797b269af2a618c85df",
+    "guard_596": "bc9da0547f4e187969f5dc21bc7a188e9a519d8d"
+  },
+  "event120_mirrors": {
+    "human_git_blob": "787c734fcf6ca665a7818655e3daac974438dc1b",
+    "machine_git_blob": "d86e30e8ee96a2073dfefdca33422381cd932085",
+    "equal": true
+  },
+  "github_evidence": {
+    "pr599_role_tests": {
+      "run": 44929694541,
+      "passed": 8
+    },
+    "pr599_contradiction_tests": {
+      "run": 44929694542,
+      "passed": 6
+    },
+    "inherited_python_setup_failures": [
+      44929694559,
+      44929694537
+    ],
+    "canonical_archive_404": {
+      "run": 44930168974,
+      "kind": "V80_ORIGINAL_PUBLIC_FIT_ARTIFACT_RETRIEVAL__HTTP_404"
+    },
+    "handoff_success_runs": [
+      44930172362,
+      44930172411,
+      44930172380,
+      44930172361
+    ]
+  },
+  "source_blobs": {
+    "role_workflow_599": "37f9904fe0cf6006fa8b6ee9cca01942dd1021e1",
+    "pregeneration_workflow_599": "10cc5403722acb7d71c98ff9b56343f8547e1c3f",
+    "guard_596": "b6c9b7289f3013b4755c7b41ad701f3251c71759"
+  },
+  "integration_finding": {
+    "type": "UNMERGED_CROSS_BRANCH_WORKFLOW_INCOMPATIBILITY",
+    "pattern": "unittest discover",
+    "reason": "PR596 reject DISCOVERY_TEST_ROUTE; both PR599 source-only workflows use discover",
+    "fix": "LITERAL_EXACT_TEST_MODULE_OR_PATH__RUN_GUARD_ON_COMBINED_TREE",
+    "current_source_only_pass_unchanged": true
+  },
+  "independent_C3_review": "PENDING",
+  "generator_integrated": false,
+  "realism_qualified": false,
+  "world_generated": false,
+  "training_executed": false,
+  "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+}
