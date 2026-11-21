@@ -2381,5 +2381,22 @@
       "Only after separate owner authorization may a new synthetic version be realized and evaluated prospectively; no M1/M2 training."
     ],
     "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
+  },
+  "event119_dev2048_joint_realism_pregeneration_20261121": {
+    "event": 119,
+    "date_utc": "2026-11-21",
+    "human": "docs/agent/JEPA_20261121_EVENT119_DEV2048_RARE_PERTURB_REALISM_JOINT_PREGENERATION.md",
+    "human_sha": "5e0504cb960e93c56c6fb6fe473a44696f602102",
+    "machine": "results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT119_DEV2048_REALISM_JOINT_PREGENERATION_MAP.json",
+    "machine_sha": "6e997054068a08f69a9216cd75e8fd9601767ce9",
+    "implementation_pr": 599,
+    "implementation_head": "2d737248041e3885db787304a2e12425755de0d5",
+    "open_scope": [
+      "Independent #599 source and C3 query/panel semantics review, choose physically consistent v2 preserving known-truth program overlap.",
+      "Resolve inherited exact Python 3.11.9 CI runtime separately; no reliance on repeated PR547 generator/materialization.",
+      "Require authenticated TRAIN-only calibration issuer and actual Task3 producer parameter binding, frozen finite joint realism assessment; old V78/V79 failures stay negative.",
+      "Owner authorization and independent gate before generation; M1/M2 and any learning remain OFF."
+    ],
+    "authority": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED"
   }
 }

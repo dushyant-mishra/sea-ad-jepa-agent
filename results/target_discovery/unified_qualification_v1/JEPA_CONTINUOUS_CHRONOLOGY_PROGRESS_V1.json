@@ -4973,6 +4973,45 @@
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44925941120",
         "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44925941127"
       ]
+    },
+    {
+      "event_id": "20261121-EVENT119-DEV2048-RARE-PERTURB-REALISM-JOINT-PREGENERATION-REVIEW",
+      "date_utc": "2026-11-21",
+      "workstream": "dev2048_realism_and_known_truth_joint_pregeneration",
+      "implementation_pr": 599,
+      "implementation_head": "2d737248041e3885db787304a2e12425755de0d5",
+      "source_inputs": [
+        {
+          "path": "docs/agent/JEPA_20261121_EVENT119_DEV2048_RARE_PERTURB_REALISM_JOINT_PREGENERATION.md",
+          "blob_sha1": "5e0504cb960e93c56c6fb6fe473a44696f602102",
+          "role": "source-grounded integrated biological design review"
+        },
+        {
+          "path": "results/target_discovery/unified_qualification_v1/JEPA_20261121_EVENT119_DEV2048_REALISM_JOINT_PREGENERATION_MAP.json",
+          "blob_sha1": "6e997054068a08f69a9216cd75e8fd9601767ce9",
+          "role": "inert pinned evidence and CI map"
+        }
+      ],
+      "change_type": "source_custody",
+      "what_already_existed": "Original #547 F1–F4 review and Macha v2 prospect, V74/V77/S174 real calibration, #239 class E0–E4, V78/V79 negatives, Task3 and #598 static maps.",
+      "new_work_or_result": "Demonstrated v2 proposal contradicts original 15-gene program/disjoint-panel capacity and perturb response overlaps rare0; added read-only prospective metadata/static source preflight and unified realism/known-truth requirements.",
+      "negative_or_counterfactual_evidence": "Biological role allocation not qualified; 15 original rare genes cannot satisfy 4 per view+query and 3 distinct other panel genes. Inherited 3.11.9 runner workflows stopped before tests. No observed synthetic/real comparison or model learning.",
+      "test_review_scope": "Draft PR599 exact-hosted source-only run 44927416268 passed 6 inert unittest; inherited runs 44927416182/44927416197 failed Python setup before fixture execution.",
+      "independent_review": "NOT_INDEPENDENTLY_REVIEWED",
+      "authority_before": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "authority_after": "TARGET_WINNER_NONE__REPRESENTATION_WINNER_NONE__REAL_TRAINING_OFF__STAGE4_NOT_AUTHORIZED",
+      "open_specific_deltas": [
+        "Independent #599 source and C3 query/panel semantics review, choose physically consistent v2 preserving known-truth program overlap.",
+        "Resolve inherited exact Python 3.11.9 CI runtime separately; no reliance on repeated PR547 generator/materialization.",
+        "Require authenticated TRAIN-only calibration issuer and actual Task3 producer parameter binding, frozen finite joint realism assessment; old V78/V79 failures stay negative.",
+        "Owner authorization and independent gate before generation; M1/M2 and any learning remain OFF."
+      ],
+      "historical_supersession": "Append only; preserve original 118 events and 83 no-repeat keys unchanged.",
+      "evidence_links": [
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/599",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/547#issuecomment-6649566055",
+        "https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/44927416268"
+      ]
     }
   ]
 }
